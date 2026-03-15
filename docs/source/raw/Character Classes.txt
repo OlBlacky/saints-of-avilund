@@ -1,0 +1,552 @@
+Character Classes
+Academic
+This character class is essentially a very skilled, slightly magical character. These are typically archaeologists and other academic-types that have studied a little bit of magic, but are more focused on their skills. Their magic is `New Magic' or `Elder Magic' which they have learned through their studies, rather than formal training. They learn, memorize and cast spells as wizards, but they may not specialize.
+Alignment: Any Hit Dice: d6
+Class Skills Appraise, Bluff, Concentration, Craft, Decipher Script, Diplomacy, Disable Device, Disguise, Forgery, Gather Information, Knowledge (any), Listen, Open Lock, Perform, Profession, Research, Search, Sense Motive, Sleight of Hand, Speak Language, Spellcraft, Spot.
+Skill Points at 1st Level: (8+ Int modifier) x 4. Skill Points at Each Additional Level: 8 + Int modifier.
+Class Features All of the following are class features for the Academic.
+Weapon and Armour Proficiency: The Academic is proficient with all simple weapons, plus the rapier. They are proficient with all light armour, but not shields.
+Spells: The Academic casts arcane spells exactly as a wizard. He learns, prepares and casts exactly like a wizard, but has none of the other benefits of the wizard class (no familiar, no extra metamagic feats.
+Spellbooks: The academic uses a spellbook exactly like a wizard. He begins at first level with a spellbook with 4 cantrips, and 3 + Int modifier 1st level spells. The Academic can add spells to this book exactly as a wizard, and furthermore, may add one spell into it for free every level.
+Magic Items: Academics can use magic items exactly as mages.
+Lifelong Study: A character that takes his first level in Academic has benefits with regards to skills in later levels. Whenever the character takes a level in a class other than Academic, he may still take any of the following skill ranks as class-skills, even if they are not class-skills for the newly chosen character class; Decipher Script, Forgery, Knowledge (any), Research, Speak Language, Spellcraft.
+
+Table 1-1: The Academic
+
+Level Base Fort Ref Will
+
+Spells/
+
+Attack Save Save Save
+
+Day
+
+Bonus
+
+Cantrips 1st
+
+2nd 3rd
+
+4th
+
+5th
+
+1
+
++0 +0 +0 +2
+
+1
+
+0
+
+-
+
+-
+
+-
+
+-
+
+2
+
++1 +0 +0 +3
+
+2
+
+0
+
+-
+
+-
+
+-
+
+-
+
+3
+
++2 +1 +1 +3
+
+3
+
+1
+
+0
+
+-
+
+-
+
+-
+
+4
+
++3 +1 +1 +4
+
+4
+
+2
+
+0
+
+-
+
+-
+
+-
+
+5
+
++3 +1 +1 +4
+
+4
+
+2
+
+1
+
+0
+
+-
+
+-
+
+6
+
++4 +2 +2 +5
+
+4
+
+3
+
+2
+
+0
+
+-
+
+-
+
+7
+
++5 +2 +2 +5
+
+4
+
+3
+
+2
+
+1
+
+-
+
+-
+
+8
+
++6 +2 +2 +6
+
+4
+
+4
+
+3
+
+1
+
+0
+
+-
+
+9
+
++6 +3 +3 +6
+
+4
+
+4
+
+3
+
+2
+
+0
+
+-
+
+10
+
++7 +3 +3 +7
+
+4
+
+4
+
+4
+
+2
+
+1
+
+-
+
+11
+
++8 +3 +3 +7
+
+4
+
+4
+
+4
+
+3
+
+1
+
+0
+
+12
+
++9 +4 +4 +8
+
+4
+
+4
+
+4
+
+3
+
+2
+
+0
+
+13
+
++9 +4 +4 +8
+
+4
+
+4
+
+4
+
+4
+
+2
+
+1
+
+14 +10 +4 +4 +9
+
+4
+
+4
+
+4
+
+4
+
+3
+
+1
+
+15 +11 +5 +5 +9
+
+4
+
+4
+
+4
+
+4
+
+3
+
+2
+
+16 +12 +5 +5 +10
+
+4
+
+4
+
+4
+
+4
+
+4
+
+2
+
+17 +12 +5 +5 +10
+
+4
+
+4
+
+4
+
+4
+
+4
+
+3
+
+18 +13 +6 +6 +11
+
+4
+
+4
+
+4
+
+4
+
+4
+
+3
+
+19 +14 +6 +6 +11
+
+4
+
+4
+
+4
+
+4
+
+4
+
+4
+
+20 +15 +6 +6 +12
+
+4
+
+4
+
+4
+
+4
+
+4
+
+4
+
+Professional
+This is the player-character class used for such things as merchants, politicians, investigators and the like. This character is also based on the Rogue character class, but with some modifications. There are no Sneak Attack bonuses or any other traditional `thief' abilities. This character class excels at having huge bonuses on their skills, but is a little weak in combat.
+Alignment: Any Hit Dice: d6
+Class Skills All.
+Skill Points at First Level: (8 + Int modifier) x 4. Skill Points each Level: 8 + Int modifier.
+
+Class Features All of the following are class skills of the Professional.
+Weapon and Armour Proficiency: Professionals can use all simple weapons, as well as the rapier. They are proficient with light armour, but not shields.
+Saving Throws: The Professional is a character with a great deal of latitude. For this reason, his saving throws are a little unusual. This character chooses which save is his `strong' save and the other two then become `weak' saves. Therefore, this character could be resilient like a fighter, quick like a rogue, or strong willed like a wizard.
+Professional Focus Skills: At first level, this character chooses three Professional Focus Skills. These can be any three skills. The character may always take ranks in these skills as class-skills, even when taking a level in a class that may not choose these skills as class-skills. Furthermore, the character gets a Professional Competency bonus of +2 to each of those three skills.
+At levels 5, 10 and 15, the professional chooses another skill to make a Professional Focus Skill. The +2 Professional Competency Bonus is added right away, but any ½ ranks that were chosen in this skill previously are not upgraded to full ranks. The skill does become a class-skill for every class for this character from this time on, however.
+Skill Mastery: At levels 3, 6, and 9, the Professional may select one if it's Professional Focus Skills to master. The Professional may always take 10 in this skill, regardless of situation.
+Bonus Feats: At levels 1, 2, 4, 7, 8, 11, 14, 16, 17, 19, and 20, the Professional may take a bonus feat. The bonus feat may be chosen from the following list; Acrobatic, Agile, Alertness, Animal Affinity, Athletic, Deceitful, Deft Hands, Diligent, Great Fortitude, Investigator, Iron Will, Leadership, Lightning Reflexes, Magical Aptitude, Negotiator, Nimble Fingers, Persuasive, Run, Skill Focus, Stealthy, Toughness, and Track.
+
+Table 1-2: The Professional
+
+Level Base Weak Weak Strong Attack Save Save Save Bonus
+
+Special
+
+1
+
++0
+
++0
+
++0
+
++2 Professional Focus Skills,
+
+Bonus Feat
+
+2
+
++1
+
++0
+
++0
+
++3 Bonus Feat
+
+3
+
++2
+
++1
+
++1
+
++3 Skill Mastery
+
+4
+
++3
+
++1
+
++1
+
++4 Bonus Feat
+
+5
+
++3
+
++1
+
++1
+
++4 New Focus
+
+6
+
++4
+
++2
+
++2
+
++5 Skill Mastery
+
+7
+
++5
+
++2
+
++2
+
++5 Bonus Feat
+
+8
+
++6
+
++2
+
++2
+
++6 Bonus Feat
+
+9
+
++6
+
++3
+
++3
+
++6 Skill Mastery
+
+10
+
++7
+
++3
+
++3
+
++7 New Focus
+
+11
+
++8
+
++3
+
++3
+
++7 Bonus Feat
+
+12
+
++9
+
++4
+
++4
+
++8
+
+13
+
++9
+
++4
+
++4
+
++8 New Focus
+
+14
+
++10
+
++4
+
++4
+
++9 Bonus Feat
+
+15
+
++11
+
++5
+
++5
+
++9
+
+16
+
++12
+
++5
+
++5 +10 Bonus Feat
+
+17
+
++12
+
++5
+
++5 +10 Bonus Feat
+
+18
+
++13
+
++6
+
++6 +11
+
+19
+
++14
+
++6
+
++6 +11 Bonus Feat
+
+20
+
++15
+
++6
+
++6 +12 Bonus Feat
+
+

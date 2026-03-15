@@ -1,0 +1,993 @@
+Something else about why I don't mind Prestige Classes: bad guy NPC's.
+Adding a Prestige Class to a main bad guy is a good way to keep the PC's on their toes, and maybe a little frightened. Especially if the Players have not actually had a chance to read the book which contains the Prestige Class.
+That's a big reason for creating our own world, in my mind. The Players should only have access to the PHB, and, maybe, certain chapters of other sourcebooks as they relate to divine or arcane spells that the character has access to. But players should not be flipping through the DMG, or the Draconomicon, or any other such book.
+A lot of us honoured that agreement. We never looked into the Big Book of Drow, even though we desparately wanted to. I still don't know more than about 5% about what the fucking Drow are really like and what they can do, and I've been fighting them for damn near a decade.
+The same goes with the sourcebook, The Unapproachable East. You made it clear that that was your region, that Thay was yours alone as a DM, so I, at least, have never even read the back cover of that sourcebook.
+It adds to the enjoyment and terror of the campaign. Give us a bad guy with a prestige class that the PC's know nothing about (I can hear the echoes of Harwood, "No. Mages do not do that. It says so in the PHB and DMG. And the DM would not be witholding information from me...") and you'll have a bunch of players cowering like little school girls.
+I want to change this a bit. I suggested in an earlier email that not all priests of the Faith were clerics. I want to stand by that. so as to expand the role of medicine and science in our world, I want the vast majority of priests to be simple non-spellcadting commoners (with the Commoner class from the DMG or a new Priest NPC class we create.)
+A very few men and women who are either particularly devout, or simply chosen by the individual Saints, gain the ability to cast spells granted to them by the Saint. Those that can cast spells are Clerics as per the PHB.
+But not all clerics are priests. I'm thinking of someone like Joan of Arc, as an extreme example of how someone who is not a priest can still be chosen by a Saint as their messenger or tool or weapon or what have you.
+I think that making this distinction gives us two advantages.
+1. Medicine and science suddenly have a role to play in our world. Diseases can be cured by Clerics and Paladins, but there are only a handful of those around, and most, since they are special members of the church, are too busy doing their superior's bidding to be bothered with curing plagues and setting bones. Doctors and hospitals, and oldfashioned home and herbal remedies become the standard way the average person seeks relief from disease. It also forces the PC's to maybe think twice before throwing themselves into a fight. Easy to fight whatever comes at you when you're full of hit points and there is a
+
+cleric back in town. But is it easier to fight when there is no way to heal other than plain old bed rest, or a surgeon's deft hands? Gregor would do well in our world.
+2. It releases the PC cleric characters from having to be typecast as the parish priest. This was the original intention of AD&D 2ed, where Clerics were crusaders and special forces, so to speak, of the larger church. Most priests were just regular joes, but Clerics were special. I still think this is what we should do, since it gives enough independence for the PC Cleric to be able to do some adventuring, but still keeps them on a leash held by their superiors. and it would be fun to yank on that leash from time to time.
+HIGH LEVEL CLERICS BECOME SAINTS.
+Not all high level clerics. And not just clerics. I'd rather think that the average joe worshipper would be encouraged to live his life in holiness and piety so that he too may aspire to Sainthood.
+I think the path to Sainthood should be rather difficult.
+My idea of this faith, as it is shaping up, is somewhat similar to the Catholic church, though slightly more militant, perhaps.
+There should be a strong patriarch or pontiff, supported by a conclave of high level clerics (Cardinals or Archbishops) who not only control the vast property and wealth the church owns, but also direct its temporal activities and rule on its spiritual ones.
+Average parish priests, as I said above, should just be common men (and/or women) with no special spellcasting abilities at all.
+However, a few Rules, Orders and Societies should exist that provide us with our PC adventurers. Each of these should venerate a specific Saint, as they do in the Catholic church.
+Rules are monasteries, with monks. Within these, the majority of the monks are just normal commoners, though a select few are chosen to train for the defense of the monastery (the monk class.)
+Orders are knightly or crusader groupings of Paladins.
+Societies are groupings of Clerics that act as a sort of "special forces" for the Faith.
+Thus, the Society of Saint Maturin of Anauroch is a confederation of Clerics who have been granted divine favour (the ability to cast spells, etc) by Saint Maturin and who act as missionaries in support of Saint Maturin's patronage of all those who suffer in slavery.
+The Order of Saint Maturin of Anauroch is a fraternity of Paladins who have been granted the divine favour by Saint Maturin, and whose mission it is to liberate all those who are enslaved.
+The Rule of Saint Maturin is really just a document outlining the proper way that a person who chooses to follow Saint Maturin's example
+
+and teachings should live, and which forms the basis for the way of life at Maturian monasteries.
+Although, clerics need not be part of societies, monks of monasteries, or paladins orf knightly orders. It helps, since the church is so highly regimented and organised, but the individual Saint, if he is more informal or chaotic, might prefer his chosen to be individuals, rather than band together.
+Clerics, may therefore be just average individuals who were chosen by the saint because they possess a special quality within them that the saint wishes to exploit. Paladins may, though rarely, be knightserrant, doing their saint's wishes without the constraints of an order (although this is more common if the saint is not well known, so therer simply are not enough paladins to form an order.) And Monks may be hermits, living alone or with a master, not pledging themselves to the service of a monastery.
+As for Saints themselves, they should have a distinctly hands-off approach to the world. Basically, a Saint is able to grant spells/special powers to a few chosen clerics and paladins. The greater or older the saint, the more clerics and paladins he can empower. But that is the limit of the saints' involvement in the world. He cannot communicate with mortals, except through symbolism and omens. He cannot manifest in the world, or send an avatar. He is basically limited to granting special powers to those whom he determines to be the best capable individuals to carry out his wishes, and then henceforth lets them alone to try and carry out those wishes. Occassionally, if dire circumstances require it, the saint may concentrate his power and force a vague, but symbolic, dream or vision on his cleric or paladin so as to try and let his will or intentions known. But the interpretation of this vision is left solely up to the cleric.
+In the end, basically, the gods should not walk the earth. The Saints act in mysterious ways, should be a saying in our world.
+I HAVE ALREADY USED TWO SAINT'S NAMES IN EASTWITCH, WHICH I WILL HAVE TO DIG UP.
+2. THE SAINTS CAUSE LITTLE SUB-SECTS IN THE CHURCH, WITH THEIR OWN ORDERS AND MONESTARIES. WE SHOULD HAVE MAYBE 4-6 OF THESE DETAILED.
+We should have quite a few Saints detailed, though, in all honesty, most (like in Catholisim) should remain obscure and unknown. This lets any DM put two Cleric Domains together and create a Saint.
+i.e.: Saint Maturin of Anauroch (Healing/Protection), Patron Saint of Slaves and Lycanthrope Hunters.
+Later on I can create Saint Dorian of Daggerdale (War/Trickery) Patron Saint of Swordsmen even though no one has really ever heard of Saint Dorian.
+There are so many domains (if you count those in the books outside of
+
+the PHB), that the combinations of them for the purposes of creating saints are almost endless.
+Saint Joe of Blow (Good/Evil) Patron Saint of Contradictions
+3. IN SOME REMOTE PARTS, ANCESTOR WORSHIP IS STILL A MAJOR RELIGION.
+I dig ancestor worship. Although I'd prefer it if those who did this sort of thing were still within the Cleric class, rather than be thrown into Druids. We can call them Shamans or whatever you like, but not Druids.
+THE GRIMWOODS OF EASTWITCH ARE DESCENDANTS OF CELT-LIKE PEOPLE FROM AN ISLAND WHERE SCHOLARS THINK MEN ORIGINATED. THE MAJOR FAITH DOES NOT AGREE WITH ANCESTOR WORSHIP, THOUGH PERHAPS ONE OF THE SAINTS' FAITHS MIGHT ALLOW IT TO SOME DEGREE.
+If you took Saint Angus Grimwood, for example, who within the Faith is Patron Saint of Woodcutters, say, but to the Grimwood Clan, he is their ancestor, and worshipped as thus, Saint Angus Grimwood's sect would overlook this ancestor worship.
+Mind you, not all who worship their ancestors will have an ancestor as a Saint. But if the Grimwoods did (or some other family) and they worshipped him, not as a Saint, but as the ancestral patriarch of their family, you could reconcile both systems of belief.
+4. NATURE WORSHIP (DRUIDS AND SUCH) IS STILL PRACTICED IN SOME REMOTE PARTS AS WELL, AND AGAIN, THE MAJOR FAITH DOES NOT LIKE IT,
+I consider Druids to be an archaic type of wizard, rather than nature worshippers. Druids do worship nature, of course, but I view them as precursors to wizards, and not to clerics.
+THOUGH ONE OF THE SAINTLY SECTS MIGHT ALOW FOR IT
+I don't see why. Not really a religion, so it does not threaten the Faith. It is just pagans practicing their witchcraft.
+(AND MAYBE ONE HAS A REAL HATE-ON FOR IT
+The bastard pagans are practicing their witchcraft again! We must burn them all!!! Death to the heretical sinners!!!
+; COULD MAKE AN INTERRESTING RIVALRY IN THE MAJOR FAITH, PERHAPS EVEN A BREWING SCHISM).
+I think so. although I see the schism as being between those who preach acceptance and tolerance, and those who would root out heresy wherever it may hide.
+
+5. THERE IS AN ANTITHESIS OF THE MAJOR FAITH (THE DEVIL), WHO SUPPLIES EVIL CLERICS WITH SPELLS. I WOULD ACTUALLY PREFER THAT THERE WERE LOTS OF DEVILS (COUNTERPART TO THE SAINTS) THAT PROVIDE EVIL CLERICS WITH THEIR POWER, AND THAT THESE VARIOUS DEVILS ALSO HAVE RIVALRIES AMONGST THEMSELVES. THESE CLERICS/CULTS ARE OUTLAWED IN THE NATION WE WILL DETAIL.
+I think The Devil is a good idea. though in actuality you could use Asmodeus, and the remaionder of the fiends from the 9 Hells as your lesser devils. Or you can use fallen or corrupted saints. Yeah, have one Devil, but just as really pious and holy people can be elveated to Saints, really dastardly evil individuals can descend into hell.
+I also think there should be a place for demons separate from the Devil and the Faith.
+Details of the Anti-Faith (or Dark Faith or whatever we want to call it) should be kept to ourselves. This is why:
+1. These bastards would never really get along wioht one another. Evil hardly ever cooperates and congregates.
+2. When you DM, you can surprise the hell out of me (literally) since you hold all the cards in this regard.
+3. When I DM, I am free to use my own sect or branch of the Dark Faith that you know nothing about so as to keep you in the dark as well.
+No harm in working together detailing the forces of Good, and the basic mechanics. But when it comes to something that can be used against the PC's by one of us as a DM, best to just keep it to ourselves so we don't show all our cards too early on.
+6. THE NATION IS NON-SECULAR WITH A REALLY STONG CHURCH THAT HAS MUCH POLITICAL CLOUT.
+I like that.
+7. ASTRONOMY/ASTROLOGY; I WANT TO HAVE A REALLY STRONG CELESTIAL IMPORTANCE IN THE REALM.
+This sounds interesting. Of course, you may have to draw a star chart.
+ALL OF THE SAINTS WILL HAVE CONSTELATIONS IN THEIR NAME, AND SOME OF THE DEVILS MIGHT HAVE SOME TOO.
+Have both the constellations be the same. That is Constellation A is known as Saint Maturin of Anauroch to the average commoner. That same Constellation A is known as Hagan the Fiend among worshippers of the Dark Lord.
+
+ONE SUN. ONE MOON. SIMPLE.
+Though we should add some planets, maybe. Planets help in the astrological scope of things because they move around, so that astrologerts can say something like: When the planet Boregar is in the constellation of Saint Maturin, a great plague will befall the land!
+I've got some more parenting to do at the moment. I think one quick task we should set straight from now is nomenclature.
+I suggest that we stick to English/European sounding names for our little corner of the world. Stuff like Grimwood and Eastwitch. It makes no sense to come out with some made up fantasy names when everything else is kind of English sounding. It'll keep things clean and simple.
+Ok. That's it for me from now. I've got some more reading to do. In the meantime, I want you to think on this, because this is what I shall be pondering now:
+What happens when the people of our world die? What is the afterlife like? Seeing as how that is the primary concern of all religions, I thought we might consider that.
+I like this a lot. Superstition and ignorance should be a BIG factor in our world. "Old Man Zeke, from Lakehurst, don't you know? They say he tends a shrine to Saint Kezz the Half-Orcish in his cellar. That's the Black Faith, that is. And, did you hear about Mistress Lane? Out walking half-naked in the rain t'other night, I heard. Cavorting with satyrs and centaurs and other fell beats of Hell. She's another of the Black faithful, she is. Might have to write a letter to that Inquisitor up in the Capital. You remember him? Passed through here a few years back and burned the whole Locke family, man, woman and all five children for trying to get a cure for little Hanie's pox from those devil worshipping Grimwoods, instead of coming to church to pray for a cure. Brother Caius, that was his name. A good lad he was. Handy with the fire. I'm sure he'd sort things out around here. Too much devilry and faithlessness around these days. Too much devilry..."
+1. The Most Holy and Supreme Speaker of Our Faith ("The Speaker" for short)
+This is the patriarch and supreme leader of the faith.
+2. The Most Holy Prelates of the Faith ("Prelate" for short)
+These are the commanders or leaders of each Saintly Canon. Thus, The Most Holy Prelate of Saint Maturin of Anauroch (or "Prelate Boregar of Saint Maturin" for short) is the highest ranking member of Saint Maturin's sect. He can be a Cleric, Paladin, Monk, Priest, Aristocrat or whatever else, and of any level.
+3. Priors, Abbots, & Deans
+
+These are the commanders of individual monasteries (Abbots) knightly orders (Priors) or cathedrals and societies (Deans). They usually have some Brothers and Initiates under their command, as well as lay individuals that do not fall within the heirarchy of the church. they report directly to their respective Prelate within their Canon.
+A "Prior" leads a Knightly order and can be referred to as "Prior", "Master", or "Father" depending on who is addressing him. Formally, he might be "Boregar, Prior of the Crusading Order of Saint Maturin", and would be referred to as such by thoise outside the church. To the knights under his command, he would be known simply as "Master Boregar". To those within the church, but who are not part of the knightly order, he would be known simply as "Father Boregar".
+An "Abbot" heads a particular monastery, and would be referred to in the same fashion as with a Prior. (ie: "Abbot Boregar of the Monastery of Saint Maturin the Martyred"; "Master Boregar", "Father Boregar".)
+A "Dean" heads a cathedral and its province, or a Society of Clerics, and would be referred to in the same fashion as both a Prior and an Abbott. (ie: "Boregar, Dean of the Cathedral of Saint Maturin in the Province of Eastwitch" or "Boregar, Dean of the Society of Saint Maturin of Anauroch"; "Master Boregar"; "Father Boregar".)
+4. Priests, Monks & Knights ("Brothers" for short)
+These are the rank and file members of the church. They fill most roles, and provide the starting rank for most PC's and NPC's. Whether a Cleric, Priest, Monk, Paladin, Knight or whathave-you, they are referred to as "Brother", or, more formally, as "Brother of Saint Maturin" reflecting the individual Saint they serve, if they serve a Saint.
+5. Initiates
+These are students, squires, etc who are on their way to becoming higher ranking members of the church.
+6. Warden
+Wardens are lay-individuals who are not formally part of the church hierarchy, but who are either employed, or serve within, the church itself. Most wardens are lay-preachers who assist a priest or an initiate in large congregations, or they may be administrative staff within the church offices.
+I envision a scenario where demons (from the Abyss, who are older, and have little in common with the devils of Hell) have found a way to penetrate into the world. Angels, Saints, Devils and Anti-Saints do not know how to enter the Material Plane, so they must act as best they can through their clerics and followers. Demons, as ancient, displaced and fallen dieties and powers have managed to survive because they have
+
+the ability, although somewhat limited (otherwise we would be living under a demonic horde) to enter our world and cause havoc.
+The average person can not make a distinction between a druid, the undead, ancestor worshippers, a devil, a demon, a monster, or Old Zeke the Sorceror. To him, it is all the Black Faith. But to the followers of both the Saintly Canons and the True Black Faith, demons are something entirely different and as great an enemy as anything else.
+So, let's say we've got an "empire". This "Empire" used to be a theocracy with our pontiff and his conclave in absolute control of every aspect of the government. Something happened (war, plague, whatever) about 200 years ago, and the Empire kind of broke apart into a dozen smaller kingdoms and city-states.
+The Capital is the main city of the remainder of this empire. Although, the "empire" is nothing more than a city-state composed of the capital and about a 100 mile radius of lands and towns.
+Our pontiff's motivation could be the re-establishment of his family's old empire. While the church is theoretically unified under his command, the existence of all these canons and saints, and the existence of the Conclave, in practice has diluted his authority and power. The monastic, clerical, and knightly orders in service of the different canons especially prove to be troublesome, since they tend to act too independently. They act for the betterment of advancement of their Saint's canon, and not for the advancement of the church as a whole. If he could consolidate all the canons into his own hand, his family could once again command the united armies of the church, his family could once again control all the vast property holdings and wealth owned by the individual monasteries, societies and knightly orders, and with this powerful army and great wealth, he can restore the empire to its ancient glory...
+Or something like that.
+I think there should be some sort of secular, though more or less corrupt, democratic government ifor The Capital that runs in parallel with the church. The empire fell apart in revolution, and these damn democrats now run what remains of the empire. This senate or parliament with its Premier are the political leaders, but the church and pontiff (who is now seen as a sort of constitutional monarch) control the bureaucracy. So, the members of parliament and the premier can pass all the laws they want, but in the end, it is churchmen who are the majority of the bureaucrats, adminsitering the law.
+Or something like that...
+But that is now getting into a discussion of the politics of the place, not religion. Even though it appears that th two are going to be fairly intertwined.
+I like that. If we're setting our chronological benchmark at around 1750, we should have printing presses. However, their use should be somewhat limited. I can see the church limiting the use of printing
+
+presses becasue they consider them heretical and demonic for whatever reason. A few underground printers still mass-produce some canons and the bible, as well as some more subversive publications, but their quality is really poor and unreliable.
+I like the idea of having different versions of the bible around.
+Yeah, this is gold. Some canons might have folded and they back the pontiff on this matter. and even within the canons their are smaller splinter groups who oppose this move and threaten to separate.
+This is mostly background flavour, but we're definitely crafting a scenario where the very beginnings of a major schism are underway. Things aren't bad yet, but if they keep going the way they are going, probably in a decade or so the whole thing is going to blow.
+I think it sounds good. I don't know how to make the distinction though. Certainly one group fo canons don't sell indulgences at all. These guys might also fall into two groups. One group believes that once you commit evil, there is no salvation, and you should be dammned for all eternity, so they won't sell you salvation. But the second group won't sell you salvation simply because they believe that you have to go out and work for it with good deeds, not by paying money.
+Then there's the group that do sell indulgences. Some might do it as nothing more than a cash grab. Some might actually believe that it works. And maybe for a few canons, it does work.
+Yeah. I can see people praying to and venerating a whole bunch of different saints just to be sure. Some old wife in Eastwitch probably has a good 30 shrines set up in her attic, just to be sure. you know, cause Saint Maturin, he'll be there to help her when the going gets tough, but he's not so good at fighting the demons. So she'll pray to Saint Dorian because he's a warrior-saint who can fight off the demons, but not so good at helping in other ways. And so on. Only a few people really stick to one saint. Most'll probably try to hedge their bets with different saints.
+When you reach the judgement, and this is different for each individual, you are judged before every single soul that dwells there in Heaven or Hell. Your Saint or Devil pleads your case for you, or advises you on what to say or something. In the end, though, it is by democratic vote that you're either let in or cast out. If you plead successfully, all the souls in Heaven will agree to let you in and join their ranks. If not, they will cast you down into the Abyss. Same goes for Hell.... which would be a pretty cool scene as people try to plead that they really are truly evil bastards. Can you imagine getting bounced from Hell for not being evil enough? That's some good bad guy motivation we're creating here. How evil does the Evil Mage have to be? More evil than any previous evil bastard ever was if he wants to get into Hell. That's fucking evil, man.
+I'm sure they'll tell you all manner of lies and half-truths about that. If you pray to Saint Dorian three times a day and give 40% of your income to the church, he'll make sure that you'll start half of the way down the road to Heaven in the Valley of Death. If you tithe another 10% on top of that, Saint Dorian will make sure you're not
+
+bothered by demons. And if you buy our replica of Saint Dorian's jaw bone for only £300, he will ensure that it won't rain on you at all while you're walking down the Valley.
+It's like the fucking mafia.
+Or the real catholic church.
+I LIKE THE IDEA OF THE LONELY TRAVELER IN THE GREY REALM BEING MET BY SOME SEEMINGLY HARMLESS OTHER TRAVELER, WHO ACTUALLY HAS A SALES PITCH TO MAKE, AND ONLY MAKES IT AFTER THEY HAVE SAVED THE TRAVELER FROM A FALL INTO THE ABYSS, OR FROM THE MAW OF SOME DEMON.
+I like this too.
+There are also demons. These ancient beings occassionally raid the Valley of Death and kidnap souls so that they may be transformed into other demons.
+DEMONS SHOULD BE THE UBIQUITOUS EVIL-DOERS OF MANY REALMS (MORTAL, VALLEY OF DEATH, ABYSS). THEY CAN GET AROUND A GREAT DEAL BETWEEN WORLDS, AND IT IS THESE THAT WE ENCOUNTER MOSTLY IN OUR MORTAL ENDEAVOURS.
+Agreed.
+I like this a lot. Superstition and ignorance should be a BIG factor in our world. "Old Man Zeke, from Lakehurst, don't you know? They say he tends a shrine to Saint Kezz the Half-Orcish in his cellar. That's the Black Faith, that is. And, did you hear about Mistress Lane? Out walking half-naked in the rain t'other night, I heard. Cavorting with satyrs and centaurs and other fell beats of Hell. She's another of the Black faithful, she is. Might have to write a letter to that Inquisitor up in the Capital. You remember him? Passed through here a few years back and burned the whole Locke family, man, woman and all five children for trying to get a cure for little Hanie's pox from those devil worshipping Grimwoods, instead of coming to church to pray for a cure. Brother Caius, that was his name. A good lad he was. Handy with the fire. I'm sure he'd sort things out around here. Too much devilry and faithlessness around these days. Too much devilry..."
+HAR HAR! THAT IS GREAT. WE NEED TO HAVE LOTS OF LITTLE BLURBS LIKE THAT READY TO DROP AT ANY TIME. IGNORANCE IS INDEED A MANDITORY COMPONENT OF GUSSY/BLACKY WORLD.
+You bet.
+I REALLY LIKE THE WORD 'CONCLAVE'. LETS USE THAT.
+
+Fine by me. Conclave is one of those ancient sounding words that evokes a bit mroe mystery.
+Another option I just came across is Canon. Used in its definition of "doctrine or dogma", we've got a good name, I think. The Saintly Canons refers to the whole group of Saints. Then you've got the Canon of Saint Maturin, which refers not only to the teachings of Saint Maturin, but also to his followers as a whole.
+CANON IS GOOD. LETS USE THAT TOO. I LIKE YOUR USAGE OF IT ABOVE.
+Check.
+I DON'T REALLY LIKE 'SPEAKER'. CAN WE USE 'PONTIFF'? WOULD THAT BE APPROPRIATE?
+Pontiff is appropriate, though I don't particularly like it. I was thinking about this. One of the Pope's titles is Vicar of Christ. Vicar just means something like "small time country parish priest". However, the Pope, to show that his office is a humble one, and at the same time, greater than everything else, has this seemingly inocuous title.
+I then think the head of our church should have a title like that. So, nothing like Lord High Priest or Most Holy Speaker. It should be something like Vicar of Christ. Something that makes his position seem much more humble than it actually is.
+NAMES FOR THE FAITH....WE HAVE TO NAIL THAT DOWN.
+HOW ABOUT SOMETHING LIKE 'PRIMUS DEUS FIDELIS' OR SOMETHING OLD TIMEY LIKE THAT?
+I like it, though we should have somthing that can be boiled down to one word for short. Primus Deus Fidelis doesn't roll off the tongue.
+I think Latin, or Latin sounding things should feature highly in our world.
+This is my suggestion for an organisational hierarchy:
+1. The Most Holy and Supreme Speaker of Our Faith ("The Speaker" for short)
+I WOULD LIKE SOMETHING A LITTLE LESS COMICAL, AND MORE SINISTER, IF POSSIBLE.
+Sinister, but humble? We need to work on this.
+
+2. The Most Holy Prelates of the Faith ("Prelate" for short)
+PRELATES IS GOOD. ARE THESE THE GUYS THAT MAKE UP THE CONCLAVE?
+Yup.
+GOOD AND GOOD. WELL DONE, SIR. COMMIT THAT TO OUR DOCUMENT.
+Will do. I'm writing up a separate document for the church itself.
+We're on the samke page with this one, I'm sure.
+YEP. SEEMS LIKE OUR IDEAS ON RELIGION ARE CLICKING TOGETHER NICELY.
+Yes sir.
+WE SHOULD HAVE A COUPLE OF CRUSADING ORDERS. A CRUSADING ORDER WOULD TAKE KNIGHTS FROM PRETTY MUCH ANY CANON. THERE SHOULD BE A PATRON SAINT OF CRUSADERS OF COURSE, BUT THESE GUYS SHOULD BE A WIERD MIX OF WORSHIPERS (LIKE THE MIX OF ENGLISH, SPANISH, ITALIAN AND GERMAN CRUSADERS OF THE 11-13TH CENTURIES). EACH ORDER SHOULD HAVE IT'S OWN STRONGHOLD IN THE MAINLAND, WHICH IS PRETTY MUCH EMPTY MOST OF THE TIME. THERE WOULD BE YOUNG MEN TRAINING THERE, AND PERHAPS A FEW OLDER GUYS LEADING THE TRAINING AND RELIGIONS SERVICES (WHICH WOULD BE A BASTARDIZED HODGE-PODGE OF MULTICANONICAL TEACHINGS), BUT MOST OF THE CRUSADERS ARE IN LANDS THAT MOST PEOPLE HAVE NEVER HEARD OF.
+I like this quite a bit.
+CRUSADING ORDERS MIGHT BE GEOGRAPHICALLY BASED, OR BASED ON A NOBLE FAMILY, OR PERHAPS A SINGLE WARRIOR WHOS SAINT-STATUS IS STILL PENDING APPROVAL FROM THE PONTIFF. YEAH.
+Yeah.
+I was thinking that relics and the like should play a bit of an increased role.
+INDEED. NOT ENOUGH CHARACTERS HAVE BITS OF DEAD BODIES FOR MAGICAL WEAPONS. INSTEAD OF THAT CLOAK OF PROTECTION +3, HOW ABOUT THE 'TOE OF SAINT LAZARUS'? YEAH!
+That's great!
+this is why we call our sects "Canons", see? Cause each Saint
+
+gives his followers his doctrine in a book actually called "The Canon of Saint Maturin".
+FUCKING PERFECT, SIR! JUST WHAT I WAS THINKING. THE BOOK WOULD BE CALLED THE 'RULE' TOO, RIGHT? OR IS THAT JUST WHAT THE BOOK CONTAINS? FUCK IT; MESH IT ALL TOGETHER IN ONE CONFUSING MESS, I SAY.
+In one confusing mess. Over the millenia the whole thing should have become convoluted.
+I WAS SAYING THIS EARLIER. THE PONTIFF REALLY WANTS TO GET HIS HANDS ON ALL THE BOOKS AND RELICS, SO THAT HE CAN BE THE SOLE-INTERPRETER OF THEM. SOME OF THE MORE COMPLACENT CANONS MIGHT HAVE ALREADY SUBMITTED THIER BITS OF PARCHEMENT AND BONES, BUT MOST HAVE NOT.
+Yes.
+HOW ABOUT THIS; SOME SAINTS DON'T REALLY HAVE FOLLOWERS PER SE, BUT ARE JUST SORT OF INVOKED SOMETIMES. YOU MIGHT CALL ON SOME OBSCURE AND QUESTIONABLE SAINT TO CURSE SOMEONE'S LOINS, OR YOU MIGHT ASK ONE TO HELP YOU FIND YOUR MISSING CAR KEYS. CANAAN WOULD BE LIKE THIS. PEOPLE DON'T REALLY WORSHIP HIM, BUT INVOKE HIM ONCE IN A WHILE.
+I think maybe most saints are like this. The more I think about it, the more I come to realise that the idea of our saints needs to be refined.
+There would probably be about 20 to 50 saints who actually have followers and spell casters and monasteries and some knightly orders associated with them. These are the more major ones. Then there would be another 100 or so who have a cleric or two, a paladin or two, and maybe a single monastery or something. These are the more minor saints. Then there are hundreds more who have maybe a cleric or two or a paladin, and a shrine somewhere, who are invoked from time to time, but not really worshipped. These are the saints like Caanan that most people aren't sure who they were, or what they're suppossed to do, or even if they are part of the Faith at all. All they know is that grandpa taught them to curse Caanan's name whenever something bad happened. These forgotten saints may have a worshipper or two, or even a cleric. Some people might even take up the worsip of one of these saints based on the assumption that the major saints would be too busy to help in the Valley of Death, but one of these minor saints would be more than willing to help guide him since he has nothing else to do, right?
+AND, OF COURSE, THERE SHOULD BE DOZENS OF CANONS THAT HAVE JUST DWINDLED TO OBSCURITY AND HISTORY. EMPTY ABBEYS SHOULD DOT THE COUNTRYSIDE IN THE OLDER PARTS OF THE KINGDOM (HOW ABOUT 'HEGEMONY' FOR THIS TERM?)
+Hegemony sounds ok. we better get an idea of the political landscape
+
+before we assign a term.
+But I like the idea of empty abbeys and dead saints.
+YEAH. THAT IS GREAT. IN OUR LIST OF SAINTS, WE SHOULD HAVE A 'PRESENT STATUS' LINE FOR THEM, AND A ROUGH ESTIMATE OF THEIR FOLLOWERS AND RELATIVE POWER.
+Agreed.
+THIS WOULD BE A BIG CHART THAT WOULD BE MOSTLY UNFILLED AT FIRST, BUT WE CAN FLESH IT OUT OVER THE NEXT 50 YEARS. HOW ABOUT THAT? I WILL PUT TOGETHER A SPREAD SHEET FORTHWITH FOR THIS.
+Go to it.
+Man, I could give you 100. Making up saints has now become a passtime for me in the last 24 hours. I try to come up with saints while drivbing, showering, shitting, cooking. It's lots of fun.
+SOUNDS GOOD. I SEE NO REASON WHY WE CAN'T HAVE A LIST OF 100 OR MORE. HERE IS THE REAL QUESTION; IN OUR WORLD THERE NEEDS TO BE A LIST OF THESE GUYS AND THEIR HISTORIES. WHERE IS THIS BOOK? WHO CONTROLS IT? HOW DO YOU GET YOUR NAME IN IT?
+Good questions that. My mind is clouding at the moment, so I fear I am losing my usefulness for the day. It is almost time for me to crack open a beer, watch the Simpsons and start in on dinner.
+WELL...ANYONE IN THE SETTING WOULD CALL DRUIDS, ANCESTOR WORSHIPERS, SORCERERS AND WIZARDS WITCHES. ACTUAL WITCHES I ENVISION TO BE DRUIDS OR SORCERERS. ALTHOUGH 'ACTUAL' HAS LITTLE MEANING IN THE BACKGROUND INFO. AND IN GAME TERMS, THERE ARE NO 'WITCH' CLASSES (I ALMOST SAID WITCH O.C.C.; HOW MESSED UP IS THAT?)
+How messed up is the fact that I still remember what OCC stands for, and I didn't miss a beat when I saw it?
+, SO THE TERM IS AMBIGUOUS, WHICH SUITS ME FINE.
+Ok.
+NO PROBLEM. EVENTUALLY WE WILL COME UP WITH SOME GOOD ORIGINAL NAMES FOR GOD AND THE DEVIL, AND FIGURE OUT HOW THEY GOT TO WHERE THEY ARE TODAY.
+I think "The One True God" and "The Black Lord" as God and The Devil should be abstract concepts. No stats or descriptions of
+
+any kind. All we (as the inhabitants of this world) know of them is that in order to gain their favour we have to appeal to the Saints and Fallen Saints.
+I AM WITH YOU 100% NO 50TH LEVEL DIETYS AND ALL THAT SHIT. I THINK THE SAINTS SHOULD BE ABSTRACTIONS TOO.
+By all that is holy, yes!
+THE ONLY GAME CODE FOR THEM SHOULD BE WHAT SPHERES OF INFLUENCE THEY HAVE, AND WHAT SPELLS AND BOONS THEY OFFER. NO STATS FOR THESE GUYS. NO AVATARS.
+Agreed wholeheartedly.
+Maybe there is a cult that tries to worship one of them directly, but they should get no spells or anything like that. worshipping "The One True God" is like worshipping "Good". It is just an abstract concept.
+THAT IS WHAT I AM THINKING FOR THE PONTIFF. HE WORSHIPS THE PRIME DIETY DIRECTLY, BECAUSE HE HAS SOME MANUSCRIPT FROM THE GOD THAT HE KEEPS IN HIS OLD DUSTY CASTLE. THE ORIGINAL SAINTS MIGHT HAVE BEEN MEN WHO READ THIS BOOK AS WELL, AND WENT OUT INTO THE WORLD TO DO GOD'S BIDDING. FROM THERE THINGS BRANCHED OUT AND BECAME MUDDLED. I WILL WORK UP SOME MORE RELIGIOUS HISTORY LATER TONIGHT...
+We need some history here.
+I like your idea that the pontiff worshiops God directly. However, that assumes that God takes an interest.
+My suggestion is,as I said earlier, for a bit of irony, where the hereditary pontiff's ancestor was the first saint, and the church developed out of this ancient ancestor worship. There would be a saint who is "First Among Equals". This makes the Pontiff "first among equals" himself within the Conclave.
+So, let's say Saint Maturin was the First Saint, and our pontiff's ancestor. The pontiff is, aside from being pontiff, also Prelate of Saint Maturin within the Conclave.
+The pontiff doesn't like this very much. Being "first among equals" implies that the other riff-raff Prelates are equal to him. And that the other riff-raff saints are equal to his ancestor Saint Maturin. And if everyone is equal, well, then what is stopping Prelate Boregar of Saint Dalak from proclaiming himself Pontiff and deposing the current occupant? No. The Pontiff is not equal. He is the Living Saint. He will consolidate all the canons under his rule. Just as every saint will be subservient to Saint Maturin, every Prelate will be subservient to him. And eventually, the only saint that will matter is Saint Maturin. Once all the canons are brought together under his rule and administration, well, they can all be folded into the teachings of Saint Maturin. And in the end, there will be one unified church, with
+
+all worshipping the Great Saint Maturin and no one else.
+So, I also see this:
+The original humans were barbarian tribesmen who practiced ancestor worship. The original saints were the great heroes and chieftains of the various clans. The ancestor of the most powerful clan, whose chief was the king of all the clans, was the ancestor of our current pontiff. He was also the first saint, though the other chieftains and heroes were eleveated as well, and became the core group of about 20 original saints.
+Through the millenia, this relationship and history has become muddled and confused and no one really knows what is what.
+Except for the Pontiff. In his castle are the original scrolls or tablets or books that show his descent from this First Saint, that show that the religion, despite its avid persecution of pagans, has its roots in ancestor spirit worship, among other things.
+Leave the main god out of it. But have the pontiff, and his family, be obesessd with consolidating all the different canons under his own autocratic rule, and then discrediting all the saints so that the world is left with only the one to worship.
+That's my thought. What do you think?
+I WOULD LIKE THERE BE THE VERY RARE, VERY FUCKING RARE, THAT IS, ASSIMAR OR TEIFLING THAT IS THE OFSPRING OF AN ANGEL OR A DEVIL.
+I agree.
+HOW THIS MATING HAPPENS, I AM NOT SURE.
+No one really is. We'd have to work on that. Maybe the odd angel or devil manages to penetrate into the material world. they manage to find out how it is that the demons do it. However, the world is poisonous to them, and they can only exist here in bodily form for only a very short period of time. Short enough to knock up some chick, though. these angels/devils then either die here, having been poisoned by just breathing our air, or they return to where they came from, unable to reopen the portal they used to get through to our world int he first place.
+FOR THE MOST PART, I DON'T WANT ANGELS AND DEVILS IN OUR MORTAL REALM,
+Not at all.
+BUT ONCE IN A WHILE THEY HAVE TO FUCK SOME MORTAL CHICK, DON'T THEY?
+A long, long time ago. Assimars and tieflings are descended from thses creatures, but many generations removed, I think. Maybe great-great-
+
+great grandpa was a pit fiend who raped great-great-great grandma and so now the whole family has cloven hoofs for feet, forked tongues and a couple of eerie powers.
+Maybe even older generations than that.
+DEMONS DO ALL THE TIME.
+As well they should.
+WE SHOULD HAVE A SPECIAL 1/2 DEMON PROFILE OR TEMPLATE TO ADD ON TO CHARACTERS AND NPCS. IT SHOULD BE HIGHLY VARIABLE, AND BE COMPLETELY MALEABLE BY THE INDIVIDUAL DM. PEOPLE SHOULD MEET UP WITH 1/2 DEMONS FAIRLY OFTEN; LIKE ONCE IN A LIFE TIME FOR MOST PEOPLE, SAY.
+I agree. Except, the half-demon probably meets up with normal people on the wrong end of a lynching if you ask me.
+A 1/2 demon template should be easy to draw up with the Monster Manual's guidelines.
+I LIKE THE IDEA OF THE BARBARIANS BEING MEN FROM THE NORTH SOMEPLACE. THEY HAVE A COUPLE OLD CASTLES THAT THEY WRESTED FROM THE EMPIRE CENTURIES AGO, AND STILL CAUSE TROUBLE FOR THE EMPIRE BETWEEN BOUTS OF DRINKING AND WHORING. I WANT THEM TO BE SCOTTISH IN APPEARANCE; KILTS, THE FACE PAINT, AND ALL THAT. I LIKE IT.
+Me too.
+WITH REGARDS TO 1/2 ORCS, WE SHOULD PUT ALOT OF DETAIL INTO TYPES OF 1/2 ORCS. THEY SHOULD BE FAIRLY COMMON IN OUR WORLD, I THINK. I WILL SUBMIT MORE ON THEM LATER TONIGHT.
+1. That the average human never travels more than 10 or 20 miles from his home during his entire lifetime, thus making knowledge of "foreign parts" extremely limited. (This also gives free reign to others who would DM in the future to develop their corners of the world however they see fit.)
+THAT IS A FINE ASSUMPTION. MOST NOBLES, THOUGH, MIGHT TRAVEL A HUNDRED MILES OR SOMETHING LIKE THAT, FROM ONE LODGE TO THE NEXT, AND TO DISTANT RELATIVES TO FIND SOME RELATED PEOPLE TO MARRY.
+I'm good with that. I'd just like the world to seem like a big terrifying place to everyone, and not just the kind of place where you can hop on your horse and be off from Waterdeep to Thay without incident or culture shock.
+
+2. That the world is a very dangerous place, overpopulated by monsters, evil humanoids, and other great perils, thus limiting the scope and extent of true exploration of the continent. So the "known world" as perceived by a citizen of Eastwitch consists of solely their town, the few surrounding villages and towns within easy or safe riding distance, and The Capital. A citizen of The Capital might perceive the "known world" to be slightly bigger, with some greater knowledge of a few, but not many, of the outside kingdoms and regions.
+I WOULD LIKE TO HAVE THE CORE AREA AROUND THE CAPITAL (AN AREA ABOUT 200 MILES IN RADIUS) TO BE VERY CIVILIZED. SO CIVILIZED, IN FACT, THAT IT IS BORING FOR SOME ADVENTUROUS HUNTERS AND NOBLES WHO HAVE TO HEAD OUT TO THE WILDS FOR A DECENT HUNT. I'd make it a little smaller than that. 200 mile radius is HUGE. That's Ottawa to Montreal and beyond. That's a big stretch of land. Even today, there are quite a few farms if you stick close to the rivers, but most of that area is as wild as it was 1000 years ago. I'd bring this radius down to 50 miles or so of civilisation, maybe a bit more along some major river or highway.
+IN ANOTHER RADIUS OF 400 MILES FROM THE CAPITAL,
+Again, that is ENORMOUS. That is from Ottawa to Toronto, or Ottawa to Sundridge. If you drive from Ottawa to toronto on highway 7, once you get out to about Carleton Place, you don't come across another town for damn near 200 miles or so. In most places, you're lucky if you see hydro poles or telephone poles. There is nothing but the road and wild bush. And that is the friggin' heart of Upper Canada. It's cause Highway 7 runs through the middle between the St Lawrence and the Ottawa River, where no one bothered to settle. Even in the heart of civilisation, a good couple bands of orc bandits could set up shop there hijacking the unwary travellers, and there'd be damn little the OPP could really do.
+It's the same if you drive up to Sundridge from Ottawa on 17 or 60. Well, on one you drive through the park, but on the other, you're right along the river, and still there are long stretches of road where theoretically you'd be on your own if you broke down (except for the thousands of lumber trucks and all the soldiers from Petawawa, that is.)
+I think the radius ought to be 50 and 100 miles, with some variations depending on how the rivers and highways flow. But even in the heart of civilisation, you should have a few stretches of woodland or marsh or moor where highwaymen and bandits might make their home. maybe not monsters and orcs, but human predators.
+THE WORLD IS SEMI-CIVILIZED. THERE ARE NO LARGE TOWNS, BUT MANY OLD CASTLES AND FROTIER STRONGHOLDS WHERE CIVILIZATION IS STARTING TO BULGE OUT A LITTLE BIT. BEYOND THIS IS THE 'WILDE' WHERE THERE ARE MONSTERS AND HORRORS APPLENTY.
+
+I like this though.
+I'm torn, see. On the one hand, I've got this idea and vision of a civilisation in decline. A civilisation where mankind is now under seige within its own kingdoms, and the orcs are the ones pushing out of their territories and into mankinds. On the other hand, it's the vision of mankind just starting to get a grip on civilisation and starting to branch out and colonise.
+The only reason I am leaning towards the "mankind under seige and in decline" viewpoint is that expanding borders imply youth and optimisim. A collapsing frontier where the wild is what is encroaching on civilisation smacks of old age and desperation. And I'm beginning to get a feel that our world and our civilisation is very old. It's colonisation and expansion has been done. The empire branched out and expanded until it met the orcs, the orcs fought back and gained the upper hand, and now it is the orcs and the wilderness who are expanding.
+I like the idea of many dotted castles and monasteries and even towns, but these should be at the end of their lifespan, and even abandoned, not being built.
+That's my thought on this grim october evening, at any rate. It might look different in the morning.
+HERE IS A BASIC LAYOUT FOR YOU. I WILL LAYOUT A GRID BELOW, AND TELL YOU WHAT IS IN EACH AREA;
+123 456 789
+THIS IS BASICALLY ALL LAND. THE WESTERN SEA BORDERS ON THE WEST AND SOUTH REGIONS.
+Flip it around. This is a recently developed pet peeve of mine. Why the west? For once I'd like to see a map where the great sea is on the east, like with the Atlantic from the North American perspective. It's just a small detail, but I'd just like to see the ocean on the east coast for once.
+I developed this pet peeve thanks to my wife. She, being an Albertan, considers, "the ocean" and "the coast" to be the Pacific and BC respectively. For me, being from Ontario, "the ocean" and "the coast" are the Atlantic and the Maritimes/New England respectively. It never really hit me how geography really screws up your perspective of the world. I love Albertan and Albertans, but crickey! they can go crazy living on those wind-swept plains, crammed right up to those mountains.
+I said to the wife, "When we retire, I think I might like for us to live near the sea." "I know a great place on Vancouver Island you might like," said she. "I was thinking more along the lines of the Maritimes," said I.
+
+Vancouver Island?! Crazy Albertans...
+Like a fucking Australian insiting it should snow in July, and you should be wearing shorts and a t-shirt for the Christmas barbeque.
+THE NORTH IS BORDERED BY A FROZEN WASTE, BROKEN UP BY MOUNTAINS. THE EAST IS BORDERED BY 'THE GREAT WOOD', WHICH SEPERATES THE EMPIRE FROM THE EAST OF THE CONTINENT, WHERE MANY NAMELESS HORRORS AWAIT.
+I'm glad to see the north is still north, and it is properly frozen.
+For that: all good.
+1. THIS AREA IS A FRONTIER AREA, WHERE THE BARBARIANS CAUSE LOTS OF TROUBLE. THERE ARE SOME BARBARIAN STRONHOLDS. THIS IS A MOUNTAINOUS AND COLD CLIME.
+All good. Gotta keep those barbarians from being too viking-like though. I like the idea of some sort of celtic/scottish/maybe a bit of viking flavour to them. While the gentlemen of the empire dress in suits and duel with rapiers and pistols, these bastards wear kilts, armour, and will still swing a greatsword at you.
+2-3. COLD FRONTIER. LOTS MORE MOUNTAINS AND MANY SMALL CASTLES AND FORTIFIED ABEYS AND THINGS.
+I'd love a good mountain adventure. In one of the old Forgotten Realms 2nd Ed books there is this great picture. It is in the cold mountains, and there is this monstous rmy on the march up the mountains. there's a sleigh with the evil wizard, and human and orcs and hobgoblin mercenaries and even a giant or two. The mountains look fantastic, just like the Rockies in winter and the look of this ragged army marching up them in the snow is great. It's my favourite piece of D&D artwork I've come across. On the basis of that picture alone, I've always wanted to do some adventuring in the cold mountains. In the realms it was the Spine of the World. In our world it's here. One day I'll send a group of you guys out to canibalise, I mean... adventure with, each other in these mountains.
+4. THE CIVILIZED LANDS AND THE CAPITAL.
+To keep with the bleakness of theme, I'd like to see the capital as far north in this area as possible. As it is on the coast, its's climate would be moderated, kind of like Vancouver's. But I'd like it to be a place with relatively harsh winters, just to add a bit more misery. Otherwise you get happy-go-lucky hippies like you've got in California or Seattle or BC. We need a good snowy winter.
+5. SETTLED LANDS. SOME TROUBLE HERE WITH ORCS AND OTHER THINGS, BUT MOST TROUBLE HERE IS INTERNAL; THE BLACK FAITH AND POLITICAL
+
+PROBLEMS.
+Check. Sounds good.
+6. FRONEIR. AT THE EASTERN EDGE OF THIS ZONE IS EASTWITCH. THIS LAND IS WILD.
+Sounds good.
+7. CIVILIZED LANDS. THIS IS WHERE THE PONTIFF HAS HIS CASTLE. THIS LAND IS REASONABY SAFE AS WELL, BUT WAS SETTLED CENTURIES AGO. IT IS THE MOST DECREPIT PART OF THE EMPIRE, WITH LOTS OF STRANGE OLD SAINTS, AND LONELY VILLAGES, HAUNTED CASTLES AND THE LIKE.
+Check.
+8. SETTLE LANDS. THIS IS A FERTILE AREA WHERE THE IS MUCH CONFLICT FROM ORCS RAIDING FARMS. THE SOUTH IS THE SHORE OF A GREAT BAY OF THE OCEAN WHICH IS QUITE WARM (MEDITERANEAN LIKE). LOTS OF TROUBLE FROM THE WATERS AS WELL.
+This should probably be the centre of crusading activity. Not that this is where they fight, but rather, this is probably where they would embark out of. Some port town or city here is where they depart to go fight their wars.
+Lots of pirate activity here too.
+9. FRONTIER. NOT MUCH HERE BESIDES OUTPOSTES. A TRADE ROAD GOES ALONG THE SHORE OF THE SEA TO THE SOUTH, AND LEADS EAST, SNAKING THROUGH THE GREAT WOOD. THIS IS A TRADE ROAD, THOUGH WHERE IT GOES TO AND THE PEOLE THERE ARE LITTLE KNOW. SOME WONDERS COME BACK UP THIS ROAD, AND LOTS OF CRUSADERS GO DOWN IT, OFTEN NEVER TO BE SEEN AGAIN.
+This is very good. i'd like to see that road in disuse. More of my dismal "end of the world" mentality this evening. But there's probably a big war going on about 500 miles down that road, where crusaders and orcs and god knows what else are locked in a stalemate battle. So nothing much comes down that road anymore.
+Maybe I'm trying too hard to isolate our world. I just don;t want us to say, "Well, jeez, I guess Thay is down that road, eh?" And then have Casey come with a Red Wizard PC cause we said the magic word. I want the players to get the idea thattheir characters are pretty much going to come from Eastwitch, or maybe, if they have to, from a different part f this here empire. Maybe they're from one of the barbarian towns, or an orc. But for the most part, the PC's should not be from Thay or Halruaa or Lantan or wherever else. Maybe some day down the road. the whole idea behind this is to get the player's (and us) to
+
+discover the world by putting one foot in front of the other and walking that road. So, if no trade caravan has come down that road in damn near 50 years, and every damn crusader that goes out that way never comes back, there would be a damn good reason for the PC's to want to go find out what is holding up traffic there.
+HOW DOES ALL THAT SOUND?
+It sounds good to me. I've given my suggestions, for your consideration.
+THERE ARE ALSO LOTS OF OTHER ISLANDS AND CONTINENTS THAT ARE BASICALLY TERRA OBSCURA, THOUGH THEY ARE BEING EXPLORED (AND EXPLOITED) BY MORE AND MORE HUMAN COMPANIES AND CRUSADERS ALL THE TIME.
+This is where i diverge in viewpoint. I think they should remain terra obscura. I think if someone is going to explore them, it should be the PC's. Or at least, thier exploration and discovery should come ingame. Give the PC's the chance to be the actual explorers who go out and map this place: one day, a strange, enormous war-canoe with savage looking men shows up on shore. After much confusion it is determined that they're explorers who have come from their group of islands some 2000 miles out to sea. Some stuff happens... the PC's are chosen to return with these savages to their island nation as the representatives of the empire (and maybe conquer and colonise.)
+I like the idea of attempots being made, and maybe some small gains, but for the most part, aside from what you've got down on your map, it should be left blank by uis, and be considered blank y the folk of our world. Let's discover it and explore it in-game.
+I actually do envision a scenario where the pontiff is somewhat successful in uniting the church a decade or two from now, and then calls for a great crusade to fight back the orcs. He also commands a whole whack of missionaries to go out and explore and convert the savages. I think religion would be a great incentive to explore and branch out. But not yet.
+2. Physics
+I DONT THINK WE HAVE TO DWELL TOO MUCH ON PHYSICS. I WANT A FAIRLY REALISTIC SETTING, BUT WITH MAGIC TOO. NUFF SAID.
+I agree. We just stick to the standard D&D assumptions.
+3. Cosmology
+I THINK THAT IS GOOD ENOUGH. WE DON'T NEED ALL THOSE OTHER PLANES, I
+
+DON'T THINK.
+No one really does. It's just a place to out gods and send epic characters.
+A LOT OF THE MAGICAL POWERS THAT ARE AVAILABLE IN OUR WORLD COME RIGHT FROM THIS WORLD, SO WE DON'T NEED TO ASIGN A COSMOLOGICAL SOURCE OF POWER FOR EVERY MAGICAL EFFECT THAT WE USE.
+Not every one, but you'd be surprised at how many. all healing spells, for example, draw their power by tapping into the Positive Energy Plane. Enervation and the like, from the Negative Energy Plane. Elemental spells, from their elements.
+It all really comes down to how magic works. But if you get rid of the elemental planes, say, then you can't really summon an elemental. Unless you decide that an elemental comes from the actual material world imbued with some magic. Well, then it ceases to be "extraplanar" type and thus gains immunity from spells that affect "extraplanar" creatrures.
+Keeping the Inner Planes in place, as I mentioned, leaves us with about 95% of these issues resolved. I'm sure Casey will pull out a spell that relies on the existence of the plane of Gehenna to function, but since we have no such plane in our comology his netire character concept will fall apart.
+I'm just double checking that the cosmology will stay more or less in place in the Inner Planes.
+As for the Outer Planes, we've covered that: Heaven, Hell, The Valley of Death and The Abyss.
+4. Magic
+3. Divine (MIDDLE MAGIC; EXPLANATION BELOW)
+?
+5. Religion
+We've been convering this.
+7. Demographics
+I WOULD LIKE HUMANS AND ORCS TO BE TIED FOR DOMINANCE. THE HUMANS HAVE INTELLIGENCE AND ORGANIZATION ON THEIR SIDE. THE ORCS HAVE SHEER NUMBERS AND AGGRESSION. THE HUMANS EXPAND LIKE NO ONE'S BUSINESS.
+
+This is a point where we diverge. I agree with them being tied for dominance, but the Orcs should be far more superior in numbers than humans. i was envisoning a 10 to 1 ratio of orcs to humans. It's just that the orcs are too disorganised to make a decent challenge.
+i think humans should have expanded. 1000 years ago, they maybe ruled from coast to coast on the continent. They had everything mapped and roaded up and the orcs subjugated and the land tamed and civilised. and then the orcs began to rise up, and cracks began to appear in the empire, and so mankind began to fight a losing war, and many were killed by disease adn the orc hordes, and eventually, all that was left were the lands between the great wood and the coast. And that's when, 400 years ago, the people rebelled and the pontiff's theocracy was brought down and replaced with democracy. The empire splintered into several states and kingdoms, and still suffers the encroachment of the orcs on its frontiers. but the pontiff dreams of changing all that. He dreams of unifying the canons under his control, reclaiming his autocratic rule over the empire, and then expanding out in a holy crusade against the orcs.
+HERE IS WHAT I THINK; ELVES SHOULD BE NO MORE THAN HISTORY.
+Yeah, I'm pretty much in agreement.
+THERE ARE LOTS OF OLD ELVEN PLACES THAT ARE NOW HUMAN HABITATIONS AND SETTLEMENTS.
+Yeah. And Orcish. I'd love to have an old elven city that is now the capital of some petty Orcish kingdom.
+THERE ARE PERHAPS A 1/2 DOZ 1/2 ELVES ON THE ENTIRE CONTINENT. THEY ARE VERY IMPORTANT PEOPLE AND VERY OLD. THEY HOLD PLACES OF HONOUR IN SOME TOWNS AND SMALL CITIES, AND IN THE UNIVERSITY.
+Maybe more than 1/2 dozen, though. if there are 1/2 dozen or so few, we pretty much have to name them all as all would be quite famous. I agree with this concept though.
+1/2 ORCS ARE SOMETHING I THINK WE SHOULD PAY LOTS OF ATTENTION TO.
+Agreed.
+WE SHOULD COME OUT WITH DIFFERENT TYPES OF HALF ORC.
+Subraces? Or just different clans and tribes? What i mean is, is the difference just cosmetic or are there game mechanics involved?
+THEY SHOULD BE VERY COMMON.
+Very common, but still 2nd class citizens in the human lands.
+
+ORCS ARE UBIQUITOUS. WHO DOESN'T LIKE FIGHTING ORCS?
+That's a truly valid point. Who doesn't?
+4. Halflings & Gnomes:
+FUCK'EM. CREATURES OF LEGEND ONLY IN OUR LANDS.
+Not even. Don't exist, never have. But I do want Goblins to fill the roles some of these creatures would fill.
+I almost see a society with castes. Planetouched and Half-elves at the very very top. Humans next. Half-Orcs next. Goblins at the bottom.
+5. Dwarves: I like your idea of Dwarves. Not much more to say on that. I think they should be xenophobic, clannish, stubborn, and have a damn good reason to be out on the surface.
+SOUNDS GOOD. THEY WOULD DWELL SOMEWHERE IN ZONE 3 ON THAT MAP ABOVE. VERY HARD TO COME ACROSS, THOUGH SOME OF THIER CRAFT MIGHT TRICKLE OUT OF THE MOUNTAINS IN TRADE ITEMS.
+Should be prized items. It is what marks you as being a man of status and wealth. If you have some Dwarven dishes or something, you're considered a man of wealth.
+I WANT PLANETOUCHED CREATURES TO FACTOR IN HEAVLIY. I DON'T WANT THEM CRAWLING ALL OVER THE PLACE, BUT I WANT A FEW, VERY IMPORTANT ONES TO ENTER INTO THE STORIES ONCE IN A WHILE.
+As i said above. Mayeb have them be some sort of top-dog Alpha caste. No one really knows who they are or what they are, except very very few. That is, your average commoner doesn't know what an Assimar is, let alone be able to identify one when he sees one. He just knows that the Prelate that passed by town t'other day was a bit queer lookin'. Can't quite put my finger on it, though.
+I REALLY LIKE THE IDEA OF THE EXTRAPLANAR HERITAGE OF SOME REMARKABLE PEOPLE. WE SHOULD REALLY PLAY UP HOW SPECIAL THEY ARE, THOUGH.
+And demonic. Doesn't matter if you're an Assimar decended from Saint Maturin himself, you're just not human enough, so, therefore, you must be a demon!
+I think these guys would keep a very low profile, working as much as they can from behind the scenes.
+EVEN KETHOTH IS TOO HUMAN FOR BLACKY. A KETHOTH IN THIS REALM SHOULD BE A VERY UNFORGETABLE CHARACTER.
+
+Agreed.
+BLACKY IS TORN ON THE DROW. I DUNNO WHETHER TO GET RID OF EM OR NOT.
+Get rid of them. Here is why: we've ealt with them already, so the player's all know to expect darkness to be thrown at them and all that. We know their tricks. However...
+THEY FACTOR HEAVILY INTO A FEW MAJOR FANTASY ECOLOGIES (ALL DND, WARHAMMER FANTASY, TO NAME A COUPLE). PERHAPS IT IS TIME TO PUT THEM UP ON THE SHELF. WHAT DO YOU THINK?
+The beauty of the drow is that they live UNDERGROUND. Who is to say that in 10 or 20 years time the Drow won't decide it's time for them to come to the surface and make their presence known.
+Take em out for now. Those bastards have a good shelf life. They'll keep. (Just think of when we're 60 and rolling dice, and all of a sudden the PC's are thrown into darkness for the first time in decades... Gold!)
+Also, as I see it, it's time for the fiends to shine. Maybe some undead too. But, for now, its the demons' turn.
+I LIKE THE THOUGHT OF THE UBIQUITOUS GOBLIN TOO. BUT, AS WITH THE ORCS AND HALF ORCS, WE SHOULD HAVE MANY SPECIES OF GOBLIN. EACH DM SHOULD DETAIL A NEW SPECIES EVERY NEW ADVENTURE. IT SHOULD HAVE ITS OWN DESCRIPTIONS, STATS AND CHARACTER. I WANT EVERY MONSTER TO BE MEMORABLE IN THIS SETTING. LIKE A 3-LEGGED GOBLIN...
+Yup.
+I WILL LAY OUT A HISTORY OF THE WORLD TONIGHT. I AM TOO TIRED TO DO IT WELL (AGAIN) THIS MORNING.
+This should take a bit of time to flesh out. If this world turns out to be a very old world, there's all kinds of things we can toss in.
+9. Politics
+LET'S GET RELIGION SQUARED AWAY, THEN TACKLE POLITICS. POLITICS WILL HAVE BEEN MOLDED BY RELIGION, SO I THINK THAT IS THE RIGHT ORDER OF OPERATIONS.
+I agree. Although I'm beginning to see politics and religion being one and the same here.
+
+SAME GOES FOR ECONOMICS.
+Yup. Economics should be one of the last things.
+10. Technology
+THIS ALL SOUNDS GOOD, GUSSY. I WANT THERE TO BE INVENTORS IN THE CAPITAL THOUGH, THAT ARE COMING UP WITH PRETTY CRAZY STUFF, LIKE ZEPLINS OR HOT AIR BALLOONS AND THE LIKE. I WANT THERE TO BE JUST THE SLIGHTEST HINT OF STEAM-PUNK IN THIS SETTING. NO TRAINS, UNDERSTAND, BUT THERE MIGHT BE SOON...
+I like that idea. No trains, but I agree with other steam-punkish stuff coming into play.
+So, okay, basically, you've got a world where the main human civilisation, which was 5000 years old, say, and dominated by this byzantine and bureaucratic organsied religion, collapsed about 400 years ago. For the majority of its existence, the church suppressed technology and innovation and that sort of stuff. 400 years ago, the revolution swept that aside, and with democracy and the collapse of the empire, came an Enlightenment. On its borders, for the 400 years, the remnants of the empire continued to struggle and fight, but within, the society advanced by leaps and bounds to reach the current level of technological innovation. Now, then, fuelled by this renaissance, the empire is ready to start expanding again and fighting back with guns blazing.
+11. Economics
+ECONOMY IS MORE IMPORTANT THAN RELIGION. WE SHOULD TACKLE IT LAST.
+Yup.
+I LIKE THE IDEA OF THE SILVER AS THE STANDARD UNIT OF CURRENCY, WITH GOLD BEING HIGHLY VARIABLE IN VALUE. A WORKING MAN SHOULD MAKE 1-5 SILVER A DAY. A DOCTOR MAKES 5-10.
+SILVER COINS SHOULD BE FAIRLY STANDARD. WE WILL HAVE A COUPLE DIFFERENT VARIETIES. I THINK IT WOULD BE GREAT IF ALL THE GOLD COINS ARE ALL OLD. VERY OLD. SO, YOU GET SOME GOLD COINS THAT ARE THE SIZE OF OUR DIMES, AND SOME THE SIZE OF A TEA SAUCER, AND ALL WITH DIFFERENT PICTURES OR COATS OF ARMS IN LANGUAGES SOMETIMES FORGOTTEN, OFTEN RUBBED NEARLY CLEAN OF ALL BUT THE DEEPEST DETAILS. NO STANDARD GOLD COIN. SOME MIGHT BE WORTH 5 SILVER, SOME MIGHT BE WORTH 1000.
+Good stuff.
+ALSO, I REALLY WANT THERE TO BE A STOCK MARKET AND TRADING COMPANIES,
+
+INSURANCE COMPANIES, A BANK, PAPER NOTES, AND THE LIKE. READ 'A CONSPIRACY OF PAPER' TO SEE WHAT THIS CRAZY NEW FINANCE LOOKED LIKE IN THE 1750s. IT IS A GREAT BOOK BESIDES.
+If I can find it I'll read it. I'm heading to a big book store tomorrow to look for it (and others that might help us along.)
+I'm all for a stock market and paper notes and insurance and the like.
+12. Monster Ecology
+I THINK WE SHOULD DRESS UP MOST OF OUR MONSTERS.
+Agreed.
+I DON'T WANT THE GUYS TO SAY 'OH...THAT'S A BUG BEAR' OR 'I KNOW THOSE TRACKS; THAT'S A TROLL...REGENERATES 5 HP/ROUND IT DOES'.
+IF WE USE PRE-ESTABLISHED MONSTERS, LETS PUT EM IN COSTUMES TO THROW OFF THE LADS. THE MYTHOLOGY OF THE PLACE WILL INCLUDE AND MENTION THINGS LIKE TROLLS, CHIMERAS AND DRAGONS, BUT THEY WILL NOT BE AS COMMON AS THE STRANGE-LOOKING THINGS THAT WE PUT THE PC'S UP AGAINST.
+Well, I think everything should have a name change. Orcs should not be "orcs" they should be something else, but with a similar characteristic. But that's just being unique for the sake of being unique, rather than helpful. I do like the idea of changing things up in the bestiary.
+THE PONTIFF IS A DESCENDANT OF THE ORIGINAL SAINT. COOL. THEY WERE ANCESTOR WORSHIPERS, JUST LIKE THE FUCKERS ON THE ISLE WHERE MEN BEGAN.
+Aye, aye, aye. Irony, that is.
+THE ORIGINAL SAINT WAS A LITTLE NUTS, AND RECIEVED DIVINE WISDOM FROM A COMBINATION OF HIS ANCESTORS AND THE EARTH (OLD MAGIC).
+I like the idea of our first saint being either a planar being, a direct descendent of a planar being (half-angel or half-devil) and a really powerful spellcaster on his own right (a druid, perhaps, but also the first true sorceror or wizard or something.) I'd prefer to see him ascend to godhood on his own, rather than being elevated by some higher power.
+But definitely, planar bloodshould run in the pontiff's family.
+HE MADE A RECORD OF THEIR TEACHINGS BY WAY OF TATTOOING THE BACKS
+
+OF HIS CLAN IN THEIR ROUGH HEIROGLYPHS. THERE ARE, SAY, ABOUT 15-20 OF THESE OLD DRIED UP SKINS THAT RESIDE IN THE CASTLE TO THIS DATE. THIS IS THE ORIGINAL MANUSCRIPT, MY FRIEND. HOW ABOUT THAT?!
+That, sir, is the greatest fucking contribution you have yet to make to D&D!!! Ok, maybe I exaggerate, but this is fantastic. I got a chill down my spine thinking about the reliquary that would house this. I pictured a rather cavernous circular room with these skins stretched out like banners around the perimeter of the room. Freaky.
+I REALLY LIKE THE IDEA OF THE IRONY OF OUR SAINT-WORSHIP DESCENDING FROM ANCESTOR WORSHIP. IT IS A LOGICAL STEP, I SUPPOSE. BUT IN THE MODERN ERA, WHERE WE CONDEMN SUCH PRACTICE, IT IS FUNNY AND IRONIC.
+Good.
+THE PONTIFF AS THE LIVING, BREATHING DESCENDANT OF THE ORIGINAL SAINT IS A GREAT IDEA. MORE IRONY AND HYPOCROSY.
+Aye.
+HERE IS A MAJOR THEME FOR YOU; WE ARE PAST THE PEAK OF CIVILIZATION. ABOUT 400 YEARS AGO, THE CHURCH BASICALLY RAN THE SHOW. HUMAN CIVILIZATION SPREAD LIKE WILD FIRE UNDER THE GUIDANCE OF A VERY POTENT PONTIFF.
+Check.
+AT THE 400 YEAR MARK, THE PONTIFF BEGAN THE QUEST OF UNITING THE DOCUMENTS AND RELICS OF THE CANONS. THIS CAUSED A BIT OF TENSION IN THE CHURCH, AND A REVOLUTION IN THE CAPITAL. DEMOCRACY FOLLOWED.
+Ã
+WITH DEMOCRACY CAME THINGS LIKE THE PRINTING PRESS, GUNS, MEDECINE, SCIENCE, ARCHITECTURE, ALL THAT GOOD STUFF...BUT THINGS ARE GETTING DARKER; THE BARBARIANS ARE ONCE AGAIN CLOSING IN, AND THERE IS A GREAT THREAT FROM WITHIN, FROM THE GROWING BLACK FAITH.
+Ã
+MANY OF THE SIGNIFICANT CANONS WHO WOULD NOT GIVE UP THEIR RELICS
+
+SENT THEM WITH THE KNIGHTLY ORDERS OVER SEAS, TO GET THEM OUT OF THE REACH OF THE PONTIFF.
+I like the idea of some canon hiding a particular relic in the neighbourhood of Eastwitch as a springboard to an adventure.
+A NAME FOR THE PONTIFF; HE IS THE SOLE READER OF THE SKINS OF THE ORIGINAL MESSAGE. WHY DON'T WE CALL HIM 'THE READER' OR SOMETHING ALONG THAT LINES; HIS TITLE SHOULD INDICATE THAT HE ALONE READS THE 'WORD'.
+I can't remember if I'd answered about this. I don't like "Reader". We have many days to come up with something. Pontiff serves for now.
+Actually, have a look at an AD&D 2Ed DMG. Somewhere in that book is a table of noble and religious titles and positions. That would be a good place to start our search for this and other titles to use in our world.
+IT WOULD BE GREAT IF WE GOT SOMETHING TOGETHER FOR YOUR RETURN. WE COULD EACH DM A SESSION OR TWO WITH WHATEVER LADS ARE AVAILABLE. I WOULD LIKE TO SPRING THIS ON EVERYONE, SO LET'S KEEP IT OUR LITTLE SECRET, EH?
+Agreed. Not a word to the others for now.
+SOUNDS GOOD. BIG, SCARY, MYSTERIOUS WORLD. I LIKE IT.
+Aye.
+HERE IS HOW I SEE THINGS SHAPING UP, IN TERMS OF HISTORY OF THIS EMPIRE.
+FOR ABOUT 3000 YEARS, THE CULTURE WAS DRIVEN BY THE SAINT WORSHIPERS. THEY MANAGED TO EXPAND AND FORTIFY THE EMPIRE. THEY SPREAD OUT TO MANY PLACES, MOST OF WHICH ARE ALREADY FORGOTTEN (EXPLORERS MIGHT GO TO SOME ISLAND ANY DAY NOW, AND FIND A 1000 YEAR OLD STATUE OF ST. BOSCH THAT IS BEING WORSHIPED BY SOME ORCS).
+I think this is great. There's a bit of an explanation that needs to be done for why there is so much blank space on the maps, but I'm pretty sure I've got one.
+Sometime in the period leading up to the Revolution, but not during the Revolution itself, there was a small cult of monks that preached against the wicked and unholy excesses of the academics and wizards. They espoused about how much saintlier and holy the ignorant and simple were. The cult was slightly violent and militant, and the monks, aside from preaching in town squares, would often lead small groups of villagers in towns to destroy the libraries of the rich, the artworks
+
+of the churches, and so on.
+Slowly, the cult gains a fair bit of wealth and power by various means (ie The Black Faith), with a few of its members reaching even as high as Prelates. The church already greatly inhibited most academic and technological knowledge, and desperately tried to keep most of the populace ignorant. This was not always possible, and the wealthy, particularly, kept their own libraries and founded universities and academies.
+Anywho, one thing leads to another, and the cult of monks leads the church to what historians now refer to as "The Cleansing". During this two-week period, this splinter group within the church led raids and assaults upon the houses of the nobility, the universities, wizards, and many others. Hundreds died, often brutally tortured to death, at the hands of the monks. And all items of knowledge and art that the monks found were destroyed (books were burned, maps and paintings defaced and destroyed, silver and gold works were melted down, statues smashed, etc.)
+It was the Pontiff himself, who managed to muster a small army of loyal churchmen, citizens and nobles, who put an end to the bloody monks, and then led a brutal purge and inquisition of the church ranks, whereby those who had even the slightest connection with the cult were put to death.
+The great bodies of learning never recovered fully from the damage. What little knowledge they possessed to begin with was now destroyed.
+As for the church, the first great purge of the black priests was succesful. However, it never quite recovered from the stigma acquired both as a result of the wanton destruction of the libraries and museums, nor from the revelation that its ranks were filled with evil faith adherents.
+The weakened church, and resentment by the secular government, the nobles and the academics towards The Cleansing planted some of the seeds of discontent that would later lead to the revolution.
+(AN ASIDE: I was interrupted about 15 times when writing the above story. If it makes no sense, it was as a result of these damn interuptions. I will hash this out a bit better later. We need a good reason for why people used to know what the world looked like 1000 years ago, but don't know what it really looks like beyond the borders now. I really like the story of Savoranola, who was basically a lowly Dominican inquisitor in late 15th century Florence. He could preach a good sermon, and preached about the decadence and corruption of the Pope and the church, and how all the art and literature being produced at the time by all the great masters (or at least today they are the great masters) was nothing but heretical and demonic evil. He eventually managed to kind-of oust the Medici family from ruling Florence, and instead ruled the city-state himself in a bizarre form of brutal theocracy. He was everyone's enemy, and crazy as a loon, but he was a fantastic public speaker (CHA 20 or so, I imagine) so he could persuade all the poor and unfortunate about his ideas. He eventually died a terrible death, but not before the Pope had him mercilessly, and brutally, tortured just for the hell of it. A remarkable villain who
+
+lived at the same time and place as the Medicis, Michaelangelo, Machiavelli, and many others... His brand of the inquisition inspires me for this story.)
+THERE WAS A PERIOD OF EXPANSION ABOUT 1000 YEARS AGO, AS MEN LEFT THE CONTINENT BY SEA, AND TRAVELLED ALONG THE TRADE ROAD TO FOREIGN LANDS. AT THIS TIME, EXPANSION WAS FUELED BY THE CHURCH WHICH WAS NEARLY UNIFIED; THE PONTIFF HAD A GREAT DEAL OF CONTROL OVER THE CANONS, AND EXPANSION WAS EASY TO ORGANIZE.
+Nothing like missionary work to fuel exploration. Convery the heathens. Heh, I have a good picture in my mind as to what the first missionary...
+God damn it. That's yet another long interruption. Although this one was tasty, since it ended up involving the best chinese food this side of the Doctor. And I'm in Asia.
+Anyway, now that I am stuffed to the eyeballs...
+Oh, yeah, I have this great picture in my head of how the encounter would go when a bunch of 1st or 2nd level missionaries approach a band of wild orcs in the hinterlands for conversion to thier canon. We eat well tonight! The meat is never as tender as when it is holy.
+Then again, I also have a good picture of how the *second* attempt at converting the heathen orcs would go... it involves words like "crusader" and "smite the infidels" and "orcish heads on a pike as an example to the rest of the murdering heretical demons."
+THIS EXPANSION SLOWED BY ABOUT 800 YEARS AGO. THE EMPIRE WAS JUST SPREADING TOO THIN, AND THE BLACK FAITH BEGAN TO FLOURISH IN THE HOMELAND (SOME SAY THAT COLONISTS BROUGHT THE BLACK FAITH BACK WITH THEM FROM FOREIGN LANDS). MANY TROOPS NEEDED TO BE BROUGHT HOME TO TAKE CARE OF INTERNAL PROBLEMS.
+See my suggestion above about the xenophobic and anti-literacy cult that springs up at about this time. I like the idea that people brand this type of thinking as being "foreign". Of course the black faith comes from foreign lands. Our realm is much too pure for such heresy to be homegrown. It was courrption by them infidels, it was, what with their strange languages, barbaric foods, and demonic hygeine habits. I said so before! I said to Mabel, I said, them good Saintly soldiers and priests that go off to preach the canon to the heathen infidels, Mabel, will come to nothing but trouble, you just mark my words and see. There's nothing but evil come out of the western colonies for the last two hundred years. Good, honest Saintly folk have no business cavorting out so far from their homes. First it was the pox, then it was the orcs, and now it is them black preachers of the devil... nothing but trouble out there, just mark my words, nothing but trouble.
+BY 600 YEARS AGO, MOST OF THE OUTPOSTES AND COLONIES THAT WERE
+
+STARTED OFF CONTIENT, AND TO THE WEST (I HAVE ADOPTED YOUR EAST-WEST TWIST THAT YOU WANT) WERE PRETTY MUCH IN RUINS AND OVERTAKEN BY THE MULTIDUNOUS ORCS AND BARBARIANS.
+This is good. I like the idea that a half-orc tribe might be the result of an ancient colony. I think I might adopt that as one of my DM tribes: an early human colony close to orc lands that didn't so much as vanish, as got merged with the neighbouring orcish tribes. Now there's a town of somewhat civilised half-orcs and orcs not too far from the empire's border where some really old human customs survive.
+THERE WERE LOTS OF INTERNAL TROUBLES AT HOME. THE BLACK FAITH HAD CONVERTED MANY ENTIRE TOWNS AND VILLAGES, AND THERE WAS A PERIOD OF WAR IN THE EMPIRE THAT LASTED ABOUT 200 YEARS. (STILL NEED TO FLESH OUT WHAT THEY WERE FIGHTING ABOUT)
+See my suggestion above. I need to flesh it out a bit more, but I think it should involve knowledge and academia. There should be all manner of other underlying causes and reasons for the civil war, but I think the spark that sets things off, and the primary reason is a power struggle between a xenophobic and isolationist luddite cult, and the mainstream.
+However, I envision the Pontiff and the Conclave being on the mainstream's' side. I think the Pontiff and the Conclave are on the winning side of this conflict, but ultimately lose, because...
+400 YEARS AGO, AT THE END OF 200 YEARS OF FIGHTING AND THE EMPIRE SHRINKING AND COLLAPSING, A REVOLUTION HAPPENED.
+...the common folk couldn't really distinguish between the good priest and the evil priest. As far as they were concerned, it was the church organisation as a whole that had become corrupt and evil, and not just some upstart cult that had gained control.
+So, even though the pontiff and the canons, and the secular armies of the nobility won the war against the evil cult, in the end, the common folk still revolted against the pontiff's absolute control since they blamed the church as a whole. Which is why...
+THE PONIFF WAS REMOVED AS HEAD OF STATE, AND THE ELECTORAL SYSTEM WAS PUT IN PLACE (WE CAN FLESH THIS OUT LATER). THE EMPIRE WAS NOW A DEMOCRACY OR A REPUBLIC OF SORTS, WITH THE CHURCH STILL MAINTAINING QUITE A BIT OF CONTROL.
+... a democracy was put in place after the church, weakened profusely after so many decades of viscious warfare, was removed from power through the revolution. However, because most of the secular nobles knew more or less what the score was, and because they had the considerable wealth and power to back this idea, they were able to convince the revolutionaries to keep the Pontiff and the Conclave as a figurehead monarchy. And, lacking in the requisite skills, the revolutionaries also agreed to maintain many of the clergy within their bureaucratic positions.
+
+AT THIS TIME, WITH SOME OF THE STRICT RULES OF THE CHURCH REMOVED, SOME TECHNOLOGIES DEVELOPED.
+As a knee-jerk reaction to the extreme views preached by the defeated cult, the nobles/academics/middle class/etc lobbied for one the first legislative act of the new parliament to be the repeal of most of the laws restricting the pursuits of science and knowledge.
+GUN POWDER WAS DEVELOPED BY SCIENTISTS AND MAGES. MEDECINE BEGAN TO FLOURISH AS LORD'S UNIVERSITY WAS FINALLY ALOWED TO TEACH THE SUBJECT FORMALLY (IT HAD BEEN AN UNDERGROUND STUDY BEFORE THAT). SOME PRODUCTION TOOLS AND TECHNIQUES BEGAN TO APPEAR, SUCH AS LARGE MILLS AND LOOMS.
+The nobility especially, invested heavily into academies and universities and other institutions of learning. Having suffered quite heavily at the hands of the cultists and the church (most of their libraries, antiques, art works, etc having been destroyed by the mad monks) they were determined to rebuild what was lost by funding these universities.
+AFTER THE REVOLUTION, A FEW CITY STATES WERE FORMED OF WHAT HAD BEEN A UNIFIED EMPIRE (SEE MAJOR SETTLEMENTS, BELOW). THEY WERE NOW PEACEFUL AND NO LONGER AT WAR WITH EACH OTHER, BUT THEY DID NOT HAVE A COMMON RULER (THE PONTIFF).
+I see this kind of like the Holy Roman Empire, in a way. The Pontiff is in charge, nominally, but each little state or county has its own ruler (noble house, democratic assembly, hereditary lord, etc.) This ruler in theory acts as a vassal of the pontiff, and reports to the parliament in the capital, but in practice, it has a very loose hand to do what it wants.
+Or better yet, almost like Canada. Provinces nominally united under a single central government, but endlessly bickering and constantly angling to erode more and more power away from the centre and closer to themselves.
+THE VAST BULK OF WHAT HAD BEEN THE EMPIRE NOW FELL UNDER THE RULE AND PROTECTION OF THE CITY OF AVITUS (THE CAPITAL), BUT BY RULE OF LAW ONLY. MOST OF THE EMPIRE IS COMPOSED OF LITTLE TOWNS AND VILLAGES THAT FEEL NO ALLEGIANCE TO THIS DISTANT CAPITAL THAT DOES NOT SEND TROOPS WHEN THEY ARE NEEDED. THESE DISTANT PLACES ARE RULED MORE BY THE CANONS.
+I think in some places, the canons should be in charge. In some other places, though, the canons should act as advisors to a secular administrator, town council, or even hereditary lord.
+I kind of see the nobility as being regarded as the heroes of the civil war and of the revolution. Certain very wealthy families were able to
+
+raise their own private armies to fight back against the evil cultists during the civil war. And it was during the revolution, when the common villager and farmer was burning priests and monks on a pyre in the town square, that the nobility stepped in again with their wealth and their armies to quell the violence and bring order and a new government to the place.
+The nobility is another one of our power players. They're not as powerful as the Prelates, nor are their armies a match for the combined forces of the church, but, the canons are quarelling with each other and nowhere close to uniting yet. Sensing opportunity, they were able to quickly step into the power vaccum left in the wake of the revolution. They were able to broker a deal, leaving the Pontiff and the Conclave in place, as well as the priestly bureaucracy, albeit reduced in power, which appeased the church (hey, it was better than being completely deposed and sent to the gallows); and they were able to bring in a form of democracy in the shape of a parliament, as well as secularised the government, which appeased the revolutionaries.
+To the average man, the noble houses, then, are either the saviours of the land, who should be rewarded with even greater power, if not direct rulership (or, at least, that's what the subversive agents of Duke Leopold von Hesse, the man who has styled himself as our possible future king, would have you believe); or they are all rat-bastards, same as the old bunch of clergy.
+This is all getting into the politics of the realm now, and not religion. Though, this is really were the boundaries start to blur.
+Still, I'd like to see a class of nobles come into play. They should not be too visible. I see them more as being a handful (maybe 10) really old families with considerable wealth and famous histories. But they mostly act behind the scenes. Their main weapon is money, and their main goal is power and more money.
+Anyway, politics comes later.
+AFTER THE REVOLUTION, AND THE FORMATION OF THE EMPIRE AND THE TWO OTHER INDEPENDANT CITY STATES,
+Are the independent states truly independent, or are they still under the nominal control of the pontiff. See, my idea is for Eastwitch, say, eing part of a county or province that considers itself independent. It might send a member of parliament to Avitus, and it might still have a portrait of the pontiff in the post office, but, as far as the average citizen is concerned, Eastwitch is in the nation of Eastwitch ruled by the people of Eastwitch and pays taxes only to Eastwitch, so bugger off!
+So I see dozens of these little types of towns and cities that are still within the empire, but consider themselves completely independent. They may still send a member of parliament to Avitus, if only to make sure that none of the other towns are planning to screw them over, but the relationship to the old empire ends there.
+
+You might have a different view of this. I'm not set in stone in my views.
+However, the two independent city states, they might be completely independent. They don't even bother to associate themselves politically with Avitus. They might pay some sort of lip service to the Pontiff, but for the most part, they consider themselves to be free.
+THINGS DID NOT ACTUALLY IMPROVE FOR THOSE THAT LIVE MORE THAN 50 MILES FROM AVITUS OR THE OTHER TWO CITIES (GENUA,
+Stop right there. Unfortunately, "Genua" is a name that is too close to the real-life Italian city of Genoa. Plus, in the Discworld novels, I'm pretty sure Terry Pratchett has a city on his world named Genua. Change this name, please.
+THE WARM COASTAL CRUSADER CITY,
+I dig this. Despite the name, I like this. Kind of mediterranean, with vineyards and olive groves in the countryside, maybe some fruit orchards. Outside the walls there's a perpetual army camp of tents and wooden buildings that has sprung up. Every other day a new ship leaves full of knights and horses and food and weapons and gold, and an old one returns empty and damaged.
+On the surface, this city is bright with optimism. The weather is warm, the sky is blue, the young soliders and sailors carouse and play games, the locals make thier wines and pick thier fruits, merchants make money and pirates spend their booty. Dig just a little deeper, and you find the misery of a crusade that has been going on for centuries. No one ever talks about the empty ships returning, and no one can ever meet the eye of a young happy knight as he boards his vessel... never to be seen on these shores again.
+I think this would be the most depressing place around. This is where the flower of the church's youth take their last stride of innocense before they are forced into adult reality by the business end of some orcish canons.
+AND HAVILAH THE GREAT NORTHERN CITY
+This one I like a lot. I actually envision it as a half-barbarian city. My thoughts on this one later, though, contrary to popular fantasy conventions, I don't see this as a place where dwarves and miners dwell.
+). WHILE THE CITIES BUILT THEMSELVES UP, THE HINTERLAND LOST GROUND. YEAR BY YEAR, SETTLEMENTS WERE LOST TO BARBARIAN INVASION, ORC RAIDS, AND THE SLOW GRIND OF TIME; PESTILENCE, DIMINISHING POPULATIONS IN THE HINTERLAND (DUE TO MIGRATION TO THE CITIES), AND THE BLACK FAITH ALL CAUSED REMOTE SETTLEMENTS TO DWINDLE AND VANISH.
+
+Ã
+FOR THESE REMOTE PLACES, IT IS USUALLY RELIGION, NOT GOVERNMENT THAT KEEPS THE AVERAGE VILLAGE FROM BEING CONSUMED. PRIESTS AND KNIGHTS FROM THE ABBEYS ARE THE ONLY MILITARY PRESENCE FOR MANY OF THESE PLACES, EVEN LARGE SETTLEMENTS OF 2500 PEOPLE AND MORE, IN SOME CASES.
+I like that. There might be some secular Reeve appointed by the parliament in an effort to break the church's power, but probably no one fills the position. And if someone does, he's probably no more than a glorified clerk.
+Probably most of the furthest outlying towns and villages were built in the shadow or in view of some monastery or knightly fortress.
+200 YEARS AGO, A NEW PONTIF TOOK THE SEAT, AND DECIDED ENOUGH WAS ENOUGH.
+As well he should. I think the only Pontiff that never thought enough was enough was Alexander VI...
+(http://www.encyclopedia.com/html/A/Alexand6.asp)
+... who was the pope in question with good old Savoranola that I mentioned above (and the one who enjoyed the subsequent torture he inflicted on the dominican.) Pope Alexander was probably the most corrupt and sadistic sexual deviant that ever was pope. If you ever go to Rome, and visit the Vatican, make sure to go see the altar of St Peter's basilica. When looking at the altar, try to remember that Pope Alexander VI most likely did it doggy-style with a number of women right on that altar.
+HE IMMEDIATELY SET THE NUMBER OF CONCLAVE ASSEMBLIES FROM 2/YEAR TO 4, AND NOT LONG AFTER, TO 8 (TODAY, THE CONCLAVE IS ALWAYS IN SESSION).
+Hmm... I like the limited number of sessions per year better than always. This is just to keep a DM tool open for use. Say, alter on the PC's need something or other, but it has to be done through the Conclave. If the Conclave is always in session, this is no problem. However, if the Conclave meets only 8 times per year, then the PC's might be delayed in thier schemes.
+then again, it is preceisely for this reason that Is ee why the Pontiff wants them to meet constantly.
+What I see, then, is open beligerence on the part of the Prelates. Remember that the Pontiff is asking them to surrender their treasures to him, more or less. The Prelates are probably rather miffed, and might be refusing to meet more than 1 week a month just to spite the Pontiff.
+
+Probably we should even include this conflict. Maybe the Pontiff is starting to get his way. they used to meet one week out of every four, but now, the Pontiff, with the support of just enough Prelates is about to persuade the Conclave to meet for 8 whole months straight. Later on, he might try and convince them to stay in Avitus (where he can control them) year-round. But for now, he's probably convinced them to stay no more than 8 months, and even then, the more obstinate and powerful ones probably won't come at all.
+HE SUGGESTED BRINGING ALL THE RULES OF THE SAINTS TOGETHER, AND ALL THEIR RELICS, TO ONE PLACE (HIS ANCESTRAL CASTLE). HIS AIM WAS TO BRING ORGANIZED RELIGION BACK TO THE EMPIRE, AND TO HALT THE DIMINISHING OF THE KINGDOM.
+Good stuff.
+SOME OF THE CANONS ARE DEAD SET AGAINST THIS INTRUSION ON THEIR AUTONOMY. THEY SENT THEIR RELICS AND RULES TO FOREIGN LANDS WITH CRUSADERS TO PROTECT THEM. THIS STARTED A NEW AGE OF CRUSADING, THOUGH SMALLER IN SCALE THAN THE CRUSADES OF 1000 YEARS AGO. WITH KNIGHTS ONCE AGAIN LEAVING THE CONTINENT, THE CHURCH HAD THE OPPOSITE EFFECT TO THAT WHICH IT DESIRED; THE CONTINENT WAS PROTECTED EVEN LESS, AND THE HORDES CLOSED IN EVEN MORE.
+That's great.
+I'm sure more than one canon lost their relics to the infidels by doing this, which meant calling a new crusade to rescue the relics that were lost.
+IN THE MODERN DAY, THE PEOPLE OF THE CITIES AND THE AREAS CLOSE AROUND THEM LIVE IN RELATIVE COMFORT AND PROSPERITY, THOUGH THIS CAN'T LAST FOREVER. THE HINTERLAND IS SHRINKING, AND WITHIN THE CIVILIZED WALLS OF THE CITY STATES, THE BLACK FAITH GAINS GROUND, WHILE THE TRUE FAITH FIGHTS AMONST ITSELF, AND WITH THE NONSECULAR RULERS OF THE EMPIRE.
+Gold.
+*****************
+HERE ARE SOME ABSTRACT IDEAS THAT I WANT TO COMMIT WHILE THEY ARE IN MY MIND;
+INSTEAD OF ELVES, HOW ABOUT 'ELDERS' OR THE 'ELDER RACE'.
+I like that.
+THE LOOK PRETTY MUCH LIKE ELVES, BUT THEY ARE NOT, AND HAVE NOT, EVER BEEN CALLED ELVES. THEY LIVED A LONG TIME, AND WERE RELATIVELY
+
+PEACEFUL, BUT WERE DISPLACED BY THE ORCS, AND ARE NOW EXTINCT (NOT IN THE WEST).
+Good.
+THEY DID MATE WITH SOME OF THE YOUNGER RACE (MODERN MAN) AND MADE A RACE OF MEN CALLED THE 'MIDDLE RACE' (OR SOMETHING LIKE THAT).
+Good.
+***************** A BREIF HISTORY OF MAGIC; 40,000 ya THE ELDERS HARNESSED THE MAGIC OF THE EARTH (OLD MAGIC). THEY WORSHIPPED ELEMENTAL GODS AND EARTH GODS/GODDESSES, BUT UNDERSTOOD THAT POWER CAME FROM THE WORLD ITSELF.
+Good.
+35,000 ya THE ELDERS DISCOVER THAT THEY CAN REFINE THE NATURAL MAGICS OF THE WORLD. THEY TAKE AN APPROACH TO THIS REFINEMENT SIMILAR TO METALURGISTS; TO THEM, THEY ARE FINDING NEW WAYS TO USE A NATURAL AND ABUNDANT RESOURCE. THIS IS THE 'NEW MAGIC', THOUGH IT IS, IRONICALLY, REFERRED TO AS THE ELDER MAGICS BY SOME SCHOLARS AND THEOLOGISTS.
+I like that.
+20,000 ya TROUBLE IN THE ELDER WORLD. PERHAPS A SPLIT IN THE ELDER PEOPLE, AND THE CREATION OF THE ORCS (WHICH WE NEED TO RENAME SOON). BY THIS TIME, THE PRIMITIVE ANCESTORS OF MODERN MAN THEMSELVES HAVE DISCOVERED OLD MAGIC. 10,000 ya MODERN MAN IS NOW PRACTICING ANCESTOR WORSHIP, AND DERIVING MAGICAL POWER FROM THE PLANES (MIDDLE MAGIC). THEY LEAVE THEIR ANCESTRAL ISLAND HOME.
+Good.
+8,000 ya COLLAPSE OF THE ELDER EMPIRE.
+Aye.
+3,000 ya MODERN MAN HAS A HIGHLY DEVELOPED PANTHEON OF SAINTS AND EXTENSIVE USE OF MIDDLE MAGIC, WHICH HELPS HIM TO PROLIFERATE AND
+
+TRIUMP OVER THE HORDES. DISCOVERY OF ELDER MAGIC, AND IT'S STUDY IN ACADEMIC CIRCLES LEADS TO A DEVELOPMENT OF 'NEW MAGIC'.
+Good stuff.
+1750 ya (YEAR ZERO). THE CITY OF AVITUS IS WON FROM THE HORDES. THIS IS AN ELDER CITY THAT HAS BEEN FAUGHT OVER FOR THOUSANDS OF YEARS. IT HAS NOT BEEN RELINQUISHED SINCE.
+Good.
+-PRESENT; THE DEVELOMPENT OF NEW MAGIC CONTINUES; THERE ARE TWO BRANCHES OF THIS DEVELOPMENT. ONE IS ARCHAEOLOGICAL, AND THE OTHER ALCHEMICAL. THE ARCHAEOLOGISTS SEEK OUT THE SECRETS OF THE ELDER RACE, WHILE THE ALCHEMISTS TRY TO TAKE WHAT IS ALREADY KNOWN OF THE ELDER MAGIC TO LEARN THEIR OWN NEW SECRETS. HOW IS THAT?
+That's great. I want more detail on the Archaeologists and Alchemists,but I am just being impatient.
+I AM HAPPY WITH 50 MILES AND 100 MILES. I WILL HAVE SOME SMALLER 'SAFE' AREAS AROUND OTHER SMALLER SETTLEMENTS, AND THE CITIES OF GENUA AND HAVILAH.
+Ok.
+THERE ARE MANY WORLDS WHERE HUMANS ARE JUST COMING INTO THEIR OWN. LET'S MIX'ER UP A BIT. I BET NOT MANY GUYS HAVE A SETTING LIKE OURS, WHERE THE PRINTING PRESS WAS MADE JUST IN TIME TO PUBLISH THE END OF THE WORLD, JUST BEFORE IT HAPPENS.
+Heh-heh-heh!
+I WANT THE EMPIRE TO BE AT A CROSS ROADS.
+As do I. We're doing good here.
+THINGS COULD GET BETTER; THE PONTIFF COULD TAKE A DIFFERENT APPROACH TO DEALING WITH THE CANONS, AND TRY TO RECONCILE THEM. THIS COULD BRING MORE UNITY TO MANKIND (WHICH WAS HIS ONLY REALY TRUMP CARD IN THE FIRST PLACE).
+My favourite thing so far is the fact that the Pontiff is the GOOD guy! That's right! He's the fearless leader of the angelic and saintly armies of Heaven here on earth! He is here to vanquish the
+
+demons and devils and purge the land of the Black Faith... yet... he is a deformed, insane, probably sadistic individual bent on total world domination. But, he's the good guy...
+BUT, THINGS COULD JUST GO ALL TO HELL.
+Quite literally, I would think. Well, the Abyss at any rate. We've pretty much established that the cover charge to get into Hell's party is quite steep.
+WHILE DEBAUCHEROUS NOBLES DRINK AND WHORE AWAY THEIR DWINDLING FORTUNES INSIDE THE SAFE AND WARM WALLS OF THE GREAT CITIES, THE HORDES ARE CLOSING IN CLOSE ABOUT THEM. AND WHILE HE IS NEGLECTING HIS OWN HOUSE, MANY OF HIS OWN PEOPLE ARE TURNING TO THE DARK FAITH, AND WELCOME THE HORDES.
+Wonderful. I like the idea of people in cities, especially nobles, being proud that no family member of theirs has left the city walls in 7 generations. People don't travel. There is this mindset now that to leave the city is just plain foolish. As a sresult, there's all kinds of things going on in the countryside and near the borders that the average city weller only dismisses as fantastical rumour. You say an orcish tribe has camped not 70 miles from here? That's ludicrous! Everyone knows the empire's borders stretch all the way to the River Wen. The thought that orc raiders would travel freely within imperial lands is plain heresy, my good man!
+I WANT THE PLAYERS AND THE CHARACTERS TO FEEL LIKE THEY CAN MAKE A DIFFERENCE IN THIS WORLD, BLEAK THOUGH IT MAY BE.
+I agree 100% on this.
+AND I WILL TELL YOU WHY I WANT THIS, SIR;
+I DON'T RECALL A HAPPIER BUNCH OF ADVENTURERS AND PLAYERS THAN YOU GUYS THAT DELIVERED THOSE SLAVES INTO SHADOW DALE, AND THEN WENT AND LIBERATED DAGGER FALLS. YOU GUYS WERE FUCKING CHEERING WHEN CLARK NABBED THAT ZHENT SPY, AND WHEN THE BARON WENT DOWN. I WANT TO SEE YOU GUYS CONGRATULATING EACH OTHER ON A JOB WELL DONE AGAIN.
+Aye. I liked that too. that was abig impetus fopr proposing this project. If we make our own world, we can design it in such a way so that the players mould it along the way.
+The only reason I am leaning towards the "mankind under seige and in decline" viewpoint is that expanding borders imply youth and optimisim. A collapsing frontier where the wild is what is encroaching on civilisation smacks of old age and desperation. And I'm beginning to get a feel that our world and our civilisation is very old. It's colonisation and expansion has
+
+been done. The empire branched out and expanded until it met the orcs, the orcs fought back and gained the upper hand, and now it is the orcs and the wilderness who are expanding.
+RIGHT ON. THIS IS EXACTLY HOW I SEE IT.
+Excellent.
+AND EVERYTHING IS IN DISREPAIR; EVERY FEW MILES DOWN ANY GIVEN ROAD, YOU CAN PASS BUY AN OLD ABBEY, OR TEMPLE, OR MANSION THAT IS BARELY DISTINGUISABLE THROUGH ALL THE GREY BRAMBLES THAT ARE EATING THE THING. THERE SHOULD BE ROAD SIGNS AT EVERY JUNCTION, BUT MOST OF THEM SHOULD BE LYING ON THE GROUND, HALF CONCEALED BY SOME THORNY BUSH THAT HAS LONG-SINCE GROWN OVER IT.
+That's fantastic.
+VERY LITTLE BEING BUILT. I LIKE THE IDEA OF PEOPLE DWELLING IN BUILDINGS THAT ARE 100'S OF YEARS OLD, AT LEAST.
+Me too.
+MOST FAMILIES LIVE IN PLACES AS MUCH AS A THOUSAND YEARS OLD, AS YOU GET TOWARDS THE CITIES. THERE ARE SOME ABBEYS THAT MIGHT HAVE BEEN BUILT 3000 YEARS AGO, AND THOSE UPON THE RUINS OF AN ELDER TEMPLE OR SCHOOL.
+I LIKE THE IDEA OF THE 'FIRST SAINT'. WE SHOULD PROBABLY JUST CALL HIM SAINT PRIMUS OR SOMETHING LIKE THAT. HIS NAME IS LOST TO TIME (FOR ALL BUT THE PONTIFF AND HIS FEW PEOPLE, WHO STILL HAVE THE BITS OF THIS SAINT IN HIS CASTLE).
+This sounds good to me. Although, and I can guarantee this with 100% certainty, if you call our first saint "Saint Primus", someone (and I'm looking over at Toddy here) is going to refer to him as Optimus Prime at the table, and it is going to stick.
+Remember "Ye Olde Companie of the Redde Herringe"? We have a badge with a fish on it and everything. The jokes about our saints being Autobots, and the black faith being Decepticons are endless.
+I personally like Saint Primus as a name, but, you should consider yourself warned.
+I like the idea of the faith being so old that it's true origins are not known.
+RIGHT ON. AND YOU NEED 3000 YEARS FOR THAT, AT LEAST.
+
+At least.
+WE KNOW 2000 ISN'T ENOUGH, DON'T WE? 3000 SEEMS PRETTY GOOD. BEFORE THAT, PEOPLE MOSTLY WORSHIPED STICKS AND STONES AND BIG LIZARDS.
+Good stuff.
+THE TRUE ORIGINS OF THE CHURCH WILL BE KNOWN ONLY TO THE PONTIFF AND A FEW OF HIS KIN. THIS MIGHT BE A FUN THING TO DISCOVER.
+Very fun. I think time should play an important role in our new world. I'll explain what I mean in another email, as it is just a thought that needs time to grow into a full idea.
+IN FACT; ADVENTURE IDEA; SOME ONE HAS DISCOVERED THIS SECRET, AND SHOWS UP AT THE LOCAL WATERING HOLE. THIS PERSON IS BESET BY A BAND OF ASSASSINS, AND THE CHARACTERS RESCUE HIM (MAKE IT A 'HER'). SHE HAS A REALLY IMPORTANT TASK TO DO, SHE EXPLAINS, AND TRIES TO GET THE PCs TO ACCOMPANY HER ON A PERILOUS JOURNEY TO DELIVER HER MESSAGE TO THE CARDINAL OF SOME REMOTE ABBEY.
+If there is one thing I know, it is that chicks always lead to peril. But if I know two things, it is that, with the exception of KC, who seems to be more distrustful than the rest (maybe cause he gets laid most often than anyone else,) no matter the peril they will agree to accompany a pair of tits wherever it wants to go.
+SPEAKING OF DISCOVERY, I WANT TO KEEP ONE THEME REALLY STRONG IN THIS SETTING;
+THE THEME OF ACADEMIA.
+Ding-ding-ding-ding-ding!!!
+Har, har, Blacky!!!
+You might recall, about a year ago, when I was trying to do that Wastrel adventure over email with ol' Kethoth the Indominable, that I had created a handful of universities which I placed throughout the Realms.
+Hopefully you will recall that. If you don't my point is this, my good sir, we are on not only the same page, but on the same paragraph, sentence, and word. If we were any closer on this, there'd be anal penetration involved.
+Academia is going to feature front and centre. I'd almost hope that all the PC's were of an academic bent, rather than "adventurers". I'd rather have them be scientists and explorers, rather than dungeoncrawlers.
+
+Watchman: Excuse me Professor Kethoth, but I could not help but notice that you are in the process of robbing that grave...
+Kethoth: Bite your tongue, sir. I am no grave-robber! If you were an educated man with at least half the brain you are purported to have, you might notice that I am not robbing this grave, but, rather, first, removing the ancient corpse for later anatomical and anthropological research. That the corpse is standing of its own accord and helping to dig the hole is but a reflection on the sad state of academia these days, when a man can't even get budgetary approval for a decent field assistant. Now, secondly, you would notice that my removal of these artifacts is solely for the purpose of further archaeologcal research, and you can rest assured that I will donate this shimmering enchanted staff to the Royal Antiquities Museum, as is proper, when my research has come to its satisfactory conclusion!
+Watchman: Very well then, sir, carry on.
+There is but a very fine line.
+I LOVE ALL THE HANDOUTS
+There is nothing I like more than ahandout. A good handout is better than any treasure or magic item around. I love getting them, I love making them, I love hanging on to them, and I especially like handing them out (hence the name, Im suppose.) Academia only proliferates the amount of handouts.
+AND THE NPC DOCTORS AND ARCHAELOGISTS AND SUCH. I LIKE THE RESEARCH PROCESS WHEREBY YOU GUYS DIG UP OLD BOOKS AND JOURNALS AND FIND THE BIG SPANKIN' HANDOUTS FULL OF HISTORY. WE SHOULD TRY TO KEEP THIS IN MIND.
+You better believe this is in mind, my good man.
+As I mentioned in an earlier email, I think most really ancient works would have been lost. there are some bad copies, and maybe some second-hand replicas. But, for the most part, getting your hands on some real old documents should be difficult and costly. But worthwhile. The PC's can't just go down to the public library and ask to see Saint Primus' Canon on the original human skins, please. They should have to work a little to find just the right book they are after. But once they do, the reward should be sweet (though sometimes sour.)
+Our pontiff's motivation could be the re-establishment of his family's old empire. While the church is theoretically unified under his command, the existence of all these canons and saints, and the existence of the Conclave, in practice has diluted his authority and power.
+
+THAT IS, IN FACT HIS GOAL. HE WANTS TO CONROL ALL THE CANONS AND DIRECT THEM AGAIN. WHY? IT CAN'T BE FOR THE ALTRUISTIC REASON OF UNITING THE EMPIRE AGAIN AND LETTING MAN SPREAD. NO SIR, I WON'T TOLERATE THAT.
+Nor will I. The Pontiff is not altruistic at all.
+HOW ABOUT THIS; THE PONTIFS HAVE BEEN GIVEN A MANDATE TO DO SO, AND RISK GREAT PERIL ON THEIR JOURNEY DOWN THE VALLEY OF DEATH IF THEY CANNOT MAKE SOME AMMENDS HERE.
+HERE'S AN IDEA TO SHOOT AT YOU;
+400 YEARS AGO, WHEN THERE WAS THE REVOLUTION, THE PONTIFF WAS SOMEHOW RESPONSIBLE FOR IT (WE NEED TO ADD LOTS OF FLESH HERE) AND THE DECAY OF THE EMPIRE THAT FOLLOWED WAS IN FACT HIS FAULT. THE SAINTS AND CELESTIA BEING UNFORGIVING AS THEY ARE, HAVE COMMANDED THE SUBSEQUENT HEIRS OF THE PONTIF TO MAKE AMENDS FOR THE GREAT SIN OF THEIR FOREFATHER. I LIKE THAT.
+I'm leery of direct commands and communications from the planes. I'd rather see it more like the current Pontiff believes that this is the case. Whether or not this is how it really is is beside the point. Maybe he heard voices, maybe he thinks that this is what he has to do to make things right. Maybe he is inasane. Or maybe just misguided.
+I do like the idea. I would just rather see the Pontiff come to the conclusion on his own (or maybe his father told him on his deathbed, just like his father before him, and his father before him, etc), rather than having been comanded by the saints.
+SOME FOLKS OUT THERE IN SOME CANONS KNOW ABOUT THIS, PERHAPS. PERHAPS A CERTAIN SAINT MET UP WITH ONE OF THE RECENT PONTIFS IN THE VALLEY OF DEATH, AND FOUND OUT FROM HIM WHAT IS GOING ON. HE MIGHT HAVE EVEN SEEN HIS TRIAL, AND THE DESTRUCTION OF HIS SOUL.
+Again, I'm leery of communication between the saints and humans. It should happen, but on very rare occassions, and it should be cryptic.
+I like the idea that some prelates know. How they know is a mystery for the PC's to find out maybe.
+WHO KNOWS?
+Blacky and Gussy!
+PERHAPS A COUPLE OF THE LARGER CANONS ARE AWARE THAT THE PONTIF HAS HIS OWN PERSONAL AGENDA, AND THEY HAVE KEPT THEIR DISTANCE BECAUSE OF THIS.
+
+I like that. There might even be some quiet grumbles about replacing the Pontiff with a younger, more pliable and controllable, brother... although these grumbles would be very, very quiet as it would be deemed heretical, traitorous, demonic, etc.
+OTHER SMALLER CANONS JUST FOLLOW SUIT. "I HEARD THE BISHOP OF ST. JEROME'S SAY T'OTHER DAY THAT HE AIN'T DOING NUTHIN' THAT THE MASKED PONTIFF SAYS. 'BELIKE OUR MOST HOLY ADJUDICATOR HAS HIS OWN DESIGNS FOR OUR ORDER, AND CARES LITTLE OF OUR BEST INTERRESTS, BEYOND WHERE THEY INTERSECT HIS OWN' I HEARD 'IM SAY. I AIM TO TELL MY FLOCK WE AIN'T GONNA CAST OUR LOT WITH NO ST.PRIMUS AND HIS MORTAL DESCENDANT, NO MATTER HOW UGLY HE IS!"
+Right on.
+If he could consolidate all the canons into his own hand, his family could once again command the united armies of the church, his family could once again control all the vast property holdings and wealth owned by the individual monasteries, societies and knightly orders, and with this powerful army and great wealth, he can restore the empire to its ancient glory...
+YEP. BUT WE AREN'T GOING TO LET THAT HAPPEN, ARE WE? I LIKE THE IDEA THAT THE CHURCH WANTS TO DO SOMETHING LIKE THAT, BUT THAT THERE IS SO MUCH MISTRUST BETWEEN THE CANONS, AND ESPECIALLY BETWEEN THE CANONS AND THE PONTIFF, THAT IT JUST WILL BE NEARLY IMPOSSIBLE (WITHOUT THE AID OF THE PCS).
+Yeah, I'm with you on this.
+WHICH BRINGS ME TO ANOTHER IDEA; DID YOU SEE BROTHERHOOD OF THE WOLF?
+You better believe it. I own a copy. there are a couple of movies that perpetually inspire me for D&D. Not a lot, but a couple. Brotherhood of the Wolf is one of them. Crouching Tiger, Hidden Dragon is another, as are Sleepy Hollow and Raiders of the Lost Ark among others.
+REMEMBER THE CHICK-ASSASSIN WHO WORKED FOR THE POPE. WE NEED A SECRET ORDER LIKE THAT FOR THE PONTIFF TOO. REALLY NASTY, BUT SMART ASSASSINS WHO ARE TRYING, BY ANY MEANS NECESSARY, TO ACHEIVE THE PONTIFF'S AIMS. THIS COULD MAKE FOR SOME GREAT NPC'S.
+You bet! This is great. I like the idea behind this. Kind of like the ideabehind the inquisition. We are a church of peace. Jesus is all about peace and love and forgiveness. But we can't forgive you and love you unless you admit to us that you are a demon-worshipping witch! We are just peaceful men, but in order to bring you peace, we must burn the truth out of you.
+Basically, I like the idea of the church bieng completely against assassins in every way. Yet, it somehow manages to find some obscure
+
+passage in the canons that might be interpreted as being somehwat lenient in the use of murder or something to get the job done. It happens all the time (like George Bush with his "we have to limit your freedoms in order to preserve them" or with the fucking muslims and their jihad.)
+I really like that. But this should be ultra hush hush. It is something that should take PC's a long time to discover that it exists.
+I think there should be some sort of secular, though more or less corrupt, democratic government ifor The Capital that runs in parallel with the church. The empire fell apart in revolution, and these damn democrats now run what remains of the empire. This senate or parliament with its Premier are the political leaders, but the church and pontiff (who is now seen as a sort of constitutional monarch) control the bureaucracy. So, the members of parliament and the premier can pass all the laws they want, but in the end, it is churchmen who are the majority of the bureaucrats, adminsitering the law.
+THAT SOUNDS PRETTY GOOD. I LIKE THE IDEA THAT THE GOVERNMENT STILL NEEDS THE CHURCH TO CARRY OUT SOME OF IT'S POLICY. LOTS OF THE BEAUROCRACY SHOULD BE MADE UP OF MEMBERS OF THE CHURCH, WHERE IT WOULD BE APPROPRIATE, OR, VASTLY INNAPROPRIATE.
+Yeah. I see some posts bein hereditary, but most, are just filled by churchmen because for so long they were the only ones with the skills to be able to fill the job.
+'BY ORDER ORDER OF THE RULING COUNCIL OF THE CITY AND EMPIRE OF AVITUS, ALL DEAD ARE ORDERED TO BE PRESENTED ON LORD'S ROW BEFORE 6 BELLS EVERY MORNING FOR COLLECTION BY THE CITY. THE MONKS OF ST.CHALMAZAR'S WILL COLLECT THESE CORPES FOR PROPER DISPOSAL'
+ONLY, THE MONK'S OF ST.CHALMAZAR'S ARE IN PRAYER FROM 4 BELLS TO 10 BELLS. SOMETHING LIKE THAT. BODIES SIT THERE IN THE SUN FOR A FEW HOURS...
+That's great!
+SOUNDS GOOD. WE NEED PRINTING PRESSES, THAT IS FOR SURE.
+Printing Press = More Handouts = D&D Gold = Fun+5 (Keen)
+THERE SHOULD BE ONE IN LORD'S UNIVERSITY, I THINK.
+And it should be enormous, taking up a whole room, with about a dozen typesetters working full-time moving the little blocks around, and another dozen ink-setters working full time mixing large vats of ink.
+
+THE UNIVERSITY HAS TO GET PERMISSION TO PRINT ANYTHING THOUGH, AND PERMISSION TAKES MONTHS TO GET, AS IT HAS TO BE APPROVED BY THE RULING COUNCIL'S COMMITTE ON COMMUNICATIONS, MESSAGES AND SOCIAL RESPONSIBILITY, BEFORE IT CAN BE PRINTED OFF.
+Right on. And while they're waiting for permission, maybe one of the typesetters is running a subversive student newspaper on the side which he prints off during those idle times...
+THIS DOESN'T MEAN THAT THERE AREN'T LOTS OF UNDERGROUND PRESSES, ESPECIALLY WHERE THE BLACK FAITH IS CONCERNED, BUT THE UNIVERSITY SHOULD HAVE ONE, THOUGH IT IS TIED UP IN RED TAPE.
+I like that a lot. There are smaller, cheap presses out there that can pump out poor quality leaflets and newsletters, but the big one at Lord's, that one has the potential of printing out the entire Saintly Canons in excellent quality, if only the damn Provost would file the petition with the council.
+I RECENTLY RAN AN ADVENTURE IN WATERDEEP WHICH CENTRED AROUND AN UNDERGROUN PRINTING PRESS. I SENT YOU SOME CLIPPINGS FROM THAT ADVENTURE.
+I don't know if I received it, as it does not ring a bell. Might have to check through the old mail.
+IT WAS LOTS OF FUN, AND REALLY FRUSTRATING FOR THE PCs, WHICH IS THE MAIN THING, EH?
+Yup.
+I like the idea of having different versions of the bible around.
+LIKE I THINK I MENTIONED (I CAN'T REMEMBER SOMETIMES, IF IT WAS SOMETHING I PUT IN THAT LONG WORD UPDATE THAT I LOST, OR IF I HAVE ALREADY TOLD YOU...) BEFORE, I THINK THAT THE ORIGINAL VERSION OF THE BIBLE SHOULD BE A BUNCH OF ANCIENT HUMAN LEATHER WITH TATTOOS ON IT.
+And I belive I said: BEST. IDEA. EVAR!!1!
+THE CANONS HAVE THEIR OWN BOOKS THAT COULD BE ADDED TO IT, BUT, WE KNOW THAT NO TIME SOON WILL THERE BE A CONSOLIDATION OF THESE DOCUMENTS.
+Check.
+Yeah, this is gold. Some canons might have folded and they back the pontiff on this matter. and even within the canons their are
+
+smaller splinter groups who oppose this move and threaten to separate.
+EXACTLY.
+This is mostly background flavour, but we're definitely crafting a scenario where the very beginnings of a major schism are underway. Things aren't bad yet, but if they keep going the way they are going, probably in a decade or so the whole thing is going to blow.
+PERFECT. RISING STORM. I LOVE IT.
+Good stuff.
+HERE IS HOW I SEE THIS PENDING SCHISM; MOST PEOPLE IN THE EMPIRE HAVE NO IDEA THAT THERE IS SO MUCH TROUBLE. YOUR AVERAGE FOLLOWER OF ST. HEIRONYMUS IN PENTICTON VILLAGE KNOWS THAT THE FOLLOWERS OF ST. GARFELD IN HAFTBURY, NEXT VILLAGE OVER, GET UP REALLY EARLY TO PRAY, AND THEY DON'T LIFT A FINGER ON WEDNESDAYS, AND THAT MAKES THEM WIERD, BUT NOT REALLY AN ENEMY OF ANY SORT, OR EVEN A POLITICAL RIVAL.
+EVEN IN THE CITIES, PEOPLE DO NOT PERCIEVE TAHT THERE IS ANY MAJOR PROBLEMS. RIGHT NOW, THE ONLY PEOPLE THAT SEE TROUBLE COMING ARE THE REALLY HIGHTLY PLACED RELIGIOUS FIGURES, AND A FEW POLITICAL PEOPLE.
+Perfect. I think that's just the way it goes.
+Then there's the group that do sell indulgences. Some might do it as nothing more than a cash grab. Some might actually believe that it works. And maybe for a few canons, it does work.
+ALL GOOD. IT SHOULD WORK FOR SOME. BUT THERE SHOULD BE AS MANY CANONS SELLING INDULGENCES THAT DON'T WORK, AS THERE ARE ONES THAT DO. AND MOST SHOULDN'T SELL THEM AT ALL, AND MOST OF THOSE THAT DON'T OUTRIGHT CONDEMN THE PRACTICE (THOSE IN THE MORE RURAL, AND POOR AREAS, OBVIOUSLY).
+Ok.
+one saint. Most'll probably try to hedge their bets with different saints.
+AGREED. WHY NOT PRAY TO A FEW SAINTS, IF YOU KNOW THEIR UTILITY? PROBABLY MOST RELIGIOS PEOPLE WILL ALIGN THEMESELVES WITH ONE PARTICULAR SAINT, BUT WILL OFTEN, EVEN OVER THE COURSE OF A DAY, INVOKE SEVERAL OTHER SAINTS. WHY NOT? NO HARM, RIGHT?
+Right. Ultimately, though, you probably nhave to make a decision on who you really ewant to represent you in th Valley of Death. But
+
+there's never any harm in praying to the others along the way.
+I agree. This is much better than the holding cell I had originally envisioned. Life is tough, but not as tough as the Valley of Death.
+THAT IS A GOOD SAYING; "LIFE IS TOUGH, BUT IT'S GONNA GET A WHOLE LOT TOUGHER BEFORE YOU MEET YOUR MAKER, SON! MAKE YOURSELF PREPARED, BOY!"
+We should pepper our final material with stuff like this to add some flavour.
+When you reach the judgement, and this is different for each individual, you are judged before every single soul that dwells there in Heaven or Hell. Your Saint or Devil pleads your case for you, or advises you on what to say or something. In the end, though, it is by democratic vote that you're either let in or cast out. If you plead successfully, all the souls in Heaven will agree to let you in and join their ranks. If not, they will cast you down into the Abyss. Same goes for Hell.... which would be a pretty cool scene as people try to plead that they really are truly evil bastards. Can you imagine getting bounced from Hell for not being evil enough? That's some good bad guy motivation we're creating here. How evil does the Evil Mage have to be? More evil than any previous evil bastard ever was if he wants to get into Hell. That's fucking evil, man.
+HAR! THAT IS GOLD, GUSTAVO! I LOVE IT. IF OL'HAGAN WAS DOING IN 5YEAR OLD CHILDREN BY THE SCORE EVERY YEAR, WHAT DO YOU HAVE TO DO TO ONE-UP THAT FUCKER? GREAT CONCEPT.
+Oh man, that's a terrible door we've opened, in retrospect. But it will be fun. When the bad guys are motivated by their desire to out-do each other in their vileness, there is no end to the depravity to which they are prepared to sink.
+To this day, there has been no more terrifying or evil experience for me than when we explored the Wolfsong Weather Station. That still gives me nightmares.
+But, those guys who will sit at the table as PC's? They ain't seen nothing yet.
+HERE IS A LATERAL THOUGHT;
+CELESTIA IS FULL OF 4 TYPES OF BEINGS, LISTED BELOW IN DESCENDING ORDER OF POWER/IMPORTANCE;
+
+1. THE NATIVES OF THE PLAIN, WHICH ARE A FEW GOD-LIKE BEINGS WHO HAVE PERMITED THE SAINTS TO ENTER. MAYBE ONLY ONE BEING? (NEEDS FLESH)
+I'm keen to kill this off. I have an idea of making the Angels fill this role. More info below.
+2. THE SAINTS. THESE ARE THE MOST REMARKABLE AND GOOD PEOPLE WHO HAVE COME HERE FROM OUR WORLD. THEY HAVE CONSIDERABLE POWER, THOUGH IT VARIES FROM SAINT TO SAINT. MOST HAVE SOME ANGELS IN THEIR SERVICE; SOME MIGHT ONLY HAVE ONE OR TWO, BUT SOME OF THE LARGER CANONS MIGHT HAVE A SCORE OF ANGELS. (WE NEED NAMES OF ANGELS TOO).
+I agree with this 100%
+3. ANGELS. THESE ARE MORTAL SOULS FROM PEOPLE WHO WERE REMARKABLE (OFTEN WARRIORS OR MAGES OR OTHER NOTABLE PEOPLE) IN LIFE. THEY HAVE BEEN GRANTED THE POWER TO TRAVERSE WORLDS, THOUGH THEY NEED PERMISSION TO DO SO, AND, FOR THE MOST PART, STAY PUT. (CHARACTERS MIGHT ENCOUNTER ANGLES)
+I'd rather see Angels as the natives of Heaven. They're the ones who've allowed the Saints to enter and dwell there, and in turn, they allowed the souls to enter too. The angels needed the saints for some reason. Maybe they are a race of servants that need to serve a master, and they chose those who became saints. I don't know. Why saints can be saints needs fleshing.
+Now, I think they are capable of travelling to our world (and others, such as Helland the Abyss) but it is very, very difficult. Like the demons of the Abyss, Angels can cross over at certain places (which are guarded by scores of demons, making it difficult) and by expending a lot of energy and power.
+Once in our world it is virtually, if not completely, impossible to get back. The angels that dwell in our world came here for some very specific reasons. Some perished in their missions, others settled and married, creating off-spring (Half-Celestials) and decendents (Assimars), while others killed themselves out of desperation from not being able to return to their plane.
+Some might even have become corrupted by the demons, and then gave rise to the black faith.
+I think, despite anything else, any angels that the PC's might encounter should have getting home to Heaven as a very strong motivation.
+That's my take, at any rate. As I've said, I'm keen to keep the direct interference from Heaven and Hell to a minimum.
+Another approach is to let angels cross over whenever they want, but our world is poisonous to them. They can cross over for a week, maybe
+
+a month, before they die if they do not return to heaven. Therefore, angels only cross over on the most important of missions or errands, and usually only long enough to find some suitable humans (the PCs) who can finish the mission for him.
+4. SOULS. THE PEOPLE WHO MADE IT TO CELESTIA, JUST BARELY OR OTHERWISE UNREMARKABLY. (CHARACTERS MIGHT ENCOUNTER SOULS)
+Sounds good.
+HELL HAS CORROSPONDING TIERS;
+1. NATIVE RESIDENT(S). "THE" DEVIL. MEPHISTOPHOLES, OR WHO EVER. WE SHOULD COME UP WITH OUR OWN DEVIL, AND GIVE HIM A REALLY SINISTER NAME.
+See above. I think we should have a really eveil fallen saint as our devil. We have Saint Primus, say, though he's not as powerful as he used to be, and doesn't really command heaven.
+However, we have the Dark Lord (who was Saint Primus's best friend in life, or something like that. A traditional sort of myth) who fell from grace and amassed enormous power for himself. He wa able to carve out his own kingdom from the Abyss and from Heaven, and that's Hell.
+Unlike Saint Primus, our Dark Lord kept consolidating and growing in power. There might be hundreds of good saints, but only a dozen antisaints down in Hell, because The Boss keeps a tight grip on power.
+Maybe. It's getting late so my thoughts are getting fuzzy with tiredness.
+2. ANTI SAINTS (WE NEED BETTER WORD FOR THIS TOO).
+Yes we do.
+SAME GOES; THESE ARE REMARKABLE PEOPLE FROM MORTAL WORLDS (OURS ESPECIALLY) WHO HAVE BEEN PROMOTED IN HELL TO VERY POWERFUL BEINGS.
+Yup.
+3. DEVILS. YOUR AVERAGE PIT FIEND AND OTHER SUCH FELLAS, ALL THE WAY DOWN TO SUCCUBI AND SUCH. (CHARACTERS MIGHT ENCOUNTER DEVILS).
+Aye. In the same manner as Angels.
+4. SOULS. UNLIKE YOUR TYPICAL VIEW OF HELL, THESE ARE RELATIVELY FREE PEOPLE SOULS THAT ARE NOT REALLY TORMENTED OR MADE SLAVES. THAT HAPPENS IN THE
+
+ABYSS.
+Agreed.
+ANOTHER THOUGHT; IN THE VALLEY OF DEATH, YOU ENCOUNTER MANY TRIALS ON YOUR JOURNEY. MANY OF THESE MIGHT ACTUALLY BE PUT BEFORE YOU BY YOUR SAINT, OR PERHAPS OTHER SAINTS.
+And the devils and demons. You have to prove yourself worthy. And likewise, you have to prove yourself unworthy. If that makes sense.
+SOUNDS GOOD. I WILL LEAVE THAT BIT OF NAMEOLOGY TO YOU; YOU KNOW WAY MORE RELIGIOUS TITLES THAN OL'BLACKY.
+Oy... that's a tough responsibility. I'll do my best.
+I like it, though we should have somthing that can be boiled down to one word for short. Primus Deus Fidelis doesn't roll off the tongue.
+IT DOESN'T. BUT AGAIN, I WILL ACQUIESCE TO YOUR JUDGEMENT ON MATTERS OF RELIGEE-OUS NAMEOLOGY.
+It is growing on me. For short, the Common Folk just call it Saintly. as in "I'm Saintly" when referring to themselves like someone would say "I'm Christian". Although, since everyone is supposed to be Saintly (if you're not you're a heretic or demon) this really doesn't matter.
+Primus Deus Fidelis is good for an official name.
+I think Latin, or Latin sounding things should feature highly in our world.
+YEP AND YEP. I WOULD LIKE TO HAVE SOME LATIN SOUNDING NAMES, AND LOTS OF THE EUROPEAN SOUNDING NAMES; SOME DUCTH, SOME GERMAN, SOME SCANDINAVIAN, MOST PLACES, SEE. NOT FRANCE THOUGH. NO ONE LIKES FRENCH NAMES. 'MONSIER DE OBADIAH?' I DON'T THINK SO.
+100%
+Sinister, but humble? We need to work on this.
+AT THE PRESENT TIME, I AM WEARY AND GROGGY, AND A GOOD SINISTER AND HUMBLE NAME IS NOT IN ME. I WILL THINK ABOUT IT THOUGH.
+Damn it. Now I'm weary and groggy. I'lll try to think on this in the morning when I am fresh.
+
+Will do. I'm writing up a separate document for the church itself.
+IT WILL LIKELY NEED A LENGTHY ONE BY THE TIME WE ARE DONE, EH? WITH REGARDS TO CRUSADING ORDERS; I NAMED 3 CITIES THE OTHER NIGHT; AVITUS; THE CAPITAL
+Good.
+
+GENUA; INDEPENDANT CITY STATE. THIS IS A MEDITERANEAN-FLAVOURED TOWN
+
+THAT IS
+
+ALSO THE MAIN PORT. THIS IS WHERE MANY CRUSAIND ORDERS
+
+WOULD SET OUT FROM.
+
+See my previous thoughts on the name for this one.
+
+HAVILAH; THIS IS THE GREAT NORTHERN CITY. IT IS ALSO INDEPENDANT, AND A REALLY ROUGH AND TUMBLE PLACE.
+I have some plans fgor this one that I will put for your consideration later.
+
+ALL OF THE CRUSADING ORDERS WOULD HAVE SOME SORT OF BUILDING OR TEMPLE IN THE CITY OF GENUA. NONE OF THEM ARE ANYWHERE NEAR AVITUS, AS THEY CAN'T STAND TO BE NEAR THE POLITICAL CAPITAL.
+Agreed.
+
+FOR A GOOD EXAMPLE OF HOW THINGS TURN INTO A CONFUSING, CONVOLUTED MESS THAT ISN'T QUITE UNDERSTOOD, LOOK AT THE ELECTORAL SYSTEM FOR THE HOLY ROMAN EMPORER IN THE EARLY RENAISANCE. WHAT A CLUSTER FUCK; A BUNCH OF SECULAR VOTERS, A BUNCH OF NON SECULAR VOTERS, A COUPLE SOMEWHERE IN BETWEEN, SOME WITH MORE VOTES THAN THE OTHER, SOME WITH VETOES AND OTHER STRANGE POWERS OF DEMOCRACY THAT SEEM LIKE MADNESS. I TOOK THIS COURSE ON THE 30 YEARS' WAR, AND WAS COMPLETELY BAFFLED THAT THEY COULD ELECT ANYONE AT ALL. THEY ALWAYS ELECTED A WEAKLING AND A COWARD, WHICH IS THE FUNNY THING; THEY WANTED TO KEEP THE EMPOROR WEAKER THAN THE POPE, AND WEAKER THAN THEMSELVES. PERHAPS THE NON SECULAR HEAD OF OUR STATE IS JUST SUCH A BOOB (THE OL' YARKUL-AS-BOSS-OF-DAGGER-FALLS SCHEME AGAIN, EH?).
+Ha!
+I like the whole business. I thinkour empire, in the aftermath of the revolution, should resemble something like the Holy Roman Empire. My thoughts on that are elsewhere, but we shall discuss further when we talk about politics.
+
+LOTS OF EMPTY PLACES AND DEAD EVERYTHING. I WANT THE WORLD TO FEEL VERY MUCH LIKE A COFFIN. PERPETUAL LATE AUTUMN. THE LEAVES ARE ALL FALLEN AND DEAD AND DEVOID OF ANY COLOUR BEYOND BROWN-GREY. YOU CAN SMELL THE SNOW IN THE AIR; THE COLDNESS IS JUST AROUND THE CORNER. SEE? SEE?
+I see. I like that.
+My suggestion is,as I said earlier, for a bit of irony, where the hereditary pontiff's ancestor was the first saint, and the church developed out of this ancient ancestor worship. There would be a saint who is "First Among Equals". This makes the Pontiff "first among equals" himself within the Conclave.
+SOUNDS GOOD. SO; THE FIRST SAINT WALKED THE EARTH AND HAD SOME SAINTLY POWERS BEFORE HE LEFT THIS WORLD.
+They would be considered saintly. He maybe had a stronger grasp of magic than any who came before him.
+HE HAD A SMALL FOLLOWING OF OTHER MEN WHO BECAME SAINTS.
+Yeah. Although, I wouldn't call them a following. They were chieftains all, who considered themselves equal to one another. It's just that Primus was more powerful than the others.
+HE WAS TEH FIRST SAINT IN HEAVEN (HAVING BEEN KILLED BY SOME HEATHENS OF SOME VARIETY),
+Yeah. or maybe he just up and left. Remember the myth fof Jesus or Anakin Skywalker or King Arthur. Or good Primus vanished into the west (or east) but his descendents wait for him to come back to lead them personally to the promised heaven.
+Something like that. We need to start meshing in some mythology with our history.
+AND WAS THE FIRST TO COMMUNICATE BEYOND THE GRAVE ON HIS OWN BEHALF
+In a very limited way, but yeah.
+(***THIS DIFFERS STRICTLY FROM ANCESTOR WORSHIP, IN THAT A SAINT WILL ACTIVELY CONTACT YOU IN A VERY CRYTIC WAY; ANCESTOR WORSHIP ALWAYS INVOLVES THE MORTAL SOULD TO MAKE AN ACTIVE EFFORT TO CONTACT AN ANCESTOR***).
+Got it.
+THIS FELLA WAS CONSIDERABLY MORE POWERFUL BACK THEN (ABOUT 3000 YEARS AGO). HE IS SUSPECTED TODAY OF STILL BEING A 'FIRST AMONG EQUALS', THOUGH THIS IS, IN FACT, NOT TRUE. THERE ARE LOTS OF SAINTS WITH AS
+
+MUCH OR MORE POWER THAN HIM THESE DAYS. HIS POSITION, LIKE THAT OF HIS PONTIFF, IS MORE FIGURATIVE THAN ANYTHING ELSE.
+Which gives some Prelates in the Conclave thoughts about replacing the current Pontiff with themselves, seeing as how their canon is bigger, wealthier and more powerful.
+The prime Diety and the Prime Devil were both mortal men who were very close, perhaps even brothers.
+I like the idea of them being brothers. I'd like to see the Evil one being the older brother, and the Good one being the younger brother. Aside from everything else, the older brother also sees his younger brother an usurper.
+The good guy was in love with a woman (you can see where this is going, eh?).
+It goes the same way that all such stories go, eh? Heartbreak, damnation, a lot of whiskey, blood, banjo music, and death on a highway.
+I like the name Ruth or Sarah for this chick.
+I like Ruth.
+The bad guy, of course, was in love with her too, but she loved the good guy more.
+Not really in love, per se... maybe just jealous. Ruth is the Babest Babe there is, and our bad guy, just wants her. He hates his brother and lusts after her, but doesn't really love her. I'm just thinking about some tangential lore for our world, where we can write up some morality tales for the canons warning against jealousy or lust based on aspects of this story.
+The bad guy, through great treachery and deception manages to make her think that the good guy has done something terrible to some younger girl (perhaps her sister, eh?).
+Aye. I like the idea of a sister. Have the bad guy make Ruth think that the good guy raped his own sister (that's pretty fucking evil) and then she leaves the good guy and, for whatever reason, shacks up with the bad guy. The bad guy, at this time, also manages to murder his father, blaming it on the good guy as well. The bad guy then becomes chieftain, and banishes his brother.
+Then there is a period where the good guy wanders the wilderness. All kinds of tangential stories can come from this period.
+Although I'm thinking that the good guy has to do something bad himself. He can't just be Good (or maybe he can...) I was thinking he
+
+does something else. Maybe he is the one that accidentally kills his father, and then everyone thinks he'd done murder. So then he has to atone for this killing.
+In any case, we should have a period of a few years where the good guy has to wander the wilderness performing quests and slaying monsters, so as we can have some tangential mythological stories and magic items.
+She then switches lovers.
+Over time, the good guy is able to prove his innocence to his former lover. Perhaps he is able to have the violated and dead younger sister contact the woman somehow, and plead the case of the good guy.
+I like the idea of the undead, or at least, the spirit world coming into play here. These guys are, after all, ancestor worshippers.
+During his wanderings in the wilderness, the good guy manages to find a way to cross, as a mortal, to the afterlife. When wandering in the Valley of Death, he finds his father and gets the truth of the murder out of him. He also finds the soul of his sister, and finds out that it was the bad guy brother that raped and killed her.
+He then manages to find a way for his ancestors (all of them. every single one of them) to manifest back in the mortal world. This veritable army of ancestral ghosts, led by the good guy, confronts the bad guy in front of the entire tribe. The tribe (and Ruth) hear right from the ghosts all the evil deeds the bad guy has done. Ruth turns on the bad guy, and with the good guy at her side, the tribe run the bad guy out of the place, and annoint the good guy as their king in place of the bad guy. The ancestors return to whence they came.
+But the bad guy ain't done. No sir, he's a bit of a master of old magic, this one, and manages to sneak back into the village...
+Seeing that she has been tricked, she switches lovers again.
+This is too much for the bad guy to bear. He kidnaps the woman, and rapes and kills her, of course.
+And does this exact thing. Except not at first. He kidnaps her, with the intention of forcefully marrying her and starting his own tribe. They run into the wilderness. But the good guy is on to them quickly. He sets off tracking them, always just a day or two behind.
+Until finally he comes to them. However, the bad guy manages to imobilise the good guy using magic. While the good guy looks on, helpless, the bad guy rapes Ruth and then visciously kills her.
+Powered by his rage, maybe, the good guy manages to free himself from his prison and lunges at the bad guy.
+This leads to a great struggle between the two that leads to their mutual destruction.
+
+They fight for 40 days and 40 nights... or however long. But they fight epically across the land. Maybe they don't die. Maybe they just cross over to the world of the dead in the same manner the good guy was able to do before.
+In the Valley of the Dead, they continue to struggle against each other as well. Why not make it really epic, eh?
+I like that. They continue on even in death...
+At some point, they come across the soul of the double-crossed lover. She is pregnant with the offspring of the bad guy. Pregnancy in teh Valley of the Dead is a tricky subject, but i like the thought of it.
+I like this a lot too. It doesn't have to make sense, right, it's mythology. But I like this. They come across the soul of Ruth and her big belly.
+Here is where I am going with this; the bad guy will rip the children out of her belly
+So the bad guy manages to take Ruth hostage yet again. "Back off brother, or I will kill her..." or something like that. The good guy backs off a little, giving the bad guy the opportunity. He gives a sconful laugh, "But, brother, you are a fool! We are already dead! I cannot kill that which is already dead!" And with some words to that effect he reaches in to Ruth's womb and rips out the triplets just to prove the point that you can't hurt that which is already dead.
+Except he was wrong...
+(there ends up being 3 of them
+I like this, though. There is your Unholy Trinity. I like it a lot.
+, or some other number that numerology might find significant), and casts them down into the abyss. The woman chases the children to the abyss, and her soul is destroyed. Right on.
+Right on. Although I think the bad guy manages to destroy her soul himself. He says he can't really kill her, but he actually can, surprising even himself by the amount of power he has accumulated. And then, the good guy, seeing his brother kill Ruth before his eyes twice now, becomes even more enraged and goes at his brother.
+But it is too late.
+The bad guy manages to make an escape somehow. Maybe the good guy, rather than be enraged, at seeing Ruth die twice before his eyes, just
+
+falls to his knees in terrible grief. He just falls to his knees and holds her dead soul to himelf, weeping unconsolably. The bad guy sneers at this show of weakness, and bolts, with his three children (whether he casts them into the abyss and they become demons, or he takes them to Hell and they become his Unholy Trinity, is a matter for discussion (or maybe even for scholarly interpretation by our world's theologians...)
+The two brothers somehow ascend after that.
+The bad guy, by dint of being so ferociously evil, is invited to hide out in hell by the devils that dwell there. Maybe the Pit Fiends that rule appreciate the bad guy's talents and invite him to become one of them, or they had an idea of hw to manipulate him for their own purposes. Except the bad guy has other plans, and, despite accepting the offer, manages to ensalve all of the minions of hell to himself. However he does this, the end result is that he ends up becoming Lord of Hell... a fact that the resident devils of the place resent tremendously. But, since they have signed some sort of legitimate and binding contract of servitude to him (for 9999 years, say...) they just bide their time, doing their Tyrant's will, knowing that when the contract expires they will have their revenge.
+This is something that preoccupies the bad guy. He knows that his rule of Hell is shortlived, although no one really knows this. It will inevitably come to an end when the agreement or the terms of the contract expire. None of the good guys, and few of the bad guys know this. But he works ceaselessly at trying to find ways to be able to prevent what will happen when the devils are set free.
+As for the good guy, the angels of heaven invite him in to join them. The angels see the genuine love he has for Ruth, as well as how Good he was in life. Furthermore, seeing how the bad guy manages to take control over Hell, they realise that the only being capable of holding the new Lord of Hell in check is the good guy. So he is invited into heaven, where he is eventually, unanimously selected to lead the place as General of the Armies of Heaven or something like that.
+So maybe, instead of a soul being chosen to enter heaven or hell by democratic vote, they are chosen by the Lord of Hell and the General of Heaven themselves. They are essentially recruiting soldiers for their inevitable war. Hell wants only the vilest, most evil individuals. Heaven wants the incorruptible and the most righteous.
+The Lord of Hell wants souls not just to one day fight against the minions of heaven, but also to fight against the devils that will one day seek revenge on him.
+I am not sure about all the details, but I want them to have fought over a woman who spawns a breed of demons in the abyss,
+A little bit of irony. Let's say that back during the period before all this started, when Ruth and the good guy were happily married, Ruth bore the good guy children. One of the first evil acts that the bad
+
+guy does is murder these children. Then, later, once they're fighting in the Valley of Death, the bad guy casts down or corrupts the good guy's children, and it is they who become the demons of the Abyss.
+and I want her soul to have been destroyed.
+I agree with that. And the good guy is probably half-obsessed with finding a way to bring back her soul. It is impossible, but he tries anyway cause he's gone a little crazy now given everything he has gone through.
+This way, I like having motivations outside the mortal world for our chief deities. The good guy is trying to get Ruth and the bad guy is trying to find a loophole in his contract with the pit fiends.
+That should be evil enough for that guy to rule Hell; he steals his brothers wife, the looses her, then kidnaps, rapes and kills her, then, in the afterlife, cuts babies out of her (his own...but perhaps his brothers...could be either or both, eh?)
+I'm leaning towards his brother's. Its even more evil.
+This guy is a bad ass. No wonder he gets to rule Hell.
+and chucks 'em into the abyss. Those are the elements I am sure of. The rest we can work on together.
+Tell me what you think of my suggestions. I want us to write it out as a narrative, or some sort of poem, and I want this story to be the very first thing we give the other guys before we introduce this world. We should just send them this story, without explanation or anything, as a bit of a teaser a few weeks before we sit at the table to go at it in this world.
+A further thought for consideration:
+I think there should be a splinter cult that worships Ruth. She should not be a saint, nor a devil, nor a demon, since her soul was destroyed, though worship of her is considered the Black Faith by some (she was a dastardly, fickle whore who betrayed Saint Primus every chance she got...) and as part of the Saintly Faith by others (kind of like the Roman Catholic cult of the Virgin Mary.)
+Worshippers of Ruth should get no spells, that is, there are no clerics or paladins in this cult, but there are monks and fighters and wizards and druids and what not. All of them chicks. Yeah, a sort of women's only kind of lesbo-cult. Maybe they all consider themselves to be decendents of Ruth's sisters or something (whether actually or just figuratively). Their rituals and practices rely mostly on arcane magic, or old druidic magic, and thus they are often branded as witches.
+
+I want to devlop this further...
+Another thought that I want to propose:
+Sorcerors, as a class, rather than having "dragon blood" in their veins, or whatever it says in the PHB, have Elder Blood running in their veins. It is too diluted to mark them with any special characteristics (ie they are completely human) but, the trace amount of Elder blood in their family line gives them their special aptitude towards magic.
+Or something along those lines. But that is one of the last things we need to worry about.
+Still, when it comes to character classes in our world, I want us to create one or two core classes to go along with the ones in the PHB. The main one that comes to mind is that of an Academic. I see it as a d6 class based on the Rogue, but, with a different list of class skills, and different special abilities. An academic has no need to sneak attack, but he may have found out how to cast a very limited number of arcane spells or something (much more limited than even the Bard, and he has to cast them like a Wizard ie: memorise them ahead of time.) It should be a flexible enough class, whereby, someone who is a Medical Doctor has a different set of class special abilities from someone who is an Archeologist, or someone who is a Theologian. Say, someone who chooses the class Academic(Medical Doctor) gets a bonus to his heal skills and might even be able to cast a few curative (or necromantic) spells as spell-like abilites a limited number of times per day (Cure Light Wounds twice per day at 3rd level, say) and can learn arcane spells likme a wizard in a very, very limited sort of way (like the Paladin and Ranger, say) and only from the healing and necromantic lists; while an Academic(Archeologist) would gain a bonus to a knowledge skill and might be able to cast a Comprehend Languages or Locate Object a couple of times a day at 3rd level,a nd gains his arcane spell-casting abilities like the doctor above, except his spells come from the Divination and Knowledge lists.
+Something to consider for later when we're trying to work out how each character class (and prestige classes) would fit in our world.
+ol'Gus;
+I will respond to all of your mail tomorrow. This weekend is nutso, with turkeys being served up all over. I am not a man to complain about turkey though. No sir. I have turkey dinners planned for every day this weekend; once in Barrie with Anne's folks. Once at the Millwards, and once with my famdamily. Is that too much turkey for one man? I thought you'd see it my way.
+Anyway, i wanted to shoot off one idea before it left my head;
+The prime Diety and the Prime Devil were both mortal men who were very close, perhaps even brothers. The good guy was in love with a woman (you can see where this is going, eh?). I like the name Ruth or Sarah
+
+for this chick.
+The bad guy, of course, was in love with her too, but she loved the good guy more. The bad guy, through great treachery and deception manages to make her think that the good guy has done something terrible to some younger girl (perhaps her sister, eh?). She then switches lovers.
+Over time, the good guy is able to prove his innocence to his former lover. Perhaps he is able to have the violated and dead younger sister contact the woman somehow, and plead the case of the good guy. Seeing that she has been tricked, she switches lovers again.
+This is too much for the bad guy to bear. He kidnaps the woman, and rapes and kills her, of course.
+This leads to a great struggle between the two that leads to their mutual destruction.
+In the Valley of the Dead, they continue to struggle against each other as well. Why not make it really epic, eh?
+At some point, they come across the soul of the double-crossed lover. She is pregnant with the offspring of the bad guy. Pregnancy in teh Valley of the Dead is a tricky subject, but i like the thought of it.
+Here is where I am going with this; the bad guy will rip the children out of her belly (there ends up being 3 of them, or some other number that numerology might find significant), and casts them down into the abyss. The woman chases the children to the abyss, and her soul is destroyed. Right on.
+The two brothers somehow ascend after that.
+I am not sure about all the details, but I want them to have fought over a woman who spawns a breed of demons in the abyss, and I want her soul to have been destroyed. That should be evil enough for that guy to rule Hell; he steals his brothers wife, the looses her, then kidnaps, rapes and kills her, then, in the afterlife, cuts babies out of her (his own...but perhaps his brothers...could be either or both, eh?) and chucks 'em into the abyss. Those are the elements I am sure of. The rest we can work on together.
+But definitely, planar bloodshould run in the pontiff's family.
+INDEED. I LIKE THE IDEA, THOUGH, OF THE PONTIFF'S FAMILY GAINING SOME CELESTIAL BLOOD THROUGH A LATER COUPLING WITH SOME ANGEL OR SOMETHING.
+Yeah, this idea really grows on me. It should be recent enough for some traits to be fairly evident in the latest generation, but not recent enough that anyone really remembers. Whether it is Celestial, Fiendish, or Demonic blood is up for discussion. Of course, the church itself, and the Pontiff's family, maintain that it is Angelic blood. To suggest otherwise is traitorous heresy and would invite the questioning of most thorough of inquisitors...
+
+THE ORIGINAL SAINT WAS A MORTAL MAN WHO ASCENDED, AFTER THE GREAT STRUGGLE THAT WE TALKED ABOUT.
+Yeah. Although of some outstanding personal talents. Powerful and important enough to ascend to heaven.
+That, sir, is the greatest fucking contribution you have yet to make to D&D!!! Ok, maybe I exaggerate, but this is fantastic. I got a chill down my spine thinking about the reliquary that would house this. I pictured a rather cavernous circular room with these skins stretched out like banners around the perimeter of the room.
+HAR HAR. YOU LIKED THAT, EH? I DUNNO WHERE I GOT THAT FROM, BUT IT SEEMED CREEPY ENOUGH TO ME.
+It is damn creepy, and sinister enough for flavour. I don't know what 3000 year old human skins would look like, but, I imagine, regardless of what they look like, it must be unnerving to gaze upon them.
+Ì
+DOES THIS MEAN 'RIGHT ON BLACKY'?
+Pretty much. It's a check mark, but I suppose that's what Hotmail does to it, eh? And here I thought I was being clever by using the symbol instead of typing out the words.
+Ã!
+I like the idea of some canon hiding a particular relic in the neighbourhood of Eastwitch as a springboard to an adventure.
+AH...I NEVER EVEN THOUGHT OF THAT. GOOD IDEA, THAT.
+I WAS THINKING OF HAVING RELICS THAT GO TO THE HEATHEN LANDS WITH CRUSADERS, THAT END UP GETTING STOLLEN BY THE ORCS/BARBARIANS/WHOEVER.
+I've got the same idea, and I believe I made mention of that somewhere in this assortment of emails. I imagine that it would be one of the smaller, poorer canons that would hide something near Eastwitch. If you're a Canon without paladins or monasteries or even much money, but you have an item of some great value that you don't want to see in the Pontiff's hands, and you can't afford to send it overseas, why not look to hide it in a remote backwater of our own civilised lands?
+
+Ahoy Blacky,
+This is what I figure we need at this point, before we go much further:
+1. A Calendar
+It may seem a minor thing, but if we put a calendar in place now, we can accurately date everything that we are detailing. It's nice, if for nothing else than as an outline of topics, to have a chronology.
+2. A List of Place Names
+This should be more or less uniform. I think we should put a reasonably logical nomenclature in place for most of our geography. I like the idea of having, essentially, four languages in the history of our world. (The names of them are just placeholders until we can come up with better ones):
+a. Elderspeech: this was the language of the Elders, obviously, and the oldest around. Very rare and obscure, found mainly in older magical writings. An old magic sword, for example, would have writing in Elderspeech inscribed upon the blade. No one really speaks it at all, for it is near impossible to get the pronunciation right. Those who can speak it, usually do so in a bastardised way. I was planning on using the Arabic script for this language, or even Chinese-like characters (that is, it is a completely different alphabet and grammar from the rest of the languages, making it very difficult for a character to learn it. A character can learn it, but it should cost double the number of language slots to learn to read it, and another double to speak it properly. That is, then, a total of 2 language slots to read it, and a total of 4 language slots to read and speak it. In order to have this kind of command of the language, then, it requires an INT of at least 18.)
+b. Tribalspeech: this was the early language of humans, akin to Celtic, Scandinavian or maybe German. Our first Saints and most Barbarians and even the Orcs (which I'm leaning to call them Ferals, but more on that in a bit) speak a variant dialect of it now. Some written forms of the original version of it can still be found on magic items and religious relics. It forms the basis of the newer languages in a rough sort of way. There are as many dialects and variants as there are tribes.
+c. Old Imperial: This is essentially Latin. The vast majority of writings are in this language. For 2000 years, or so, this was the language in which the entire empire operated. It never really died, though it was highly modified as colonists and explorers and others began adapting words and phrases from the barbaric Tribalspeech tongues. This intermixing between Old Imperial and Tribalspeech dialects led to the informal formation of what is considered "New Imperial".
+d. New Imperial: This is essentially English. New Imperial is the language currently in use by our civilisation. It has grown out of mixing Tribalspeech dialects with Old Imperial as a result of colonisations and barbarian inter-marriages and influences. It is
+
+usually just refered to as "Imperial", and it is the language of the common man. Old Imperial is still the language of goverment, the church, academics and the high born.
+3. Names of Demographic Groups
+You are right, we need to start getting some of these down. This is what I suggest:
+a. Saints: they are just called "Saints".
+b. Celestials: people call them Celestials or Angels. Although, the term "Celestial" refers to any being who dwells in Celestia (so a Saint is also a "Celestial"), whereas "Angel" refers specifically to those beings who are native to Celestia. People don't much care for the difference, but scholars do.
+c. Hellion: these are what we were previously calling "Anti-Saints"
+d. Devils: people call them Fiends or Devils. Same as with Celestials, "Fiends" refers to any being who dwells in Hell (so our Hellions are also Fiends), whereas "Devils" are the natives of Hell.
+e. Demons: these can be anything and everything the common man wants to label as such. Strictly speaking, natives of the Abyss are referred to as "Abyssals" or "Tanar'ri". The same distinctions apply as with Celestials and Fiends.
+f. Celestialspawn: these are strong beings who have one mortal parent and one Angelic parent (ie Half-Angels or Half-Celestials.) They are creatures of legend, though, they were real enough, as there is evidence of them from their descendants. The common man would not be able to differentiate one from a true Angel, so this label is almost strictly academic.
+g. Devilspawn: same as Celestiaspawn, except with a Devil as one parent.
+h. Demonspawn: same as above. However, it is impossible for the average man to distinguish between a Devilspawn or a Demonspawn. To him, they are all demons. But, a knowledgeable scholar can make the distinction.
+i. Celestialkin: these are what would be considered Assimars. They are the descendants of Celestialspawn through many generations (it is unclear how long it takes for outsider blood to dilute itself out of the family line entirely.)
+j. Devilkin: same as Celestialkin, etc
+k. Demonkin, same as Celestialkin, etc
+l. The Elders: these were a now long-extinct race of powerful and long-lived humanoids that dominated the world in the darkest ancient times. It is unknown exactly what caused their extinction, but most scholars suspect that a combination of disease, warfare, and population
+
+pressures were the main culprits. Hundreds of ruins mark their passing, as do many artifacts, works of magic, etc.
+m. The Feral Men: Referred to most commonly as "Ferals" by the common men, these are what we would consider to be Orcs. The Ferals have their own name for themselves ("Damann", which is an old Human Tribalspeech word for "man" that the Ferals adopted, and which has, ironically, now been translated back into New Imperial as meaning "Demon"...) but civilised men continue to just call them Ferals or Beastmen..
+(As an aside: I don't want the fellas to think of them as Orcs. I don't even want us, in a way, to think of them as Orcs. I kind of see them as Neanderthals, in much the same way as in the movie "The 13th Warrior". These are a third offshoot in the humanoid family tree, like the Elders and Humans, but much uglier and meaner than Neanderthals, and with wild variations. There are some tribes that have tusks and green skins, other have more human characteristics, except for sloping foreheads, and others still have grey skins and claws...)
+(As a further aside: I think we should get rid of dwarves altogether.)
+n. The Barbarian tribes: I don't know what to call these guys. "Barbarian" should be an adjective in our world, not a noun. And, as with the orcs, there should be a difference between what they call themselves and what the imperials call them. I kind of like the idea of them referring to themselves as "Damann" as well, just like the Ferals. This implies, from a civilised man's perspective in Avitus, that the human Damanns are no different than the Feral Damanns and that they are all Demons anyway.
+4. Names for the Church
+We need a name for the office of Pontiff. I've been thinking about this at some length. I think rather than emphasize his church position, his title should emphasize, in a perverted sort of way, his position as the descendant of the first saint. I was thinking of "Scion" as a title. It just means "descendant". I like the irony behind it as well, keeping with the theme that the church grew out of ancient ancestor worship practices. And, given that the position of head of the church, and rulership of the empire, is hereditary based on this bloodline to the original saint, the emphasis should be on this.
+So the boss of the church is, officially, "The Scion of Saint Primus". Unofficially, he is referred to as "The Scion", or, sometimes, when a Prelate wants to be insulting, "The Descendant".
+It adds to the irony. The church persecutes the ancestor worshippers, yet, the church not only has its roots in ancestor worship, but, its leader's position is based on ancestral lineage. And what's more, even his title is based on this.
+Of course, that's not the official line. The official history of the church is something entirely different, and the reasons given for why The Scion is called The Scion vary wildly depending on who is telling the story. But the truth is, as The Scion alone knows, that the title,
+
+as with much of the church itself, is rooted quite heavily in the ancient pagan rites of worship.
+5. Names of Individuals
+A couple of things on this topic.
+a. The accepted norm for names within the empire would be as follows: First Name Saint Name Family Name. So, every individual, when their parents name them, is given a first name, which is what people call him, a middle name which is the name of a saint they want (or hope) to look after the child, and then their family name. An individual may change his saint name, depending on if he serves a specific saint as a knight, say, or if he has personally adopted a specific saint as his patron. Most people stick to the saint name they were given at birth, and adopt that particular saint as their main patron.
+This is a throwback to old customs in our world, where children would be given a name of their own, a name of an ancestor who would look after them, and then their tribal name.
+So, most people would have names like Maturin Primus Grey, where Maturin is the given first name, Primus is the name of the saint (or ancestor) and Grey is the family or tribal name.
+b. For names, I find it useful to visit this website:
+http://www.catholic-forum.com/saints/indexsnt.htm
+The sheer variety of names that can be found there from every european region, for every time period, is pretty damn good.
+This website is also alright for finding names by geographical region or cultural background:
+http://www.20000-names.com/
+c. The Scion's family name. Unknown. At least, not the original name. I think he should have a Germanic, or Barbaric name. The way I see it, the really old families (The Scion's, a few nobles, etc) would have names that harken back to the barbaric roots of the human race. However, the newer families (those that became established in the last 2000 years) would have names that sound more Latin, in accordance with the language. The more common families would have either more English sounding family names derived from recent intermarriages with barbarians and the influence of the newer language. Others might have adopted bastardised Elder sounding names, as became the fashion to do a century or two ago. There should be a hodgepodge of differnet names mixed in together everywhere, but, as far as The Scion and the really old and wealthy noble families go, their family names should be a harsh germanic or celtic sounding name.
+My preference for The Scion's family name is Valdenwail. I like the sound of the one you proposed (Vanderweil) but I changed it a little. "Valdemarr" means "famous ruler" in German, so I just took the first
+
+half (Valde) and added it to -weil (which I liked from your suggestion), but changed the e to an a. I think it still sounds a bit harsh, a bit german, but not too sinister and modern enough.
+His family is Valdenwail, though that is not the original name. The original one is known only to The Scion, as it is written on the skins in his reliquary. But Valdenwail was adopted somewhere along the line. But this hardly matters, because few know his real name anyway. All know The Scion simply as The Scion, and to speak his true name is blasphemy. The family name is known, as it is what is used to refer to the family bloodline, and the name that those who did not ascend to the Saintly throne (we need a name for the guy's throne. Something like the "Stone of Scone" for Scotland) use as their family name.
+I think our Scion's secret (though not exactly his true name) name is: Sawl Avitus Valdenwail.
+Sawl is the name of an ancient Welsh chieftain. I think it both conveys a bit of barbarism, as well as a bit of biblical allusion. Avitus, as his saint name is explained below. and Valdenwail as his family name.
+His true true name would be different. It would be based on the real first and family names of the first saint. And we should leave it blank for now. It should be as much a mystery to us right now as to everyone else. No sense in peeking behind the curtain unnecessarily at this stage.
+His ancient fortified palace in the country is simply referred to as The Valdenwail.
+d. Name of the First Saint.
+I actually like Avitus. Why wouldn't the capital of the empire be named after the first saint? Of course, "Avitus" is not the real name of the first saint. It is just the Old Imperial name for this saint. The true, tribal name of the saint is again something that only The Scion knows.
+I like the idea that "Avitus" refers to the Saint, to the Capital City, to the Empire, and to who-knows how many other things.
+e. Name of the Lord of Hell
+For our Chief Devil, or whatever, I am not sure what we will name him. He has to be sinister sounding enough. That is, his original name is again lost to time, however, the mortals of the empire came up with a name for him that has to evoke a certain amount of fear in people. And probably like in our own world, he is called by different names in different places and at different times.
+However, I propose the following names for our Unholy Trinity of Hellions.
+Maccul
+
+Sodor Ultan
+Maccul is the scheming plotter. A tyrant and patron of corruption, slavery, oppression and calculated, organised evil. He represents political evil, and is deemed to be both the Lord of Hell's favourite lieutenant, and his most fierce rival.
+Sodor is the vile sadist. He is a predator and rapist, patron of all those who inflict pain, suffering and murder for the sheer enjoyment and pleasure of it. He is a loose cannon who is unpredictable in his violence and cruelty.
+Ultan is the silent killer. He is the patron of disease, poisons, assassins, premeditated murder, necromancy and other vile practices. His greatest enjoyment is in his followers unleashing plagues upon mankind, and in their defiling the graves and souls of men through the practices of necromancy.
+These three can either be men who ascended to Hell later on, to become this Unholy Trinity, or, they are Saint Avitus's triplet sons, whom the Lord of Hell ripped from Ruth's belly in the Valley of Death. In power and position, they are the second tier below the Lord of Hell himself.
+I think this is all I got for now. The interruptions of fatherhood and domestic life have commenced for the day, and, although I enjoy them quite a bit, they have made me lose my train of thought and concentration.
+I will respond to your most most recent emails later tonight, once we have put our young daughter to bed. And once I watch Brotherhood of the Wolf again. I've got it on disc, so why not, eh? (Incidentally, over the weekend I watched Van Helsing. A bit of a silly movie, but I actually liked a lot of the imagery, concepts and details found therein. If you haven't seen it, I'd recommend seeing it if for nothing other than the visuals, the weapons, some of the steam-punk elements, and the hot-chicks.)
+Ok... why do I like this? I shall explain now. The Inquisition is legend. Period. It doesn't exist. It's always a friend of a friend of a cousin whose been taken by the inquisition.
+It did exist in the past. The Inquisition was created, officially, after The Cleansing in order to root out the corruption and heresy within the church. It was a formal affair. We'll call it, The Inquisitive Society of Clarity and Truth in the Service of St Avitus. A nice formal name. For short, it became, the Inquistion.
+At first, it was a sort of internal probe of church affairs. Looking for the corrupted priests, and the heresy of the black faith hidden in the monasteries. However, it did not take long for it to get out of hand and expand into looking into the population in general and rooting
+
+out heresy there.
+With the Revolution came the end of the Inquisition. In fact, the Inquisition was a major cause of the Revolution. The secular government, as part of the constitution that was passed, made sure that the inquisition was to be permanently disbanded.
+And so it was. The Inquisition passed into the history books, and then into legend.
+Fast-forward to the current Scion. He's a smart and scheming man. For his own reasons, he's decided to reactivate the Inquisition. It's never really gone away, though, most of its activities and members throughout the centuries since the revolution have been small. But now, the new Scion, has decided to put them in play again, in a very secretive way.
+ONE REMARKABLE INQUISITOR, KERRIGAN OF HOLMGRAD, WAS INSTRUMENTAL IN THE ROOTING OUT OF PARTICULAR CULTS (FLESH FOR LATER). HE WAS A RUTHLESS MAN WHO GOT RESULTS NO MATTER WHAT. ST.KERRIGAN IS OBSCURE TO SAY THE LEAST (DC 40 RELIGION OR RESEACH CHECK). A FEW OF THE HIGHER UPS IN THE CANON OF ST.AVITUS KNOW OF ST.KERRIGAN, AND PERHAPS A FEW OF THE PRELATES OF SOME OF THE LARGER CANONS, BUT REALLY HE IS ONLY WELL KNOWN TO BUT A FEW INQUISITORS. HIS NAME IS NOT COMMONLY INVOKED, AS HE TRULY WAS A TERRIBLE MAN; A REGRETABLE BUT NECESSARY EVIL OF THE TIME. HE IS A GREY AREA IN TERMS OF GOOD AND EVIL, RIGHT AND WRONG. ONLY THE MOST DESPERATE, RUTHLESS, OR MORALLY-UNPURE INQUISITORS WILL INVOKE HIS NAME REGULARLY.
+Idea: The first year of a campaign in this world should take place with a celebration in the background. I think the church should be celebrating its 3000th anniversary, and the city of Avitus its 1750th birthday.
+The celebrations and festivals as background add a bit of flavour, and, because I am a bastard as a DM, give the players a false sense of security. They might think it is all nice and wonderful and a great big festive party, but, the reality, as we're building it, can't be further from the truth.
+The whole year, 1750, should be a year of celebration. Carnivals, festivals, circuses, fairs, and so on. Beneath the surface, though, we'll find the rot.
+At the head of all this, should be the rumours and innuendo behind the Scion.
+WHAT ARE THIS GUYS AIMS? I THINK HE SEES THE PONTIF AS AN ABERATION. AS ONE OF THE FEW PEOPLE WHO HAVE ACTUALLY SEEN HIM, HE THINKS THAT THE PONTIFF IS UNWORTHY OF HIS POSITION. HE IS EXTRAORDINARILY VAIN. VAIN VAIN VAIN. HE SEES HIMSELF AS A MORE WORTHY PERSON TO SIT IN THE BIG SEAT, BUT HIS ONLY COURSE OF ACTION TO GET THERE IS TO SIDE WITH THE TROUBLESOME CANON OF ST.IGNATIUS. HE THINKS HE IS DOING WHAT IS RIGHT, ONLY BECAUSE HE CAN'T SEE PAST HIS OWN REFLECTION, AND THE PRELATE OF ST.IGNATIUS IS FUELING THIS VANITY.
+
+Changed my mind. I am with you 100% on this guy like this now. I was going to push for this to just be a lowly scholarly monk that wanted to be left alone, but I like this angle better. This guy wants to be king, not pope. He's thrown his lot in with Saint Ignatius not because he believes in that saint's canon, but because he believes that that saint's organization, power and wealth give him the best chance of reaching his goals. He might be a clergyman, or he might not. If he is, it might only be lip-service. Definitely, this guy's aims, if he is as vain as you propose, should be political, not religious. He seeks to make himself king or emperor (which is what the Prelate of Saint Ignatius has promised him provided that in turn, he makes the Prelate the legitimate head of the church.)
+THAT'S BETTER. I THINK HIS OWN DEGENERATE NATURE WOULD PRECLUDE HIM FROM TAKING ANYONE'S ADVICE, INCLUDING, PERHAPS, HIS OWN ANCESTORS, AND, CERTAINLY, HIS ADVISORS. HE HAS HIS OWN SHOW HE WANTS TO RUN, AND THERE ARE CRUSADERS AND INQUISITORS IN THE CENTRE RING.
+Except for one advisor. but maybe I get carried away. I do want him to have a monk who is also his doctor and who is also his closest advisor. I want this monk to have the authority to speak for the Scion. this way, when the PC's need something from the Scion, or need to talk to him, they don;t actually get to do so directly, but instead, they have to go through this monk.
+Assassinating this monk should be at the top of the priority lists of a lot of Prelates.
+Befriending and bribing should be at the top of the others.
+LIKE I MENTIONED EARLIER; LETS EACH MAKE CULTS OF RUTH. WE BOTH HAVE GOOD IDEAS THAT WE CAN SPRING ON EACH OTHER AT SOME POINT. WE SHOULD JUST PUT A LITTLE BLURB ABOUT HER CULTS IN THE DM'S MANUAL, SO THE OTHER DM'S KNOW THAT THERE ARE THESE CULTS, AND THE MANY DIFFERENT FACES THAT THEY PRESENT.
+Yeah. I figure though that there might be one or two cults or Black Faith groups that are more or less known to the public. These should either be extinct, or believed to be extinct though.
+In any case, I think this cult would be underground. That is, people know it exists, but no one is standing up to proclaim themselves a member. Although, maybe it is something that is fashionable among the women of a few noble houses, eh? Who knows?
+PERFECT. I AGREE. I COULD SEE WOMEN IN THOSE BUSTY-DRESSES SIPPING TEA, AND GIGGLING AS THEY READ THE LEAVES AND INVOKE HER NAME.
+Good. I was thinking that a lot of things might actually be a little grey. There is a definite sense of black and white in this world, but, there should be enough grey in the world to add more depth. for example, I like the idea of these society ladies doing as above. Or the idea that a particular saint's faith, due to politics more than
+
+religion, was outlawed by a Scion and labelled as being "the Black Faith" when no such thing was true. So then maybe you've got monks of Saint Lazarus who are all good guys, but whose canon was declared to be demonic a few centuries ago, for whatever political reason (maybe the Scion wanted to seize control of the wealthy and valuable lands the canon owned) and so now the monks of Saint Lazarus must keep themselves hidden.
+I'm actually thinking of writing two such documents. One is my "Lives of the Saints" by Dr Archibald Beaumont (published in 1698) which will end up being more academic in its scope. However, this book would have been published under the patronage of the Scion, and thus heavily censored and skewed towards making Saint Avitus look extremely good, and all the rest extremely bad. It doesn't read anywhere like that yet, but that's where I am taking it.
+The second was going to be a sort of uncensored common-man's Almanac published by an outlawed printing press outside of Avitus.
+One of my DM Tools is going to be a mobile publishing house. I've got this idea for a group that publishes uncensored almanacs and magazines geared towards the lower classes. The almanacs are your basic farmer's almanac, but also contain stuff like lists and descriptions of the saints, guides to the known beasts of the world, a primer on heraldry, and so on. It would also include lots of gossip, hearsay, news, fiction, poetry, announcements and so on. Basically, 90% of what is inside the almanac is rubbish, but a good 10% would be of use.
+This press is completely uncensored and unregulated, and deemed to be outlaws. What they publish is usually scandalous half-truths and unverifiable rumours, for the most part, but they are still being hunted down by the authorities for subversion and treason. So, basically, these guys and their portable press pack up and move from hiding place to hiding place in the countryside, irregularly releasing a new volume of their almanac .
+But, essentially, I want to arm the players with a censored scholarly view at the saints, and also an uncensored tabloid-like look at them.
+I haven't yet come up with a name for this publication yet, but I was leaning towards something very simple like "Mrs Pike's Almanac".
+Maccul Sodor Ultan
+Maccul is the scheming plotter. A tyrant and patron of corruption, slavery, oppression and calculated, organised evil. He represents political evil, and is deemed to be both the Lord of Hell's favourite lieutenant, and his most fierce rival.
+Sodor is the vile sadist. He is a predator and rapist, patron of all those who inflict pain, suffering and murder for the sheer enjoyment and pleasure of it. He is a loose cannon who is unpredictable in his violence and cruelty.
+
+Ultan is the silent killer. He is the patron of disease, poisons, assassins, premeditated murder, necromancy and other vile practices. His greatest enjoyment is in his followers unleashing plagues upon mankind, and in their defiling the graves and souls of men through the practices of necromancy.
+I'm still keen on the following: Avitus and Ruth get married, and they have 4 children. The bad guy murders the first three of them as his first evil act, but one of them escapes (we'll put together a story about a woman seer who switches the baby with her own so that the bad guy kills her child, and she runs off into the wilderness with the real son of Avitus and Ruth. He is the one who eventually comes back to the tribe and assumes the Chieftainship, and becomes the first priest of his father Saint Avitus, and nails an Angel producing his planetouched line, and tattoos the story of Saint Avitus on the skins of his tribesmen. He's sort of the founder of the whole church.) Later on, once Avitus is restored to the tribe and the bad guy banished, he impregnates Ruth again, and she is pregnant with triplets. These triplets, who are Avitus' children, are the ones he rips out of Ruth in the afterlife, and then corrupts to evil and they become Maccul, Sodor and Ultan. I think it is more painful and ironic for Avitus to know that the worst bad guys of the lot are his own triplet sons.
+As for the bad guy, whether he has children by Ruth or not is matter for theological debate. I think he definitely has a few devilspawn and demonspawn running around the world from before all this started. Or at least, there are devilspawn and demonspawn claiming that he is their father and bullying people into joining their cults.
+Worshippers of Ruth should get no spells, that is, there are no clerics or paladins in this cult, but there are monks and fighters and wizards and druids and what not. All of them chicks. Yeah, a sort of women's only kind of lesbo-cult. Maybe they all consider themselves to be decendents of Ruth's sisters or something (whether actually or just figuratively). Their rituals and practices rely mostly on arcane magic, or old druidic magic, and thus they are often branded as witches.
+RIGHT ON! A CHICK-CULT. HOW ABOUT THIS; MAYBE THERE IS A FACTION OF THE CULT THAT HAS SOME REALLY STRANGE RITUALS THAT DOES GET THEM SPELLS. IN FACT, THEY GET THEIR SPELLS FROM SOME DEVIL WHO IS DUPING THEM (OR MAYBE THEY AREN'T DUPED...). THIS IS THE BLACK FAITH FOR SURE. AND IT SURE MAKES THE REST OF THEM LOOK BAD. SCHOLARS WHO FIND OUT THAT THESE CHICKS ARE GETTING SPELLS FROM 'RUTH' WOULD SURE MAKE AN INCREDIBLE, SQUINTY-EYED FACE AT THESE CHICKS, AND THEN SET OUT TO FIND AND INQUISITOR. THIS, OF COURSE, WOULD LEAD TO LOTS MORE INNOCENT RUTH-WORSHIPERS GETTING BURNT TOO. BUT WE LIKE THAT, DON'T WE?
+Ha! Oh, Blacky, speaking of having a connection. I was taking a dump earlier, and while I was on the toilet there, I got to thinking about how it would be really funny if one of these chicks had been visited by a devil or hellion pretending to be Ruth ("Na, girlfriend, I was never destroyed. I was just hiding, you know...") and then he started granting spells to them and the cult flourished.
+
+And somewhere a Paladin shakes his head and says, "Fucking stupid chicks, eh?"
+But I figure at some point, maybe, one or two of these get wise to the source of their power, but they don;t mind. they're either too far corrupted, or they're just evil themselves. So maybe the leader of this cult knows that she gets her spells from Sodor, and doesn't care, but there are other LG chicks who believe wholeheartedly that it is Ruth granting the spells.
+In any case, I think this cult would be underground. That is, people know it exists, but no one is standing up to proclaim themselves a member. Although, maybe it is something that is fashionable among the women of a few noble houses, eh? Who knows?
+I'd like to see, then, maybe, a companion cult on the other side of the equation. Chick assassins like in the Brotherhood of the Wolf who serve Saint Avitus, and who have rooting out the Ruthists as a primary mission.
+I LOVE IT. WE CAN ADD LOTS OF FLESH TO THAT. HERE IS A RECURRING THEME; A CERTAIN CANON HAS SEVERAL TATTOOS ON THE MEMBERS OF THE FAITH. THE CRAZY BOOK BURNERS DECIDE THAT THE INFORMATION ON THEIR TATTOOS IS DANGEROUS. THIS, OF COURSE, COULD LEAD TO ALL KINDS OF GREAT ATTROCITIES, EH? HEH HEH.
+That is fucking great. Atrocities and adventures. PC's have to hide or protect this ragged old monk with tattoos ono his back who is being pursued by some crazy other monks who have revived the old antiacademic cult who want to flay him and burn him.
+Jeez, this is a brutal and bloody world we are building.
+What I mean is, our world has, for the most part, gone through the expansions, consolidations, marriages of convenience, takeovers, and so on. Big companies or merchant families have virtual to total monopolies in certain industries.
+For example, paper. There may be hundreds of different logging enterprises going, small firms that hire lumberjacks, or pay lumberjacks by the log. These are of little consequence. However, these firms sell their material to a very wealthy and powerful family which has a monopoly on the production of paper. They have long since bought out or intimidated or merged with or taken over every other paper manufacturer there was in the empire. As it stands then, this family runs the only paper mill in civilized lands. Once the paper is produced, they then sell it on at a tidy profit to another large group of very minor merchants and shopkeepers who sell it to their customers for their own profit. So while the lumber industry and the retail business is fairly open, the production aspect of the paper industry is bottlenecked by a monopoly.
+Most industries I think should probably be like this. The economy is
+
+old. There are no areas of growth, except maybe for finance, but there seems to be little to actually finance.
+You know better than I do how to set up this part of the economy., But I think a good, though non-combat, element to the campaign is having the PC's set up their own company in an industry where a monopoly, or oligarchy, already exists. Say with paper, since that is the example I used above. Say the PC's manage to start up a paper mill near Eastwitch, and they're able to turn a bit of a tidy profit from it since they get their lumber from source (the Great Wood) process it almost on the spot, and then sell it straight to the small presses directly. For a time they may make some wild money on the side as shareholders of such a company, but eventually, the big bad monopoly is going to take notice and send cease and desist "messages". And then they'll get rough.
+I'd like to see the PC's embroiled up to their necks in the three main themes we seem to be developing here: academia, religion, and finance. If I had my way, half the PC's would be University Lecturers venturing out into the field for research, the other half would be Clerics charged with keeping an eye on the professors, and all would somehow become embroiled in financial dealings and corporate endeavours of some kind. It is hard to make running a business as exciting as hunting Drow, but if we do it right we might be able to give the same satisfaction to the players from running a competitor out of business as we can from killing a bunch of Zhents.
+
+
