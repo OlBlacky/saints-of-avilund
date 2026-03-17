@@ -84,11 +84,11 @@ Any roll can be an attack against any attribute's Defence Target. The attribute 
 
 HP can be increased by purchasing HP Advances with AP. The HP gained per advance varies by class:
 
-| Class Type | Cost | HP Gained |
+| HP Tier | Cost | HP Gained |
 |---|---|---|
-| Tanky | 10 AP | +5 HP |
-| Average | 10 AP | +3 HP |
-| Caster | 10 AP | +2 HP |
+| Hard | 10 AP | +5 HP |
+| Tough | 10 AP | +3 HP |
+| Normal | 10 AP | +2 HP |
 
 One free HP Advance is granted when you purchase a Class.
 

@@ -53,11 +53,11 @@ Purchased separately per attribute. Cheaper than attribute score increases.
 
 ## HP Advance Costs
 
-| Class Type | Cost | HP Gained | Classes |
+| HP Tier | Cost | HP Gained | Classes |
 |---|---|---|---|
-| Tanky | 10 AP | +5 HP | Fighter, Barbarian, Paladin, Warlord |
-| Average | 10 AP | +3 HP | Ranger, Monk, Rogue, Bard, Artificer, Druid, Warlock, Cleric |
-| Caster | 10 AP | +2 HP | Wizard, Sorcerer |
+| Hard | 10 AP | +5 HP | Soldier, Commander, Pugilist, Inquisitor, Reaver |
+| Tough | 10 AP | +3 HP | Scoundrel, Scout, Archaeologist, Artificer, Naturalist |
+| Normal | 10 AP | +2 HP | Orator, Occultist, Arcanist, Investigator, Friar |
 
 One free HP Advance is granted when you purchase a Class.
 
