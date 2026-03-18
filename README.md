@@ -35,12 +35,17 @@ Mechanics are being designed and documented first. The application will be built
 ## Repository Layout
 
 ```
-docs/
-  mechanics/     # Core rules: combat, abilities, advancement, weapons, armour
-  characters/    # Character creation, classes, skills, sample builds
-  lore/          # World-building, setting documents, player-facing materials
-  gm/            # Game Master guidance and encounter design
-  source/raw/    # Original source documents — the founding lore archive
+mechanics/        # The design layer — raw rules as they actually work.
+  characters/     # Character creation, classes, skills, advancement.
+rulebook/         # Players Rule Book — formatted, chapter-by-chapter,
+                  # written to be read and used at the table.
+setting-book/     # Players Setting Book — the in-world document collection.
+                  # Primary sources, journals, pamphlets, church records.
+                  # Organized as a book a character might carry.
+gm/               # Dungeon Master folder — secrets, encounter design,
+                  # NPC details, campaign guidance. Never seen by players.
+app/              # Browser companion app — specs now, code later.
+source/           # Original source archive. Reference only.
 ```
 
 ---
@@ -62,7 +67,7 @@ docs/
 
 ## For Players and Collaborators
 
-See [docs/lore/setting-summary.md](docs/lore/setting-summary.md) for an introduction to the world.
+See [setting-book/setting-summary.md](setting-book/setting-summary.md) for an introduction to the world.
 
 ---
 

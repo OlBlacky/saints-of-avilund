@@ -17,10 +17,13 @@ Long-term goal: a browser-based app with a rules reference, character generator,
 ## Repo Layout
 
 ```
-docs/mechanics/        # Core TTRPG rules, systems, and mechanics
-docs/lore/             # World-building, factions, history, geography
-docs/characters/       # Character creation, classes, archetypes
-docs/gm/               # Game Master guidance, encounter design
+mechanics/        # The design layer — raw rules as they actually work
+  characters/     # Character creation, classes, skills, advancement
+rulebook/         # Players Rule Book — formatted, player-friendly prose
+setting-book/     # Players Setting Book — in-world documents (epistolary)
+gm/               # Game Master folder — secrets, encounters, campaign tools
+app/              # Browser companion app — specs now, code later
+source/           # Original source archive — reference only
 ```
 
 ---
