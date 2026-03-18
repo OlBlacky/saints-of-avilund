@@ -30,6 +30,10 @@ docs/gm/               # Game Master guidance, encounter design
 - Do not commit unless explicitly asked
 - Do not push unless explicitly asked
 
+## Shorthand Commands
+
+**CLEAN** — When the user writes this word, commit all outstanding changes and push to remote (sync). Stage everything, write a sensible commit message based on what changed, commit, and push.
+
 ---
 
 ## Primary User
