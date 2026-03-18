@@ -1,6 +1,6 @@
 # Saints of Avilund
 
-A tabletop role-playing game (TTRPG) with a planned companion video game adaptation.
+A tabletop role-playing game (TTRPG) with a planned browser-based companion application.
 
 ---
 
@@ -17,6 +17,18 @@ The world is discovered through the documents that people in it actually wrote �
 ## Current Phase
 
 **TTRPG mechanics design.** No code, no digital systems yet.
+
+---
+
+## Planned Application
+
+The long-term goal is a browser-based companion application that will include:
+
+- A rules reference — the full system, searchable and organized
+- A character generator — guided character creation and leveling
+- Additional TTRPG tools (encounter helpers, GM aids, and more)
+
+Mechanics are being designed and documented first. The application will be built once the core rules are stable.
 
 ---
 

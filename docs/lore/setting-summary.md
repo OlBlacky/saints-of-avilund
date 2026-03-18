@@ -76,4 +76,4 @@ That is intentional. There is no manual for Avilund. There is just evidence, and
 
 ---
 
-*Saints of Avilund is currently in active development. Mechanics, lore, and additional setting documents are ongoing.*
+*Saints of Avilund is currently in active development. Mechanics, lore, and additional setting documents are ongoing. A browser-based companion application — including a rules reference, character generator, and GM tools — is planned once the core rules are stable.*
