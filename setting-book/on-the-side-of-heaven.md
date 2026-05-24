@@ -52,22 +52,6 @@ Mark well which offices these founders keep, for in it lies the deepest fracture
 
 *The First Saints, who lived and died upon the Archipelago. By the present age, the most are all but forgotten; only the three Fundatores — Avitus, Severinius, and Mairin — keep a living devotion.*
 
-| Office | Saint |
-|---|---|
-| Throne | **Avitus** ✦ |
-| Letters | **Severinius** ✦ |
-| Harvest | **Mairin** ✦ |
-| Mercy | Caspar |
-| Craft | Pelagius |
-| Trade | Viator |
-| Arms | Conrad |
-| Passage | Ida |
-| Hearth | Ruth |
-| Death | Tarsis |
-| The Lost | Muriel |
-
-*(✦ = Sanctus Fundator)*
-
 **Avitus** *(Throne)* — The First Saint, whose mortal name was Riven. Cast out for a crime he did not commit, he transcended this world in his final battle with his brother Gaul, and alone of mortal men was bidden to rule in Heaven. Patron of fatherhood and of authority itself; the wellspring from whom every later saint draws grace. The Empire bears his name, and the Scion rules in his line from the Imperial Ecclesiarchy of Valdenwail.
 
 **Severinius** *(Letters)* — Sever, son of Avitus and Ruth, hidden in the Great Wood by Mairin and raised to manhood there. The first Scion, who returned to rule his clan, set down the Church's governance, and composed the Canon of Saint Avitus. Patron of tradition, of letters, and of the administrators and middling ranks who keep the world in order. His is among the largest followings in the Empire; his Bishopric lies in the South.
@@ -96,20 +80,6 @@ Mark well which offices these founders keep, for in it lies the deepest fracture
 
 *The Second Saints, born upon the Archipelago but living their lives in Avilund — the saints of the Crossing and the settlement. Their sects hold the Centre of the continent.*
 
-| Office | Saint |
-|---|---|
-| Throne | **Sebald** ✦ |
-| Letters | **Ignatius** ✦ |
-| Arms | **Dunstan** ✦ |
-| Mercy | Alodia |
-| Craft | Barnabas |
-| Trade | Aquila |
-| Harvest | Eligius |
-| Passage | Gabrielle |
-| Hearth | Adelle |
-| Death | Killian |
-| The Lost | Stanis |
-
 **Sebald** *(Throne)* — Younger son of Severinius and Ida, half-angel and long-lived; the second Scion. He founded the great castle of Valdenwail and, conquering and assimilating the neighbouring clans, is reckoned the true builder of the Empire. Patron of nobility, of primogeniture, and of the right of inheritance. The Peakes of St. Sebald stand north of Waldheim.
 
 **Ignatius** *(Letters)* — The elder of the three Colleagues of Waldheim, who gathered his younger fellows and stole into the Elders' doomed city to wrest their knowledge from them in the last hour before its fall. Patron of knowledge, academia, explorers, and cartographers. His Bishopric lies in the Centre, and his Society still excavates the ruins of Waldheim.
@@ -137,20 +107,6 @@ Mark well which offices these founders keep, for in it lies the deepest fracture
 ## BOOK THREE — The Sancti Coaevi
 
 *The Coevals, the first saints born in Avilund — of eastern blood but not of Avitus's line, contemporaries of the Secundi. Their sects hold the rough North.*
-
-| Office | Saint |
-|---|---|
-| Arms | **Ulric** ✦ |
-| Mercy | **Gratus** ✦ |
-| The Lost | **Irenaeus** ✦ |
-| Letters | Anselm |
-| Craft | Bernward |
-| Trade | Oswin |
-| Harvest | Judith |
-| Passage | Colman |
-| Hearth | Agatha |
-| Death | Cuthman |
-| Throne | Leopold |
 
 **Ulric** *(Arms)* — The very type of the hero: wholly mortal, friend and rival of the half-angel Dunstan, raised to sainthood by a long train of legendary deeds. Patron of personal glory, of ambition, and of the questing knight — and, in our own commercial age, of the merchant-houses, whose young men now seek their glory on the battlefields of trade and finance. The Peakes of St. Ulric crown the North.
 
