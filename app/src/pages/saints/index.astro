@@ -1,0 +1,53 @@
+---
+import Base from '../../layouts/Base.astro';
+import { url } from '../../lib/url';
+import {
+  TIER_ORDER, TIER_BLURBS, orderedByOffice, saintsByTier, FUNDATORES,
+} from '../../lib/saints';
+---
+
+<Base title="The Saints" description="The Saintly Canon of Avilund — the four orders, the eleven offices, and the nine Fundatores.">
+  <p class="eyebrow">The Saintly Canon</p>
+  <h1>The Saints of Avilund</h1>
+  <p class="lede">
+    Three-and-thirty saints in the higher orders, set in a grid of three generations
+    and eleven offices — and beneath them the countless Lesser Saints.
+  </p>
+
+  <div class="prose">
+    <p>
+      The saints are reckoned in four orders after their origin: the <strong>Primi</strong>,
+      who lived and died upon the Archipelago; the <strong>Secundi</strong>, born there but
+      living in Avilund; the <strong>Coaevi</strong>, the first native-born; and the countless
+      <strong>Minores</strong>. Each higher order keeps the same eleven offices. Nine saints —
+      three from each higher order — are <strong>Fundatores</strong>, the founders of the nine
+      sects of the Church: {FUNDATORES.map((f, i) => (
+        <>{i > 0 ? ', ' : ''}<a href={url(`saints/${f.slug}/`)}>{f.name}</a></>
+      ))}.
+    </p>
+  </div>
+
+  {TIER_ORDER.map((tier) => {
+    const list = tier === 'Minores' ? saintsByTier(tier) : orderedByOffice(tier);
+    if (list.length === 0) return null;
+    return (
+      <section class="tier">
+        <h2>Sancti {tier}</h2>
+        <p class="tier__intro">{TIER_BLURBS[tier]}</p>
+        <ul class="grid">
+          {list.map((s) => (
+            <li>
+              <a class="card" href={url(`saints/${s.slug}/`)}>
+                <p class="card__name">{s.name}</p>
+                <p class="card__meta">
+                  {s.office}{s.fundator ? ' · Fundator' : ''}
+                </p>
+                <p class="card__blurb">{s.blurb.slice(0, 120)}…</p>
+              </a>
+            </li>
+          ))}
+        </ul>
+      </section>
+    );
+  })}
+</Base>

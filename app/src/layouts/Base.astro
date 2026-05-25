@@ -1,0 +1,62 @@
+---
+import '../styles/global.scss';
+import { url } from '../lib/url';
+
+interface Props {
+  title?: string;
+  description?: string;
+}
+const { title, description } = Astro.props;
+const siteName = 'Saints of Avilund';
+const fullTitle = title ? `${title} — ${siteName}` : siteName;
+const pathname = Astro.url.pathname;
+
+const nav = [
+  { label: 'The Saints', href: url('saints/') },
+  { label: 'The Library', href: url('library/') },
+  { label: 'History', href: url('history/') },
+  { label: 'Geography', href: url('geography/') },
+  { label: 'Search', href: url('search/') },
+];
+
+function isCurrent(href: string) {
+  if (href === url('')) return pathname === url('');
+  return pathname.startsWith(href);
+}
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{fullTitle}</title>
+    {description && <meta name="description" content={description} />}
+    <link rel="icon" href={url('favicon.svg')} />
+  </head>
+  <body>
+    <header class="site-header">
+      <div class="site-header__inner">
+        <a class="site-title" href={url('')}>
+          Saints of Avilund
+          <span>An Imperial Compendium</span>
+        </a>
+        <nav class="site-nav" aria-label="Primary">
+          {nav.map((item) => (
+            <a href={item.href} aria-current={isCurrent(item.href) ? 'page' : undefined}>
+              {item.label}
+            </a>
+          ))}
+        </nav>
+      </div>
+    </header>
+
+    <main>
+      <slot />
+    </main>
+
+    <footer class="site-footer">
+      <p>Saints of Avilund — a setting compendium. Drawn from the canonical record.</p>
+    </footer>
+  </body>
+</html>

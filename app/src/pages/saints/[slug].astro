@@ -1,0 +1,37 @@
+---
+import Base from '../../layouts/Base.astro';
+import { url } from '../../lib/url';
+import { SAINTS, getSaint } from '../../lib/saints';
+
+export function getStaticPaths() {
+  return SAINTS.map((s) => ({ params: { slug: s.slug }, props: { saint: s } }));
+}
+
+const { saint } = Astro.props;
+const tierLabel: Record<string, string> = {
+  Primi: 'Sanctus / Sancta Prima — lived and died upon the Archipelago',
+  Secundi: 'Sanctus / Sancta Secunda — born in the Archipelago, lived in Avilund',
+  Coaevi: 'Sanctus / Sancta Coaeva — born in Avilund',
+  Minores: 'One of the countless Lesser Saints',
+};
+---
+
+<Base title={saint.name} description={saint.blurb.slice(0, 150)}>
+  <p class="back-link"><a href={url('saints/')}>← The Saints</a></p>
+
+  <header class="saint-head">
+    <p class="eyebrow">{saint.office}{saint.tier !== 'Minores' ? ` · Sancti ${saint.tier}` : ''}</p>
+    <h1>{saint.name}</h1>
+    {saint.meaning && <p class="lede">“{saint.meaning}”</p>}
+    <div class="meta">
+      <span class="tag">{saint.office}</span>
+      <span class="tag">Sancti {saint.tier}</span>
+      {saint.fundator && <span class="tag tag--fundator">Fundator · founder of the Sect of {saint.name}</span>}
+    </div>
+  </header>
+
+  <div class="prose">
+    <p>{saint.blurb}</p>
+    <p class="card__meta">{tierLabel[saint.tier]}.</p>
+  </div>
+</Base>

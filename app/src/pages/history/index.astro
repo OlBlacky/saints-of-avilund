@@ -1,0 +1,59 @@
+---
+import Base from '../../layouts/Base.astro';
+import { url } from '../../lib/url';
+
+const eras = [
+  {
+    when: 'The Elder Ages',
+    what: 'Before Men, the continent belonged to the Elders — a long-lived, sophisticated people — until they were destroyed by the Ferals, who linger yet at the edges of the world. Men inherited a land full of abandoned Elder cities and half-understood Elder knowledge.',
+  },
+  {
+    when: 'Early Middle History (before ~1400 BC)',
+    what: 'The age of the Prime Saints in the Eastern Archipelago: Avitus the First Saint, his brother Gaul, the murders, and the hidden boy Sever — the matter of the Tale of the Woodland King. No firm dates survive; the age was all but erased by the later Repurgo.',
+  },
+  {
+    when: 'The Crossing (~1400 BC)',
+    what: 'Men took ship from the Archipelago to Avilund. This is the hinge of the Secundi generation — born in the islands, they would live and die in the new land. Sebald founded the great castle of Valdenwail.',
+  },
+  {
+    when: 'First Age of Imperial Expansion (~1250–450 BC)',
+    what: 'Men spread across Avilund, ever at war with the Ferals. Around 1199 BC the Colleagues of Waldheim — Ignatius, Anselm, and Gratus — wrested the last knowledge from the dying Elders before their city fell. Near 450 BC, Lazarus of Duneedin sallied from the walls of Valdenwail to slay the Feral warlord Brogard.',
+  },
+  {
+    when: 'The Imperial Age (from 0 IC)',
+    what: 'Saint Abaddon at last took the city of Waldheim from the Ferals, and the Imperial Calendar begins from that conquest. In the centuries after, the Empire launched its Crusades — to the Eastern Theatre (the old Archipelago) and, later, into the Western Theatre, whence few returned.',
+  },
+  {
+    when: 'The Black Faith & the Inquisitions (~750 IC onward)',
+    what: 'The Black Faith was unmasked, and the Scions raised inquisitions to root it out. The Repurgo (c. 1210–1348) saw books and records burned across the Empire — which is why so much of the early history is now lost.',
+  },
+  {
+    when: 'The Present Age',
+    what: 'Four hundred years past, the Bloody Revolution broke the Empire’s political grip on the north and centre. The Church endures — it still has teeth — but no longer wears a crown. What follows is an age of learning, exploration, and competing ideas, haunted by all the old things that did not go away.',
+  },
+];
+---
+
+<Base title="History" description="A history of Avilund — from the Elder ages to the fractured present.">
+  <p class="eyebrow">A Chronicle in Brief</p>
+  <h1>The History of Avilund</h1>
+  <p class="lede">From the Elder ages, through the Crossing and the Empire, to the fractured present.</p>
+
+  <div class="prose">
+    <p>
+      The fullest account of the Faith’s own history is set down by Dr. Archibald Beaumont in the
+      preface to <a href={url('library/on-the-side-of-heaven/')}>On the Side of Heaven</a>. What
+      follows is a plainer skeleton of the ages — for the deep past of Avilund is, in truth, mostly
+      lost, the casualty of fire and inquisition.
+    </p>
+  </div>
+
+  <dl class="prose">
+    {eras.map((e) => (
+      <div style="margin-bottom:1.4rem">
+        <dt style="font-family:var(--display);color:var(--oxblood);font-size:1.15rem">{e.when}</dt>
+        <dd style="margin:0.3rem 0 0">{e.what}</dd>
+      </div>
+    ))}
+  </dl>
+</Base>

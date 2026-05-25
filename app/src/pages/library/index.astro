@@ -1,0 +1,26 @@
+---
+import Base from '../../layouts/Base.astro';
+import { url } from '../../lib/url';
+import { getCollection } from 'astro:content';
+
+const docs = (await getCollection('library')).sort(
+  (a, b) => (a.data.order ?? 100) - (b.data.order ?? 100)
+);
+---
+
+<Base title="The Library" description="The in-world texts of Avilund — chronicles, accounts, and primers.">
+  <p class="eyebrow">The Library</p>
+  <h1>The Library of Avilund</h1>
+  <p class="lede">The texts of the Empire — the accounts, histories, and primers as their authors set them down.</p>
+
+  <ul class="doc-list">
+    {docs.map((doc) => (
+      <li>
+        <a class="title" href={url(`library/${doc.id}/`)}>{doc.data.title}</a>
+        {doc.data.kind && <div class="by"><em>{doc.data.kind}</em></div>}
+        {doc.data.author && <div class="by">by {doc.data.author}</div>}
+        {doc.data.summary && <p class="card__blurb">{doc.data.summary}</p>}
+      </li>
+    ))}
+  </ul>
+</Base>

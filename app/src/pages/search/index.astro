@@ -1,0 +1,18 @@
+---
+import Base from '../../layouts/Base.astro';
+import Search from 'astro-pagefind/components/Search';
+---
+
+<Base title="Search" description="Search the compendium.">
+  <p class="eyebrow">Seek and Find</p>
+  <h1>Search the Compendium</h1>
+  <p class="lede">Search across the saints, the Library, the history, and the geography.</p>
+
+  <div class="prose">
+    <Search id="search" className="pagefind-ui" uiOptions={{ showSubResults: true, showImages: false }} />
+    <p style="color:var(--ink-soft);font-style:italic;margin-top:1.5rem">
+      Note: search is built from the published pages, so it works on the live site (and after a
+      production build), not in the live-reloading dev preview.
+    </p>
+  </div>
+</Base>

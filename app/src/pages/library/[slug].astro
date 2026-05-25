@@ -1,0 +1,27 @@
+---
+import Base from '../../layouts/Base.astro';
+import { url } from '../../lib/url';
+import { getCollection, render } from 'astro:content';
+
+export async function getStaticPaths() {
+  const docs = await getCollection('library');
+  return docs.map((doc) => ({ params: { slug: doc.id }, props: { doc } }));
+}
+
+const { doc } = Astro.props;
+const { Content } = await render(doc);
+---
+
+<Base title={doc.data.title} description={doc.data.summary}>
+  <p class="back-link"><a href={url('library/')}>← The Library</a></p>
+
+  <header class="saint-head">
+    {doc.data.kind && <p class="eyebrow">{doc.data.kind}</p>}
+    <h1>{doc.data.title}</h1>
+    {doc.data.author && <p class="lede">{doc.data.author}</p>}
+  </header>
+
+  <article class="prose">
+    <Content />
+  </article>
+</Base>

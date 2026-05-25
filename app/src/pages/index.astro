@@ -1,0 +1,43 @@
+---
+import Base from '../layouts/Base.astro';
+import { url } from '../lib/url';
+import { FUNDATORES } from '../lib/saints';
+
+const sections = [
+  { name: 'The Saints', href: url('saints/'), blurb: 'The full canon — three orders of eleven offices, and the nine Fundatores who founded the sects of the Church.' },
+  { name: 'The Library', href: url('library/'), blurb: 'The in-world texts of the Empire, beginning with Beaumont’s On the Side of Heaven.' },
+  { name: 'History', href: url('history/'), blurb: 'From the Elder ages, through the Crossing and the Empire, to the fractured present.' },
+  { name: 'Geography', href: url('geography/'), blurb: 'A continent between three seas, its map written over with the names of saints.' },
+];
+---
+
+<Base description="A setting compendium for Saints of Avilund — the saints, the Library, the history, and the map of the continent.">
+  <section class="hero">
+    <p class="eyebrow">A Setting Compendium</p>
+    <h1>Saints of Avilund</h1>
+    <p class="lede">
+      A continent with a long memory and a short attention span — inherited from the Elders,
+      contested with the Ferals, and bound together by a Church of saints.
+    </p>
+  </section>
+
+  <div class="prose" style="margin:0 auto;">
+    <p>
+      Men came late to Avilund and built an Empire from what the Elders left behind. That Empire is
+      fractured now, but its Faith endures — a canon of saints reckoned in four orders and eleven
+      offices, with nine <a href={url('saints/')}>Fundatores</a> at its head:
+      {FUNDATORES.map((f, i) => (<>{i > 0 ? ', ' : ''}<a href={url(`saints/${f.slug}/`)}>{f.name}</a></>))}.
+    </p>
+  </div>
+
+  <ul class="grid">
+    {sections.map((s) => (
+      <li>
+        <a class="card" href={s.href}>
+          <p class="card__name">{s.name}</p>
+          <p class="card__blurb">{s.blurb}</p>
+        </a>
+      </li>
+    ))}
+  </ul>
+</Base>

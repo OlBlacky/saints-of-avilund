@@ -1,0 +1,179 @@
+// ── Saints of Avilund — theme ────────────────────────────────
+// Parchment, ink, and oxblood. System serif stacks (no web fonts,
+// so nothing to fetch at runtime).
+
+:root {
+  --ink: #2a2018;
+  --ink-soft: #5b4d3e;
+  --parchment: #f4ecd8;
+  --parchment-deep: #e8dcc0;
+  --panel: #fbf6e9;
+  --oxblood: #6e1f1a;
+  --oxblood-bright: #8c2a23;
+  --gold: #9a7b2e;
+  --rule: #cbb98f;
+  --shadow: rgba(42, 32, 24, 0.18);
+
+  --serif: "Iowan Old Style", "Palatino Linotype", Palatino, "Book Antiqua", Georgia, serif;
+  --display: "Trajan Pro", "Optima", "Palatino Linotype", Georgia, serif;
+
+  --measure: 42rem;
+}
+
+* { box-sizing: border-box; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  margin: 0;
+  font-family: var(--serif);
+  font-size: 1.125rem;
+  line-height: 1.7;
+  color: var(--ink);
+  background-color: var(--parchment);
+  background-image:
+    radial-gradient(transparent 0, rgba(120, 90, 40, 0.04) 100%);
+  -webkit-font-smoothing: antialiased;
+}
+
+a {
+  color: var(--oxblood);
+  text-decoration-color: var(--rule);
+  text-underline-offset: 2px;
+}
+a:hover { color: var(--oxblood-bright); }
+
+// ── Header / nav ─────────────────────────────────────────────
+.site-header {
+  border-bottom: 2px solid var(--oxblood);
+  background: var(--panel);
+  box-shadow: 0 1px 0 var(--rule);
+}
+.site-header__inner {
+  max-width: 72rem;
+  margin: 0 auto;
+  padding: 1rem 1.5rem 0.75rem;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.5rem 1.5rem;
+}
+.site-title {
+  font-family: var(--display);
+  font-size: 1.5rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--oxblood);
+  text-decoration: none;
+  margin: 0;
+}
+.site-title span { display: block; font-size: 0.7rem; letter-spacing: 0.22em; color: var(--ink-soft); }
+
+.site-nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.25rem;
+  font-variant: small-caps;
+  letter-spacing: 0.04em;
+  font-size: 1rem;
+}
+.site-nav a { text-decoration: none; color: var(--ink-soft); }
+.site-nav a:hover { color: var(--oxblood); }
+.site-nav a[aria-current="page"] { color: var(--oxblood); border-bottom: 2px solid var(--gold); }
+
+// ── Layout shell ─────────────────────────────────────────────
+main {
+  max-width: 72rem;
+  margin: 0 auto;
+  padding: 2.5rem 1.5rem 4rem;
+}
+.prose { max-width: var(--measure); }
+.prose p, .prose ul, .prose ol { margin: 0 0 1.1rem; }
+
+h1, h2, h3 { font-family: var(--display); color: var(--ink); line-height: 1.2; }
+h1 { font-size: 2.3rem; margin: 0 0 0.4rem; }
+h2 { font-size: 1.6rem; margin: 2.4rem 0 0.8rem; border-bottom: 1px solid var(--rule); padding-bottom: 0.3rem; }
+h3 { font-size: 1.25rem; margin: 1.8rem 0 0.5rem; }
+
+.lede { font-size: 1.25rem; color: var(--ink-soft); font-style: italic; max-width: var(--measure); }
+hr { border: 0; border-top: 1px solid var(--rule); margin: 2rem 0; }
+blockquote {
+  margin: 1.4rem 0; padding: 0.4rem 1.2rem;
+  border-left: 3px solid var(--gold); color: var(--ink-soft); font-style: italic;
+}
+
+// ── Eyebrow / tags ───────────────────────────────────────────
+.eyebrow {
+  font-variant: small-caps; letter-spacing: 0.14em; color: var(--gold);
+  font-size: 0.95rem; margin: 0 0 0.25rem;
+}
+.tag {
+  display: inline-block; font-variant: small-caps; letter-spacing: 0.04em;
+  font-size: 0.85rem; padding: 0.05rem 0.6rem; border: 1px solid var(--rule);
+  border-radius: 999px; color: var(--ink-soft); background: var(--panel);
+  text-decoration: none;
+}
+.tag--fundator { border-color: var(--gold); color: var(--oxblood); }
+
+// ── Cards / grids ────────────────────────────────────────────
+.grid {
+  display: grid; gap: 1rem; list-style: none; padding: 0; margin: 1.2rem 0 0;
+  grid-template-columns: repeat(auto-fill, minmax(15rem, 1fr));
+}
+.card {
+  display: block; padding: 1rem 1.1rem; background: var(--panel);
+  border: 1px solid var(--rule); border-radius: 4px; text-decoration: none;
+  color: var(--ink); box-shadow: 0 1px 2px var(--shadow); transition: transform 0.08s ease, box-shadow 0.08s ease;
+}
+.card:hover { transform: translateY(-2px); box-shadow: 0 4px 10px var(--shadow); }
+.card__name { font-family: var(--display); font-size: 1.2rem; color: var(--oxblood); margin: 0; }
+.card__meta { font-variant: small-caps; letter-spacing: 0.04em; color: var(--ink-soft); font-size: 0.9rem; margin: 0.15rem 0 0; }
+.card__blurb { font-size: 0.98rem; margin: 0.6rem 0 0; color: var(--ink-soft); }
+
+// ── Saint catalogue: tier sections ───────────────────────────
+.tier { margin-top: 2.5rem; }
+.tier__intro { max-width: var(--measure); color: var(--ink-soft); font-style: italic; }
+
+// ── Saint page header ────────────────────────────────────────
+.saint-head { border-bottom: 2px solid var(--oxblood); padding-bottom: 1rem; margin-bottom: 1.5rem; }
+.saint-head .meta { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 0.6rem; }
+
+// ── Library list ─────────────────────────────────────────────
+.doc-list { list-style: none; padding: 0; }
+.doc-list li { padding: 1.1rem 0; border-bottom: 1px solid var(--rule); }
+.doc-list .title { font-family: var(--display); font-size: 1.35rem; }
+.doc-list .by { color: var(--ink-soft); font-style: italic; }
+
+// ── Figure / map ─────────────────────────────────────────────
+figure { margin: 1.5rem 0; }
+figure img { width: 100%; height: auto; border: 1px solid var(--rule); box-shadow: 0 2px 8px var(--shadow); }
+figcaption { color: var(--ink-soft); font-size: 0.95rem; font-style: italic; margin-top: 0.5rem; }
+
+// ── Search ───────────────────────────────────────────────────
+.pagefind-ui {
+  --pagefind-ui-primary: var(--oxblood);
+  --pagefind-ui-text: var(--ink);
+  --pagefind-ui-background: var(--panel);
+  --pagefind-ui-border: var(--rule);
+  --pagefind-ui-font: var(--serif);
+}
+
+// ── Footer ───────────────────────────────────────────────────
+.site-footer {
+  border-top: 2px solid var(--oxblood); background: var(--panel);
+  color: var(--ink-soft); font-size: 0.9rem; text-align: center;
+  padding: 1.5rem; margin-top: 3rem; font-style: italic;
+}
+
+// ── Home hero ────────────────────────────────────────────────
+.hero { text-align: center; padding: 2rem 0 1rem; }
+.hero h1 { font-size: 3rem; letter-spacing: 0.04em; }
+.hero .lede { margin: 0.5rem auto 0; }
+
+.back-link { font-variant: small-caps; letter-spacing: 0.05em; font-size: 0.95rem; }
+
+@media (max-width: 40rem) {
+  body { font-size: 1.05rem; }
+  .hero h1 { font-size: 2.2rem; }
+}

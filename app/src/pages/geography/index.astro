@@ -1,0 +1,44 @@
+---
+import Base from '../../layouts/Base.astro';
+import { url } from '../../lib/url';
+
+const regions = [
+  {
+    name: 'The South — the heartland of the old Faith',
+    body: 'Home of the Primi cult and the most prominent Secundi. Here stand the Imperial Ecclesiarchy of Valdenwail (the Scion’s seat, in the line of Avitus), the Bishopric of St. Severinius, the Bishopric of St. Mairin, and the city of Lysander with its Cathedral of St. Dunstan. The three Primi Fundatores — Avitus, Severinius, Mairin — are honoured here above all.',
+  },
+  {
+    name: 'The Centre — the realm of the Secundi',
+    body: 'The middle lands, where the sects of the Secundi hold sway: the Bishopric of St. Ignatius and its Collegium, and the settled regions of Patrilund, Wellendlund, and Gablelund. To the east lie the Republic of Waldheim and the great City of Waldheim itself, with the Peakes of St. Sebald rising to its north.',
+  },
+  {
+    name: 'The North — the rough country of the Coaevi',
+    body: 'Beneath the Imperial Rooftop Mountains — the Peakes of St. Ulric — the sects of the Coaevi and the rarer saints command a more independent people. The Kingdoms of Mantlethorn and Hiergallad lie here. To the west rise the Imperial Rampart Mountains, the Peakes of St. Abaddon.',
+  },
+];
+---
+
+<Base title="Geography" description="The continent of Avilund — its regions, seas, and saint-named lands.">
+  <p class="eyebrow">The Lay of the Land</p>
+  <h1>Geography of Avilund</h1>
+  <p class="lede">A continent between three seas, its very map written over with the names of saints.</p>
+
+  <figure>
+    <img src={url('images/map-of-avilund.jpg')} alt="A hand-drawn map of the continent of Avilund" />
+    <figcaption>The continent of Avilund, bounded by the Cholera Sea (south-west), the Sanguine Sea (south-east), and the northern waters beyond.</figcaption>
+  </figure>
+
+  <div class="prose">
+    <p>
+      The map of Avilund tells the story of its Faith. Worship runs in three broad bands across the
+      continent, each tied to one of the three higher orders of saints.
+    </p>
+  </div>
+
+  {regions.map((r) => (
+    <section class="prose" style="margin-top:1.6rem">
+      <h2>{r.name}</h2>
+      <p>{r.body}</p>
+    </section>
+  ))}
+</Base>
