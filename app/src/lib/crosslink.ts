@@ -19,6 +19,7 @@ function escapeRegExp(s: string): string {
 interface Entity { name: string; url: string; }
 
 const SAINT_ENTITIES: Entity[] = SAINTS
+  .filter((s) => !s.noAutoLink)
   .map((s) => ({ name: s.name, url: `${BASE}saints/${s.slug}/` }))
   .sort((a, b) => b.name.length - a.name.length); // longest names first
 
@@ -79,7 +80,7 @@ function escapeHtml(s: string): string {
 // (so a saint's own page never links to itself).
 export function linkifySaints(text: string, base: string, excludeSlug?: string): string {
   const entities: Entity[] = SAINTS
-    .filter((s) => s.slug !== excludeSlug)
+    .filter((s) => s.slug !== excludeSlug && !s.noAutoLink)
     .map((s) => ({ name: s.name, url: `${base}saints/${s.slug}/` }))
     .sort((a, b) => b.name.length - a.name.length);
   const linked = new Set<string>();

@@ -13,9 +13,10 @@ export interface Saint {
   slug: string;
   name: string;
   tier: Tier;
-  office: Office;
-  fundator?: boolean; // founder of a sect of the Church
-  meaning?: string;   // for the invented names
+  office: Office | (string & {}); // one of the eleven offices for the upper tiers; free-text patronage for Minores
+  fundator?: boolean;   // founder of a sect of the Church
+  meaning?: string;     // for the invented names
+  noAutoLink?: boolean; // skip auto cross-linking (ambiguous common/personal names)
   blurb: string;
 }
 
@@ -176,6 +177,64 @@ export const SAINTS: Saint[] = [
   {
     slug: 'caanan', name: 'Caanan', tier: 'Minores', office: 'Misfortune',
     blurb: 'Once numbered among the early saints, Caanan has no canon, no order, and no known follower; his name is invoked only by the common man when misfortune strikes, and the schoolmen are divided whether he be a saint at all or a Hellion in saint’s clothing. He is rightly the patron of the very thing he has become: the Forgotten — and stands first among the countless Sancti Minores.',
+  },
+
+  // ── Further Sancti Minores (named in primary sources) ─────────
+  {
+    slug: 'kez', name: 'Kez', tier: 'Minores', office: 'Law & Justice',
+    blurb: 'Called "Kez the Damann." One of Beaumont’s Later Saints — patron of police, law, and justice, and of the Ferals who forsake the dark for the Faith. His canon stands close to the work of the Inquisition.',
+  },
+  {
+    slug: 'florian', name: 'Florian', tier: 'Minores', office: 'Art & Lovers',
+    blurb: 'One of Beaumont’s Later Saints — patron of art, sculpture, and lovers; the saint of beauty wrought by mortal hands.',
+  },
+  {
+    slug: 'cardigan', name: 'Cardigan', tier: 'Minores', office: 'Patron of the Republic of Waldheim',
+    blurb: 'The regional patron of the Republic of Waldheim and all its Saintly people. He holds no writ from the Scion and little wealth or influence beyond the Republic, yet his shrines stand everywhere within it, and all civil proceedings are commended to his guidance.',
+  },
+  {
+    slug: 'serra', name: 'Serra', tier: 'Minores', office: 'Healing',
+    blurb: 'Known chiefly through her relic, the Hand of Saint Serra, which is said to cure many diseases. The Hand was carried into the Western Theatre during the Fourth Crusade and never returned; the High Clergy of St. Ulric remain its Custodians.',
+  },
+  {
+    slug: 'kerrigan', name: 'Kerrigan', tier: 'Minores', office: 'The Inquisition',
+    blurb: 'The saint whose canon produced Inquisitor-Cardinal Hanzig Van Tassel, author of Adnihilo Inter Nos. His followers number among the hunters of demons and the watchers for possession.',
+  },
+  {
+    slug: 'theobald', name: 'Theobald', tier: 'Minores', office: 'A canon of loose writ',
+    blurb: 'A saint whose Canon was granted only a loose Writ by the Scion — named in the records of the faith’s many canons, but little else of him is now remembered.',
+  },
+  {
+    slug: 'lorrigan', name: 'Lorrigan', tier: 'Minores', office: 'Escape & deliverance',
+    blurb: 'Invoked by those who would escape confinement, for it is said that Saint Lorrigan made a living escape from his own unfounded grave.',
+  },
+  {
+    slug: 'oledan', name: 'Oledan', tier: 'Minores', office: 'An obscure feast',
+    blurb: 'An obscure saint of the Valdenwail, known to outsiders only by his Feast — on which day the Scion’s seat admits no visitors. Brother Stephan Dunmorrow first learned the name while shut out in the rain.',
+  },
+  {
+    slug: 'belarus', name: 'Belarus', tier: 'Minores', office: 'An obscure feast',
+    blurb: 'An obscure saint of the Valdenwail, venerated on the day of the Consumption of St. Belarus — one of the many holy days on which the Scion will receive no guest.',
+  },
+  {
+    slug: 'donovan', name: 'Donovan', tier: 'Minores', office: 'An obscure feast',
+    blurb: 'An obscure saint of the Valdenwail, venerated on the day of the Immolation of St. Donovan.',
+  },
+  {
+    slug: 'gideon', name: 'Gideon', tier: 'Minores', office: 'A saint of the City of Avitus', noAutoLink: true,
+    blurb: 'A saint honoured in the City of Avitus, where a district and an annexed town bear his name. The Scion’s own physician and most trusted advisor — Doctor Gideon, who alone speaks for the Valdenwail at Conclave — is named for him.',
+  },
+  {
+    slug: 'pitt', name: 'Pitt', tier: 'Minores', office: 'A saint of the City of Avitus', noAutoLink: true,
+    blurb: 'Saint Pitt’s Town, now a transient quarter of stockyards and barracks, is named for him — a waystation where the crusading orders gather before the long march to Lysander.',
+  },
+  {
+    slug: 'william', name: 'William', tier: 'Minores', office: 'An obscure feast', noAutoLink: true,
+    blurb: 'An obscure saint of the Valdenwail, venerated on the day of the Crucifixion of St. William.',
+  },
+  {
+    slug: 'troy', name: 'Troy', tier: 'Minores', office: 'A saint of the Republic', noAutoLink: true,
+    blurb: 'A saint of the Republic of Waldheim; the county and seat of St. Troy-on-the-Moor bears his name.',
   },
 ];
 
