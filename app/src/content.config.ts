@@ -13,4 +13,14 @@ const library = defineCollection({
   }),
 });
 
-export const collections = { library };
+// Rough working drafts and uncertain texts — the Scriptorium (for collaborators).
+const scriptorium = defineCollection({
+  loader: glob({ pattern: '**/*.{md,mdx}', base: './src/content/scriptorium' }),
+  schema: z.object({
+    title: z.string(),
+    source: z.string().optional(),
+    order: z.number().default(100),
+  }),
+});
+
+export const collections = { library, scriptorium };

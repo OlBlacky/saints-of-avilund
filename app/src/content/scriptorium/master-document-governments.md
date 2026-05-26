@@ -1,0 +1,298 @@
+---
+title: "Master Document (governments draft)"
+source: "MasterDocument.txt"
+order: 60
+---
+
+Governments of Avitus
+
+There are several different types of government in what was the Empire Of Avitus. Until the Revolution, the Empire was, strictly speaking, an Ecclesiarchy. It was ruled, at the top, by the Scion of St. Avitus, who was the head of the Primus Deus Fidelis. This `Empire' was a unified polity, subdivided into smaller ecclesiastic polities called diocses and bishoprics.
+
+After the Revolution, the Empire became fragmented, and several independent, different forms of government were formed. The most common forms of government include democracies, feudal kingdoms, and ecclesiarchies. There are some other, more obscure forms of government found in Avitus, but the three above represent the largest and most common.
+
+Where there used to be one Empire, there is now in Avitus, 14 major political regions which may be thought of as countries. These are each independently ruled, with a head of state located within their borders. There are several smaller independent regions and large towns, and many small towns located between major polities that neither pay taxes, nor receive protection from the major polities (such as Eastwitch).
+
+At the present time, the various countries that make up the `Empire' are in a state of peace with each other. There have been no open wars since the Revolution between former states of the Empire, though there are some tensions of the merchant and religious variety.
+
+Democracies
+
+There are 3 major democracies in Avitus; The Waldheim Republic, The Freehold of Havilah and the Republic of Isenwald. The Waldheim Republic is the most prominent of these, though it is not a model democracy, to be sure. The Freehold of Havilah is a democracy in charter only, and not in practice (it is ruled by merchant guilds who fix elections by any means necessary). The Republic of Isenwald is more idealistic, and has the closest thing to a genuine democracy in Avitus.
+
+Feudal Kingdoms
+
+Feudal society is becoming more prominent in Avitus in the present day, despite what the `logic' of scholars and sociologists of the Universities in the cities would predict. With the decentralization of military power and the protection afforded most communities, after the Revolution (we need a new name for the Revolution) a more simplistic model of military organization and government emerged in many lands. The landed nobility, who have been responsible for fighting for centuries before the Revolution, became de facto warlords as soon as Imperial soldiers departed their lands. When raids from Ferals, Kells and other bandits began to increase over the decades that followed the Revolution, the fighting nobility was called upon for protection, and soon the old Feudal system, which had been dead for over 1000 years, had made a full resurgence.
+
+The major feudal kingdoms of Avitus include the Kingdom of Mantlethorn, Kingdom of Hiergallad, Gablelund and Patrilund. In each of these polities, a monarch reigns. The monarchs of these lands come to their seat of power through complex intermarriages, and no small amount of deceit, violence and plotting.
+
+Beneath the monarchs, or suzerains are the greater landed nobility; dukes, counts, earls, barons and so forth. Beneath them are their vassals, the knights, who manage smaller fiefs. It is the greater nobility that owes service to their suzerain, which they get from their vassals. The vassals, of course, manage the serfs in their fiefdom, many of the strongest of which are trained as soldiers.
+
+Feudal kingdoms vary greatly from kingdom to kingdom, but the system of military service and the pastoral nature of the economies is quite predominant and unchanging. Further, they all share the same class system, with 4 tiers; nobles, clergy, burgesses, serfs. In all these kingdoms, serfs work land that belongs to the nobles. The nobles are in charge of protecting the serfs (a very dangerous responsibility in some kingdoms). The suzerain is in charge of the nobles. The burgesses (a very small portion of the population in any kingdom) live somewhere in between. Man burgesses are land owners as well, and may actually be wealthier than the noble who is their `superior'.
+
+Because of the military nature of these government systems, the feudal kingdoms tend to supply more than their fare share of knights to the fighting orders of the churches, and indeed, many feudal kingdoms have large monastaries and training facilities for the fighting orders.
+
+Ecclesiarchies
+
+There are surprisingly few of these governments in Avitus, despite the heavy presence of religion in society. The main Ecclesiastical governments of Avitus include the City State of Lysander, Bishopric of St. Ignatius, Bishopric of St. Mairin, and the Dominion of St. Lucas. In each of these polities, religion has figured a little higher than the rest of the continent, and the churches have had too much power not to have seized control after the Revolution.
+
+These are the most uniform of all styles of government, because most are run by the tenets found in the Rule of St. Severinius. All of these states acknowledge the primogeniture of the Scion (though the Bishopric of St. Ignatius is presently causing many waves with regards to this), though they all run their states as autonomous entities. They are influenced heavily by the Primus Deus Fidelis, but do exert their own authority in their own states.
+
+In terms of organization, they are very similar. The hierarchy of the church, as laid down in the Rule of St. Severinius has been established as the hierarchy of state in these polities, with certain civic powers invested in various levels of the church (such as judges, rule of small towns, military organization, etc).
+
+These polities are not free from political complexity, however. The ambitions of men run just as strong in the men of the cloth, and their attempts to gain power are no less concerted than men of the laiety. The Bishopric of St. Ignatius, in particular, is known for it's very dark, political side.
+
+Regional Governments of Avitus
+
+Republic of Waldheim
+
+This region includes the City of Waldheim (Avitus) and immediate environs out to a radius of about 50 miles. The City dominates this polity, of course, but several smaller towns surrounding the City are under its immediate protection and rule. The countryside around the City is very fertile, being made up mostly of the converging river valleys of the Wen and Nith rivers. The area around the City is the most civilized safest land on the continent. In fact, nobles from the City are known to travel abroad in order to hunt something more exciting than the struggling deer and fox populations of their country estates close to the City.
+
+Population: About 200,000 in the City itself. Another 40,000 in the surrounding area.
+
+Government: A secular, elected council of 11 men and women who then appoint a mayor.
+
+Lysander (Independent City State)
+
+This region includes the City of Lysander and an area about 75 miles in radius around it. The City is found at an ancient nexus; it is close to the Sea of Sorrow, which is an inland sea that provides access to the West; it is on the northern shore of the Great Ocean (rename?), and it sits on the ancient trade road, which once connected the Empire with the West. This City has been the source of most of the global exchanges that have happened in the last 1000 years, limited though they might be now. It is an ancient city, with some very strange architecture that hearkens back to times of great population movements; the Colonization and the Crusades. Buildings of tremendous size and strange shapes and odd materials are found all throughout this ancient City.
+
+This City has been ruled by the Council of War for over 1500 years. The Council is made up, currently, of the Prelate of St. Dunstan, The Prelate of St. Ulric, the Arch Bishop of St. Severinius' Lysander, The Arch Bishop of St. Sebalds' Lysander, and the Bishop of St. Abaddons' Lysander. This City is ruled by the Council, but the Council is, in large part, ruled by the Primus Deus Fidelis, which answers to the Scion of St. Avitus. As such, politics in this City is a slow and complicated matter that never makes any sense to the locals. Locals here do not have the sense of rights and freedoms as they do in Waldheim. Here, they are subjects that are ruled, and punishments are harsh and swift. That being said, this is a very peaceful City, with a very ecclesiastically heavy
+
+demographic. About 1 in 7 people in this City is a member of the clergy, or a fighting order of one of the many Canons that fill this City.
+
+Population: About 95,000 in the City, about 24,000 more in the country side.
+
+Government: Ecclesiastic council of 5 officials from the `Crusading' Canons.
+
+Freehold of Havilah
+
+Also called the Great Northern City, Havilah is found near the mouth of the River Wen, in lands to the north and west that border on the Kellish and Feral kingdoms. This is a newer City, being less than 500 years old, and only recently experiencing a large population boom. This is a rough City where it is not uncommon to find bodies in the streets when the sun comes up, and Kells, half Ferals and other foreigners about, making no attempts to hide their ancestry. This polity includes only the City itself. It does not pretend to rule, or especially, to protect the numerous villages and few small towns nearby.
+
+Havilah is nominally ruled by an elected official called `Chancellor'. The election of this official is about the furthest thing from a true democracy, however. The Charter for the City provides for a very sophisticated democratic process, but this has been subverted by the Guilds of the City, which actually rule the place. The Guilds influence the vote by any means necessary, and prefer overt violence and murder to anything more subtle.
+
+The Canons of this City have lost ground ever since the Revolution. There are a few large churches and cathedrals, but most are in disrepair, and many have been purchased by guilds and merchants and converted for their purposes. There is one exception to this trend; the Cathedral of St. Ulric here is well appointed, large, and powerful. The Bishop of St. Ulrics' Havilah is a very powerful man who most of the Guilds owe favours to.
+
+It is important to note that the New Finance started in this remote place. History records that logging and mining companies were paying their men with paper notes as early as 1388, and that by 1530, men were buying stocks in some mines and forestry endeavours. It is here that the following of Ulric as a means to economic conquest was begun. Of course, this is more apparent in Waldheim in the present day, but it is still conspicuous here.
+
+Population: 76,000.
+
+Government: Secular official called "Chancellor", though actually ruled by Guilds.
+
+Imperial Ecclesiarchy of Valdenwail
+
+This is a polity that is dominated by the old, sprawling and decaying castle of Valdenwail. The polity extends about 40 miles around the castle. This is an ancient and
+
+desolate place that has not been developed for over 1000 years. There are 2 small villages of less than 200 people each (farming communities that provide for the castle), and a few nomadic shepherds as well. The polity is protected by the mysterious Knights of the Scion (rename?); speechless men upon soundless steeds who wear plate armour that is unmistakably ancient. These men roam the region alone, dispatching the few creatures and Ferals that are foolish enough to wander into the region. The region is bordered by a very tangled, thick, old and decrepit forest which is inhabited by nothing. In the middle of the forest is a thick and thorny hedge some 100-200 feet thick. A single road leads out of the region, and it sees very little traffic in a year. It is watched closely by the Knights (can we come up with a cooler name than this?), however, who do not abide trespassers, and who ask no questions.
+
+At the heart of the polity is Valdenwail itself. This castle was once a small City, but it has, over the countless centuries, been completely closed in by walls and roofs, and is now a convoluted, sprawling castle. Valdenwail is the home of the Scion and his odd family.
+
+Population: Perhaps 1000 total, including the 500 or so peasants that live in the countryside.
+
+Government: Absolute Monarchy of the descendants of Saint Avitus.
+
+Kingdom of Mantlethorn
+
+Kingdom of Hiergallad
+
+Republic of Isenwald
+
+Republic of Dunstanmoore
+
+Bishopric of St. Ignatius
+
+Bishopric of St. Mairin
+
+Dominion of St. Lucas
+
+Wellenlund
+
+Gablelund
+
+Patrilund
+
+History of the Empire
+
+-40000
+
+The Elders are practicing Old Magic. Their society is agrarian but not very highly developed. They are found exclusively on the main continent of the Empire, which the Elders call Avilund.
+
+-35000
+
+The Elder society is prominently urban by this time. They begin to develop New Magic.
+
+-33500
+
+The Elders are masters of New Magic by this time. Their society sees it's first major troubles, as Old Magic factions rival New Magic factions for rulership of their society, though no open wars are fought.
+
+-30000
+
+The Pentaganet Elders (Old Magic faction) breed the first Ferals (Pentadaaman), anticipating that the Decaganet (New Magic faction) will begin to wage war.
+
+-28500
+
+The Pentaganet Elders foresee that the Decaganets will destroy them, and so they leave the main continent. They breed another race of Ferals (Decadaaman) that they leave behind on Avilund in order to cause the Decaganets trouble.
+
+-28500-14000 For this long period of history, the two Elder societies develop independent of each other. The Pentaganets continue the use of Old Magic, and use the Pentadaaman as slaves.
+
+The Decaganets develop a very sophisticated society on Avilund, despite constant warring with the Decadaaman. They master New Magic, which they use to build their society.
+
+-14000
+
+The Pentaganets encounter modern man for the first time, on the Island of Daaman. They speculate that men are a sub-race of Pentadaaman that evolved independent of their influence. The Pentaganets befriend them, and teach them Old Magic. The Pentaganets give this race the name Odopentadaaman.
+
+-8000-6500
+
+Age of Infestation (I want this to be the equivalent of our `Flood Myth', if you don't mind). A global infestation of giant spiders. The spiders have magic and power greater than the Elders, and the two factions are forced to join together in order to combat them. This age ends with a relative containment of the Infestation.
+
+-6500-3000
+
+Age of Atrophy. The Elder societies, spent from their wars with the spiders (we will come up with a good name for them...creative portion of my brain is not awake at this time...), begin to decline. The Pentadaaman on Avilund begin to overrun the Pentaganet cities, while in remote parts, the Decadaaman and the Odopentadaaman (`Man', for short) begin to
+
+-3000
+
+-2000
+
+-1582 -1580 -1560 -1550
+
+edge out the Decaganets, though without the overt warlike tactics of the Pentadaaman.
+
+The Odopentadaaman begin to develop Middle Magic which springs from Ancestor Worship. The names of these original ancestors that were worshiped at this time are forgotten. At this time, the society of Man is primarily a Hunter-Gatherer, nomadic society. They left many stone cairns and other rock carvings and simple, crude structures.
+
+The Pentaganets are reduced to only two cities; Waldheim and Vermillund. The Decaganets are reduced to a few small villages and towns. None of their cities remain, as the Decadaaman and Man have edged them out to all but the most remote parts.
+
+At this time, Man begins to sail further distances, and manages to populate many of the islands close to the Isles of Vander and Daaman.
+
+Birth of Rivenghast of the Isle of Vander
+
+Birth of Gaulghast. The 3333rd anniversary of this event is 3 years away, as many doomsday cults fear.
+
+Riven marries Ruth.
+
+This is a year of ruin for Riven. Gaul, who covets Ruth, does a series of terrible deeds in this year, in order to break them apart.
+
+First, he slaughters their children. He thinks he has killed all 4, but in fact, Mairin stole away with Severinius, exchanging her own child in order to fool Gaul. Though a tragedy of great proportions, it is Mairin, rather than Riven, that gets blamed for this evil act, contrary to Gaul's best attempt to frame his brother.
+
+Next, he rapes and murders his sister, Muriel. He successfully frames his brother for this misdeed, and Ruth turns her back on Riven.
+
+Riven appeals to his father, who believes him. When Gaul finds out that his father will attempt to clear Riven's name of this foul act, he kills him too. Gaul is able to frame Riven for the murder of their father too.
+
+Riven is made a criminal, and is forced to flee for his life. He will spend the next 33 years wandering the wilderness.
+
+Some theological scholars believe that Gaul made his pact with the Devils in this year. The 3333rd anniversary of this event is 33 years away. It is a fact that Gaul was consorting with spirits and had a great degree of
+
+-1517
+
+-1505 -1504 -1503 -1400
+
+mastery over the Old Magic, but whether he actually signed his infamous pact this year is a point of controversy and speculation.
+
+Riven returns to the Isle of Vander to confront his brother and prove his innocence. Before confronting his brother, he makes amends with Ruth, and the two are once again joined as husband and wife. Unfortunately for Riven, Gaul learns of his brother's return and has time to plot again. He manages to use powerful magic to bind the two of them helpless. He forces Riven to watch as he rapes and kills Ruth.
+
+This is too much for Riven to bear. He breaks free of his magical bindings, and engages his brother in deadly combat. The two fight for a length of time that is disputed in theological scholarly circles; some say 3 days, some say 33, some 333. At any rate, the two transcend this world, though whether by mutual mortal death, or some greater magical transcendence, is unknown.
+
+Later in the year, Mairin returns with Severinius, who claims rulership of the clan.
+
+Severinius has brought unity to the whole of the Isle of Vander. In this year, he weds the Angel, Ida, and they have their first child, Dunstan.
+
+Birth of Sebald. Sebald is very long-lived, and it is he who is probably most responsible for the spread of Man and the development of Man's culture.
+
+Severinius claims to have many conversations with his father, who describes his continued struggles with Gaul, and his long journey through the Valley of Death. Severinius claims in this year that it is his father, alone, that should be consulted on matters of faith. This is a new concept to the people of the Isle of Vander. Severinius is often seen with his friends (some say `Disciples') Caspar and Canaan. His relationship with these men is a thing of mystery. Both seem to be personalities that he would be at odds with, but he remains fast friends with them until his death.
+
+The church of the Prime Saint has grown to a substantial size, and brought prosperity to it's people. Sebald, through many consultations with the few remaining Elders, has helped to bring the culture of Man to great heights in only a short time. They are excellent stone-masons, ship builders, cultivators and horticulturalists in many areas. This year marks the journey of Sebald, Dunstan and Barnabas from Vander in the vessel known in legend as Bram'Cairn, a controversially Kellish name meaning `without burial'. This ship is in a remarkable state of preservation in a great stone warehouse in Vanderwail.
+
+The arrival of men on Avilund marks the beginning of the Saeculum Humanitas a Avilund (Age of Men in Avilund) which continues to this day. This also begets a brief movement called the Saeculum Maximus Congrecius (Age of Great Migration) (-1400 to -1273) in which the islands of man, the Isles of Vander and Daaman included, send most of their notable citizens off in boats to Avilund. It is this movement that causes a slow but sure divergence in the culture of Men, and the estrangement of the Saintly from their homelands. Over the next thousand years, the Saintly prosper on Avilund, but the islands that they left behind fall into barbarism. Eventually, the Saintly decide to return to these islands (see First Age of Crusades, below).
+
+-1250
+
+This year is heralded as the true birth of the church. In this year, Sebald is said to have gotten word from his grandfather that he had found his way to Heaven, and that his evil brother had found his way to Hell. It is suspected that Gaul signed his pact with the Devils in this year, and that Riven was made the Ruler of Heaven. This date is the Orthodox birth date of the Primus Deus Fidelis. The first stones at Vanderwail are laid this year as well. The 3333rd anniversary of this event is 333 years away. At this time, Judith has established some of the most fertile farming operations to yield crops since the height of the Pentaganets.
+
+Also in this year, Sebald and many of the second tier Saints set out for Waldheim to meet with the last Elders holding out there. Here, Ulric stays for several years and wages his legendary one-man-war against the Decadaaman. There are no known recordings of the proceedings between Sebald and his men with the Elders in all the manuscripts or any other records of men. It is unknown how they actually got along, as a result, but it is known that Sebald respected them, and held them to be creatures greater than Men, and worthy of emulating. It was he who insisted that Ulric stay and help the last Elders. The Elders, known as competent historians (when their works can be uncovered), are suspected of having made a record of their meeting with the Odopentadaaman, though no such record has been unearthed as yet.
+
+-1250 to -450 First Age of Imperial Expansion; The descendants of Riven prosper on the mainland. They are constantly at war with the Ferals, but manage to push back their boundaries more with each century. They are settled mostly in the south (in the regions around Vanderwail and the modern-day city of Lysander), but covet the resource-rich north, especially the river valleys of the Wen and Nith. At the intersection of these two rivers is the fabled city of Waldheim, where the Pentaganet culture is said to have peaked. For much of this time, the Ferals occupy Waldheim. A series of wars makes this place change hands not only between the Men of the
+
+-1245 -1206 -1199
+
+-450
+
+Empire and the Ferals, but also the Norlunders who occupy the far north (much later on in this period; the Norlunders did not appear on these shores until sometime around -650).
+
+By -450, the great castle Vanderwail is as massive and sprawling as it is today, though it is packed with thousands of Men. The city of Tiberwail (modern day Lysander) is well established, and the modern day road that connects them is even more populous and well protected than it is today. Trade and communications flow between these two great establishments fast and frequently.
+
+Also by -450, the pantheon of Saints numbers over 100, and there are no less than 6 great cathedrals (only one of which survives to this day; The Cathedral of St. Dunstan in Lysander) outside of Vanderwail.
+
+Death of Judith. Completion of the Rule of Saint Rivenghast by Sebald.
+
+Death of Ulric in the maw of Razzlethorn (perhaps a dragon, perhaps a spider). Fall of Waldheim to the horde of Vestus the Pestilent (a notably unhealthy but wise Feral who used sickness as a weapon; a great plague had swept through Feral lands to the west, and he claimed that the Elders in Waldheim had started it, and that they had a cure. Perhaps true, perhaps not, but it had the intended effect; a great horde of Ferals that overran the city and cast out the Elders for good).
+
+Founding of the Conlegium Waldheim (The Colleagues of Waldheim) in Valdenwail. This assortment of men included Ignatius, Anselm and Gratus; three men who had met and studied with the last Elders, and who managed to escape the carnage of Vestus' horde. This is the first School of Men. Though thought of by the few academics who know of it as a college, it really does not resemble the modern idea of colleges in any way. There were very few men in it's ranks, and they took on but a few students, to pass along what they had learned from the Elders. The building that they met in is still standing in Valdenwail today, and was a destination for pilgrimage for almost 2 millennia. Today it is hidden within the walls of Valdenwail, and has seen no visitors for hundreds of years.
+
+Invasion of Brogard The Cruel; In this year, a horde of Ferals under the leadership of Brogard the Cruel, numbering over 100,000, marches upon the southern Empire of Man. Tiberwail is razed nearly to the ground, and the settlements along the road between them, and most of their outposts are destroyed. The invasion halts at the walls of Vanderwail. There, Brogar's horde breaks upon the immense walls, and Lazarus of Duneedin charges out to take the head of Brogard (this trophy is still on display in the Cathedral of St. Lazarus in the town of Deneedin).
+
+-450-50
+
+Age of Rebuilding; Little besides recovering from the destruction of Brogard's invasion happens in this time. (good spot to add in Kez, I think, and his contributions; you seem to have ideas and a plan for this saint, eh?)
+
+0 Conquest of Avitus; Called Gulfziam by the Ferals at this time, the modern day city of Avitus is defeated under the leadership of Saint Abaddon, and has not been retaken to this day, despite many more years of conflict and sieges to come. With the conquest of this city, which for over 1000 years had been the prime objective of the Empire, the Imperial Calendar was begun. It was started a number of times before that, but only after Abaddon's conquest of the City has it remained in the hands of Men. This starts the Saeculum Dominae Humanitas a Avilund which persists to this day (according to some...)
+
+0-745 Second Age of Imperial Expansion; During this long stretch of time, during which much happened, the Empire experiences it's greatest amount of growth and expansion. Several colonies are founded over seas, as well as many west of the Barrier Wood. This is, in great part, due to the study of New Magic, by those exploring the ruins of Waldheim. This age is also known as the Age of New Magic, though by none but the most academic. The bulk of the magical artifacts in the world are created at this time, when mages and alchemists were given the freedom to pursue their studies. Numerous Crusades are launched at this time. During this time, the citizens of the Empire are speaking the `Old Imperial' tongue, which has been developing slowly since Sebald set foot on the continent.
+
+244 The Armed Pilgrimage (First Crusade). Lead by Luke of Abbadonia (222245), a great host of men from many churches sets out for the islands of Vander and Daaman in order to take them into Imperial Possession. This was spawned by Scion Innocentus (198-281), who wished to see the homeland of his ancestors reclaimed. The journey was toted as a pilgrimage to the birth-lands of the prime saints, but it was clear that it would be an armed pilgrimage. It was not called a `Crusade' until well after the 4th Crusade. This pilgrimage ends with the terrible deaths of most of the pilgrims, and enslavement for the unfortunate rest.
+
+333 In this year, a meteor shower lasting 11 nights has the Empire in chaos. Most people believe that the end might be near, despite the growth of the Empire. A very opportunistic Scion of Rivenghast uses this coincidence to further his own aims. This man, Lothar the Unifier (301-389), claims to have been visited by Saint Rivenghast during each night of the Meteor Shower, which he explains off as being a great flight of Angels into Hell, to wage war.
+
+Lothar also explains that the Celestial name for Rivenghast is Avitus, and has every bit of evidence of the name `Rivenghast' taken from society. The church itself, and the city of Abaddonia are renamed `Avitus' in honour of this discovery.
+
+An era of unmatched Ecclesiastical Authority commences from here, as Lothar develops the first true beurocracies.
+
+Towards the end of the year, Lothar announces another `Pilgrimage' to be launched to the homelands in the Eastern Sea. This time, a knightly order, the Pilgrims of Vander, is formed. This is made up of the landed, armed and determined nobility in the Cannon of St. Ulric. This is the `Second Crusade'.
+
+335 The second crusade takes possession of many of the great fortresses on Vander, and will hold them for over 200 years.
+
+745-1023
+
+First Inquisition; With the Crusades leaving the Empire all-but empty of troops, and bringing back with them strange languages, goods and culture, the Black Faith erupts from the shadows of the empire. This is an age of terrible crimes on behalf of both inquisitors and demon- and devilworshiping cults alike. The expansion of the Empire halts during this time. Troops are called home, and the foreign colonies slowly begin to loose contact with the Empire. This period is marked, at its beginning, by the famous public decree of Nicetus Avitus Vanderwail (700-804) in the Capital, known as the "Prospectus Imperialis ex Daemonica". This very heavy-handed policy of rooting out evil led to the terrible crimes for which the Inquisition is usually associated with and feared for.
+
+This period is marked, at its end, by the renouncing of the Inquisitorial Authority by Maiolus the Forgiving (960-1074), who is known as the most benign ruler the Empire ever had. This came after the burning of the entire village of Hamstonfast on 31 October, 1021, and the death of every one of its 900 citizens.
+
+At this time, academics start to go underground. The Inquisition is suspicious of everyone, and educated and magic-wielding people not-theleast.
+
+During this period, the expansion of the empire halted altogether, and a period of shrinkage begins. The colonies on the mainland and the islands are lost, and the slow collapse of the borders of the Empire on the mainland begins. By the end of this period, the influence of the Scion is limited to the much-reduced settlements of Avilund
+
+889
+
+Prospectus ex Veneficium penned by Tancred Avitus Vanderwail (804-
+
+1009). This proclamation makes the practice and study of magic of any
+
+variety other than Divine, illegal. This gives the Inquisitors much more
+
+freedom, and makes magicians hide their secrets even deeper. In
+
+academic circles, this begins the Saeculum Noctis Obscuris, which does
+
+not end until 1348; almost 500 years of academic stagnation, culminating
+
+in academic destruction during the Repurgo Imperialis.
+
+1210-1348
+
+Repurgo Imperialis. This event sculpted Avitus into the world it is today. In 1210, the Casparian Monk, David of Sandalstone started a great religious and social movement away from academics. His movement outlasted him, and became a great conflagration that swept through all the lands of the Empire. The results of this terrible movement were many. To begin with, books and manuscripts by the thousands were destroyed, and places of learning burned to the ground. Things such as globes, maps and other instruments of navigation were destroyed where they were found. Entire libraries were put to the torch, and academics everywhere went underground to save their lives. This was an age of senseless destruction and bloodshed, in what should have been an age of expansion; the Ferals and the Kells did little to shrink the borders of the Empire during these decades, whilst the Empire consumed itself.
+
+In 1295, the Second Inquisition was ordered by Baudri Avitus Vanderwail (1210-1350) for many reasons. He was sympathetic to the ideals of the Repurgo, if not the practices that it fomented. However, he was suspicious of many of the elements that made up the movement, and rightfully so. The Black Faith was indeed heavily involved with the movement, and numerous enterprising villains and scoundrels to boot.
+
+1295-1348
+
+Second Inquisition Started in order to monitor the actions of those carrying out the Repurgo Imperialis, as well as those opposed to it, this was the bloodier of the two Inquisitions, and the principal reason for the Novae res Sanguinus (Bloody Revolution).
+
+Baudri was certainly the most ruthless Scion to sit as Emporer. He saw in the Repurgo, a fertile ground to sew the seeds of his own political goals. He was principally concerned with the growing wealth of the Burgesses of the large towns, and the growing power of the landed nobility. He wished to use the chaos, destruction, and bloodshed of the Repurgo as a smokescreen for his own bloody plots to increase his wealth and power, and he decided to reinstate an old institution; the Inquisition (though it had never actually been disbanded; rather, training of Inquisitors had continued after 1023, though in secret, and their use in the field was very limited).
+
+This time around, the Inquisition stopped at nothing to achieve the goals of the Scion. They vehemently pursued any they suspected of being followers of the Black Faith and the Repurgo. They put entire villages to the torch, made forests from pikes and corpses, executed nobles and burgesses alike, and went so far as to pursue `enemies' in the other Saintly Canons (such as Ignatius and Severinius).
+
+1348
+
+The attrocities of this age are too numerous to give number too. They were carried out by dozens of factions, but the Repurgo and the Inquisition certainly were responsible for the lion's share of the butchery, and were easier to identify than the miscelaneous rogues and cults that used this bloody time for their own opportunistic goals. As such, many powerful bodies, both secular and canonical, appealed to the Scion to put an end to the Inquisition and the Repurgo. For decades the appeals came, but nothing was done. In the end, there was nothing for it, but for the people to revolt. Thus, the Novae res Sanguinus happened, and the Empire came to a sudden end.
+
+Revolution. Things started and ended in the City of Avitus. Here, academics, nobles, burgesses, and other powerful men were able to muster not only support for their cause, but the arms to match it. Canonical rule of that City ended very quickly, and the Scion was forced to depart the city, for his safe walls in Valdenwail. From the City, the revolution spread quickly. In territories where the atrocities were the worst, people were willing to challenge the rule of the Scion immediately, and resistance to the cause was minimal and fleeting. Still, in others, resistance did occur, and in a few states, it endured the conflict (places like Lysander, and the Bishoprics of St. Ignatius and St. Mairin still acknowledge the preeminence of the Scion of St. Avitus to this day). However, the end result was that the Empire was fragmented for good.
+
+The Novae res Sanguinius came to a head on the 7th of September, 1348. A great army comprised of many different political components marched upon Valdenwail, in order to have the Scion sign a proclomation that they had drafted, which would limit the power of his family and the church permanently and officially. The document was full of all sorts of other strange clauses designed to protect and nurture the interrests of various parties in the army.
+
+
+

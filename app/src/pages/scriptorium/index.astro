@@ -1,0 +1,29 @@
+---
+import Base from '../../layouts/Base.astro';
+import { url } from '../../lib/url';
+import { getCollection } from 'astro:content';
+
+const docs = (await getCollection('scriptorium')).sort(
+  (a, b) => (a.data.order ?? 100) - (b.data.order ?? 100) || a.data.title.localeCompare(b.data.title)
+);
+---
+
+<Base title="The Scriptorium" description="Working drafts and uncertain texts — rough material shared for collaborators.">
+  <p class="eyebrow">Working Drafts &amp; Uncertain Texts</p>
+  <h1>The Scriptorium</h1>
+
+  <div class="wip-banner">
+    ⚠ The Scriptorium holds rough, unedited, and uncertain material — design notes, half-formed
+    lore, and drafts that may contradict the settled canon elsewhere on this site. It is shared
+    for collaborators and the curious; read it with a grain of salt.
+  </div>
+
+  <ul class="doc-list">
+    {docs.map((doc) => (
+      <li>
+        <a class="title" href={url(`scriptorium/${doc.id}/`)}>{doc.data.title}</a>
+        {doc.data.source && <div class="by"><em>from {doc.data.source}</em></div>}
+      </li>
+    ))}
+  </ul>
+</Base>

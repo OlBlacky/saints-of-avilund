@@ -1,0 +1,29 @@
+---
+import Base from '../../layouts/Base.astro';
+import { url } from '../../lib/url';
+import { getCollection, render } from 'astro:content';
+
+export async function getStaticPaths() {
+  const docs = await getCollection('scriptorium');
+  return docs.map((doc) => ({ params: { slug: doc.id }, props: { doc } }));
+}
+
+const { doc } = Astro.props;
+const { Content } = await render(doc);
+---
+
+<Base title={doc.data.title} description="A rough working draft from the Scriptorium.">
+  <p class="back-link"><a href={url('scriptorium/')}>← The Scriptorium</a></p>
+
+  <div class="wip-banner">⚠ Working draft — rough, unedited, and not settled canon.</div>
+
+  <header class="saint-head">
+    <p class="eyebrow">The Scriptorium</p>
+    <h1>{doc.data.title}</h1>
+    {doc.data.source && <p class="lede">from <code>{doc.data.source}</code></p>}
+  </header>
+
+  <article class="prose">
+    <Content />
+  </article>
+</Base>
