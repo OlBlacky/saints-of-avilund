@@ -1,0 +1,61 @@
+---
+import Base from '../../../layouts/Base.astro';
+import { url } from '../../../lib/url';
+import { getCollection, render } from 'astro:content';
+import { getWork } from '../../../lib/texts';
+
+// One page per part of a multi-part work. A part's id is "<work>/<part>"
+// (e.g. "journal/oct-06"), so the first path segment is the work slug.
+export async function getStaticPaths() {
+  const all = await getCollection('texts');
+  const byWork = new Map<string, typeof all>();
+  for (const entry of all) {
+    const work = entry.id.split('/')[0];
+    (byWork.get(work) ?? byWork.set(work, []).get(work)!).push(entry);
+  }
+  return [...byWork.entries()].flatMap(([work, parts]) => {
+    const sorted = parts.sort((a, b) => a.data.order - b.data.order);
+    return sorted.map((entry, i) => ({
+      params: { work, part: entry.id.split('/').slice(1).join('/') },
+      props: {
+        entry,
+        prev: sorted[i - 1] ?? null,
+        next: sorted[i + 1] ?? null,
+        index: i + 1,
+        total: sorted.length,
+      },
+    }));
+  });
+}
+
+const { entry, prev, next, index, total } = Astro.props;
+const workSlug = entry.id.split('/')[0];
+const work = getWork(workSlug);
+const { Content } = await render(entry);
+
+const partUrl = (e: typeof entry) => url(`library/${workSlug}/${e.id.split('/').slice(1).join('/')}/`);
+---
+
+<Base title={`${entry.data.title} — ${work?.title ?? 'The Library'}`} description={work?.summary}>
+  <p class="back-link"><a href={url(`library/${workSlug}/`)}>← Contents</a></p>
+
+  <header class="saint-head">
+    <p class="eyebrow">{work?.title} · {index} of {total}</p>
+    <h1>{entry.data.title}</h1>
+  </header>
+
+  <article class="prose"><Content /></article>
+
+  <nav class="entry-nav">
+    {prev ? (
+      <a class="entry-nav__prev" href={partUrl(prev)}>← {prev.data.title}</a>
+    ) : (
+      <a class="entry-nav__prev" href={url(`library/${workSlug}/`)}>← Contents</a>
+    )}
+    {next ? (
+      <a class="entry-nav__next" href={partUrl(next)}>{next.data.title} →</a>
+    ) : (
+      <a class="entry-nav__next" href={url('library/')}>The Library →</a>
+    )}
+  </nav>
+</Base>

@@ -2,9 +2,11 @@
 import Base from '../../layouts/Base.astro';
 import { url } from '../../lib/url';
 import { getCollection } from 'astro:content';
+import { WORKS } from '../../lib/texts';
 
 const docs = await getCollection('library');
 const items = [
+  // Single, one-page texts.
   ...docs.map((doc) => ({
     title: doc.data.title,
     href: url(`library/${doc.id}/`),
@@ -13,15 +15,15 @@ const items = [
     summary: doc.data.summary,
     order: doc.data.order ?? 100,
   })),
-  // The Journal is a multi-part text with its own paged reader.
-  {
-    title: 'From the Journal of Brother Stephan Dunmorrow',
-    href: url('library/journal/'),
-    kind: 'A travel journal, 1746–1747',
-    author: 'Brother Stephan Dunmorrow, Envoy of St. Ignatius',
-    summary: 'An account of the journey to the Valdenwail and the long incarceration there — in fifteen entries.',
-    order: 4,
-  },
+  // Multi-part works, each with its own paged reader (see src/lib/texts.ts).
+  ...WORKS.map((work) => ({
+    title: work.title,
+    href: url(`library/${work.slug}/`),
+    kind: work.kind,
+    author: work.author,
+    summary: work.summary,
+    order: work.order,
+  })),
 ].sort((a, b) => a.order - b.order);
 ---
 

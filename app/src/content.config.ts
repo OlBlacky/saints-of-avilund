@@ -10,7 +10,6 @@ const library = defineCollection({
     kind: z.string().optional(), // e.g. "Ecclesiastical history", "Primer"
     order: z.number().default(100),
     summary: z.string().optional(),
-    toc: z.boolean().default(false), // show a table of contents (long, sectioned texts)
   }),
 });
 
@@ -24,13 +23,15 @@ const scriptorium = defineCollection({
   }),
 });
 
-// A long in-world text split into navigable entries — the Journal.
-const journal = defineCollection({
-  loader: glob({ pattern: '**/*.{md,mdx}', base: './src/content/journal' }),
+// Long in-world texts split into navigable parts — the paged reader. Each work
+// is a subfolder of src/content/texts/ (e.g. on-the-side-of-heaven/, journal/);
+// each file is one part. Work-level metadata lives in src/lib/texts.ts.
+const texts = defineCollection({
+  loader: glob({ pattern: '**/*.{md,mdx}', base: './src/content/texts' }),
   schema: z.object({
     title: z.string(),
     order: z.number().default(0),
   }),
 });
 
-export const collections = { library, scriptorium, journal };
+export const collections = { library, scriptorium, texts };

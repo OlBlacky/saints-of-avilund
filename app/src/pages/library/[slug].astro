@@ -2,42 +2,86 @@
 import Base from '../../layouts/Base.astro';
 import { url } from '../../lib/url';
 import { getCollection, render } from 'astro:content';
+import { WORKS, getWork } from '../../lib/texts';
 
+// This route serves two kinds of page at /library/<slug>/:
+//   • a single one-page text (the `library` collection), and
+//   • the contents/landing page of a multi-part work (the `texts` registry).
+// The per-part reader pages live one level deeper, at /library/<work>/<part>/.
 export async function getStaticPaths() {
   const docs = await getCollection('library');
-  return docs.map((doc) => ({ params: { slug: doc.id }, props: { doc } }));
+  const docPaths = docs.map((doc) => ({
+    params: { slug: doc.id },
+    props: { type: 'doc' as const, doc },
+  }));
+  const workPaths = WORKS.map((work) => ({
+    params: { slug: work.slug },
+    props: { type: 'work' as const, workSlug: work.slug },
+  }));
+  return [...docPaths, ...workPaths];
 }
 
-const { doc } = Astro.props;
-const { Content, headings } = await render(doc);
+const props = Astro.props;
+const partSlug = (id: string) => id.split('/').slice(1).join('/');
 
-// For long, sectioned texts (frontmatter `toc: true`) build a contents box
-// from the top-level (h2) headings. Slugs come straight from Astro's own
-// heading-id generation, so the anchor links always match the rendered ids.
-const sections = doc.data.toc ? headings.filter((h) => h.depth === 2) : [];
+let title: string;
+let description: string | undefined;
+let docData: any = null;
+let DocContent: any = null;
+let work: any = null;
+let parts: any[] = [];
+let first: any = null;
+
+if (props.type === 'doc') {
+  docData = props.doc.data;
+  DocContent = (await render(props.doc)).Content;
+  title = docData.title;
+  description = docData.summary;
+} else {
+  work = getWork(props.workSlug);
+  parts = (await getCollection('texts'))
+    .filter((e) => e.id.split('/')[0] === props.workSlug)
+    .sort((a, b) => a.data.order - b.data.order);
+  first = parts[0];
+  title = work.title;
+  description = work.summary;
+}
 ---
 
-<Base title={doc.data.title} description={doc.data.summary}>
+<Base title={title} description={description}>
   <p class="back-link"><a href={url('library/')}>← The Library</a></p>
 
-  <header class="saint-head">
-    {doc.data.kind && <p class="eyebrow">{doc.data.kind}</p>}
-    <h1>{doc.data.title}</h1>
-    {doc.data.author && <p class="lede">{doc.data.author}</p>}
-  </header>
+  {props.type === 'doc' ? (
+    <>
+      <header class="saint-head">
+        {docData.kind && <p class="eyebrow">{docData.kind}</p>}
+        <h1>{docData.title}</h1>
+        {docData.author && <p class="lede">{docData.author}</p>}
+      </header>
+      <article class="prose">{DocContent && <DocContent />}</article>
+    </>
+  ) : (
+    <>
+      <header class="saint-head">
+        {work.kind && <p class="eyebrow">{work.kind}</p>}
+        <h1>{work.title}</h1>
+        {work.author && <p class="byline">{work.author}</p>}
+      </header>
 
-  {sections.length > 1 && (
-    <nav class="toc" aria-label="Contents">
-      <p class="toc__title">Contents</p>
-      <ol class="toc__list">
-        {sections.map((s) => (
-          <li><a href={`#${s.slug}`}>{s.text}</a></li>
+      {work.lede && <p class="lede">{work.lede}</p>}
+
+      {first && (
+        <p style="margin:1.6rem 0;">
+          <a class="tag tag--fundator" href={url(`library/${work.slug}/${partSlug(first.id)}/`)}>Begin reading →</a>
+        </p>
+      )}
+
+      <h2>Contents</h2>
+      <ol class="entry-list">
+        {parts.map((p) => (
+          <li><a href={url(`library/${work.slug}/${partSlug(p.id)}/`)}>{p.data.title}</a></li>
         ))}
       </ol>
-    </nav>
+    </>
   )}
-
-  <article class="prose">
-    <Content />
-  </article>
 </Base>

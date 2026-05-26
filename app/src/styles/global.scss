@@ -151,23 +151,8 @@ blockquote {
 .doc-list .title { font-family: var(--display); font-size: 1.35rem; }
 .doc-list .by { color: var(--ink-soft); font-style: italic; }
 
-// ── Table of contents (long, sectioned texts) ───────────────
-.toc {
-  max-width: var(--measure);
-  background: var(--panel);
-  border: 1px solid var(--rule);
-  border-left: 3px solid var(--gold);
-  border-radius: 4px;
-  padding: 1rem 1.4rem;
-  margin: 1.5rem 0 2.4rem;
-}
-.toc__title {
-  font-variant: small-caps; letter-spacing: 0.14em; color: var(--gold);
-  font-family: var(--display); margin: 0 0 0.5rem;
-}
-.toc__list { margin: 0; padding-left: 1.4rem; }
-.toc__list li { margin: 0.3rem 0; }
-.toc__list a { font-family: var(--display); }
+// Author byline on a multi-part work's contents page.
+.byline { color: var(--ink-soft); font-style: italic; font-size: 0.98rem; margin: 0 0 0.4rem; }
 
 // ── Figure / map ─────────────────────────────────────────────
 figure { margin: 1.5rem 0; }
