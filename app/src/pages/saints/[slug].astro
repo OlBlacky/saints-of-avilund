@@ -2,12 +2,14 @@
 import Base from '../../layouts/Base.astro';
 import { url } from '../../lib/url';
 import { SAINTS, getSaint } from '../../lib/saints';
+import { linkifySaints } from '../../lib/crosslink';
 
 export function getStaticPaths() {
   return SAINTS.map((s) => ({ params: { slug: s.slug }, props: { saint: s } }));
 }
 
 const { saint } = Astro.props;
+const blurbHtml = linkifySaints(saint.blurb, import.meta.env.BASE_URL, saint.slug);
 const tierLabel: Record<string, string> = {
   Primi: 'Sanctus / Sancta Prima — lived and died upon the Archipelago',
   Secundi: 'Sanctus / Sancta Secunda — born in the Archipelago, lived in Avilund',
@@ -31,7 +33,7 @@ const tierLabel: Record<string, string> = {
   </header>
 
   <div class="prose">
-    <p>{saint.blurb}</p>
+    <p set:html={blurbHtml}></p>
     <p class="card__meta">{tierLabel[saint.tier]}.</p>
   </div>
 </Base>
