@@ -9,7 +9,12 @@ export async function getStaticPaths() {
 }
 
 const { doc } = Astro.props;
-const { Content } = await render(doc);
+const { Content, headings } = await render(doc);
+
+// For long, sectioned texts (frontmatter `toc: true`) build a contents box
+// from the top-level (h2) headings. Slugs come straight from Astro's own
+// heading-id generation, so the anchor links always match the rendered ids.
+const sections = doc.data.toc ? headings.filter((h) => h.depth === 2) : [];
 ---
 
 <Base title={doc.data.title} description={doc.data.summary}>
@@ -20,6 +25,17 @@ const { Content } = await render(doc);
     <h1>{doc.data.title}</h1>
     {doc.data.author && <p class="lede">{doc.data.author}</p>}
   </header>
+
+  {sections.length > 1 && (
+    <nav class="toc" aria-label="Contents">
+      <p class="toc__title">Contents</p>
+      <ol class="toc__list">
+        {sections.map((s) => (
+          <li><a href={`#${s.slug}`}>{s.text}</a></li>
+        ))}
+      </ol>
+    </nav>
+  )}
 
   <article class="prose">
     <Content />

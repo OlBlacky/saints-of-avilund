@@ -32,7 +32,7 @@ Men developed a form of Art that the Elders did not conceive of first; Ancestor 
 
 our Pantheon. However, this taxonomy includes those that invoke their powers from the Demons and Devils of the Depths, and many others besides. The crude and barbaric Kells of the North, people we are certainly closely related to, have their own Pantheon which does not overlap with ours at all. Yet, the source of their power is the same; it is loaned from beings outside of our world.
 
-The study of New Magic by our Race began in ­1199, by the founders of the Colegium Waldheim; Saint Ignatius, Saint Anselm and Saint Gratus, though our own mastery of this form of the Art was long it it's development. In fact, it is not until the dawn of the Age of Men, with the final conquest of Waldheim, that our study of, and mastery of New Magic would arise. Shortly after the Colleagues of Waldheim met with the Last Elders, Waldheim finally fell to the Feral Hoards, and their Race was exterminated utterly.
+The study of New Magic by our Race began in â€”1199, by the founders of the Colegium Waldheim; Saint Ignatius, Saint Anselm and Saint Gratus, though our own mastery of this form of the Art was long it it's development. In fact, it is not until the dawn of the Age of Men, with the final conquest of Waldheim, that our study of, and mastery of New Magic would arise. Shortly after the Colleagues of Waldheim met with the Last Elders, Waldheim finally fell to the Feral Hoards, and their Race was exterminated utterly.
 
 When St. Abbadon re-conquered Waldheim in Year 0, the mysteries of the Elders were once again available to Men. For the next 745 years, Scholars, and men of less noble vocations, delved into the past, and the Age of New Magic was born, lived, and died. It is during this time that the vast majority of the Artifacts which our Society has generated, about which this tome is chiefly concerned, were manufactured. Many were lost during the Repurgo, but hundreds of Artifacts have come down through the ages, and many of those are herein discussed.
 
@@ -54,7 +54,7 @@ Middle, Anatomical Exhumed December 19, -388 Exhumed and amputated by Bishop Mal
 
 The hand is a black and shriveled thing, as one would well expect from a 2000 year old carcass. Though foul to look upon, it gives off a pleasant aroma that has defies a consistent description; it has been likened to the smell of roses, the smell of fresh baked bread, crushed ginger, venison gravy, and many other things besides. The Author has not smelled this Artifact.
 
-St. Serra was a Knight of the Order of Ulric who fought in the wars against Brogard the Cruel. She was slain outside Dunstanmoore in ­450. She was interred in the church's cemetery for heroes later in the year with all due honour. In ­388, Bishop Malvoy of St. Ulric's Dunstanmoore claimed to have spoken to her in his dreams on 3 consecutive nights. On the third morning, he had her exhumed, and it was noted that she had not decayed over the course of her 62 years of interment. In fact, the odour from her casket was pleasing to all who bore witness. Malvoy struck her hand from the rest of her body. It was then taken into the church and displayed with various other Saints and Heroes for some time.
+St. Serra was a Knight of the Order of Ulric who fought in the wars against Brogard the Cruel. She was slain outside Dunstanmoore in â€”450. She was interred in the church's cemetery for heroes later in the year with all due honour. In â€”388, Bishop Malvoy of St. Ulric's Dunstanmoore claimed to have spoken to her in his dreams on 3 consecutive nights. On the third morning, he had her exhumed, and it was noted that she had not decayed over the course of her 62 years of interment. In fact, the odour from her casket was pleasing to all who bore witness. Malvoy struck her hand from the rest of her body. It was then taken into the church and displayed with various other Saints and Heroes for some time.
 
 The hand has been used to cure all sorts of ailments throughout the years. It is not capable of healing severe wounds, but is known to cure many diseases and their symptoms. Mention of the Hand of Saint Serra comes often in all sorts of History books, both secular and otherwise.
 
@@ -64,7 +64,7 @@ The Hand would be worth 3000-4500 Pieces of Silver in most markets, but might fe
 
 Sorrow Wind
 
-New, Weapon Created sometime between ­28500 to ­25500
+New, Weapon Created sometime between â€”28500 to â€”25500
 
 Elder Artisan Dcuidules of Aredemis
 

@@ -10,6 +10,7 @@ const library = defineCollection({
     kind: z.string().optional(), // e.g. "Ecclesiastical history", "Primer"
     order: z.number().default(100),
     summary: z.string().optional(),
+    toc: z.boolean().default(false), // show a table of contents (long, sectioned texts)
   }),
 });
 

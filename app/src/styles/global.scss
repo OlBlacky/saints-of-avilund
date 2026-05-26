@@ -93,8 +93,14 @@ main {
 
 h1, h2, h3 { font-family: var(--display); color: var(--ink); line-height: 1.2; }
 h1 { font-size: 2.3rem; margin: 0 0 0.4rem; }
-h2 { font-size: 1.6rem; margin: 2.4rem 0 0.8rem; border-bottom: 1px solid var(--rule); padding-bottom: 0.3rem; }
-h3 { font-size: 1.25rem; margin: 1.8rem 0 0.5rem; }
+h2 {
+  font-size: 1.7rem; color: var(--oxblood); margin: 2.8rem 0 0.9rem;
+  border-bottom: 2px solid var(--gold); padding-bottom: 0.35rem;
+}
+h3 {
+  font-size: 1.3rem; color: var(--oxblood); margin: 2rem 0 0.5rem;
+  font-variant: small-caps; letter-spacing: 0.04em;
+}
 
 .lede { font-size: 1.25rem; color: var(--ink-soft); font-style: italic; max-width: var(--measure); }
 hr { border: 0; border-top: 1px solid var(--rule); margin: 2rem 0; }
@@ -144,6 +150,24 @@ blockquote {
 .doc-list li { padding: 1.1rem 0; border-bottom: 1px solid var(--rule); }
 .doc-list .title { font-family: var(--display); font-size: 1.35rem; }
 .doc-list .by { color: var(--ink-soft); font-style: italic; }
+
+// ── Table of contents (long, sectioned texts) ───────────────
+.toc {
+  max-width: var(--measure);
+  background: var(--panel);
+  border: 1px solid var(--rule);
+  border-left: 3px solid var(--gold);
+  border-radius: 4px;
+  padding: 1rem 1.4rem;
+  margin: 1.5rem 0 2.4rem;
+}
+.toc__title {
+  font-variant: small-caps; letter-spacing: 0.14em; color: var(--gold);
+  font-family: var(--display); margin: 0 0 0.5rem;
+}
+.toc__list { margin: 0; padding-left: 1.4rem; }
+.toc__list li { margin: 0.3rem 0; }
+.toc__list a { font-family: var(--display); }
 
 // ── Figure / map ─────────────────────────────────────────────
 figure { margin: 1.5rem 0; }

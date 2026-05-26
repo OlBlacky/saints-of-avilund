@@ -220,7 +220,7 @@ When you reach the judgement, and this is different for each individual, you are
 
 I'm sure they'll tell you all manner of lies and half-truths about that. If you pray to Saint Dorian three times a day and give 40% of your income to the church, he'll make sure that you'll start half of the way down the road to Heaven in the Valley of Death. If you tithe another 10% on top of that, Saint Dorian will make sure you're not
 
-bothered by demons. And if you buy our replica of Saint Dorian's jaw bone for only £300, he will ensure that it won't rain on you at all while you're walking down the Valley.
+bothered by demons. And if you buy our replica of Saint Dorian's jaw bone for only Â£300, he will ensure that it won't rain on you at all while you're walking down the Valley.
 
 It's like the fucking mafia.
 
@@ -734,11 +734,11 @@ Check.
 
 AT THE 400 YEAR MARK, THE PONTIFF BEGAN THE QUEST OF UNITING THE DOCUMENTS AND RELICS OF THE CANONS. THIS CAUSED A BIT OF TENSION IN THE CHURCH, AND A REVOLUTION IN THE CAPITAL. DEMOCRACY FOLLOWED.
 
-Ã
+Ãƒ
 
 WITH DEMOCRACY CAME THINGS LIKE THE PRINTING PRESS, GUNS, MEDECINE, SCIENCE, ARCHITECTURE, ALL THAT GOOD STUFF...BUT THINGS ARE GETTING DARKER; THE BARBARIANS ARE ONCE AGAIN CLOSING IN, AND THERE IS A GREAT THREAT FROM WITHIN, FROM THE GROWING BLACK FAITH.
 
-Ã
+Ãƒ
 
 MANY OF THE SIGNIFICANT CANONS WHO WOULD NOT GIVE UP THEIR RELICS
 
@@ -884,7 +884,7 @@ This one I like a lot. I actually envision it as a half-barbarian city. My thoug
 
 ). WHILE THE CITIES BUILT THEMSELVES UP, THE HINTERLAND LOST GROUND. YEAR BY YEAR, SETTLEMENTS WERE LOST TO BARBARIAN INVASION, ORC RAIDS, AND THE SLOW GRIND OF TIME; PESTILENCE, DIMINISHING POPULATIONS IN THE HINTERLAND (DUE TO MIGRATION TO THE CITIES), AND THE BLACK FAITH ALL CAUSED REMOTE SETTLEMENTS TO DWINDLE AND VANISH.
 
-Ã
+Ãƒ
 
 FOR THESE REMOTE PLACES, IT IS USUALLY RELIGION, NOT GOVERNMENT THAT KEEPS THE AVERAGE VILLAGE FROM BEING CONSUMED. PRIESTS AND KNIGHTS FROM THE ABBEYS ARE THE ONLY MILITARY PRESENCE FOR MANY OF THESE PLACES, EVEN LARGE SETTLEMENTS OF 2500 PEOPLE AND MORE, IN SOME CASES.
 
@@ -1566,13 +1566,13 @@ HAR HAR. YOU LIKED THAT, EH? I DUNNO WHERE I GOT THAT FROM, BUT IT SEEMED CREEPY
 
 It is damn creepy, and sinister enough for flavour. I don't know what 3000 year old human skins would look like, but, I imagine, regardless of what they look like, it must be unnerving to gaze upon them.
 
-Ì
+ÃŒ
 
 DOES THIS MEAN 'RIGHT ON BLACKY'?
 
 Pretty much. It's a check mark, but I suppose that's what Hotmail does to it, eh? And here I thought I was being clever by using the symbol instead of typing out the words.
 
-Ã!
+Ãƒ!
 
 I like the idea of some canon hiding a particular relic in the neighbourhood of Eastwitch as a springboard to an adventure.
 

@@ -4,6 +4,7 @@ author: Dr. Archibald Beaumont, Doctor of Sacred Letters of Lord's University
 kind: An Account of the Lives of the Imperial Saints
 order: 1
 summary: The authoritative account of the saints — the four orders, the eleven offices, and the nine sects of the Church.
+toc: true
 ---
 
 ## PREFACE — Of the Rise and Governance of the Saintly Faith

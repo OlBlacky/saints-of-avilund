@@ -20,7 +20,7 @@ Baudri
 
 Scion. 1210-1350. Most ruthless Emporer ever.
 
-Brogard the Cruel Feral who razed much of the Empire around ­450.
+Brogard the Cruel Feral who razed much of the Empire around â€”450.
 
 Canaan
 
@@ -70,7 +70,7 @@ Younger sister to Gaul and Riven. Raped and Murdered by Gaul.
 
 Scion. 700-804. Started First Inquisition with Prospectus Imperialis ex Daemonica
 
-Norlunders Kells who appear in ­650 from the islands. Settle north of Waldheim.
+Norlunders Kells who appear in â€”650 from the islands. Settle north of Waldheim.
 
 Odopentadaaman Elder name for Men.
 
@@ -78,7 +78,7 @@ Pentaganet
 
 Elders who practiced Old Magic. Left Avilund for the Islands. Create the Pentadaaman as servants and warriors. Also create the Decadaaman (true Ferals).
 
-Pentadaaman Ferals created by the Pentaganet Elders in ­30,000.
+Pentadaaman Ferals created by the Pentaganet Elders in â€”30,000.
 
 Pilgrims of Vander Crusading Order under St. Ulric. Created in 333 for the Second Crusade.
 
@@ -124,7 +124,7 @@ The Holy Island. Home of Avitus.
 
 Valdenwail.
 
-Herditary Castle of the Scion's line. Started in ­1250.
+Herditary Castle of the Scion's line. Started in â€”1250.
 
 Vermullund Elder City
 
@@ -138,11 +138,11 @@ AKA the First Crusade. 244. Pilgrimage to the Isle of Vander. Ends in tragedy.
 
 Age of New Magic 0 to 745. Also called Second Age of Imperial Expansion
 
-Age of Rebuilding -450 to ­50. Recovery of the Empire from the destruction of Brogard.
+Age of Rebuilding -450 to â€”50. Recovery of the Empire from the destruction of Brogard.
 
 Bram'Cairn Vessel that bore Sebald, Dunstan and Barnabus to Avilund. Kellish name meaning `without burial'
 
-Colegium Waldheim. AKA Colleagues of Waldheim. Created in ­1199 by Ignatius, Anselm and Gratus. These men met with the last of the Elders, and learned much from them in a short time.
+Colegium Waldheim. AKA Colleagues of Waldheim. Created in â€”1199 by Ignatius, Anselm and Gratus. These men met with the last of the Elders, and learned much from them in a short time.
 
 Crusade, First
 
@@ -166,7 +166,7 @@ Inquisition, Third 1510-present. Presently, the Inquisition is quiet, but active
 
 Novae res Sanguinus 1348. Bloody Revolution. Primus Deus Fidelis Elder name for the Faith of the Odopentadaaman. Prospectus ex Veneficium Document penned by Tancred in 889. Makes magic illegal. Prospectus Imperialis ex Daemonica Document penned in 745. Starts Inquisition. Repugo Imperialis 1210-1348. Started by Casparian Monk David of Sandalstone.
 
-Books and knowledge destroyed and Lost. Rule of Saint Rivenghast -1245. Penned by Sebald. First document of the PDF. Saeculum Dominae Humanitas A Avilund Age of the Rule of Men in Avilund. Saeculum Humanitas A Avilund Age of Men in Avilund. ­1400 to present. Saceulum Ingenium Aurum Golden Age of Invention. 1348-1548. Saeculum Maximus Congrecius Age of Great Migration. ­1400 to ­1273. Saeculum Noctis Obscuris. 889-1348. Begins after the Prospectus ex Veneficium is
+Books and knowledge destroyed and Lost. Rule of Saint Rivenghast -1245. Penned by Sebald. First document of the PDF. Saeculum Dominae Humanitas A Avilund Age of the Rule of Men in Avilund. Saeculum Humanitas A Avilund Age of Men in Avilund. â€”1400 to present. Saceulum Ingenium Aurum Golden Age of Invention. 1348-1548. Saeculum Maximus Congrecius Age of Great Migration. â€”1400 to â€”1273. Saeculum Noctis Obscuris. 889-1348. Begins after the Prospectus ex Veneficium is
 
 penned. Mages go underground.
 

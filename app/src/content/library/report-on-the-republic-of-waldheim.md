@@ -88,7 +88,7 @@ Royal Regimental Court is a military court, which I am not familiar enough with 
 
 Republic Law Court is the new law institution, implemented shortly after 1346. There are 2 divisions of this court; Common Law and Equity.
 
-The Common Law division has 4 levels. From top-to-bottom they are; · The Senate Bench · The Court of Common Council · County Court · Justices of the Peace.
+The Common Law division has 4 levels. From top-to-bottom they are; Â· The Senate Bench Â· The Court of Common Council Â· County Court Â· Justices of the Peace.
 
 Justices of the Peace are the judges that administer most Republic Common Law. In large parishes they have their own buildings and sit often, though some counties have but a single Justice who travels from parish to parish, setting up an impromptu court to hear cases. Many prisoners in these counties wait a very long time before their case is heard.
 
@@ -112,7 +112,7 @@ When I began my investigation of the nobility of Waldheim, I was shocked to lear
 
 Cryptic matters of intranobility politics aside, the framework of the nobility is quite a simple matter, compared to the systems of peerage we are familiar with south of the Imperial Septum. There are but 5 ranks of nobles, plus two ranks of acknowledgment.
 
-The 5 ranks of nobility from top-to-bottom; · King · Duke · Count · Earl · Baron
+The 5 ranks of nobility from top-to-bottom; Â· King Â· Duke Â· Count Â· Earl Â· Baron
 
 The present King is Goering Severinius. Goering is the patriarch of the Severinius family, and is as firm a picture of Old Blood as one would expect in a king. He is 61 years old, and is the picture of health and vitality. He spends most of his time in the City, though his throne is technically in Stonesaddle. Though he is difficult to approach on account of his retinue and guards, the man is only somewhat aloof in his dealings with people, and he does keep appointments with people outside the gentry.
 
@@ -132,7 +132,7 @@ Barons are wealthy land owners, and are the basic unit of organization for the p
 
 All members of these ranks are referred to as `Lord' by those beneath them, but amongst peers, it is common to call them by their polity name.
 
-The 2 ranks of acknowledgment are; · Knight · Esquire
+The 2 ranks of acknowledgment are; Â· Knight Â· Esquire
 
 It is possible for laymen to enter into the nobility through either of these two ranks of acknowledgment. These two ranks are markedly different.
 
