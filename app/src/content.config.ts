@@ -23,4 +23,13 @@ const scriptorium = defineCollection({
   }),
 });
 
-export const collections = { library, scriptorium };
+// A long in-world text split into navigable entries — the Journal.
+const journal = defineCollection({
+  loader: glob({ pattern: '**/*.{md,mdx}', base: './src/content/journal' }),
+  schema: z.object({
+    title: z.string(),
+    order: z.number().default(0),
+  }),
+});
+
+export const collections = { library, scriptorium, journal };

@@ -1,0 +1,46 @@
+---
+import Base from '../../../layouts/Base.astro';
+import { url } from '../../../lib/url';
+import { getCollection, render } from 'astro:content';
+
+export async function getStaticPaths() {
+  const entries = (await getCollection('journal')).sort((a, b) => a.data.order - b.data.order);
+  return entries.map((entry, i) => ({
+    params: { slug: entry.id },
+    props: {
+      entry,
+      prev: entries[i - 1] ?? null,
+      next: entries[i + 1] ?? null,
+      index: i + 1,
+      total: entries.length,
+    },
+  }));
+}
+
+const { entry, prev, next, index, total } = Astro.props;
+const { Content } = await render(entry);
+---
+
+<Base title={`${entry.data.title} — Journal of Brother Stephan Dunmorrow`} description="A journal entry.">
+  <p class="back-link"><a href={url('library/journal/')}>← Contents</a></p>
+
+  <header class="saint-head">
+    <p class="eyebrow">Journal of Brother Stephan Dunmorrow · Entry {index} of {total}</p>
+    <h1>{entry.data.title}</h1>
+  </header>
+
+  <article class="prose"><Content /></article>
+
+  <nav class="entry-nav">
+    {prev ? (
+      <a class="entry-nav__prev" href={url(`library/journal/${prev.id}/`)}>← {prev.data.title}</a>
+    ) : (
+      <a class="entry-nav__prev" href={url('library/journal/')}>← Contents</a>
+    )}
+    {next ? (
+      <a class="entry-nav__next" href={url(`library/journal/${next.id}/`)}>{next.data.title} →</a>
+    ) : (
+      <a class="entry-nav__next" href={url('library/')}>The Library →</a>
+    )}
+  </nav>
+</Base>

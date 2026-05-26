@@ -3,9 +3,26 @@ import Base from '../../layouts/Base.astro';
 import { url } from '../../lib/url';
 import { getCollection } from 'astro:content';
 
-const docs = (await getCollection('library')).sort(
-  (a, b) => (a.data.order ?? 100) - (b.data.order ?? 100)
-);
+const docs = await getCollection('library');
+const items = [
+  ...docs.map((doc) => ({
+    title: doc.data.title,
+    href: url(`library/${doc.id}/`),
+    kind: doc.data.kind,
+    author: doc.data.author,
+    summary: doc.data.summary,
+    order: doc.data.order ?? 100,
+  })),
+  // The Journal is a multi-part text with its own paged reader.
+  {
+    title: 'From the Journal of Brother Stephan Dunmorrow',
+    href: url('library/journal/'),
+    kind: 'A travel journal, 1746–1747',
+    author: 'Brother Stephan Dunmorrow, Envoy of St. Ignatius',
+    summary: 'An account of the journey to the Valdenwail and the long incarceration there — in fifteen entries.',
+    order: 4,
+  },
+].sort((a, b) => a.order - b.order);
 ---
 
 <Base title="The Library" description="The in-world texts of Avilund — chronicles, accounts, and primers.">
@@ -14,12 +31,12 @@ const docs = (await getCollection('library')).sort(
   <p class="lede">The texts of the Empire — the accounts, histories, and primers as their authors set them down.</p>
 
   <ul class="doc-list">
-    {docs.map((doc) => (
+    {items.map((item) => (
       <li>
-        <a class="title" href={url(`library/${doc.id}/`)}>{doc.data.title}</a>
-        {doc.data.kind && <div class="by"><em>{doc.data.kind}</em></div>}
-        {doc.data.author && <div class="by">by {doc.data.author}</div>}
-        {doc.data.summary && <p class="card__blurb">{doc.data.summary}</p>}
+        <a class="title" href={item.href}>{item.title}</a>
+        {item.kind && <div class="by"><em>{item.kind}</em></div>}
+        {item.author && <div class="by">by {item.author}</div>}
+        {item.summary && <p class="card__blurb">{item.summary}</p>}
       </li>
     ))}
   </ul>

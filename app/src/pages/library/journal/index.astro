@@ -1,0 +1,29 @@
+---
+import Base from '../../../layouts/Base.astro';
+import { url } from '../../../lib/url';
+import { getCollection } from 'astro:content';
+
+const entries = (await getCollection('journal')).sort((a, b) => a.data.order - b.data.order);
+const first = entries[0];
+---
+
+<Base title="From the Journal of Brother Stephan Dunmorrow" description="A travel journal of the journey to the Valdenwail, 1746–1747.">
+  <p class="back-link"><a href={url('library/')}>← The Library</a></p>
+  <p class="eyebrow">A Travel Journal · 1746–1747</p>
+  <h1>From the Journal of Brother Stephan Dunmorrow</h1>
+  <p class="lede">
+    Envoy of Prelate Calvin Van Miserly of St. Ignatius — an account of his journey through the
+    Hedge to the Valdenwail, and his long, strange incarceration within its sunless walls.
+  </p>
+
+  <p style="margin:1.6rem 0;">
+    <a class="tag tag--fundator" href={url(`library/journal/${first.id}/`)}>Begin reading →</a>
+  </p>
+
+  <h2>Entries</h2>
+  <ol class="entry-list">
+    {entries.map((e) => (
+      <li><a href={url(`library/journal/${e.id}/`)}>{e.data.title}</a></li>
+    ))}
+  </ol>
+</Base>

@@ -1,0 +1,41 @@
+---
+title: "October 7"
+order: 2
+---
+
+Today brought more hope with it, but ended with less.
+
+When we both agreed that it must be somewhere around daybreak, we packed up and made our way. We were not convinced of our reckoning for some time; the vault of the Hedge was close in about us for a couple hours (if time exists in such a piceous void as this portion of the Hedge), and we saw no hint of light all that time. Finally, though, the way became more cavernous, and through the brambles above, we again saw light. Such was my joy at the sight of those wan cobbles ahead of us that it was long before I noticed the condition of my guide.
+
+My good man, Janvermin, had been using what little light we had with us (some candles and one anemic lantern which burns more oil than it casts light) to find our way. But he had been using his hands to find our way in some of the more nigrous and sigmoid portions of the journey, and he was covered in wicked lacerations too numerous to tabulate. I implored him to stop so that I could dress his wounds.
+
+Upon cleaning the wounds with what little water we could spare, I noticed that they were grossly inflamed as well. I am no Doctor of Medicine, but I know a dangerous wound when I see one, and he has scores. Already, he has developed a cough and a pallor that worries me.
+
+At any rate, we continued on. The day was full of the same findings as yesterday; the meandering conduit within the Hedge, sometimes following the ancient and worn cobbles, sometimes not, rare sightings of structures, perhaps forgotten by all but us, through this swart nettle.
+
+Finally, though, the road and the path widened, and we followed a straight path up a hill for several hundred yards. The road here, though grown over considerably, revealed some particularly large stones that had engravings of all manners of things upon them. At a few spots along the way, the broken remnants of old statues of many sizes, now covered in the same bracken as the rest of the land, evoked disconsolate images of a great Empire, erstwhile and unremembered. I wanted to examine some of the carvings and statues, but Janvermin would abide none of my distractions. Today, I did not argue with him. He is now a sick man.
+
+That steep approach is bathed in a wan light, as the gorse above is presumably not so thick. Towards the top of the hill, we were able to see quite clearly, a stone wall which obstructed our path, and a great archway in that wall through which we might pass. As before, I misjudged the size of that which I observed. The wall and the archway seemed to get no nearer with my first many steps, until it seemed like we were marching up a most unnatural hill, which checked our progress. But it was long after apparent that the hill was just longer and higher than I thought, as was the wall, and the width of the very road leading to it. Though this misconception is partly due to clever engineering and tricks of scale and perspective, it is also largely due, I am sure, to the unnatural and oppressive nature of the Hedge, and it's adeptness for inspiring confusion and doubt.
+
+At length, we came to the top of the hill, and found ourselves before a great wall and a great archway. I should think that it may have been a veritable splendour of the ingenuity, industry and will of Men, if the wall and the aperture could be seen in the unobstructed light of day. But, though some little light did come through the furze above, it was still no brighter than a cloudy twilight. Details and convolutions upon the wall and the archway there were aplenty. Too many, in fact, to get a focus on one, for the firsttime-observer of this magnificent and cyclopean structure. I should have liked to stay a while and recorded some of them. There is an entire encyclopedia of information and history in that archway, I am sure. But, it was not to be. For starters, my guide would not have permitted a lingering. But it was our new company that hastened things along.
+
+For, we were not alone under that prodigious structure. Under the archway stood a trio of sentinels, as quiet as they were dark. We were both quite frightened when we saw them, and no one stirred a fig for quite some time. I confess that I went through a series of thoughts and emotions. The figures, under that enormous archway, looked like toy soldiers beneath a more commonly sized archway. They provoked fear at first, but then doubt; I thought that perhaps they were statues, so still they stood. But then I knew that they were living things, of a stamp. They did not move or make noise or give any other indication to the observer of their prescience, but they did inspire one to realization and further fear.
+
+Finally, after many exchanged glances and whispers between us, Janvermin and I approached the trio of sentinels. That they are of a human proportion and configuration is a good place to begin my description of them. They are adorned with the trappings of men, ancient though they are. There, their likeness to living, breathing men stops.
+
+These sentinels stand about as large as the largest of men. They are clad in bronze armour so old and thick with grime of ages as to appear black in all but the most elevated of reliefs. Their armour is the plate variety that one can now find in museums and the halls of the warlike Saints and Nobles; it covers every possible bit of flesh, and is so bulky and heavy that it was, in its day, more of a liability than an asset, and has thus been replaced by lighter armours in our times. The begrimed armour is covered, on all surfaces, by very intricate relief. I have not had the opportunity, as one could well imagine, to clean and inspect one of these suits properly, but even though the grit of a
+
+dozen centuries chokes those friezes, I could plainly see that the armour was beautiful, and that each suit must have a great story to tell.
+
+But that is neither here nor there. The issue at hand was salutations, and those were of the most unusual variety I have ever experienced, and hope never to experience again. I remember a time, during my Investiture at the Seminary, that some of my fellow students would sing the most salacious song. It was entitled Lonely Sister Rebeccah Tuck, and it was full of all the obvious limericks you might expect from such a title. Anyway, there were verses that would stick in my head for days at a time, and it felt like a veritable intrusion into my own mind. Meeting the sentinels was much the same. That they spoke directly inside my head, I don't doubt, though it was not the same as hearing one speak with a corporeal tongue. I was given the distinct impression by the sentinels that I would not be able to pass without some explanation as to my business in the Valdenwail.
+
+I croaked out an explanation. "Sirs; my apologies for intruding upon your most serene and amicable home. I am Brother Stephan, Envoy from the Seminary of St. Ignatius, and I come bearing a marqued letter from His Most Enlightened Prelate Van Miserly, to be delivered to the hands of the Scion of St. Avitus, and none other." I remember looking at my toes the whole time I delivered this speech, and the shiny creases on the folds of the worn leather of my shoes.
+
+I was then aware that I was free to pass, but that Janvermin was not. I stammered a plea for him to accompany me, but it was met with a wall of obstinate will, and I knew that he could not pass. He knew it too.
+
+"I will go down the hill, and await your return" Janvermin said to me through his weak coughs. "I do not wish to wait under the gaze of these things, and under the maw of this wall. I wish you well. Though this place is foreboding, I feel you have safe leave. If they wished you harm, it would have been done to you already. Fare you well, Envoy"
+
+I nodded a weak nod, and approached the sentinels. Finally they moved; they pivoted on one heel, and pointed into the archway, to the gloom beyond. And then, one by one, they turned back to their previous resolute stance.
+
+I journeyed past the sentinels, leaving Janvermin behind. He has been in my mind all the rest of this dreary and trying day. For the Gate is but the halfway point in the Hedge, if what I have read is true, and I have at least 2 days to spend, clawing through this caliginous bramble, before I am delivered from it.
+
