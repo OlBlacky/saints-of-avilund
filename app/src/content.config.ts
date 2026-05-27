@@ -36,6 +36,10 @@ const texts = defineCollection({
   schema: z.object({
     title: z.string(),
     order: z.number().default(0),
+    // Optional per-part illustration (a "plate"); see the library collection above.
+    plate: z.string().optional(),
+    plateAlt: z.string().optional(),
+    plateCaption: z.string().optional(),
   }),
 });
 

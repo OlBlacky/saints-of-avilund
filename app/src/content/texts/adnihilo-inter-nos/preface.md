@@ -1,0 +1,6 @@
+---
+title: "Preface"
+order: 1
+---
+
+It is most common to hear the utterance in any City, Town, Village, Hamlet and Cottage of the Empire, the terrible and loathsome word "Demon". Most men and women, including those of Breeding and Education, are ignorant of the truth of that word, "Demon", and use it to label nearly every type of nuisance and unpalatable creature or happening that besets them. However, blessed are the ignorant, and blessed are the deeds that spring from their fears and grievances. Surely, for every hundred cries of "Demon", there is one cry that rings true, and it is up to the servants of the Saintly to investigate every cry and plea with due vigilance and prejudice, and find what true demons do lurk at the edge of the shadow of fear. It is the charge of the Ordo Calculus Veritas to be the eyes and ears of the Saintly Faith, and to be its hammer when the demon is found. In our Sacred Duty, we must not forget that it is only through brutal prejudice and merciless hunting for our prey that we may clean the taint of the Children of the Abyss from the Empire, and though a hundred innocent men and women might bleed before the demon is uncovered, we must accept that their deaths are more acceptable than the life of one demon.

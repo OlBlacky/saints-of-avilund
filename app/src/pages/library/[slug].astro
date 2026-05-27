@@ -76,6 +76,13 @@ if (props.type === 'doc') {
 
       {work.lede && <p class="lede">{work.lede}</p>}
 
+      {work.plate && (
+        <figure class="plate">
+          <img src={url(work.plate)} alt={work.plateAlt ?? ''} />
+          {work.plateCaption && <figcaption>{work.plateCaption}</figcaption>}
+        </figure>
+      )}
+
       {first && (
         <p style="margin:1.6rem 0;">
           <a class="tag tag--fundator" href={url(`library/${work.slug}/${partSlug(first.id)}/`)}>Begin reading →</a>

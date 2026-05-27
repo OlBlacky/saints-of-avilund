@@ -44,6 +44,13 @@ const partUrl = (e: typeof entry) => url(`library/${workSlug}/${e.id.split('/').
     <h1>{entry.data.title}</h1>
   </header>
 
+  {entry.data.plate && (
+    <figure class="plate">
+      <img src={url(entry.data.plate)} alt={entry.data.plateAlt ?? ''} />
+      {entry.data.plateCaption && <figcaption>{entry.data.plateCaption}</figcaption>}
+    </figure>
+  )}
+
   <article class="prose"><Content /></article>
 
   <nav class="entry-nav">
