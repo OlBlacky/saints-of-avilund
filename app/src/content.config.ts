@@ -10,6 +10,11 @@ const library = defineCollection({
     kind: z.string().optional(), // e.g. "Ecclesiastical history", "Primer"
     order: z.number().default(100),
     summary: z.string().optional(),
+    // Optional leading illustration (a "plate"). `plate` is a path under
+    // public/, e.g. "images/woodcuts/foo.jpg" — resolved through url() in the route.
+    plate: z.string().optional(),
+    plateAlt: z.string().optional(),
+    plateCaption: z.string().optional(),
   }),
 });
 

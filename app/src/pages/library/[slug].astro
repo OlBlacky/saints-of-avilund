@@ -58,6 +58,12 @@ if (props.type === 'doc') {
         <h1>{docData.title}</h1>
         {docData.author && <p class="lede">{docData.author}</p>}
       </header>
+      {docData.plate && (
+        <figure class="plate">
+          <img src={url(docData.plate)} alt={docData.plateAlt ?? ''} />
+          {docData.plateCaption && <figcaption>{docData.plateCaption}</figcaption>}
+        </figure>
+      )}
       <article class="prose">{DocContent && <DocContent />}</article>
     </>
   ) : (

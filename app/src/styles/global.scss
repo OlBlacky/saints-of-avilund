@@ -159,6 +159,11 @@ figure { margin: 1.5rem 0; }
 figure img { width: 100%; height: auto; border: 1px solid var(--rule); box-shadow: 0 2px 8px var(--shadow); }
 figcaption { color: var(--ink-soft); font-size: 0.95rem; font-style: italic; margin-top: 0.5rem; }
 
+// A leading illustration ("plate") — sized and centred like a book engraving,
+// not full-bleed. Inherits the border + shadow from `figure img` above.
+.plate { max-width: 26rem; margin: 1.8rem auto 2.4rem; text-align: center; }
+.plate figcaption { font-variant: small-caps; letter-spacing: 0.03em; text-align: center; }
+
 // ── Search ───────────────────────────────────────────────────
 .pagefind-ui {
   --pagefind-ui-primary: var(--oxblood);

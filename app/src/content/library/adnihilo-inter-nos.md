@@ -4,6 +4,9 @@ author: "Inquisitor-Cardinal Hanzig Van Tassel, Prelate of St. Kerrigan"
 kind: "A treatise on demons and possession, 1347"
 order: 6
 summary: "On the demons of the Abyss that walk among Men, and the rites for cases of possession."
+plate: "images/woodcuts/adnihilo-examination.png"
+plateAlt: "Woodcut: a veiled woman seated and bound at a table, examined by a circle of hooded clergy by lamplight."
+plateCaption: "An examination for the signs of possession. Woodcut by Albrecht Türmann of Waldheim, from the first impression."
 ---
 
 Preface It is most common to hear the utterance in any City, Town, Village, Hamlet and Cottage of the Empire, the terrible and loathsome word "Demon". Most men and women, including those of Breeding and Education, are ignorant of the truth of that word, "Demon", and use it to label nearly every type of nuisance and unpalatable creature or happening that besets them. However, blessed are the ignorant, and blessed are the deeds that spring from their fears and grievances. Surely, for every hundred cries of "Demon", there is one cry that rings true, and it is up to the servants of the Saintly to
