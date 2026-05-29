@@ -1,6 +1,9 @@
 ---
 title: "Adnihilo Taxonomie — Of Their Forms and Powers"
 order: 3
+plate: "images/woodcuts/adnihilo-of-their-powers.png"
+plateAlt: "Woodcut: a towering many-limbed horned demon with multiple eyes and outstretched wings, wreathed in roaring flame, looming over tiny fleeing figures."
+plateCaption: "A fiend of the Greater Order, with the mastery of Fire. Woodcut by Albrecht Türmann of Waldheim."
 ---
 
 Of those demons with bodily form, there are countless different species and sizes ranging from that of a large rat, to those of gigantic proportions. They may have any number of limbs, heads, eyes, hands, legs, claws and so forth, but the Ordo encounters a preponderance of those that are roughly the size and composition of Men, no doubt owing to their desire to blend into our Societie, and their ability to change their form in this world. Though many have but one form in our World, there are some few who can change forms and sizes, and these provide the greatest challenge for the Inquisitor. Many demons come to our World in their soul-form only, and seek out the bodies of victims or willing supplicants to possess. These also provide a great challenge for the Inquisitor, but they may often be dealt with by the Brethren of St. Ignatius, who are known as Exorcists of the First Order. It is most often the case that a demon-soul forced from its host will return to the Abyss, but there are some powerful few who might go from body to body before they are dispatched. These are the most problematic, and require the assistance of other Canons to dispense with. It is well that the Inquisitor destroy any potential hosts, and possibly-willing supplicants, with or without proof of such, before the Exorcism is performed. Such was the case in Hamstonfast in 1021, and though the Empire reeled at the success of Brother-Inquisitor Dredfall's efforts, the demon in that case was banished.

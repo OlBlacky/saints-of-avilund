@@ -1,6 +1,9 @@
 ---
 title: "Adnihilo Taxonomie — Of the Finding of Demons"
 order: 2
+plate: "images/woodcuts/adnihilo-of-the-finding.png"
+plateAlt: "Woodcut: hooded inquisitors lowering a bound, robed suspect by ropes into a dark river at night, torchbearers and onlookers on the bank."
+plateCaption: "The trial by water of a suspected demon-host. Woodcut by Albrecht Türmann of Waldheim."
 ---
 
 It is not vital for the Inquisitor, least of all the Inquisitor-Innovitiae, to see the demon amongst his flock. If there be common complaint of demon and demonic doings, it is well that the Inquisitor find what might be the demon, and put an end to it by whatever means are available him. Trial and drowning are preferred, but fire, the rope, the blade and the mob are all viable tools for the meting out of the demon, or the supposed demon, and his minions. It is better that one person suspected of demonic cavorting or demonic hosting be slain, though no proof be found, than any body of people be left wanting for justice and safety. Again, if one hundred suspects are put to water or fire or blade, surely, one or more demons will be sent permanently from this world.

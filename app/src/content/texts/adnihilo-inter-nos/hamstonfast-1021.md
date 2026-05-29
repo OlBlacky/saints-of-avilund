@@ -1,6 +1,9 @@
 ---
 title: "The Account of Hamstonfast, 1021"
 order: 4
+plate: "images/woodcuts/adnihilo-hamstonfast.png"
+plateAlt: "Woodcut: an inquisitor in dark robes confronting a black-bodied horned demon within a carved sigil-circle, possessed villagers fighting around them in torchlight."
+plateCaption: "Brother-Inquisitor Dredfall confronting Gazzlemast within the Great Circle. All Hallows, 1021. Woodcut by Albrecht Türmann of Waldheim."
 ---
 
 Brother-Inquisitor Dredfall it was who was selected to investigate the terrible goings on in the doomed village of Hamstonfast in One-Thousand and Twenty-One. Reports of a cult of Black Faith in that town were many, and given the proximity of the place to Irenaeus, it was suspected that a cult of Ultan had been uncovered. However, Inquisitor-Prelate Mortican identified in the reports some articles which ruled out the likelihood of the Ultanites, and suggested a straight-forward, albeit markedly dangerous, demon-worshiping cult. The reports suggested that there would not be a Man in the Empire capable of withstanding the will of the demon that plagued Hamstonfast. And so it was that Dredfall was chosen; his will was unmatched, even by Mortican; Dredfall, when once charged with being a demon himself, used a hot brand to burn the entirety of the Prospectus Imperialis Ex Daemonica onto his legs, arm and chest, though the pain of it must have been unrivaled.
