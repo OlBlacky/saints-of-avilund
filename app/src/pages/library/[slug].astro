@@ -60,13 +60,15 @@ if (props.type === 'doc') {
           <p class="byline">{docData.author}{docData.author && docData.date ? ' · ' : ''}{docData.date}</p>
         )}
       </header>
-      {docData.plate && (
-        <figure class="plate">
-          <img src={url(docData.plate)} alt={docData.plateAlt ?? ''} />
-          {docData.plateCaption && <figcaption>{docData.plateCaption}</figcaption>}
-        </figure>
-      )}
-      <article class="prose">{DocContent && <DocContent />}</article>
+      <article class="prose">
+        {docData.plate && (
+          <figure class="plate plate--inset">
+            <img src={url(docData.plate)} alt={docData.plateAlt ?? ''} />
+            {docData.plateCaption && <figcaption>{docData.plateCaption}</figcaption>}
+          </figure>
+        )}
+        {DocContent && <DocContent />}
+      </article>
     </>
   ) : (
     <>

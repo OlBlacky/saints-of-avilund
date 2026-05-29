@@ -88,7 +88,7 @@ main {
   margin: 0 auto;
   padding: 2.5rem 1.5rem 4rem;
 }
-.prose { max-width: var(--measure); }
+.prose { max-width: var(--measure); display: flow-root; }
 .prose p, .prose ul, .prose ol { margin: 0 0 1.1rem; }
 
 h1, h2, h3 { font-family: var(--display); color: var(--ink); line-height: 1.2; }
@@ -177,6 +177,22 @@ figcaption { color: var(--ink-soft); font-size: 0.95rem; font-style: italic; mar
 // not full-bleed. Inherits the border + shadow from `figure img` above.
 .plate { max-width: 26rem; margin: 1.8rem auto 2.4rem; text-align: center; }
 .plate figcaption { font-variant: small-caps; letter-spacing: 0.03em; text-align: center; }
+
+// Inset variant — floats alongside the text instead of sitting above it.
+// Used on body-text pages (part pages, single library docs). The centered
+// base .plate is kept for frontispieces.
+.plate--inset {
+  max-width: 16rem;
+  float: right;
+  margin: 0 0 1rem 1.5rem;
+}
+@media (max-width: 40rem) {
+  .plate--inset {
+    float: none;
+    max-width: 100%;
+    margin: 1.5rem auto;
+  }
+}
 
 // ── Search ───────────────────────────────────────────────────
 .pagefind-ui {
