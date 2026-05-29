@@ -11,18 +11,23 @@ const siteName = 'Saints of Avilund';
 const fullTitle = title ? `${title} — ${siteName}` : siteName;
 const pathname = Astro.url.pathname;
 
+// Three top-level sections + Search. Each item carries a list of URL prefixes
+// to highlight against, so the existing top-level routes (/saints/, /library/,
+// etc.) light up "The Setting" without needing to be moved under /setting/.
 const nav = [
-  { label: 'The Saints', href: url('saints/') },
-  { label: 'The Library', href: url('library/') },
-  { label: 'History', href: url('history/') },
-  { label: 'Geography', href: url('geography/') },
-  { label: 'Scriptorium', href: url('scriptorium/') },
-  { label: 'Search', href: url('search/') },
+  { label: 'The Setting', href: url('setting/'),
+    matches: ['setting/', 'saints/', 'library/', 'history/', 'geography/'] },
+  { label: 'The System', href: url('system/'),
+    matches: ['system/'] },
+  { label: 'Designers’ Notes', href: url('scriptorium/'),
+    matches: ['scriptorium/'] },
+  { label: 'Search', href: url('search/'),
+    matches: ['search/'] },
 ];
 
-function isCurrent(href: string) {
-  if (href === url('')) return pathname === url('');
-  return pathname.startsWith(href);
+function isCurrent(item: { href: string; matches: string[] }) {
+  if (item.href === url('')) return pathname === url('');
+  return item.matches.some((m) => pathname.startsWith(url(m)));
 }
 ---
 
@@ -44,7 +49,7 @@ function isCurrent(href: string) {
         </a>
         <nav class="site-nav" aria-label="Primary">
           {nav.map((item) => (
-            <a href={item.href} aria-current={isCurrent(item.href) ? 'page' : undefined}>
+            <a href={item.href} aria-current={isCurrent(item) ? 'page' : undefined}>
               {item.label}
             </a>
           ))}

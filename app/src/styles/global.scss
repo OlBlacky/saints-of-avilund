@@ -215,6 +215,47 @@ figcaption { color: var(--ink-soft); font-size: 0.95rem; font-style: italic; mar
 .hero h1 { font-size: 3rem; letter-spacing: 0.04em; }
 .hero .lede { margin: 0.5rem auto 0; }
 
+// Marketing hero on the home page: a wide banner image above the tagline.
+// Unframed (it is not an in-world plate); just a soft shadow to lift it off
+// the parchment.
+.hero__image { margin: 0 0 1.5rem; }
+.hero__image img {
+  width: 100%; height: auto; display: block;
+  box-shadow: 0 4px 24px var(--shadow);
+}
+
+// Three-column pitch under the hero — the three distinctives.
+.pitch {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2.2rem;
+  max-width: 64rem;
+  margin: 2rem auto 2.5rem;
+}
+.pitch__column h2 {
+  font-size: 1.3rem;
+  margin: 0 0 0.5rem;
+  border-bottom: none;
+  padding-bottom: 0;
+}
+.pitch__column p { margin: 0; color: var(--ink-soft); }
+@media (max-width: 50rem) {
+  .pitch { grid-template-columns: 1fr; gap: 1.5rem; max-width: var(--measure); }
+}
+
+// The three doorways: same .grid + .card pattern as the section cards, but
+// force three columns on wide screens for the headline marketing feel.
+.doorways {
+  grid-template-columns: repeat(3, 1fr);
+  max-width: 64rem;
+  margin-left: auto;
+  margin-right: auto;
+}
+.doorways .card__name { font-size: 1.4rem; }
+@media (max-width: 50rem) {
+  .doorways { grid-template-columns: 1fr; }
+}
+
 .back-link { font-variant: small-caps; letter-spacing: 0.05em; font-size: 0.95rem; }
 
 .wip-banner {

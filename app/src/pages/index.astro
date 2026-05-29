@@ -1,41 +1,78 @@
 ---
 import Base from '../layouts/Base.astro';
 import { url } from '../lib/url';
-import { FUNDATORES } from '../lib/saints';
 
-const sections = [
-  { name: 'The Saints', href: url('saints/'), blurb: 'The full canon — three orders of eleven offices, and the nine Fundatores who founded the sects of the Church.' },
-  { name: 'The Library', href: url('library/'), blurb: 'The in-world texts of the Empire, beginning with Beaumont’s On the Side of Heaven.' },
-  { name: 'History', href: url('history/'), blurb: 'From the Elder ages, through the Crossing and the Empire, to the fractured present.' },
-  { name: 'Geography', href: url('geography/'), blurb: 'A continent between three seas, its map written over with the names of saints.' },
+const doorways = [
+  {
+    name: 'The Setting',
+    href: url('setting/'),
+    invite: 'The world of Avilund — its saints, its history, its geography, and the Library of in-world texts that record them.',
+  },
+  {
+    name: 'The System',
+    href: url('system/'),
+    invite: 'The tabletop rules of play — character generation, mechanics, and Game Master tools. Currently in design.',
+  },
+  {
+    name: 'Designers’ Notes',
+    href: url('scriptorium/'),
+    invite: 'Working drafts, design notes, and the artists’ reference file — for collaborators and the curious.',
+  },
 ];
 ---
 
-<Base description="A setting compendium for Saints of Avilund — the saints, the Library, the history, and the map of the continent.">
+<Base description="A low-fantasy tabletop setting — three civilizations on one continent, read through the primary documents of the world.">
   <section class="hero">
-    <p class="eyebrow">A Setting Compendium</p>
-    <h1>Saints of Avilund</h1>
+    <figure class="hero__image">
+      <img
+        src={url('images/pulp/dredfall-at-hamstonfast.png')}
+        alt="Brother-Inquisitor Dredfall stands within a sigil circle, sword in hand, facing the demon Gazzlemast amid the slaughtered All Hallows feast at Hamstonfast."
+        width="1344"
+        height="896"
+      />
+    </figure>
+    <p class="eyebrow">Saints of Avilund — A Setting Compendium</p>
+    <h1>A continent with a long memory.</h1>
     <p class="lede">
-      A continent with a long memory and a short attention span — inherited from the Elders,
-      contested with the Ferals, and bound together by a Church of saints.
+      Three civilizations have stood here. Two are forgotten.
+      The third is fracturing — and writing about it.
     </p>
   </section>
 
-  <div class="prose" style="margin:0 auto;">
-    <p>
-      Men came late to Avilund and built an Empire from what the Elders left behind. That Empire is
-      fractured now, but its Faith endures — a canon of saints reckoned in four orders and eleven
-      offices, with nine <a href={url('saints/')}>Fundatores</a> at its head:
-      {FUNDATORES.map((f, i) => (<>{i > 0 ? ', ' : ''}<a href={url(`saints/${f.slug}/`)}>{f.name}</a></>))}.
-    </p>
-  </div>
+  <section class="pitch">
+    <div class="pitch__column">
+      <h2>Three ages, one continent.</h2>
+      <p>
+        In Avilund the calendar reads <strong>1750</strong> in the capital, <strong>1350</strong>
+        in the south, and <strong>1050</strong> in the north — all at once. Move between them and
+        the world changes around you: printing presses to cathedrals to longhouses, in the
+        span of a journey.
+      </p>
+    </div>
+    <div class="pitch__column">
+      <h2>Low fantasy. No spectacle.</h2>
+      <p>
+        Magic is real and unwelcome. A miracle is unsettling, not a set piece.
+        The Faith has lost its crown but not its teeth. The Inquisitions are
+        mostly over. The dragons are not coming.
+      </p>
+    </div>
+    <div class="pitch__column">
+      <h2>Read the primary sources.</h2>
+      <p>
+        Everything you&rsquo;ll find here was written by someone inside the world —
+        and illustrated by three artists across three eras of the Empire&rsquo;s
+        print history. You aren&rsquo;t reading a manual. You are reading the evidence.
+      </p>
+    </div>
+  </section>
 
-  <ul class="grid">
-    {sections.map((s) => (
+  <ul class="grid doorways">
+    {doorways.map((d) => (
       <li>
-        <a class="card" href={s.href}>
-          <p class="card__name">{s.name}</p>
-          <p class="card__blurb">{s.blurb}</p>
+        <a class="card" href={d.href}>
+          <p class="card__name">{d.name}</p>
+          <p class="card__blurb">{d.invite}</p>
         </a>
       </li>
     ))}
