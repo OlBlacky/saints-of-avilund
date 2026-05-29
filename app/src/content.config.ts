@@ -7,7 +7,8 @@ const library = defineCollection({
   schema: z.object({
     title: z.string(),
     author: z.string().optional(),
-    kind: z.string().optional(), // e.g. "Ecclesiastical history", "Primer"
+    date: z.string().optional(),    // publication date (a string — covers ranges like "1746–1747")
+    kind: z.string().optional(),    // optional Context — rendered as the eyebrow above the title
     order: z.number().default(100),
     summary: z.string().optional(),
     // Optional leading illustration (a "plate"). `plate` is a path under

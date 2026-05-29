@@ -1,8 +1,6 @@
 ---
-title: A Setting Summary
-kind: An overview for newcomers
-order: 2
-summary: Avilund in brief — the Elders, the Ferals, the Empire, and the age that followed.
+title: "A Setting Summary"
+order: 5
 ---
 
 ## The World in Brief

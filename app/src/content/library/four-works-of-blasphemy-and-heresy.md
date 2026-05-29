@@ -1,5 +1,7 @@
 ---
 title: "Four Works of Blasphemy and Heresy"
+author: "Dr. Archibald Beaumont, Lord’s University"
+date: "December 15, 1738"
 kind: "On the cornerstones of the Humanist Subversion"
 order: 9
 summary: "Four recent works that form the foundation of the growing Humanist Subversion."

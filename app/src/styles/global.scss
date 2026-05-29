@@ -147,9 +147,23 @@ blockquote {
 
 // ── Library list ─────────────────────────────────────────────
 .doc-list { list-style: none; padding: 0; }
-.doc-list li { padding: 1.1rem 0; border-bottom: 1px solid var(--rule); }
+.doc-list li {
+  padding: 1.1rem 0;
+  border-bottom: 1px solid var(--rule);
+  display: flex;
+  gap: 1.2rem;
+  align-items: flex-start;
+}
+.doc-list__text { flex: 1; min-width: 0; }
 .doc-list .title { font-family: var(--display); font-size: 1.35rem; }
 .doc-list .by { color: var(--ink-soft); font-style: italic; }
+.doc-list__thumb-link { flex: 0 0 auto; display: block; line-height: 0; }
+.doc-list__thumb {
+  width: 96px; height: 96px;
+  object-fit: cover;
+  border: 1px solid var(--rule);
+  box-shadow: 0 2px 6px var(--shadow);
+}
 
 // Author byline on a multi-part work's contents page.
 .byline { color: var(--ink-soft); font-style: italic; font-size: 0.98rem; margin: 0 0 0.4rem; }

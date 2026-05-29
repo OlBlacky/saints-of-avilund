@@ -11,7 +11,8 @@ export interface Work {
   slug: string;      // folder under content/texts/ and first URL segment
   title: string;
   author?: string;
-  kind?: string;     // shown as the eyebrow, e.g. "A travel journal, 1746–1747"
+  date?: string;     // publication date (string — covers ranges like "1746–1747")
+  kind?: string;     // optional Context — rendered as the eyebrow above the title
   summary: string;   // one-line blurb for the Library index
   lede?: string;     // longer intro shown on the work's contents page
   plate?: string;        // optional frontispiece (path under public/), shown on the contents page
@@ -25,6 +26,7 @@ export const WORKS: Work[] = [
     slug: 'on-the-side-of-heaven',
     title: 'On the Side of Heaven',
     author: 'Dr. Archibald Beaumont, Doctor of Sacred Letters of Lord’s University',
+    date: '1698',
     kind: 'An Account of the Lives of the Imperial Saints',
     summary: 'The authoritative account of the saints — the four orders, the eleven offices, and the nine sects of the Church.',
     lede: 'Beaumont’s account of the saints: the four orders, the eleven offices, and the nine sects of the Church — in a preface and four books.',
@@ -34,7 +36,8 @@ export const WORKS: Work[] = [
     slug: 'journal',
     title: 'From the Journal of Brother Stephan Dunmorrow',
     author: 'Brother Stephan Dunmorrow, Envoy of St. Ignatius',
-    kind: 'A travel journal, 1746–1747',
+    date: '1746–1747',
+    kind: 'A travel journal',
     summary: 'An account of the journey to the Valdenwail and the long incarceration there — in fifteen entries.',
     lede: 'Envoy of Prelate Calvin Van Miserly of St. Ignatius — an account of his journey through the Hedge to the Valdenwail, and his long, strange incarceration within its sunless walls.',
     order: 4,
@@ -43,7 +46,8 @@ export const WORKS: Work[] = [
     slug: 'adnihilo-inter-nos',
     title: 'Adnihilo Inter Nos',
     author: 'Inquisitor-Cardinal Hanzig Van Tassel, Prelate of St. Kerrigan',
-    kind: 'A treatise on demons and possession, 1347',
+    date: '1347',
+    kind: 'A treatise on demons and possession',
     summary: 'On the demons of the Abyss that walk among Men, and the rites for cases of possession.',
     lede: 'Inquisitor-Cardinal Van Tassel’s manual for the Ordo Calculus Veritas — on knowing a true demon from a frightened neighbour’s fancy, the forms and powers of the Abyss-born, and the rites by which they are put down. Cut with woodcuts by Albrecht Türmann of Waldheim.',
     plate: 'images/woodcuts/adnihilo-examination.png',

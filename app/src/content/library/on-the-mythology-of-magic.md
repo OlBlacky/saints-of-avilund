@@ -1,6 +1,7 @@
 ---
 title: "On the Mythology of Magic"
 author: "Dr. Lucius Gasterbeer"
+date: "1735"
 kind: "A treatise on the Arcane"
 order: 7
 summary: "Profound insights into the misleading nomenclature of the Arcane — for learned circles only."

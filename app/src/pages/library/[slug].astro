@@ -56,7 +56,9 @@ if (props.type === 'doc') {
       <header class="saint-head">
         {docData.kind && <p class="eyebrow">{docData.kind}</p>}
         <h1>{docData.title}</h1>
-        {docData.author && <p class="lede">{docData.author}</p>}
+        {(docData.author || docData.date) && (
+          <p class="byline">{docData.author}{docData.author && docData.date ? ' · ' : ''}{docData.date}</p>
+        )}
       </header>
       {docData.plate && (
         <figure class="plate">
@@ -71,7 +73,9 @@ if (props.type === 'doc') {
       <header class="saint-head">
         {work.kind && <p class="eyebrow">{work.kind}</p>}
         <h1>{work.title}</h1>
-        {work.author && <p class="byline">{work.author}</p>}
+        {(work.author || work.date) && (
+          <p class="byline">{work.author}{work.author && work.date ? ' · ' : ''}{work.date}</p>
+        )}
       </header>
 
       {work.lede && <p class="lede">{work.lede}</p>}

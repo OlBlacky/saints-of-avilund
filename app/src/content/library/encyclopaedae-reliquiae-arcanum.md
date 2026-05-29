@@ -1,7 +1,8 @@
 ---
 title: "Encyclopaedae Reliquiae Arcanum"
 author: "Sir Geofrey Golfschalk"
-kind: "Preface to the encyclopaedia of the Arcane, 1723"
+date: "1723"
+kind: "Preface to the encyclopaedia of the Arcane"
 order: 8
 summary: "On the taxonomy and history of the Arcane — Old Magic, New Magic, and what lies beyond."
 ---

@@ -5,6 +5,20 @@ import { getCollection } from 'astro:content';
 import { WORKS } from '../../lib/texts';
 
 const docs = await getCollection('library');
+
+// Derive a thumbnail path from a plate path:
+//   images/woodcuts/foo.png → images/woodcuts/thumbs/foo.webp
+// The thumbnails themselves are generated at build time by
+// scripts/build-thumbnails.mjs (run as the `prebuild` npm lifecycle).
+function thumbOf(plate: string | undefined): string | undefined {
+  if (!plate) return undefined;
+  const last = plate.lastIndexOf('/');
+  const dir = last >= 0 ? plate.slice(0, last + 1) : '';
+  const file = last >= 0 ? plate.slice(last + 1) : plate;
+  const base = file.replace(/\.[^.]+$/, '');
+  return `${dir}thumbs/${base}.webp`;
+}
+
 const items = [
   // Single, one-page texts.
   ...docs.map((doc) => ({
@@ -13,6 +27,8 @@ const items = [
     kind: doc.data.kind,
     author: doc.data.author,
     summary: doc.data.summary,
+    plate: doc.data.plate,
+    thumb: thumbOf(doc.data.plate),
     order: doc.data.order ?? 100,
   })),
   // Multi-part works, each with its own paged reader (see src/lib/texts.ts).
@@ -22,6 +38,8 @@ const items = [
     kind: work.kind,
     author: work.author,
     summary: work.summary,
+    plate: work.plate,
+    thumb: thumbOf(work.plate),
     order: work.order,
   })),
 ].sort((a, b) => a.order - b.order);
@@ -35,10 +53,17 @@ const items = [
   <ul class="doc-list">
     {items.map((item) => (
       <li>
-        <a class="title" href={item.href}>{item.title}</a>
-        {item.kind && <div class="by"><em>{item.kind}</em></div>}
-        {item.author && <div class="by">by {item.author}</div>}
-        {item.summary && <p class="card__blurb">{item.summary}</p>}
+        <div class="doc-list__text">
+          <a class="title" href={item.href}>{item.title}</a>
+          {item.kind && <div class="by"><em>{item.kind}</em></div>}
+          {item.author && <div class="by">by {item.author}</div>}
+          {item.summary && <p class="card__blurb">{item.summary}</p>}
+        </div>
+        {item.plate && (
+          <a class="doc-list__thumb-link" href={item.href} aria-hidden="true" tabindex="-1">
+            <img class="doc-list__thumb" src={url(item.thumb ?? item.plate)} alt="" loading="lazy" decoding="async" width="96" height="96" />
+          </a>
+        )}
       </li>
     ))}
   </ul>

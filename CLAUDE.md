@@ -63,6 +63,8 @@ An **Astro 6** static site — a setting compendium — deployed to **GitHub Pag
 
 **Images (standing order):** every content page must carry at least one image, and content pages should be kept short enough that a single image feels like sufficient visual interest. If a text runs long, split it into smaller pages (the multi-part `texts` reader) so each page is short enough to stand on one image.
 
+**Library entry headers (standing order):** every Library entry's first content page (single doc, or the contents page of a multi-part work) must show at the top: **Author**, **Publication Date**, and optionally **Context**. Set `author` and `date` in the frontmatter (library docs) or in the `WORKS` entry (multi-part works in `src/lib/texts.ts`). The `kind` field is the optional Context (rendered as the eyebrow above the title). Render order: Context → Title → Author · Date.
+
 ---
 
 ## Primary User

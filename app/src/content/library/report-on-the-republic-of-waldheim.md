@@ -1,7 +1,8 @@
 ---
 title: "A Report on the Republic of Waldheim"
 author: "Eremauld Von Gruenstein, Emissary of St. Severinius"
-kind: "A political report, 1749"
+date: "1749"
+kind: "A political report"
 order: 5
 summary: "The structure, nobility, and New Finance of the Republic of Waldheim."
 ---

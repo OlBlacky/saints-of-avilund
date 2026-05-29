@@ -1,5 +1,7 @@
 ---
 title: "A Brief Guide to Avitus"
+author: "Grafton Fitzdecker"
+date: "May 1, 1747"
 kind: "A guide to the imperial capital"
 order: 3
 summary: "A walk through the neighbourhoods of the City of Avitus — the islands, the Fleet, Lord's, and the sprawling suburbs."
