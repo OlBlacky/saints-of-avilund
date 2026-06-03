@@ -55,4 +55,15 @@ const classes = defineCollection({
   }),
 });
 
-export const collections = { library, scriptorium, texts, classes };
+// Rules-system prose — one markdown file per System section, named by the
+// section's slug (e.g. character-creation.md). Section title/blurb/status live
+// in src/lib/system.ts; this collection supplies the body.
+const rules = defineCollection({
+  loader: glob({ pattern: '**/*.{md,mdx}', base: './src/content/rules' }),
+  schema: z.object({
+    title: z.string().optional(),
+    summary: z.string().optional(),
+  }),
+});
+
+export const collections = { library, scriptorium, texts, classes, rules };

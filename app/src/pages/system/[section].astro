@@ -1,0 +1,68 @@
+---
+import Base from '../../layouts/Base.astro';
+import { url } from '../../lib/url';
+import { SYSTEM_ENTRIES, STATUS_LABEL } from '../../lib/system';
+import { getCollection, render } from 'astro:content';
+
+// Generates a page for every system section except those with their own
+// hand-built route (stub: false, e.g. Classes). If a matching markdown file
+// exists in the `rules` collection, its prose is rendered; otherwise the page
+// shows a status stub.
+export async function getStaticPaths() {
+  const docs = await getCollection('rules');
+  return SYSTEM_ENTRIES
+    .filter((e) => e.stub !== false)
+    .map((entry) => ({
+      params: { section: entry.slug },
+      props: { entry, doc: docs.find((d) => d.id === entry.slug) ?? null },
+    }));
+}
+
+const { entry, doc } = Astro.props;
+const Content = doc ? (await render(doc)).Content : null;
+
+const NOTE: Record<string, string> = {
+  designed: 'The rules for this section are designed and tested — they will be written up here shortly.',
+  progress: 'This section is actively being built. Check back soon.',
+  planned: 'This section is planned, and will be designed in a later pass.',
+  live: 'This section is ready to read.',
+};
+---
+
+<Base title={entry.title} description={entry.blurb}>
+  <p class="back-link"><a href={url('system/')}>← The System</a></p>
+
+  <header class="saint-head">
+    <p class="eyebrow">{entry.part}</p>
+    <h1>{entry.title}</h1>
+  </header>
+
+  {Content ? (
+    <article class="prose" style="margin:0 auto;">
+      <Content />
+    </article>
+  ) : (
+    <article class="prose" style="margin:0 auto;">
+      <p class="lede">{entry.blurb}</p>
+      <p style="margin-top:1.4rem;">
+        <span class={`sys-status sys-status--${entry.status}`}>{STATUS_LABEL[entry.status]}</span>
+      </p>
+      <p style="margin-top:1.2rem;">{NOTE[entry.status]}</p>
+    </article>
+  )}
+
+  <style>
+    .sys-status {
+      display: inline-block;
+      padding: 0.1rem 0.6rem;
+      border: 1px solid rgba(120, 90, 40, 0.45);
+      border-radius: 999px;
+      font-size: 0.72rem;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      color: #6a532a;
+      background: rgba(120, 90, 40, 0.06);
+    }
+    .sys-status--live { color: #2f5d3a; border-color: rgba(47, 93, 58, 0.5); background: rgba(47, 93, 58, 0.08); }
+  </style>
+</Base>
