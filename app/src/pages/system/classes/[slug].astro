@@ -1,0 +1,29 @@
+---
+import Base from '../../../layouts/Base.astro';
+import { url } from '../../../lib/url';
+import { getCollection, render } from 'astro:content';
+
+export async function getStaticPaths() {
+  const classes = await getCollection('classes');
+  return classes.map((entry) => ({
+    params: { slug: entry.id },
+    props: { entry },
+  }));
+}
+
+const { entry } = Astro.props;
+const { Content } = await render(entry);
+---
+
+<Base title={entry.data.title} description={entry.data.summary}>
+  <p class="back-link"><a href={url('system/classes/')}>← Character Classes</a></p>
+
+  <header class="saint-head">
+    {entry.data.portfolio && <p class="eyebrow">Portfolio of {entry.data.portfolio}</p>}
+    <h1>{entry.data.title}</h1>
+  </header>
+
+  <article class="prose">
+    <Content />
+  </article>
+</Base>

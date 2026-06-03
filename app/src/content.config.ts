@@ -44,4 +44,15 @@ const texts = defineCollection({
   }),
 });
 
-export const collections = { library, scriptorium, texts };
+// Character Classes — the rules layer (The System). Each file is one class.
+const classes = defineCollection({
+  loader: glob({ pattern: '**/*.{md,mdx}', base: './src/content/classes' }),
+  schema: z.object({
+    title: z.string(),
+    portfolio: z.string().optional(),   // the Saint Portfolio this class is styled to
+    summary: z.string().optional(),
+    order: z.number().default(100),
+  }),
+});
+
+export const collections = { library, scriptorium, texts, classes };

@@ -99,38 +99,36 @@ Each class grants 1 free Class Feature on purchase, chosen from the class's list
 
 **Combat**
 1. **Weapon Proficiency** — trained in a weapon group; no penalty for use
-2. **Weapon Specialisation** — +1 Attack and damage with a chosen weapon group
-3. **Armour Proficiency** — trained in a type of armour; no Speed or attack penalties
-4. **Armour Specialisation** — additional Defence bonus or reduced penalties from a chosen armour type
-5. **Shield Proficiency** — can use a shield without penalty
-6. **Two-Weapon Fighting** — reduced penalties when wielding two weapons
-7. **Combat Reflexes** — can make additional Opportunity Attacks per round
-8. **Sneak Attack** — bonus damage when attacking an unaware or flanked enemy
-9. **Mounted Combat** — bonuses to attack and Defence when fighting on horseback
+2. **Armour Proficiency** — trained in a type of armour; no Speed or attack penalties
+3. **Shield Proficiency** — can use a shield without penalty
+4. **Two-Weapon Fighting** — reduced penalties when wielding two weapons
+5. **Combat Reflexes** — can make additional Opportunity Attacks per round
+6. **Sneak Attack** — bonus damage when attacking an unaware or flanked enemy
+7. **Mounted Combat** — bonuses to attack and Defence when fighting on horseback
 
 **Resilience**
-10. **Toughness** — bonus HP (flat amount)
-11. **Second Wind** — recover HP once per Short Rest as a Minor Action
-12. **Evasion** — on a successful Dex Defence, take no damage instead of reduced damage
-13. **Danger Sense** — cannot be surprised; bonus to Initiative
+8. **Toughness** — bonus HP (flat amount)
+9. **Second Wind** — recover HP once per Short Rest as a Minor Action
+10. **Evasion** — on a successful Dex Defence, take no damage instead of reduced damage
+11. **Danger Sense** — cannot be surprised; bonus to Initiative
 
 **Skills**
-14. **Skill Specialisation** — choose one skill; roll twice and take the higher result
-15. **Skill Expertise** — chosen Class skill cap increases from +5 to +6
-16. **Tool Proficiency** — trained with a specific set of tools; no penalty for use
+12. **Skill Specialisation** — choose one skill; roll twice and take the higher result
+13. **Skill Expertise** — chosen Class skill cap increases from +5 to +6
+14. **Tool Proficiency** — trained with a specific set of tools; no penalty for use
 
 **Magic & Abilities**
-17. **Spell Specialisation** — choose an ability category; reduce its AP improvement cost by 1
-18. **Ritualist** — can use Class Special abilities outside combat without spending from the Special Pool
-19. **Implement Proficiency** — trained with a specific magical implement; bonus when using it
+15. **Spell Specialisation** — choose an ability category; reduce its AP improvement cost by 1
+16. **Ritualist** — can use Class Special abilities outside combat without spending from the Special Pool
+17. **Implement Proficiency** — trained with a specific magical implement; bonus when using it
 
 **Social & Utility**
-20. **Bardic Knowledge** — gain +1 in all Academic skills regardless of Class
+18. **Bardic Knowledge** — gain +1 in all Academic skills regardless of Class
 
 **Pinnacle Defence** *(20 AP each; requires +2 Save in the relevant attribute)*
-21. **Pinnacle Strength Defence** — roll 2d20 and take the higher on Str Defence rolls
-22. **Pinnacle Dexterity Defence** — roll 2d20 and take the higher on Dex Defence rolls
-23. **Pinnacle Constitution Defence** — roll 2d20 and take the higher on Con Defence rolls
-24. **Pinnacle Intelligence Defence** — roll 2d20 and take the higher on Int Defence rolls
-25. **Pinnacle Wisdom Defence** — roll 2d20 and take the higher on Wis Defence rolls
-26. **Pinnacle Charisma Defence** — roll 2d20 and take the higher on Cha Defence rolls
+19. **Pinnacle Strength Defence** — roll 2d20 and take the higher on Str Defence rolls
+20. **Pinnacle Dexterity Defence** — roll 2d20 and take the higher on Dex Defence rolls
+21. **Pinnacle Constitution Defence** — roll 2d20 and take the higher on Con Defence rolls
+22. **Pinnacle Intelligence Defence** — roll 2d20 and take the higher on Int Defence rolls
+23. **Pinnacle Wisdom Defence** — roll 2d20 and take the higher on Wis Defence rolls
+24. **Pinnacle Charisma Defence** — roll 2d20 and take the higher on Cha Defence rolls

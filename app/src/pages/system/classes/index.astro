@@ -1,0 +1,31 @@
+---
+import Base from '../../../layouts/Base.astro';
+import { url } from '../../../lib/url';
+import { getCollection } from 'astro:content';
+
+const classes = (await getCollection('classes'))
+  .sort((a, b) => a.data.order - b.data.order);
+---
+
+<Base title="Character Classes" description="The eleven character classes of Saints of Avilund — their attributes, paths, and abilities.">
+  <p class="back-link"><a href={url('system/')}>← The System</a></p>
+
+  <p class="eyebrow">The System</p>
+  <h1>Character Classes</h1>
+  <p class="lede">
+    Eleven classes, each styled to one of the eleven Saint Portfolios. Every class offers three Paths —
+    distinct builds that share a common core. (More classes will appear here as they are finished.)
+  </p>
+
+  <ul class="doc-list">
+    {classes.map((c) => (
+      <li>
+        <div class="doc-list__text">
+          <a class="title" href={url(`system/classes/${c.id}/`)}>{c.data.title}</a>
+          {c.data.portfolio && <div class="by"><em>Portfolio of {c.data.portfolio}</em></div>}
+          {c.data.summary && <p class="card__blurb">{c.data.summary}</p>}
+        </div>
+      </li>
+    ))}
+  </ul>
+</Base>
