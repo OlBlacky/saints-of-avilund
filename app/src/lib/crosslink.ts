@@ -1,12 +1,14 @@
 // Wiki-style auto cross-linking.
 //
-// Two entry points share one entity registry (the saints):
+// Two entry points share one entity registry (saints + places):
 //   • remarkCrossLink — a remark plugin that links the first mention of each
-//     saint in any markdown document (Library, Journal, Scriptorium).
-//   • linkifySaints  — links saint names inside a plain string (used for the
-//     saint-page blurbs, which aren't markdown), excluding the saint's own page.
+//     entity in any markdown document (Library, Journal, Scriptorium).
+//   • linkifySaints  — links entity names inside a plain string (used for the
+//     saint-page blurbs and the gazetteer, which aren't markdown), excluding
+//     the page's own entity.
 //
-// Places will join the registry once they have pages of their own.
+// Places join the registry here as they gain pages of their own; each may
+// carry several name aliases that all resolve to one page.
 
 import { SAINTS } from './saints';
 
@@ -18,10 +20,24 @@ function escapeRegExp(s: string): string {
 
 interface Entity { name: string; url: string; }
 
-const SAINT_ENTITIES: Entity[] = SAINTS
-  .filter((s) => !s.noAutoLink)
-  .map((s) => ({ name: s.name, url: `${BASE}saints/${s.slug}/` }))
-  .sort((a, b) => b.name.length - a.name.length); // longest names first
+interface PlaceDef { names: string[]; path: string; slug: string; }
+const PLACE_DEFS: PlaceDef[] = [
+  { names: ['City of Waldheim', 'Waldheim'], path: 'geography/waldheim/', slug: 'waldheim' },
+];
+
+// Build the combined saint + place registry for a given base URL, optionally
+// excluding one entity by slug (so a page never links to itself).
+function buildRegistry(base: string, excludeSlug?: string): Entity[] {
+  const saints: Entity[] = SAINTS
+    .filter((s) => s.slug !== excludeSlug && !s.noAutoLink)
+    .map((s) => ({ name: s.name, url: `${base}saints/${s.slug}/` }));
+  const places: Entity[] = PLACE_DEFS
+    .filter((p) => p.slug !== excludeSlug)
+    .flatMap((p) => p.names.map((name) => ({ name, url: `${base}${p.path}` })));
+  return [...saints, ...places].sort((a, b) => b.name.length - a.name.length); // longest first
+}
+
+const SAINT_ENTITIES: Entity[] = buildRegistry(BASE);
 
 // Walk a string and return mdast nodes, linking the first unlinked mention of
 // each entity, left to right. `linked` tracks names already linked in this doc.
@@ -76,13 +92,10 @@ function escapeHtml(s: string): string {
   return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
 }
 
-// Link saint names inside a plain string, returning HTML. Excludes one slug
-// (so a saint's own page never links to itself).
+// Link saint and place names inside a plain string, returning HTML. Excludes
+// one slug (so a page never links to itself).
 export function linkifySaints(text: string, base: string, excludeSlug?: string): string {
-  const entities: Entity[] = SAINTS
-    .filter((s) => s.slug !== excludeSlug && !s.noAutoLink)
-    .map((s) => ({ name: s.name, url: `${base}saints/${s.slug}/` }))
-    .sort((a, b) => b.name.length - a.name.length);
+  const entities = buildRegistry(base, excludeSlug);
   const linked = new Set<string>();
   let out = '';
   let i = 0;

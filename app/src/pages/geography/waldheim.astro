@@ -8,7 +8,7 @@ import { linkifySaints } from '../../lib/crosslink';
 const wardMap: string | null = null;
 
 const BASE = import.meta.env.BASE_URL;
-const link = (s: string) => linkifySaints(s, BASE);
+const link = (s: string) => linkifySaints(s, BASE, 'waldheim');
 
 // The City of Waldheim, ward by ward. Condensed from the Robertson handouts.
 const wards = [
