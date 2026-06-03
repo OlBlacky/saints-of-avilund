@@ -1,0 +1,203 @@
+---
+import Base from '../../layouts/Base.astro';
+import { url } from '../../lib/url';
+import { linkifySaints } from '../../lib/crosslink';
+
+// Drop a ward map into app/public/images/ and set this to its path
+// (e.g. 'images/waldheim-ward-map.jpg') to light up the figure below.
+const wardMap: string | null = null;
+
+const BASE = import.meta.env.BASE_URL;
+const link = (s: string) => linkifySaints(s, BASE);
+
+// The City of Waldheim, ward by ward. Condensed from the Robertson handouts.
+const wards = [
+  {
+    name: 'The Islands — the ancient heart',
+    intro:
+      'The city began on the islands at the meeting of the rivers, the old Elder city of Avitus, and for most of its history went no further. Here still sits its traditional seat of power.',
+    places: [
+      {
+        name: 'The Old City (Elderton)',
+        body:
+          'On Saints’ Island at the confluence of the Wen and the Nith at Calder’s Basin — the original site of the Elder city of Avitus. Around its Imperial Square stand the Cathedral and Monastery of Saint Avitus, the Blue Palace of the Scion, and the Palace of Saint Severinius. This has always been the traditional power centre of the city, and is ringed by the ancient guild Halls.',
+      },
+      {
+        name: 'Sebald’s Isle & Elder Isle',
+        body:
+          'The islands adjacent to Saints’ Island, long the residential quarter of prelates, nobles and wealthy merchants. As the city spread onto the mainland — and the great families decamped to drier ground at Newton Hill — many of the old palaces here were gutted and subdivided into tenements for the growing middle class.',
+      },
+    ],
+  },
+  {
+    name: 'The West Bank — Kingston',
+    intro:
+      'Once the separate city of Kingston, on the west bank of the Wen across from Avitus, and annexed after the Revolution. Its four districts are a near-lawless sprawl of stockyards, slaughterhouses, factories and seedy inns.',
+    places: [
+      {
+        name: 'Hog’s Market',
+        body:
+          'The city’s live-animal and meat markets, and the only quarter of Kingston with any real safety — order brutally kept by the Butchers’ Guild, who fear that lawlessness might drive the livestock trade elsewhere.',
+      },
+      {
+        name: 'King’s',
+        body: 'The central district: an impoverished commercial centre of slums and decaying buildings.',
+      },
+      {
+        name: 'The Bride',
+        body: 'The northern suburb, mostly residential — a west-bank cousin to the Northlund Road across the river.',
+      },
+      {
+        name: 'Black’s Road',
+        body:
+          'The westernmost part of the city and the main gateway for all who come from the western country. Named for a famous highwayman, it is all taverns, coach-houses, caravan yards and animal pens.',
+      },
+    ],
+  },
+  {
+    name: 'The Fleet — the civic east',
+    intro: '',
+    places: [
+      {
+        name: 'The Fleet',
+        body:
+          'On the eastern shore opposite the islands — once home to the Imperial Navy’s docks and shipyards, always a raucous and impoverished neighbourhood. After the Revolution the new government planted its administrative centre here, away from the Church’s influence in the Old City, and renamed it the “Civic Centre” (“Civic” for short) — a name not one soul in the city actually uses. The promised improvements largely never came; outside its main thoroughfares The Fleet remains among the most dangerous and squalid districts in the city.',
+      },
+    ],
+  },
+  {
+    name: 'The Northern Suburbs — the genteel city',
+    intro:
+      'North of the islands the ground rises above the Wen’s floods, and here the wealth of the city has gathered into clean, spacious quarters.',
+    places: [
+      {
+        name: 'Lord’s University',
+        body:
+          'North-west of The Fleet, once a great estate and now given over almost entirely to the University and its institutions. Set on a series of low hills, it is spared the worst when the Wen floods.',
+      },
+      {
+        name: 'Sever’s Cross',
+        body:
+          'East of Lord’s and north of The Fleet — the main commercial and trades district, densely built with the shops and homes of the prosperous tradesmen. Clean and well kept, it is where the middle and upper classes shop, dine and take their entertainment, and it holds most of the city’s markets (save livestock, at Hog’s Market, and fish, at The Harbour).',
+      },
+      {
+        name: 'Newton Hill',
+        body:
+          'A hill overlooking the city to the north, and the wealthiest district of all: a sleepy quarter of villas and palaces around clean parks and squares, home to most of the upper class, the prelates and the nobility.',
+      },
+      {
+        name: 'Methwold',
+        body:
+          'South of The Green and east of Newton — another well-to-do quarter of the nobility, but its homes are spread out like country estates rather than crowded palaces.',
+      },
+      {
+        name: 'The Green',
+        body:
+          'A great cultivated forest and park marking the northern boundary of the city: parkland and gardens near the walls, wild hunting-forest further out, reserved for the city’s elite — though its deeper reaches are said to shelter escaped convicts and bandits.',
+      },
+      {
+        name: 'Saint Gideon',
+        body:
+          'A once-prosperous town in its own right, lately swallowed up as a northern suburb, yet keeping its own square, hall and council. As industrial as neighbouring Waverleigh, but markedly cleaner and more prosperous.',
+      },
+      {
+        name: 'Northlund Road',
+        body:
+          'Not a district so much as a ribbon of villages and buildings along the road north up the east bank of the Wen, growing more rural the further it runs.',
+      },
+    ],
+  },
+  {
+    name: 'The Harbour & the Spit — the seaward city',
+    intro: 'South of the genteel north, across Severn Harbour, lies the working waterfront and the new money rising beside it.',
+    places: [
+      {
+        name: 'The Harbour',
+        body:
+          'South of Methwold and east of Sever’s Cross — exactly what its name implies, holding most of the city’s docks, shipyards and warehouses, and the main fish market. A largely industrial quarter with little to offer beyond the nautical trades.',
+      },
+      {
+        name: 'Landside & The Spit',
+        body:
+          'On the spit of land south of Severn Harbour. Landside is a cousin to The Harbour — warehouses, tenements and sailors’ inns. The Spit, by contrast, is in the midst of a renaissance: young, ambitious merchants have bought up cheap property and turned the narrow strip into the financial centre of the city, home now to the Bank of Avitus and the rising Exchange.',
+      },
+    ],
+  },
+  {
+    name: 'The Eastern Wards — the working city',
+    intro: 'East of Severn Harbour, where the Tine enters the city, lie the poor industrial wards that drive everything else.',
+    places: [
+      {
+        name: 'Waverleigh, Chapelton & Pondluck',
+        body:
+          'Three poor, dirty, near-indistinguishable industrial districts, punctuated by the black smoke of the factory fires and home to the city’s working masses. Scorned by the affluent, but the necessary industrial engine of the city.',
+      },
+      {
+        name: 'St. Cardigan’s-Under-Cross — the Crystal Parish',
+        body:
+          'The best-off parish of Chapelton Ward, owed to the long prosperity of the Royal Company of Glaziers and Glassblowers. Known for its stained glass — in homes, civic buildings, lamps and glass arches that cast coloured light across the streets. Its 1744 census counted some 2,000 souls; its great churches are the Cathedral of Saint Caanan, Saint Dunstan on the Tine, and the popular Saint Cardigan on the Tine.',
+      },
+      {
+        name: 'The Marshes',
+        body:
+          'Built on drained marshland by the Nith, east of Chapelton — as poor as its neighbours but, the soft ground forbidding any large building, without the factories and workhouses. Wracked by mass unemployment; perhaps the most impoverished district in the city.',
+      },
+      {
+        name: 'Saint Pitt’s Town',
+        body:
+          'Like Saint Gideon, an annexed town — but one that kept none of its charm: a transient sprawl of stockyards, abandoned buildings, poor monasteries and barracks. Its one asset is as a gathering point for the crusading orders, a way-station between the provinces and Lysander.',
+      },
+    ],
+  },
+  {
+    name: 'Beyond the Rivers',
+    intro: 'The city is bound and divided by three rivers — the Wen and the Nith, which meet at the islands, and the Tine, which enters from the east through Chapelton.',
+    places: [
+      {
+        name: 'Highborough & Farmwalk',
+        body:
+          'On the south bank of the Nith, across the ferry from Landside and The Spit — a town grown up independently and formally still apart from Avitus. With its small suburb of Farmwalk it is little more than a middling market town for the south-bank farmers, and the start of the Lysander Road, so it keeps a great many inns.',
+      },
+    ],
+  },
+];
+---
+
+<Base title="The City of Waldheim" description="A gazetteer of the City of Waldheim — its islands, banks, suburbs and working wards, ward by ward.">
+  <p class="back-link"><a href={url('geography/')}>← Geography</a></p>
+
+  <p class="eyebrow">A Gazetteer</p>
+  <h1>The City of Waldheim</h1>
+  <p class="lede">The great city at the meeting of the rivers — the old Elder city of Avitus, ward by ward.</p>
+
+  {wardMap && (
+    <figure>
+      <img src={url(wardMap)} alt="A ward map of the City of Waldheim" />
+      <figcaption>The City of Waldheim and its wards, from the islands out across both banks of the Wen and the Nith.</figcaption>
+    </figure>
+  )}
+
+  <div class="prose">
+    <p>
+      The city began on the islands where the <strong>Wen</strong> meets the <strong>Nith</strong> at
+      Calder’s Basin — the ancient Elder city of <a href={url('saints/avitus/')}>Avitus</a> — and for
+      most of its history went no further. Only later did it spill onto both banks and swallow the
+      independent towns around it. What follows is the city as it stands today, ward by ward.
+    </p>
+  </div>
+
+  {wards.map((w) => (
+    <section class="prose" style="margin-top:1.8rem">
+      <h2>{w.name}</h2>
+      {w.intro && <p>{w.intro}</p>}
+      <dl>
+        {w.places.map((p) => (
+          <div style="margin-bottom:1.2rem">
+            <dt style="font-family:var(--display);color:var(--oxblood);font-size:1.1rem">{p.name}</dt>
+            <dd style="margin:0.3rem 0 0" set:html={link(p.body)}></dd>
+          </div>
+        ))}
+      </dl>
+    </section>
+  ))}
+</Base>

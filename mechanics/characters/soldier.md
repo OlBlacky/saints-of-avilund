@@ -38,7 +38,7 @@ The armoured anchor of the line. Vanguards hold ground, shield their comrades, a
 | **Secondary Attribute** | Constitution |
 | **Category** | Protection |
 | **Skills** | Survival, Perception |
-| **Weapon Proficiencies** | Hammers/Maces, Spears & Lances |
+| **Weapon Proficiencies** | Hammers/Maces, Spears/Lances |
 | **Armour Proficiencies** | Heavy Armour, Heavy Shield |
 
 *Note: Constitution never powers an attack, so a Vanguard's Protection attacks run off **Strength**; Constitution carries their defenses, HP, and saves — "Strength hits, Constitution endures."*
@@ -86,10 +86,10 @@ Your bread-and-butter attack, and the one most shaped by your weapon.
 | Light Blades | +1 to hit |
 | Hammers | Push 5' |
 | Axes | Bleed 1 |
-| Spears / Polearms | +5' reach |
-| Flails / Chains | ignore the target's shield bonus to AC |
+| Spears/Polearms | +5' reach |
+| Flails/Chains | ignore the target's shield bonus to AC |
 | Staves | +1 to one of your defenses until your next turn |
-| Bows / Crossbows | may be made as a ranged attack (1×WRI) |
+| Bows/Crossbows | may be made as a ranged attack (1×WRI) |
 
 **Power Attack** — *Offensive · the heavy blow*
 - **Attack:** Strength vs AC · **1[W]**

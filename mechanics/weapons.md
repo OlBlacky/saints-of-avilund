@@ -11,9 +11,9 @@ Every weapon belongs to one of **17 Weapon Proficiency groups**. Being proficien
 | Light Blades | Slings |
 | Hammers/Maces | Thrown |
 | Picks | Pistols |
-| Flails & Chains | Rifles |
+| Flails/Chains | Rifles |
 | Polearms | Grenades |
-| Spears & Lances | |
+| Spears/Lances | |
 | Unarmed/Natural | |
 | Staves | |
 
@@ -111,7 +111,7 @@ Every weapon has the following traits:
 | **Light Hammer** | Hammers/Maces | Blunt | 1d4 | 1H | 2 lbs | 2 gp | 20/40/60 | Thrown |
 | **Mace** | Hammers/Maces | Blunt | 1d6 | 1H | 4 lbs | 5 gp | — | — |
 | **Warhammer** | Hammers/Maces | Blunt | 1d8 | 1H | 5 lbs | 15 gp | — | Versatile (1d10) |
-| **Flail** | Flails & Chains | Blunt | 1d8 | 1H | 3 lbs | 10 gp | — | — |
+| **Flail** | Flails/Chains | Blunt | 1d8 | 1H | 3 lbs | 10 gp | — | — |
 | **Maul** | Hammers/Maces | Blunt | 2d6 | 2H | 10 lbs | 15 gp | — | — |
 | **Shortbow** | Bows | Piercing | 1d6 | 2H | 2 lbs | 25 gp | 60/120/180 | — |
 | **Longbow** | Bows | Piercing | 1d8 | 2H | 2 lbs | 50 gp | 100/200/300 | — |
@@ -120,16 +120,16 @@ Every weapon has the following traits:
 | **Crossbow** | Crossbows | Piercing | 1d10 | 2H | 6 lbs | 35 gp | 100/200/300 | Loading |
 | **Heavy Crossbow** | Crossbows | Piercing | 1d12 | 2H | 10 lbs | 50 gp | 120/240/360 | Loading |
 | **Javelin** | Thrown | Piercing | 1d6 | 1H | 2 lbs | 1 gp | 30/60/90 | Thrown |
-| **Spear** | Spears & Lances | Piercing | 1d6 | 1H | 3 lbs | 5 gp | 20/40/60 | Versatile (1d8), Reach, Thrown |
+| **Spear** | Spears/Lances | Piercing | 1d6 | 1H | 3 lbs | 5 gp | 20/40/60 | Versatile (1d8), Reach, Thrown |
 | **Quarterstaff** | Staves | Blunt | 1d6 | 2H | 4 lbs | 1 gp | — | Defensive |
 | **Iron-Shod Staff** | Staves | Blunt | 1d8 | 2H | 6 lbs | 8 gp | — | Defensive |
 | **Club** | Hammers/Maces | Blunt | 1d4 | 1H | 2 lbs | — | — | — |
 | **War Pick** | Picks | Piercing | 1d8 | 1H | 4 lbs | 8 gp | — | — |
 | **Morningstar** | Hammers/Maces | Piercing | 1d8 | 1H | 4 lbs | 10 gp | — | — |
-| **Longspear** | Spears & Lances | Piercing | 1d8 | 2H | 5 lbs | 10 gp | — | Reach |
-| **Pike** | Spears & Lances | Piercing | 1d10 | 2H | 8 lbs | 15 gp | — | Reach |
-| **Lance** | Spears & Lances | Piercing | 1d10 | 1H | 7 lbs | 25 gp | — | Reach |
-| **Trident** | Spears & Lances | Piercing | 1d8 | 1H | 4 lbs | 12 gp | 10/20/30 | Thrown |
+| **Longspear** | Spears/Lances | Piercing | 1d8 | 2H | 5 lbs | 10 gp | — | Reach |
+| **Pike** | Spears/Lances | Piercing | 1d10 | 2H | 8 lbs | 15 gp | — | Reach |
+| **Lance** | Spears/Lances | Piercing | 1d10 | 1H | 7 lbs | 25 gp | — | Reach |
+| **Trident** | Spears/Lances | Piercing | 1d8 | 1H | 4 lbs | 12 gp | 10/20/30 | Thrown |
 | **Sling** | Slings | Blunt | 1d4 | 1H | — | 1 sp | 50/100/150 | — |
 | **Staff Sling** | Slings | Blunt | 1d6 | 2H | 3 lbs | 5 gp | 60/120/180 | — |
 | **Unarmed Strike** | Unarmed/Natural | Blunt | 1d4 | 1H | — | — | — | — |
