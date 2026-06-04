@@ -43,7 +43,7 @@ export const SYSTEM: SystemPart[] = [
     items: [
       { slug: 'classes', title: 'Classes & Paths', blurb: 'Eleven vocations, each with three Paths. The Soldier is written up in full.', status: 'live', stub: false },
       { slug: 'abilities', title: 'Abilities', blurb: 'Ability Categories, and the chassis of eight dials each power is built from.', status: 'live', stub: false },
-      { slug: 'conditions', title: 'Conditions', blurb: 'The laddered conditions — Daze, Control, Movement, Debuff, and the rest.', status: 'designed' },
+      { slug: 'conditions', title: 'Conditions', blurb: 'The laddered conditions — Daze, Control, Movement, Debuff, and the rest.', status: 'live' },
       { slug: 'feats', title: 'Feats', blurb: 'The specialist economy — conditional perks that reshape your abilities.', status: 'designed' },
     ],
   },
