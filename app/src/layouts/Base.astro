@@ -1,7 +1,7 @@
 ---
 import '../styles/global.scss';
 import { url } from '../lib/url';
-import { GLOSSARY } from '../lib/glossary';
+import { GLOSSARY, INLINE_TERMS } from '../lib/glossary';
 
 interface Props {
   title?: string;
@@ -109,7 +109,7 @@ function isCurrent(item: { href: string; matches: string[] }) {
       }
     </style>
 
-    <script define:vars={{ glossary: GLOSSARY }}>
+    <script define:vars={{ glossary: GLOSSARY, inlineTerms: INLINE_TERMS }}>
       // Decorate bold game terms on System pages with a glossary tooltip.
       (function () {
         try {
@@ -139,6 +139,42 @@ function isCurrent(item: { href: string; matches: string[] }) {
             el.setAttribute('data-def', def);
             el.setAttribute('tabindex', '0');
             el.setAttribute('role', 'note');
+          }
+
+          // Inline abbreviations (e.g. WRI) — wrap whole-word matches in body text.
+          var inlineKeys = Object.keys(inlineTerms || {});
+          if (inlineKeys.length) {
+            var pattern = '\\b(' + inlineKeys.join('|') + ')\\b';
+            var walker = document.createTreeWalker(main, NodeFilter.SHOW_TEXT, null);
+            var hits = [];
+            var tn;
+            while ((tn = walker.nextNode())) {
+              var pn = tn.parentNode;
+              if (!pn) continue;
+              var tag = pn.nodeName;
+              if (tag === 'SCRIPT' || tag === 'STYLE') continue;
+              if (pn.classList && pn.classList.contains('gloss-term')) continue;
+              if (new RegExp(pattern).test(tn.nodeValue || '')) hits.push(tn);
+            }
+            hits.forEach(function (node) {
+              var text = node.nodeValue;
+              var frag = document.createDocumentFragment();
+              var re = new RegExp(pattern, 'g');
+              var last = 0, m;
+              while ((m = re.exec(text))) {
+                if (m.index > last) frag.appendChild(document.createTextNode(text.slice(last, m.index)));
+                var span = document.createElement('span');
+                span.className = 'gloss-term';
+                span.setAttribute('data-def', inlineTerms[m[1]]);
+                span.setAttribute('tabindex', '0');
+                span.setAttribute('role', 'note');
+                span.textContent = m[1];
+                frag.appendChild(span);
+                last = m.index + m[1].length;
+              }
+              if (last < text.length) frag.appendChild(document.createTextNode(text.slice(last)));
+              node.parentNode.replaceChild(frag, node);
+            });
           }
         } catch (e) { /* no-op */ }
       })();

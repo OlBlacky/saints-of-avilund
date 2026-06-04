@@ -28,3 +28,9 @@ export const GLOSSARY: Record<string, string> = {
   'Frequency': 'How often an Ability may be used — once per day, once per encounter, or at-will.',
   'milestone': 'A step of advancement; three make a level. Each milestone grants +1 Major and +1 Minor Advance.',
 };
+
+// Inline abbreviations — decorated wherever they appear in body text (not only
+// when bold), on System pages. Kept small and specific to avoid false matches.
+export const INLINE_TERMS: Record<string, string> = {
+  'WRI': 'Weapon Range Increment — a ranged weapon’s base distance (e.g. 10′ for a knife, 30′ for a short bow). You can fire out to three increments, at 0 / −2 / −4 to hit; Range advances make each increment larger.',
+};

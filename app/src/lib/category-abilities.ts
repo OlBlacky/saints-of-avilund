@@ -16,15 +16,26 @@ export interface CategoryGroup {
 const FREQ_FULL: Variable = { base: 'Daily', advances: [{ value: 'Encounter', cost: 'M' }, { value: 'At-Will', cost: 'M' }] };
 const FREQ_ENC: Variable = { base: 'Daily', advances: [{ value: 'Encounter', cost: 'M' }] };
 
-// The standard weapon-damage ladder (+attribute, die size, double).
-const weaponDamage = (attr: string): Variable => ({
-  base: '1[W]',
+// The "power" damage ladder shared by Power Attack and Marksman's Shot:
+// +attribute baked into the base, two die-size steps, then double.
+const powerDamage = (attr: string): Variable => ({
+  base: `1[W] + ${attr}`,
   advances: [
-    { value: `1[W] + ${attr}`, cost: 'm' },
-    { value: 'weapon counts as one size larger (→ d12)', cost: 'm' },
-    { value: `×2 → 2[W] + ${attr}`, cost: 'M' },
+    { value: `weapon one size larger, + ${attr}`, cost: 'm' },
+    { value: `weapon two sizes larger, + ${attr}`, cost: 'm' },
+    { value: `2[W] + ${attr}`, cost: 'M' },
   ],
 });
+
+// The Strike damage ladder shared by Martial Strike and Marking Strike.
+const STRIKE_DAMAGE: Variable = {
+  base: '1[W]',
+  advances: [
+    { value: '1[W] + 1', cost: 'm' },
+    { value: '1[W] + Str', cost: 'm' },
+    { value: '2[W]', cost: 'M', note: 'L5' },
+  ],
+};
 
 const MARTIAL_HOOKS =
   "Weapon Specialisation (with the Feat + that weapon): Heavy Blades → +2 damage · Light Blades → +1 to hit · " +
@@ -47,7 +58,7 @@ const MARTIAL: Ability[] = [
       range: { base: 'Reach' },
       targets: { base: 'One' },
       attack: { base: 'Strength vs AC' },
-      damage: weaponDamage('Str'),
+      damage: STRIKE_DAMAGE,
       duration: { base: 'Instant' },
     },
     feats: MARTIAL_HOOKS,
@@ -60,14 +71,7 @@ const MARTIAL: Ability[] = [
       range: { base: 'Reach' },
       targets: { base: 'One' },
       attack: { base: 'Strength vs AC' },
-      damage: {
-        base: '1[W] + Str',
-        advances: [
-          { value: 'weapon one size larger, + Str', cost: 'm' },
-          { value: 'weapon two sizes larger, + Str', cost: 'm' },
-          { value: '2[W] + Str', cost: 'M' },
-        ],
-      },
+      damage: powerDamage('Str'),
       duration: { base: 'Instant' },
     },
     feats: 'Heavy Blade or Hammer Specialisation → +2 damage (Hammer also Push 5\').',
@@ -80,7 +84,7 @@ const MARTIAL: Ability[] = [
       range: { base: 'Reach' },
       targets: { base: 'One' },
       attack: { base: 'Strength vs AC' },
-      damage: { base: '1[W]', advances: [{ value: '1[W] + Str', cost: 'm' }] },
+      damage: { base: '1[W]' },
       effects: { base: 'On a hit, +1 to one of your defenses until your next turn.', advances: [{ value: '+2 to one of your defenses', cost: 'm' }] },
       duration: { base: 'Until your next turn' },
     },
@@ -111,7 +115,7 @@ const MARTIAL: Ability[] = [
       range: { base: 'Reach' },
       targets: { base: 'One' },
       attack: { base: 'Strength vs Armoured Dexterity' },
-      damage: { base: '1[W]', advances: [{ value: '1[W] + Str', cost: 'm' }] },
+      damage: { base: '1[W]' },
       effects: {
         base: 'Target takes −1 to hit.',
         advances: [
@@ -197,7 +201,7 @@ const PROTECTION: Ability[] = [
       range: { base: 'Reach' },
       targets: { base: 'One' },
       attack: { base: 'Strength vs AC' },
-      damage: weaponDamage('Str'),
+      damage: STRIKE_DAMAGE,
       effects: { base: 'Target is Marked (−1 to attack anyone but you).', advances: [{ value: 'Marked −2', cost: 'm' }] },
       duration: { base: 'Save ends' },
     },
@@ -294,17 +298,11 @@ const PROTECTION: Ability[] = [
 ];
 
 // ── Leadership (Commander) ──────────────────────────────────────
-const COMBINED_BUFF: Variable['advances'] = [
-  { value: 'all allies +1 to hit and damage', cost: 'm' },
-  { value: 'all allies +2 to hit, +1 damage', cost: 'm' },
-  { value: 'all allies +2 to hit and damage', cost: 'M' },
-];
-
 const LEADERSHIP: Ability[] = [
   {
     name: 'Command', category: 'Leadership', role: 'Offensive · action-grant', mode: 'Effect',
     vars: {
-      frequency: FREQ_FULL,
+      frequency: { base: 'Daily', advances: [{ value: 'Encounter', cost: 'M' }, { value: 'At-Will', cost: 'M', note: 'L5' }] },
       action: { base: 'Standard', advances: [{ value: 'Move', cost: 'M' }, { value: 'Minor', cost: 'M' }] },
       range: { base: 'One ally in range' },
       targets: { base: 'One ally' },
@@ -313,7 +311,7 @@ const LEADERSHIP: Ability[] = [
         advances: [
           { value: 'a free basic attack, +1 to hit', cost: 'm' },
           { value: 'a free basic attack, +2 to hit', cost: 'm' },
-          { value: 'an ally may take any Standard action; if it is an attack, +2 to hit', cost: 'M' },
+          { value: 'an ally may take any Standard action; if it is an attack, +2 to hit', cost: 'M', note: 'L3' },
         ],
       },
       duration: { base: 'Instant' },
@@ -328,7 +326,14 @@ const LEADERSHIP: Ability[] = [
       targets: { base: 'One (struck); buffs all allies' },
       attack: { base: 'Strength vs AC' },
       damage: { base: '1[W]' },
-      effects: { base: 'Until next round, all allies gain +1 to hit the struck target.', advances: COMBINED_BUFF },
+      effects: {
+        base: 'Until next round, all allies gain +1 to hit the struck target.',
+        advances: [
+          { value: 'all allies +1 to hit and damage', cost: 'm' },
+          { value: 'all allies +2 to hit and damage', cost: 'm' },
+          { value: 'all allies +2 to hit and damage, and one adjacent ally may make a Melee Basic Attack against the opponent', cost: 'M' },
+        ],
+      },
       duration: { base: 'Until next round' },
     },
   },
@@ -339,7 +344,14 @@ const LEADERSHIP: Ability[] = [
       action: { base: 'Standard', advances: [{ value: 'Move', cost: 'M' }, { value: 'Minor', cost: 'M' }] },
       range: { base: 'One enemy in range' },
       targets: { base: 'One enemy (no attack roll — just designate)' },
-      effects: { base: 'Until next round, all allies gain +1 to hit the designated target.', advances: COMBINED_BUFF },
+      effects: {
+        base: 'Until next round, all allies gain +1 to hit the designated target.',
+        advances: [
+          { value: 'all allies +1 to hit and damage', cost: 'm' },
+          { value: 'all allies +2 to hit and damage', cost: 'm' },
+          { value: 'all allies +2 to hit and damage, and one ally may make a Ranged Basic Attack against the opponent', cost: 'M' },
+        ],
+      },
       duration: { base: 'Until next round' },
     },
   },
@@ -375,7 +387,7 @@ const LEADERSHIP: Ability[] = [
         advances: [
           { value: 'within 20\'', cost: 'm' },
           { value: 'within 30\'', cost: 'm' },
-          { value: 'within 30\', and gain 2 temporary Hit Points', cost: 'M' },
+          { value: 'within 30\', and gain 2 temporary Hit Points', cost: 'M', note: 'L5' },
         ],
       },
       duration: { base: 'Until your next turn' },
@@ -385,14 +397,14 @@ const LEADERSHIP: Ability[] = [
     name: 'War Cry', category: 'Leadership', role: 'Buff', mode: 'Effect',
     vars: {
       frequency: FREQ_FULL,
-      action: { base: 'Standard', advances: [{ value: 'Move', cost: 'M' }, { value: 'Minor', cost: 'M' }, { value: 'Free', cost: 'M' }] },
+      action: { base: 'Standard', advances: [{ value: 'Move', cost: 'M' }, { value: 'Minor', cost: 'M' }, { value: 'Free', cost: 'M', note: 'L5' }] },
       range: { base: 'Allies within 10\' (widens)' },
       effects: {
         base: 'Allies within 10\' gain +1 to hit on all attacks until your next turn.',
         advances: [
           { value: 'within 20\'', cost: 'm' },
           { value: 'within 30\'', cost: 'm' },
-          { value: 'within 30\', and +2 damage', cost: 'M' },
+          { value: 'within 30\', and +2 damage', cost: 'M', note: 'L3' },
         ],
       },
       duration: { base: 'Until your next turn' },
@@ -437,7 +449,7 @@ const MARKSMANSHIP: Ability[] = [
       range: WRI_RANGE,
       targets: { base: 'One' },
       attack: { base: 'Dexterity vs AC (−0 / −2 / −4 by band)' },
-      damage: weaponDamage('Dex'),
+      damage: powerDamage('Dex'),
       duration: { base: 'Instant' },
     },
     feats: RANGED_HOOKS,
@@ -459,7 +471,7 @@ const MARKSMANSHIP: Ability[] = [
           { value: 'Immobilized', cost: 'M' },
         ],
       },
-      duration: { base: 'Save ends' },
+      duration: { base: 'Save ends (Con Save vs the attacker’s Dex Offense)' },
     },
   },
   {
@@ -501,13 +513,13 @@ const MARKSMANSHIP: Ability[] = [
     name: 'Run and Gun', category: 'Marksmanship', role: 'Movement', mode: 'Effect',
     vars: {
       frequency: FREQ_ENC,
-      action: { base: 'Movement only' },
+      action: { base: 'Standard only' },
       effects: {
-        base: 'Move 5\' and make a basic ranged attack.',
+        base: 'Shift 5\'.',
         advances: [
-          { value: 'Move 10\' and make a basic ranged attack', cost: 'm' },
-          { value: 'Move 15\' and make a basic ranged attack', cost: 'm' },
-          { value: 'Move 20\' and take a Standard Action', cost: 'M' },
+          { value: 'Shift 5\' and +1 to a chosen defense until the end of your turn', cost: 'm' },
+          { value: 'Shift 5\' and +2 to a chosen defense until the end of your turn', cost: 'm' },
+          { value: 'Shift 10\' and +2 to all defenses until the end of your turn', cost: 'M' },
         ],
       },
       duration: { base: 'Instant' },
@@ -520,7 +532,14 @@ const MARKSMANSHIP: Ability[] = [
       action: { base: 'Standard' },
       range: { base: '1×WRI' },
       targets: { base: 'One' },
-      attack: { base: 'Dexterity vs AC' },
+      attack: {
+        base: 'Dexterity vs AC',
+        advances: [
+          { value: 'Dexterity vs AC or Armoured Str', cost: 'm' },
+          { value: 'Dexterity vs AC, Armoured Str, or Armoured Dex', cost: 'm' },
+          { value: 'Dexterity vs Unarmoured AC, Str, or Dex', cost: 'M' },
+        ],
+      },
       damage: { base: 'W' },
       effects: {
         base: '−1 to a chosen defense.',
@@ -530,7 +549,7 @@ const MARKSMANSHIP: Ability[] = [
           { value: '−2 and Vulnerable 5', cost: 'M' },
         ],
       },
-      duration: { base: 'Save ends' },
+      duration: { base: 'Save ends (Con Save vs the attacker’s Dex Offense)' },
     },
   },
   {
