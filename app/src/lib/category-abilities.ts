@@ -21,8 +21,8 @@ const weaponDamage = (attr: string): Variable => ({
   base: '1[W]',
   advances: [
     { value: `1[W] + ${attr}`, cost: 'm' },
-    { value: 'weapon counts as one size larger (→ d12)', cost: 'm', note: '1/lvl' },
-    { value: `×2 → 2[W] + ${attr}`, cost: 'M', note: 'lvl' },
+    { value: 'weapon counts as one size larger (→ d12)', cost: 'm' },
+    { value: `×2 → 2[W] + ${attr}`, cost: 'M' },
   ],
 });
 
@@ -60,7 +60,14 @@ const MARTIAL: Ability[] = [
       range: { base: 'Reach' },
       targets: { base: 'One' },
       attack: { base: 'Strength vs AC' },
-      damage: weaponDamage('Str'),
+      damage: {
+        base: '1[W] + Str',
+        advances: [
+          { value: 'weapon one size larger, + Str', cost: 'm' },
+          { value: 'weapon two sizes larger, + Str', cost: 'm' },
+          { value: '2[W] + Str', cost: 'M' },
+        ],
+      },
       duration: { base: 'Instant' },
     },
     feats: 'Heavy Blade or Hammer Specialisation → +2 damage (Hammer also Push 5\').',
