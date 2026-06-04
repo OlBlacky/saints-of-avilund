@@ -30,7 +30,7 @@ Your chosen **Path** adds your Secondary Attribute, a second ability Category, t
 
 ## Paths
 
-### Vanguard — *the wall*
+### Vanguard
 The armoured anchor of the line. Vanguards hold ground, shield their comrades, and punish anything that tries to push through.
 
 | | |
@@ -43,7 +43,7 @@ The armoured anchor of the line. Vanguards hold ground, shield their comrades, a
 
 *Note: Constitution never powers an attack, so a Vanguard's Protection attacks run off **Strength**; Constitution carries their defenses, HP, and saves — "Strength hits, Constitution endures."*
 
-### Commander — *the banner*
+### Commander
 The officer who fights by making everyone around them fight better — calling targets, rallying the line, and leading from the front with sabre and sidearm.
 
 | | |
@@ -54,7 +54,7 @@ The officer who fights by making everyone around them fight better — calling t
 | **Weapon Proficiencies** | Light Blades, Pistols |
 | **Armour Proficiencies** | *(none beyond the Class)* |
 
-### Marksman — *the bow*
+### Marksman
 The ranged specialist — bow, crossbow, or rifle — who controls the field from a distance and never lets the enemy dictate the range.
 
 | | |

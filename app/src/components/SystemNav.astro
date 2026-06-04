@@ -1,0 +1,21 @@
+---
+import { url } from '../lib/url';
+import { systemNav } from '../lib/system';
+
+// Chapter nav for the foot of a System section page. Pass the section's slug;
+// renders previous / next links in reading order, falling back to the System
+// table of contents at either end.
+interface Props { slug: string; }
+const { slug } = Astro.props;
+const { prev, next } = systemNav(slug);
+const overview = url('system/');
+---
+
+<nav class="entry-nav">
+  {prev
+    ? <a class="entry-nav__prev" href={url(`system/${prev.slug}/`)}>← {prev.title}</a>
+    : <a class="entry-nav__prev" href={overview}>← The System</a>}
+  {next
+    ? <a class="entry-nav__next" href={url(`system/${next.slug}/`)}>{next.title} →</a>
+    : <a class="entry-nav__next" href={overview}>The System →</a>}
+</nav>

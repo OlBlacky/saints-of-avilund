@@ -1,6 +1,7 @@
 ---
 import Base from '../../layouts/Base.astro';
 import { url } from '../../lib/url';
+import SystemNav from '../../components/SystemNav.astro';
 
 // Character Creation — a hand-built route (not the generic [section].astro stub)
 // so the prose can carry a worked example beside each step. The running example
@@ -57,28 +58,28 @@ const soldier = url('system/classes/soldier/');
         Your <strong>Class</strong> sets your <strong>Primary Attribute</strong>, one
         <strong>Ability Category</strong>, your <strong>Class HP</strong>, two
         <strong>Class Skills</strong>, and a set of weapon and armour <strong>proficiencies</strong>.
-        Your <strong>Path</strong> adds your <strong>Secondary Attribute</strong>, a second Category,
-        two more skills, and further proficiencies.
+        Your <strong>Path</strong> adds your <strong>Secondary Attribute</strong>, a second
+        <strong>Ability Category</strong>, two more Class Skills, and further proficiencies.
       </p>
       <p>
-        Your Primary and Secondary are your two <strong>key attributes</strong> — the only ones that
-        can ever climb past +2.
+        Your Primary Attribute and Secondary Attribute are your two <strong>key attributes</strong> —
+        the only ones that can ever climb past +2.
       </p>
     </div>
     <aside class="eg">
       <p class="eg__tag">Example · Soldier (Vanguard)</p>
       <h4 class="eg__title"><a href={soldier}>Soldier</a> <span class="eg__sub">(Class)</span></h4>
       <ul class="eg__lines">
-        <li><span>Primary</span><span class="eg__v">Strength</span></li>
-        <li><span>Category</span><span class="eg__v">Martial</span></li>
+        <li><span>Primary Attribute</span><span class="eg__v">Strength</span></li>
+        <li><span>Ability Category</span><span class="eg__v">Martial</span></li>
         <li><span>Class HP</span><span class="eg__v">3</span></li>
-        <li><span>Skills</span><span class="eg__v">Endurance, Intimidate</span></li>
+        <li><span>Class Skills</span><span class="eg__v">Endurance, Intimidate</span></li>
       </ul>
       <h4 class="eg__title eg__title--next">Vanguard <span class="eg__sub">(Path)</span></h4>
       <ul class="eg__lines">
-        <li><span>Secondary</span><span class="eg__v">Constitution</span></li>
-        <li><span>Category</span><span class="eg__v">Protection</span></li>
-        <li><span>Skills</span><span class="eg__v">Survival, Perception</span></li>
+        <li><span>Secondary Attribute</span><span class="eg__v">Constitution</span></li>
+        <li><span>Ability Category</span><span class="eg__v">Protection</span></li>
+        <li><span>Additional Class Skills</span><span class="eg__v">Survival, Perception</span></li>
       </ul>
       <p class="eg__note">Key attributes: <strong>Strength</strong> &amp; <strong>Constitution</strong>.</p>
     </aside>
@@ -100,7 +101,7 @@ const soldier = url('system/classes/soldier/');
         </li>
         <li>
           <strong>Abilities.</strong> Each Ability costs <strong>1 Major</strong> and must come from
-          one of your two Categories. Every Ability is bought at a frequency of
+          one of your two Ability Categories. Every Ability is bought at a frequency of
           <strong>once per day</strong>; at creation you may spend one Major to raise a single Ability
           to <strong>once per encounter</strong>.
         </li>
@@ -133,7 +134,7 @@ const soldier = url('system/classes/soldier/');
       </p>
       <ul>
         <li><strong>+1 to an Offense</strong> (your attack bonus with an attribute) or <strong>+1 to a Defense</strong>.</li>
-        <li><strong>Hit Points</strong> — each Minor adds your <strong>Class HP</strong> (1, 2, or 3).</li>
+        <li><strong>Hit Points</strong> — one Minor adds your <strong>Class HP</strong> (1, 2, or 3). You may buy HP only <strong>once per level</strong>.</li>
         <li><strong>Skill ranks</strong> — +1 in any skill, or +2 in a <strong>Class Skill</strong>.</li>
         <li><strong>Proficiencies, Feats, and languages.</strong></li>
       </ul>
@@ -144,8 +145,8 @@ const soldier = url('system/classes/soldier/');
       <h4 class="eg__title">Spending the 11 Minor</h4>
       <ul class="eg__lines eg__lines--cost">
         <li><span>Strength Offense → +1</span><span class="eg__cost">1 m</span></li>
-        <li><span>Hit Points ×3 <span class="eg__sub">(+9 HP)</span></span><span class="eg__cost">3 m</span></li>
-        <li><span>Armoured Con Defense → +1</span><span class="eg__cost">1 m</span></li>
+        <li><span>Hit Points <span class="eg__sub">(once — +3 HP)</span></span><span class="eg__cost">1 m</span></li>
+        <li><span>Armoured Con Defense → +2</span><span class="eg__cost">3 m</span></li>
         <li><span>Endurance → +2 <span class="eg__sub">(Class)</span></span><span class="eg__cost">1 m</span></li>
         <li><span>Intimidate → +2 <span class="eg__sub">(Class)</span></span><span class="eg__cost">1 m</span></li>
         <li><span>Survival → +2 <span class="eg__sub">(Class)</span></span><span class="eg__cost">1 m</span></li>
@@ -200,10 +201,10 @@ const soldier = url('system/classes/soldier/');
       <h4 class="eg__title">Derived statistics</h4>
       <ul class="eg__lines">
         <li><span>Melee Offense</span><span class="eg__v">+4 <span class="eg__sub">(Str +3, +1 rank)</span></span></li>
-        <li><span>AC</span><span class="eg__v">13 + armour</span></li>
-        <li><span>Hit Points</span><span class="eg__v">14 <span class="eg__sub">(5 + 9)</span></span></li>
+        <li><span>AC</span><span class="eg__v">14 + armour</span></li>
+        <li><span>Hit Points</span><span class="eg__v">8 <span class="eg__sub">(5 + 3)</span></span></li>
       </ul>
-      <p class="eg__note">AC = 10 + 2 (Con) + 1 (Armoured Con Defense rank) + your armour.</p>
+      <p class="eg__note">AC = 10 + 2 (Con) + 2 (Armoured Con Defense rank) + your armour.</p>
     </aside>
   </section>
 
@@ -217,6 +218,12 @@ const soldier = url('system/classes/soldier/');
         <strong>+1 Major and +1 Minor Advance</strong>, spent exactly as above. Your character
         sharpens one notch at a time, adventure by adventure.
       </p>
+      <p>
+        Once-per-level purchases — chiefly <strong>Hit Points</strong> — refresh at the
+        <strong>first milestone of the next level</strong>, not at the level-up itself. Reach your
+        first milestone on the way to Level 1 and you are out of Level 0 and working on 1: the
+        once-per-level allowance opens again, so you may buy HP a second time.
+      </p>
     </div>
     <aside class="eg">
       <p class="eg__tag">Example · Soldier (Vanguard)</p>
@@ -228,6 +235,8 @@ const soldier = url('system/classes/soldier/');
       <p class="eg__note">Or bank the Major toward Strength +4, which unlocks at 5th level.</p>
     </aside>
   </section>
+
+  <SystemNav slug="character-creation" />
 
   <style>
     /* Two-column step layout: prose left, the running example in the right rail. */

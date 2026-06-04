@@ -14,9 +14,9 @@ The Soldier is the trained fighting professional of Avilund — the disciplined 
 | | |
 |---|---|
 | **Primary Attribute** | Strength |
-| **Primary Category** | Martial |
+| **Primary Ability Category** | Martial |
 | **Class HP** | 3 |
-| **Primary Skills** | Endurance, Intimidate |
+| **Class Skills** | Endurance, Intimidate |
 | **Weapon Proficiencies** | Heavy Blades, Polearms, Crossbows |
 | **Armour Proficiencies** | Light Armour, Medium Armour, Light Shield |
 | **Paths** | Vanguard · Commander · Marksman |
@@ -25,46 +25,44 @@ The Soldier is the trained fighting professional of Avilund — the disciplined 
 
 ## Class Features
 
-A Soldier brings **Strength** as their key Primary Attribute and the **Martial** ability Category, backed by a sturdy **Class HP of 3**. They are trained in the **Endurance** and **Intimidate** skills, in the **Heavy Blades, Polearms,** and **Crossbows** weapon groups, and in **Light Armour, Medium Armour,** and the **Light Shield**.
+A Soldier brings **Strength** as their key Primary Attribute and the **Martial** Ability Category, backed by a sturdy **Class HP of 3**. They are trained in the **Endurance** and **Intimidate** skills, in the **Heavy Blades, Polearms,** and **Crossbows** weapon groups, and in **Light Armour, Medium Armour,** and the **Light Shield**.
 
-Your chosen **Path** adds your Secondary Attribute, a second ability Category, two more skills, and further proficiencies — see below.
+Your chosen **Path** adds your Secondary Attribute, a second Ability Category, two more Class Skills, and further proficiencies — see below.
 
 ---
 
 ## Paths
 
-### Vanguard — *the wall*
+### Vanguard
 The armoured anchor of the line. Vanguards hold ground, shield their comrades, and punish anything that tries to push through.
 
 | | |
 |---|---|
 | **Secondary Attribute** | Constitution |
-| **Category** | Protection |
-| **Skills** | Survival, Perception |
+| **Ability Category** | Protection |
+| **Additional Class Skills** | Survival, Perception |
 | **Weapon Proficiencies** | Hammers/Maces, Spears/Lances |
 | **Armour Proficiencies** | Heavy Armour, Heavy Shield |
 
-*Constitution never powers an attack, so a Vanguard's Protection attacks run off **Strength**; Constitution carries their defenses, HP, and saves — "Strength hits, Constitution endures."*
-
-### Commander — *the banner*
+### Commander
 The officer who fights by making everyone around them fight better — calling targets, rallying the line, and leading from the front with sabre and sidearm.
 
 | | |
 |---|---|
 | **Secondary Attribute** | Charisma |
-| **Category** | Leadership |
-| **Skills** | Diplomacy, Perception |
+| **Ability Category** | Leadership |
+| **Additional Class Skills** | Diplomacy, Perception |
 | **Weapon Proficiencies** | Light Blades, Pistols |
 | **Armour Proficiencies** | *(none beyond the Class)* |
 
-### Marksman — *the bow*
+### Marksman
 The ranged specialist — bow, crossbow, or rifle — who controls the field from a distance and never lets the enemy dictate the range.
 
 | | |
 |---|---|
 | **Secondary Attribute** | Dexterity |
-| **Category** | Marksmanship |
-| **Skills** | Acrobatics, Perception |
+| **Ability Category** | Marksmanship |
+| **Additional Class Skills** | Acrobatics, Perception |
 | **Weapon Proficiencies** | Bows, Rifles |
 | **Armour Proficiencies** | *(none beyond the Class — stays nimble)* |
 
@@ -72,7 +70,7 @@ The ranged specialist — bow, crossbow, or rifle — who controls the field fro
 
 ## Abilities
 
-Every Soldier draws on two Ability Categories — **Martial** from the Class, and a second from the chosen Path. Each Category offers a full spread: a couple of offensive options, a hybrid and a defensive one, a buff or debuff, and a utility. The complete cards — with every advancement — live in the **Abilities** section; here is what each Category brings.
+Every Soldier draws on two Ability Categories — **Martial** from the Class, and a second from the chosen Path. Each Ability Category offers a full spread: a couple of offensive options, a hybrid and a defensive one, a buff or debuff, and a utility. The complete cards — with every advancement — live in the **Abilities** section; here is what each Ability Category brings.
 
 ### Martial — *the Class category*
 The disciplined core of weapon-fighting: reliable strikes that grow with the weapon in your hands, plus the means to guard, disarm, focus, and read a fight.

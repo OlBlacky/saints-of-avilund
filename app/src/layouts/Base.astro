@@ -1,6 +1,7 @@
 ---
 import '../styles/global.scss';
 import { url } from '../lib/url';
+import { GLOSSARY } from '../lib/glossary';
 
 interface Props {
   title?: string;
@@ -64,5 +65,83 @@ function isCurrent(item: { href: string; matches: string[] }) {
     <footer class="site-footer">
       <p>Saints of Avilund — a setting compendium. Drawn from the canonical record.</p>
     </footer>
+
+    <style is:global>
+      /* Hover/focus glossary for game terms (applied to bold terms on System
+         pages by the decorator script below). */
+      .gloss-term {
+        border-bottom: 1px dotted var(--gold);
+        cursor: help;
+        position: relative;
+      }
+      .gloss-term::after {
+        content: attr(data-def);
+        position: absolute;
+        left: 0;
+        top: calc(100% + 0.4rem);
+        z-index: 30;
+        width: max-content;
+        max-width: 19rem;
+        padding: 0.5rem 0.7rem;
+        background: var(--ink);
+        color: var(--parchment);
+        border: 1px solid var(--gold);
+        border-radius: 4px;
+        font-family: var(--serif);
+        font-size: 0.82rem;
+        font-weight: 400;
+        font-style: normal;
+        font-variant: normal;
+        line-height: 1.45;
+        letter-spacing: 0;
+        text-transform: none;
+        white-space: normal;
+        box-shadow: 0 6px 18px rgba(0, 0, 0, 0.28);
+        opacity: 0;
+        visibility: hidden;
+        transition: opacity 0.12s ease;
+        pointer-events: none;
+      }
+      .gloss-term:hover::after,
+      .gloss-term:focus-visible::after {
+        opacity: 1;
+        visibility: visible;
+      }
+    </style>
+
+    <script define:vars={{ glossary: GLOSSARY }}>
+      // Decorate bold game terms on System pages with a glossary tooltip.
+      (function () {
+        try {
+          if (!location.pathname.includes('/system/')) return;
+          var map = {};
+          for (var k in glossary) map[k.toLowerCase()] = glossary[k];
+          function lookup(text) {
+            var n = (text || '').toLowerCase().trim()
+              .replace(/^[+\-]?\d+\s+/, '')          // drop a leading quantity ("11 ")
+              .replace(/^[("\[‘’]+/, '')
+              .replace(/[.,;:!?’'")\]]+$/, '');
+            if (!n) return null;
+            if (map[n]) return map[n];
+            if (n.slice(-1) === 's' && map[n.slice(0, -1)]) return map[n.slice(0, -1)];
+            if (map[n + 's']) return map[n + 's'];
+            return null;
+          }
+          var main = document.querySelector('main');
+          if (!main) return;
+          var nodes = main.querySelectorAll('strong, b');
+          for (var i = 0; i < nodes.length; i++) {
+            var el = nodes[i];
+            if (el.getAttribute('data-def')) continue;
+            var def = lookup(el.textContent);
+            if (!def) continue;
+            el.classList.add('gloss-term');
+            el.setAttribute('data-def', def);
+            el.setAttribute('tabindex', '0');
+            el.setAttribute('role', 'note');
+          }
+        } catch (e) { /* no-op */ }
+      })();
+    </script>
   </body>
 </html>

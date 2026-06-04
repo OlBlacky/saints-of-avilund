@@ -35,6 +35,7 @@ export const SYSTEM: SystemPart[] = [
       { slug: 'character-creation', title: 'Character Creation', blurb: 'Advances (Major & Minor), levels 0–11, and milestone advancement.', status: 'live', stub: false },
       { slug: 'attributes', title: 'Attributes, Offenses & Defenses', blurb: 'The six attributes, AC, and the Armoured / Unarmoured defenses.', status: 'designed' },
       { slug: 'skills', title: 'Skills', blurb: 'The twenty-nine skills, each tied to an attribute.', status: 'designed' },
+      { slug: 'proficiencies', title: 'Proficiencies', blurb: 'Weapon groups and armour, and how training in them works.', status: 'designed' },
     ],
   },
   {
@@ -49,7 +50,6 @@ export const SYSTEM: SystemPart[] = [
   {
     part: 'III · Gear & Combat',
     items: [
-      { slug: 'proficiencies', title: 'Proficiencies', blurb: 'Weapon groups and armour, and how training in them works.', status: 'designed' },
       { slug: 'equipment', title: 'Equipment', blurb: 'The weapon, armour, and gear lists.', status: 'progress' },
       { slug: 'combat', title: 'Combat', blurb: 'The turn, the action economy, attack resolution, range and cover.', status: 'designed' },
     ],
@@ -72,3 +72,16 @@ export const SYSTEM: SystemPart[] = [
 export const SYSTEM_ENTRIES = SYSTEM.flatMap((p) =>
   p.items.map((item) => ({ ...item, part: p.part }))
 );
+
+// Previous / next section in reading order (for the chapter nav at the foot of
+// each System page). Either may be undefined at the ends of the sequence.
+export function systemNav(slug: string): {
+  prev?: { slug: string; title: string };
+  next?: { slug: string; title: string };
+} {
+  const i = SYSTEM_ENTRIES.findIndex((e) => e.slug === slug);
+  if (i === -1) return {};
+  const at = (n: number) =>
+    SYSTEM_ENTRIES[n] ? { slug: SYSTEM_ENTRIES[n].slug, title: SYSTEM_ENTRIES[n].title } : undefined;
+  return { prev: at(i - 1), next: at(i + 1) };
+}

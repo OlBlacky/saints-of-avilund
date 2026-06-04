@@ -2,6 +2,7 @@
 import Base from '../../../layouts/Base.astro';
 import { url } from '../../../lib/url';
 import { getCollection } from 'astro:content';
+import SystemNav from '../../../components/SystemNav.astro';
 
 const classes = (await getCollection('classes'))
   .sort((a, b) => a.data.order - b.data.order);
@@ -28,4 +29,6 @@ const classes = (await getCollection('classes'))
       </li>
     ))}
   </ul>
+
+  <SystemNav slug="classes" />
 </Base>
