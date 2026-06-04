@@ -43,25 +43,30 @@ export const SYSTEM: SystemPart[] = [
     items: [
       { slug: 'classes', title: 'Classes & Paths', blurb: 'Eleven vocations, each with three Paths. The Soldier is written up in full.', status: 'live', stub: false },
       { slug: 'abilities', title: 'Abilities', blurb: 'Ability Categories, and the chassis of eight dials each power is built from.', status: 'live', stub: false },
-      { slug: 'conditions', title: 'Conditions', blurb: 'The laddered conditions — Daze, Control, Movement, Debuff, and the rest.', status: 'live' },
       { slug: 'feats', title: 'Feats', blurb: 'The specialist economy — conditional perks that reshape your abilities.', status: 'designed' },
     ],
   },
   {
-    part: 'III · Gear & Combat',
+    part: 'III · Combat',
     items: [
-      { slug: 'equipment', title: 'Equipment', blurb: 'The weapon, armour, and gear lists.', status: 'progress' },
       { slug: 'combat', title: 'Combat', blurb: 'The turn, the action economy, attack resolution, range and cover.', status: 'designed' },
+      { slug: 'conditions', title: 'Conditions', blurb: 'The laddered conditions — Daze, Control, Movement, Debuff, and the rest.', status: 'live' },
     ],
   },
   {
-    part: 'IV · Magic',
+    part: 'IV · Gear',
+    items: [
+      { slug: 'equipment', title: 'Equipment', blurb: 'The weapon, armour, and gear lists.', status: 'progress' },
+    ],
+  },
+  {
+    part: 'V · Magic',
     items: [
       { slug: 'magic', title: 'Magic', blurb: 'The arcane and occult arts of Avilund.', status: 'planned' },
     ],
   },
   {
-    part: 'V · The Game Master’s Section',
+    part: 'VI · The Game Master’s Section',
     items: [
       { slug: 'game-master', title: 'For the Game Master', blurb: 'Encounters, adversaries, and the secrets of running Avilund.', status: 'planned' },
     ],

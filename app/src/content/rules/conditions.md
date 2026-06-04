@@ -28,9 +28,9 @@ Strips actions from the target — the Dazed-to-Stunned axis.
 
 | Rank | Effect | Cost |
 |---|---|---|
-| 1 | no Reactions or Interrupts | — |
-| 2 | + no Minor action | Minor |
-| 3 | + no Move action | Minor |
+| 1 | no Reactions or Interrupts (Dazed) | — |
+| 2 | + no Minor action (Dazed) | Minor |
+| 3 | + no Move action (Dazed) | Minor |
 | 4 | no actions at all (Stunned) | Major |
 
 ### Movement
@@ -38,9 +38,9 @@ Slows the target, then stops it.
 
 | Rank | Effect | Cost |
 |---|---|---|
-| 1 | −5' speed | — |
-| 2 | −10' speed | Minor |
-| 3 | −15' speed | Minor |
+| 1 | Slowed −5' | — |
+| 2 | Slowed −10' | Minor |
+| 3 | Slowed −15' | Minor |
 | 4 | Immobilized | Major |
 
 ### Sensory

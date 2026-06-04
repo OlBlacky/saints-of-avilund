@@ -1,0 +1,348 @@
+---
+import Base from '../../layouts/Base.astro';
+import { url } from '../../lib/url';
+
+// A static, illustrative mock-up of the (digital) character sheet, filled in
+// with the running example: Gareth Ironside, a level-3 Soldier (Vanguard).
+// Three "pages": the Character, Attacks & Abilities, and Gear.
+---
+
+<Base title="Character Sheet — Preview" description="An illustrative mock-up of the Saints of Avilund character sheet, using a sample Soldier (Vanguard).">
+  <p class="back-link"><a href={url('system/')}>← The System</a></p>
+  <p class="eyebrow">The System · Preview</p>
+  <h1>Character Sheet</h1>
+  <p class="lede" style="max-width:var(--measure);">
+    An illustrative mock-up of the digital character sheet — three pages, filled in with our running
+    example, <strong>Gareth Ironside</strong>, a level-3 Soldier (Vanguard). Numbers are for show.
+  </p>
+
+  <!-- ───────────────────────── PAGE 1 · THE CHARACTER ───────────────────────── -->
+  <section class="sheet">
+    <header class="sheet__head">
+      <div>
+        <p class="sheet__page">Page 1 · The Character</p>
+        <h2 class="sheet__name">Gareth Ironside</h2>
+        <p class="sheet__sub">Soldier · Vanguard &nbsp;·&nbsp; Level 3 &nbsp; <span class="pips">● ● ○</span></p>
+      </div>
+      <div class="portrait" aria-label="Portrait placeholder"><span>Portrait</span></div>
+    </header>
+
+    <div class="grid grid--2">
+      <div class="panel">
+        <h3>Attributes &amp; Defenses</h3>
+        <table class="attr">
+          <thead><tr><th>Attr</th><th>Val</th><th>Off</th><th>Un</th><th>Arm</th></tr></thead>
+          <tbody>
+            <tr><th>Str <span class="key">★</span></th><td>+3</td><td>+4</td><td>13</td><td>17</td></tr>
+            <tr><th>Dex</th><td>+1</td><td>+1</td><td>11</td><td>15</td></tr>
+            <tr><th>Con <span class="key">★</span></th><td>+2</td><td class="muted">—</td><td>14</td><td class="ac">18</td></tr>
+            <tr><th>Int</th><td>−1</td><td>−1</td><td>9</td><td>9</td></tr>
+            <tr><th>Wis</th><td>+1</td><td>+1</td><td>11</td><td>11</td></tr>
+            <tr><th>Cha</th><td>+0</td><td>+0</td><td>10</td><td>10</td></tr>
+          </tbody>
+        </table>
+        <p class="fine"><span class="key">★</span> Class Attribute · <span class="ac-chip">18</span> = AC (Armoured Con) · Con never attacks · armour adds to physical Armoured defenses.</p>
+
+        <h3 style="margin-top:1.1rem;">Vitals</h3>
+        <ul class="stats">
+          <li><span>Hit Points</span><span class="v">17 / 17</span></li>
+          <li><span>Temp HP</span><span class="v">0</span></li>
+          <li><span>Speed</span><span class="v">25'</span></li>
+          <li><span>DR</span><span class="v">2</span></li>
+          <li><span>AC</span><span class="v">18</span></li>
+        </ul>
+      </div>
+
+      <div class="panel">
+        <h3>Skills</h3>
+        <ul class="stats">
+          <li><span>Endurance <em>(Con)</em></span><span class="v">+4</span></li>
+          <li><span>Survival <em>(Wis)</em></span><span class="v">+3</span></li>
+          <li><span>Perception <em>(Wis)</em></span><span class="v">+3</span></li>
+          <li><span>Intimidate <em>(Cha)</em></span><span class="v">+2</span></li>
+          <li><span>Climb <em>(Str)</em></span><span class="v">+4</span></li>
+        </ul>
+
+        <h3 style="margin-top:1.1rem;">Proficiencies</h3>
+        <p class="tags"><strong>Weapons:</strong> Heavy Blades · Polearms · Crossbows · Hammers/Maces · Spears/Lances</p>
+        <p class="tags"><strong>Armour:</strong> Light · Medium · Heavy Armour · Light Shield · Heavy Shield</p>
+
+        <h3 style="margin-top:1.1rem;">Feats</h3>
+        <ul class="bullets">
+          <li>Heavy Shield Specialist</li>
+          <li>Heavy Blade Specialist</li>
+          <li>Toughness</li>
+        </ul>
+      </div>
+    </div>
+
+    <footer class="sheet__foot">
+      <span><strong>Advances</strong> · Major <span class="bar"><i style="width:90%"></i></span> 18 / 20 · Minor <span class="bar"><i style="width:85%"></i></span> 17 / 20</span>
+      <span class="btn">Level Up ▸</span>
+    </footer>
+  </section>
+
+  <!-- ───────────────────────── PAGE 2 · ATTACKS & ABILITIES ───────────────────────── -->
+  <section class="sheet">
+    <header class="sheet__head">
+      <div>
+        <p class="sheet__page">Page 2 · Attacks &amp; Abilities</p>
+        <h2 class="sheet__name">Gareth Ironside</h2>
+        <p class="sheet__sub">Soldier · Vanguard · Level 3</p>
+      </div>
+    </header>
+
+    <div class="grid grid--2">
+      <div class="panel">
+        <h3>Attacks</h3>
+        <ul class="atk">
+          <li><span class="atk__n">Greatsword — Power Attack <span class="freq">1/enc ●</span></span><span class="atk__h">+4</span><span class="atk__d">2[W]+Str &nbsp;(1d12+5)</span></li>
+          <li><span class="atk__n">Greatsword — Martial Strike <span class="freq inf">∞</span></span><span class="atk__h">+4</span><span class="atk__d">1[W]+Str &nbsp;(1d12+3)</span></li>
+          <li><span class="atk__n">Greatsword — Marking Strike <span class="freq inf">∞</span></span><span class="atk__h">+4</span><span class="atk__d">1[W] &nbsp;· Marked</span></li>
+          <li><span class="atk__n">Melee Basic Attack</span><span class="atk__h">+3</span><span class="atk__d">1[W] &nbsp;(1d12)</span></li>
+          <li><span class="atk__n">Crossbow — Ranged Basic</span><span class="atk__h">+1</span><span class="atk__d">1d8 &nbsp;· WRI 80'</span></li>
+        </ul>
+
+        <h3 style="margin-top:1.2rem;">Conditions</h3>
+        <p class="fine">— none active —</p>
+      </div>
+
+      <div class="panel">
+        <h3>Abilities</h3>
+
+        <div class="pcard">
+          <div class="pcard__h"><span>Guard</span><span class="freq">1/enc ●</span></div>
+          <p class="pcard__b">+2 to all Armoured Defences (self / 1 ally) · Move · until next turn</p>
+        </div>
+        <div class="pcard">
+          <div class="pcard__h"><span>Shield Bash</span><span class="freq">1/day ●</span></div>
+          <p class="pcard__b">Str vs AC · Daze · Move action · Push 5' (Heavy Shield)</p>
+        </div>
+        <div class="pcard">
+          <div class="pcard__h"><span>Intercept</span><span class="freq">1/day ●</span></div>
+          <p class="pcard__b">Reaction · trade places with an ally, take the hit − Armour DR</p>
+        </div>
+        <div class="pcard">
+          <div class="pcard__h"><span>Bulwark</span><span class="freq">1/enc ●</span></div>
+          <p class="pcard__b">Move · gain 4 temp HP</p>
+        </div>
+        <div class="pcard">
+          <div class="pcard__h"><span>Stand Watch</span><span class="freq">1/day ●</span></div>
+          <p class="pcard__b">No surprise on a 4-hour watch · +1 Perception</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ───────────────────────── PAGE 3 · GEAR ───────────────────────── -->
+  <section class="sheet">
+    <header class="sheet__head">
+      <div>
+        <p class="sheet__page">Page 3 · Gear</p>
+        <h2 class="sheet__name">Gareth Ironside</h2>
+        <p class="sheet__sub">Soldier · Vanguard · Level 3</p>
+      </div>
+    </header>
+
+    <div class="grid grid--2">
+      <div class="panel">
+        <h3>Weapons</h3>
+        <ul class="gear">
+          <li><span class="gear__n">Greatsword</span><span class="gear__t">Heavy Blades</span><span class="gear__s">1d12 · 2H · equipped ✔</span></li>
+          <li><span class="gear__n">Crossbow</span><span class="gear__t">Crossbows</span><span class="gear__s">1d8 · WRI 80'</span></li>
+          <li><span class="gear__n">Dagger</span><span class="gear__t">Light Blades</span><span class="gear__s">1d4 · thrown WRI 10'</span></li>
+        </ul>
+      </div>
+
+      <div class="panel">
+        <h3>Armour</h3>
+        <ul class="gear">
+          <li><span class="gear__n">Chain Mail</span><span class="gear__t">Medium Armour</span><span class="gear__s">+4 AC · DR 1 · equipped ✔</span></li>
+          <li><span class="gear__n">Heavy Shield</span><span class="gear__t">Heavy Shield</span><span class="gear__s">+AC · Shield DR 1 · −5' · equipped ✔</span></li>
+        </ul>
+      </div>
+
+      <div class="panel">
+        <h3>Equipment</h3>
+        <ul class="bullets bullets--cols">
+          <li>Backpack</li><li>Bedroll</li><li>Rope, 50'</li>
+          <li>Rations ×5</li><li>Torches ×4</li><li>Whetstone</li>
+          <li>Healer's kit</li><li>Tinderbox</li><li>Waterskin</li>
+        </ul>
+      </div>
+
+      <div class="panel">
+        <h3>Wealth</h3>
+        <ul class="stats">
+          <li><span>Gold</span><span class="v">120</span></li>
+          <li><span>Silver</span><span class="v">35</span></li>
+          <li><span>Valuables</span><span class="v">a signet ring</span></li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ───────────────────────── PAGE 4 · ADVANCEMENT LOG ───────────────────────── -->
+  <section class="sheet">
+    <header class="sheet__head">
+      <div>
+        <p class="sheet__page">Page 4 · Advancement Log</p>
+        <h2 class="sheet__name">Gareth Ironside</h2>
+        <p class="sheet__sub">Every Advance taken, in order — back-track the whole build</p>
+      </div>
+    </header>
+
+    <div class="panel" style="border-top:0;">
+      <div class="log">
+
+        <div class="log__lvl"><span class="log__when">Level 0 · Creation</span><span class="log__note">11 Major · 11 Minor (+1 Major from a Flaw)</span></div>
+        <ul class="log__items">
+          <li><span class="adv adv--M">M</span> Strength → +3 <span class="cost">6 Major</span></li>
+          <li><span class="adv adv--M">M</span> Constitution → +2 <span class="cost">3 Major</span></li>
+          <li><span class="adv adv--M">M</span> Martial Strike <span class="cost">1 Major</span></li>
+          <li><span class="adv adv--M">M</span> Shield Bash <span class="cost">1 Major</span></li>
+          <li><span class="adv adv--flaw">⚑</span> Flaw — Intelligence → −1 <span class="cost">+1 Major</span></li>
+          <li><span class="adv adv--m">m</span> Endurance +2 <span class="cost">3 Minor</span></li>
+          <li><span class="adv adv--m">m</span> Armoured Con Defense +2 <span class="cost">3 Minor</span></li>
+          <li><span class="adv adv--m">m</span> Strength Offense +1 <span class="cost">1 Minor</span></li>
+          <li><span class="adv adv--m">m</span> Hit Points (+3) <span class="cost">1 Minor</span></li>
+          <li><span class="adv adv--m">m</span> Heavy Shield Specialist <span class="cost">1 Minor</span></li>
+          <li><span class="adv adv--m">m</span> Common tongue (language) <span class="cost">1 Minor</span></li>
+        </ul>
+
+        <div class="log__lvl"><span class="log__when">Level 1</span><span class="log__note">three milestones</span></div>
+        <ul class="log__items">
+          <li><span class="ms">M1</span> <span class="adv adv--M">M</span> Marking Strike &nbsp;·&nbsp; <span class="adv adv--m">m</span> Perception +2</li>
+          <li><span class="ms">M2</span> <span class="adv adv--M">M</span> Martial Strike → 1/encounter &nbsp;·&nbsp; <span class="adv adv--m">m</span> Hit Points (+3)</li>
+          <li><span class="ms">M3 ▲</span> <span class="adv adv--M">M</span> Intercept &nbsp;·&nbsp; <span class="adv adv--m">m</span> Intimidate +2</li>
+        </ul>
+
+        <div class="log__lvl"><span class="log__when">Level 2</span><span class="log__note">three milestones</span></div>
+        <ul class="log__items">
+          <li><span class="ms">M1</span> <span class="adv adv--M">M</span> Power Attack — +Str damage &nbsp;·&nbsp; <span class="adv adv--m">m</span> Hit Points (+3)</li>
+          <li><span class="ms">M2</span> <span class="adv adv--M">M</span> Guard → 1/encounter &nbsp;·&nbsp; <span class="adv adv--m">m</span> Heavy Blade Specialist</li>
+          <li><span class="ms">M3 ▲</span> <span class="adv adv--M">M</span> Bulwark &nbsp;·&nbsp; <span class="adv adv--m">m</span> Climb +1</li>
+        </ul>
+
+        <div class="log__lvl"><span class="log__when">Level 3</span><span class="log__note">three milestones · 2 Advances banked</span></div>
+        <ul class="log__items">
+          <li><span class="ms">M1</span> <span class="adv adv--M">M</span> Martial Strike → at-will &nbsp;·&nbsp; <span class="adv adv--m">m</span> Hit Points (+3)</li>
+          <li><span class="ms">M2</span> <span class="adv adv--M">M</span> Stand Watch &nbsp;·&nbsp; <span class="adv adv--m">m</span> Survival +1</li>
+          <li><span class="ms">M3 ▲</span> <span class="banked">— 1 Major &amp; 1 Minor banked for next level —</span></li>
+        </ul>
+
+      </div>
+    </div>
+  </section>
+
+  <style>
+    .sheet {
+      max-width: 62rem;
+      margin: 2.2rem auto;
+      border: 1px solid var(--rule);
+      background: var(--panel);
+      border-radius: 6px;
+      box-shadow: 0 2px 10px var(--shadow);
+      overflow: hidden;
+    }
+    .sheet__head {
+      display: flex; justify-content: space-between; align-items: flex-start; gap: 1rem;
+      padding: 1rem 1.2rem; border-bottom: 2px solid var(--oxblood);
+      background: rgba(120, 90, 40, 0.09);
+    }
+    .sheet__page { margin: 0 0 0.25rem; font-variant: small-caps; letter-spacing: 0.08em; color: var(--gold); font-size: 0.8rem; }
+    .sheet__name { margin: 0; font-family: var(--display); color: var(--oxblood); font-size: 1.6rem; line-height: 1.1; }
+    .sheet__sub { margin: 0.25rem 0 0; color: var(--ink-soft); }
+    .pips { letter-spacing: 0.15em; color: var(--gold); }
+
+    .portrait {
+      flex: none; width: 92px; height: 116px;
+      border: 1px solid var(--rule); border-radius: 3px;
+      background: repeating-linear-gradient(135deg, rgba(120,90,40,0.05) 0 8px, rgba(120,90,40,0.10) 8px 16px);
+      display: flex; align-items: center; justify-content: center;
+    }
+    .portrait span { font-variant: small-caps; letter-spacing: 0.06em; color: var(--ink-soft); font-size: 0.72rem; }
+
+    .grid { display: grid; }
+    .grid--2 { grid-template-columns: 1fr 1fr; }
+    .panel { padding: 1rem 1.2rem; border-top: 1px solid var(--rule); }
+    .grid--2 .panel:nth-child(even) { border-left: 1px solid var(--rule); }
+    .panel h3 {
+      margin: 0 0 0.55rem; font-variant: small-caps; letter-spacing: 0.06em;
+      color: var(--oxblood); font-size: 0.92rem; border-bottom: 1px solid var(--rule); padding-bottom: 0.2rem;
+    }
+
+    table.attr { width: 100%; border-collapse: collapse; font-size: 0.95rem; }
+    table.attr th, table.attr td { text-align: center; padding: 0.22rem 0.3rem; }
+    table.attr thead th { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.04em; color: var(--ink-soft); border-bottom: 1px solid var(--rule); }
+    table.attr tbody th { text-align: left; font-weight: 700; color: var(--ink); }
+    table.attr tbody tr:nth-child(even) { background: rgba(120,90,40,0.04); }
+    .key { color: var(--gold); }
+    .muted { color: rgba(120,90,40,0.5); }
+    .ac { font-weight: 700; color: var(--oxblood); }
+    .ac::before, .ac::after { content: ''; }
+    .ac-chip { display: inline-block; padding: 0 0.35rem; border: 1px solid var(--oxblood); border-radius: 3px; color: var(--oxblood); font-weight: 700; }
+
+    .stats { list-style: none; margin: 0; padding: 0; }
+    .stats li { display: flex; justify-content: space-between; gap: 0.6rem; padding: 0.2rem 0; border-bottom: 1px dotted var(--rule); }
+    .stats li:last-child { border-bottom: 0; }
+    .stats em { color: var(--ink-soft); font-size: 0.82em; }
+    .stats .v { color: var(--oxblood); font-weight: 700; }
+
+    .bullets { margin: 0; padding-left: 1.1rem; }
+    .bullets li { margin: 0.15rem 0; }
+    .bullets--cols { columns: 2; padding-left: 1.1rem; }
+    .tags { margin: 0 0 0.4rem; font-size: 0.9rem; line-height: 1.5; }
+    .fine { margin: 0.5rem 0 0; font-size: 0.78rem; color: var(--ink-soft); font-style: italic; }
+
+    .sheet__foot {
+      display: flex; justify-content: space-between; align-items: center; gap: 1rem;
+      padding: 0.7rem 1.2rem; border-top: 2px solid var(--gold); background: rgba(120,90,40,0.06);
+      font-size: 0.9rem;
+    }
+    .bar { display: inline-block; width: 5rem; height: 0.5rem; border: 1px solid var(--rule); border-radius: 3px; vertical-align: middle; background: var(--parchment); overflow: hidden; }
+    .bar i { display: block; height: 100%; background: var(--gold); }
+    .btn { padding: 0.2rem 0.7rem; border: 1px solid var(--oxblood); border-radius: 4px; color: var(--oxblood); font-variant: small-caps; letter-spacing: 0.04em; cursor: default; }
+
+    .freq { font-size: 0.74rem; color: var(--ink-soft); white-space: nowrap; }
+    .freq.inf { color: var(--gold); font-weight: 700; }
+
+    ul.atk { list-style: none; margin: 0; padding: 0; }
+    ul.atk li { display: grid; grid-template-columns: 1fr auto auto; gap: 0.6rem; align-items: baseline; padding: 0.32rem 0; border-bottom: 1px dotted var(--rule); }
+    ul.atk li:last-child { border-bottom: 0; }
+    .atk__h { color: var(--oxblood); font-weight: 700; font-variant-numeric: tabular-nums; }
+    .atk__d { color: var(--ink-soft); font-size: 0.85rem; white-space: nowrap; }
+
+    .pcard { border: 1px solid var(--rule); border-radius: 4px; margin: 0 0 0.55rem; background: rgba(120,90,40,0.03); }
+    .pcard__h { display: flex; justify-content: space-between; gap: 0.6rem; padding: 0.35rem 0.6rem; background: rgba(120,90,40,0.10); font-family: var(--display); color: var(--oxblood); }
+    .pcard__b { margin: 0; padding: 0.4rem 0.6rem; font-size: 0.85rem; color: var(--ink-soft); }
+
+    ul.gear { list-style: none; margin: 0; padding: 0; }
+    ul.gear li { display: grid; grid-template-columns: 1fr auto; gap: 0.2rem 0.6rem; padding: 0.35rem 0; border-bottom: 1px dotted var(--rule); }
+    ul.gear li:last-child { border-bottom: 0; }
+    .gear__n { font-weight: 700; }
+    .gear__t { color: var(--gold); font-size: 0.78rem; font-variant: small-caps; letter-spacing: 0.04em; text-align: right; }
+    .gear__s { grid-column: 1 / -1; color: var(--ink-soft); font-size: 0.83rem; }
+
+    /* Advancement log (page 4) */
+    .log__lvl { display: flex; justify-content: space-between; align-items: baseline; gap: 0.6rem; margin: 1.2rem 0 0.45rem; padding-bottom: 0.2rem; border-bottom: 1px solid var(--oxblood); }
+    .log__lvl:first-child { margin-top: 0; }
+    .log__when { font-family: var(--display); color: var(--oxblood); font-size: 1.08rem; }
+    .log__note { color: var(--ink-soft); font-size: 0.8rem; font-style: italic; }
+    .log__items { list-style: none; margin: 0 0 0.4rem; padding: 0; }
+    .log__items li { padding: 0.28rem 0; border-bottom: 1px dotted var(--rule); font-size: 0.92rem; }
+    .log__items li:last-child { border-bottom: 0; }
+    .cost { float: right; color: var(--ink-soft); font-size: 0.82rem; font-variant-numeric: tabular-nums; }
+    .ms { display: inline-block; width: 2.6rem; color: var(--gold); font-size: 0.76rem; font-variant: small-caps; letter-spacing: 0.04em; }
+    .adv { display: inline-block; min-width: 1.15rem; text-align: center; padding: 0 0.3rem; border-radius: 3px; font-size: 0.72rem; font-weight: 700; margin-right: 0.15rem; vertical-align: baseline; }
+    .adv--M { color: #f6efe0; background: var(--oxblood); }
+    .adv--m { color: var(--oxblood); border: 1px solid var(--oxblood); }
+    .adv--flaw { color: var(--gold); border: 1px solid var(--gold); }
+    .banked { color: var(--ink-soft); font-style: italic; }
+
+    @media (max-width: 46rem) {
+      .grid--2 { grid-template-columns: 1fr; }
+      .grid--2 .panel:nth-child(even) { border-left: 0; }
+    }
+  </style>
+</Base>
