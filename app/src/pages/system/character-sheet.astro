@@ -1,6 +1,7 @@
 ---
 import Base from '../../layouts/Base.astro';
 import { url } from '../../lib/url';
+import SystemNav from '../../components/SystemNav.astro';
 
 // A static, illustrative mock-up of the (digital) character sheet, filled in
 // with the running example: Gareth Ironside, a level-3 Soldier (Vanguard).
@@ -24,7 +25,7 @@ import { url } from '../../lib/url';
         <h2 class="sheet__name">Gareth Ironside</h2>
         <p class="sheet__sub">Soldier · Vanguard &nbsp;·&nbsp; Level 3 &nbsp; <span class="pips">● ● ○</span></p>
       </div>
-      <div class="portrait" aria-label="Portrait placeholder"><span>Portrait</span></div>
+      <div class="portrait"><img src={url('images/pulp/gareth_ironside.png')} alt="Gareth Ironside" /></div>
     </header>
 
     <div class="grid grid--2">
@@ -33,15 +34,15 @@ import { url } from '../../lib/url';
         <table class="attr">
           <thead><tr><th>Attr</th><th>Val</th><th>Off</th><th>Un</th><th>Arm</th></tr></thead>
           <tbody>
-            <tr><th>Str <span class="key">★</span></th><td>+3</td><td>+4</td><td>13</td><td>17</td></tr>
-            <tr><th>Dex</th><td>+1</td><td>+1</td><td>11</td><td>15</td></tr>
-            <tr><th>Con <span class="key">★</span></th><td>+2</td><td class="muted">—</td><td>14</td><td class="ac">18</td></tr>
+            <tr><th>Str <span class="key">★</span></th><td>+3</td><td>+4</td><td>13</td><td>16</td></tr>
+            <tr><th>Dex</th><td>+1</td><td>+1</td><td>11</td><td>14</td></tr>
+            <tr><th>Con <span class="key">★</span></th><td>+2</td><td class="muted">—</td><td>14</td><td class="ac">17</td></tr>
             <tr><th>Int</th><td>−1</td><td>−1</td><td>9</td><td>9</td></tr>
             <tr><th>Wis</th><td>+1</td><td>+1</td><td>11</td><td>11</td></tr>
             <tr><th>Cha</th><td>+0</td><td>+0</td><td>10</td><td>10</td></tr>
           </tbody>
         </table>
-        <p class="fine"><span class="key">★</span> Class Attribute · <span class="ac-chip">18</span> = AC (Armoured Con) · Con never attacks · armour adds to physical Armoured defenses.</p>
+        <p class="fine"><span class="key">★</span> Class Attribute · <span class="ac-chip">17</span> = AC (Armoured Con) · Con never attacks · Chain Mail adds +3 to physical Armoured defenses; a raised shield adds +2 AC / +1 DR.</p>
 
         <h3 style="margin-top:1.1rem;">Vitals</h3>
         <ul class="stats">
@@ -49,7 +50,7 @@ import { url } from '../../lib/url';
           <li><span>Temp HP</span><span class="v">0</span></li>
           <li><span>Speed</span><span class="v">25'</span></li>
           <li><span>DR</span><span class="v">2</span></li>
-          <li><span>AC</span><span class="v">18</span></li>
+          <li><span>AC</span><span class="v">17</span></li>
         </ul>
       </div>
 
@@ -157,8 +158,8 @@ import { url } from '../../lib/url';
       <div class="panel">
         <h3>Armour</h3>
         <ul class="gear">
-          <li><span class="gear__n">Chain Mail</span><span class="gear__t">Medium Armour</span><span class="gear__s">+4 AC · DR 1 · equipped ✔</span></li>
-          <li><span class="gear__n">Heavy Shield</span><span class="gear__t">Heavy Shield</span><span class="gear__s">+AC · Shield DR 1 · −5' · equipped ✔</span></li>
+          <li><span class="gear__n">Chain Mail</span><span class="gear__t">Heavy Armour</span><span class="gear__s">+3 AC · DR 2 · Str +1 · Speed −5' (advanced) · equipped ✔</span></li>
+          <li><span class="gear__n">Heater Shield</span><span class="gear__t">Heavy Shield</span><span class="gear__s">+2 AC · DR 1 (raised) · −5' · equipped ✔</span></li>
         </ul>
       </div>
 
@@ -235,6 +236,8 @@ import { url } from '../../lib/url';
     </div>
   </section>
 
+  <SystemNav slug="character-sheet" />
+
   <style>
     .sheet {
       max-width: 62rem;
@@ -256,12 +259,12 @@ import { url } from '../../lib/url';
     .pips { letter-spacing: 0.15em; color: var(--gold); }
 
     .portrait {
-      flex: none; width: 92px; height: 116px;
+      flex: none; width: 108px; height: 136px;
       border: 1px solid var(--rule); border-radius: 3px;
-      background: repeating-linear-gradient(135deg, rgba(120,90,40,0.05) 0 8px, rgba(120,90,40,0.10) 8px 16px);
-      display: flex; align-items: center; justify-content: center;
+      overflow: hidden; background: var(--parchment);
+      box-shadow: 0 1px 3px var(--shadow);
     }
-    .portrait span { font-variant: small-caps; letter-spacing: 0.06em; color: var(--ink-soft); font-size: 0.72rem; }
+    .portrait img { width: 100%; height: 100%; object-fit: cover; display: block; }
 
     .grid { display: grid; }
     .grid--2 { grid-template-columns: 1fr 1fr; }

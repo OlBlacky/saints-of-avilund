@@ -33,6 +33,7 @@ export const SYSTEM: SystemPart[] = [
     items: [
       { slug: 'introduction', title: 'Introduction & How to Play', blurb: 'What the game is, and the d20 core it runs on.', status: 'planned' },
       { slug: 'character-creation', title: 'Character Creation', blurb: 'Advances (Major & Minor), levels 0–11, and milestone advancement.', status: 'live', stub: false },
+      { slug: 'character-sheet', title: 'Character Sheet', blurb: 'A look at the digital character sheet — the example Soldier laid out across four pages.', status: 'live', stub: false },
       { slug: 'attributes', title: 'Attributes, Offenses & Defenses', blurb: 'The six attributes, AC, and the Armoured / Unarmoured defenses.', status: 'designed' },
       { slug: 'skills', title: 'Skills', blurb: 'The twenty-nine skills, each tied to an attribute.', status: 'designed' },
       { slug: 'proficiencies', title: 'Proficiencies', blurb: 'Weapon groups and armour, and how training in them works.', status: 'designed' },
@@ -56,7 +57,8 @@ export const SYSTEM: SystemPart[] = [
   {
     part: 'IV · Gear',
     items: [
-      { slug: 'equipment', title: 'Equipment', blurb: 'The weapon, armour, and gear lists.', status: 'progress' },
+      { slug: 'armour', title: 'Armour', blurb: 'The nine armours and four shields — protection, cost, and how a shield is raised.', status: 'live' },
+      { slug: 'equipment', title: 'Equipment', blurb: 'The weapon and gear lists.', status: 'progress' },
     ],
   },
   {
