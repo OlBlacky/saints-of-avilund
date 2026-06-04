@@ -1,0 +1,299 @@
+---
+import Base from '../../layouts/Base.astro';
+import { url } from '../../lib/url';
+
+// Character Creation — a hand-built route (not the generic [section].astro stub)
+// so the prose can carry a worked example beside each step. The running example
+// is a single Soldier (Vanguard) build, accumulated step by step in the right rail.
+
+const title = 'Character Creation';
+const blurb = 'Advances (Major & Minor), levels 0–11, and milestone advancement.';
+const soldier = url('system/classes/soldier/');
+---
+
+<Base title={title} description={blurb}>
+  <p class="back-link"><a href={url('system/')}>← The System</a></p>
+
+  <header class="saint-head">
+    <p class="eyebrow">I · Foundations</p>
+    <h1>{title}</h1>
+  </header>
+
+  <p class="lede" style="margin-bottom:2rem;">
+    Building a character is a matter of spending <strong>Advances</strong> — the universal
+    currency of growth — against the menu your Class and Path open up. Here is the short
+    version, with one build carried through it: a <a href={soldier}>Soldier (Vanguard)</a>.
+  </p>
+
+  <!-- What you start with -->
+  <section class="cc-row">
+    <div class="cc-row__body">
+      <h2>What you start with</h2>
+      <p>
+        Every character begins at <strong>Level 0</strong> with <strong>11 Major Advances</strong>
+        and <strong>11 Minor Advances</strong> to spend, and a base of <strong>5 Hit Points</strong>.
+        All six attributes — Strength, Dexterity, Constitution, Intelligence, Wisdom, and Charisma —
+        begin at <strong>+0</strong>.
+      </p>
+    </div>
+    <aside class="eg">
+      <p class="eg__tag">Example · Soldier (Vanguard)</p>
+      <h4 class="eg__title">Opening sheet</h4>
+      <ul class="eg__lines">
+        <li><span>Level</span><span class="eg__v">0</span></li>
+        <li><span>Major Advances</span><span class="eg__v">11</span></li>
+        <li><span>Minor Advances</span><span class="eg__v">11</span></li>
+        <li><span>Hit Points</span><span class="eg__v">5</span></li>
+        <li><span>All attributes</span><span class="eg__v">+0</span></li>
+      </ul>
+    </aside>
+  </section>
+
+  <!-- Step 1 -->
+  <section class="cc-row">
+    <div class="cc-row__body">
+      <h2>Step 1 · Choose a Class and Path</h2>
+      <p>
+        Your <strong>Class</strong> sets your <strong>Primary Attribute</strong>, one
+        <strong>Ability Category</strong>, your <strong>Class HP</strong>, two
+        <strong>Class Skills</strong>, and a set of weapon and armour <strong>proficiencies</strong>.
+        Your <strong>Path</strong> adds your <strong>Secondary Attribute</strong>, a second Category,
+        two more skills, and further proficiencies.
+      </p>
+      <p>
+        Your Primary and Secondary are your two <strong>key attributes</strong> — the only ones that
+        can ever climb past +2.
+      </p>
+    </div>
+    <aside class="eg">
+      <p class="eg__tag">Example · Soldier (Vanguard)</p>
+      <h4 class="eg__title"><a href={soldier}>Soldier</a> <span class="eg__sub">(Class)</span></h4>
+      <ul class="eg__lines">
+        <li><span>Primary</span><span class="eg__v">Strength</span></li>
+        <li><span>Category</span><span class="eg__v">Martial</span></li>
+        <li><span>Class HP</span><span class="eg__v">3</span></li>
+        <li><span>Skills</span><span class="eg__v">Endurance, Intimidate</span></li>
+      </ul>
+      <h4 class="eg__title eg__title--next">Vanguard <span class="eg__sub">(Path)</span></h4>
+      <ul class="eg__lines">
+        <li><span>Secondary</span><span class="eg__v">Constitution</span></li>
+        <li><span>Category</span><span class="eg__v">Protection</span></li>
+        <li><span>Skills</span><span class="eg__v">Survival, Perception</span></li>
+      </ul>
+      <p class="eg__note">Key attributes: <strong>Strength</strong> &amp; <strong>Constitution</strong>.</p>
+    </aside>
+  </section>
+
+  <!-- Step 2 -->
+  <section class="cc-row">
+    <div class="cc-row__body">
+      <h2>Step 2 · Spend your 11 Major Advances</h2>
+      <p>Major Advances mostly buy <strong>attribute points</strong> and <strong>Abilities</strong>.</p>
+      <ul>
+        <li>
+          <strong>Attributes.</strong> Each new point costs more than the last: <strong>+1</strong>
+          costs 1 Major, <strong>+2</strong> costs 3 in total, <strong>+3</strong> costs 6 in total.
+          At Level 0 ordinary attributes cap at <strong>+2</strong>; your two
+          <strong>key attributes</strong> may be pushed straight to <strong>+3</strong> at creation —
+          paying the full 6 Major now rather than saving three later milestones' Major Advances for
+          it. Key attributes go on to reach +4 at 5th level and +5 at 10th.
+        </li>
+        <li>
+          <strong>Abilities.</strong> Each Ability costs <strong>1 Major</strong> and must come from
+          one of your two Categories. Every Ability is bought at a frequency of
+          <strong>once per day</strong>; at creation you may spend one Major to raise a single Ability
+          to <strong>once per encounter</strong>.
+        </li>
+      </ul>
+    </div>
+    <aside class="eg">
+      <p class="eg__tag">Example · Soldier (Vanguard)</p>
+      <h4 class="eg__title">Spending the 11 Major</h4>
+      <ul class="eg__lines eg__lines--cost">
+        <li><span>Strength → <strong>+3</strong></span><span class="eg__cost">6 M</span></li>
+        <li><span>Constitution → <strong>+2</strong></span><span class="eg__cost">3 M</span></li>
+        <li><span>Martial Strike <span class="eg__sub">(Martial)</span></span><span class="eg__cost">1 M</span></li>
+        <li><span>Shield Bash <span class="eg__sub">(Protection)</span></span><span class="eg__cost">1 M</span></li>
+      </ul>
+      <p class="eg__total"><span>Total</span><span>11 Major</span></p>
+      <p class="eg__note">
+        Pushing Strength to +3 now spends the same 6 Major you'd otherwise gather over three later
+        milestones — that's the trade the new option lets you make up front.
+      </p>
+    </aside>
+  </section>
+
+  <!-- Step 3 -->
+  <section class="cc-row">
+    <div class="cc-row__body">
+      <h2>Step 3 · Spend your 11 Minor Advances</h2>
+      <p>
+        Minor Advances buy the finer details — each on the same rising cost as attributes
+        (+1 costs 1, +2 costs 3):
+      </p>
+      <ul>
+        <li><strong>+1 to an Offense</strong> (your attack bonus with an attribute) or <strong>+1 to a Defense</strong>.</li>
+        <li><strong>Hit Points</strong> — each Minor adds your <strong>Class HP</strong> (1, 2, or 3).</li>
+        <li><strong>Skill ranks</strong> — +1 in any skill, or +2 in a <strong>Class Skill</strong>.</li>
+        <li><strong>Proficiencies, Feats, and languages.</strong></li>
+      </ul>
+      <p>Offenses, defenses, and skill ranks all stack <em>on top of</em> the governing attribute.</p>
+    </div>
+    <aside class="eg">
+      <p class="eg__tag">Example · Soldier (Vanguard)</p>
+      <h4 class="eg__title">Spending the 11 Minor</h4>
+      <ul class="eg__lines eg__lines--cost">
+        <li><span>Strength Offense → +1</span><span class="eg__cost">1 m</span></li>
+        <li><span>Hit Points ×3 <span class="eg__sub">(+9 HP)</span></span><span class="eg__cost">3 m</span></li>
+        <li><span>Armoured Con Defense → +1</span><span class="eg__cost">1 m</span></li>
+        <li><span>Endurance → +2 <span class="eg__sub">(Class)</span></span><span class="eg__cost">1 m</span></li>
+        <li><span>Intimidate → +2 <span class="eg__sub">(Class)</span></span><span class="eg__cost">1 m</span></li>
+        <li><span>Survival → +2 <span class="eg__sub">(Class)</span></span><span class="eg__cost">1 m</span></li>
+        <li><span>Perception → +2 <span class="eg__sub">(Class)</span></span><span class="eg__cost">1 m</span></li>
+        <li><span>Heavy Shield Specialisation <span class="eg__sub">(Feat)</span></span><span class="eg__cost">1 m</span></li>
+        <li><span>One language</span><span class="eg__cost">1 m</span></li>
+      </ul>
+      <p class="eg__total"><span>Total</span><span>11 Minor</span></p>
+    </aside>
+  </section>
+
+  <!-- Step 4 -->
+  <section class="cc-row">
+    <div class="cc-row__body">
+      <h2>Step 4 · Take a Flaw (optional)</h2>
+      <p>
+        You may lower up to <strong>two</strong> attributes by −1 at creation, gaining
+        <strong>1 extra Major Advance</strong> for each.
+      </p>
+    </div>
+    <aside class="eg">
+      <p class="eg__tag">Example · Soldier (Vanguard)</p>
+      <h4 class="eg__title">A two-point Flaw</h4>
+      <ul class="eg__lines eg__lines--cost">
+        <li><span>Intelligence → −1</span><span class="eg__cost">+1 M</span></li>
+        <li><span>Charisma → −1</span><span class="eg__cost">+1 M</span></li>
+      </ul>
+      <p class="eg__note">
+        The two extra Major (13 in all) buy a per-encounter Martial Strike and a third ability,
+        Marking Strike.
+      </p>
+    </aside>
+  </section>
+
+  <!-- Your numbers -->
+  <section class="cc-row">
+    <div class="cc-row__body">
+      <h2>Your numbers</h2>
+      <p>Once everything is spent, note your derived statistics:</p>
+      <ul>
+        <li><strong>Offense</strong> (attack bonus) = attribute + offense ranks.</li>
+        <li>
+          <strong>Defense</strong> (target number) = 10 + attribute + defense ranks;
+          <strong>Armoured</strong> defenses also add your armour. Your <strong>AC</strong> is your
+          Armoured Constitution Defense.
+        </li>
+        <li><strong>Hit Points</strong> = 5 + the HP you bought.</li>
+      </ul>
+    </div>
+    <aside class="eg">
+      <p class="eg__tag">Example · Soldier (Vanguard)</p>
+      <h4 class="eg__title">Derived statistics</h4>
+      <ul class="eg__lines">
+        <li><span>Melee Offense</span><span class="eg__v">+4 <span class="eg__sub">(Str +3, +1 rank)</span></span></li>
+        <li><span>AC</span><span class="eg__v">13 + armour</span></li>
+        <li><span>Hit Points</span><span class="eg__v">14 <span class="eg__sub">(5 + 9)</span></span></li>
+      </ul>
+      <p class="eg__note">AC = 10 + 2 (Con) + 1 (Armoured Con Defense rank) + your armour.</p>
+    </aside>
+  </section>
+
+  <!-- Afterwards -->
+  <section class="cc-row">
+    <div class="cc-row__body">
+      <h2>Afterwards · advancement</h2>
+      <p>
+        You climb from Level 0 to a cap of <strong>Level 11</strong>. Each level is three
+        <strong>milestones</strong> — roughly one per adventure — and every milestone grants
+        <strong>+1 Major and +1 Minor Advance</strong>, spent exactly as above. Your character
+        sharpens one notch at a time, adventure by adventure.
+      </p>
+    </div>
+    <aside class="eg">
+      <p class="eg__tag">Example · Soldier (Vanguard)</p>
+      <h4 class="eg__title">Next milestone</h4>
+      <ul class="eg__lines eg__lines--cost">
+        <li><span>Constitution → +3</span><span class="eg__cost">1 M</span></li>
+        <li><span>Hit Points ×1 <span class="eg__sub">(+3 HP)</span></span><span class="eg__cost">1 m</span></li>
+      </ul>
+      <p class="eg__note">Or bank the Major toward Strength +4, which unlocks at 5th level.</p>
+    </aside>
+  </section>
+
+  <style>
+    /* Two-column step layout: prose left, the running example in the right rail. */
+    .cc-row {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 19rem;
+      gap: 2.6rem;
+      align-items: start;
+      margin-top: 0.5rem;
+    }
+    .cc-row__body { max-width: var(--measure); }
+    .cc-row__body h2 { margin-top: 2.4rem; }
+    .cc-row__body > ul { margin: 0 0 1.1rem; padding-left: 1.2rem; }
+    .cc-row__body li { margin: 0 0 0.5rem; }
+
+    /* The example panel — a parchment aside, sticky so it tracks its step. */
+    .eg {
+      position: sticky;
+      top: 1.5rem;
+      margin-top: 4.1rem; /* drop the panel to roughly align with the step heading */
+      padding: 1.1rem 1.2rem 1.2rem;
+      background: var(--panel);
+      border: 1px solid var(--rule);
+      border-top: 3px solid var(--gold);
+      border-radius: 4px;
+      box-shadow: 0 1px 2px var(--shadow);
+      font-size: 0.92rem;
+      line-height: 1.5;
+    }
+    .eg__tag {
+      font-variant: small-caps; letter-spacing: 0.08em; color: var(--gold);
+      font-size: 0.78rem; margin: 0 0 0.5rem;
+    }
+    .eg__title {
+      font-family: var(--display); font-size: 1.05rem; color: var(--oxblood);
+      margin: 0 0 0.5rem; font-variant: normal; letter-spacing: 0;
+    }
+    .eg__title--next { margin-top: 0.9rem; }
+    .eg__title a { text-decoration: none; }
+    .eg__sub { color: var(--ink-soft); font-size: 0.82em; font-weight: normal; }
+    .eg__lines { list-style: none; margin: 0; padding: 0; }
+    .eg__lines li {
+      display: flex; justify-content: space-between; gap: 0.6rem;
+      padding: 0.18rem 0; border-bottom: 1px dotted var(--rule);
+    }
+    .eg__lines li:last-child { border-bottom: 0; }
+    .eg__v { color: var(--ink-soft); text-align: right; }
+    .eg__cost {
+      color: var(--oxblood); font-variant-numeric: tabular-nums; white-space: nowrap;
+      font-size: 0.86rem;
+    }
+    .eg__total {
+      display: flex; justify-content: space-between;
+      margin: 0.5rem 0 0; padding-top: 0.4rem;
+      border-top: 2px solid var(--gold);
+      font-family: var(--display); color: var(--oxblood); font-size: 0.95rem;
+    }
+    .eg__note {
+      margin: 0.7rem 0 0; color: var(--ink-soft); font-style: italic; font-size: 0.85rem;
+      line-height: 1.45;
+    }
+
+    /* Stack on narrow screens; the panel becomes a normal block under the text. */
+    @media (max-width: 56rem) {
+      .cc-row { grid-template-columns: 1fr; gap: 1rem; }
+      .eg { position: static; margin-top: 0.6rem; max-width: var(--measure); }
+    }
+  </style>
+</Base>

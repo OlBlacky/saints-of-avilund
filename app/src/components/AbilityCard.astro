@@ -1,0 +1,189 @@
+---
+import type { Ability } from '../lib/abilities';
+import { VAR_ORDER, VAR_LABELS, resolveValue } from '../lib/abilities';
+
+interface Props {
+  ability: Ability;
+  mode?: 'build' | 'play';
+}
+const { ability, mode = 'build' } = Astro.props;
+const ADV_COLS = [0, 1, 2];
+
+const sub = [ability.role, ability.mode].filter(Boolean).join(' · ');
+
+// Play mode: only the rows a character actually has a value for.
+const playRows = VAR_ORDER
+  .map((k) => ({ key: k, label: VAR_LABELS[k], value: resolveValue(ability.vars[k], ability.current?.[k]) }))
+  .filter((r) => r.value && r.value !== '—');
+---
+
+<section class={`acard acard--${mode}`}>
+  <header class="acard__banner">
+    <span class="acard__name">{ability.name}</span>
+    <span class="acard__cat">{ability.category}</span>
+  </header>
+  {sub && <p class="acard__sub">{sub}</p>}
+
+  {mode === 'build' ? (
+    <table class="acard__table acard__table--build">
+      <thead>
+        <tr>
+          <th class="acard__var">Variable</th>
+          <th>Base</th>
+          <th>&#9312;</th>
+          <th>&#9313;</th>
+          <th>&#9314;</th>
+        </tr>
+      </thead>
+      <tbody>
+        {VAR_ORDER.map((k) => {
+          const v = ability.vars[k];
+          const base = v?.base ?? '—';
+          const adv = v?.advances ?? [];
+          const blank = base === '—' && adv.length === 0;
+          return (
+            <tr class={blank ? 'acard__row--locked' : undefined}>
+              <th scope="row" class="acard__var">{VAR_LABELS[k]}</th>
+              <td>{base}</td>
+              {ADV_COLS.map((i) => (
+                adv[i]
+                  ? (
+                    <td>
+                      {adv[i].value}{' '}
+                      <span class={`pip pip--${adv[i].cost}`}>{adv[i].cost}{adv[i].note ? `·${adv[i].note}` : ''}</span>
+                    </td>
+                  )
+                  : <td class="acard__empty">—</td>
+              ))}
+            </tr>
+          );
+        })}
+      </tbody>
+    </table>
+  ) : (
+    <table class="acard__table acard__table--play">
+      <tbody>
+        {playRows.map((r) => (
+          <tr>
+            <th scope="row" class="acard__var">{r.label}</th>
+            <td>{r.value}</td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  )}
+
+  {ability.feats && (
+    <p class="acard__feats"><strong>Feats:</strong> {ability.feats}</p>
+  )}
+</section>
+
+<style>
+  .acard {
+    border: 1px solid rgba(120, 90, 40, 0.40);
+    border-radius: 7px;
+    background: rgba(120, 90, 40, 0.035);
+    margin: 1.6rem 0;
+    overflow: hidden;
+    box-shadow: 0 1px 3px rgba(60, 45, 20, 0.10);
+  }
+  .acard__banner {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 0.5rem 0.9rem;
+    background: rgba(120, 90, 40, 0.16);
+    border-bottom: 1px solid rgba(120, 90, 40, 0.30);
+  }
+  .acard__name {
+    font-family: var(--font-display, Georgia, 'Times New Roman', serif);
+    font-weight: 700;
+    font-size: 1.18rem;
+    letter-spacing: 0.01em;
+    color: #4a3719;
+  }
+  .acard__cat {
+    text-transform: uppercase;
+    letter-spacing: 0.09em;
+    font-size: 0.72rem;
+    color: #6a532a;
+    white-space: nowrap;
+  }
+  .acard__sub {
+    margin: 0;
+    padding: 0.3rem 0.9rem 0;
+    font-size: 0.78rem;
+    font-style: italic;
+    color: #6a532a;
+  }
+
+  .acard__table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 0.6rem 0 0;
+    font-size: 0.9rem;
+    line-height: 1.4;
+  }
+  .acard__table th,
+  .acard__table td {
+    text-align: left;
+    vertical-align: top;
+    padding: 0.42rem 0.7rem;
+    border-top: 1px solid rgba(120, 90, 40, 0.18);
+  }
+  .acard__table thead th {
+    border-top: none;
+    border-bottom: 1px solid rgba(120, 90, 40, 0.30);
+    font-size: 0.72rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: #6a532a;
+    font-weight: 700;
+  }
+  .acard__var {
+    font-weight: 700;
+    color: #4a3719;
+    white-space: nowrap;
+    width: 1%;
+  }
+  /* Build mode: roomy advancement columns so a sentence or two wraps cleanly. */
+  .acard__table--build td { min-width: 7.5rem; }
+  .acard__table--build thead th:nth-child(n+3) { text-align: left; color: #8a6d35; }
+  .acard__empty { color: rgba(120, 90, 40, 0.35); }
+  .acard__row--locked th,
+  .acard__row--locked td { color: rgba(74, 55, 25, 0.45); }
+  .acard__table--build tbody tr:nth-child(even) { background: rgba(120, 90, 40, 0.04); }
+
+  .pip {
+    display: inline-block;
+    min-width: 1.1rem;
+    padding: 0 0.32rem;
+    border-radius: 3px;
+    font-size: 0.7rem;
+    font-weight: 700;
+    line-height: 1.35;
+    text-align: center;
+    vertical-align: baseline;
+    white-space: nowrap;
+  }
+  /* Minor = light outline; Major = filled — the heavier the cost, the heavier the pip. */
+  .pip--m {
+    color: #6a532a;
+    border: 1px solid rgba(120, 90, 40, 0.5);
+    background: rgba(120, 90, 40, 0.07);
+  }
+  .pip--M {
+    color: #f6efe0;
+    background: #6a532a;
+    border: 1px solid #6a532a;
+  }
+
+  .acard__feats {
+    margin: 0;
+    padding: 0.55rem 0.9rem 0.75rem;
+    border-top: 1px solid rgba(120, 90, 40, 0.18);
+    font-size: 0.83rem;
+    color: #5a4a2c;
+  }
+</style>

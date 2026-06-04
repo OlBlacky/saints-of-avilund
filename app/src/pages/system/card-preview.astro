@@ -1,0 +1,93 @@
+---
+import Base from '../../layouts/Base.astro';
+import AbilityCard from '../../components/AbilityCard.astro';
+import { url } from '../../lib/url';
+import type { Ability } from '../../lib/abilities';
+
+const powerAttack: Ability = {
+  name: 'Power Attack', category: 'Martial', role: 'Offensive', mode: 'Attack',
+  vars: {
+    frequency: { base: 'Daily', advances: [{ value: 'Encounter', cost: 'M' }, { value: 'At-Will', cost: 'M' }] },
+    action: { base: 'Standard' },
+    range: { base: 'Reach' },
+    targets: { base: 'One' },
+    attack: { base: 'Strength vs AC' },
+    damage: {
+      base: '1[W]',
+      advances: [
+        { value: '1[W] + Str', cost: 'm' },
+        { value: 'weapon counts as one size larger (→ d12)', cost: 'm', note: '1/lvl' },
+        { value: '×2 → 2[W] + Str', cost: 'M', note: 'lvl' },
+      ],
+    },
+    duration: { base: 'Instant' },
+  },
+  feats: "Heavy Blade or Hammer Specialisation → +2 damage (Hammer also Push 5').",
+  current: { frequency: 1, damage: 1 },
+};
+
+const guard: Ability = {
+  name: 'Guard', category: 'Protection', role: 'Defensive', mode: 'Effect',
+  vars: {
+    frequency: { base: 'Daily', advances: [{ value: 'Encounter', cost: 'M' }, { value: 'At-Will', cost: 'M', note: 'L5' }] },
+    action: { base: 'Move', advances: [{ value: 'Minor', cost: 'M' }, { value: 'Interrupt', cost: 'M' }] },
+    range: { base: 'Self / 1 adjacent ally' },
+    targets: { base: 'Self / 1 adjacent ally' },
+    effects: {
+      base: '+1 to AC',
+      advances: [
+        { value: '+1 to all Armoured Defences', cost: 'm' },
+        { value: '+2 to all Armoured Defences', cost: 'm' },
+        { value: '+2 to all Armoured Defences, extended to all adjacent allies', cost: 'M' },
+      ],
+    },
+    duration: { base: 'Until your next turn' },
+  },
+  feats: "Light / Heavy Shield Specialisation → apply your Shield's DR to everyone protected.",
+  current: { frequency: 1, effects: 2 },
+};
+
+const intercept: Ability = {
+  name: 'Intercept', category: 'Protection', role: 'Defensive · maneuver', mode: 'Effect',
+  vars: {
+    frequency: { base: 'Daily', advances: [{ value: 'Encounter', cost: 'M' }] },
+    action: { base: 'Reaction — when an adjacent ally is hit' },
+    range: { base: 'Adjacent ally' },
+    effects: {
+      base: 'Trade places with the endangered ally, then you take the damage in their stead.',
+      advances: [
+        { value: 'You take the damage, reduced by your Armour DR.', cost: 'm' },
+        { value: 'Instead of simply taking it, the opponent must make the attack against you, resolved normally — they may miss your defenses entirely.', cost: 'm' },
+        { value: 'As above, and you may intercept for an ally up to 10′ (2 squares) away, not just an adjacent one.', cost: 'M' },
+      ],
+    },
+    duration: { base: 'Instant' },
+  },
+  feats: "Light / Heavy Shield Specialisation → apply your Shield's DR.",
+};
+---
+
+<Base title="Ability Card — Preview" description="Styling preview for the standardized Ability Card component.">
+  <p class="back-link"><a href={url('system/')}>← The System</a></p>
+  <p class="eyebrow">The System · Preview</p>
+  <h1>Ability Card</h1>
+  <p class="lede">A styling preview of the standardized Ability Card — Build view (every variable and advancement) and Play view (only what a character has).</p>
+
+  <div class="prose" style="margin:0 auto;">
+    <h2>Build view</h2>
+    <p>Every variable, every possible advancement, each tagged <strong>m</strong> (Minor) or <strong>M</strong> (Major). Locked/blank rows stay visible so the structure reads the same on every card.</p>
+
+    <AbilityCard ability={powerAttack} mode="build" />
+    <AbilityCard ability={guard} mode="build" />
+
+    <h3>A wordier card</h3>
+    <p>Effects can run a sentence or two — the advancement cells wrap cleanly.</p>
+    <AbilityCard ability={intercept} mode="build" />
+
+    <h2>Play view</h2>
+    <p>The same abilities as a character actually owns them — just the values, blank rows collapsed.</p>
+
+    <AbilityCard ability={guard} mode="play" />
+    <AbilityCard ability={powerAttack} mode="play" />
+  </div>
+</Base>

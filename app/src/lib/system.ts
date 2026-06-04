@@ -32,7 +32,7 @@ export const SYSTEM: SystemPart[] = [
     part: 'I · Foundations',
     items: [
       { slug: 'introduction', title: 'Introduction & How to Play', blurb: 'What the game is, and the d20 core it runs on.', status: 'planned' },
-      { slug: 'character-creation', title: 'Character Creation', blurb: 'Advances (Major & Minor), levels 0–11, and milestone advancement.', status: 'live' },
+      { slug: 'character-creation', title: 'Character Creation', blurb: 'Advances (Major & Minor), levels 0–11, and milestone advancement.', status: 'live', stub: false },
       { slug: 'attributes', title: 'Attributes, Offenses & Defenses', blurb: 'The six attributes, AC, and the Armoured / Unarmoured defenses.', status: 'designed' },
       { slug: 'skills', title: 'Skills', blurb: 'The twenty-nine skills, each tied to an attribute.', status: 'designed' },
     ],
