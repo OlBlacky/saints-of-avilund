@@ -57,8 +57,7 @@ export const SYSTEM: SystemPart[] = [
   {
     part: 'IV · Gear',
     items: [
-      { slug: 'armour', title: 'Armour', blurb: 'The nine armours and four shields — protection, cost, and how a shield is raised.', status: 'live' },
-      { slug: 'equipment', title: 'Equipment', blurb: 'The weapon and gear lists.', status: 'progress' },
+      { slug: 'equipment', title: 'Equipment', blurb: 'Weapons, armour & shields, sundries, and coin.', status: 'live' },
     ],
   },
   {

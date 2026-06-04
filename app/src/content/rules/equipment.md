@@ -1,13 +1,21 @@
 ---
-title: Armour
-summary: The armour and shields of Avilund — what they protect, what they cost, and how a shield is raised.
+title: Equipment
+summary: The gear of Avilund — weapons, armour and shields, sundries, and coin.
 ---
+
+The gear of Avilund. Prices are in **Silver Pieces (sp)**.
+
+## Weapons
+
+*The weapon list — the seventeen weapon groups and their arms, with damage, range, and properties — is in progress.*
+
+## Armour &amp; Shields
 
 Armour raises your **Armoured Defenses** and grants **Damage Reduction (DR)**. There are four armour proficiencies — **Unarmoured, Light, Medium,** and **Heavy** — plus two shield proficiencies, **Light Shield** and **Heavy Shield**. (Unarmoured is a fighting *style* you take Feats in; there is nothing to buy.)
 
 Your **AC** is your Armoured Constitution Defense — the number most physical attacks must beat. Armour's bonus is flat **by tier**: Light **+1**, Medium **+2**, Heavy **+3** to your Armoured Defenses. *Within* a tier, the heavier pieces buy more **DR** (and a small perk on the third) at the price of weight, coin, and drawback.
 
-## Armour
+### Armour
 
 | Armour | Tier | AC | DR | Perk | Speed | Stealth | Str | Cost | Weight |
 |---|---|---|---|---|---|---|---|---|---|
@@ -25,7 +33,7 @@ Your **AC** is your Armoured Constitution Defense — the number most physical a
 - **Medium** armour takes **−1 Stealth** — the **Breastplate** keeps the Stealth penalty but loses the Speed penalty (its **Mobility**).
 - **Heavy** armour takes **−10' Speed and −2 Stealth**, and needs the listed **Strength**. Your proficiency advances and Armour Specialisation Feats buy these drawbacks back down.
 
-## Shields
+### Shields
 
 A shield gives **both its AC and its DR only while it is raised** — nothing is passive but its weight and Speed. Each occupies a hand, so you cannot wield a two-handed weapon while shielded.
 
@@ -41,4 +49,10 @@ A shield's AC stacks on your armour's. **Raising a shield** can be done two ways
 - **Anyone proficient** may raise their shield as a **Standard action**, gaining its AC and DR until the start of their next turn — re-paid every turn.
 - The **Raise Shield** ability (Martial) does it far better: from a Move action down to **Free** — eventually every turn for nothing — and its Feats extend your Shield DR to the allies you protect.
 
-*Prices are in **Silver Pieces (sp)**.*
+## Sundries
+
+*Packs, tools, consumables, and other gear — coming soon.*
+
+## Wealth
+
+The base coin of the realm is the **Silver Piece (sp)**. *(Full currency and trade-goods table to come.)*
