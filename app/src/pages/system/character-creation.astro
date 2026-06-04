@@ -55,33 +55,37 @@ const soldier = url('system/classes/soldier/');
     <div class="cc-row__body">
       <h2>Step 1 · Choose a Class and Path</h2>
       <p>
-        Your <strong>Class</strong> sets your <strong>Primary Attribute</strong>, one
+        Your <strong>Class</strong> sets a <strong>Class Attribute</strong>, one
         <strong>Ability Category</strong>, your <strong>Class HP</strong>, two
         <strong>Class Skills</strong>, and a set of weapon and armour <strong>proficiencies</strong>.
-        Your <strong>Path</strong> adds your <strong>Secondary Attribute</strong>, a second
+        Your <strong>Path</strong> adds a second <strong>Class Attribute</strong>, a second
         <strong>Ability Category</strong>, two more Class Skills, and further proficiencies.
       </p>
       <p>
-        Your Primary Attribute and Secondary Attribute are your two <strong>key attributes</strong> —
-        the only ones that can ever climb past +2.
+        Those two <strong>Class Attributes</strong> are the only attributes that can ever climb
+        past +2.
       </p>
     </div>
     <aside class="eg">
       <p class="eg__tag">Example · Soldier (Vanguard)</p>
       <h4 class="eg__title"><a href={soldier}>Soldier</a> <span class="eg__sub">(Class)</span></h4>
       <ul class="eg__lines">
-        <li><span>Primary Attribute</span><span class="eg__v">Strength</span></li>
+        <li><span>Class Attribute</span><span class="eg__v">Strength</span></li>
         <li><span>Ability Category</span><span class="eg__v">Martial</span></li>
         <li><span>Class HP</span><span class="eg__v">3</span></li>
         <li><span>Class Skills</span><span class="eg__v">Endurance, Intimidate</span></li>
+        <li><span>Weapon Proficiencies</span><span class="eg__v">Heavy Blades, Polearms, Crossbows</span></li>
+        <li><span>Armour Proficiencies</span><span class="eg__v">Light Armour, Medium Armour, Light Shield</span></li>
       </ul>
       <h4 class="eg__title eg__title--next">Vanguard <span class="eg__sub">(Path)</span></h4>
       <ul class="eg__lines">
-        <li><span>Secondary Attribute</span><span class="eg__v">Constitution</span></li>
+        <li><span>Class Attribute</span><span class="eg__v">Constitution</span></li>
         <li><span>Ability Category</span><span class="eg__v">Protection</span></li>
         <li><span>Additional Class Skills</span><span class="eg__v">Survival, Perception</span></li>
+        <li><span>Weapon Proficiencies</span><span class="eg__v">Hammers/Maces, Spears/Lances</span></li>
+        <li><span>Armour Proficiencies</span><span class="eg__v">Heavy Armour, Heavy Shield</span></li>
       </ul>
-      <p class="eg__note">Key attributes: <strong>Strength</strong> &amp; <strong>Constitution</strong>.</p>
+      <p class="eg__note">Class Attributes: <strong>Strength</strong> &amp; <strong>Constitution</strong>.</p>
     </aside>
   </section>
 
@@ -95,15 +99,25 @@ const soldier = url('system/classes/soldier/');
           <strong>Attributes.</strong> Each new point costs more than the last: <strong>+1</strong>
           costs 1 Major, <strong>+2</strong> costs 3 in total, <strong>+3</strong> costs 6 in total.
           At Level 0 ordinary attributes cap at <strong>+2</strong>; your two
-          <strong>key attributes</strong> may be pushed straight to <strong>+3</strong> at creation —
+          <strong>Class Attributes</strong> may be pushed straight to <strong>+3</strong> at creation —
           paying the full 6 Major now rather than saving three later milestones' Major Advances for
-          it. Key attributes go on to reach +4 at 5th level and +5 at 10th.
+          it. Class Attributes go on to reach +4 at 5th level and +5 at 10th.
         </li>
         <li>
           <strong>Abilities.</strong> Each Ability costs <strong>1 Major</strong> and must come from
-          one of your two Ability Categories. Every Ability is bought at a frequency of
-          <strong>once per day</strong>; at creation you may spend one Major to raise a single Ability
-          to <strong>once per encounter</strong>.
+          one of your two Ability Categories. Every Ability comes with some variables that can be
+          improved by spending Major or Minor Advances.
+          <br /><br />
+          You may purchase as many Abilities as you have Major Advances to spend, but will likely
+          want to spend some Advances (Major and Minor) on improving the Abilities you buy. This is
+          one of the main leveling vectors in the game system.
+        </li>
+        <li>
+          <strong>Additional Classes.</strong> You may purchase a second Class and a Path from it for
+          <strong>3 Major Advances</strong>, and a third Class and Path from it for an additional
+          <strong>6 Major Advances</strong>. These selections don't come with any automatic benefits
+          (aside from Weapon and Armour Proficiencies), but do allow you to broaden your access to
+          Ability Categories, as well as additional Class Attributes and Class Skills.
         </li>
       </ul>
     </div>

@@ -10,7 +10,7 @@ The Soldier is the trained fighting professional of Avilund — the disciplined 
 
 | | |
 |---|---|
-| **Primary Attribute** | Strength |
+| **Class Attribute** | Strength |
 | **Primary Category** | Martial |
 | **Class HP** | 3 |
 | **Primary Skills** | Endurance, Intimidate |
@@ -22,9 +22,9 @@ The Soldier is the trained fighting professional of Avilund — the disciplined 
 
 ## Class Features
 
-A Soldier brings **Strength** as their key Primary Attribute and the **Martial** ability Category, backed by a sturdy **Class HP of 3**. They are trained in the **Endurance** and **Intimidate** skills, in the **Heavy Blades, Polearms,** and **Crossbows** weapon groups, and in **Light Armour, Medium Armour,** and the **Light Shield**.
+A Soldier brings **Strength** as their Class Attribute and the **Martial** ability Category, backed by a sturdy **Class HP of 3**. They are trained in the **Endurance** and **Intimidate** skills, in the **Heavy Blades, Polearms,** and **Crossbows** weapon groups, and in **Light Armour, Medium Armour,** and the **Light Shield**.
 
-Your chosen **Path** adds your Secondary Attribute, a second ability Category, two more skills, and further proficiencies — see below.
+Your chosen **Path** adds a second Class Attribute, a second ability Category, two more skills, and further proficiencies — see below.
 
 ---
 
@@ -35,7 +35,7 @@ The armoured anchor of the line. Vanguards hold ground, shield their comrades, a
 
 | | |
 |---|---|
-| **Secondary Attribute** | Constitution |
+| **Class Attribute** | Constitution |
 | **Category** | Protection |
 | **Skills** | Survival, Perception |
 | **Weapon Proficiencies** | Hammers/Maces, Spears/Lances |
@@ -48,7 +48,7 @@ The officer who fights by making everyone around them fight better — calling t
 
 | | |
 |---|---|
-| **Secondary Attribute** | Charisma |
+| **Class Attribute** | Charisma |
 | **Category** | Leadership |
 | **Skills** | Diplomacy, Perception |
 | **Weapon Proficiencies** | Light Blades, Pistols |
@@ -59,7 +59,7 @@ The ranged specialist — bow, crossbow, or rifle — who controls the field fro
 
 | | |
 |---|---|
-| **Secondary Attribute** | Dexterity |
+| **Class Attribute** | Dexterity |
 | **Category** | Marksmanship |
 | **Skills** | Acrobatics, Perception |
 | **Weapon Proficiencies** | Bows, Rifles |

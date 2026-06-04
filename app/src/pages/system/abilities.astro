@@ -1,0 +1,88 @@
+---
+import Base from '../../layouts/Base.astro';
+import { url } from '../../lib/url';
+import SystemNav from '../../components/SystemNav.astro';
+import AbilityCard from '../../components/AbilityCard.astro';
+import { CATEGORIES } from '../../lib/category-abilities';
+
+// Abilities reference — a hand-built route (stub: false in system.ts). Each
+// Category is a collapsible <details>; inside are its Ability cards in Build view.
+---
+
+<Base title="Abilities" description="The Ability Categories of Saints of Avilund and the cards within them, each shown with its full advancement.">
+  <p class="back-link"><a href={url('system/')}>← The System</a></p>
+
+  <header class="saint-head">
+    <p class="eyebrow">II · Classes &amp; Abilities</p>
+    <h1>Abilities</h1>
+  </header>
+
+  <p class="lede" style="max-width:var(--measure);">
+    Abilities are organised by <strong>Category</strong>. Each card is shown in Build view — every
+    variable, and every advancement you can buy, tagged <strong>m</strong> (Minor) or
+    <strong>M</strong> (Major). Expand a Category to read its cards.
+  </p>
+
+  {CATEGORIES.map((cat, i) => (
+    <details class="cat" open={i === 0}>
+      <summary class="cat__summary">
+        <span class="cat__name">{cat.name}</span>
+        <span class="cat__meta">{cat.source} · {cat.abilities.length} abilities</span>
+      </summary>
+      <div class="cat__body">
+        <p class="cat__blurb">{cat.blurb}</p>
+        {cat.abilities.map((a) => <AbilityCard ability={a} mode="build" />)}
+      </div>
+    </details>
+  ))}
+
+  <SystemNav slug="abilities" />
+
+  <style>
+    .cat {
+      border: 1px solid var(--rule);
+      border-radius: 6px;
+      margin: 1.4rem 0;
+      background: var(--panel);
+      overflow: hidden;
+    }
+    .cat__summary {
+      cursor: pointer;
+      list-style: none;
+      padding: 0.85rem 1.1rem;
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 1rem;
+      background: rgba(120, 90, 40, 0.10);
+      user-select: none;
+    }
+    .cat__summary::-webkit-details-marker { display: none; }
+    .cat__summary::before {
+      content: '▸';
+      color: var(--gold);
+      font-size: 0.85em;
+      margin-right: 0.1rem;
+    }
+    .cat[open] .cat__summary {
+      border-bottom: 1px solid var(--rule);
+    }
+    .cat[open] .cat__summary::before { content: '▾'; }
+    .cat__name {
+      flex: 1;
+      font-family: var(--display);
+      font-size: 1.4rem;
+      color: var(--oxblood);
+      margin-left: 0.45rem;
+    }
+    .cat__meta {
+      font-size: 0.74rem;
+      color: var(--ink-soft);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      white-space: nowrap;
+    }
+    .cat__body { padding: 0.4rem 1.1rem 1.1rem; }
+    .cat__blurb { margin: 0.9rem 0 0.4rem; color: var(--ink-soft); font-style: italic; }
+  </style>
+</Base>
