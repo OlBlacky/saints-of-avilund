@@ -155,29 +155,8 @@ const playRows = VAR_ORDER
   .acard__row--locked td { color: rgba(74, 55, 25, 0.45); }
   .acard__table--build tbody tr:nth-child(even) { background: rgba(120, 90, 40, 0.04); }
 
-  .pip {
-    display: inline-block;
-    min-width: 1.1rem;
-    padding: 0 0.32rem;
-    border-radius: 3px;
-    font-size: 0.7rem;
-    font-weight: 700;
-    line-height: 1.35;
-    text-align: center;
-    vertical-align: baseline;
-    white-space: nowrap;
-  }
-  /* Minor = light outline; Major = filled — the heavier the cost, the heavier the pip. */
-  .pip--m {
-    color: #6a532a;
-    border: 1px solid rgba(120, 90, 40, 0.5);
-    background: rgba(120, 90, 40, 0.07);
-  }
-  .pip--M {
-    color: #f6efe0;
-    background: #6a532a;
-    border: 1px solid #6a532a;
-  }
+  /* The .pip styles (Minor = light outline, Major = filled) are defined once,
+     site-wide, in global.scss so the same boxes appear everywhere a cost is given. */
 
   .acard__feats {
     margin: 0;

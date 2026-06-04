@@ -308,3 +308,32 @@ figcaption { color: var(--ink-soft); font-size: 0.95rem; font-style: italic; mar
   body { font-size: 1.05rem; }
   .hero h1 { font-size: 2.2rem; }
 }
+
+// ── Advance pips (Major / Minor) ─────────────────────────────
+// The site-wide shorthand for the two Advance sizes, introduced on the
+// Character Creation page: a filled box is a Major (M), a hollow box a
+// Minor (m). Reused on the Ability cards, in worked examples, and in the
+// condition ladders — anywhere a cost is given. The heavier the cost, the
+// heavier the pip.
+.pip {
+  display: inline-block;
+  min-width: 1.1rem;
+  padding: 0 0.32rem;
+  border-radius: 3px;
+  font-size: 0.7rem;
+  font-weight: 700;
+  line-height: 1.35;
+  text-align: center;
+  vertical-align: baseline;
+  white-space: nowrap;
+}
+.pip--m {
+  color: #6a532a;
+  border: 1px solid rgba(120, 90, 40, 0.5);
+  background: rgba(120, 90, 40, 0.07);
+}
+.pip--M {
+  color: #f6efe0;
+  background: #6a532a;
+  border: 1px solid #6a532a;
+}

@@ -93,7 +93,12 @@ const soldier = url('system/classes/soldier/');
   <section class="cc-row">
     <div class="cc-row__body">
       <h2>Step 2 · Spend your 11 Major Advances</h2>
-      <p>Major Advances mostly buy <strong>attribute points</strong> and <strong>Abilities</strong>.</p>
+      <p>
+        Major Advances mostly buy <strong>attribute points</strong> and <strong>Abilities</strong>.
+        Throughout the System a Major Advance is written as a <strong>filled box</strong> —
+        <span class="pip pip--M">M</span> — so a cost of six Majors reads
+        <strong>6&nbsp;<span class="pip pip--M">M</span></strong>.
+      </p>
       <ul>
         <li>
           <strong>Attributes.</strong> Each new point costs more than the last: <strong>+1</strong>
@@ -125,10 +130,10 @@ const soldier = url('system/classes/soldier/');
       <p class="eg__tag">Example · Soldier (Vanguard)</p>
       <h4 class="eg__title">Spending the 11 Major</h4>
       <ul class="eg__lines eg__lines--cost">
-        <li><span>Strength → <strong>+3</strong></span><span class="eg__cost">6 M</span></li>
-        <li><span>Constitution → <strong>+2</strong></span><span class="eg__cost">3 M</span></li>
-        <li><span>Martial Strike <span class="eg__sub">(Martial)</span></span><span class="eg__cost">1 M</span></li>
-        <li><span>Shield Bash <span class="eg__sub">(Protection)</span></span><span class="eg__cost">1 M</span></li>
+        <li><span>Strength → <strong>+3</strong></span><span class="eg__cost">6&nbsp;<span class="pip pip--M">M</span></span></li>
+        <li><span>Constitution → <strong>+2</strong></span><span class="eg__cost">3&nbsp;<span class="pip pip--M">M</span></span></li>
+        <li><span>Martial Strike <span class="eg__sub">(Martial)</span></span><span class="eg__cost">1&nbsp;<span class="pip pip--M">M</span></span></li>
+        <li><span>Shield Bash <span class="eg__sub">(Protection)</span></span><span class="eg__cost">1&nbsp;<span class="pip pip--M">M</span></span></li>
       </ul>
       <p class="eg__total"><span>Total</span><span>11 Major</span></p>
       <p class="eg__note">
@@ -143,8 +148,9 @@ const soldier = url('system/classes/soldier/');
     <div class="cc-row__body">
       <h2>Step 3 · Spend your 11 Minor Advances</h2>
       <p>
-        Minor Advances buy the finer details — each on the same rising cost as attributes
-        (+1 costs 1, +2 costs 3):
+        Minor Advances buy the finer details. To set it apart from the filled Major, a Minor Advance
+        is written as a <strong>hollow box</strong> — <span class="pip pip--m">m</span>. Each line
+        below rises on the same cost as attributes (+1 costs 1, +2 costs 3):
       </p>
       <ul>
         <li><strong>+1 to an Offense</strong> (your attack bonus with an attribute) or <strong>+1 to a Defense</strong>.</li>
@@ -158,15 +164,15 @@ const soldier = url('system/classes/soldier/');
       <p class="eg__tag">Example · Soldier (Vanguard)</p>
       <h4 class="eg__title">Spending the 11 Minor</h4>
       <ul class="eg__lines eg__lines--cost">
-        <li><span>Strength Offense → +1</span><span class="eg__cost">1 m</span></li>
-        <li><span>Hit Points <span class="eg__sub">(once — +3 HP)</span></span><span class="eg__cost">1 m</span></li>
-        <li><span>Armoured Con Defense → +2</span><span class="eg__cost">3 m</span></li>
-        <li><span>Endurance → +2 <span class="eg__sub">(Class)</span></span><span class="eg__cost">1 m</span></li>
-        <li><span>Intimidate → +2 <span class="eg__sub">(Class)</span></span><span class="eg__cost">1 m</span></li>
-        <li><span>Survival → +2 <span class="eg__sub">(Class)</span></span><span class="eg__cost">1 m</span></li>
-        <li><span>Perception → +2 <span class="eg__sub">(Class)</span></span><span class="eg__cost">1 m</span></li>
-        <li><span>Heavy Shield Specialisation <span class="eg__sub">(Feat)</span></span><span class="eg__cost">1 m</span></li>
-        <li><span>One language</span><span class="eg__cost">1 m</span></li>
+        <li><span>Strength Offense → +1</span><span class="eg__cost">1&nbsp;<span class="pip pip--m">m</span></span></li>
+        <li><span>Hit Points <span class="eg__sub">(once — +3 HP)</span></span><span class="eg__cost">1&nbsp;<span class="pip pip--m">m</span></span></li>
+        <li><span>Armoured Con Defense → +2</span><span class="eg__cost">3&nbsp;<span class="pip pip--m">m</span></span></li>
+        <li><span>Endurance → +2 <span class="eg__sub">(Class)</span></span><span class="eg__cost">1&nbsp;<span class="pip pip--m">m</span></span></li>
+        <li><span>Intimidate → +2 <span class="eg__sub">(Class)</span></span><span class="eg__cost">1&nbsp;<span class="pip pip--m">m</span></span></li>
+        <li><span>Survival → +2 <span class="eg__sub">(Class)</span></span><span class="eg__cost">1&nbsp;<span class="pip pip--m">m</span></span></li>
+        <li><span>Perception → +2 <span class="eg__sub">(Class)</span></span><span class="eg__cost">1&nbsp;<span class="pip pip--m">m</span></span></li>
+        <li><span>Heavy Shield Specialisation <span class="eg__sub">(Feat)</span></span><span class="eg__cost">1&nbsp;<span class="pip pip--m">m</span></span></li>
+        <li><span>One language</span><span class="eg__cost">1&nbsp;<span class="pip pip--m">m</span></span></li>
       </ul>
       <p class="eg__total"><span>Total</span><span>11 Minor</span></p>
     </aside>
@@ -185,8 +191,8 @@ const soldier = url('system/classes/soldier/');
       <p class="eg__tag">Example · Soldier (Vanguard)</p>
       <h4 class="eg__title">A two-point Flaw</h4>
       <ul class="eg__lines eg__lines--cost">
-        <li><span>Intelligence → −1</span><span class="eg__cost">+1 M</span></li>
-        <li><span>Charisma → −1</span><span class="eg__cost">+1 M</span></li>
+        <li><span>Intelligence → −1</span><span class="eg__cost">+1&nbsp;<span class="pip pip--M">M</span></span></li>
+        <li><span>Charisma → −1</span><span class="eg__cost">+1&nbsp;<span class="pip pip--M">M</span></span></li>
       </ul>
       <p class="eg__note">
         The two extra Major (13 in all) buy a per-encounter Martial Strike and a third ability,
@@ -243,8 +249,8 @@ const soldier = url('system/classes/soldier/');
       <p class="eg__tag">Example · Soldier (Vanguard)</p>
       <h4 class="eg__title">Next milestone</h4>
       <ul class="eg__lines eg__lines--cost">
-        <li><span>Constitution → +3</span><span class="eg__cost">1 M</span></li>
-        <li><span>Hit Points ×1 <span class="eg__sub">(+3 HP)</span></span><span class="eg__cost">1 m</span></li>
+        <li><span>Constitution → +3</span><span class="eg__cost">1&nbsp;<span class="pip pip--M">M</span></span></li>
+        <li><span>Hit Points ×1 <span class="eg__sub">(+3 HP)</span></span><span class="eg__cost">1&nbsp;<span class="pip pip--m">m</span></span></li>
       </ul>
       <p class="eg__note">Or bank the Major toward Strength +4, which unlocks at 5th level.</p>
     </aside>
