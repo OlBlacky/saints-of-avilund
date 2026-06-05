@@ -568,9 +568,295 @@ const MARKSMANSHIP: Ability[] = [
   },
 ];
 
+// ── Service (Friar — Class) ─────────────────────────────────────
+// The Friar's healer kit: no attacks at all. Healing is deliberately
+// underpowered; most cards do their work through the Effect(s) row.
+const FREQ_FRIAR: Variable = { base: 'Daily', advances: [{ value: 'Encounter', cost: 'M' }, { value: 'Twice per encounter', cost: 'M' }] };
+const ACTION_SMM: Variable = { base: 'Standard', advances: [{ value: 'Move', cost: 'M' }, { value: 'Minor', cost: 'M' }] };
+
+const SERVICE: Ability[] = [
+  {
+    name: 'Mending Touch', category: 'Service', role: 'Healing', mode: 'Effect',
+    vars: {
+      frequency: FREQ_FRIAR,
+      action: ACTION_SMM,
+      range: { base: 'Touch' },
+      targets: { base: 'One creature' },
+      effects: {
+        base: 'Heal Wis HP.',
+        advances: [
+          { value: 'Heal Wis + 1', cost: 'm' },
+          { value: 'Heal Wis + 2', cost: 'm' },
+          { value: 'Heal Wis + 1d6, and the target may make one saving throw of their choice against any condition affecting them', cost: 'M' },
+        ],
+      },
+      duration: { base: 'Instant' },
+    },
+  },
+  {
+    name: 'Stabilise', category: 'Service', role: 'Healing', mode: 'Effect',
+    vars: {
+      frequency: FREQ_FRIAR,
+      action: ACTION_SMM,
+      range: { base: 'Touch' },
+      targets: { base: 'One creature' },
+      effects: {
+        base: 'Reduce the damage from one ongoing-damage condition (Bleed, Poison, etc.) by 1. A touch also stabilises a dying creature — it stops dying. (Bodily conditions only.)',
+        advances: [
+          { value: 'Reduce by 2', cost: 'm' },
+          { value: 'Reduce by 3', cost: 'm' },
+          { value: 'End the condition completely', cost: 'M' },
+        ],
+      },
+      duration: { base: 'Instant' },
+    },
+  },
+  {
+    name: 'Blessing', category: 'Service', role: 'Buff', mode: 'Effect',
+    vars: {
+      frequency: FREQ_FRIAR,
+      action: ACTION_SMM,
+      range: { base: 'Touch' },
+      targets: {
+        base: 'One ally',
+        advances: [
+          { value: 'Two allies', cost: 'm' },
+          { value: 'Two allies within 10\'', cost: 'm' },
+          { value: 'All allies within 10\'', cost: 'M' },
+        ],
+      },
+      effects: {
+        base: '+1 to all saving throws.',
+        advances: [
+          { value: '+2 to all saving throws', cost: 'm' },
+          { value: '+2, and may attempt a save now', cost: 'm' },
+          { value: '+2, may attempt a save now, and if it succeeds, immunity to that effect for the encounter', cost: 'M' },
+        ],
+      },
+      duration: {
+        base: 'Wis rounds',
+        advances: [
+          { value: 'Wis + 1 rounds', cost: 'm' },
+          { value: 'Wis + 2 rounds', cost: 'm' },
+          { value: 'Encounter', cost: 'M' },
+        ],
+      },
+    },
+  },
+  {
+    name: 'Prayer for the Saintly', category: 'Service', role: 'Utility', mode: 'Effect',
+    vars: {
+      frequency: { base: 'Daily' },
+      action: { base: 'Ritual, during a rest' },
+      range: { base: 'Those present at the prayer' },
+      targets: {
+        base: 'One ally',
+        advances: [
+          { value: 'Two allies', cost: 'm' },
+          { value: 'All allies', cost: 'm' },
+          { value: 'You and all allies', cost: 'M' },
+        ],
+      },
+      effects: {
+        base: 'Grant 1 reroll, shared by the blessed — keep the better result, on any d20 roll.',
+        advances: [
+          { value: '2 rerolls, shared', cost: 'm' },
+          { value: '3 rerolls, shared', cost: 'm' },
+          { value: 'Each blessed ally gets their own reroll', cost: 'M' },
+        ],
+      },
+      duration: { base: 'Until your next rest' },
+    },
+  },
+  {
+    name: 'Preach to the Saintly', category: 'Service', role: 'Utility', mode: 'Effect',
+    vars: {
+      frequency: FREQ_ENC,
+      action: { base: 'A few minutes of preaching (Standard in a tense scene)' },
+      range: { base: 'Those within earshot' },
+      targets: {
+        base: '5 NPCs',
+        advances: [
+          { value: '10 NPCs', cost: 'm' },
+          { value: 'The crowd in earshot', cost: 'm' },
+          { value: 'Those the crowd then talks to (spreads through town)', cost: 'M' },
+        ],
+      },
+      effects: {
+        base: 'Make a Religion (Saintly Faith) check, DC 10 (a friendly Saintly gathering) up to 20 (strangers in a strange land). On a success, NPC Attitude improves one step and/or hireling Morale improves one step. Never works on Hostile NPCs.',
+        advances: [
+          { value: 'Improve by two steps instead', cost: 'M' },
+        ],
+      },
+      duration: { base: 'The scene' },
+    },
+  },
+  {
+    name: 'Tend the Wounded', category: 'Service', role: 'Utility', mode: 'Effect',
+    vars: {
+      frequency: { base: 'Daily' },
+      action: { base: 'Ministration, during a rest' },
+      range: { base: 'Those resting in camp' },
+      targets: {
+        base: 'One ally',
+        advances: [
+          { value: 'Two allies', cost: 'm' },
+          { value: 'Three allies', cost: 'm' },
+          { value: 'All who rest in camp', cost: 'M' },
+        ],
+      },
+      effects: {
+        base: 'Tended allies recover an extra Wis HP on the rest, and may make one save against a bodily affliction (+0). Bodily afflictions only.',
+        advances: [
+          { value: 'Wis + 1 HP; the save is at +1', cost: 'm' },
+          { value: 'Wis + 2 HP; the save is at +2', cost: 'm' },
+          { value: 'Wis + 1d6 HP; a save against each bodily affliction, at +2', cost: 'M' },
+        ],
+      },
+      duration: { base: 'The rest' },
+    },
+  },
+];
+
+// ── Forbearance (Friar — Mendicant) ─────────────────────────────
+// The pacifist martyr: binding Vows, Temp HP wrung from his own pain,
+// and the endurance to keep standing. No attacks. Vows are passive and
+// break only under compulsion — lost until the Mendicant Atones.
+const FORBEARANCE: Ability[] = [
+  {
+    name: 'Vow of Mercy', category: 'Forbearance', role: 'Vow', mode: 'Passive',
+    vars: {
+      frequency: { base: 'Passive (always on)' },
+      effects: {
+        base: 'Any ability you use that heals or grants Temp HP to allies is +1. The Vow: you may never willingly bear arms, make an attack roll, harm an ally, or allow an ally to come to harm if you can prevent it.',
+        advances: [{ value: '+2', cost: 'M', note: 'L5' }],
+      },
+    },
+  },
+  {
+    name: 'Vow of Poverty', category: 'Forbearance', role: 'Vow', mode: 'Passive',
+    vars: {
+      frequency: { base: 'Passive (always on)' },
+      effects: {
+        base: '+1 to all Armoured and Unarmoured Defences. The Vow: you may not accumulate personal wealth — nothing beyond the clothes on your back and the instruments of healing and your Saintly office.',
+        advances: [{ value: '+2', cost: 'M', note: 'L5' }],
+      },
+    },
+  },
+  {
+    name: 'Vow of Abstinence', category: 'Forbearance', role: 'Vow', mode: 'Passive',
+    vars: {
+      frequency: { base: 'Passive (always on)' },
+      effects: {
+        base: '+1 to all saving throws. The Vow: you may never imbibe alcohol, tobacco, or similar substances, nor drink potions or willingly receive any healing or magical benefit that is not from a Saintly source.',
+        advances: [{ value: '+2', cost: 'M', note: 'L5' }],
+      },
+    },
+  },
+  {
+    name: 'Flesh of the Martyr', category: 'Forbearance', role: 'Defensive', mode: 'Effect',
+    vars: {
+      frequency: FREQ_FRIAR,
+      action: { base: 'Reaction — when you take at least 1 damage (to Temp HP or normal HP)' },
+      targets: {
+        base: 'One ally',
+        advances: [
+          { value: 'Two allies within 10\'', cost: 'm' },
+          { value: 'Two allies within 20\'', cost: 'm' },
+          { value: 'All allies visible', cost: 'M' },
+        ],
+      },
+      effects: {
+        base: 'Grant Con Temp HP.',
+        advances: [
+          { value: 'Con + 1', cost: 'm' },
+          { value: 'Con + 2', cost: 'm' },
+          { value: 'Con + 2, and heal 1 HP', cost: 'M' },
+        ],
+      },
+    },
+  },
+  {
+    name: 'Nimbus of the Martyr', category: 'Forbearance', role: 'Buff', mode: 'Effect',
+    vars: {
+      frequency: FREQ_ENC,
+      action: ACTION_SMM,
+      range: {
+        base: '5\'',
+        advances: [
+          { value: '10\'', cost: 'm' },
+          { value: '15\'', cost: 'm' },
+          { value: '30\'', cost: 'M' },
+        ],
+      },
+      targets: { base: 'Self + all allies within range' },
+      effects: {
+        base: 'Grant Con Temp HP.',
+        advances: [
+          { value: 'Con + 1', cost: 'm' },
+          { value: 'Con + 2', cost: 'm' },
+          { value: 'Con + 2, and heal 1 HP', cost: 'M' },
+        ],
+      },
+      duration: {
+        base: 'Temp HP vanish at the end of the encounter',
+        advances: [{ value: 'Temp HP last until a long rest', cost: 'M', note: 'L3' }],
+      },
+    },
+  },
+  {
+    name: 'Endurance of the Saintly', category: 'Forbearance', role: 'Defensive', mode: 'Effect',
+    vars: {
+      frequency: { base: 'Daily', advances: [{ value: 'Encounter', cost: 'M', note: 'L5' }] },
+      action: ACTION_SMM,
+      targets: { base: 'Self' },
+      effects: {
+        base: 'While active, you cannot be reduced below 1 HP.',
+        advances: [
+          { value: 'Also reduce all ongoing-damage you take by 1', cost: 'm' },
+          { value: 'Reduce ongoing-damage by 2', cost: 'm' },
+          { value: 'Also shrug off (end) one condition on you each round', cost: 'M' },
+        ],
+      },
+      duration: {
+        base: 'Con rounds',
+        advances: [
+          { value: 'Con + 1 rounds', cost: 'm' },
+          { value: 'Con + 2 rounds', cost: 'm' },
+          { value: 'Encounter', cost: 'M' },
+        ],
+      },
+    },
+  },
+  {
+    name: 'Pilgrim\'s Endurance', category: 'Forbearance', role: 'Utility', mode: 'Passive',
+    vars: {
+      frequency: { base: 'Passive (always on)' },
+      targets: {
+        base: 'Self',
+        advances: [
+          { value: 'Self + Wis allies', cost: 'm' },
+          { value: 'All companions travelling with you', cost: 'm' },
+          { value: 'All companions, and a safe night\'s rest in hostile country', cost: 'M' },
+        ],
+      },
+      effects: {
+        base: 'Ignore the ill effects of hunger, thirst, and exposure to weather.',
+        advances: [
+          { value: 'Also ignore fatigue from forced marches', cost: 'm' },
+          { value: 'Need only half the normal provisions and rest', cost: 'm' },
+          { value: 'The company may push a longer day\'s travel with no penalty, and shrugs one environmental hazard', cost: 'M' },
+        ],
+      },
+    },
+  },
+];
+
 export const CATEGORIES: CategoryGroup[] = [
   { name: 'Martial', source: 'Soldier — Class', blurb: 'The disciplined core of weapon-fighting: reliable strikes that grow with the weapon in your hands, plus the means to guard, disarm, focus, and read a fight.', abilities: MARTIAL },
   { name: 'Protection', source: 'Soldier — Vanguard', blurb: 'The defender’s toolkit: control strikes that pin and daze, shielding auras for your comrades, and the means to take a blow meant for someone else.', abilities: PROTECTION },
   { name: 'Leadership', source: 'Soldier — Commander', blurb: 'Command and rally: granting allies free attacks, calling focus-fire targets, bracing the line, and bolstering the whole company at once.', abilities: LEADERSHIP },
   { name: 'Marksmanship', source: 'Soldier — Marksman', blurb: 'Ranged mastery: the bread-and-butter shot that fits any ranged weapon, fire that pins and cripples, covering an ally, and shooting on the move.', abilities: MARKSMANSHIP },
+  { name: 'Service', source: 'Friar — Class', blurb: 'The body-mender’s kit, with no attacks at all: quiet, underpowered healing, blessings and saves, and the camp and social rites that keep a company whole.', abilities: SERVICE },
+  { name: 'Forbearance', source: 'Friar — Mendicant', blurb: 'The pacifist martyr’s discipline: binding Vows, Temp HP wrung from his own suffering, and the endurance to keep standing. Vows break only under compulsion — and stay lost until he Atones.', abilities: FORBEARANCE },
 ];
