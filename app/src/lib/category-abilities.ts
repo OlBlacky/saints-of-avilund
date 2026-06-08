@@ -891,7 +891,7 @@ const SPIRITUAL: Ability[] = [
         advances: [
           { value: '+ no Minor action', cost: 'm' },
           { value: '+ no Move action', cost: 'm' },
-          { value: 'Stunned — no actions; the Black Faith takes −2 on its save against this', cost: 'M' },
+          { value: 'Stunned — no actions', cost: 'M' },
         ],
       },
       duration: { base: 'Save ends' },

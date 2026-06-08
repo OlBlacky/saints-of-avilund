@@ -238,7 +238,7 @@ The soul-mender and inquisitor's debuffing craft. His signature attack line is *
 | Dazed — no Reactions or Interrupts | base |
 | + no Minor action | m |
 | + no Move action | m |
-| Stunned — no actions; the Black Faith takes −2 on its save against this | M |
+| Stunned — no actions | M |
 
 **Prayer of Anathema** *(Debuff · dispel)*
 - **Type:** Effect — automatic, no attack roll *(only the rung-4 debuff is save-ends)* · **Targets:** opponents in the area · **Duration:** instant
