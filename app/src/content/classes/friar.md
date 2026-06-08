@@ -74,22 +74,22 @@ The least warlike — barefoot, weaponless, owning nothing, who will not raise a
 
 Every Friar draws on **Service** from the Class, and a second Category from the chosen Path. The complete cards — with every advancement — live in the **Abilities** section; here is what each Ability Category brings.
 
-### Service — *the Class category*
+### [Service](../../abilities/#service) — *the Class category*
 No attacks at all. Quiet, underpowered healing, blessings and saves, and the camp and social rites that keep a company whole.
 
 *Mending Touch · Stabilise · Blessing · Prayer for the Saintly · Preach to the Saintly · Tend the Wounded*
 
-### Martial — *Chaplain*
+### [Martial](../../abilities/#martial) — *Chaplain*
 The Chaplain takes up the Soldier's own **Martial** toolkit — reliable weapon strikes, the means to guard, disarm, focus, and read a fight — wielded with mace and staff.
 
 *Martial Strike · Power Attack · Defensive Strike · Parry · Disarming Strike · Martial Focus · Raise Shield · Measure the Foe*
 
-### Spiritual — *Confessor*
+### [Spiritual](../../abilities/#spiritual) — *Confessor*
 The soul-mender and inquisitor's debuffing craft: softening strikes and a staggering rebuke, an area buff-purge, a burst of holy dread, a vow against the unclean, an exorcism, and the means to wring out the truth.
 
 *Censure · Rebuke · Prayer of Anathema · Fly the Wicked · Vow of Nicetus · Exorcism · Ferret the Wicked*
 
-### Forbearance — *Mendicant*
+### [Forbearance](../../abilities/#forbearance) — *Mendicant*
 The pacifist martyr's discipline: three binding **Vows**, Temp HP wrung from his own suffering, and the sheer endurance to keep standing when he should have fallen.
 
 *Vow of Mercy · Vow of Poverty · Vow of Abstinence · Flesh of the Martyr · Nimbus of the Martyr · Endurance of the Saintly · Pilgrim's Endurance*

@@ -24,7 +24,7 @@ import { CATEGORIES } from '../../lib/category-abilities';
   </p>
 
   {CATEGORIES.map((cat, i) => (
-    <details class="cat" open={i === 0}>
+    <details class="cat" id={cat.name.toLowerCase()} open={i === 0}>
       <summary class="cat__summary">
         <span class="cat__name">{cat.name}</span>
         <span class="cat__meta">{cat.source} · {cat.abilities.length} abilities</span>
@@ -37,6 +37,22 @@ import { CATEGORIES } from '../../lib/category-abilities';
   ))}
 
   <SystemNav slug="abilities" />
+
+  <script is:inline>
+    // A category is a collapsed <details>; open and scroll to it when the URL
+    // hash targets it (e.g. a Class page linking to .../abilities/#service).
+    function openHashCategory() {
+      const id = decodeURIComponent(location.hash.slice(1));
+      if (!id) return;
+      const el = document.getElementById(id);
+      if (el && el.tagName === 'DETAILS') {
+        el.open = true;
+        el.scrollIntoView();
+      }
+    }
+    openHashCategory();
+    window.addEventListener('hashchange', openHashCategory);
+  </script>
 
   <style>
     .cat {

@@ -72,22 +72,22 @@ The ranged specialist — bow, crossbow, or rifle — who controls the field fro
 
 Every Soldier draws on two Ability Categories — **Martial** from the Class, and a second from the chosen Path. Each Ability Category offers a full spread: a couple of offensive options, a hybrid and a defensive one, a buff or debuff, and a utility. The complete cards — with every advancement — live in the **Abilities** section; here is what each Ability Category brings.
 
-### Martial — *the Class category*
+### [Martial](../../abilities/#martial) — *the Class category*
 The disciplined core of weapon-fighting: reliable strikes that grow with the weapon in your hands, plus the means to guard, disarm, focus, and read a fight.
 
 *Martial Strike · Power Attack · Defensive Strike · Parry · Disarming Strike · Martial Focus · Raise Shield · Measure the Foe*
 
-### Protection — *Vanguard*
+### [Protection](../../abilities/#protection) — *Vanguard*
 The defender's toolkit: control strikes that pin and daze, shielding auras for your comrades, and the means to take a blow meant for someone else.
 
 *Shield Bash · Marking Strike · Sentinel Strike · Guard · Intercept · Bulwark · Stand Watch*
 
-### Leadership — *Commander*
+### [Leadership](../../abilities/#leadership) — *Commander*
 Command and rally: granting allies free attacks, calling focus-fire targets, bracing the line, and bolstering the whole company at once.
 
 *Command · Commander's Strike · Focus Fire · Resolute Strike · Rally · War Cry · Inspiring Word*
 
-### Marksmanship — *Marksman*
+### [Marksmanship](../../abilities/#marksmanship) — *Marksman*
 Ranged mastery: the bread-and-butter shot that fits any ranged weapon, fire that pins and cripples, covering an ally, and shooting on the move.
 
 *Marksman's Shot · Pinning Shot · Skirmishing Shot · Covering Fire · Run and Gun · Debilitating Shot · Marksman's Eye*
