@@ -47,15 +47,15 @@ The most warlike of the three — the fighting priest who marches with the war-b
 | **Armour Proficiencies** | Light Armour, Medium Armour, Light Shield |
 
 ### Confessor
-The tender of souls — exorcist and inquisitor, who cures fear, doubt, and possession and stands against the Black Faith. His war is with the unseen, so he carries no extra steel. *(In design — the Spiritual Category is being written.)*
+The tender of souls — exorcist and inquisitor, who breaks possession, cows the wicked, and stands against the Black Faith. A debuffer: he doesn't out-damage a foe, he *unmakes* them, fighting with Charisma against the enemy's own resolve. His battles are partly spiritual, sometimes violent.
 
 | | |
 |---|---|
-| **Class Attribute** | *(in design)* |
+| **Class Attribute** | Charisma |
 | **Ability Category** | Spiritual |
-| **Additional Class Skills** | *(in design)* |
-| **Weapon Proficiencies** | *(in design)* |
-| **Armour Proficiencies** | *(in design)* |
+| **Additional Class Skills** | Sense Motive, Religion (Black Faith) |
+| **Weapon Proficiencies** | Light Blades *(Hammers/Maces already from the Class)* |
+| **Armour Proficiencies** | Light Armour |
 
 ### Mendicant
 The least warlike — barefoot, weaponless, owning nothing, who will not raise a hand even to defend himself, only to shield others. He absorbs harm and gives it back as grace: the company's Temp HP flows from his own suffering.
@@ -85,7 +85,9 @@ The Chaplain takes up the Soldier's own **Martial** toolkit — reliable weapon 
 *Martial Strike · Power Attack · Defensive Strike · Parry · Disarming Strike · Martial Focus · Raise Shield · Measure the Foe*
 
 ### Spiritual — *Confessor*
-The exorcist's craft against fear, possession, and the Black Faith. *(In design.)*
+The soul-mender and inquisitor's debuffing craft: softening strikes and a staggering rebuke, an area buff-purge, a burst of holy dread, a vow against the unclean, an exorcism, and the means to wring out the truth.
+
+*Censure · Rebuke · Prayer of Anathema · Fly the Wicked · Vow of Nicetus · Exorcism · Ferret the Wicked*
 
 ### Forbearance — *Mendicant*
 The pacifist martyr's discipline: three binding **Vows**, Temp HP wrung from his own suffering, and the sheer endurance to keep standing when he should have fallen.

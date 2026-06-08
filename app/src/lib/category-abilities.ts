@@ -852,6 +852,165 @@ const FORBEARANCE: Ability[] = [
   },
 ];
 
+// ── Spiritual (Friar — Confessor) ───────────────────────────────
+// The soul-mender and inquisitor: a debuffer. His signature attack line
+// is Charisma vs the target's Unarmoured Wisdom. The Ritual Option on a
+// couple of cards trades combat speed for a skill roll at +2 with
+// material components (prayer book, holy symbol, 10 sp of incense).
+const SPIRITUAL: Ability[] = [
+  {
+    name: 'Censure', category: 'Spiritual', role: 'Offensive', mode: 'Attack',
+    vars: {
+      frequency: FREQ_FULL,
+      action: { base: 'Standard' },
+      range: { base: 'Reach' },
+      targets: { base: 'One' },
+      attack: { base: 'Charisma vs AC (Light Blade or Mace)' },
+      damage: { base: '1[W]', advances: [{ value: '1[W] + Cha', cost: 'm' }] },
+      effects: {
+        base: '−1 to all the target’s defences.',
+        advances: [
+          { value: '−2 to all defences', cost: 'm' },
+          { value: '−2, and Vulnerable 1', cost: 'm' },
+          { value: '−2, Vulnerable 5; and vs the Black Faith the penalty also applies to its attack rolls', cost: 'M' },
+        ],
+      },
+      duration: { base: 'Save ends' },
+    },
+  },
+  {
+    name: 'Rebuke', category: 'Spiritual', role: 'Offensive · debuff', mode: 'Attack',
+    vars: {
+      frequency: FREQ_FULL,
+      action: { base: 'Standard', advances: [{ value: 'Move', cost: 'M' }, { value: 'Minor', cost: 'M' }, { value: 'Free', cost: 'M' }] },
+      range: { base: '30\'' },
+      targets: { base: 'One' },
+      attack: { base: 'Charisma vs Unarmoured Wisdom' },
+      effects: {
+        base: 'Dazed — no Reactions or Interrupts.',
+        advances: [
+          { value: '+ no Minor action', cost: 'm' },
+          { value: '+ no Move action', cost: 'm' },
+          { value: 'Stunned — no actions; the Black Faith takes −2 on its save against this', cost: 'M' },
+        ],
+      },
+      duration: { base: 'Save ends' },
+    },
+  },
+  {
+    name: 'Prayer of Anathema', category: 'Spiritual', role: 'Debuff · dispel', mode: 'Effect',
+    vars: {
+      frequency: FREQ_ENC,
+      action: ACTION_SMM,
+      range: { base: '30\'', advances: [{ value: '60\'', cost: 'm' }, { value: '90\'', cost: 'm' }] },
+      targets: {
+        base: 'Opponents in a 10\' burst',
+        advances: [
+          { value: '15\' burst', cost: 'm' },
+          { value: '20\' burst', cost: 'm' },
+          { value: '30\' burst', cost: 'M' },
+        ],
+      },
+      effects: {
+        base: 'All opponents lose all Temp HP.',
+        advances: [
+          { value: '+ lose 1 beneficial effect (your choice)', cost: 'm' },
+          { value: '+ lose all beneficial effects', cost: 'm' },
+          { value: '+ a debuff preventing new buffs or Temp HP, save ends', cost: 'M' },
+        ],
+      },
+      duration: { base: 'Instant' },
+    },
+  },
+  {
+    name: 'Fly the Wicked', category: 'Spiritual', role: 'Debuff · Fear', mode: 'Attack',
+    vars: {
+      frequency: FREQ_ENC,
+      action: ACTION_SMM,
+      range: {
+        base: 'Close burst 10\', centred on you',
+        advances: [
+          { value: '15\' burst', cost: 'm' },
+          { value: '20\' burst', cost: 'm' },
+          { value: '30\' burst', cost: 'M' },
+        ],
+      },
+      targets: {
+        base: '1 enemy in the burst',
+        advances: [
+          { value: '2 enemies', cost: 'm' },
+          { value: '3 enemies', cost: 'm' },
+          { value: 'all enemies in the burst', cost: 'M' },
+        ],
+      },
+      attack: { base: 'Charisma vs Unarmoured Wisdom (one roll vs all)' },
+      effects: {
+        base: '−1 to attack rolls (Fear).',
+        advances: [
+          { value: '−1, and can’t move closer to you', cost: 'm' },
+          { value: '+ can’t attack you', cost: 'm' },
+          { value: 'flees you until it saves', cost: 'M' },
+        ],
+      },
+      duration: { base: 'Save ends' },
+    },
+  },
+  {
+    name: 'Vow of Nicetus', category: 'Spiritual', role: 'Vow', mode: 'Passive',
+    vars: {
+      frequency: { base: 'Passive (always on)' },
+      effects: {
+        base: '+1 to attack rolls and skill checks against the Black Faith, Demons, Devils, and Undead. The Vow: never knowingly suffer a creature of the Black Faith to pass unopposed — neither aid, shelter, nor parley with them.',
+        advances: [{ value: '+2', cost: 'M', note: 'L5' }],
+      },
+    },
+  },
+  {
+    name: 'Exorcism', category: 'Spiritual', role: 'Cleanse', mode: 'Attack',
+    vars: {
+      frequency: FREQ_ENC,
+      action: ACTION_SMM,
+      range: { base: 'Touch' },
+      targets: { base: 'One creature' },
+      attack: {
+        base: 'Charisma vs the Condition’s DC',
+        advances: [{ value: 'Ritual — Religion (Saintly Faith) vs the Condition’s DC, +2 (prayer book, holy symbol, 10 sp incense)', cost: 'm' }],
+      },
+      effects: {
+        base: 'Reduce the target’s Control condition by one rank.',
+        advances: [
+          { value: 'Reduce by two ranks', cost: 'm' },
+          { value: 'End the Control condition entirely', cost: 'm' },
+          { value: 'End it; immune to Control for the encounter; a Black Faith spirit is banished from its host', cost: 'M' },
+        ],
+      },
+      duration: { base: 'Instant' },
+    },
+  },
+  {
+    name: 'Ferret the Wicked', category: 'Spiritual', role: 'Utility', mode: 'Attack',
+    vars: {
+      frequency: FREQ_ENC,
+      action: { base: 'A few minutes of questioning (Standard in a tense scene)' },
+      range: { base: 'The person before you' },
+      targets: { base: 'One NPC' },
+      attack: {
+        base: 'Charisma vs Unarmoured Wisdom',
+        advances: [{ value: 'Ritual — Sense Motive vs Unarmoured Wisdom, +2 (prayer book, holy symbol, 10 sp incense)', cost: 'm' }],
+      },
+      effects: {
+        base: 'You know whether each answer the target gives is true or false.',
+        advances: [
+          { value: 'The target cannot knowingly lie to you (it may refuse or stay silent)', cost: 'm' },
+          { value: 'It must answer one question truthfully', cost: 'm' },
+          { value: 'It must answer Cha questions truthfully, and you perceive any Black Faith taint or hidden allegiance', cost: 'M' },
+        ],
+      },
+      duration: { base: 'The interrogation' },
+    },
+  },
+];
+
 export const CATEGORIES: CategoryGroup[] = [
   { name: 'Martial', source: 'Soldier — Class', blurb: 'The disciplined core of weapon-fighting: reliable strikes that grow with the weapon in your hands, plus the means to guard, disarm, focus, and read a fight.', abilities: MARTIAL },
   { name: 'Protection', source: 'Soldier — Vanguard', blurb: 'The defender’s toolkit: control strikes that pin and daze, shielding auras for your comrades, and the means to take a blow meant for someone else.', abilities: PROTECTION },
@@ -859,4 +1018,5 @@ export const CATEGORIES: CategoryGroup[] = [
   { name: 'Marksmanship', source: 'Soldier — Marksman', blurb: 'Ranged mastery: the bread-and-butter shot that fits any ranged weapon, fire that pins and cripples, covering an ally, and shooting on the move.', abilities: MARKSMANSHIP },
   { name: 'Service', source: 'Friar — Class', blurb: 'The body-mender’s kit, with no attacks at all: quiet, underpowered healing, blessings and saves, and the camp and social rites that keep a company whole.', abilities: SERVICE },
   { name: 'Forbearance', source: 'Friar — Mendicant', blurb: 'The pacifist martyr’s discipline: binding Vows, Temp HP wrung from his own suffering, and the endurance to keep standing. Vows break only under compulsion — and stay lost until he Atones.', abilities: FORBEARANCE },
+  { name: 'Spiritual', source: 'Friar — Confessor', blurb: 'The soul-mender and inquisitor — a debuffer who fights with Charisma against a foe’s Unarmoured Wisdom: softening strikes, a staggering rebuke, an area buff-purge, a burst of holy dread, an exorcism, and the means to wring out the truth.', abilities: SPIRITUAL },
 ];
