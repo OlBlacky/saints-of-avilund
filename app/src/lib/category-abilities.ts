@@ -872,7 +872,7 @@ const SPIRITUAL: Ability[] = [
         advances: [
           { value: '−2 to all defences', cost: 'm' },
           { value: '−2, and Vulnerable 1', cost: 'm' },
-          { value: '−2, Vulnerable 5; and vs the Black Faith the penalty also applies to its attack rolls', cost: 'M' },
+          { value: '−2 and Vulnerable 5', cost: 'M' },
         ],
       },
       duration: { base: 'Save ends' },

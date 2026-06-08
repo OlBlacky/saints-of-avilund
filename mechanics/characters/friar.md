@@ -227,7 +227,7 @@ The soul-mender and inquisitor's debuffing craft. His signature attack line is *
 | −1 to all the target's defences | base |
 | −2 to all its defences | m |
 | −2, and Vulnerable 1 | m |
-| −2, Vulnerable 5; and vs the Black Faith the penalty also applies to its attack rolls | M |
+| −2 and Vulnerable 5 | M |
 
 **Rebuke** *(Offensive · debuff)*
 - **Type:** Attack · **Charisma vs Unarmoured Wisdom** · **Range:** 30' · **Targets:** one · **Damage:** none · **Duration:** save ends
