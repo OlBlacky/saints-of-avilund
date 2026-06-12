@@ -31,7 +31,7 @@ export const SYSTEM: SystemPart[] = [
   {
     part: 'I · Foundations',
     items: [
-      { slug: 'introduction', title: 'Introduction & How to Play', blurb: 'What the game is, and the d20 core it runs on.', status: 'planned' },
+      { slug: 'introduction', title: 'Introduction & How to Play', blurb: 'What the game is, the d20 core it runs on, and the Ladders and Ranks every ability is built from.', status: 'live' },
       { slug: 'character-creation', title: 'Character Creation', blurb: 'Advances (Major & Minor), levels 0–11, and milestone advancement.', status: 'live', stub: false },
       { slug: 'character-sheet', title: 'Character Sheet', blurb: 'A look at the digital character sheet — the example Soldier laid out across four pages.', status: 'live', stub: false },
       { slug: 'attributes', title: 'Attributes, Offenses & Defenses', blurb: 'The six attributes, AC, and the Armoured / Unarmoured defenses.', status: 'designed' },

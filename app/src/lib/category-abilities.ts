@@ -898,7 +898,7 @@ const SPIRITUAL: Ability[] = [
     },
   },
   {
-    name: 'Prayer of Anathema', category: 'Spiritual', role: 'Debuff · dispel', mode: 'Effect',
+    name: "Kerrigan's Prayer", category: 'Spiritual', role: 'Debuff · dispel', mode: 'Effect',
     vars: {
       frequency: FREQ_ENC,
       action: ACTION_SMM,

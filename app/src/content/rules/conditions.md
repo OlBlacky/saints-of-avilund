@@ -3,7 +3,7 @@ title: Conditions
 summary: The laddered conditions — ongoing damage and the debuff scales — and how they are applied, advanced, and ended.
 ---
 
-A **Condition** is a lasting effect an Ability hangs on its target — as opposed to an instant Effect, which resolves at once. Rather than a long list of separate conditions, Avilund uses a handful of **laddered scales**: each is four ranks deep, and the familiar names (Dazed, Stunned, Slowed, and the rest) are simply labels for rungs on those ladders.
+A **Condition** is a lasting effect an Ability hangs on its target — as opposed to an instant Effect, which resolves at once. Rather than a long list of separate conditions, Avilund uses a handful of **laddered scales**: each is four Ranks deep, and the familiar names (Dazed, Stunned, Slowed, and the rest) are simply labels for Ranks on those Ladders.
 
 ## How a condition works
 

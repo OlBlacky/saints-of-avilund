@@ -87,7 +87,7 @@ The Chaplain takes up the Soldier's own **Martial** toolkit — reliable weapon 
 ### [Spiritual](../../abilities/#spiritual) — *Confessor*
 The soul-mender and inquisitor's debuffing craft: softening strikes and a staggering rebuke, an area buff-purge, a burst of holy dread, a vow against the unclean, an exorcism, and the means to wring out the truth.
 
-*Censure · Rebuke · Prayer of Anathema · Fly the Wicked · Vow of Nicetus · Exorcism · Ferret the Wicked*
+*Censure · Rebuke · Kerrigan's Prayer · Fly the Wicked · Vow of Nicetus · Exorcism · Ferret the Wicked*
 
 ### [Forbearance](../../abilities/#forbearance) — *Mendicant*
 The pacifist martyr's discipline: three binding **Vows**, Temp HP wrung from his own suffering, and the sheer endurance to keep standing when he should have fallen.

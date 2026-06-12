@@ -69,7 +69,7 @@ The least warlike — barefoot, weaponless, owning nothing, who will not raise a
 
 ## Abilities
 
-Every ability is a chassis improved over a career. Ladders show a base rank, two rungs bought with **Minor** Advances (m), and a top rung bought with a **Major** (M). Where a Major rung is gated to a level, it is noted (e.g. *L5*).
+Every ability is a chassis improved over a career. Ladders show a base Rank, two Ranks bought with **Minor** Advances (m), and a top Rank bought with a **Major** (M). Where a Major Rank is gated to a level, it is noted (e.g. *L5*).
 
 Two resolution conventions apply throughout:
 
@@ -240,9 +240,10 @@ The soul-mender and inquisitor's debuffing craft. His signature attack line is *
 | + no Move action | m |
 | Stunned — no actions | M |
 
-**Prayer of Anathema** *(Debuff · dispel)*
-- **Type:** Effect — automatic, no attack roll *(only the rung-4 debuff is save-ends)* · **Targets:** opponents in the area · **Duration:** instant
+**Kerrigan's Prayer** *(Debuff · dispel)*
+- **Type:** Effect — automatic, no attack roll *(only the Rank-4 debuff is save-ends)* · **Targets:** opponents in the area · **Duration:** instant
 - **Action:** Standard → Move → Minor *(Major each)* · **Frequency:** Daily → Encounter *(Major)*
+- *Named for Saint Kerrigan, whose canon produced the Inquisition and its rites for the reducing-to-nothing of unholy grace.*
 
 | Range | Cost | | Area (burst) | Cost | | Effect | Cost |
 |---|---|---|---|---|---|---|---|

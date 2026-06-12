@@ -39,7 +39,7 @@ Skills represent trained areas of expertise. They are tied to Attributes — whe
 | **Craft** *(speciality)* | Int, Wis, Dex | Making and repairing things |
 | **Decipher Script** | Int | Reading unknown languages and coded writing |
 | **Forgery** | Int | Creating convincing false documents |
-| **Arcana** | Int | Knowledge of arcane magic and phenomena |
+| **Arcana** | Int | Knowledge of arcane magic and phenomena; identifying magical items, spells and effects. **Prerequisite: Language (Elder Arcana).** |
 | **Dungeoneering** | Int, Wis | Underground navigation, creatures, hazards |
 | **Geography** | Int, Wis | Maps, terrain, regional knowledge |
 | **History** | Int, Wis | Events, figures, and lore of the past |
@@ -47,6 +47,7 @@ Skills represent trained areas of expertise. They are tied to Attributes — whe
 | **Nature** | Int, Wis | Plants, animals, weather, natural world |
 | **Nobility & Etiquette** | Int, Cha | Court customs, heraldry, social protocol |
 | **Religion** | Int, Wis | Theology, rites, religious history and figures |
+| **Rituals** | Int | Performing rituals — the Ritual Leader's Casting-DC check — and the lore of ritual magic |
 | **The Planes** | Int | Knowledge of planar cosmology and extraplanar entities |
 | **Spellcraft** | Int | Understanding and identifying spells and magical effects |
 | **Search** | Int, Wis | Finding hidden objects, traps, or clues |
@@ -62,4 +63,3 @@ Skills represent trained areas of expertise. They are tied to Attributes — whe
 | **Handle Animal** | Cha, Wis | Training, calming, and directing animals |
 | **Perform** *(speciality)* | Cha | Entertaining through music, storytelling, dance, etc. |
 | **Commerce** | Cha, Int, Wis | Buying, selling, negotiating deals, reading markets |
-| **Use Magic Device** | Cha | Operating magical items without formal training |

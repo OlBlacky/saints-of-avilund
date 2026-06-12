@@ -27,6 +27,8 @@ export const GLOSSARY: Record<string, string> = {
   'Ability': 'An active power, bought for 1 Major Advance from one of your Ability Categories and improved dial by dial.',
   'Frequency': 'How often an Ability may be used — once per day, once per encounter, or at-will.',
   'milestone': 'A step of advancement; three make a level. Each milestone grants +1 Major and +1 Minor Advance.',
+  'Ladder': 'A short track of escalating effect. Rank 1 is the base; the middle Ranks cost a Minor Advance each, and the top Rank costs a Major. Abilities, conditions, frequency, and more are all built as Ladders.',
+  'Rank': 'A single step on a Ladder. You climb from Rank 1 (the base) upward, paying Advances as you go.',
 };
 
 // Inline abbreviations — decorated wherever they appear in body text (not only

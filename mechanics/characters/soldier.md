@@ -69,7 +69,7 @@ The ranged specialist — bow, crossbow, or rifle — who controls the field fro
 
 ## Abilities
 
-Every ability is a chassis you improve over a career. Most have one or more **ladders** — a base rank that comes with the ability, two rungs you buy with **Minor** Advances, and a top rung that costs a **Major**. Frequency (Daily → Encounter → At-Will) and Action cost are themselves ladders on many abilities.
+Every ability is a chassis you improve over a career. Most have one or more **Ladders** — a base Rank that comes with the ability, two Ranks you buy with **Minor** Advances, and a top Rank that costs a **Major**. Frequency (Daily → Encounter → At-Will) and Action cost are themselves Ladders on many abilities.
 
 ### Martial *(Class)*
 
