@@ -53,7 +53,7 @@ The same shape governs the harm an ability inflicts. **Ongoing Damage** — Blee
 
 An attack that sets a target Bleeding starts at Rank 1; you raise the bite of it by climbing the Ladder, exactly as you raised Parry.
 
-### Why it matters
+### One pattern, learned once
 
 Because the structure repeats, you only ever learn it once. **Frequency** (Daily → Encounter → At-Will), an ability's damage, the reach of a buff, the depth of a [Condition](../conditions/) — all of them are Ladders, all measured in Ranks, all climbed with the same two Advances. Read a Ladder, and you can see at a glance what a character can do now and what the next Advance will buy.
 
