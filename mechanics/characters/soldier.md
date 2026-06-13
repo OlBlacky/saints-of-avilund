@@ -11,7 +11,7 @@ The Soldier is the trained fighting professional of Avilund — the disciplined 
 | | |
 |---|---|
 | **Class Attribute** | Strength |
-| **Primary Category** | Martial |
+| **Primary Category** | Arms |
 | **Class HP** | 3 |
 | **Primary Skills** | Endurance, Intimidate |
 | **Weapon Proficiencies** | Heavy Blades, Polearms, Crossbows |
@@ -22,7 +22,7 @@ The Soldier is the trained fighting professional of Avilund — the disciplined 
 
 ## Class Features
 
-A Soldier brings **Strength** as their Class Attribute and the **Martial** ability Category, backed by a sturdy **Class HP of 3**. They are trained in the **Endurance** and **Intimidate** skills, in the **Heavy Blades, Polearms,** and **Crossbows** weapon groups, and in **Light Armour, Medium Armour,** and the **Light Shield**.
+A Soldier brings **Strength** as their Class Attribute and the **Arms** ability Category, backed by a sturdy **Class HP of 3**. They are trained in the **Endurance** and **Intimidate** skills, in the **Heavy Blades, Polearms,** and **Crossbows** weapon groups, and in **Light Armour, Medium Armour,** and the **Light Shield**.
 
 Your chosen **Path** adds a second Class Attribute, a second ability Category, two more skills, and further proficiencies — see below.
 
@@ -71,7 +71,7 @@ The ranged specialist — bow, crossbow, or rifle — who controls the field fro
 
 Every ability is a chassis you improve over a career. Most have one or more **Ladders** — a base Rank that comes with the ability, two Ranks you buy with **Minor** Advances, and a top Rank that costs a **Major**. Frequency (Daily → Encounter → At-Will) and Action cost are themselves Ladders on many abilities.
 
-### Martial *(Class)*
+### Arms *(Class)*
 
 **Martial Strike** — *Offensive · the canvas*
 Your bread-and-butter attack, and the one most shaped by your weapon.

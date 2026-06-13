@@ -47,7 +47,7 @@ A shield gives **both its AC and its DR only while it is raised** — nothing is
 A shield's AC stacks on your armour's. **Raising a shield** can be done two ways:
 
 - **Anyone proficient** may raise their shield as a **Standard action**, gaining its AC and DR until the start of their next turn — re-paid every turn.
-- The **Raise Shield** ability (Martial) does it far better: from a Move action down to **Free** — eventually every turn for nothing — and its Feats extend your Shield DR to the allies you protect.
+- The **Raise Shield** ability (Arms) does it far better: from a Move action down to **Free** — eventually every turn for nothing — and its Feats extend your Shield DR to the allies you protect.
 
 ## Sundries
 

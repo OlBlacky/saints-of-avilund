@@ -6,9 +6,9 @@ There are three types of abilities:
 
 **Universal** — available to all characters regardless of class. These do not need to be purchased. Examples: Melee Attack, Ranged Attack.
 
-**Category** — tied to one of the 12 ability categories (Martial, Survival, etc.). Available to any character whose class includes that category. In-class characters pay standard AP costs; characters without that category cannot access them. Examples: abilities from the Martial or Survival category pools.
+**Category** — tied to one of the 12 ability categories (Arms, Survival, etc.). Available to any character whose class includes that category. In-class characters pay standard AP costs; characters without that category cannot access them. Examples: abilities from the Arms or Survival category pools.
 
-**Class** — tied to a specific class and also tagged with a category. Only characters who own that class may purchase them, regardless of category overlap. They cost the same as Category abilities for in-class characters. Examples: Power Strike (Martial · Soldier only).
+**Class** — tied to a specific class and also tagged with a category. Only characters who own that class may purchase them, regardless of category overlap. They cost the same as Category abilities for in-class characters. Examples: Power Strike (Arms · Soldier only).
 
 > The category tag on a Class ability indicates its flavour and discipline — it does not grant access to characters who merely share that category.
 
@@ -20,7 +20,7 @@ Each class has 2 primary categories. There are 12 categories in total:
 
 | Category | Description |
 |---|---|
-| **Martial** | Combat, weapons, fighting techniques |
+| **Arms** | Combat, weapons, fighting techniques |
 | **Survival** | Endurance, hardship, staying alive |
 | **Nature** | Wilderness, animals, the natural world |
 | **Stealth** | Hiding, deception, subterfuge |
@@ -97,7 +97,7 @@ Available to all characters at no AP cost.
 
 The following are example abilities from each category. Full ability cards to be developed.
 
-### Martial
+### Arms
 1. **Power Strike** *(Class — Soldier)* — see [Soldier Abilities](soldier-abilities.md)
 2. **Defensive Strike** *(Class — Soldier)* — see [Soldier Abilities](soldier-abilities.md)
 3. **Disarming Strike** — melee attack attempting to knock an opponent's weapon away (Str vs Str Defence)

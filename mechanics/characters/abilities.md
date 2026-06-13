@@ -39,7 +39,7 @@ Each Class has 2 primary Ability Categories. Abilities within those categories a
 
 | Category | Description |
 |---|---|
-| **Martial** | Combat, weapons, fighting techniques |
+| **Arms** | Combat, weapons, fighting techniques |
 | **Survival** | Endurance, hardship, staying alive |
 | **Nature** | Wilderness, animals, the natural world |
 | **Stealth** | Hiding, deception, subterfuge |
@@ -104,7 +104,7 @@ Some abilities inherit their damage from the equipped weapon rather than a fixed
 
 These are example Class Standard abilities. Each class has access to abilities from its 2 categories.
 
-### Martial
+### Arms
 1. **Power Strike** — a melee weapon attack that adds your Str bonus to damage
 2. **Defensive Strike** — a melee attack that grants +1 to your Defence until the start of your next turn
 3. **Disarming Strike** — a melee attack that attempts to knock the opponent's weapon away (Str attack vs Str Defence)

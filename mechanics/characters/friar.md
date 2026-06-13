@@ -11,7 +11,7 @@ The Friar is the body-mender of Avilund — physician of the faithful, who walks
 | | |
 |---|---|
 | **Class Attribute** | Wisdom |
-| **Primary Ability Category** | Service |
+| **Primary Ability Category** | Mercy |
 | **Class HP** | 2 |
 | **Class Skills** | Heal, Religion (Saintly Faith) |
 | **Weapon Proficiencies** | Hammers/Maces, Staves |
@@ -22,9 +22,9 @@ The Friar is the body-mender of Avilund — physician of the faithful, who walks
 
 ## Class Features
 
-A Friar brings **Wisdom** as their Class Attribute and the **Service** Ability Category, with a modest **Class HP of 2**. They are trained in the **Heal** skill and in **Religion (Saintly Faith)**, and they carry only the old clerical arms — the **Hammers/Maces** and **Staves** that shed no blood. They wear no trained armour; a Friar's protection comes from his Path and his faith.
+A Friar brings **Wisdom** as their Class Attribute and the **Mercy** Ability Category, with a modest **Class HP of 2**. They are trained in the **Heal** skill and in **Religion (Saintly Faith)**, and they carry only the old clerical arms — the **Hammers/Maces** and **Staves** that shed no blood. They wear no trained armour; a Friar's protection comes from his Path and his faith.
 
-The **Service** Category has no attacks of any kind. It is quiet, deliberately underpowered healing — a base mending of little more than your Wisdom — together with blessings, wards against affliction, and the camp and social rites that hold a company together. Conspicuous, miraculous healing is the work of a seasoned saint, not a starting trick.
+The **Mercy** Category has no attacks of any kind. It is quiet, deliberately underpowered healing — a base mending of little more than your Wisdom — together with blessings, wards against affliction, and the camp and social rites that hold a company together. Conspicuous, miraculous healing is the work of a seasoned saint, not a starting trick.
 
 Your chosen **Path** adds a second Class Attribute, a second Ability Category, two more Class Skills, and further proficiencies.
 
@@ -38,7 +38,7 @@ The most warlike of the three — the fighting priest who marches with the war-b
 | | |
 |---|---|
 | **Class Attribute** | Strength |
-| **Ability Category** | Martial |
+| **Ability Category** | Arms |
 | **Additional Class Skills** | Endurance, Perception |
 | **Weapon Proficiencies** | *(none beyond the Class)* |
 | **Armour Proficiencies** | Light Armour, Medium Armour, Light Shield |
@@ -78,7 +78,7 @@ Two resolution conventions apply throughout:
 
 ---
 
-### Service — *the Class category*
+### Mercy — *the Class category*
 
 No attacks at all. Quiet, underpowered healing, blessings and saves, and the camp and social rites that keep a company whole.
 
@@ -151,9 +151,9 @@ No attacks at all. Quiet, underpowered healing, blessings and saves, and the cam
 
 ---
 
-### Martial — *Chaplain*
+### Arms — *Chaplain*
 
-The Chaplain takes up the Soldier's own **Martial** toolkit — reliable weapon strikes, the means to guard, disarm, focus, and read a fight — wielded with mace and staff. The cards are written up under the Soldier (see `soldier.md`).
+The Chaplain takes up the Soldier's own **Arms** toolkit — reliable weapon strikes, the means to guard, disarm, focus, and read a fight — wielded with mace and staff. The cards are written up under the Soldier (see `soldier.md`).
 
 *Martial Strike · Power Attack · Defensive Strike · Parry · Disarming Strike · Martial Focus · Raise Shield · Measure the Foe*
 

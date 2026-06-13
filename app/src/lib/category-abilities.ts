@@ -1,6 +1,6 @@
 // The Ability cards, grouped by Category, for the Abilities reference page.
 // Each Ability is described in the AbilityCard data model (see ./abilities.ts).
-// These four Categories are the Soldier's: Martial (Class), Protection
+// These four Categories are the Soldier's: Arms (Class), Protection
 // (Vanguard), Leadership (Commander), Marksmanship (Marksman).
 
 import type { Ability, Variable } from './abilities';
@@ -48,10 +48,10 @@ const RANGED_HOOKS =
   "Slings → Push 5' · Thrown → +Str damage · Pistols → +2 damage within the first increment · Rifles → ignore " +
   "range penalty · Grenades → hits a 5' burst.";
 
-// ── Martial (Class) ─────────────────────────────────────────────
-const MARTIAL: Ability[] = [
+// ── Arms (Class) ────────────────────────────────────────────────
+const ARMS: Ability[] = [
   {
-    name: 'Martial Strike', category: 'Martial', role: 'Offensive', mode: 'Attack',
+    name: 'Martial Strike', category: 'Arms', role: 'Offensive', mode: 'Attack',
     vars: {
       frequency: FREQ_FULL,
       action: { base: 'Standard' },
@@ -64,7 +64,7 @@ const MARTIAL: Ability[] = [
     feats: MARTIAL_HOOKS,
   },
   {
-    name: 'Power Attack', category: 'Martial', role: 'Offensive', mode: 'Attack',
+    name: 'Power Attack', category: 'Arms', role: 'Offensive', mode: 'Attack',
     vars: {
       frequency: FREQ_FULL,
       action: { base: 'Standard' },
@@ -77,7 +77,7 @@ const MARTIAL: Ability[] = [
     feats: 'Heavy Blade or Hammer Specialisation → +2 damage (Hammer also Push 5\').',
   },
   {
-    name: 'Defensive Strike', category: 'Martial', role: 'Offensive + Defensive', mode: 'Attack',
+    name: 'Defensive Strike', category: 'Arms', role: 'Offensive + Defensive', mode: 'Attack',
     vars: {
       frequency: FREQ_FULL,
       action: { base: 'Standard' },
@@ -91,7 +91,7 @@ const MARTIAL: Ability[] = [
     feats: 'Shield Specialisation → +1 additional defense; Staff → shove the attacker, or +defense vs them.',
   },
   {
-    name: 'Parry', category: 'Martial', role: 'Defensive', mode: 'Effect',
+    name: 'Parry', category: 'Arms', role: 'Defensive', mode: 'Effect',
     vars: {
       frequency: FREQ_ENC,
       action: { base: 'Move', advances: [{ value: 'Minor', cost: 'M' }, { value: 'Interrupt', cost: 'M' }] },
@@ -108,7 +108,7 @@ const MARTIAL: Ability[] = [
     feats: 'Light Blade Specialisation → the riposte unlocks at Rank 3, and adds damage.',
   },
   {
-    name: 'Disarming Strike', category: 'Martial', role: 'Debuff', mode: 'Attack',
+    name: 'Disarming Strike', category: 'Arms', role: 'Debuff', mode: 'Attack',
     vars: {
       frequency: FREQ_FULL,
       action: { base: 'Standard' },
@@ -129,7 +129,7 @@ const MARTIAL: Ability[] = [
     feats: 'Chain weapon → on a Disarm, you grab and keep the weapon.',
   },
   {
-    name: 'Martial Focus', category: 'Martial', role: 'Buff', mode: 'Effect',
+    name: 'Martial Focus', category: 'Arms', role: 'Buff', mode: 'Effect',
     vars: {
       frequency: FREQ_ENC,
       action: { base: 'Move', advances: [{ value: 'Minor', cost: 'M' }, { value: 'Free', cost: 'M' }] },
@@ -146,7 +146,7 @@ const MARTIAL: Ability[] = [
     },
   },
   {
-    name: 'Raise Shield', category: 'Martial', role: 'Defensive', mode: 'Effect',
+    name: 'Raise Shield', category: 'Arms', role: 'Defensive', mode: 'Effect',
     vars: {
       frequency: FREQ_FULL,
       action: { base: 'Move', advances: [{ value: 'Minor', cost: 'M' }, { value: 'Free', cost: 'M' }] },
@@ -156,7 +156,7 @@ const MARTIAL: Ability[] = [
     },
   },
   {
-    name: 'Measure the Foe', category: 'Martial', role: 'Utility', mode: 'Effect',
+    name: 'Measure the Foe', category: 'Arms', role: 'Utility', mode: 'Effect',
     vars: {
       frequency: { base: 'Encounter' },
       action: { base: 'Minor (in combat) / instant (out of combat)' },
@@ -568,15 +568,15 @@ const MARKSMANSHIP: Ability[] = [
   },
 ];
 
-// ── Service (Friar — Class) ─────────────────────────────────────
+// ── Mercy (Friar — Class) ───────────────────────────────────────
 // The Friar's healer kit: no attacks at all. Healing is deliberately
 // underpowered; most cards do their work through the Effect(s) row.
 const FREQ_FRIAR: Variable = { base: 'Daily', advances: [{ value: 'Encounter', cost: 'M' }, { value: 'Twice per encounter', cost: 'M' }] };
 const ACTION_SMM: Variable = { base: 'Standard', advances: [{ value: 'Move', cost: 'M' }, { value: 'Minor', cost: 'M' }] };
 
-const SERVICE: Ability[] = [
+const MERCY: Ability[] = [
   {
-    name: 'Mending Touch', category: 'Service', role: 'Healing', mode: 'Effect',
+    name: 'Mending Touch', category: 'Mercy', role: 'Healing', mode: 'Effect',
     vars: {
       frequency: FREQ_FRIAR,
       action: ACTION_SMM,
@@ -594,7 +594,7 @@ const SERVICE: Ability[] = [
     },
   },
   {
-    name: 'Stabilise', category: 'Service', role: 'Healing', mode: 'Effect',
+    name: 'Stabilise', category: 'Mercy', role: 'Healing', mode: 'Effect',
     vars: {
       frequency: FREQ_FRIAR,
       action: ACTION_SMM,
@@ -612,7 +612,7 @@ const SERVICE: Ability[] = [
     },
   },
   {
-    name: 'Blessing', category: 'Service', role: 'Buff', mode: 'Effect',
+    name: 'Blessing', category: 'Mercy', role: 'Buff', mode: 'Effect',
     vars: {
       frequency: FREQ_FRIAR,
       action: ACTION_SMM,
@@ -644,7 +644,7 @@ const SERVICE: Ability[] = [
     },
   },
   {
-    name: 'Prayer for the Saintly', category: 'Service', role: 'Utility', mode: 'Effect',
+    name: 'Prayer for the Saintly', category: 'Mercy', role: 'Utility', mode: 'Effect',
     vars: {
       frequency: { base: 'Daily' },
       action: { base: 'Ritual, during a rest' },
@@ -669,7 +669,7 @@ const SERVICE: Ability[] = [
     },
   },
   {
-    name: 'Preach to the Saintly', category: 'Service', role: 'Utility', mode: 'Effect',
+    name: 'Preach to the Saintly', category: 'Mercy', role: 'Utility', mode: 'Effect',
     vars: {
       frequency: FREQ_ENC,
       action: { base: 'A few minutes of preaching (Standard in a tense scene)' },
@@ -692,7 +692,7 @@ const SERVICE: Ability[] = [
     },
   },
   {
-    name: 'Tend the Wounded', category: 'Service', role: 'Utility', mode: 'Effect',
+    name: 'Tend the Wounded', category: 'Mercy', role: 'Utility', mode: 'Effect',
     vars: {
       frequency: { base: 'Daily' },
       action: { base: 'Ministration, during a rest' },
@@ -1012,11 +1012,11 @@ const SPIRITUAL: Ability[] = [
 ];
 
 export const CATEGORIES: CategoryGroup[] = [
-  { name: 'Martial', source: 'Soldier — Class', blurb: 'The disciplined core of weapon-fighting: reliable strikes that grow with the weapon in your hands, plus the means to guard, disarm, focus, and read a fight.', abilities: MARTIAL },
+  { name: 'Arms', source: 'Soldier — Class', blurb: 'The disciplined core of weapon-fighting: reliable strikes that grow with the weapon in your hands, plus the means to guard, disarm, focus, and read a fight.', abilities: ARMS },
   { name: 'Protection', source: 'Soldier — Vanguard', blurb: 'The defender’s toolkit: control strikes that pin and daze, shielding auras for your comrades, and the means to take a blow meant for someone else.', abilities: PROTECTION },
   { name: 'Leadership', source: 'Soldier — Commander', blurb: 'Command and rally: granting allies free attacks, calling focus-fire targets, bracing the line, and bolstering the whole company at once.', abilities: LEADERSHIP },
   { name: 'Marksmanship', source: 'Soldier — Marksman', blurb: 'Ranged mastery: the bread-and-butter shot that fits any ranged weapon, fire that pins and cripples, covering an ally, and shooting on the move.', abilities: MARKSMANSHIP },
-  { name: 'Service', source: 'Friar — Class', blurb: 'The body-mender’s kit, with no attacks at all: quiet, underpowered healing, blessings and saves, and the camp and social rites that keep a company whole.', abilities: SERVICE },
+  { name: 'Mercy', source: 'Friar — Class', blurb: 'The body-mender’s kit, with no attacks at all: quiet, underpowered healing, blessings and saves, and the camp and social rites that keep a company whole.', abilities: MERCY },
   { name: 'Forbearance', source: 'Friar — Mendicant', blurb: 'The pacifist martyr’s discipline: binding Vows, Temp HP wrung from his own suffering, and the endurance to keep standing. Vows break only under compulsion — and stay lost until he Atones.', abilities: FORBEARANCE },
   { name: 'Spiritual', source: 'Friar — Confessor', blurb: 'The soul-mender and inquisitor — a debuffer who fights with Charisma against a foe’s Unarmoured Wisdom: softening strikes, a staggering rebuke, an area buff-purge, a burst of holy dread, an exorcism, and the means to wring out the truth.', abilities: SPIRITUAL },
 ];

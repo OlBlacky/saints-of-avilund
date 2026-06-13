@@ -14,7 +14,7 @@ The Soldier is the trained fighting professional of Avilund — the disciplined 
 | | |
 |---|---|
 | **Class Attribute** | Strength |
-| **Primary Ability Category** | Martial |
+| **Primary Ability Category** | Arms |
 | **Class HP** | 3 |
 | **Class Skills** | Endurance, Intimidate |
 | **Weapon Proficiencies** | Heavy Blades, Polearms, Crossbows |
@@ -25,7 +25,7 @@ The Soldier is the trained fighting professional of Avilund — the disciplined 
 
 ## Class Features
 
-A Soldier brings **Strength** as their Class Attribute and the **Martial** Ability Category, backed by a sturdy **Class HP of 3**. They are trained in the **Endurance** and **Intimidate** skills, in the **Heavy Blades, Polearms,** and **Crossbows** weapon groups, and in **Light Armour, Medium Armour,** and the **Light Shield**.
+A Soldier brings **Strength** as their Class Attribute and the **Arms** Ability Category, backed by a sturdy **Class HP of 3**. They are trained in the **Endurance** and **Intimidate** skills, in the **Heavy Blades, Polearms,** and **Crossbows** weapon groups, and in **Light Armour, Medium Armour,** and the **Light Shield**.
 
 Your chosen **Path** adds a second Class Attribute, a second Ability Category, two more Class Skills, and further proficiencies — see below.
 
@@ -70,9 +70,9 @@ The ranged specialist — bow, crossbow, or rifle — who controls the field fro
 
 ## Abilities
 
-Every Soldier draws on two Ability Categories — **Martial** from the Class, and a second from the chosen Path. Each Ability Category offers a full spread: a couple of offensive options, a hybrid and a defensive one, a buff or debuff, and a utility. The complete cards — with every advancement — live in the **Abilities** section; here is what each Ability Category brings.
+Every Soldier draws on two Ability Categories — **Arms** from the Class, and a second from the chosen Path. Each Ability Category offers a full spread: a couple of offensive options, a hybrid and a defensive one, a buff or debuff, and a utility. The complete cards — with every advancement — live in the **Abilities** section; here is what each Ability Category brings.
 
-### [Martial](../../abilities/#martial) — *the Class category*
+### [Arms](../../abilities/#arms) — *the Class category*
 The disciplined core of weapon-fighting: reliable strikes that grow with the weapon in your hands, plus the means to guard, disarm, focus, and read a fight.
 
 *Martial Strike · Power Attack · Defensive Strike · Parry · Disarming Strike · Martial Focus · Raise Shield · Measure the Foe*

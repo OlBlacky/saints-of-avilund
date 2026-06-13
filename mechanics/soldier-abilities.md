@@ -1,6 +1,6 @@
 # Soldier Abilities
 
-**Class:** Soldier | **Categories:** Martial, Survival
+**Class:** Soldier | **Categories:** Arms, Survival
 
 ---
 
@@ -8,7 +8,7 @@
 
 ---
 **POWER STRIKE**
-*Class · Martial · Soldier*
+*Class · Arms · Soldier*
 
 | | |
 |---|---|
@@ -33,7 +33,7 @@
 
 ---
 **DEFENSIVE STRIKE**
-*Class · Martial · Soldier*
+*Class · Arms · Soldier*
 
 | | |
 |---|---|
@@ -85,7 +85,7 @@
 
 ---
 **BATTLE RAGE**
-*Class · Martial · Soldier*
+*Class · Arms · Soldier*
 
 | | |
 |---|---|
@@ -137,7 +137,7 @@
 
 ---
 **WHIRLWIND ATTACK**
-*Class · Martial · Soldier*
+*Class · Arms · Soldier*
 
 | | |
 |---|---|
