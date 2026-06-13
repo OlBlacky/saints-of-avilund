@@ -63,7 +63,7 @@ export const SYSTEM: SystemPart[] = [
   {
     part: 'V · Magic',
     items: [
-      { slug: 'magic', title: 'Magic', blurb: 'The arcane and occult arts of Avilund.', status: 'planned' },
+      { slug: 'magic', title: 'Magic', blurb: 'Spells found, not chosen — scrolls, spellbooks and rituals, and the feats that wield magic items.', status: 'progress' },
     ],
   },
   {

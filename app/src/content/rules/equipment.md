@@ -49,9 +49,52 @@ A shield's AC stacks on your armour's. **Raising a shield** can be done two ways
 - **Anyone proficient** may raise their shield as a **Standard action**, gaining its AC and DR until the start of their next turn — re-paid every turn.
 - The **Raise Shield** ability (Arms) does it far better: from a Move action down to **Free** — eventually every turn for nothing — and its Feats extend your Shield DR to the allies you protect.
 
-## Sundries
+## Medical &amp; Ministration Kits
 
-*Packs, tools, consumables, and other gear — coming soon.*
+A kit holds a **Supply** value of **0–20** — the consumables it spends in use. Hands-on healing and several abilities draw down Supplies; an empty kit is just the tools and the bag.
+
+| Item | Supply | Cost | Weight |
+|---|---|---|---|
+| **Healer's Kit** *(empty — tools &amp; bag)* | — | 10 sp | 3 lb |
+| **Friar's Kit** *(empty — oils, incense &amp; implements)* | — | 10 sp | 3 lb |
+| Supplies *(per 10)* | +10 | 1 sp | 1 lb |
+
+- The **Healer's Kit** holds bandages, salves, and thread — the physician's consumables. Its Supplies fuel hands-on medicine: a trained healer's **Tend Wounded**, and the Physician's healing abilities.
+- The **Friar's Kit** is the spiritual counterpart — holy oils and incense — identical in weight, cost, and Supply mechanics, but **some ministrations require it instead of the Healer's Kit** (for instance, treating damage to the mind and soul).
+- A kit filled to 20 Supplies weighs about **5 lb** and costs about **12 sp**.
+
+## Poisons
+
+A poison is defined by its **Application** *(ingestion, inhaled, wound, or contact)*, a **Save DC**, an **Onset**, and then — once it takes hold — a **Duration** *(how long one interval lasts)* and an **Interval count** *(how many ticks it runs)*. At each interval the victim saves again, and the poison worsens or eases. Coating a weapon by the **Wound** method takes a Minor action and a Wisdom check *(DC 10)*; one dose serves a single weapon or missile and lasts 24 hours.
+
+Poisons are **crafted** with the **Craft (Poison)** skill — here is a sample.
+
+### Gaul's Thistle Oil
+
+*A creeping paralytic venom named for Gaul, the fratricide brother of Saint Avitus.*
+
+| | |
+|---|---|
+| **Application** | Wound |
+| **Save DC** | 15 |
+| **Onset** | 1 round |
+| **Duration / Intervals** | 1 round, for 5 intervals |
+
+Each interval the victim climbs this track on a failed save, and descends on a success:
+
+| Rank | Effect |
+|---|---|
+| 1 | Slowed −5' · 1 necrotic / round |
+| 2 | Slowed −10' · 1 necrotic / round |
+| 3 | Slowed −15' · 1 necrotic / round |
+| 4 | Immobilized · 1 necrotic / round |
+
+| **Crafting** | |
+|---|---|
+| **Craft DC** | 15 *(Craft: Poison)* |
+| **Ingredients** | Gaul's Thistles *(1 bundle, 2 sp)* · pure alcohol *(1 bottle, 2 sp)* — 4 sp / dose |
+| **Time** | 8 hours per batch *(up to 10 doses at 10× ingredients)* |
+| **Price** | 8 sp / dose |
 
 ## Wealth
 
