@@ -1011,6 +1011,278 @@ const SPIRITUAL: Ability[] = [
   },
 ];
 
+// ── Letters (Scholar — Class) ───────────────────────────────────
+// Scholarship: academic utility, a clever Int-based blade, and the
+// literacy that reads scrolls, spellbooks and rituals. No spells of its own.
+const LETTERS: Ability[] = [
+  {
+    name: 'Research', category: 'Letters', role: 'Utility · non-combat', mode: 'Effect',
+    vars: {
+      frequency: { base: 'Uncapped (limited by time)' },
+      action: { base: '8 hours of study', advances: [{ value: '6 hours', cost: 'm' }, { value: '4 hours', cost: 'm' }, { value: '1 hour', cost: 'M' }] },
+      effects: {
+        base: 'With relevant written sources, make a Knowledge skill check vs a GM-set DC, with a +2 research bonus.',
+        advances: [
+          { value: 'the bonus is +3', cost: 'm' },
+          { value: '+4', cost: 'm' },
+          { value: '+5, and you may reroll (keep the better)', cost: 'M' },
+        ],
+      },
+    },
+  },
+  {
+    name: 'Scholar’s Strike', category: 'Letters', role: 'Offensive', mode: 'Attack',
+    vars: {
+      frequency: FREQ_FULL,
+      action: { base: 'Standard' },
+      range: { base: 'Reach' },
+      targets: { base: 'One' },
+      attack: { base: 'Intelligence vs AC' },
+      damage: { base: '1[W] (fixed)' },
+      duration: { base: 'Instant' },
+    },
+    feats: 'Light Blade Specialisation → +1 to hit · Staff Specialisation → +1 to one of your defenses until your next turn.',
+  },
+  {
+    name: 'Evade', category: 'Letters', role: 'Defensive · mobility', mode: 'Attack',
+    vars: {
+      frequency: FREQ_ENC,
+      action: { base: 'Standard', advances: [{ value: 'Move', cost: 'M' }, { value: 'Minor', cost: 'M' }] },
+      range: { base: 'One engaging opponent' },
+      targets: { base: 'One' },
+      attack: {
+        base: 'Intelligence vs Unarmoured Wisdom',
+        advances: [
+          { value: '+1 to the roll', cost: 'm' },
+          { value: '+2 to the roll', cost: 'm' },
+          { value: '+2; the Shift becomes 2 (10\')', cost: 'M' },
+        ],
+      },
+      effects: { base: 'On a hit, Shift 1 (5\'); the opponent may not use a reaction to this movement.' },
+      duration: { base: 'Instant' },
+    },
+  },
+  {
+    name: 'Recall', category: 'Letters', role: 'Utility', mode: 'Effect',
+    vars: {
+      frequency: FREQ_FRIAR,
+      action: { base: 'Standard', advances: [{ value: 'Move', cost: 'M' }, { value: 'Minor', cost: 'M' }, { value: 'Free', cost: 'M' }] },
+      effects: {
+        base: 'Make a Knowledge skill check to recall a detail relevant to the situation or foe.',
+        advances: [
+          { value: 'the check is at +1', cost: 'm' },
+          { value: 'at +2', cost: 'm' },
+          { value: 'at +2 — or make it with a Knowledge skill you are untrained in', cost: 'M' },
+        ],
+      },
+    },
+  },
+  {
+    name: 'Read Scrolls', category: 'Letters', role: 'Magic literacy', mode: 'Effect',
+    vars: {
+      frequency: { base: 'Daily', advances: [{ value: 'Encounter', cost: 'M' }, { value: '2 / encounter', cost: 'M', note: 'L3' }] },
+      action: { base: 'Full Round', advances: [{ value: 'Standard', cost: 'M' }] },
+      attack: { base: 'Int (+ Scroll Specialisation) vs the spell’s defence' },
+      effects: {
+        base: 'Read only — identify a scroll’s spell. You must know its language (e.g. Elder Arcana).',
+        advances: [
+          { value: 'cast Lesser spells from a scroll (consumed on use)', cost: 'm' },
+          { value: 'cast Greater spells', cost: 'M', note: 'L5' },
+        ],
+      },
+    },
+    feats: 'Generic Boosts: buy m, m, M; at the moment of casting, push one of the spell’s variables up its Ladder. A Scroll Specialist may buy a second set (two variables). Scribe / Create track (Major advances): Scribe Lesser (L3), Create Lesser (L5), Scribe Greater (L7), Create Greater (L9).',
+  },
+  {
+    name: 'Read Spellbooks', category: 'Letters', role: 'Magic literacy', mode: 'Effect',
+    vars: {
+      frequency: { base: 'Daily', advances: [{ value: 'Encounter', cost: 'M' }, { value: '2 / encounter', cost: 'M', note: 'L3' }] },
+      action: { base: 'Full Round', advances: [{ value: 'Standard', cost: 'M' }] },
+      attack: { base: 'Int (+ Spellbook Specialisation) vs the spell’s defence' },
+      effects: {
+        base: 'Read only — identify a spellbook’s spell. You must know its language. (Reusable; supply the components each casting.)',
+        advances: [
+          { value: 'cast Lesser spells', cost: 'm' },
+          { value: 'cast Greater spells', cost: 'M', note: 'L5' },
+        ],
+      },
+    },
+    feats: 'Same Generic-Boost and Scribe / Create tracks as Read Scrolls. A Spellbook Specialist may buy a second Generic-Boost set, and adds Int to a damaging spell’s damage.',
+  },
+  {
+    name: 'Conduct Ritual', category: 'Letters', role: 'Magic literacy', mode: 'Effect',
+    vars: {
+      action: { base: 'The ritual’s own casting time' },
+      effects: {
+        base: 'Anyone with the materials and the language may perform a ritual at its base. Conduct Ritual lets you IMPROVE one: buy m, m, M and push one of its variables per casting (e.g. shorten its time).',
+      },
+    },
+    feats: 'A Ritual Specialist may buy a second Generic-Boost set, and gains +1 to any d20 roll for the ritual. Participant-Ladder boost (Major): improve a ritual’s Participant Ladder by one degree. Scribe / Create track (Major advances): Scribe Lesser (L3) → Create Lesser (L5) → Scribe Greater (L7) → Create Greater (L9).',
+  },
+  {
+    name: 'Identify', category: 'Letters', role: 'Magic literacy · utility', mode: 'Effect',
+    vars: {
+      frequency: { base: 'Uncapped' },
+      action: { base: 'A few minutes of study' },
+      effects: {
+        base: 'An Arcana check vs the object’s DC reveals it is magical, its tradition, and its level. (Only for magic whose language and tradition you know.)',
+        advances: [
+          { value: 'also its function', cost: 'm' },
+          { value: 'also how to use it — command words, components, charges', cost: 'm' },
+          { value: 'also its flaws and secrets — curses, hidden properties, maker', cost: 'M' },
+        ],
+      },
+    },
+  },
+];
+
+// ── Medicine (Scholar — Physician) ──────────────────────────────
+// Non-magical: a surgeon’s cuts and crafted poisons, a guarded stance,
+// and hands-on healing that draws on a Healer’s Kit and its Supplies.
+const MEDICINE: Ability[] = [
+  {
+    name: 'Surgeon’s Strike', category: 'Medicine', role: 'Offensive', mode: 'Attack',
+    vars: {
+      frequency: FREQ_FULL,
+      action: { base: 'Standard' },
+      range: { base: 'Reach' },
+      targets: { base: 'One' },
+      attack: { base: 'Intelligence vs AC (Light Blade)' },
+      damage: { base: '1[W] (fixed)' },
+      effects: {
+        base: 'Bleed 1 / round.',
+        advances: [
+          { value: 'Bleed 2 / round', cost: 'm' },
+          { value: 'Bleed 3 / round', cost: 'm' },
+          { value: 'Bleed 5 / round', cost: 'M' },
+        ],
+      },
+      duration: { base: 'Save ends (or a Heal action stops it)' },
+    },
+    feats: 'Light Blade Specialisation → +Int damage.',
+  },
+  {
+    name: 'Envenom', category: 'Medicine', role: 'Offensive', mode: 'Attack',
+    vars: {
+      frequency: FREQ_FULL,
+      action: { base: 'Standard — coats the blade and attacks in one (no Wis check)' },
+      range: { base: 'Reach' },
+      targets: { base: 'One' },
+      attack: { base: 'Intelligence vs AC (Light Blade)' },
+      damage: { base: '1[W]' },
+      effects: {
+        base: 'Delivers a crafted poison of your choice (you must have a full dose); +1 to the poison’s save DC.',
+        advances: [
+          { value: '+2 to the poison’s DC', cost: 'm' },
+          { value: '+2 DC, and +1 Interval', cost: 'm' },
+          { value: '+2 DC, and +Int Intervals', cost: 'M' },
+        ],
+      },
+    },
+    feats: 'Light Blade Specialisation → +Int damage.',
+  },
+  {
+    name: 'Guard Vitals', category: 'Medicine', role: 'Defensive', mode: 'Effect',
+    vars: {
+      frequency: FREQ_ENC,
+      action: ACTION_SMM,
+      range: { base: 'Self' },
+      effects: {
+        base: 'DR 1 against 1 attack.',
+        advances: [
+          { value: 'DR 2 against 1 attack', cost: 'm' },
+          { value: 'DR 2 against all attacks from a single opponent', cost: 'm' },
+          { value: 'DR 2 against all attacks until the start of your next turn', cost: 'M' },
+        ],
+      },
+    },
+  },
+  {
+    name: 'Field Dressing', category: 'Medicine', role: 'Healing', mode: 'Effect',
+    vars: {
+      frequency: FREQ_FRIAR,
+      action: ACTION_SMM,
+      range: { base: 'Touch' },
+      targets: { base: 'One creature' },
+      effects: {
+        base: 'Heal Int HP. (Requires a Healer’s Kit; spends 1 Supply.)',
+        advances: [
+          { value: 'Heal Int + 1', cost: 'm' },
+          { value: 'Heal Int + 2', cost: 'm' },
+          { value: 'Heal Int + 1d6', cost: 'M' },
+        ],
+      },
+      duration: { base: 'Instant' },
+    },
+  },
+  {
+    name: 'Field Medicine', category: 'Medicine', role: 'Healing', mode: 'Effect',
+    vars: {
+      frequency: FREQ_FRIAR,
+      action: ACTION_SMM,
+      range: { base: 'Touch' },
+      targets: { base: 'One creature' },
+      effects: {
+        base: 'Reduce one bodily Condition, ongoing damage, or poison by 1 Rank. A touch also stabilises a dying creature. (Healer’s Kit; 1 Supply.)',
+        advances: [
+          { value: 'reduce by 2 Ranks', cost: 'm' },
+          { value: 'end it entirely', cost: 'm' },
+          { value: 'end one, and the target may save against another', cost: 'M' },
+        ],
+      },
+      duration: { base: 'Instant' },
+    },
+  },
+  {
+    name: 'Tend the Wounded', category: 'Medicine', role: 'Utility · camp heal', mode: 'Effect',
+    vars: {
+      frequency: { base: 'Daily' },
+      action: { base: 'During a rest (Healer’s Kit; 1 Supply per target)' },
+      range: { base: 'Those resting in camp' },
+      targets: {
+        base: 'One ally',
+        advances: [
+          { value: 'Two allies', cost: 'm' },
+          { value: 'Three allies', cost: 'm' },
+          { value: 'All who rest in camp', cost: 'M' },
+        ],
+      },
+      effects: {
+        base: 'Each recovers +Int HP on the rest, and may save (+0) against a bodily affliction.',
+        advances: [
+          { value: '+Int + 1 HP; the save is at +1', cost: 'm' },
+          { value: '+Int + 2 HP; the save is at +2', cost: 'm' },
+          { value: '+Int + 1d6 HP; a save vs each affliction at +2', cost: 'M' },
+        ],
+      },
+      duration: { base: 'The rest' },
+    },
+  },
+  {
+    name: 'Convalescence', category: 'Medicine', role: 'Utility · long-term care', mode: 'Effect',
+    vars: {
+      frequency: { base: '24 hours of care, per patient' },
+      action: { base: 'Patient at complete rest, no activity' },
+      targets: {
+        base: '1 patient',
+        advances: [
+          { value: '2 patients', cost: 'm' },
+          { value: 'Int patients', cost: 'm' },
+          { value: '10 patients', cost: 'M' },
+        ],
+      },
+      effects: {
+        base: 'Tend 1 Wound OR 1 Ability-Damage point as though 7 days had passed (your Heal roll replaces the save; 2 Supplies each). +3 HP bundled. At most 1 point per Ability Score per day.',
+        advances: [
+          { value: '2 Wounds or Ability-Damage points', cost: 'm' },
+          { value: 'Int Wounds or points', cost: 'm' },
+          { value: 'all Wounds and Ability-Damage points', cost: 'M' },
+        ],
+      },
+    },
+  },
+];
+
 export const CATEGORIES: CategoryGroup[] = [
   { name: 'Arms', source: 'Soldier — Class', blurb: 'The disciplined core of weapon-fighting: reliable strikes that grow with the weapon in your hands, plus the means to guard, disarm, focus, and read a fight.', abilities: ARMS },
   { name: 'Protection', source: 'Soldier — Vanguard', blurb: 'The defender’s toolkit: control strikes that pin and daze, shielding auras for your comrades, and the means to take a blow meant for someone else.', abilities: PROTECTION },
@@ -1019,4 +1291,6 @@ export const CATEGORIES: CategoryGroup[] = [
   { name: 'Mercy', source: 'Friar — Class', blurb: 'The body-mender’s kit, with no attacks at all: quiet, underpowered healing, blessings and saves, and the camp and social rites that keep a company whole.', abilities: MERCY },
   { name: 'Forbearance', source: 'Friar — Mendicant', blurb: 'The pacifist martyr’s discipline: binding Vows, Temp HP wrung from his own suffering, and the endurance to keep standing. Vows break only under compulsion — and stay lost until he Atones.', abilities: FORBEARANCE },
   { name: 'Spiritual', source: 'Friar — Confessor', blurb: 'The soul-mender and inquisitor — a debuffer who fights with Charisma against a foe’s Unarmoured Wisdom: softening strikes, a staggering rebuke, an area buff-purge, a burst of holy dread, an exorcism, and the means to wring out the truth.', abilities: SPIRITUAL },
+  { name: 'Letters', source: 'Scholar — Class', blurb: 'Scholarship, half academic and half arcane literacy: research and recall, a clever Int-based blade, and the reading of scrolls, spellbooks and rituals. No spells of its own.', abilities: LETTERS },
+  { name: 'Medicine', source: 'Scholar — Physician', blurb: 'The non-magical physician: a surgeon’s cuts and crafted poisons, a guarded stance, and hands-on healing — combat dressings, condition care, and the long convalescence — drawing on a Healer’s Kit.', abilities: MEDICINE },
 ];
