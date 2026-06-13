@@ -32,13 +32,11 @@ A trained caster's advances decide how much of a found spell they realise — ho
 
 A ritual is simply a spell whose Casting Time is a Ritual. Many have a **Casting DC** *(rolled by the Ritual Leader with the **Rituals** skill)* and a **Participant Ladder** — more hands, meeting the ritual's requirements, unlock greater effects. *(A worked ritual, **Locate Person**, will appear here.)*
 
-## Magic items and the feats that wield them
+## Wielding magic items
 
-A character cannot simply pick up a wand and use it. **Activated magic items** — wands, staves, rings, scrolls, spellbooks — require the **Use Magic Item** feat *(prerequisite: Intelligence +1)*. A magic item attacks using your **Intelligence**.
+A wand, staff, scroll, or spellbook is wielded like any weapon — through a **Weapon Proficiency**. **Wands, Magic Staves, Scrolls,** and **Spellbooks** are proficiency groups in their own right, granted and advanced exactly like Heavy Blades or Bows — with one difference: a magic item **attacks with your Intelligence**. Their **Weapon Specialisation Feats** carry the signature perks *(a Scroll specialist may not burn the scroll; a Spellbook specialist adds his Intelligence to a damaging spell's damage)*.
 
-From that gateway branch the **item Specialties** — one each for **Wand, Staff, Ring, Scroll, Spellbook,** and **Ritual**. Each grants **+1** with its item type and unlocks special perks on your abilities *(for example, a Scroll Specialty gives a chance not to consume the scroll; a Spellbook Specialty adds your Intelligence to a damaging spell's damage)*.
-
-**Passive** magic items — a warded cloak, a keen blade — work for most anyone, no feat required.
+**Passive** magic items — a warded cloak, a keen blade — need no training at all. *(See [Proficiencies](../proficiencies/).)*
 
 ## The taxonomy of the Arcane
 
