@@ -167,6 +167,8 @@ blockquote {
 
 // Author byline on a multi-part work's contents page.
 .byline { color: var(--ink-soft); font-style: italic; font-size: 0.98rem; margin: 0 0 0.4rem; }
+// A secondary credit line for the illustrator, sat just under the author byline.
+.byline--art { font-size: 0.9rem; margin-top: -0.25rem; }
 
 // ── Figure / map ─────────────────────────────────────────────
 figure { margin: 1.5rem 0; }

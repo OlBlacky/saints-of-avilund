@@ -9,6 +9,8 @@ const library = defineCollection({
     author: z.string().optional(),
     date: z.string().optional(),    // publication date (a string — covers ranges like "1746–1747")
     kind: z.string().optional(),    // optional Context — rendered as the eyebrow above the title
+    artist: z.string().optional(),  // illustrator credited at the top, in the same fashion as the author
+    medium: z.string().optional(),  // the art medium (e.g. "Woodcut"), noted beside the artist
     order: z.number().default(100),
     summary: z.string().optional(),
     // Optional leading illustration (a "plate"). `plate` is a path under

@@ -34,8 +34,8 @@ export const SYSTEM: SystemPart[] = [
       { slug: 'introduction', title: 'Introduction & How to Play', blurb: 'What the game is, the d20 core it runs on, and the Ladders and Ranks every ability is built from.', status: 'live' },
       { slug: 'character-creation', title: 'Character Creation', blurb: 'Advances (Major & Minor), levels 0–11, and milestone advancement.', status: 'live', stub: false },
       { slug: 'character-sheet', title: 'Character Sheet', blurb: 'A look at the digital character sheet — the example Soldier laid out across four pages.', status: 'live', stub: false },
-      { slug: 'attributes', title: 'Attributes, Offenses & Defenses', blurb: 'The six attributes, AC, and the Armoured / Unarmoured defenses.', status: 'designed' },
-      { slug: 'skills', title: 'Skills', blurb: 'The twenty-nine skills, each tied to an attribute.', status: 'designed' },
+      { slug: 'attributes', title: 'Attributes, Offenses & Defenses', blurb: 'The six attributes, AC, and the Armoured / Unarmoured defenses.', status: 'live' },
+      { slug: 'skills', title: 'Skills', blurb: 'The skills of Avilund, each tied to an attribute — with the Heal skill in play.', status: 'live' },
       { slug: 'proficiencies', title: 'Proficiencies', blurb: 'Weapon groups (magic items included), armour, and how training in them is granted, advanced, and specialised.', status: 'live' },
     ],
   },
@@ -44,13 +44,13 @@ export const SYSTEM: SystemPart[] = [
     items: [
       { slug: 'classes', title: 'Classes & Paths', blurb: 'Eleven vocations, each with three Paths. The Soldier is written up in full.', status: 'live', stub: false },
       { slug: 'abilities', title: 'Abilities', blurb: 'Ability Categories, and the chassis of eight dials each power is built from.', status: 'live', stub: false },
-      { slug: 'feats', title: 'Feats', blurb: 'The specialist economy — conditional perks that reshape your abilities.', status: 'designed' },
+      { slug: 'feats', title: 'Feats', blurb: 'The specialist economy — conditional perks that reshape your abilities.', status: 'progress' },
     ],
   },
   {
     part: 'III · Combat',
     items: [
-      { slug: 'combat', title: 'Combat', blurb: 'The turn, the action economy, attack resolution, range and cover.', status: 'designed' },
+      { slug: 'combat', title: 'Combat', blurb: 'The turn and its actions, attack resolution, and the rules for falling, dying, and recovery.', status: 'progress' },
       { slug: 'conditions', title: 'Conditions', blurb: 'The laddered conditions — Daze, Control, Movement, Debuff, and the rest.', status: 'live' },
     ],
   },

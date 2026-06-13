@@ -59,6 +59,9 @@ if (props.type === 'doc') {
         {(docData.author || docData.date) && (
           <p class="byline">{docData.author}{docData.author && docData.date ? ' · ' : ''}{docData.date}</p>
         )}
+        {(docData.artist || docData.medium) && (
+          <p class="byline byline--art">{docData.artist}{docData.artist && docData.medium ? ' · ' : ''}{docData.medium}</p>
+        )}
       </header>
       <article class="prose">
         {docData.plate && (
@@ -77,6 +80,9 @@ if (props.type === 'doc') {
         <h1>{work.title}</h1>
         {(work.author || work.date) && (
           <p class="byline">{work.author}{work.author && work.date ? ' · ' : ''}{work.date}</p>
+        )}
+        {(work.artist || work.medium) && (
+          <p class="byline byline--art">{work.artist}{work.artist && work.medium ? ' · ' : ''}{work.medium}</p>
         )}
       </header>
 

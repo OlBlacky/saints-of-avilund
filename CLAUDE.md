@@ -65,6 +65,8 @@ An **Astro 6** static site — a setting compendium — deployed to **GitHub Pag
 
 **Library entry headers (standing order):** every Library entry's first content page (single doc, or the contents page of a multi-part work) must show at the top: **Author**, **Publication Date**, and optionally **Context**. Set `author` and `date` in the frontmatter (library docs) or in the `WORKS` entry (multi-part works in `src/lib/texts.ts`). The `kind` field is the optional Context (rendered as the eyebrow above the title). Render order: Context → Title → Author · Date.
 
+**Artist credit (standing order):** any Source Material that carries artwork must also credit the **artist** at the top, in the same fashion as the author, with the **art medium** noted (e.g. *Albrecht Türmann of Waldheim · Woodcut* on _Adnihilo Inter Nos_). Set `artist` and `medium` in the frontmatter (library docs) or the `WORKS` entry (multi-part works). It renders as a second byline line just under Author · Date. Only credit a named artist; leave it off where the illustrator is unknown.
+
 ---
 
 ## Primary User

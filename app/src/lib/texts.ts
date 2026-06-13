@@ -13,6 +13,8 @@ export interface Work {
   author?: string;
   date?: string;     // publication date (string — covers ranges like "1746–1747")
   kind?: string;     // optional Context — rendered as the eyebrow above the title
+  artist?: string;   // illustrator credited at the top, in the same fashion as the author
+  medium?: string;   // the art medium (e.g. "Woodcut"), noted beside the artist
   summary: string;   // one-line blurb for the Library index
   lede?: string;     // longer intro shown on the work's contents page
   plate?: string;        // optional frontispiece (path under public/), shown on the contents page
@@ -47,6 +49,8 @@ export const WORKS: Work[] = [
     title: 'Adnihilo Inter Nos',
     author: 'Inquisitor-Cardinal Hanzig Van Tassel, Prelate of St. Kerrigan',
     date: '1347',
+    artist: 'Albrecht Türmann of Waldheim',
+    medium: 'Woodcut',
     kind: 'A treatise on demons and possession',
     summary: 'On the demons of the Abyss that walk among Men, and the rites for cases of possession.',
     lede: 'Inquisitor-Cardinal Van Tassel’s manual for the Ordo Calculus Veritas — on knowing a true demon from a frightened neighbour’s fancy, the forms and powers of the Abyss-born, and the rites by which they are put down. Cut with woodcuts by Albrecht Türmann of Waldheim.',
