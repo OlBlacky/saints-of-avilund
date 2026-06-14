@@ -34,7 +34,7 @@ A ritual is simply a spell whose Casting Time is a Ritual. Many have a **Casting
 
 ## Wielding magic items
 
-A wand, staff, scroll, or spellbook is wielded like any weapon — through a **Weapon Proficiency**. **Wands, Magic Staves, Scrolls,** and **Spellbooks** are proficiency groups in their own right, granted and advanced exactly like Heavy Blades or Bows — with one difference: a magic item **attacks with your Intelligence**. Their **Weapon Specialisation Feats** carry the signature perks *(a Scroll specialist may not burn the scroll; a Spellbook specialist adds his Intelligence to a damaging spell's damage)*.
+A wand, staff, scroll, or spellbook is wielded through an **Implement Proficiency** — its own family of four *(**Wands, Magic Staves, Spellbooks, Scrolls**)*, granted and advanced exactly like a weapon group. The difference: an implement **attacks with a mental or nimble attribute** — usually **Intelligence**, though some casters aim with **Dexterity**. Their **Implement Specialisation Feats** carry the signature perks *(a Scroll specialist may not burn the scroll; a Spellbook specialist adds his Intelligence to a damaging spell's damage)*.
 
 **Passive** magic items — a warded cloak, a keen blade — need no training at all. *(See [Proficiencies](../proficiencies/).)*
 

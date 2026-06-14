@@ -26,18 +26,18 @@ Every weapon belongs to one **group**. Being proficient in the group means you w
 | Slings | Thrown | Pistols |
 | Rifles | Grenades | |
 
-## Magic Items
+## Implement Proficiencies
 
-Anything that *casts* is, for these purposes, a weapon — and uses the **same proficiency rules above**. Four magic groups join the list:
+Anything that *casts* is wielded through an **Implement Proficiency** — the same proficiency rules above, just a separate family of four:
 
-| Group | What it is |
+| Implement | What it is |
 |---|---|
 | **Wands** | one-effect rods, loosed like a shot |
 | **Magic Staves** | the greater casting staves |
-| **Scrolls** | single-use written spells |
 | **Spellbooks** | bound, reusable spells |
+| **Scrolls** | single-use written spells |
 
-The one difference from a sword or bow: a magic item **attacks with Intelligence** — `d20 + Int (+ proficiency) vs the defence`. Their **Weapon Specialisation Feats** carry the signature perks — a *Scroll* specialist has a chance not to burn the scroll; a *Spellbook* specialist adds his Intelligence to a damaging spell's damage.
+Unlike a sword or bow, an implement's attack uses a **mental or nimble attribute** rather than brawn — most often **Intelligence**, though some casters aim with **Dexterity**, as the wielding ability specifies. Their **Implement Specialisation Feats** carry the signature perks — a *Scroll* specialist has a chance not to burn the scroll; a *Spellbook* specialist adds his Intelligence to a damaging spell's damage.
 
 **Passive** magic items — a warded cloak, an enchanted blade — need no proficiency; they simply work. *(How spells are actually cast from scrolls, spellbooks and rituals is covered under [Magic](../magic/).)*
 

@@ -49,7 +49,6 @@ Skills represent trained areas of expertise. They are tied to Attributes — whe
 | **Religion** | Int, Wis | Theology, rites, religious history and figures |
 | **Rituals** | Int | Performing rituals — the Ritual Leader's Casting-DC check — and the lore of ritual magic |
 | **The Planes** | Int | Knowledge of planar cosmology and extraplanar entities |
-| **Spellcraft** | Int | Understanding and identifying spells and magical effects |
 | **Search** | Int, Wis | Finding hidden objects, traps, or clues |
 | **Heal** | Wis, Int | Treating wounds, illness and conditions |
 | **Perception** | Wis | Noticing details, sensing danger, general awareness |

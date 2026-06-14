@@ -1,0 +1,170 @@
+---
+import Base from '../../layouts/Base.astro';
+import { url } from '../../lib/url';
+import SystemNav from '../../components/SystemNav.astro';
+import { SKILLS } from '../../lib/skills';
+
+// Skills reference — a hand-built route (stub: false in system.ts). Each skill
+// is a collapsible <details>, alphabetised; inside is how it works and a
+// highlighted box of the Actions it enables.
+const skills = [...SKILLS].sort((a, b) => a.name.localeCompare(b.name));
+---
+
+<Base title="Skills" description="The skills of Avilund, alphabetised — each tied to an attribute, with how it works and the Actions it enables.">
+  <p class="back-link"><a href={url('system/')}>← The System</a></p>
+
+  <header class="saint-head">
+    <p class="eyebrow">I · Foundations</p>
+    <h1>Skills</h1>
+  </header>
+
+  <p class="lede" style="max-width:var(--measure);">
+    A skill is a trained area of expertise. To use one, roll <strong>d20 + the attribute + your skill
+    bonus</strong>, against a difficulty the Game Master sets. Most skills list more than one attribute —
+    you choose <em>which fits your approach</em> <span class="muted">(intimidating with a raised fist is
+    Strength; with a cold word, Charisma)</span>. Expand a skill to read how it works and the Actions it
+    enables.
+  </p>
+
+  <div class="prose" style="margin:0 auto 1.6rem;">
+    <p><strong>Training caps.</strong> The skills your <strong>Class</strong> grants — its
+    <strong>Class Skills</strong> — and the two your <strong>Path</strong> grants — its
+    <strong>Additional Class Skills</strong> — can be raised to <strong>+2</strong>. Any other skill you
+    pick up caps at <strong>+1</strong>.</p>
+    <p><strong>Specialities.</strong> A few skills are taken in a chosen field: <strong>Craft, Profession,
+    Perform,</strong> and <strong>Trade</strong> <em>(e.g. Craft: Poison)</em>. <strong>Religion</strong>
+    likewise names a faith — <strong>Religion (Saintly Faith)</strong>, <strong>Religion (Black Faith)</strong>,
+    and others.</p>
+  </div>
+
+  {skills.map((s) => (
+    <details class="skill" id={s.name.toLowerCase().replace(/[^a-z0-9]+/g, '-')}>
+      <summary class="skill__summary">
+        <span class="skill__name">{s.name}{s.field && <span class="skill__field">{s.field}</span>}</span>
+        <span class="skill__attrs">{s.attrs}</span>
+      </summary>
+      <div class="skill__body">
+        <p class="skill__how">{s.how}</p>
+        <div class="actions">
+          <p class="actions__h">Actions</p>
+          <ul class="actions__list">
+            {s.actions.map((a) => (
+              <li class="action">
+                <span class="action__name">{a.name}</span>
+                <span class="action__rule">{a.rule}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+        {s.note && <p class="skill__note">{s.note}</p>}
+      </div>
+    </details>
+  ))}
+
+  <SystemNav slug="skills" />
+
+  <script is:inline>
+    // Open and scroll to a skill when the URL hash targets it (e.g. .../skills/#stealth).
+    function openHashSkill() {
+      const id = decodeURIComponent(location.hash.slice(1));
+      if (!id) return;
+      const el = document.getElementById(id);
+      if (el && el.tagName === 'DETAILS') {
+        el.open = true;
+        el.scrollIntoView();
+      }
+    }
+    openHashSkill();
+    window.addEventListener('hashchange', openHashSkill);
+  </script>
+
+  <style>
+    .muted { color: var(--ink-soft); }
+
+    .skill {
+      border: 1px solid var(--rule);
+      border-radius: 6px;
+      margin: 0.7rem 0;
+      background: var(--panel);
+      overflow: hidden;
+    }
+    .skill__summary {
+      cursor: pointer;
+      list-style: none;
+      padding: 0.7rem 1.1rem;
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 1rem;
+      background: rgba(120, 90, 40, 0.07);
+      user-select: none;
+    }
+    .skill__summary::-webkit-details-marker { display: none; }
+    .skill__summary::before {
+      content: '▸';
+      color: var(--gold);
+      font-size: 0.85em;
+      margin-right: 0.1rem;
+    }
+    .skill[open] .skill__summary { border-bottom: 1px solid var(--rule); }
+    .skill[open] .skill__summary::before { content: '▾'; }
+    .skill__name {
+      flex: 1;
+      font-family: var(--display);
+      font-size: 1.2rem;
+      color: var(--oxblood);
+      margin-left: 0.45rem;
+    }
+    .skill__field {
+      font-family: var(--serif);
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--ink-soft);
+      border: 1px solid var(--rule);
+      border-radius: 999px;
+      padding: 0.02rem 0.5rem;
+      margin-left: 0.5rem;
+      vertical-align: middle;
+    }
+    .skill__attrs {
+      font-size: 0.74rem;
+      color: var(--ink-soft);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      white-space: nowrap;
+    }
+    .skill__body { padding: 0.5rem 1.1rem 1.1rem; }
+    .skill__how { margin: 0.6rem 0 0.9rem; }
+    .skill__note { margin: 0.8rem 0 0; font-size: 0.9rem; font-style: italic; color: var(--ink-soft); }
+
+    /* The highlighted Actions box — the specific in-game rules. */
+    .actions {
+      border: 1px solid var(--rule);
+      border-left: 3px solid var(--gold);
+      border-radius: 4px;
+      background: rgba(120, 90, 40, 0.05);
+      padding: 0.6rem 0.9rem 0.7rem;
+    }
+    .actions__h {
+      margin: 0 0 0.4rem;
+      font-variant: small-caps;
+      letter-spacing: 0.1em;
+      color: var(--gold);
+      font-size: 0.85rem;
+    }
+    .actions__list { list-style: none; margin: 0; padding: 0; }
+    .action {
+      padding: 0.32rem 0;
+      border-top: 1px solid var(--rule);
+    }
+    .action:first-child { border-top: none; }
+    .action__name {
+      font-weight: 700;
+      color: var(--oxblood);
+      margin-right: 0.4rem;
+    }
+    .action__name::after { content: ' —'; color: var(--ink-soft); font-weight: 400; }
+    .action__rule { color: var(--ink); }
+  </style>
+</Base>

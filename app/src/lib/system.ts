@@ -35,7 +35,7 @@ export const SYSTEM: SystemPart[] = [
       { slug: 'character-creation', title: 'Character Creation', blurb: 'Advances (Major & Minor), levels 0–11, and milestone advancement.', status: 'live', stub: false },
       { slug: 'character-sheet', title: 'Character Sheet', blurb: 'A look at the digital character sheet — the example Soldier laid out across four pages.', status: 'live', stub: false },
       { slug: 'attributes', title: 'Attributes, Offenses & Defenses', blurb: 'The six attributes, AC, and the Armoured / Unarmoured defenses.', status: 'live' },
-      { slug: 'skills', title: 'Skills', blurb: 'The skills of Avilund, each tied to an attribute — with the Heal skill in play.', status: 'live' },
+      { slug: 'skills', title: 'Skills', blurb: 'The skills of Avilund, each tied to an attribute — with the Heal skill in play.', status: 'live', stub: false },
       { slug: 'proficiencies', title: 'Proficiencies', blurb: 'Weapon groups (magic items included), armour, and how training in them is granted, advanced, and specialised.', status: 'live' },
     ],
   },

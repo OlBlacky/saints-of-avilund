@@ -53,6 +53,12 @@ The same shape governs the harm an ability inflicts. **Ongoing Damage** — Blee
 
 An attack that sets a target Bleeding starts at Rank 1; you raise the bite of it by climbing the Ladder, exactly as you raised Parry.
 
+### One Rank per level
+
+A Ladder is climbed **a single Rank at a time**: you may raise any one Ladder by **at most one Rank per level**. The base Rank and the first Advance may both be taken when you first buy the thing — but after that, each further Rank waits for a new level.
+
+This paces a Ladder for you. Take a four-Rank ability bought at creation: you light Rank 1 and may buy Rank 2 straight away, but Rank 3 must wait until you begin **Level 1**, and Rank 4 until **Level 2**. A four-Rank Ladder therefore tops out as you enter Level 2 on its own — without anyone writing a level on it. When a Rank *does* carry a level (you'll see it noted, like *L5*), that Rank opens **later** than this natural pace, not sooner. The limit is per Ladder: two different parts of the same ability may each climb a Rank in the same level.
+
 ### One pattern, learned once
 
 Because the structure repeats, you only ever learn it once. **Frequency** (Daily → Encounter → At-Will), an ability's damage, the reach of a buff, the depth of a [Condition](../conditions/) — all of them are Ladders, all measured in Ranks, all climbed with the same two Advances. Read a Ladder, and you can see at a glance what a character can do now and what the next Advance will buy.
