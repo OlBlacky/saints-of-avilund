@@ -1437,6 +1437,161 @@ const ELDER_MAGIC: Ability[] = [
   },
 ];
 
+// ── New Magic (Scholar — Arcanist) ──────────────────────────────
+// The Collegium's destructive art, and a spell-builder. Each offensive
+// chassis is bought with ONE element + a custom name, then re-bought to
+// make another spell. Dexterity vs AC aims; Intelligence powers damage.
+// An element's signature Effect ladder is FEAT-GATED (the matching
+// Elementalist feat), so those ladders live in each card's Feats line;
+// the Effect(s) row shows only the baseline (damage, or a Defence ladder
+// on the close chassis). Implements (wand/staff/spellbook/scroll) lend hooks.
+const FREQ_ATWILL_L3: Variable = { base: 'Daily', advances: [{ value: 'Encounter', cost: 'M' }, { value: 'At-Will', cost: 'M', note: 'L3' }] };
+
+const RANGED_SINGLE_DMG: Variable = { base: '1d4', advances: [{ value: '1d4 + Int', cost: 'm' }, { value: '1d6 + Int', cost: 'm' }, { value: '2d6 + Int', cost: 'M', note: 'L5' }] };
+const CLOSE_SINGLE_DMG: Variable = { base: '1d6', advances: [{ value: '1d6 + Int', cost: 'm' }, { value: '1d8 + Int', cost: 'm' }, { value: '2d8 + Int', cost: 'M', note: 'L5' }] };
+const RANGED_AOE_DMG: Variable = { base: '1', advances: [{ value: 'Int', cost: 'm' }, { value: '1d4 + Int', cost: 'm' }, { value: '2d4 + Int', cost: 'M', note: 'L5' }] };
+const CLOSE_AOE_DMG: Variable = { base: 'Int', advances: [{ value: '1d4 + Int', cost: 'm' }, { value: '1d6 + Int', cost: 'm' }, { value: '2d6 + Int', cost: 'M', note: 'L5' }] };
+const NM_DEFENCE: Variable = { base: '+1 to one Defence (until your next turn)', advances: [{ value: '+1 to all Defences', cost: 'm' }, { value: '+2 to all Defences', cost: 'm' }, { value: '+2 to all Defences and DR 1', cost: 'M' }] };
+const NM_AOE_TARGETS: Variable = { base: 'Each creature in the burst — one Dexterity vs AC roll resolved against each (friendly fire included)' };
+
+const NM_ELEMENTS = 'Pick ONE element; buy this chassis again (with a new name) to build another spell. Each element’s Effect ladder is gated by its Elementalist feat — Fire/Acid → Ongoing Damage, Cold → Movement, Lightning/Sonic → Action Denial, Force → Push.';
+const NM_IMPL = 'Implements — Wand → +1 to hit · Magic Staff → +1 to one Defence until your next round · Spellbook → the element Effect ladder lands one Rank higher · Scroll → once per encounter, cast without consuming the scroll.';
+const NM_IMPL_AOE = 'Implements — Wand → +1 to hit · Magic Staff → +5\' burst radius · Spellbook → the element Effect ladder lands one Rank higher · Scroll → once per encounter, cast without consuming the scroll.';
+const HK_SPLASH = 'Acid & Sonic → Splash (1 dmg to 1 adjacent → 2 adjacent → Int adjacent → 2 to all adjacent)';
+const HK_GLANCING = 'Force & Cold → Glancing (1 dmg on a miss → 2 → Int → half the spell’s damage on a miss)';
+const HK_PIERCE = 'Fire & Lightning → Pierce (1 dmg to an enemy in the line between you and the target → 2 → Int → 2 to all in the line)';
+const HK_RETAL = 'Fire & Lightning → Retaliation (the next enemy to melee you takes 1 typed dmg → all your attackers → 2 typed → lasts the Encounter)';
+const HK_LINGER = 'Acid & Sonic → Lingering (a creature that enters or ends its turn in the area takes 1 typed → 2 → Int → the hazard lasts a 2nd round)';
+const hooks = (...hs: string[]) => `${NM_ELEMENTS} Specialization Hooks: ${hs.join('; ')}.`;
+
+const NEW_MAGIC: Ability[] = [
+  {
+    name: 'Ranged Spell', category: 'New Magic', role: 'Offensive · spell-builder', mode: 'Attack',
+    vars: {
+      frequency: FREQ_ATWILL_L3,
+      action: { base: 'Standard' },
+      range: STD_RANGE,
+      targets: { base: 'One' },
+      attack: { base: 'Dexterity vs AC' },
+      damage: RANGED_SINGLE_DMG,
+      duration: { base: 'Instant' },
+    },
+    feats: `${hooks(HK_PIERCE, HK_SPLASH, HK_GLANCING)} ${NM_IMPL}`,
+  },
+  {
+    name: 'Close Spell', category: 'New Magic', role: 'Offensive · spell-builder', mode: 'Attack',
+    vars: {
+      frequency: FREQ_ATWILL_L3,
+      action: { base: 'Standard' },
+      range: { base: 'Reach' },
+      targets: { base: 'One' },
+      attack: { base: 'Dexterity vs AC' },
+      damage: CLOSE_SINGLE_DMG,
+      effects: NM_DEFENCE,
+      duration: { base: 'Instant (Defence: until your next turn)' },
+    },
+    feats: `${hooks(HK_RETAL, HK_SPLASH, HK_GLANCING)} ${NM_IMPL} The Defence ladder above is baseline — no element or feat needed.`,
+  },
+  {
+    name: 'Ranged Burst', category: 'New Magic', role: 'Offensive · spell-builder · area', mode: 'Attack',
+    vars: {
+      frequency: FREQ_2ENC,
+      action: { base: 'Standard' },
+      range: { base: "30' (5' burst)", advances: [{ value: "60' (10' burst)", cost: 'm' }, { value: "90' (15' burst)", cost: 'm' }, { value: "120' (20' burst)", cost: 'M' }] },
+      targets: NM_AOE_TARGETS,
+      attack: { base: 'Dexterity vs AC' },
+      damage: RANGED_AOE_DMG,
+      duration: { base: 'Instant' },
+    },
+    feats: `${hooks(HK_PIERCE, HK_LINGER, HK_GLANCING)} ${NM_IMPL_AOE}`,
+  },
+  {
+    name: 'Close Burst', category: 'New Magic', role: 'Offensive · spell-builder · area', mode: 'Attack',
+    vars: {
+      frequency: FREQ_2ENC,
+      action: { base: 'Standard' },
+      range: { base: "5' burst (centred on you)", advances: [{ value: "10' burst", cost: 'm' }, { value: "15' burst", cost: 'm' }, { value: "20' burst", cost: 'M' }] },
+      targets: NM_AOE_TARGETS,
+      attack: { base: 'Dexterity vs AC' },
+      damage: CLOSE_AOE_DMG,
+      effects: NM_DEFENCE,
+      duration: { base: 'Instant (Defence: until your next turn)' },
+    },
+    feats: `${hooks(HK_RETAL, HK_LINGER, HK_GLANCING)} ${NM_IMPL_AOE} The Defence ladder above is baseline — you stand in your own burst.`,
+  },
+  {
+    name: 'Arcane Armour', category: 'New Magic', role: 'Defensive', mode: 'Effect',
+    vars: {
+      frequency: { base: 'Daily' },
+      action: { base: 'Ritual — 1 minute' },
+      targets: { base: 'Self' },
+      effects: {
+        base: '+1 AC',
+        advances: [
+          { value: '+1 to all Armoured Defences', cost: 'm' },
+          { value: '+1 to all Defences', cost: 'm' },
+          { value: '+1 to all Defences, and DR 1', cost: 'M' },
+        ],
+      },
+      duration: { base: '1 hour', advances: [{ value: '2 hours', cost: 'm' }, { value: '4 hours', cost: 'm' }, { value: 'until your next Long Rest', cost: 'M' }] },
+    },
+    feats: 'Implement — Magic Staff: while wielding it, every defence improvement is +1 more. (No element — Arcane Armour is not an elemental spell.)',
+  },
+  {
+    name: 'Force Shield', category: 'New Magic', role: 'Defensive', mode: 'Effect',
+    vars: {
+      frequency: FREQ_2ENC,
+      action: { base: 'Interrupt — when you are hit by an attack' },
+      targets: { base: 'Self' },
+      effects: {
+        base: '+1 AC (a Buckler)',
+        advances: [
+          { value: '+1 AC and DR 1 (a Standard shield)', cost: 'm' },
+          { value: '+2 AC and DR 1 (a large shield)', cost: 'm' },
+          { value: '+2 AC and DR 2 (a Tower shield)', cost: 'M' },
+        ],
+      },
+      duration: { base: 'Until the start of your next turn' },
+    },
+    feats: 'Implement — Magic Staff: +1 to both AC and DR. Force Specialization (Elementalist: Force) → the bonus applies to all Armoured Defences, not just AC.',
+  },
+  {
+    name: 'Telekinesis', category: 'New Magic', role: 'Utility', mode: 'Effect',
+    vars: {
+      frequency: FREQ_2ENC,
+      action: { base: 'Standard' },
+      range: STD_RANGE,
+      attack: { base: "Dexterity vs Armoured Strength (to shove an unwilling creature up to 10', within capacity)" },
+      effects: {
+        base: 'Move an unattended object up to 10 lb',
+        advances: [
+          { value: 'up to 50 lb', cost: 'm' },
+          { value: 'up to 200 lb (a person)', cost: 'm' },
+          { value: 'up to 1,000 lb', cost: 'M' },
+        ],
+      },
+    },
+    feats: "Implement — Wand: each ladder counts one Rank higher; at the top Rank it doubles instead → 240' / 2,000 lb. (No Force hook — Force has enough already.)",
+  },
+  {
+    name: 'Light', category: 'New Magic', role: 'Utility', mode: 'Effect',
+    vars: {
+      frequency: FREQ_2ENC,
+      action: { base: 'Minor' },
+      effects: {
+        base: "Dim light, 10' radius",
+        advances: [
+          { value: "bright 20' radius", cost: 'm' },
+          { value: "bright 20' (+ dim 20' beyond); you may move it or affix it to a moving object", cost: 'm' },
+          { value: "Daylight, bright 30' (counts as sunlight; dispels magical darkness)", cost: 'M' },
+        ],
+      },
+      duration: { base: '1 hour', advances: [{ value: '2 hours', cost: 'm' }, { value: '4 hours', cost: 'm' }, { value: 'until you dismiss it', cost: 'M' }] },
+    },
+    feats: "Implements: Wand → adds a Range ladder (30'/60'/90'/120') that tracks the Brightness Rank — place the light as far as it reaches. Fire Specialization → the light is a magical, unquenchable flame (and behaves like a torch for setting things alight).",
+  },
+];
+
 export const CATEGORIES: CategoryGroup[] = [
   { name: 'Arms', source: 'Soldier — Class', blurb: 'The disciplined core of weapon-fighting: reliable strikes that grow with the weapon in your hands, plus the means to guard, disarm, focus, and read a fight.', abilities: ARMS },
   { name: 'Protection', source: 'Soldier — Vanguard', blurb: 'The defender’s toolkit: control strikes that pin and daze, shielding auras for your comrades, and the means to take a blow meant for someone else.', abilities: PROTECTION },
@@ -1447,5 +1602,6 @@ export const CATEGORIES: CategoryGroup[] = [
   { name: 'Spiritual', source: 'Friar — Confessor', blurb: 'The soul-mender and inquisitor — a debuffer who fights with Charisma against a foe’s Unarmoured Wisdom: softening strikes, a staggering rebuke, an area buff-purge, a burst of holy dread, an exorcism, and the means to wring out the truth.', abilities: SPIRITUAL },
   { name: 'Letters', source: 'Scholar — Class', blurb: 'Scholarship, half academic and half arcane literacy: research and recall, a clever Int-based blade, and the reading of scrolls, spellbooks and rituals. No spells of its own.', abilities: LETTERS },
   { name: 'Medicine', source: 'Scholar — Physician', blurb: 'The non-magical physician: a surgeon’s cuts and crafted poisons, a guarded stance, and hands-on healing — combat dressings, condition care, and the long convalescence — drawing on a Healer’s Kit.', abilities: MEDICINE },
+  { name: 'New Magic', source: 'Scholar — Arcanist', blurb: 'The Collegium’s disciplined, destructive art — and a spell-builder. Each offensive chassis (ranged or close, single or burst) is bought with ONE element and a name of your choosing, then re-bought to make another spell. Dexterity vs AC aims every attack; Intelligence powers the damage. An element’s signature Effect ladder unlocks only with its Elementalist feat, and four implements (wand, staff, spellbook, scroll) each lend a hook.', abilities: NEW_MAGIC },
   { name: 'Elder Magic', source: 'Scholar — Antiquarian', blurb: 'The recovered, fragmentary art of the Elders — subtle and controlling, worked by force of will (Charisma against a foe’s unguarded mind): the artefact engine, psychic dread, blinding, forced movement, outright domination, a withering doubt, and the ruin-delver’s craft. Every working carries a Feat Hook, for Elder magic comes only in studied fragments.', abilities: ELDER_MAGIC },
 ];

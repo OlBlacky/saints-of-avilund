@@ -46,13 +46,15 @@ The seeker of **Elder Magic** — the recovered, half-understood art of the Elde
 | **Armour Proficiencies** | None |
 
 ### Arcanist
-The master of **New Magic** — the Collegium's disciplined, destructive art, channelled through wands and staves. *(In design — the New Magic Category is being written.)*
+The master of **New Magic** — the Collegium's disciplined, destructive art, channelled through wands and staves. It is a **spell-builder**: pick an element, build a chassis, name it your own, and buy it again to make another. **Dexterity** aims the spell; **Intelligence** powers the damage. Saint Anselm, who broke the Elder magic and remade it, is its patron.
 
 | | |
 |---|---|
-| **Class Attribute** | *(in design)* |
+| **Class Attribute** | Dexterity |
 | **Ability Category** | New Magic |
-| **Additional Class Skills** | *(in design)* |
+| **Additional Class Skills** | Arcana, The Planes |
+| **Implement Proficiencies** | Wands, Magic Staves, Spellbooks, Scrolls |
+| **Armour Proficiencies** | None |
 
 ### Physician
 No magic at all — the science of the body, the art Saint Gratus is said to have learned from the dying Elders. He stitches, drugs, and poisons; his lane is afflictions, not miracles.
@@ -81,8 +83,10 @@ The subtle, controlling craft of the Elders, all worked with Charisma against an
 
 *Wield Artefact · Whispers from the Doomed · Memory of Celestia · Figments of Forgotten Places · Edict for the Thralls · Pall of Doubt · Psychometry · Lessons from Dark Places*
 
-### New Magic — *Arcanist*
-The disciplined, destructive art of the Collegium. *(In design.)*
+### [New Magic](../../abilities/#new-magic) — *Arcanist*
+The Collegium's destructive art, built as spells of your own: four elemental chassis — ranged or close, single or burst — each bought with one element and a name, then re-bought to make another. An element's signature effect is unlocked by its Elementalist feat; wand, staff, spellbook and scroll each lend a further hook.
+
+*Ranged Spell · Close Spell · Ranged Burst · Close Burst · Arcane Armour · Force Shield · Telekinesis · Light*
 
 ### [Medicine](../../abilities/#medicine) — *Physician*
 The non-magical physician's kit: a surgeon's cuts and crafted poisons, a guarded stance, and the hands-on healing — combat dressings, condition care, and the long convalescence — that draws on a Healer's Kit.
