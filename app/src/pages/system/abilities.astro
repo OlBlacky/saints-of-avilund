@@ -24,7 +24,7 @@ import { CATEGORIES } from '../../lib/category-abilities';
   </p>
 
   {CATEGORIES.map((cat, i) => (
-    <details class="cat" id={cat.name.toLowerCase()} open={i === 0}>
+    <details class="cat" id={cat.name.toLowerCase().replace(/\s+/g, '-')} open={i === 0}>
       <summary class="cat__summary">
         <span class="cat__name">{cat.name}</span>
         <span class="cat__meta">{cat.source} · {cat.abilities.length} abilities</span>

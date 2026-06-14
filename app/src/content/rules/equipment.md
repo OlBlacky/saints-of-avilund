@@ -31,7 +31,7 @@ Your **AC** is your Armoured Constitution Defense — the number most physical a
 
 - **Light** armour carries **no penalties** at all.
 - **Medium** armour takes **−1 Stealth** — the **Breastplate** keeps the Stealth penalty but loses the Speed penalty (its **Mobility**).
-- **Heavy** armour takes **−10' Speed and −2 Stealth**, and needs the listed **Strength**. Your proficiency advances and Armour Specialisation Feats buy these drawbacks back down.
+- **Heavy** armour takes **−10' Speed and −2 Stealth**, and needs the listed **Strength**. Your proficiency advances and Armour Specialization Feats buy these drawbacks back down.
 
 ### Shields
 

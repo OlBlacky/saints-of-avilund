@@ -15,7 +15,7 @@ export const GLOSSARY: Record<string, string> = {
   'Ability Category': 'A pool of Abilities. You have two: one from your Class, one from your Path.',
   'Category': 'Short for Ability Category — a pool of Abilities. You have two: one from your Class, one from your Path.',
   'Class': 'Your character’s vocation — it sets a Class Attribute, an Ability Category, Class HP, skills, and proficiencies.',
-  'Path': 'A specialisation within your Class — it adds a second Class Attribute, a second Ability Category, more Class Skills, and more proficiencies.',
+  'Path': 'A specialization within your Class — it adds a second Class Attribute, a second Ability Category, more Class Skills, and more proficiencies.',
   'Class Skills': 'The skills your Class and Path train (the Path’s are listed as Additional Class Skills); you may raise these to +2, where other skills cap at +1.',
   'Additional Class Skills': 'The two extra Class Skills your Path trains — they work exactly like your Class’s, raising to +2.',
   'proficiencies': 'Training in a weapon or armour group; without it you take a penalty when you use it.',

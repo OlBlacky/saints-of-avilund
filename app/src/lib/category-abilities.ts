@@ -38,13 +38,13 @@ const STRIKE_DAMAGE: Variable = {
 };
 
 const MARTIAL_HOOKS =
-  "Weapon Specialisation (with the Feat + that weapon): Heavy Blades → +2 damage · Light Blades → +1 to hit · " +
+  "Weapon Specialization (with the Feat + that weapon): Heavy Blades → +2 damage · Light Blades → +1 to hit · " +
   "Hammers → Push 5' · Axes → Bleed 1 · Spears/Polearms → +5' reach · Flails/Chains → ignore the target's shield " +
   "bonus to AC · Staves → +1 to one of your defenses until your next turn · Bows/Crossbows → may be made as a " +
   "ranged attack (1×WRI).";
 
 const RANGED_HOOKS =
-  "Weapon Specialisation (with the Feat + that weapon): Bows → +1 to hit · Crossbows → ignore the DR of armour · " +
+  "Weapon Specialization (with the Feat + that weapon): Bows → +1 to hit · Crossbows → ignore the DR of armour · " +
   "Slings → Push 5' · Thrown → +Str damage · Pistols → +2 damage within the first increment · Rifles → ignore " +
   "range penalty · Grenades → hits a 5' burst.";
 
@@ -74,7 +74,7 @@ const ARMS: Ability[] = [
       damage: powerDamage('Str'),
       duration: { base: 'Instant' },
     },
-    feats: 'Heavy Blade or Hammer Specialisation → +2 damage (Hammer also Push 5\').',
+    feats: 'Heavy Blade or Hammer Specialization → +2 damage (Hammer also Push 5\').',
   },
   {
     name: 'Defensive Strike', category: 'Arms', role: 'Offensive + Defensive', mode: 'Attack',
@@ -88,7 +88,7 @@ const ARMS: Ability[] = [
       effects: { base: 'On a hit, +1 to one of your defenses until your next turn.', advances: [{ value: '+2 to one of your defenses', cost: 'm' }] },
       duration: { base: 'Until your next turn' },
     },
-    feats: 'Shield Specialisation → +1 additional defense; Staff → shove the attacker, or +defense vs them.',
+    feats: 'Shield Specialization → +1 additional defense; Staff → shove the attacker, or +defense vs them.',
   },
   {
     name: 'Parry', category: 'Arms', role: 'Defensive', mode: 'Effect',
@@ -105,7 +105,7 @@ const ARMS: Ability[] = [
         ],
       },
     },
-    feats: 'Light Blade Specialisation → the riposte unlocks at Rank 3, and adds damage.',
+    feats: 'Light Blade Specialization → the riposte unlocks at Rank 3, and adds damage.',
   },
   {
     name: 'Disarming Strike', category: 'Arms', role: 'Debuff', mode: 'Attack',
@@ -191,7 +191,7 @@ const PROTECTION: Ability[] = [
       },
       duration: { base: 'Save ends' },
     },
-    feats: 'Light Shield Specialisation → Push 5\'; Heavy Shield Specialisation → Push 5\' or Prone.',
+    feats: 'Light Shield Specialization → Push 5\'; Heavy Shield Specialization → Push 5\' or Prone.',
   },
   {
     name: 'Marking Strike', category: 'Protection', role: 'Offensive', mode: 'Attack',
@@ -225,7 +225,7 @@ const PROTECTION: Ability[] = [
       },
       duration: { base: 'Until your next turn' },
     },
-    feats: 'Light / Heavy Shield Specialisation → apply your Shield’s DR to everyone this protects.',
+    feats: 'Light / Heavy Shield Specialization → apply your Shield’s DR to everyone this protects.',
   },
   {
     name: 'Guard', category: 'Protection', role: 'Defensive', mode: 'Effect',
@@ -244,7 +244,7 @@ const PROTECTION: Ability[] = [
       },
       duration: { base: 'Until your next turn' },
     },
-    feats: 'Light / Heavy Shield Specialisation → apply your Shield’s DR to the protected.',
+    feats: 'Light / Heavy Shield Specialization → apply your Shield’s DR to the protected.',
   },
   {
     name: 'Intercept', category: 'Protection', role: 'Defensive · maneuver', mode: 'Effect',
@@ -262,7 +262,7 @@ const PROTECTION: Ability[] = [
       },
       duration: { base: 'Instant' },
     },
-    feats: 'Light / Heavy Shield Specialisation → apply your Shield’s DR.',
+    feats: 'Light / Heavy Shield Specialization → apply your Shield’s DR.',
   },
   {
     name: 'Bulwark', category: 'Protection', role: 'Buff', mode: 'Effect',
@@ -279,7 +279,7 @@ const PROTECTION: Ability[] = [
         ],
       },
     },
-    feats: 'Medium Armour Specialisation → +2 temp HP; Heavy Armour Specialisation → +3 temp HP.',
+    feats: 'Medium Armour Specialization → +2 temp HP; Heavy Armour Specialization → +3 temp HP.',
   },
   {
     name: 'Stand Watch', category: 'Protection', role: 'Utility', mode: 'Effect',
@@ -374,7 +374,7 @@ const LEADERSHIP: Ability[] = [
       },
       duration: { base: '1 round' },
     },
-    feats: 'Pistol Specialisation → +1 to hit the opponent for 1 round; Light Blade Specialisation → the target is Marked.',
+    feats: 'Pistol Specialization → +1 to hit the opponent for 1 round; Light Blade Specialization → the target is Marked.',
   },
   {
     name: 'Rally', category: 'Leadership', role: 'Defensive', mode: 'Effect',
@@ -1041,7 +1041,7 @@ const LETTERS: Ability[] = [
       damage: { base: '1[W] (fixed)' },
       duration: { base: 'Instant' },
     },
-    feats: 'Light Blade Specialisation → +1 to hit · Staff Specialisation → +1 to one of your defenses until your next turn.',
+    feats: 'Light Blade Specialization → +1 to hit · Staff Specialization → +1 to one of your defenses until your next turn.',
   },
   {
     name: 'Evade', category: 'Letters', role: 'Defensive · mobility', mode: 'Attack',
@@ -1082,7 +1082,7 @@ const LETTERS: Ability[] = [
     vars: {
       frequency: { base: 'Daily', advances: [{ value: 'Encounter', cost: 'M' }, { value: '2 / encounter', cost: 'M', note: 'L3' }] },
       action: { base: 'Full Round', advances: [{ value: 'Standard', cost: 'M' }] },
-      attack: { base: 'Int (+ Scroll Specialisation) vs the spell’s defence' },
+      attack: { base: 'Int (+ Scroll Specialization) vs the spell’s defence' },
       effects: {
         base: 'Read only — identify a scroll’s spell. You must know its language (e.g. Elder Arcana).',
         advances: [
@@ -1098,7 +1098,7 @@ const LETTERS: Ability[] = [
     vars: {
       frequency: { base: 'Daily', advances: [{ value: 'Encounter', cost: 'M' }, { value: '2 / encounter', cost: 'M', note: 'L3' }] },
       action: { base: 'Full Round', advances: [{ value: 'Standard', cost: 'M' }] },
-      attack: { base: 'Int (+ Spellbook Specialisation) vs the spell’s defence' },
+      attack: { base: 'Int (+ Spellbook Specialization) vs the spell’s defence' },
       effects: {
         base: 'Read only — identify a spellbook’s spell. You must know its language. (Reusable; supply the components each casting.)',
         advances: [
@@ -1159,7 +1159,7 @@ const MEDICINE: Ability[] = [
       },
       duration: { base: 'Save ends (or a Heal action stops it)' },
     },
-    feats: 'Light Blade Specialisation → +Int damage.',
+    feats: 'Light Blade Specialization → +Int damage.',
   },
   {
     name: 'Envenom', category: 'Medicine', role: 'Offensive', mode: 'Attack',
@@ -1179,7 +1179,7 @@ const MEDICINE: Ability[] = [
         ],
       },
     },
-    feats: 'Light Blade Specialisation → +Int damage.',
+    feats: 'Light Blade Specialization → +Int damage.',
   },
   {
     name: 'Guard Vitals', category: 'Medicine', role: 'Defensive', mode: 'Effect',
@@ -1283,6 +1283,160 @@ const MEDICINE: Ability[] = [
   },
 ];
 
+// ── Elder Magic (Scholar — Antiquarian) ─────────────────────────
+// The recovered, fragmentary art of the Elders: subtle and controlling,
+// worked by force of will (Charisma vs an unguarded mind). Every working
+// carries a Feat Hook, for Elder magic comes only in studied fragments.
+// His own ladders — Sensory, Flat Debuff, Control, and Psychic damage —
+// are reserved away from the Arcanist.
+const STD_RANGE: Variable = { base: "30'", advances: [{ value: "60'", cost: 'm' }, { value: "90'", cost: 'm' }, { value: "120'", cost: 'M' }] };
+const FREQ_2ENC: Variable = { base: 'Daily', advances: [{ value: 'Encounter', cost: 'M' }, { value: 'Twice per encounter', cost: 'M' }] };
+
+const ELDER_MAGIC: Ability[] = [
+  {
+    name: 'Wield Artefact', category: 'Elder Magic', role: 'Utility · artefact engine', mode: 'Effect',
+    vars: {
+      frequency: { base: 'Daily (Overdraw)', advances: [{ value: 'Encounter', cost: 'M' }, { value: 'Twice per encounter', cost: 'M' }] },
+      action: { base: "The artefact's own activation" },
+      effects: {
+        base: "Sense and handle an artefact; wield common ones at their base values, drawing on the artefact's own ladders. (Overdraw spends the Frequency above for extra activations beyond its charge limit.)",
+        advances: [
+          { value: "Attune to draw on an artefact's full ladders reliably", cost: 'm' },
+          { value: 'Attune to powerful artefacts', cost: 'm' },
+          { value: 'Attune to the powerful or unstable relics others cannot safely wield', cost: 'M' },
+        ],
+      },
+    },
+    feats: "Generic Boosts: buy m, m, M; at activation, climb ONE of the artefact's own variables one Rank per boost. An Artefact Specialist may buy a second set (a second variable). Feat Hook (a studied Elder fragment): a bonus when wielding artefacts of that tradition — e.g. +1 to its boosts, or a safe Overdraw.",
+  },
+  {
+    name: 'Whispers from the Doomed', category: 'Elder Magic', role: 'Offensive', mode: 'Attack',
+    vars: {
+      frequency: FREQ_2ENC,
+      action: { base: 'Standard', advances: [{ value: 'Move', cost: 'M' }] },
+      range: STD_RANGE,
+      targets: { base: 'One', advances: [{ value: 'Two', cost: 'm' }, { value: 'Three', cost: 'm' }, { value: "all in a 10' radius", cost: 'M' }] },
+      attack: { base: 'Charisma vs Unarmoured Wisdom' },
+      damage: { base: 'Cha (Psychic)', advances: [{ value: 'Cha + 1', cost: 'm' }, { value: 'Cha + 1d6', cost: 'm' }, { value: 'Cha + 2d6', cost: 'M', note: 'L5' }] },
+      duration: { base: 'Instant' },
+    },
+    feats: 'Psychic Specialization → automatic +1 to hit and a critical hit on 19–20; unlocks a purchasable Fear ladder (−1 to attack → can’t move closer → can’t attack you → flees; save ends).',
+  },
+  {
+    name: 'Memory of Celestia', category: 'Elder Magic', role: 'Control · debuff', mode: 'Attack',
+    vars: {
+      frequency: FREQ_2ENC,
+      action: { base: 'Standard', advances: [{ value: 'Move', cost: 'M' }, { value: 'Minor', cost: 'M' }, { value: 'Interrupt', cost: 'M' }] },
+      range: STD_RANGE,
+      targets: { base: 'One', advances: [{ value: 'Two', cost: 'm' }, { value: 'Three', cost: 'm' }, { value: "all in a 10' radius", cost: 'M' }] },
+      attack: { base: 'Charisma vs Unarmoured Wisdom' },
+      effects: {
+        base: '−1 to attack & Perception rolls (Sensory)',
+        advances: [
+          { value: '−2 to attack & Perception', cost: 'm' },
+          { value: '−2, and no Interrupts or Reactions', cost: 'm' },
+          { value: 'Blinded', cost: 'M' },
+        ],
+      },
+      duration: { base: 'Save ends' },
+    },
+    feats: "Artefact Specialization → Push 5'. Radiant Specialization (off-list — typically via multiclass) → +1 to hit, and unlocks a Radiant damage ladder (Cha → Cha + 1 → Cha + 1d6 → Cha + 2d6 at L5).",
+  },
+  {
+    name: 'Figments of Forgotten Places', category: 'Elder Magic', role: 'Control · forced movement', mode: 'Attack',
+    vars: {
+      frequency: FREQ_ENC,
+      action: { base: 'Full Round', advances: [{ value: 'Standard', cost: 'M' }] },
+      range: { base: "30' (5' burst)", advances: [{ value: "60' (10' burst)", cost: 'm' }, { value: "90' (15' burst)", cost: 'm' }, { value: "120' (20' burst)", cost: 'M' }] },
+      targets: { base: 'One enemy in the burst', advances: [{ value: 'Cha enemies', cost: 'm' }, { value: 'Cha + 1 enemies', cost: 'm' }, { value: 'all enemies in the burst', cost: 'M' }] },
+      attack: { base: 'Charisma vs Unarmoured Will' },
+      effects: {
+        base: "Shift the target 1 (5')",
+        advances: [
+          { value: "Shift 2 (10')", cost: 'm' },
+          { value: 'Shift 2, and Slowed 5 (1 round)', cost: 'm' },
+          { value: 'Shift 3, and Slowed 5 (save ends)', cost: 'M' },
+        ],
+      },
+      duration: { base: 'Instant (Slowed: save ends)' },
+    },
+    feats: "Psychic Specialization → adds a Psychic damage ladder onto the Effect (1 → Cha → Cha + 1 → Cha + 1 and Ongoing 1, save ends). Spellbook Specialization → +5' to the burst, and unlocks a Movement debuff ladder (−5'/−10'/−15'/Immobilized) that replaces the Slowed conditions.",
+  },
+  {
+    name: 'Edict for the Thralls', category: 'Elder Magic', role: 'Control · domination', mode: 'Attack',
+    vars: {
+      frequency: FREQ_ENC,
+      action: { base: 'Full Round', advances: [{ value: 'Standard', cost: 'M' }] },
+      range: STD_RANGE,
+      targets: { base: 'One' },
+      attack: { base: 'Charisma vs Unarmoured Will' },
+      effects: {
+        base: 'Confused — must roll to act as intended, else strike the nearest creature',
+        advances: [
+          { value: 'Charmed — cannot attack you', cost: 'm' },
+          { value: 'Ensorcelled — cannot attack you, and may be compelled to strike the nearest', cost: 'm' },
+          { value: "Dominated — you dictate the target's actions", cost: 'M', note: 'L5' },
+        ],
+      },
+      duration: { base: 'Save ends' },
+    },
+    feats: "Psychic Specialization → 1 Psychic damage each round it stays bound. Spellbook Specialization → unlocks a Targets ladder (+1 / +2 / +3 / +4 targets). Artefact Specialization → while you hold the artefact, the target takes −1 to its saves against the Edict.",
+  },
+  {
+    name: 'Pall of Doubt', category: 'Elder Magic', role: 'Debuff', mode: 'Attack',
+    vars: {
+      frequency: { base: 'Daily', advances: [{ value: 'Encounter', cost: 'M' }, { value: 'At-Will', cost: 'M', note: 'L3' }] },
+      action: { base: 'Full Round', advances: [{ value: 'Standard', cost: 'M' }] },
+      range: STD_RANGE,
+      targets: { base: 'One' },
+      attack: { base: 'Charisma vs Unarmoured Will' },
+      effects: {
+        base: '−1 to a chosen defense (Flat Debuff)',
+        advances: [
+          { value: '−2', cost: 'm' },
+          { value: '−2 and Vulnerable 1', cost: 'm' },
+          { value: '−2 and Vulnerable 5', cost: 'M' },
+        ],
+      },
+      duration: { base: 'Save ends' },
+    },
+    feats: "Magic Staff Specialization (off-list — typically via multiclass) → +1 to the Antiquarian's AC while any target remains under the Effect. Psychic Specialization → 1 Psychic damage each round the target is affected. Artefact Specialization → −1 to the target's saves, and unlocks a Targets ladder (+1 / +2 / +3 / all enemies in range).",
+  },
+  {
+    name: 'Psychometry', category: 'Elder Magic', role: 'Utility · divination', mode: 'Effect',
+    vars: {
+      frequency: { base: 'Daily' },
+      action: { base: 'Ritual — 4 hours', advances: [{ value: '2 hours', cost: 'm' }, { value: '1 hour', cost: 'm' }, { value: '10 minutes', cost: 'M' }] },
+      effects: {
+        base: 'Study an object you handle (no language gate) and make a Knowledge: History check vs its Resonance DC. An object can be read only once, ever, and a failed check silences it for good. On a success, the DM reveals something of the object’s past.',
+        advances: [
+          { value: 'the DM reveals more, in greater detail', cost: 'm' },
+          { value: 'more still, and you may ask a clarifying question', cost: 'm' },
+          { value: 'as much as the object knows — its deepest history', cost: 'M' },
+        ],
+      },
+    },
+    feats: 'Artefact Specialization → on an Artefact-tagged object, also unlocks an Identify-grade read of its powers, and grants a second attempt if the first check failed.',
+  },
+  {
+    name: 'Lessons from Dark Places', category: 'Elder Magic', role: 'Utility · delving', mode: 'Effect',
+    vars: {
+      frequency: FREQ_ENC,
+      action: { base: 'Standard (exploration)', advances: [{ value: 'Interrupt', cost: 'M' }] },
+      range: { base: "Detect hazards & secret doors within 10' (Dungeoneering or History check)", advances: [{ value: "20'", cost: 'm' }, { value: "30'", cost: 'm' }, { value: "60'", cost: 'M' }] },
+      effects: {
+        base: 'Resolve a delving hazard with a Dungeoneering or History check in place of the save or skill it requires (+0 to the check).',
+        advances: [
+          { value: '+1 to the check', cost: 'm' },
+          { value: '+2 to the check', cost: 'm' },
+          { value: '+2, and your allies may use your result', cost: 'M' },
+        ],
+      },
+    },
+    feats: 'Artefact Specialization → an additional +1 to the check.',
+  },
+];
+
 export const CATEGORIES: CategoryGroup[] = [
   { name: 'Arms', source: 'Soldier — Class', blurb: 'The disciplined core of weapon-fighting: reliable strikes that grow with the weapon in your hands, plus the means to guard, disarm, focus, and read a fight.', abilities: ARMS },
   { name: 'Protection', source: 'Soldier — Vanguard', blurb: 'The defender’s toolkit: control strikes that pin and daze, shielding auras for your comrades, and the means to take a blow meant for someone else.', abilities: PROTECTION },
@@ -1293,4 +1447,5 @@ export const CATEGORIES: CategoryGroup[] = [
   { name: 'Spiritual', source: 'Friar — Confessor', blurb: 'The soul-mender and inquisitor — a debuffer who fights with Charisma against a foe’s Unarmoured Wisdom: softening strikes, a staggering rebuke, an area buff-purge, a burst of holy dread, an exorcism, and the means to wring out the truth.', abilities: SPIRITUAL },
   { name: 'Letters', source: 'Scholar — Class', blurb: 'Scholarship, half academic and half arcane literacy: research and recall, a clever Int-based blade, and the reading of scrolls, spellbooks and rituals. No spells of its own.', abilities: LETTERS },
   { name: 'Medicine', source: 'Scholar — Physician', blurb: 'The non-magical physician: a surgeon’s cuts and crafted poisons, a guarded stance, and hands-on healing — combat dressings, condition care, and the long convalescence — drawing on a Healer’s Kit.', abilities: MEDICINE },
+  { name: 'Elder Magic', source: 'Scholar — Antiquarian', blurb: 'The recovered, fragmentary art of the Elders — subtle and controlling, worked by force of will (Charisma against a foe’s unguarded mind): the artefact engine, psychic dread, blinding, forced movement, outright domination, a withering doubt, and the ruin-delver’s craft. Every working carries a Feat Hook, for Elder magic comes only in studied fragments.', abilities: ELDER_MAGIC },
 ];

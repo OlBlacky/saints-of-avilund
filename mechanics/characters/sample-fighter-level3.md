@@ -41,9 +41,9 @@
 When making an attack, declare which Attribute you are attacking with and which Defence Target you are targeting.
 
 **Primary Attack — Great Sword (Power Strike Tier 2):**
-d20 + Str Score (+4) + Str Attack Bonus (+4) + Weapon Specialisation (+1) = **d20 + 9**
+d20 + Str Score (+4) + Str Attack Bonus (+4) + Weapon Specialization (+1) = **d20 + 9**
 
-**Damage:** 1d12 + Str Score (+4) + Weapon Specialisation (+1) = **1d12 + 5**
+**Damage:** 1d12 + Str Score (+4) + Weapon Specialization (+1) = **1d12 + 5**
 
 ---
 
@@ -94,7 +94,7 @@ d20 + Str Score (+4) + Str Attack Bonus (+4) + Weapon Specialisation (+1) = **d2
 
 | Feature | Description |
 |---|---|
-| **Weapon Specialisation** *(Two-Handed)* | +1 to Attack rolls and damage with two-handed weapons |
+| **Weapon Specialization** *(Two-Handed)* | +1 to Attack rolls and damage with two-handed weapons |
 | **Heavy Armour Proficiency** | Wears Chain Mail and Plate Mail without penalty |
 | **Toughness** | +5 HP |
 | **Combat Reflexes** | Can make one additional Opportunity Attack per round |

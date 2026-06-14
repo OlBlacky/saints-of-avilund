@@ -15,11 +15,11 @@ summary: The specialist pillar — conditional perks that reshape your abilities
 
 A Feat may **unlock conditional Effects on your abilities**, sharpen a **skill**, or grant **access** to special gear, networks, or techniques.
 
-## Specialisation Feats
+## Specialization Feats
 
-The clearest example is **Specialisation**. A **Weapon Specialisation Feat** does more than add a flat bonus — while you wield that weapon group, it **unlocks extra Effects on your abilities**:
+The clearest example is **Specialization**. A **Weapon Specialization Feat** does more than add a flat bonus — while you wield that weapon group, it **unlocks extra Effects on your abilities**:
 
 - **Hammers** → your strikes can *Push*; **Light Blades** → a *riposte* on a Parry; **Staves** → a guard bonus.
-- **Magic items** specialise the same way: a **Scroll** specialist has a chance not to burn the scroll; a **Spellbook** specialist adds his Intelligence to a damaging spell's damage.
+- **Magic items** specialize the same way: a **Scroll** specialist has a chance not to burn the scroll; a **Spellbook** specialist adds his Intelligence to a damaging spell's damage.
 
 Other Feats key off themes rather than gear — a *Conflagrationalist* who makes fire cling to his workings, for instance. The complete lists, and how Feats sit within the Advance economy, will be written up here as they firm up.

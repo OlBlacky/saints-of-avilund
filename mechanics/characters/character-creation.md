@@ -227,7 +227,7 @@ Taking a second or third class is a significant AP investment. Weigh the breadth
 
 ## A Note on Power and Level
 
-A Level 10 character is not ten times as powerful as a Level 1 character. The AP economy is designed so that growth at every level is meaningful, but the gap between an experienced character and a newcomer is one of **specialisation and breadth** — not raw power. A Level 2 character is not twice as capable as a Level 1 character.
+A Level 10 character is not ten times as powerful as a Level 1 character. The AP economy is designed so that growth at every level is meaningful, but the gap between an experienced character and a newcomer is one of **specialization and breadth** — not raw power. A Level 2 character is not twice as capable as a Level 1 character.
 
 This matters at the table. Characters of different levels can adventure together without lower-level characters feeling useless or higher-level characters feeling invincible.
 

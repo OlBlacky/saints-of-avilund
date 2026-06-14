@@ -2,7 +2,7 @@
 
 ## Overview
 
-A Class defines a character's core identity — their primary attributes, the abilities they specialise in, the skills they train, and the features that make them distinctive.
+A Class defines a character's core identity — their primary attributes, the abilities they specialize in, the skills they train, and the features that make them distinctive.
 
 ### Class Rules
 - Every character receives **1 Class for free** at character creation
@@ -113,12 +113,12 @@ Each class grants 1 free Class Feature on purchase, chosen from the class's list
 11. **Danger Sense** — cannot be surprised; bonus to Initiative
 
 **Skills**
-12. **Skill Specialisation** — choose one skill; roll twice and take the higher result
+12. **Skill Specialization** — choose one skill; roll twice and take the higher result
 13. **Skill Expertise** — chosen Class skill cap increases from +5 to +6
 14. **Tool Proficiency** — trained with a specific set of tools; no penalty for use
 
 **Magic & Abilities**
-15. **Spell Specialisation** — choose an ability category; reduce its AP improvement cost by 1
+15. **Spell Specialization** — choose an ability category; reduce its AP improvement cost by 1
 16. **Ritualist** — can use Class Special abilities outside combat without spending from the Special Pool
 17. **Implement Proficiency** — trained with a specific magical implement; bonus when using it
 

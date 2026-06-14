@@ -35,13 +35,15 @@ The **Letters** Category is **literally scholarship** — research, recall, lang
 ## Paths
 
 ### Antiquarian
-The seeker of **Elder Magic** — the recovered, half-understood art of the Elders, subtle and controlling. *(In design — the Elder Magic Category is being written.)*
+The seeker of **Elder Magic** — the recovered, half-understood art of the Elders, subtle and controlling. Where the Arcanist breaks things, the Antiquarian *bends* them: he works by force of will, **Charisma against a foe's unguarded mind**, and draws power from the relics he recovers. Saint Ignatius, Guardian of Insight, is his patron — the ruin-delver.
 
 | | |
 |---|---|
-| **Class Attribute** | *(in design)* |
+| **Class Attribute** | Charisma |
 | **Ability Category** | Elder Magic |
-| **Additional Class Skills** | *(in design)* |
+| **Additional Class Skills** | Arcana, Dungeoneering |
+| **Implement Proficiencies** | Artefacts, Spellbooks, Scrolls |
+| **Armour Proficiencies** | None |
 
 ### Arcanist
 The master of **New Magic** — the Collegium's disciplined, destructive art, channelled through wands and staves. *(In design — the New Magic Category is being written.)*
@@ -74,8 +76,10 @@ Scholarship, half academic and half arcane literacy: research and recall, a clev
 
 *Research · Scholar's Strike · Evade · Recall · Read Scrolls · Read Spellbooks · Conduct Ritual · Identify*
 
-### Elder Magic — *Antiquarian*
-The subtle, controlling craft of the Elders. *(In design.)*
+### [Elder Magic](../../abilities/#elder-magic) — *Antiquarian*
+The subtle, controlling craft of the Elders, all worked with Charisma against an unguarded mind — and every working carries a Feat Hook, for Elder magic comes only in fragments.
+
+*Wield Artefact · Whispers from the Doomed · Memory of Celestia · Figments of Forgotten Places · Edict for the Thralls · Pall of Doubt · Psychometry · Lessons from Dark Places*
 
 ### New Magic — *Arcanist*
 The disciplined, destructive art of the Collegium. *(In design.)*

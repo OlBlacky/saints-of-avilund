@@ -3,7 +3,7 @@
 ## Design Principles
 
 - Characters advance from **Levels 1–10** only
-- Growth is incremental — a Level 10 character is more specialised, not a demigod
+- Growth is incremental — a Level 10 character is more specialized, not a demigod
 - A Level 2 character is not twice as powerful as a Level 1 character
 - **Advancement Points (AP)** are the universal currency for all character building
 

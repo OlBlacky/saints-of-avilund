@@ -78,7 +78,7 @@ Your bread-and-butter attack, and the one most shaped by your weapon.
 - **Attack:** Strength vs AC · **1[W]**
 - **Frequency:** Daily → Encounter → At-Will
 - **Damage:** full ladder — +Str, die-size up (d4–d12), then ×2 (2[W])
-- **Weapon Specialisation Feat hooks** (with the Feat + that weapon equipped):
+- **Weapon Specialization Feat hooks** (with the Feat + that weapon equipped):
 
 | Weapon Group | Effect |
 |---|---|
@@ -95,12 +95,12 @@ Your bread-and-butter attack, and the one most shaped by your weapon.
 - **Attack:** Strength vs AC · **1[W]**
 - **Damage ladder** (the specialty): up to **2[W] + Str**
 - *Targets and Action cost are locked — pure single-target damage.*
-- **Feat:** Heavy Blade or Hammer Specialisation → +2 damage (Hammer also Push 5')
+- **Feat:** Heavy Blade or Hammer Specialization → +2 damage (Hammer also Push 5')
 
 **Defensive Strike** — *Offensive + Defensive*
 - **Attack:** Strength vs AC · **1[W]**; on a hit, **+1 to one of your defenses** until your next turn
 - **Ladder:** +1 → +2; further: longer duration, and "applies even on a miss" (via Feat)
-- **Feat:** Shield Specialisation → +1 additional defense; Staff → shove the attacker / +defense vs them
+- **Feat:** Shield Specialization → +1 additional defense; Staff → shove the attacker / +defense vs them
 
 **Parry** — *Defensive*
 - **Action:** Move → Minor → Interrupt
@@ -114,7 +114,7 @@ Your bread-and-butter attack, and the one most shaped by your weapon.
 | 3 | −4 |
 | 4 | −4 **and** make a Melee Basic Attack (riposte) |
 
-- **Feat:** Light Blade Specialisation → riposte unlocks at Rank 3, and adds damage
+- **Feat:** Light Blade Specialization → riposte unlocks at Rank 3, and adds damage
 
 **Disarming Strike** — *Debuff*
 - **Attack:** Strength vs Armoured Dexterity · **1[W]**
@@ -162,7 +162,7 @@ Your bread-and-butter attack, and the one most shaped by your weapon.
 - **Attack:** Strength vs AC · light/shield damage + **Daze** on hit
 - **Action:** Move → Minor · **Frequency:** Daily → Encounter
 - **Effect:** the Daze (Action-Denial) ladder — R1 no Reactions/Interrupts → R2 + no Minor action → R3 + no Move action → R4 all actions
-- **Feats:** Light Shield Specialisation → Push 5'; Heavy Shield Specialisation → Push 5' *or* Prone
+- **Feats:** Light Shield Specialization → Push 5'; Heavy Shield Specialization → Push 5' *or* Prone
 
 **Marking Strike** — *Offensive*
 The Martial Strike chassis, fitted for a defender: same attack and full Damage/Frequency scaling, but no weapon hooks — instead it always **Marks**.
@@ -180,7 +180,7 @@ The Martial Strike chassis, fitted for a defender: same attack and full Damage/F
 | 3 | you and one ally +2 AC |
 | 4 | you and **all adjacent allies** +2 AC |
 
-- **Feat:** Light/Heavy Shield Specialisation → apply your Shield's DR to everyone this Effect is protecting
+- **Feat:** Light/Heavy Shield Specialization → apply your Shield's DR to everyone this Effect is protecting
 
 **Guard** — *Defensive*
 - **Action:** Move → Minor → Interrupt
@@ -194,7 +194,7 @@ The Martial Strike chassis, fitted for a defender: same attack and full Damage/F
 | 3 | +2 to all Armoured Defences — self / 1 adjacent ally |
 | 4 | +2 to all Armoured Defences — self / **all adjacent allies** |
 
-- **Feat:** Light/Heavy Shield Specialisation → apply your Shield's DR to the protected
+- **Feat:** Light/Heavy Shield Specialization → apply your Shield's DR to the protected
 
 **Intercept** — *Defensive / maneuver*
 - **Action:** Reaction · **Frequency:** Daily → Encounter
@@ -207,12 +207,12 @@ The Martial Strike chassis, fitted for a defender: same attack and full Damage/F
 | 3 | the opponent must make the attack against **you**, resolved normally |
 | 4 | as 3, and you may intercept for an ally up to 10' (2 squares) away |
 
-- **Feat:** Light/Heavy Shield Specialisation → apply your Shield's DR
+- **Feat:** Light/Heavy Shield Specialization → apply your Shield's DR
 
 **Bulwark** — *Buff (self)*
 - **Action:** Move → Minor · **Frequency:** Daily → Encounter
 - **Effect ladder:** 2 temp HP → 3 temp HP → 4 temp HP → **5 temp HP + +1 DR for 1 round**
-- **Feats:** Medium Armour Specialisation → +2 temp HP; Heavy Armour Specialisation → +3 temp HP
+- **Feats:** Medium Armour Specialization → +2 temp HP; Heavy Armour Specialization → +3 temp HP
 
 **Stand Watch** — *Utility (non-combat)*
 - **Frequency:** Daily
@@ -269,7 +269,7 @@ The no-damage twin of Commander's Strike: no attack roll, just call the target �
 | 3 | +1 to all Defences vs all opponents |
 | 4 | +2 to all Defences vs all opponents |
 
-- **Feats:** Pistol Specialisation → +1 to hit the opponent for 1 round; Light Blade Specialisation → the target is Marked
+- **Feats:** Pistol Specialization → +1 to hit the opponent for 1 round; Light Blade Specialization → the target is Marked
 
 **Rally** — *Defensive*
 - **Action:** Standard → Move → Minor · **Frequency:** Daily → Encounter → At-Will
@@ -309,7 +309,7 @@ The offensive mirror of Rally.
 The ranged counterpart to Martial Strike.
 - **Attack:** Dexterity vs AC · **W** · **Frequency:** Daily → Encounter → At-Will
 - **Damage:** full ladder (+Dex, die-size, ×2) · **Range:** increment ×1 → ×2 → ×3
-- **Weapon Specialisation Feat hooks:**
+- **Weapon Specialization Feat hooks:**
 
 | Weapon Group | Effect |
 |---|---|

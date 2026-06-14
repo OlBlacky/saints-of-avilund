@@ -94,11 +94,11 @@ Like Weapon Proficiencies, each Armour Proficiency has a scale improved through 
 2. +1 Shield DR
 3. *(Level 5)* +1 AC
 
-### Armour Specialisation Feats
+### Armour Specialization Feats
 
-Some Classes and Paths have access to **Armour Specialisation Feats**, gated by Class/Path. These **modify your defensive Abilities** when wearing the relevant armour type — the armour counterpart to the Weapon Specialisation Feats that modify offensive abilities (see [weapons.md](weapons.md)).
+Some Classes and Paths have access to **Armour Specialization Feats**, gated by Class/Path. These **modify your defensive Abilities** when wearing the relevant armour type — the armour counterpart to the Weapon Specialization Feats that modify offensive abilities (see [weapons.md](weapons.md)).
 
-Armour Specialisation Feats can only be taken at **Level 2 or higher**.
+Armour Specialization Feats can only be taken at **Level 2 or higher**.
 
 ---
 

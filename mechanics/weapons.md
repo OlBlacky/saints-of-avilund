@@ -44,11 +44,11 @@ Beyond your Class/Path grants, **any character may buy any Weapon Proficiency** 
 - At **5th level**, you may buy a **second +1** in that proficiency.
 - A proficiency is **capped at +2**.
 
-### Weapon Specialisation Feats
+### Weapon Specialization Feats
 
-Some Classes have access to **Weapon Specialisation Feats**. Beyond any raw bonus, these **unlock the Effects of selected abilities** when wielding the relevant weapon group — tying a character's weapon choice into their ability roster rather than just their to-hit.
+Some Classes have access to **Weapon Specialization Feats**. Beyond any raw bonus, these **unlock the Effects of selected abilities** when wielding the relevant weapon group — tying a character's weapon choice into their ability roster rather than just their to-hit.
 
-Weapon Specialisation Feats can only be taken at **Level 2 or higher**.
+Weapon Specialization Feats can only be taken at **Level 2 or higher**.
 
 ---
 
@@ -58,7 +58,7 @@ Every weapon has the following traits:
 
 | Trait | Description |
 |---|---|
-| **Weapon Group** | One of the 17 Weapon Proficiency groups above; determines proficiency and specialisation (e.g. Heavy Blades, Hammers/Maces) |
+| **Weapon Group** | One of the 17 Weapon Proficiency groups above; determines proficiency and specialization (e.g. Heavy Blades, Hammers/Maces) |
 | **Type** | Piercing, Slashing, or Blunt |
 | **Damage** | Die rolled on a hit |
 | **Hands** | One-handed (1H) or Two-handed (2H) |
