@@ -52,7 +52,7 @@ The master of **New Magic** — the Collegium's disciplined, destructive art, ch
 |---|---|
 | **Class Attribute** | Dexterity |
 | **Ability Category** | New Magic |
-| **Additional Class Skills** | Arcana, The Planes |
+| **Additional Class Skills** | Arcana |
 | **Implement Proficiencies** | Wands, Magic Staves, Spellbooks, Scrolls |
 | **Armour Proficiencies** | None |
 
@@ -86,7 +86,7 @@ The subtle, controlling craft of the Elders, all worked with Charisma against an
 ### [New Magic](../../abilities/#new-magic) — *Arcanist*
 The Collegium's destructive art, built as spells of your own: four elemental chassis — ranged or close, single or burst — each bought with one element and a name, then re-bought to make another. An element's signature effect is unlocked by its Elementalist feat; wand, staff, spellbook and scroll each lend a further hook.
 
-*Ranged Spell · Close Spell · Ranged Burst · Close Burst · Arcane Armour · Force Shield · Telekinesis · Light*
+*Telum (ranged) · Tactus (close) · Globus (ranged burst) · Corona (close burst) · Lorica (arcane armour) · Scutum (force shield) · Manus (telekinesis) · Lumen (light)*
 
 ### [Medicine](../../abilities/#medicine) — *Physician*
 The non-magical physician's kit: a surgeon's cuts and crafted poisons, a guarded stance, and the hands-on healing — combat dressings, condition care, and the long convalescence — that draws on a Healer's Kit.
