@@ -73,6 +73,28 @@ const playRows = VAR_ORDER
     </table>
   )}
 
+  {ability.builder && (
+    <p class="acard__builder">
+      <strong>Build your own.</strong> This spell comes named <em>{ability.name}</em> — keep it or give it your own.
+      You may buy it more than once; each purchase is a separate spell, built its own way on every ladder above.
+    </p>
+  )}
+
+  {ability.options && ability.options.length > 0 && (
+    <dl class="acard__opts">
+      {ability.options.map((o) => (
+        <div class="acard__opt">
+          <dt class="acard__opt-label">{o.label}</dt>
+          <dd class="acard__opt-detail">
+            {Array.isArray(o.detail)
+              ? <ul>{o.detail.map((d) => <li>{d}</li>)}</ul>
+              : o.detail}
+          </dd>
+        </div>
+      ))}
+    </dl>
+  )}
+
   {ability.feats && (
     <p class="acard__feats"><strong>Feats:</strong> {ability.feats}</p>
   )}
@@ -164,5 +186,56 @@ const playRows = VAR_ORDER
     border-top: 1px solid rgba(120, 90, 40, 0.18);
     font-size: 0.83rem;
     color: #5a4a2c;
+  }
+
+  /* Spell-builder callout: the "name it / buy it again" message, set apart. */
+  .acard__builder {
+    margin: 0;
+    padding: 0.6rem 0.9rem;
+    border-top: 1px solid rgba(120, 90, 40, 0.18);
+    background: rgba(120, 90, 40, 0.07);
+    font-size: 0.84rem;
+    color: #5a4a2c;
+  }
+  .acard__builder strong { color: #4a3719; }
+
+  /* Option groups: each labelled block stands apart from the next. */
+  .acard__opts {
+    margin: 0;
+    padding: 0 0.9rem 0.4rem;
+  }
+  .acard__opt {
+    padding: 0.5rem 0;
+    border-top: 1px solid rgba(120, 90, 40, 0.16);
+  }
+  .acard__opt-label {
+    margin: 0 0 0.2rem;
+    font-size: 0.72rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: #6a532a;
+  }
+  .acard__opt-detail {
+    margin: 0;
+    font-size: 0.84rem;
+    color: #5a4a2c;
+  }
+  .acard__opt-detail ul {
+    margin: 0;
+    padding-left: 1.15rem;
+    list-style: none;
+  }
+  .acard__opt-detail li {
+    margin: 0.18rem 0;
+    position: relative;
+  }
+  .acard__opt-detail li::before {
+    content: '◆';
+    position: absolute;
+    left: -1.15rem;
+    color: var(--gold, #b8924a);
+    font-size: 0.7em;
+    top: 0.15em;
   }
 </style>

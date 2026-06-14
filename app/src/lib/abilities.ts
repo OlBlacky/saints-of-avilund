@@ -45,12 +45,26 @@ export interface Variable {
   advances?: Advance[];   // 0–3 steps
 }
 
+// A labelled block of options shown under the card — used to break a dense
+// "Feats" paragraph into distinct, scannable groups (e.g. Element,
+// Specialization Hooks, Implements). A string[] detail renders as a bullet
+// list so each option stands on its own line.
+export interface AbilityOption {
+  label: string;
+  detail: string | string[];
+}
+
 export interface Ability {
   name: string;
   category: string;
   role?: string;          // Offensive / Defensive / Buff / …
   mode?: string;          // Attack / Effect
   vars: Partial<Record<VarKey, Variable>>;
+  // Spell-builder chassis: the card comes with a default name (the Ability
+  // name), which the player may rename, and may be bought more than once —
+  // each a separate, separately-built spell. Shows a callout when true.
+  builder?: boolean;
+  options?: AbilityOption[];
   feats?: string;
   // Play mode: the rank a character has in each variable. 0 (or absent) = base;
   // 1–3 selects that advancement.

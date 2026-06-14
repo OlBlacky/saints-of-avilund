@@ -1454,15 +1454,24 @@ const CLOSE_AOE_DMG: Variable = { base: 'Int', advances: [{ value: '1d4 + Int', 
 const NM_DEFENCE: Variable = { base: '+1 to one Defence (until your next turn)', advances: [{ value: '+1 to all Defences', cost: 'm' }, { value: '+2 to all Defences', cost: 'm' }, { value: '+2 to all Defences and DR 1', cost: 'M' }] };
 const NM_AOE_TARGETS: Variable = { base: 'Each creature in the burst — one Dexterity vs AC roll resolved against each (friendly fire included)' };
 
-const NM_ELEMENTS = 'Pick ONE element; buy this chassis again (with a new name) to build another spell. Each element’s Effect ladder is gated by its Elementalist feat — Fire/Acid → Ongoing Damage, Cold → Movement, Lightning/Sonic → Action Denial, Force → Push.';
-const NM_IMPL = 'Implements — Wand → +1 to hit · Magic Staff → +1 to one Defence until your next round · Spellbook → the element Effect ladder lands one Rank higher · Scroll → once per encounter, cast without consuming the scroll.';
-const NM_IMPL_AOE = 'Implements — Wand → +1 to hit · Magic Staff → +5\' burst radius · Spellbook → the element Effect ladder lands one Rank higher · Scroll → once per encounter, cast without consuming the scroll.';
-const HK_SPLASH = 'Acid & Sonic → Splash (1 dmg to 1 adjacent → 2 adjacent → Int adjacent → 2 to all adjacent)';
-const HK_GLANCING = 'Force & Cold → Glancing (1 dmg on a miss → 2 → Int → half the spell’s damage on a miss)';
-const HK_PIERCE = 'Fire & Lightning → Pierce (1 dmg to an enemy in the line between you and the target → 2 → Int → 2 to all in the line)';
-const HK_RETAL = 'Fire & Lightning → Retaliation (the next enemy to melee you takes 1 typed dmg → all your attackers → 2 typed → lasts the Encounter)';
-const HK_LINGER = 'Acid & Sonic → Lingering (a creature that enters or ends its turn in the area takes 1 typed → 2 → Int → the hazard lasts a 2nd round)';
-const hooks = (...hs: string[]) => `${NM_ELEMENTS} Specialization Hooks: ${hs.join('; ')}.`;
+const NM_ELEMENT_DETAIL = 'Choose one element when you build the spell. Its signature Effect ladder unlocks only with the matching Elementalist feat — Fire / Acid → Ongoing Damage · Cold → Movement · Lightning / Sonic → Action Denial · Force → Push.';
+const NM_IMPL_LIST = [
+  'Wand → +1 to hit',
+  'Magic Staff → +1 to one Defence until your next round',
+  'Spellbook → the element Effect ladder lands one Rank higher',
+  'Scroll → once per encounter, cast without consuming the scroll',
+];
+const NM_IMPL_AOE_LIST = [
+  'Wand → +1 to hit',
+  "Magic Staff → +5' burst radius",
+  'Spellbook → the element Effect ladder lands one Rank higher',
+  'Scroll → once per encounter, cast without consuming the scroll',
+];
+const HK_SPLASH = 'Acid & Sonic → Splash: 1 dmg to 1 adjacent → 2 adjacent → Int adjacent → 2 to all adjacent';
+const HK_GLANCING = 'Force & Cold → Glancing: 1 dmg on a miss → 2 → Int → half the spell’s damage on a miss';
+const HK_PIERCE = 'Fire & Lightning → Pierce: 1 dmg to an enemy in the line between you and the target → 2 → Int → 2 to all in the line';
+const HK_RETAL = 'Fire & Lightning → Retaliation: the next enemy to melee you takes 1 typed dmg → all your attackers → 2 typed → lasts the Encounter';
+const HK_LINGER = 'Acid & Sonic → Lingering: a creature that enters or ends its turn in the area takes 1 typed → 2 → Int → the hazard lasts a 2nd round';
 
 const NEW_MAGIC: Ability[] = [
   {
@@ -1476,7 +1485,12 @@ const NEW_MAGIC: Ability[] = [
       damage: RANGED_SINGLE_DMG,
       duration: { base: 'Instant' },
     },
-    feats: `${hooks(HK_PIERCE, HK_SPLASH, HK_GLANCING)} ${NM_IMPL}`,
+    builder: true,
+    options: [
+      { label: 'Element', detail: NM_ELEMENT_DETAIL },
+      { label: 'Specialization Hooks', detail: [HK_PIERCE, HK_SPLASH, HK_GLANCING] },
+      { label: 'Implements', detail: NM_IMPL_LIST },
+    ],
   },
   {
     name: 'Tactus', category: 'New Magic', role: 'Offensive · close · spell-builder', mode: 'Attack',
@@ -1490,7 +1504,13 @@ const NEW_MAGIC: Ability[] = [
       effects: NM_DEFENCE,
       duration: { base: 'Instant (Defence: until your next turn)' },
     },
-    feats: `${hooks(HK_RETAL, HK_SPLASH, HK_GLANCING)} ${NM_IMPL} The Defence ladder above is baseline — no element or feat needed.`,
+    builder: true,
+    options: [
+      { label: 'Defence (baseline)', detail: 'The Effect row’s Defence ladder is always on — no element or feat needed.' },
+      { label: 'Element', detail: NM_ELEMENT_DETAIL },
+      { label: 'Specialization Hooks', detail: [HK_RETAL, HK_SPLASH, HK_GLANCING] },
+      { label: 'Implements', detail: NM_IMPL_LIST },
+    ],
   },
   {
     name: 'Globus', category: 'New Magic', role: 'Offensive · ranged burst · spell-builder', mode: 'Attack',
@@ -1503,7 +1523,12 @@ const NEW_MAGIC: Ability[] = [
       damage: RANGED_AOE_DMG,
       duration: { base: 'Instant' },
     },
-    feats: `${hooks(HK_PIERCE, HK_LINGER, HK_GLANCING)} ${NM_IMPL_AOE}`,
+    builder: true,
+    options: [
+      { label: 'Element', detail: NM_ELEMENT_DETAIL },
+      { label: 'Specialization Hooks', detail: [HK_PIERCE, HK_LINGER, HK_GLANCING] },
+      { label: 'Implements', detail: NM_IMPL_AOE_LIST },
+    ],
   },
   {
     name: 'Corona', category: 'New Magic', role: 'Offensive · close burst · spell-builder', mode: 'Attack',
@@ -1517,7 +1542,13 @@ const NEW_MAGIC: Ability[] = [
       effects: NM_DEFENCE,
       duration: { base: 'Instant (Defence: until your next turn)' },
     },
-    feats: `${hooks(HK_RETAL, HK_LINGER, HK_GLANCING)} ${NM_IMPL_AOE} The Defence ladder above is baseline — you stand in your own burst.`,
+    builder: true,
+    options: [
+      { label: 'Defence (baseline)', detail: 'The Effect row’s Defence ladder is always on — you stand in your own burst, so it needs no element or feat.' },
+      { label: 'Element', detail: NM_ELEMENT_DETAIL },
+      { label: 'Specialization Hooks', detail: [HK_RETAL, HK_LINGER, HK_GLANCING] },
+      { label: 'Implements', detail: NM_IMPL_AOE_LIST },
+    ],
   },
   {
     name: 'Lorica', category: 'New Magic', role: 'Defensive · arcane armour', mode: 'Effect',
