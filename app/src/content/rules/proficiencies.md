@@ -28,7 +28,7 @@ Every weapon belongs to one **group**. Being proficient in the group means you w
 
 ## Implement Proficiencies
 
-Anything that *casts* is wielded through an **Implement Proficiency** — the same proficiency rules above, just a separate family of four:
+Anything that *casts* is wielded through an **Implement Proficiency** — the same proficiency rules above, just a separate family:
 
 | Implement | What it is |
 |---|---|
@@ -36,6 +36,7 @@ Anything that *casts* is wielded through an **Implement Proficiency** — the sa
 | **Magic Staves** | the greater casting staves |
 | **Spellbooks** | bound, reusable spells |
 | **Scrolls** | single-use written spells |
+| **Artefacts** | any unusual magic item — rings, orbs, amulets, and the like |
 
 Unlike a sword or bow, an implement's attack uses a **mental or nimble attribute** rather than brawn — most often **Intelligence**, though some casters aim with **Dexterity**, as the wielding ability specifies. Their **Implement Specialisation Feats** carry the signature perks — a *Scroll* specialist has a chance not to burn the scroll; a *Spellbook* specialist adds his Intelligence to a damaging spell's damage.
 
