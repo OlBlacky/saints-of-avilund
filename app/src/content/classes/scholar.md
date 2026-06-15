@@ -86,7 +86,7 @@ The subtle, controlling craft of the Elders, all worked with Charisma against an
 ### [New Magic](../../abilities/#new-magic) — *Arcanist*
 The Collegium's destructive art, built as spells of your own: four elemental chassis — ranged or close, single or burst — each bought with one element and a name, then re-bought to make another. An element's signature effect is unlocked by its Mastery feat; wand, staff, spellbook and scroll each lend a further hook.
 
-*Telum (ranged) · Tactus (close) · Globus (ranged burst) · Corona (close burst) · Lorica (arcane armour) · Scutum (force shield) · Manus (telekinesis) · Lumen (light)*
+*Telum Eminus (ranged) · Tactus Comminus (close) · Globus Eminus (ranged burst) · Corona Comminus (close burst) · Lorica Arcana (arcane armour) · Scutum Virium (force shield) · Manus Eminus (telekinesis) · Lumen Arcanum (light)*
 
 ### [Medicine](../../abilities/#medicine) — *Physician*
 The non-magical physician's kit: a surgeon's cuts and crafted poisons, a guarded stance, and the hands-on healing — combat dressings, condition care, and the long convalescence — that draws on a Healer's Kit.

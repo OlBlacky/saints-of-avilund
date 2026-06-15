@@ -1475,7 +1475,7 @@ const HK_LINGER = 'Acid & Sonic → Lingering: a creature that enters or ends it
 
 const NEW_MAGIC: Ability[] = [
   {
-    name: 'Telum', category: 'New Magic', role: 'Offensive · ranged · spell-builder', mode: 'Attack',
+    name: 'Telum Eminus', category: 'New Magic', role: 'Offensive · ranged · spell-builder', mode: 'Attack',
     vars: {
       frequency: FREQ_ATWILL_L3,
       action: { base: 'Standard' },
@@ -1493,7 +1493,7 @@ const NEW_MAGIC: Ability[] = [
     ],
   },
   {
-    name: 'Tactus', category: 'New Magic', role: 'Offensive · close · spell-builder', mode: 'Attack',
+    name: 'Tactus Comminus', category: 'New Magic', role: 'Offensive · close · spell-builder', mode: 'Attack',
     vars: {
       frequency: FREQ_ATWILL_L3,
       action: { base: 'Standard' },
@@ -1513,7 +1513,7 @@ const NEW_MAGIC: Ability[] = [
     ],
   },
   {
-    name: 'Globus', category: 'New Magic', role: 'Offensive · ranged burst · spell-builder', mode: 'Attack',
+    name: 'Globus Eminus', category: 'New Magic', role: 'Offensive · ranged burst · spell-builder', mode: 'Attack',
     vars: {
       frequency: FREQ_2ENC,
       action: { base: 'Standard' },
@@ -1531,7 +1531,7 @@ const NEW_MAGIC: Ability[] = [
     ],
   },
   {
-    name: 'Corona', category: 'New Magic', role: 'Offensive · close burst · spell-builder', mode: 'Attack',
+    name: 'Corona Comminus', category: 'New Magic', role: 'Offensive · close burst · spell-builder', mode: 'Attack',
     vars: {
       frequency: FREQ_2ENC,
       action: { base: 'Standard' },
@@ -1551,7 +1551,7 @@ const NEW_MAGIC: Ability[] = [
     ],
   },
   {
-    name: 'Lorica', category: 'New Magic', role: 'Defensive · arcane armour', mode: 'Effect',
+    name: 'Lorica Arcana', category: 'New Magic', role: 'Defensive · arcane armour', mode: 'Effect',
     vars: {
       frequency: { base: 'Daily' },
       action: { base: 'Ritual — 1 minute' },
@@ -1566,10 +1566,10 @@ const NEW_MAGIC: Ability[] = [
       },
       duration: { base: '1 hour', advances: [{ value: '2 hours', cost: 'm' }, { value: '4 hours', cost: 'm' }, { value: 'until your next Long Rest', cost: 'M' }] },
     },
-    feats: 'Implement — Magic Staff: while wielding it, every defence improvement is +1 more. (No element — Lorica is not an elemental spell.)',
+    feats: 'Implement — Magic Staff: while wielding it, every defence improvement is +1 more. (No element — Lorica Arcana is not an elemental spell.)',
   },
   {
-    name: 'Scutum', category: 'New Magic', role: 'Defensive · force shield', mode: 'Effect',
+    name: 'Scutum Virium', category: 'New Magic', role: 'Defensive · force shield', mode: 'Effect',
     vars: {
       frequency: FREQ_2ENC,
       action: { base: 'Interrupt — when you are hit by an attack' },
@@ -1587,7 +1587,7 @@ const NEW_MAGIC: Ability[] = [
     feats: 'Implement — Magic Staff: +1 to both AC and DR. Mastery — Force → the bonus applies to all Armoured Defences, not just AC.',
   },
   {
-    name: 'Manus', category: 'New Magic', role: 'Utility · telekinesis', mode: 'Effect',
+    name: 'Manus Eminus', category: 'New Magic', role: 'Utility · telekinesis', mode: 'Effect',
     vars: {
       frequency: FREQ_2ENC,
       action: { base: 'Standard' },
@@ -1605,7 +1605,7 @@ const NEW_MAGIC: Ability[] = [
     feats: "Implement — Wand: each ladder counts one Rank higher; at the top Rank it doubles instead → 240' / 2,000 lb. (No Force hook — Force has enough already.)",
   },
   {
-    name: 'Lumen', category: 'New Magic', role: 'Utility · light', mode: 'Effect',
+    name: 'Lumen Arcanum', category: 'New Magic', role: 'Utility · light', mode: 'Effect',
     vars: {
       frequency: FREQ_2ENC,
       action: { base: 'Minor' },
