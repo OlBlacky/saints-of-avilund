@@ -84,7 +84,7 @@ The subtle, controlling craft of the Elders, all worked with Charisma against an
 *Wield Artefact · Whispers from the Doomed · Memory of Celestia · Figments of Forgotten Places · Edict for the Thralls · Pall of Doubt · Psychometry · Lessons from Dark Places*
 
 ### [New Magic](../../abilities/#new-magic) — *Arcanist*
-The Collegium's destructive art, built as spells of your own: four elemental chassis — ranged or close, single or burst — each bought with one element and a name, then re-bought to make another. An element's signature effect is unlocked by its Elementalist feat; wand, staff, spellbook and scroll each lend a further hook.
+The Collegium's destructive art, built as spells of your own: four elemental chassis — ranged or close, single or burst — each bought with one element and a name, then re-bought to make another. An element's signature effect is unlocked by its Mastery feat; wand, staff, spellbook and scroll each lend a further hook.
 
 *Telum (ranged) · Tactus (close) · Globus (ranged burst) · Corona (close burst) · Lorica (arcane armour) · Scutum (force shield) · Manus (telekinesis) · Lumen (light)*
 

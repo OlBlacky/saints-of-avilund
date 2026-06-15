@@ -22,4 +22,22 @@ The clearest example is **Specialization**. A **Weapon Specialization Feat** doe
 - **Hammers** → your strikes can *Push*; **Light Blades** → a *riposte* on a Parry; **Staves** → a guard bonus.
 - **Magic items** specialize the same way: a **Scroll** specialist has a chance not to burn the scroll; a **Spellbook** specialist adds his Intelligence to a damaging spell's damage.
 
-Other Feats key off themes rather than gear — a *Conflagrationalist* who makes fire cling to his workings, for instance. The complete lists, and how Feats sit within the Advance economy, will be written up here as they firm up.
+## Mastery Feats
+
+Some Feats key off a **damage type** rather than gear. These are the **Mastery** Feats — **Mastery — Fire**, **Mastery — Acid**, and so on. A spell or ability always deals its chosen damage type at baseline; the matching Mastery Feat **unlocks that type's signature effect** on top — an Effect ladder (a condition), and, on the Arcanist's elemental spells, a further combat hook. Without it, a spell of that type does only its base damage.
+
+There are nine, one for each damage type imagined so far:
+
+| Mastery Feat | Signature Effect | Arcanist hook |
+|---|---|---|
+| **Mastery — Fire** | Ongoing Damage | Pierce *(ranged)* / Retaliation *(close)* |
+| **Mastery — Acid** | Ongoing Damage | Splash / Lingering *(area)* |
+| **Mastery — Cold** | Movement *(Slow → Immobilize)* | Glancing |
+| **Mastery — Lightning** | Action Denial *(Daze → Stun)* | Pierce *(ranged)* / Retaliation *(close)* |
+| **Mastery — Sonic** | Action Denial *(Daze → Stun)* | Splash / Lingering *(area)* |
+| **Mastery — Force** | Push *(and Prone)* | Glancing |
+| **Mastery — Radiant** | +1 to hit, and a Radiant damage ladder | — |
+| **Mastery — Necrotic** | Necrotic damage and its withering effects *(Death-aligned casters)* | — |
+| **Mastery — Psychic** | +1 to hit and a wider crit range, and Fear | — |
+
+The complete Feat lists, and how Feats sit within the Advance economy, will be written up here as they firm up.

@@ -1320,7 +1320,7 @@ const ELDER_MAGIC: Ability[] = [
       damage: { base: 'Cha (Psychic)', advances: [{ value: 'Cha + 1', cost: 'm' }, { value: 'Cha + 1d6', cost: 'm' }, { value: 'Cha + 2d6', cost: 'M', note: 'L5' }] },
       duration: { base: 'Instant' },
     },
-    feats: 'Psychic Specialization → automatic +1 to hit and a critical hit on 19–20; unlocks a purchasable Fear ladder (−1 to attack → can’t move closer → can’t attack you → flees; save ends).',
+    feats: 'Mastery — Psychic → automatic +1 to hit and a critical hit on 19–20; unlocks a purchasable Fear ladder (−1 to attack → can’t move closer → can’t attack you → flees; save ends).',
   },
   {
     name: 'Memory of Celestia', category: 'Elder Magic', role: 'Control · debuff', mode: 'Attack',
@@ -1340,7 +1340,7 @@ const ELDER_MAGIC: Ability[] = [
       },
       duration: { base: 'Save ends' },
     },
-    feats: "Artefact Specialization → Push 5'. Radiant Specialization (off-list — typically via multiclass) → +1 to hit, and unlocks a Radiant damage ladder (Cha → Cha + 1 → Cha + 1d6 → Cha + 2d6 at L5).",
+    feats: "Artefact Specialization → Push 5'. Mastery — Radiant (off-list — typically via multiclass) → +1 to hit, and unlocks a Radiant damage ladder (Cha → Cha + 1 → Cha + 1d6 → Cha + 2d6 at L5).",
   },
   {
     name: 'Figments of Forgotten Places', category: 'Elder Magic', role: 'Control · forced movement', mode: 'Attack',
@@ -1360,7 +1360,7 @@ const ELDER_MAGIC: Ability[] = [
       },
       duration: { base: 'Instant (Slowed: save ends)' },
     },
-    feats: "Psychic Specialization → adds a Psychic damage ladder onto the Effect (1 → Cha → Cha + 1 → Cha + 1 and Ongoing 1, save ends). Spellbook Specialization → +5' to the burst, and unlocks a Movement debuff ladder (−5'/−10'/−15'/Immobilized) that replaces the Slowed conditions.",
+    feats: "Mastery — Psychic → adds a Psychic damage ladder onto the Effect (1 → Cha → Cha + 1 → Cha + 1 and Ongoing 1, save ends). Spellbook Specialization → +5' to the burst, and unlocks a Movement debuff ladder (−5'/−10'/−15'/Immobilized) that replaces the Slowed conditions.",
   },
   {
     name: 'Edict for the Thralls', category: 'Elder Magic', role: 'Control · domination', mode: 'Attack',
@@ -1380,7 +1380,7 @@ const ELDER_MAGIC: Ability[] = [
       },
       duration: { base: 'Save ends' },
     },
-    feats: "Psychic Specialization → 1 Psychic damage each round it stays bound. Spellbook Specialization → unlocks a Targets ladder (+1 / +2 / +3 / +4 targets). Artefact Specialization → while you hold the artefact, the target takes −1 to its saves against the Edict.",
+    feats: "Mastery — Psychic → 1 Psychic damage each round it stays bound. Spellbook Specialization → unlocks a Targets ladder (+1 / +2 / +3 / +4 targets). Artefact Specialization → while you hold the artefact, the target takes −1 to its saves against the Edict.",
   },
   {
     name: 'Pall of Doubt', category: 'Elder Magic', role: 'Debuff', mode: 'Attack',
@@ -1400,7 +1400,7 @@ const ELDER_MAGIC: Ability[] = [
       },
       duration: { base: 'Save ends' },
     },
-    feats: "Magic Staff Specialization (off-list — typically via multiclass) → +1 to the Antiquarian's AC while any target remains under the Effect. Psychic Specialization → 1 Psychic damage each round the target is affected. Artefact Specialization → −1 to the target's saves, and unlocks a Targets ladder (+1 / +2 / +3 / all enemies in range).",
+    feats: "Magic Staff Specialization (off-list — typically via multiclass) → +1 to the Antiquarian's AC while any target remains under the Effect. Mastery — Psychic → 1 Psychic damage each round the target is affected. Artefact Specialization → −1 to the target's saves, and unlocks a Targets ladder (+1 / +2 / +3 / all enemies in range).",
   },
   {
     name: 'Psychometry', category: 'Elder Magic', role: 'Utility · divination', mode: 'Effect',
@@ -1442,7 +1442,7 @@ const ELDER_MAGIC: Ability[] = [
 // chassis is bought with ONE element + a custom name, then re-bought to
 // make another spell. Dexterity vs AC aims; Intelligence powers damage.
 // An element's signature Effect ladder is FEAT-GATED (the matching
-// Elementalist feat), so those ladders live in each card's Feats line;
+// Mastery — [type] feat), so those ladders live in each card's Feats line;
 // the Effect(s) row shows only the baseline (damage, or a Defence ladder
 // on the close chassis). Implements (wand/staff/spellbook/scroll) lend hooks.
 const FREQ_ATWILL_L3: Variable = { base: 'Daily', advances: [{ value: 'Encounter', cost: 'M' }, { value: 'At-Will', cost: 'M', note: 'L3' }] };
@@ -1454,7 +1454,7 @@ const CLOSE_AOE_DMG: Variable = { base: 'Int', advances: [{ value: '1d4 + Int', 
 const NM_DEFENCE: Variable = { base: '+1 to one Defence (until your next turn)', advances: [{ value: '+1 to all Defences', cost: 'm' }, { value: '+2 to all Defences', cost: 'm' }, { value: '+2 to all Defences and DR 1', cost: 'M' }] };
 const NM_AOE_TARGETS: Variable = { base: 'Each creature in the burst — one Dexterity vs AC roll resolved against each (friendly fire included)' };
 
-const NM_ELEMENT_DETAIL = 'Choose one element when you build the spell. Its signature Effect ladder unlocks only with the matching Elementalist feat — Fire / Acid → Ongoing Damage · Cold → Movement · Lightning / Sonic → Action Denial · Force → Push.';
+const NM_ELEMENT_DETAIL = 'Choose one elemental damage type when you build the spell — Fire, Acid, Cold, Lightning, Sonic, or Force. This is the damage type of the Ability, and you can unlock additional effects if you have the Mastery Feat for that element.';
 const NM_IMPL_LIST = [
   'Wand → +1 to hit',
   'Magic Staff → +1 to one Defence until your next round',
@@ -1584,7 +1584,7 @@ const NEW_MAGIC: Ability[] = [
       },
       duration: { base: 'Until the start of your next turn' },
     },
-    feats: 'Implement — Magic Staff: +1 to both AC and DR. Force Specialization (Elementalist: Force) → the bonus applies to all Armoured Defences, not just AC.',
+    feats: 'Implement — Magic Staff: +1 to both AC and DR. Mastery — Force → the bonus applies to all Armoured Defences, not just AC.',
   },
   {
     name: 'Manus', category: 'New Magic', role: 'Utility · telekinesis', mode: 'Effect',
@@ -1619,7 +1619,7 @@ const NEW_MAGIC: Ability[] = [
       },
       duration: { base: '1 hour', advances: [{ value: '2 hours', cost: 'm' }, { value: '4 hours', cost: 'm' }, { value: 'until you dismiss it', cost: 'M' }] },
     },
-    feats: "Implements: Wand → adds a Range ladder (30'/60'/90'/120') that tracks the Brightness Rank — place the light as far as it reaches. Fire Specialization → the light is a magical, unquenchable flame (and behaves like a torch for setting things alight).",
+    feats: "Implements: Wand → adds a Range ladder (30'/60'/90'/120') that tracks the Brightness Rank — place the light as far as it reaches. Mastery — Fire → the light is a magical, unquenchable flame (and behaves like a torch for setting things alight).",
   },
 ];
 
@@ -1633,6 +1633,6 @@ export const CATEGORIES: CategoryGroup[] = [
   { name: 'Spiritual', source: 'Friar — Confessor', blurb: 'The soul-mender and inquisitor — a debuffer who fights with Charisma against a foe’s Unarmoured Wisdom: softening strikes, a staggering rebuke, an area buff-purge, a burst of holy dread, an exorcism, and the means to wring out the truth.', abilities: SPIRITUAL },
   { name: 'Letters', source: 'Scholar — Class', blurb: 'Scholarship, half academic and half arcane literacy: research and recall, a clever Int-based blade, and the reading of scrolls, spellbooks and rituals. No spells of its own.', abilities: LETTERS },
   { name: 'Medicine', source: 'Scholar — Physician', blurb: 'The non-magical physician: a surgeon’s cuts and crafted poisons, a guarded stance, and hands-on healing — combat dressings, condition care, and the long convalescence — drawing on a Healer’s Kit.', abilities: MEDICINE },
-  { name: 'New Magic', source: 'Scholar — Arcanist', blurb: 'The Collegium’s disciplined, destructive art — and a spell-builder. Each offensive chassis (ranged or close, single or burst) is bought with ONE element and a name of your choosing, then re-bought to make another spell. Dexterity vs AC aims every attack; Intelligence powers the damage. An element’s signature Effect ladder unlocks only with its Elementalist feat, and four implements (wand, staff, spellbook, scroll) each lend a hook.', abilities: NEW_MAGIC },
+  { name: 'New Magic', source: 'Scholar — Arcanist', blurb: 'The Collegium’s disciplined, destructive art — and a spell-builder. Each offensive chassis (ranged or close, single or burst) is bought with ONE element and a name of your choosing, then re-bought to make another spell. Dexterity vs AC aims every attack; Intelligence powers the damage. An element’s signature Effect ladder unlocks only with its Mastery — [type] feat, and four implements (wand, staff, spellbook, scroll) each lend a hook.', abilities: NEW_MAGIC },
   { name: 'Elder Magic', source: 'Scholar — Antiquarian', blurb: 'The recovered, fragmentary art of the Elders — subtle and controlling, worked by force of will (Charisma against a foe’s unguarded mind): the artefact engine, psychic dread, blinding, forced movement, outright domination, a withering doubt, and the ruin-delver’s craft. Every working carries a Feat Hook, for Elder magic comes only in studied fragments.', abilities: ELDER_MAGIC },
 ];
