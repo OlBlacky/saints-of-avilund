@@ -200,7 +200,8 @@ const bottomOpts = opts.filter((o) => o.placement !== 'top');
     border-radius: 7px;
     background: rgba(120, 90, 40, 0.035);
     margin: 1.6rem 0;
-    overflow: hidden;
+    /* No overflow:hidden — it would clip glossary hover tooltips at the card edge.
+       The banner rounds its own top corners instead. */
     box-shadow: 0 1px 3px rgba(60, 45, 20, 0.10);
   }
   .acard__banner {
@@ -211,6 +212,8 @@ const bottomOpts = opts.filter((o) => o.placement !== 'top');
     padding: 0.5rem 0.9rem;
     background: rgba(120, 90, 40, 0.16);
     border-bottom: 1px solid rgba(120, 90, 40, 0.30);
+    border-top-left-radius: 6px;
+    border-top-right-radius: 6px;
   }
   .acard__name {
     font-family: var(--font-display, Georgia, 'Times New Roman', serif);
