@@ -52,6 +52,7 @@ export interface Variable {
 export interface AbilityOption {
   label: string;
   detail: string | string[];
+  placement?: 'top' | 'bottom';   // 'top' renders above the variable table; default 'bottom'
 }
 
 export interface Ability {

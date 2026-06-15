@@ -1487,7 +1487,7 @@ const NEW_MAGIC: Ability[] = [
     },
     builder: true,
     options: [
-      { label: 'Element', detail: NM_ELEMENT_DETAIL },
+      { label: 'Element', detail: NM_ELEMENT_DETAIL, placement: 'top' },
       { label: 'Specialization Hooks', detail: [HK_PIERCE, HK_SPLASH, HK_GLANCING] },
       { label: 'Implements', detail: NM_IMPL_LIST },
     ],
@@ -1507,7 +1507,7 @@ const NEW_MAGIC: Ability[] = [
     builder: true,
     options: [
       { label: 'Defence (baseline)', detail: 'The Effect row’s Defence ladder is always on — no element or feat needed.' },
-      { label: 'Element', detail: NM_ELEMENT_DETAIL },
+      { label: 'Element', detail: NM_ELEMENT_DETAIL, placement: 'top' },
       { label: 'Specialization Hooks', detail: [HK_RETAL, HK_SPLASH, HK_GLANCING] },
       { label: 'Implements', detail: NM_IMPL_LIST },
     ],
@@ -1525,7 +1525,7 @@ const NEW_MAGIC: Ability[] = [
     },
     builder: true,
     options: [
-      { label: 'Element', detail: NM_ELEMENT_DETAIL },
+      { label: 'Element', detail: NM_ELEMENT_DETAIL, placement: 'top' },
       { label: 'Specialization Hooks', detail: [HK_PIERCE, HK_LINGER, HK_GLANCING] },
       { label: 'Implements', detail: NM_IMPL_AOE_LIST },
     ],
@@ -1545,7 +1545,7 @@ const NEW_MAGIC: Ability[] = [
     builder: true,
     options: [
       { label: 'Defence (baseline)', detail: 'The Effect row’s Defence ladder is always on — you stand in your own burst, so it needs no element or feat.' },
-      { label: 'Element', detail: NM_ELEMENT_DETAIL },
+      { label: 'Element', detail: NM_ELEMENT_DETAIL, placement: 'top' },
       { label: 'Specialization Hooks', detail: [HK_RETAL, HK_LINGER, HK_GLANCING] },
       { label: 'Implements', detail: NM_IMPL_AOE_LIST },
     ],
