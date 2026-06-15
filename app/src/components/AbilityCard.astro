@@ -58,7 +58,9 @@ const bottomOpts = opts.filter((o) => o.placement !== 'top');
                   {o.ladders.map((l) => (
                     <tr>
                       <th scope="row" class="acard__var">{l.name}</th>
-                      <td>{l.base ?? '—'}</td>
+                      <td>{l.base ?? '—'}{!o.hideCosts && o.baseCost && (
+                        <Fragment>{' '}<span class={`pip pip--${o.baseCost}`}>{o.baseCost}</span></Fragment>
+                      )}</td>
                       {ADV_COLS.map((i) => (
                         l.advances?.[i]
                           ? (
@@ -157,7 +159,9 @@ const bottomOpts = opts.filter((o) => o.placement !== 'top');
                   {o.ladders.map((l) => (
                     <tr>
                       <th scope="row" class="acard__var">{l.name}</th>
-                      <td>{l.base ?? '—'}</td>
+                      <td>{l.base ?? '—'}{!o.hideCosts && o.baseCost && (
+                        <Fragment>{' '}<span class={`pip pip--${o.baseCost}`}>{o.baseCost}</span></Fragment>
+                      )}</td>
                       {ADV_COLS.map((i) => (
                         l.advances?.[i]
                           ? (
