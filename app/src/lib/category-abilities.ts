@@ -82,6 +82,19 @@ const GA_NOTE = (item: string): string =>
 const GA_MASTERY = (item: string, feat: string): string =>
   `Additionally, with the ${feat} Feat you gain a second Generic Advances Ladder — apply it to a second variable the ${item} allows.`;
 
+// The crafting track on Read Scrolls / Read Spellbooks: Scribe copies from a
+// source you hold; Create makes one from scratch. Four Major, level-gated steps.
+const SCRIBE_CREATE: NamedLadder = {
+  name: 'Scribe / Create',
+  base: 'None',
+  advances: [
+    { value: 'Scribe Lesser', cost: 'M', note: 'L3' },
+    { value: 'Create Lesser', cost: 'M', note: 'L5' },
+    { value: 'Scribe Greater', cost: 'M', note: 'L7' },
+    { value: 'Create Greater', cost: 'M', note: 'L9' },
+  ],
+};
+
 // ── Arms (Class) ────────────────────────────────────────────────
 const ARMS: Ability[] = [
   {
@@ -1132,7 +1145,7 @@ const LETTERS: Ability[] = [
       { label: 'Generic Advancement Ladder', note: GA_NOTE('scroll'), ladders: [GENERIC_ADV] },
       { label: 'Implement Specialization Hooks', note: GA_MASTERY('scroll', 'Scroll Specialization') },
     ],
-    feats: 'Scribe / Create track (Major advances): Scribe Lesser (L3), Create Lesser (L5), Scribe Greater (L7), Create Greater (L9).',
+    extraVars: [SCRIBE_CREATE],
   },
   {
     name: 'Read Spellbooks', category: 'Letters', role: 'Magic literacy', mode: 'Effect',
@@ -1152,7 +1165,7 @@ const LETTERS: Ability[] = [
       { label: 'Generic Advancement Ladder', note: GA_NOTE('spellbook'), ladders: [GENERIC_ADV] },
       { label: 'Implement Specialization Hooks', note: GA_MASTERY('spellbook', 'Spellbook Specialization') + ' A Spellbook Specialist also adds Int to a damaging spell’s damage.' },
     ],
-    feats: 'Same Scribe / Create track as Read Scrolls.',
+    extraVars: [SCRIBE_CREATE],
   },
   {
     name: 'Conduct Ritual', category: 'Letters', role: 'Magic literacy', mode: 'Effect',

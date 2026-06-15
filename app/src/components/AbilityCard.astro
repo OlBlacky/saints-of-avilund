@@ -7,9 +7,20 @@ interface Props {
   mode?: 'build' | 'play';
 }
 const { ability, mode = 'build' } = Astro.props;
-const ADV_COLS = [0, 1, 2];
+const ADV_COLS = [0, 1, 2];                 // option sub-tables (hooks/effects) stay at three
+const ADV_GLYPHS = ['①', '②', '③', '④', '⑤'];  // ① ② ③ ④ ⑤
 
 const sub = [ability.role, ability.mode].filter(Boolean).join(' · ');
+
+// The main build table grows its advance columns to fit the longest ladder
+// (standard variables + any extraVars), but never fewer than three.
+const extraVars = ability.extraVars ?? [];
+const mainAdvCount = Math.max(
+  3,
+  ...VAR_ORDER.map((k) => ability.vars[k]?.advances?.length ?? 0),
+  ...extraVars.map((v) => v.advances?.length ?? 0),
+);
+const MAIN_COLS = Array.from({ length: mainAdvCount }, (_, i) => i);
 
 // Play mode: only the rows a character actually has a value for.
 const playRows = VAR_ORDER
@@ -94,9 +105,7 @@ const bottomOpts = opts.filter((o) => o.placement !== 'top');
         <tr>
           <th class="acard__var">Variable</th>
           <th>Base</th>
-          <th>&#9312;</th>
-          <th>&#9313;</th>
-          <th>&#9314;</th>
+          {MAIN_COLS.map((i) => <th>{ADV_GLYPHS[i]}</th>)}
         </tr>
       </thead>
       <tbody>
@@ -109,7 +118,7 @@ const bottomOpts = opts.filter((o) => o.placement !== 'top');
             <tr class={blank ? 'acard__row--locked' : undefined}>
               <th scope="row" class="acard__var">{VAR_LABELS[k]}</th>
               <td>{base}</td>
-              {ADV_COLS.map((i) => (
+              {MAIN_COLS.map((i) => (
                 adv[i]
                   ? (
                     <td>
@@ -122,6 +131,22 @@ const bottomOpts = opts.filter((o) => o.placement !== 'top');
             </tr>
           );
         })}
+        {extraVars.map((v) => (
+          <tr>
+            <th scope="row" class="acard__var">{v.name}</th>
+            <td>{v.base ?? '—'}</td>
+            {MAIN_COLS.map((i) => (
+              v.advances?.[i]
+                ? (
+                  <td>
+                    {v.advances[i].value}{' '}
+                    <span class={`pip pip--${v.advances[i].cost}`}>{v.advances[i].cost}{v.advances[i].note ? `·${v.advances[i].note}` : ''}</span>
+                  </td>
+                )
+                : <td class="acard__empty">—</td>
+            ))}
+          </tr>
+        ))}
       </tbody>
     </table>
   ) : (

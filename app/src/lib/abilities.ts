@@ -77,6 +77,10 @@ export interface Ability {
   // name), which the player may rename, and may be bought more than once —
   // each a separate, separately-built spell. Shows a callout when true.
   builder?: boolean;
+  // Extra ladder rows appended to the main build table, beyond the fixed
+  // VAR_ORDER variables (e.g. a Scribe/Create crafting track). If any row has
+  // more than three advances, the build table grows its advance columns to fit.
+  extraVars?: NamedLadder[];
   options?: AbilityOption[];
   feats?: string;
   // Play mode: the rank a character has in each variable. 0 (or absent) = base;
