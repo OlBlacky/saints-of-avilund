@@ -1179,8 +1179,10 @@ const LETTERS: Ability[] = [
       { label: 'Generic Advancement Ladder', note: GA_NOTE('ritual'), ladders: [GENERIC_ADV] },
       { label: 'Ritual Specialization Hooks', note: GA_MASTERY('ritual', 'Ritual Specialist') + ' A Ritual Specialist also gains +1 to any d20 roll for the ritual.' },
     ],
-    extraVars: [SCRIBE_CREATE],
-    feats: 'Participant-Ladder boost (Major): improve a ritual’s Participant Ladder by one degree.',
+    extraVars: [
+      { name: 'Participant Ladder', base: '—', advances: [{ value: 'improved one degree (more effect from fewer participants)', cost: 'M' }] },
+      SCRIBE_CREATE,
+    ],
   },
   {
     name: 'Identify', category: 'Letters', role: 'Magic literacy · utility', mode: 'Effect',
