@@ -37,16 +37,31 @@ const STRIKE_DAMAGE: Variable = {
   ],
 };
 
-const MARTIAL_HOOKS =
-  "Weapon Specialization (with the Feat + that weapon): Heavy Blades → +2 damage · Light Blades → +1 to hit · " +
-  "Hammers → Push 5' · Axes → Bleed 1 · Spears/Polearms → +5' reach · Flails/Chains → ignore the target's shield " +
-  "bonus to AC · Staves → +1 to one of your defenses until your next turn · Bows/Crossbows → may be made as a " +
-  "ranged attack (1×WRI).";
+// Specialization-hook helpers. Hooks are shown in a labelled card section
+// (Weapon / Armour / Implement Specialization Hooks); the note states the gate.
+const WEAPON_HOOK_NOTE = 'With the Weapon Specialization Feat for the weapon you wield:';
+const ARMOUR_HOOK_NOTE = 'With the matching Armour (or Shield) Specialization Feat:';
 
-const RANGED_HOOKS =
-  "Weapon Specialization (with the Feat + that weapon): Bows → +1 to hit · Crossbows → ignore the DR of armour · " +
-  "Slings → Push 5' · Thrown → +Str damage · Pistols → +2 damage within the first increment · Rifles → ignore " +
-  "range penalty · Grenades → hits a 5' burst.";
+const MARTIAL_HOOKS: string[] = [
+  'Heavy Blades → +2 damage',
+  'Light Blades → +1 to hit',
+  "Hammers → Push 5'",
+  'Axes → Bleed 1',
+  "Spears / Polearms → +5' reach",
+  "Flails / Chains → ignore the target's shield bonus to AC",
+  'Staves → +1 to one of your defenses until your next turn',
+  'Bows / Crossbows → may be made as a ranged attack (1×WRI)',
+];
+
+const RANGED_HOOKS: string[] = [
+  'Bows → +1 to hit',
+  'Crossbows → ignore the DR of armour',
+  "Slings → Push 5'",
+  'Thrown → +Str damage',
+  'Pistols → +2 damage within the first increment',
+  'Rifles → ignore range penalty',
+  "Grenades → hits a 5' burst",
+];
 
 // ── Arms (Class) ────────────────────────────────────────────────
 const ARMS: Ability[] = [
@@ -61,7 +76,7 @@ const ARMS: Ability[] = [
       damage: STRIKE_DAMAGE,
       duration: { base: 'Instant' },
     },
-    feats: MARTIAL_HOOKS,
+    options: [{ label: 'Weapon Specialization Hooks', note: WEAPON_HOOK_NOTE, detail: MARTIAL_HOOKS }],
   },
   {
     name: 'Power Attack', category: 'Arms', role: 'Offensive', mode: 'Attack',
@@ -74,7 +89,7 @@ const ARMS: Ability[] = [
       damage: powerDamage('Str'),
       duration: { base: 'Instant' },
     },
-    feats: 'Heavy Blade or Hammer Specialization → +2 damage (Hammer also Push 5\').',
+    options: [{ label: 'Weapon Specialization Hooks', note: WEAPON_HOOK_NOTE, detail: ['Heavy Blades → +2 damage', "Hammers → +2 damage and Push 5'"] }],
   },
   {
     name: 'Defensive Strike', category: 'Arms', role: 'Offensive + Defensive', mode: 'Attack',
@@ -88,7 +103,10 @@ const ARMS: Ability[] = [
       effects: { base: 'On a hit, +1 to one of your defenses until your next turn.', advances: [{ value: '+2 to one of your defenses', cost: 'm' }] },
       duration: { base: 'Until your next turn' },
     },
-    feats: 'Shield Specialization → +1 additional defense; Staff → shove the attacker, or +defense vs them.',
+    options: [
+      { label: 'Armour Specialization Hooks', note: ARMOUR_HOOK_NOTE, detail: ['Shields → +1 additional defense'] },
+      { label: 'Weapon Specialization Hooks', note: WEAPON_HOOK_NOTE, detail: ['Staves → shove the attacker, or +1 defense against them'] },
+    ],
   },
   {
     name: 'Parry', category: 'Arms', role: 'Defensive', mode: 'Effect',
@@ -105,7 +123,7 @@ const ARMS: Ability[] = [
         ],
       },
     },
-    feats: 'Light Blade Specialization → the riposte unlocks at Rank 3, and adds damage.',
+    options: [{ label: 'Weapon Specialization Hooks', note: WEAPON_HOOK_NOTE, detail: ['Light Blades → the riposte unlocks at Rank 3, and adds damage'] }],
   },
   {
     name: 'Disarming Strike', category: 'Arms', role: 'Debuff', mode: 'Attack',
@@ -126,7 +144,7 @@ const ARMS: Ability[] = [
       },
       duration: { base: 'Save ends' },
     },
-    feats: 'Chain weapon → on a Disarm, you grab and keep the weapon.',
+    options: [{ label: 'Weapon Specialization Hooks', note: WEAPON_HOOK_NOTE, detail: ['Flails / Chains → on a Disarm, you grab and keep the weapon'] }],
   },
   {
     name: 'Martial Focus', category: 'Arms', role: 'Buff', mode: 'Effect',
@@ -191,7 +209,7 @@ const PROTECTION: Ability[] = [
       },
       duration: { base: 'Save ends' },
     },
-    feats: 'Light Shield Specialization → Push 5\'; Heavy Shield Specialization → Push 5\' or Prone.',
+    options: [{ label: 'Armour Specialization Hooks', note: ARMOUR_HOOK_NOTE, detail: ["Light Shields → Push 5'", "Heavy Shields → Push 5' or Prone"] }],
   },
   {
     name: 'Marking Strike', category: 'Protection', role: 'Offensive', mode: 'Attack',
@@ -225,7 +243,7 @@ const PROTECTION: Ability[] = [
       },
       duration: { base: 'Until your next turn' },
     },
-    feats: 'Light / Heavy Shield Specialization → apply your Shield’s DR to everyone this protects.',
+    options: [{ label: 'Armour Specialization Hooks', note: ARMOUR_HOOK_NOTE, detail: ['Light / Heavy Shields → apply your Shield’s DR to everyone this protects'] }],
   },
   {
     name: 'Guard', category: 'Protection', role: 'Defensive', mode: 'Effect',
@@ -244,7 +262,7 @@ const PROTECTION: Ability[] = [
       },
       duration: { base: 'Until your next turn' },
     },
-    feats: 'Light / Heavy Shield Specialization → apply your Shield’s DR to the protected.',
+    options: [{ label: 'Armour Specialization Hooks', note: ARMOUR_HOOK_NOTE, detail: ['Light / Heavy Shields → apply your Shield’s DR to the protected'] }],
   },
   {
     name: 'Intercept', category: 'Protection', role: 'Defensive · maneuver', mode: 'Effect',
@@ -262,7 +280,7 @@ const PROTECTION: Ability[] = [
       },
       duration: { base: 'Instant' },
     },
-    feats: 'Light / Heavy Shield Specialization → apply your Shield’s DR.',
+    options: [{ label: 'Armour Specialization Hooks', note: ARMOUR_HOOK_NOTE, detail: ['Light / Heavy Shields → apply your Shield’s DR'] }],
   },
   {
     name: 'Bulwark', category: 'Protection', role: 'Buff', mode: 'Effect',
@@ -279,7 +297,7 @@ const PROTECTION: Ability[] = [
         ],
       },
     },
-    feats: 'Medium Armour Specialization → +2 temp HP; Heavy Armour Specialization → +3 temp HP.',
+    options: [{ label: 'Armour Specialization Hooks', note: ARMOUR_HOOK_NOTE, detail: ['Medium Armour → +2 temp HP', 'Heavy Armour → +3 temp HP'] }],
   },
   {
     name: 'Stand Watch', category: 'Protection', role: 'Utility', mode: 'Effect',
@@ -374,7 +392,7 @@ const LEADERSHIP: Ability[] = [
       },
       duration: { base: '1 round' },
     },
-    feats: 'Pistol Specialization → +1 to hit the opponent for 1 round; Light Blade Specialization → the target is Marked.',
+    options: [{ label: 'Weapon Specialization Hooks', note: WEAPON_HOOK_NOTE, detail: ['Pistols → +1 to hit the opponent for 1 round', 'Light Blades → the target is Marked'] }],
   },
   {
     name: 'Rally', category: 'Leadership', role: 'Defensive', mode: 'Effect',
@@ -452,7 +470,7 @@ const MARKSMANSHIP: Ability[] = [
       damage: powerDamage('Dex'),
       duration: { base: 'Instant' },
     },
-    feats: RANGED_HOOKS,
+    options: [{ label: 'Weapon Specialization Hooks', note: WEAPON_HOOK_NOTE, detail: RANGED_HOOKS }],
   },
   {
     name: 'Pinning Shot', category: 'Marksmanship', role: 'Offensive · control', mode: 'Attack',
@@ -1041,7 +1059,7 @@ const LETTERS: Ability[] = [
       damage: { base: '1[W] (fixed)' },
       duration: { base: 'Instant' },
     },
-    feats: 'Light Blade Specialization → +1 to hit · Staff Specialization → +1 to one of your defenses until your next turn.',
+    options: [{ label: 'Weapon Specialization Hooks', note: WEAPON_HOOK_NOTE, detail: ['Light Blades → +1 to hit', 'Staves → +1 to one of your defenses until your next turn'] }],
   },
   {
     name: 'Evade', category: 'Letters', role: 'Defensive · mobility', mode: 'Attack',
@@ -1091,7 +1109,8 @@ const LETTERS: Ability[] = [
         ],
       },
     },
-    feats: 'Generic Boosts: buy m, m, M; at the moment of casting, push one of the spell’s variables up its Ladder. A Scroll Specialist may buy a second set (two variables). Scribe / Create track (Major advances): Scribe Lesser (L3), Create Lesser (L5), Scribe Greater (L7), Create Greater (L9).',
+    options: [{ label: 'Implement Specialization Hooks', detail: ['Scroll Specialist → buy a second Generic-Boost set (boost two variables at the moment of casting)'] }],
+    feats: 'Generic Boosts: buy m, m, M; at the moment of casting, push one of the spell’s variables up its Ladder. Scribe / Create track (Major advances): Scribe Lesser (L3), Create Lesser (L5), Scribe Greater (L7), Create Greater (L9).',
   },
   {
     name: 'Read Spellbooks', category: 'Letters', role: 'Magic literacy', mode: 'Effect',
@@ -1107,7 +1126,8 @@ const LETTERS: Ability[] = [
         ],
       },
     },
-    feats: 'Same Generic-Boost and Scribe / Create tracks as Read Scrolls. A Spellbook Specialist may buy a second Generic-Boost set, and adds Int to a damaging spell’s damage.',
+    options: [{ label: 'Implement Specialization Hooks', detail: ['Spellbook Specialist → buy a second Generic-Boost set, and add Int to a damaging spell’s damage'] }],
+    feats: 'Same Generic-Boost and Scribe / Create tracks as Read Scrolls.',
   },
   {
     name: 'Conduct Ritual', category: 'Letters', role: 'Magic literacy', mode: 'Effect',
@@ -1159,7 +1179,7 @@ const MEDICINE: Ability[] = [
       },
       duration: { base: 'Save ends (or a Heal action stops it)' },
     },
-    feats: 'Light Blade Specialization → +Int damage.',
+    options: [{ label: 'Weapon Specialization Hooks', note: WEAPON_HOOK_NOTE, detail: ['Light Blades → +Int damage'] }],
   },
   {
     name: 'Envenom', category: 'Medicine', role: 'Offensive', mode: 'Attack',
@@ -1179,7 +1199,7 @@ const MEDICINE: Ability[] = [
         ],
       },
     },
-    feats: 'Light Blade Specialization → +Int damage.',
+    options: [{ label: 'Weapon Specialization Hooks', note: WEAPON_HOOK_NOTE, detail: ['Light Blades → +Int damage'] }],
   },
   {
     name: 'Guard Vitals', category: 'Medicine', role: 'Defensive', mode: 'Effect',
@@ -1307,7 +1327,8 @@ const ELDER_MAGIC: Ability[] = [
         ],
       },
     },
-    feats: "Generic Boosts: buy m, m, M; at activation, climb ONE of the artefact's own variables one Rank per boost. An Artefact Specialist may buy a second set (a second variable). Feat Hook (a studied Elder fragment): a bonus when wielding artefacts of that tradition — e.g. +1 to its boosts, or a safe Overdraw.",
+    options: [{ label: 'Implement Specialization Hooks', detail: ['Artefact Specialist → a second Generic-Boost set (climb a second artefact variable on activation)', 'Feat Hook (a studied Elder fragment) → a bonus when wielding artefacts of that tradition — e.g. +1 to its boosts, or a safe Overdraw'] }],
+    feats: "Generic Boosts: buy m, m, M; at activation, climb ONE of the artefact's own variables one Rank per boost.",
   },
   {
     name: 'Whispers from the Doomed', category: 'Elder Magic', role: 'Offensive', mode: 'Attack',
@@ -1320,7 +1341,7 @@ const ELDER_MAGIC: Ability[] = [
       damage: { base: 'Cha (Psychic)', advances: [{ value: 'Cha + 1', cost: 'm' }, { value: 'Cha + 1d6', cost: 'm' }, { value: 'Cha + 2d6', cost: 'M', note: 'L5' }] },
       duration: { base: 'Instant' },
     },
-    feats: 'Mastery — Psychic → automatic +1 to hit and a critical hit on 19–20; unlocks a purchasable Fear ladder (−1 to attack → can’t move closer → can’t attack you → flees; save ends).',
+    options: [{ label: 'Mastery Hooks', detail: ['Mastery — Psychic → automatic +1 to hit and a critical hit on 19–20; unlocks a purchasable Fear ladder (−1 to attack → can’t move closer → can’t attack you → flees; save ends)'] }],
   },
   {
     name: 'Memory of Celestia', category: 'Elder Magic', role: 'Control · debuff', mode: 'Attack',
@@ -1340,7 +1361,10 @@ const ELDER_MAGIC: Ability[] = [
       },
       duration: { base: 'Save ends' },
     },
-    feats: "Artefact Specialization → Push 5'. Mastery — Radiant (off-list — typically via multiclass) → +1 to hit, and unlocks a Radiant damage ladder (Cha → Cha + 1 → Cha + 1d6 → Cha + 2d6 at L5).",
+    options: [
+      { label: 'Mastery Hooks', detail: ['Mastery — Radiant (off-list — typically via multiclass) → +1 to hit, and unlocks a Radiant damage ladder (Cha → Cha + 1 → Cha + 1d6 → Cha + 2d6 at L5)'] },
+      { label: 'Implement Specialization Hooks', detail: ["Artefact → Push 5'"] },
+    ],
   },
   {
     name: 'Figments of Forgotten Places', category: 'Elder Magic', role: 'Control · forced movement', mode: 'Attack',
@@ -1360,7 +1384,10 @@ const ELDER_MAGIC: Ability[] = [
       },
       duration: { base: 'Instant (Slowed: save ends)' },
     },
-    feats: "Mastery — Psychic → adds a Psychic damage ladder onto the Effect (1 → Cha → Cha + 1 → Cha + 1 and Ongoing 1, save ends). Spellbook Specialization → +5' to the burst, and unlocks a Movement debuff ladder (−5'/−10'/−15'/Immobilized) that replaces the Slowed conditions.",
+    options: [
+      { label: 'Mastery Hooks', detail: ['Mastery — Psychic → adds a Psychic damage ladder onto the Effect (1 → Cha → Cha + 1 → Cha + 1 and Ongoing 1, save ends)'] },
+      { label: 'Implement Specialization Hooks', detail: ["Spellbook → +5' to the burst, and unlocks a Movement debuff ladder (−5'/−10'/−15'/Immobilized) that replaces the Slowed conditions"] },
+    ],
   },
   {
     name: 'Edict for the Thralls', category: 'Elder Magic', role: 'Control · domination', mode: 'Attack',
@@ -1380,7 +1407,10 @@ const ELDER_MAGIC: Ability[] = [
       },
       duration: { base: 'Save ends' },
     },
-    feats: "Mastery — Psychic → 1 Psychic damage each round it stays bound. Spellbook Specialization → unlocks a Targets ladder (+1 / +2 / +3 / +4 targets). Artefact Specialization → while you hold the artefact, the target takes −1 to its saves against the Edict.",
+    options: [
+      { label: 'Mastery Hooks', detail: ['Mastery — Psychic → 1 Psychic damage each round it stays bound'] },
+      { label: 'Implement Specialization Hooks', detail: ['Spellbook → unlocks a Targets ladder (+1 / +2 / +3 / +4 targets)', 'Artefact → while you hold the artefact, the target takes −1 to its saves against the Edict'] },
+    ],
   },
   {
     name: 'Pall of Doubt', category: 'Elder Magic', role: 'Debuff', mode: 'Attack',
@@ -1400,7 +1430,10 @@ const ELDER_MAGIC: Ability[] = [
       },
       duration: { base: 'Save ends' },
     },
-    feats: "Magic Staff Specialization (off-list — typically via multiclass) → +1 to the Antiquarian's AC while any target remains under the Effect. Mastery — Psychic → 1 Psychic damage each round the target is affected. Artefact Specialization → −1 to the target's saves, and unlocks a Targets ladder (+1 / +2 / +3 / all enemies in range).",
+    options: [
+      { label: 'Mastery Hooks', detail: ['Mastery — Psychic → 1 Psychic damage each round the target is affected'] },
+      { label: 'Implement Specialization Hooks', detail: ["Magic Staff (off-list — typically via multiclass) → +1 to your AC while any target remains under the Effect", "Artefact → −1 to the target's saves, and unlocks a Targets ladder (+1 / +2 / +3 / all enemies in range)"] },
+    ],
   },
   {
     name: 'Psychometry', category: 'Elder Magic', role: 'Utility · divination', mode: 'Effect',
@@ -1416,7 +1449,7 @@ const ELDER_MAGIC: Ability[] = [
         ],
       },
     },
-    feats: 'Artefact Specialization → on an Artefact-tagged object, also unlocks an Identify-grade read of its powers, and grants a second attempt if the first check failed.',
+    options: [{ label: 'Implement Specialization Hooks', detail: ['Artefact → on an Artefact-tagged object, also unlocks an Identify-grade read of its powers, and grants a second attempt if the first check failed'] }],
   },
   {
     name: 'Lessons from Dark Places', category: 'Elder Magic', role: 'Utility · delving', mode: 'Effect',
@@ -1433,7 +1466,7 @@ const ELDER_MAGIC: Ability[] = [
         ],
       },
     },
-    feats: 'Artefact Specialization → an additional +1 to the check.',
+    options: [{ label: 'Implement Specialization Hooks', detail: ['Artefact → an additional +1 to the check'] }],
   },
 ];
 
@@ -1652,7 +1685,7 @@ const NEW_MAGIC: Ability[] = [
       },
       duration: { base: '1 hour', advances: [{ value: '2 hours', cost: 'm' }, { value: '4 hours', cost: 'm' }, { value: 'until your next Long Rest', cost: 'M' }] },
     },
-    feats: 'Implement — Magic Staff: while wielding it, every defence improvement is +1 more. (No element — Lorica Arcana is not an elemental spell.)',
+    options: [{ label: 'Implement Specialization Hooks', note: 'No element — Lorica Arcana is not an elemental spell.', detail: ['Magic Staff → every defence improvement is +1 more'] }],
   },
   {
     name: 'Scutum Virium', category: 'New Magic', role: 'Defensive · force shield', mode: 'Effect',
@@ -1670,7 +1703,10 @@ const NEW_MAGIC: Ability[] = [
       },
       duration: { base: 'Until the start of your next turn' },
     },
-    feats: 'Implement — Magic Staff: +1 to both AC and DR. Mastery — Force → the bonus applies to all Armoured Defences, not just AC.',
+    options: [
+      { label: 'Mastery Hooks', detail: ['Mastery — Force → the bonus applies to all Armoured Defences, not just AC'] },
+      { label: 'Implement Specialization Hooks', detail: ['Magic Staff → +1 to both AC and DR'] },
+    ],
   },
   {
     name: 'Manus Eminus', category: 'New Magic', role: 'Utility · telekinesis', mode: 'Effect',
@@ -1688,7 +1724,7 @@ const NEW_MAGIC: Ability[] = [
         ],
       },
     },
-    feats: "Implement — Wand: each ladder counts one Rank higher; at the top Rank it doubles instead → 240' / 2,000 lb. (No Force hook — Force has enough already.)",
+    options: [{ label: 'Implement Specialization Hooks', detail: ["Wand → each ladder counts one Rank higher; at the top Rank it doubles instead → 240' / 2,000 lb"] }],
   },
   {
     name: 'Lumen Arcanum', category: 'New Magic', role: 'Utility · light', mode: 'Effect',
@@ -1705,7 +1741,10 @@ const NEW_MAGIC: Ability[] = [
       },
       duration: { base: '1 hour', advances: [{ value: '2 hours', cost: 'm' }, { value: '4 hours', cost: 'm' }, { value: 'until you dismiss it', cost: 'M' }] },
     },
-    feats: "Implements: Wand → adds a Range ladder (30'/60'/90'/120') that tracks the Brightness Rank — place the light as far as it reaches. Mastery — Fire → the light is a magical, unquenchable flame (and behaves like a torch for setting things alight).",
+    options: [
+      { label: 'Mastery Hooks', detail: ['Mastery — Fire → the light is a magical, unquenchable flame (and behaves like a torch for setting things alight)'] },
+      { label: 'Implement Specialization Hooks', detail: ["Wand → adds a Range ladder (30'/60'/90'/120') that tracks the Brightness Rank — place the light as far as it reaches"] },
+    ],
   },
 ];
 
