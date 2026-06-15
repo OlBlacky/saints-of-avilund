@@ -1467,7 +1467,48 @@ const NM_IMPL_AOE_LIST = [
   'Spellbook → the element Effect ladder lands one Rank higher',
   'Scroll → once per encounter, cast without consuming the scroll',
 ];
-const NM_HOOK_NOTE = 'If you have the Elemental Mastery Feat for the damage type of this spell, this unlocks the relevant Advancement table below.';
+const NM_MASTERY_NOTE = 'Your spell deals its chosen damage type at baseline. With the matching Elemental Mastery Feat you gain an automatic +1 to hit, and unlock that damage type’s Effect ladder below.';
+const NM_HOOK_NOTE = 'The same Elemental Mastery Feat also unlocks the damage type’s combat hook below.';
+
+// The four New Magic Effect ladders, each tied to its damage types. Same on
+// every offensive chassis (any element can be built into any chassis).
+const EFL_ONGOING: NamedLadder = {
+  name: 'Ongoing Damage — Fire & Acid',
+  base: '1 damage / round',
+  advances: [
+    { value: '2 / round', cost: 'm' },
+    { value: '3 / round', cost: 'm' },
+    { value: '5 / round', cost: 'M' },
+  ],
+};
+const EFL_MOVEMENT: NamedLadder = {
+  name: 'Movement — Cold',
+  base: "Slowed −5'",
+  advances: [
+    { value: "Slowed −10'", cost: 'm' },
+    { value: "Slowed −15'", cost: 'm' },
+    { value: 'Immobilized', cost: 'M' },
+  ],
+};
+const EFL_ACTION: NamedLadder = {
+  name: 'Action Denial — Lightning & Sonic',
+  base: 'Dazed — no Reactions or Interrupts',
+  advances: [
+    { value: '+ no Minor action', cost: 'm' },
+    { value: '+ no Move action', cost: 'm' },
+    { value: 'Stunned — no actions', cost: 'M' },
+  ],
+};
+const EFL_PUSH: NamedLadder = {
+  name: 'Push — Force',
+  base: "Push 5'",
+  advances: [
+    { value: "Push 10'", cost: 'm' },
+    { value: "Push 15'", cost: 'm' },
+    { value: "Push 15' and knocked Prone", cost: 'M' },
+  ],
+};
+const NM_EFFECT_LADDERS = [EFL_ONGOING, EFL_MOVEMENT, EFL_ACTION, EFL_PUSH];
 const HKL_SPLASH: NamedLadder = {
   name: 'Splash — Acid & Sonic',
   base: '1 damage to 1 adjacent creature',
@@ -1529,6 +1570,7 @@ const NEW_MAGIC: Ability[] = [
     builder: true,
     options: [
       { label: 'Element', detail: NM_ELEMENT_DETAIL, placement: 'top' },
+      { label: 'Elemental Mastery', note: NM_MASTERY_NOTE, ladders: NM_EFFECT_LADDERS },
       { label: 'Elemental Mastery Hooks', note: NM_HOOK_NOTE, ladders: [HKL_PIERCE, HKL_SPLASH, HKL_GLANCING] },
       { label: 'Implements', detail: NM_IMPL_LIST },
     ],
@@ -1549,6 +1591,7 @@ const NEW_MAGIC: Ability[] = [
     options: [
       { label: 'Defence (baseline)', detail: 'The Effect row’s Defence ladder is always on — no element or feat needed.' },
       { label: 'Element', detail: NM_ELEMENT_DETAIL, placement: 'top' },
+      { label: 'Elemental Mastery', note: NM_MASTERY_NOTE, ladders: NM_EFFECT_LADDERS },
       { label: 'Elemental Mastery Hooks', note: NM_HOOK_NOTE, ladders: [HKL_RETAL, HKL_SPLASH, HKL_GLANCING] },
       { label: 'Implements', detail: NM_IMPL_LIST },
     ],
@@ -1567,6 +1610,7 @@ const NEW_MAGIC: Ability[] = [
     builder: true,
     options: [
       { label: 'Element', detail: NM_ELEMENT_DETAIL, placement: 'top' },
+      { label: 'Elemental Mastery', note: NM_MASTERY_NOTE, ladders: NM_EFFECT_LADDERS },
       { label: 'Elemental Mastery Hooks', note: NM_HOOK_NOTE, ladders: [HKL_PIERCE, HKL_LINGER, HKL_GLANCING] },
       { label: 'Implements', detail: NM_IMPL_AOE_LIST },
     ],
@@ -1587,6 +1631,7 @@ const NEW_MAGIC: Ability[] = [
     options: [
       { label: 'Defence (baseline)', detail: 'The Effect row’s Defence ladder is always on — you stand in your own burst, so it needs no element or feat.' },
       { label: 'Element', detail: NM_ELEMENT_DETAIL, placement: 'top' },
+      { label: 'Elemental Mastery', note: NM_MASTERY_NOTE, ladders: NM_EFFECT_LADDERS },
       { label: 'Elemental Mastery Hooks', note: NM_HOOK_NOTE, ladders: [HKL_RETAL, HKL_LINGER, HKL_GLANCING] },
       { label: 'Implements', detail: NM_IMPL_AOE_LIST },
     ],

@@ -36,8 +36,10 @@ There are nine, one for each damage type imagined so far:
 | **Mastery — Lightning** | Action Denial *(Daze → Stun)* | Pierce *(ranged)* / Retaliation *(close)* |
 | **Mastery — Sonic** | Action Denial *(Daze → Stun)* | Splash / Lingering *(area)* |
 | **Mastery — Force** | Push *(and Prone)* | Glancing |
-| **Mastery — Radiant** | +1 to hit, and a Radiant damage ladder | — |
+| **Mastery — Radiant** | a Radiant damage ladder | — |
 | **Mastery — Necrotic** | Necrotic damage and its withering effects *(Death-aligned casters)* | — |
-| **Mastery — Psychic** | +1 to hit and a wider crit range, and Fear | — |
+| **Mastery — Psychic** | a wider crit range (19–20), and Fear | — |
+
+Every Mastery Feat also grants an **automatic +1 to hit** with spells of its damage type, on top of the ladders it unlocks.
 
 The complete Feat lists, and how Feats sit within the Advance economy, will be written up here as they firm up.
