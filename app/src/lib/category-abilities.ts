@@ -1467,8 +1467,8 @@ const NM_IMPL_AOE_LIST = [
   'Spellbook → the Elemental Mastery Effect ladder lands one Rank higher',
   'Scroll → once per encounter, cast without consuming the scroll',
 ];
-const NM_MASTERY_NOTE = 'Your spell deals its chosen damage type at baseline. With the matching Elemental Mastery Feat you gain an automatic +1 to hit, and unlock that damage type’s Effect ladder below.';
-const NM_HOOK_NOTE = 'The same Elemental Mastery Feat also unlocks the damage type’s combat hook below.';
+const NM_MASTERY_NOTE = 'Your spell deals its chosen damage type at baseline. With the matching Elemental Mastery Feat you unlock that damage type’s Effect ladder below.';
+const NM_HOOK_NOTE = 'You gain +1 to hit with the spell if your Mastery Feat and the Damage Type are the same. Additionally, you get an automatic Effect which improves as you Advance the Damage Ladder in the spell, as follows:';
 
 // The four New Magic Effect ladders, each tied to its damage types. Same on
 // every offensive chassis (any element can be built into any chassis).
@@ -1571,7 +1571,7 @@ const NEW_MAGIC: Ability[] = [
     options: [
       { label: 'Element', detail: NM_ELEMENT_DETAIL, placement: 'top' },
       { label: 'Elemental Mastery', note: NM_MASTERY_NOTE, ladders: NM_EFFECT_LADDERS },
-      { label: 'Elemental Mastery Hooks', note: NM_HOOK_NOTE, ladders: [HKL_PIERCE, HKL_SPLASH, HKL_GLANCING] },
+      { label: 'Elemental Mastery - Automatic Hooks', note: NM_HOOK_NOTE, hideCosts: true, ladders: [HKL_PIERCE, HKL_SPLASH, HKL_GLANCING] },
       { label: 'Implements', detail: NM_IMPL_LIST },
     ],
   },
@@ -1592,7 +1592,7 @@ const NEW_MAGIC: Ability[] = [
       { label: 'Defence (baseline)', detail: 'The Effect row’s Defence ladder is always on — no element or feat needed.' },
       { label: 'Element', detail: NM_ELEMENT_DETAIL, placement: 'top' },
       { label: 'Elemental Mastery', note: NM_MASTERY_NOTE, ladders: NM_EFFECT_LADDERS },
-      { label: 'Elemental Mastery Hooks', note: NM_HOOK_NOTE, ladders: [HKL_RETAL, HKL_SPLASH, HKL_GLANCING] },
+      { label: 'Elemental Mastery - Automatic Hooks', note: NM_HOOK_NOTE, hideCosts: true, ladders: [HKL_RETAL, HKL_SPLASH, HKL_GLANCING] },
       { label: 'Implements', detail: NM_IMPL_LIST },
     ],
   },
@@ -1611,7 +1611,7 @@ const NEW_MAGIC: Ability[] = [
     options: [
       { label: 'Element', detail: NM_ELEMENT_DETAIL, placement: 'top' },
       { label: 'Elemental Mastery', note: NM_MASTERY_NOTE, ladders: NM_EFFECT_LADDERS },
-      { label: 'Elemental Mastery Hooks', note: NM_HOOK_NOTE, ladders: [HKL_PIERCE, HKL_LINGER, HKL_GLANCING] },
+      { label: 'Elemental Mastery - Automatic Hooks', note: NM_HOOK_NOTE, hideCosts: true, ladders: [HKL_PIERCE, HKL_LINGER, HKL_GLANCING] },
       { label: 'Implements', detail: NM_IMPL_AOE_LIST },
     ],
   },
@@ -1632,7 +1632,7 @@ const NEW_MAGIC: Ability[] = [
       { label: 'Defence (baseline)', detail: 'The Effect row’s Defence ladder is always on — you stand in your own burst, so it needs no element or feat.' },
       { label: 'Element', detail: NM_ELEMENT_DETAIL, placement: 'top' },
       { label: 'Elemental Mastery', note: NM_MASTERY_NOTE, ladders: NM_EFFECT_LADDERS },
-      { label: 'Elemental Mastery Hooks', note: NM_HOOK_NOTE, ladders: [HKL_RETAL, HKL_LINGER, HKL_GLANCING] },
+      { label: 'Elemental Mastery - Automatic Hooks', note: NM_HOOK_NOTE, hideCosts: true, ladders: [HKL_RETAL, HKL_LINGER, HKL_GLANCING] },
       { label: 'Implements', detail: NM_IMPL_AOE_LIST },
     ],
   },

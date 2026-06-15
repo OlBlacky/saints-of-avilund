@@ -63,8 +63,10 @@ const bottomOpts = opts.filter((o) => o.placement !== 'top');
                         l.advances?.[i]
                           ? (
                             <td>
-                              {l.advances[i].value}{' '}
-                              <span class={`pip pip--${l.advances[i].cost}`}>{l.advances[i].cost}{l.advances[i].note ? `·${l.advances[i].note}` : ''}</span>
+                              {l.advances[i].value}
+                              {!o.hideCosts && (
+                                <Fragment>{' '}<span class={`pip pip--${l.advances[i].cost}`}>{l.advances[i].cost}{l.advances[i].note ? `·${l.advances[i].note}` : ''}</span></Fragment>
+                              )}
                             </td>
                           )
                           : <td class="acard__empty">—</td>
@@ -160,8 +162,10 @@ const bottomOpts = opts.filter((o) => o.placement !== 'top');
                         l.advances?.[i]
                           ? (
                             <td>
-                              {l.advances[i].value}{' '}
-                              <span class={`pip pip--${l.advances[i].cost}`}>{l.advances[i].cost}{l.advances[i].note ? `·${l.advances[i].note}` : ''}</span>
+                              {l.advances[i].value}
+                              {!o.hideCosts && (
+                                <Fragment>{' '}<span class={`pip pip--${l.advances[i].cost}`}>{l.advances[i].cost}{l.advances[i].note ? `·${l.advances[i].note}` : ''}</span></Fragment>
+                              )}
                             </td>
                           )
                           : <td class="acard__empty">—</td>

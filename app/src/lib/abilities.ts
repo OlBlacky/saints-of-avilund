@@ -62,6 +62,7 @@ export interface AbilityOption {
   note?: string;                  // a short line of explanation under the label
   detail?: string | string[];     // free text / bullet list (omit when using `ladders`)
   ladders?: NamedLadder[];         // rendered as mini advancement tables
+  hideCosts?: boolean;             // omit the m/M pips — for automatic ladders that track another ladder
   placement?: 'top' | 'bottom';   // 'top' renders above the variable table; default 'bottom'
 }
 
