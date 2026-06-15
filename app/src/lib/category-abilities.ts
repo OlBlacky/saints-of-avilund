@@ -1572,7 +1572,7 @@ const NEW_MAGIC: Ability[] = [
       { label: 'Element', detail: NM_ELEMENT_DETAIL, placement: 'top' },
       { label: 'Elemental Mastery - Automatic Hooks', note: NM_HOOK_NOTE, hideCosts: true, ladders: [HKL_PIERCE, HKL_SPLASH, HKL_GLANCING] },
       { label: 'Elemental Mastery - Optional Hooks', note: NM_MASTERY_NOTE, baseCost: 'm', ladders: NM_EFFECT_LADDERS },
-      { label: 'Implements', detail: NM_IMPL_LIST },
+      { label: 'Implement Specialization Hooks', detail: NM_IMPL_LIST },
     ],
   },
   {
@@ -1593,7 +1593,7 @@ const NEW_MAGIC: Ability[] = [
       { label: 'Element', detail: NM_ELEMENT_DETAIL, placement: 'top' },
       { label: 'Elemental Mastery - Automatic Hooks', note: NM_HOOK_NOTE, hideCosts: true, ladders: [HKL_RETAL, HKL_SPLASH, HKL_GLANCING] },
       { label: 'Elemental Mastery - Optional Hooks', note: NM_MASTERY_NOTE, baseCost: 'm', ladders: NM_EFFECT_LADDERS },
-      { label: 'Implements', detail: NM_IMPL_LIST },
+      { label: 'Implement Specialization Hooks', detail: NM_IMPL_LIST },
     ],
   },
   {
@@ -1612,7 +1612,7 @@ const NEW_MAGIC: Ability[] = [
       { label: 'Element', detail: NM_ELEMENT_DETAIL, placement: 'top' },
       { label: 'Elemental Mastery - Automatic Hooks', note: NM_HOOK_NOTE, hideCosts: true, ladders: [HKL_PIERCE, HKL_LINGER, HKL_GLANCING] },
       { label: 'Elemental Mastery - Optional Hooks', note: NM_MASTERY_NOTE, baseCost: 'm', ladders: NM_EFFECT_LADDERS },
-      { label: 'Implements', detail: NM_IMPL_AOE_LIST },
+      { label: 'Implement Specialization Hooks', detail: NM_IMPL_AOE_LIST },
     ],
   },
   {
@@ -1633,7 +1633,7 @@ const NEW_MAGIC: Ability[] = [
       { label: 'Element', detail: NM_ELEMENT_DETAIL, placement: 'top' },
       { label: 'Elemental Mastery - Automatic Hooks', note: NM_HOOK_NOTE, hideCosts: true, ladders: [HKL_RETAL, HKL_LINGER, HKL_GLANCING] },
       { label: 'Elemental Mastery - Optional Hooks', note: NM_MASTERY_NOTE, baseCost: 'm', ladders: NM_EFFECT_LADDERS },
-      { label: 'Implements', detail: NM_IMPL_AOE_LIST },
+      { label: 'Implement Specialization Hooks', detail: NM_IMPL_AOE_LIST },
     ],
   },
   {
