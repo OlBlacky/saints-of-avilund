@@ -42,9 +42,42 @@ const bottomOpts = opts.filter((o) => o.placement !== 'top');
         <div class="acard__opt">
           <dt class="acard__opt-label">{o.label}</dt>
           <dd class="acard__opt-detail">
-            {Array.isArray(o.detail)
-              ? <ul>{o.detail.map((d) => <li>{d}</li>)}</ul>
-              : o.detail}
+            {o.note && <p class="acard__opt-note">{o.note}</p>}
+            {o.ladders ? (
+              <table class="acard__table acard__table--build acard__subtable">
+                <thead>
+                  <tr>
+                    <th class="acard__var"></th>
+                    <th>Base</th>
+                    <th>&#9312;</th>
+                    <th>&#9313;</th>
+                    <th>&#9314;</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {o.ladders.map((l) => (
+                    <tr>
+                      <th scope="row" class="acard__var">{l.name}</th>
+                      <td>{l.base ?? '—'}</td>
+                      {ADV_COLS.map((i) => (
+                        l.advances?.[i]
+                          ? (
+                            <td>
+                              {l.advances[i].value}{' '}
+                              <span class={`pip pip--${l.advances[i].cost}`}>{l.advances[i].cost}{l.advances[i].note ? `·${l.advances[i].note}` : ''}</span>
+                            </td>
+                          )
+                          : <td class="acard__empty">—</td>
+                      ))}
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            ) : Array.isArray(o.detail) ? (
+              <ul>{o.detail.map((d) => <li>{d}</li>)}</ul>
+            ) : (
+              o.detail
+            )}
           </dd>
         </div>
       ))}
@@ -106,9 +139,42 @@ const bottomOpts = opts.filter((o) => o.placement !== 'top');
         <div class="acard__opt">
           <dt class="acard__opt-label">{o.label}</dt>
           <dd class="acard__opt-detail">
-            {Array.isArray(o.detail)
-              ? <ul>{o.detail.map((d) => <li>{d}</li>)}</ul>
-              : o.detail}
+            {o.note && <p class="acard__opt-note">{o.note}</p>}
+            {o.ladders ? (
+              <table class="acard__table acard__table--build acard__subtable">
+                <thead>
+                  <tr>
+                    <th class="acard__var"></th>
+                    <th>Base</th>
+                    <th>&#9312;</th>
+                    <th>&#9313;</th>
+                    <th>&#9314;</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {o.ladders.map((l) => (
+                    <tr>
+                      <th scope="row" class="acard__var">{l.name}</th>
+                      <td>{l.base ?? '—'}</td>
+                      {ADV_COLS.map((i) => (
+                        l.advances?.[i]
+                          ? (
+                            <td>
+                              {l.advances[i].value}{' '}
+                              <span class={`pip pip--${l.advances[i].cost}`}>{l.advances[i].cost}{l.advances[i].note ? `·${l.advances[i].note}` : ''}</span>
+                            </td>
+                          )
+                          : <td class="acard__empty">—</td>
+                      ))}
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            ) : Array.isArray(o.detail) ? (
+              <ul>{o.detail.map((d) => <li>{d}</li>)}</ul>
+            ) : (
+              o.detail
+            )}
           </dd>
         </div>
       ))}
@@ -241,6 +307,19 @@ const bottomOpts = opts.filter((o) => o.placement !== 'top');
     font-size: 0.84rem;
     color: #5a4a2c;
   }
+  .acard__opt-note {
+    margin: 0 0 0.4rem;
+    font-size: 0.82rem;
+    font-style: italic;
+    color: #6a532a;
+  }
+  /* A hook's advancement ladder, rendered as a compact build-table. */
+  .acard__subtable {
+    margin: 0.15rem 0 0.3rem;
+    border: 1px solid rgba(120, 90, 40, 0.22);
+    border-radius: 5px;
+  }
+  .acard__subtable td { min-width: 6rem; }
   .acard__opt-detail ul {
     margin: 0;
     padding-left: 1.15rem;

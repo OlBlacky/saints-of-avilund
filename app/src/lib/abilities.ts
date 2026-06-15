@@ -49,9 +49,19 @@ export interface Variable {
 // "Feats" paragraph into distinct, scannable groups (e.g. Element,
 // Specialization Hooks, Implements). A string[] detail renders as a bullet
 // list so each option stands on its own line.
+// A named advancement ladder, rendered as a mini build-table (Base / ① / ② / ③
+// with costs) — mirrors the main card table, used inside an option block.
+export interface NamedLadder {
+  name: string;
+  base?: string;
+  advances?: Advance[];
+}
+
 export interface AbilityOption {
   label: string;
-  detail: string | string[];
+  note?: string;                  // a short line of explanation under the label
+  detail?: string | string[];     // free text / bullet list (omit when using `ladders`)
+  ladders?: NamedLadder[];         // rendered as mini advancement tables
   placement?: 'top' | 'bottom';   // 'top' renders above the variable table; default 'bottom'
 }
 

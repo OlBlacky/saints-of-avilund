@@ -3,7 +3,7 @@
 // These four Categories are the Soldier's: Arms (Class), Protection
 // (Vanguard), Leadership (Commander), Marksmanship (Marksman).
 
-import type { Ability, Variable } from './abilities';
+import type { Ability, Variable, NamedLadder } from './abilities';
 
 export interface CategoryGroup {
   name: string;
@@ -1467,11 +1467,52 @@ const NM_IMPL_AOE_LIST = [
   'Spellbook → the element Effect ladder lands one Rank higher',
   'Scroll → once per encounter, cast without consuming the scroll',
 ];
-const HK_SPLASH = 'Acid & Sonic → Splash: 1 dmg to 1 adjacent → 2 adjacent → Int adjacent → 2 to all adjacent';
-const HK_GLANCING = 'Force & Cold → Glancing: 1 dmg on a miss → 2 → Int → half the spell’s damage on a miss';
-const HK_PIERCE = 'Fire & Lightning → Pierce: 1 dmg to an enemy in the line between you and the target → 2 → Int → 2 to all in the line';
-const HK_RETAL = 'Fire & Lightning → Retaliation: the next enemy to melee you takes 1 typed dmg → all your attackers → 2 typed → lasts the Encounter';
-const HK_LINGER = 'Acid & Sonic → Lingering: a creature that enters or ends its turn in the area takes 1 typed → 2 → Int → the hazard lasts a 2nd round';
+const NM_HOOK_NOTE = 'If you have the Elemental Mastery Feat for the damage type of this spell, this unlocks the relevant Advancement table below.';
+const HKL_SPLASH: NamedLadder = {
+  name: 'Splash — Acid & Sonic',
+  base: '1 damage to 1 adjacent creature',
+  advances: [
+    { value: '1 damage to 2 adjacent', cost: 'm' },
+    { value: '1 damage to Int adjacent', cost: 'm' },
+    { value: '2 damage to all adjacent', cost: 'M' },
+  ],
+};
+const HKL_GLANCING: NamedLadder = {
+  name: 'Glancing — Force & Cold',
+  base: '1 damage on a miss',
+  advances: [
+    { value: '2 damage on a miss', cost: 'm' },
+    { value: 'Int damage on a miss', cost: 'm' },
+    { value: 'half the spell’s damage on a miss', cost: 'M' },
+  ],
+};
+const HKL_PIERCE: NamedLadder = {
+  name: 'Pierce — Fire & Lightning',
+  base: '1 damage to 1 enemy in the line to the target',
+  advances: [
+    { value: '1 to 2 enemies in the line', cost: 'm' },
+    { value: '1 to Int enemies in the line', cost: 'm' },
+    { value: '2 to all in the line', cost: 'M' },
+  ],
+};
+const HKL_RETAL: NamedLadder = {
+  name: 'Retaliation — Fire & Lightning',
+  base: 'The next enemy to melee you takes 1 typed damage (until your next turn)',
+  advances: [
+    { value: 'all enemies that melee you take it', cost: 'm' },
+    { value: '2 typed damage', cost: 'm' },
+    { value: 'it lasts until the end of the encounter', cost: 'M' },
+  ],
+};
+const HKL_LINGER: NamedLadder = {
+  name: 'Lingering — Acid & Sonic',
+  base: 'A creature entering or ending its turn in the area takes 1 typed damage',
+  advances: [
+    { value: '2 typed damage', cost: 'm' },
+    { value: 'Int typed damage', cost: 'm' },
+    { value: 'the hazard lingers a second round', cost: 'M' },
+  ],
+};
 
 const NEW_MAGIC: Ability[] = [
   {
@@ -1488,7 +1529,7 @@ const NEW_MAGIC: Ability[] = [
     builder: true,
     options: [
       { label: 'Element', detail: NM_ELEMENT_DETAIL, placement: 'top' },
-      { label: 'Specialization Hooks', detail: [HK_PIERCE, HK_SPLASH, HK_GLANCING] },
+      { label: 'Elemental Mastery Hooks', note: NM_HOOK_NOTE, ladders: [HKL_PIERCE, HKL_SPLASH, HKL_GLANCING] },
       { label: 'Implements', detail: NM_IMPL_LIST },
     ],
   },
@@ -1508,7 +1549,7 @@ const NEW_MAGIC: Ability[] = [
     options: [
       { label: 'Defence (baseline)', detail: 'The Effect row’s Defence ladder is always on — no element or feat needed.' },
       { label: 'Element', detail: NM_ELEMENT_DETAIL, placement: 'top' },
-      { label: 'Specialization Hooks', detail: [HK_RETAL, HK_SPLASH, HK_GLANCING] },
+      { label: 'Elemental Mastery Hooks', note: NM_HOOK_NOTE, ladders: [HKL_RETAL, HKL_SPLASH, HKL_GLANCING] },
       { label: 'Implements', detail: NM_IMPL_LIST },
     ],
   },
@@ -1526,7 +1567,7 @@ const NEW_MAGIC: Ability[] = [
     builder: true,
     options: [
       { label: 'Element', detail: NM_ELEMENT_DETAIL, placement: 'top' },
-      { label: 'Specialization Hooks', detail: [HK_PIERCE, HK_LINGER, HK_GLANCING] },
+      { label: 'Elemental Mastery Hooks', note: NM_HOOK_NOTE, ladders: [HKL_PIERCE, HKL_LINGER, HKL_GLANCING] },
       { label: 'Implements', detail: NM_IMPL_AOE_LIST },
     ],
   },
@@ -1546,7 +1587,7 @@ const NEW_MAGIC: Ability[] = [
     options: [
       { label: 'Defence (baseline)', detail: 'The Effect row’s Defence ladder is always on — you stand in your own burst, so it needs no element or feat.' },
       { label: 'Element', detail: NM_ELEMENT_DETAIL, placement: 'top' },
-      { label: 'Specialization Hooks', detail: [HK_RETAL, HK_LINGER, HK_GLANCING] },
+      { label: 'Elemental Mastery Hooks', note: NM_HOOK_NOTE, ladders: [HKL_RETAL, HKL_LINGER, HKL_GLANCING] },
       { label: 'Implements', detail: NM_IMPL_AOE_LIST },
     ],
   },
