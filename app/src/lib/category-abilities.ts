@@ -1458,13 +1458,13 @@ const NM_ELEMENT_DETAIL = 'Choose one elemental damage type when you build the s
 const NM_IMPL_LIST = [
   'Wand → +1 to hit',
   'Magic Staff → +1 to one Defence until your next round',
-  'Spellbook → the element Effect ladder lands one Rank higher',
+  'Spellbook → the Elemental Mastery Effect ladder lands one Rank higher',
   'Scroll → once per encounter, cast without consuming the scroll',
 ];
 const NM_IMPL_AOE_LIST = [
   'Wand → +1 to hit',
   "Magic Staff → +5' burst radius",
-  'Spellbook → the element Effect ladder lands one Rank higher',
+  'Spellbook → the Elemental Mastery Effect ladder lands one Rank higher',
   'Scroll → once per encounter, cast without consuming the scroll',
 ];
 const NM_MASTERY_NOTE = 'Your spell deals its chosen damage type at baseline. With the matching Elemental Mastery Feat you gain an automatic +1 to hit, and unlock that damage type’s Effect ladder below.';
