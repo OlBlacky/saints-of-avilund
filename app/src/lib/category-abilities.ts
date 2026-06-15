@@ -68,8 +68,9 @@ const RANGED_HOOKS: string[] = [
 // apply them when you use the item. The matching specialist grants a 2nd set.
 const GENERIC_ADV: NamedLadder = {
   name: 'Generic Advances',
-  base: '1 Advance',
+  base: '—',
   advances: [
+    { value: '1 Advance', cost: 'm' },
     { value: '2 Advances', cost: 'm' },
     { value: '3 Advances', cost: 'M' },
   ],
@@ -1128,7 +1129,7 @@ const LETTERS: Ability[] = [
       },
     },
     options: [
-      { label: 'Generic Advancement Ladder', note: GA_NOTE('scroll'), baseCost: 'm', ladders: [GENERIC_ADV] },
+      { label: 'Generic Advancement Ladder', note: GA_NOTE('scroll'), ladders: [GENERIC_ADV] },
       { label: 'Implement Specialization Hooks', note: GA_MASTERY('scroll', 'Scroll Specialization') },
     ],
     feats: 'Scribe / Create track (Major advances): Scribe Lesser (L3), Create Lesser (L5), Scribe Greater (L7), Create Greater (L9).',
@@ -1148,7 +1149,7 @@ const LETTERS: Ability[] = [
       },
     },
     options: [
-      { label: 'Generic Advancement Ladder', note: GA_NOTE('spellbook'), baseCost: 'm', ladders: [GENERIC_ADV] },
+      { label: 'Generic Advancement Ladder', note: GA_NOTE('spellbook'), ladders: [GENERIC_ADV] },
       { label: 'Implement Specialization Hooks', note: GA_MASTERY('spellbook', 'Spellbook Specialization') + ' A Spellbook Specialist also adds Int to a damaging spell’s damage.' },
     ],
     feats: 'Same Scribe / Create track as Read Scrolls.',
@@ -1162,7 +1163,7 @@ const LETTERS: Ability[] = [
       },
     },
     options: [
-      { label: 'Generic Advancement Ladder', note: GA_NOTE('ritual'), baseCost: 'm', ladders: [GENERIC_ADV] },
+      { label: 'Generic Advancement Ladder', note: GA_NOTE('ritual'), ladders: [GENERIC_ADV] },
       { label: 'Ritual Specialization Hooks', note: GA_MASTERY('ritual', 'Ritual Specialist') + ' A Ritual Specialist also gains +1 to any d20 roll for the ritual.' },
     ],
     feats: 'Participant-Ladder boost (Major): improve a ritual’s Participant Ladder by one degree. Scribe / Create track (Major advances): Scribe Lesser (L3) → Create Lesser (L5) → Scribe Greater (L7) → Create Greater (L9).',
@@ -1356,7 +1357,7 @@ const ELDER_MAGIC: Ability[] = [
       },
     },
     options: [
-      { label: 'Generic Advancement Ladder', note: GA_NOTE('artefact'), baseCost: 'm', ladders: [GENERIC_ADV] },
+      { label: 'Generic Advancement Ladder', note: GA_NOTE('artefact'), ladders: [GENERIC_ADV] },
       { label: 'Implement Specialization Hooks', note: GA_MASTERY('artefact', 'Artefact Specialization'), detail: ['Feat Hook (a studied Elder fragment) → a bonus when wielding artefacts of that tradition — e.g. +1 to its boosts, or a safe Overdraw'] },
     ],
   },
