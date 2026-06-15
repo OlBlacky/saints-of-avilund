@@ -23,8 +23,8 @@ import { CATEGORIES } from '../../lib/category-abilities';
     <span class="pip pip--M">M</span> (Major). Expand a Category to read its cards.
   </p>
 
-  {CATEGORIES.map((cat, i) => (
-    <details class="cat" id={cat.name.toLowerCase().replace(/\s+/g, '-')} open={i === 0}>
+  {CATEGORIES.map((cat) => (
+    <details class="cat" id={cat.name.toLowerCase().replace(/\s+/g, '-')}>
       <summary class="cat__summary">
         <span class="cat__name">{cat.name}</span>
         <span class="cat__meta">{cat.source} · {cat.abilities.length} abilities</span>
