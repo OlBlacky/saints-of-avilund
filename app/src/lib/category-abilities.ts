@@ -63,6 +63,24 @@ const RANGED_HOOKS: string[] = [
   "Grenades → hits a 5' burst",
 ];
 
+// Generic Advances — the engine on the literacy/artefact abilities. You buy
+// Advances (each raises a variable of the tied item's Ability one Rank) and
+// apply them when you use the item. The matching specialist grants a 2nd set.
+const GENERIC_ADV: NamedLadder = {
+  name: 'Generic Advances',
+  base: '1 Advance',
+  advances: [
+    { value: '2 Advances', cost: 'm' },
+    { value: '3 Advances', cost: 'M' },
+  ],
+};
+const GA_NOTE = (item: string): string =>
+  `Unlike most Abilities, this Ability is closely tied to a particular ${item}, which has its own Ability defined. ` +
+  `While most characters can use only that Ability's baseline variables, this Ability lets you select its Advancements: ` +
+  `purchase Generic Advances per the Ladder below (each Advance raises one variable a Rank), then apply them to any variable the ${item} allows.`;
+const GA_MASTERY = (item: string, feat: string): string =>
+  `Additionally, with the ${feat} Feat you gain a second Generic Advances Ladder — apply it to a second variable the ${item} allows.`;
+
 // ── Arms (Class) ────────────────────────────────────────────────
 const ARMS: Ability[] = [
   {
@@ -1109,8 +1127,11 @@ const LETTERS: Ability[] = [
         ],
       },
     },
-    options: [{ label: 'Implement Specialization Hooks', detail: ['Scroll Specialist → buy a second Generic-Boost set (boost two variables at the moment of casting)'] }],
-    feats: 'Generic Boosts: buy m, m, M; at the moment of casting, push one of the spell’s variables up its Ladder. Scribe / Create track (Major advances): Scribe Lesser (L3), Create Lesser (L5), Scribe Greater (L7), Create Greater (L9).',
+    options: [
+      { label: 'Generic Advancement Ladder', note: GA_NOTE('scroll'), baseCost: 'm', ladders: [GENERIC_ADV] },
+      { label: 'Implement Specialization Hooks', note: GA_MASTERY('scroll', 'Scroll Specialization') },
+    ],
+    feats: 'Scribe / Create track (Major advances): Scribe Lesser (L3), Create Lesser (L5), Scribe Greater (L7), Create Greater (L9).',
   },
   {
     name: 'Read Spellbooks', category: 'Letters', role: 'Magic literacy', mode: 'Effect',
@@ -1126,18 +1147,25 @@ const LETTERS: Ability[] = [
         ],
       },
     },
-    options: [{ label: 'Implement Specialization Hooks', detail: ['Spellbook Specialist → buy a second Generic-Boost set, and add Int to a damaging spell’s damage'] }],
-    feats: 'Same Generic-Boost and Scribe / Create tracks as Read Scrolls.',
+    options: [
+      { label: 'Generic Advancement Ladder', note: GA_NOTE('spellbook'), baseCost: 'm', ladders: [GENERIC_ADV] },
+      { label: 'Implement Specialization Hooks', note: GA_MASTERY('spellbook', 'Spellbook Specialization') + ' A Spellbook Specialist also adds Int to a damaging spell’s damage.' },
+    ],
+    feats: 'Same Scribe / Create track as Read Scrolls.',
   },
   {
     name: 'Conduct Ritual', category: 'Letters', role: 'Magic literacy', mode: 'Effect',
     vars: {
       action: { base: 'The ritual’s own casting time' },
       effects: {
-        base: 'Anyone with the materials and the language may perform a ritual at its base. Conduct Ritual lets you IMPROVE one: buy m, m, M and push one of its variables per casting (e.g. shorten its time).',
+        base: 'Anyone with the materials and the language may perform a ritual at its base. Conduct Ritual lets you improve one, applying your Generic Advances (below) to its variables — e.g. shortening its casting time.',
       },
     },
-    feats: 'A Ritual Specialist may buy a second Generic-Boost set, and gains +1 to any d20 roll for the ritual. Participant-Ladder boost (Major): improve a ritual’s Participant Ladder by one degree. Scribe / Create track (Major advances): Scribe Lesser (L3) → Create Lesser (L5) → Scribe Greater (L7) → Create Greater (L9).',
+    options: [
+      { label: 'Generic Advancement Ladder', note: GA_NOTE('ritual'), baseCost: 'm', ladders: [GENERIC_ADV] },
+      { label: 'Ritual Specialization Hooks', note: GA_MASTERY('ritual', 'Ritual Specialist') + ' A Ritual Specialist also gains +1 to any d20 roll for the ritual.' },
+    ],
+    feats: 'Participant-Ladder boost (Major): improve a ritual’s Participant Ladder by one degree. Scribe / Create track (Major advances): Scribe Lesser (L3) → Create Lesser (L5) → Scribe Greater (L7) → Create Greater (L9).',
   },
   {
     name: 'Identify', category: 'Letters', role: 'Magic literacy · utility', mode: 'Effect',
@@ -1327,8 +1355,10 @@ const ELDER_MAGIC: Ability[] = [
         ],
       },
     },
-    options: [{ label: 'Implement Specialization Hooks', detail: ['Artefact Specialist → a second Generic-Boost set (climb a second artefact variable on activation)', 'Feat Hook (a studied Elder fragment) → a bonus when wielding artefacts of that tradition — e.g. +1 to its boosts, or a safe Overdraw'] }],
-    feats: "Generic Boosts: buy m, m, M; at activation, climb ONE of the artefact's own variables one Rank per boost.",
+    options: [
+      { label: 'Generic Advancement Ladder', note: GA_NOTE('artefact'), baseCost: 'm', ladders: [GENERIC_ADV] },
+      { label: 'Implement Specialization Hooks', note: GA_MASTERY('artefact', 'Artefact Specialization'), detail: ['Feat Hook (a studied Elder fragment) → a bonus when wielding artefacts of that tradition — e.g. +1 to its boosts, or a safe Overdraw'] },
+    ],
   },
   {
     name: 'Whispers from the Doomed', category: 'Elder Magic', role: 'Offensive', mode: 'Attack',
