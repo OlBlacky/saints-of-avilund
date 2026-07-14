@@ -1,27 +1,12 @@
 ---
 import Base from '../../layouts/Base.astro';
 import { url } from '../../lib/url';
-
-const regions = [
-  {
-    name: 'The South — the heartland of the old Faith',
-    body: 'Home of the Primi cult and the most prominent Secundi. Here stand the Imperial Ecclesiarchy of Valdenwail (the Scion’s seat, in the line of Avitus), the Bishopric of St. Severinius, the Bishopric of St. Mairin, and the city of Lysander with its Cathedral of St. Dunstan. The three Primi Fundatores — Avitus, Severinius, Mairin — are honoured here above all.',
-  },
-  {
-    name: 'The Centre — the realm of the Secundi',
-    body: 'The middle lands, where the sects of the Secundi hold sway: the Bishopric of St. Ignatius and its Collegium, and the settled regions of Patrilund, Wellendlund, and Gablelund. To the east lie the Republic of Waldheim and the great City of Waldheim itself, with the Peakes of St. Sebald rising to its north.',
-  },
-  {
-    name: 'The North — the rough country of the Coaevi',
-    body: 'Beneath the Imperial Rooftop Mountains — the Peakes of St. Ulric — the sects of the Coaevi and the rarer saints command a more independent people. The Kingdoms of Mantlethorn and Hiergallad lie here. To the west rise the Imperial Rampart Mountains, the Peakes of St. Abaddon.',
-  },
-];
 ---
 
-<Base title="Geography" description="The continent of Avilund — its regions, seas, and saint-named lands.">
+<Base title="Geography" description="The continent of Avilund — its three bands, its twelve states, and a map written over with the names of saints.">
   <p class="eyebrow">The Lay of the Land</p>
   <h1>Geography of Avilund</h1>
-  <p class="lede">A continent between three seas, its very map written over with the names of saints.</p>
+  <p class="lede">One continent, twelve states, and four hundred years of not quite forgiving one another.</p>
 
   <figure>
     <img src={url('images/robertson-map.webp')} alt="A hand-drawn map of the continent of Avilund" />
@@ -30,17 +15,142 @@ const regions = [
 
   <div class="prose">
     <p>
-      The map of Avilund tells the story of its Faith. Worship runs in three broad bands across the
-      continent, each tied to one of the three higher orders of saints.
+      Until 1348 there was one Empire, and the map was simple. Then the Scion signed the
+      <em>Placitum a Terminus Potentia</em> and it was not an Empire any longer. What stands in its place
+      is twelve states, each ruling itself, and a scatter of towns between them that pay no taxes and
+      receive no protection.
+    </p>
+    <p>
+      There has been no open war between them since. There has not been much friendship, either.
+    </p>
+    <p>
+      The map runs in three broad bands, and the bands are not merely political. Each keeps a different
+      tier of saints, a different tongue, a different century. A traveller going north from the
+      olive groves below <strong>St. Mairin&rsquo;s Gate</strong> to the halls of Heirgallad crosses
+      four hundred years of history in a month&rsquo;s walk.
     </p>
   </div>
 
-  {regions.map((r) => (
-    <section class="prose" style="margin-top:1.6rem">
-      <h2>{r.name}</h2>
-      <p>{r.body}</p>
-    </section>
-  ))}
+  <section class="prose" style="margin-top:1.6rem">
+    <h2>The South — the Ecclesiastic Bishoprics</h2>
+    <p>
+      Warm, ancient, and steeped past saving in tradition. The heartland of the old Faith and of the
+      <a href={url('saints/#primi')}>Primi</a>. Here a man is not a citizen with rights; he is a subject
+      who is ruled, and punishment is harsh and swift. The South never truly joined the Revolution, and
+      it has never entirely conceded that the Revolution happened.
+    </p>
+    <ul>
+      <li>
+        <strong>Bishopric of <a href={url('saints/dunstan/')}>St. Dunstan</a></strong> — the crusading
+        bishopric, and the seat of the Crusader City of <strong>Lysander</strong>, which is ruled by its
+        Council of War: five prelates of the fighting canons. The Cathedral of St. Dunstan is the only
+        cathedral outside Valdenwail to have survived Brogard, and the Abbey of the Artillery gave the
+        world both gunpowder and the printing press. Since the Fourth Crusade opened the road west,
+        Lysander has taken in generations of Westerners; its people are the duskiest in Avilund, and —
+        for a city famed for its intolerance — the most mixed.
+      </li>
+      <li>
+        <strong>Bishopric of <a href={url('saints/severinius/')}>St. Severinius</a></strong> — the
+        bishopric of the Woodland King, first man to be called a king at all.
+      </li>
+      <li>
+        <strong>Bishopric of <a href={url('saints/mairin/')}>St. Mairin</a></strong> — named for the
+        nursemaid who stole away the last living son of <a href={url('saints/avitus/')}>Avitus</a>, and
+        wore the blame for it.
+      </li>
+      <li>
+        <strong>Imperial Ecclesiarchy of Valdenwail</strong> — forty miles of dead ground, two farming
+        villages, and perhaps a thousand souls all told. At its heart sprawls the castle of Valdenwail,
+        home of the Scion and his strange family, ringed by an ancient forest and a thorn hedge two
+        hundred feet thick. Silent knights in impossibly old plate ride its borders and ask no questions.
+        No Scion has shown his face in public since 750.
+      </li>
+    </ul>
+  </section>
+
+  <section class="prose" style="margin-top:1.6rem">
+    <h2>The Centre — the Republics</h2>
+    <p>
+      The modern world, such as it is: printing presses, universities, banks, corporations, and a thin
+      overlay of occult activity that respectable people pretend isn&rsquo;t there. The realm of the
+      <a href={url('saints/#secundi')}>Secundi</a>. This is where the Revolution was won, and the Centre
+      has never let the South forget it.
+    </p>
+    <ul>
+      <li>
+        <strong>Republic of Waldheim</strong> — the great city at the meeting of the Wen and the Nith,
+        and the safest, most civilised ground on the continent. Governed by an elected council of eleven
+        who appoint a mayor. Two hundred thousand souls in the city; another forty thousand around it.
+        Its nobles must travel abroad to find anything worth hunting.
+      </li>
+      <li>
+        <strong>Republic of Dunstanmoore</strong> — sober, industrious, and named for the same saint the
+        South made a crusader of. Where the Bishopric took Dunstan the warrior, Dunstanmoore took Dunstan
+        the engineer, and neither much cares for the other&rsquo;s reading of him.
+      </li>
+      <li>
+        <strong>Republic of Isenveld</strong> — the most idealistic of the three, and the closest thing
+        in Avilund to a government that genuinely answers to the governed.
+      </li>
+      <li>
+        <strong>Freehold of Havilah</strong> — the Great Northern City, on the mouth of the Wen, hard
+        against the Kellish and Feral marches. A chartered colony of Dunstanmoore whose charter lost its
+        guarantor when the Empire fell, and which the merchant guilds have run ever since. A Chancellor
+        is elected; the guilds decide the election, and prefer murder to subtlety. Paper money was
+        invented here in 1388, and shares in mines and forests were being bought here by 1530. Its one
+        thriving church belongs to <a href={url('saints/ulric/')}>St. Ulric</a>, patron of glory —
+        and now of the merchant-houses. Dunstanmoore has never formally surrendered its claim. If the
+        four-hundred-year peace breaks, it breaks here.
+      </li>
+      <li>
+        <strong>Bishopric of <a href={url('saints/ignatius/')}>St. Ignatius</a></strong> — a bishopric in
+        name, and something else in practice. Its government is unlike any other in Avilund and is
+        understood by almost no one outside it. Alone among the ecclesiastic states it refuses to
+        acknowledge the Scion as a secular power — a debt it has been collecting since it bought the
+        Revolution&rsquo;s victory with the corpse of its own saint. It keeps the continent&rsquo;s books,
+        and its Order of the Candle keeps a quieter ledger: the possessions and the hauntings, which have
+        been rising since 1348.
+      </li>
+    </ul>
+  </section>
+
+  <section class="prose" style="margin-top:1.6rem">
+    <h2>The North — the Feudal Kingdoms</h2>
+    <p>
+      Rough country under the Imperial Rooftop, where the <a href={url('saints/#coaevi')}>Coaevi</a> are
+      honoured and the people are harder to govern. When the Imperial soldiers went home in 1348, the
+      fighting nobility became warlords, the Ferals and the Kells began raiding again, and a system a
+      thousand years dead came roaring back. Feudalism here is not a survival. It is a revival, and it is
+      still growing.
+    </p>
+    <ul>
+      <li><strong>Patrilund</strong> — the nearest of the northern kingdoms, and the first taste of the
+      North for anyone coming up out of the republics.</li>
+      <li><strong>Kingdom of Mantlethorn</strong> — which, with Heirgallad, was instrumental in bringing
+      down the rule of the Scion.</li>
+      <li><strong>Kingdom of Heirgallad</strong> — the Kellish frontier, where land disputes have been
+      settled by champions since King Garamond learned the custom in 105 BC. Crowns here pass by
+      intermarriage, deceit and murder.</li>
+    </ul>
+  </section>
+
+  <section class="prose" style="margin-top:1.6rem">
+    <h2>The Bones of the Land</h2>
+    <p>
+      The <strong>Imperial Septum</strong> is the mountain wall that divides the South from the Centre,
+      and it is the reason the two have stayed different for so long. It is pierced by
+      <strong>St. Mairin&rsquo;s Gate</strong>, a fortified pass on a bluff commanding the plain below —
+      the <strong>Olive Plain</strong>, where in 1347 Avilundian cannon was first fired on Avilundian men.
+    </p>
+    <p>
+      North of Waldheim rise the <strong>Peakes of <a href={url('saints/sebald/')}>St. Sebald</a></strong>.
+      The <strong>Imperial Rooftop</strong> — the Peakes of St. Ulric — crowns the far North, and the
+      <strong>Imperial Rampart</strong>, the Peakes of St. Abaddon, walls off the west. Beyond them lie the
+      <strong>Barrier Wood</strong>, the <strong>Sea of Sorrow</strong>, and the long dry road of the
+      <strong>Bellum Via</strong>, which runs two thousand miles west from Lysander into a Theatre no one
+      has returned from since 1510.
+    </p>
+  </section>
 
   <section class="prose" style="margin-top:2rem">
     <h2>The Cities</h2>

@@ -4,11 +4,26 @@ source: "MasterDocument.txt"
 order: 60
 ---
 
+> **Editor's note — revised 14 July 2026.** This is the original working draft, kept intact for
+> reference. The geography has since been reorganised and the current canon now lives on the
+> [Geography](/saints-of-avilund/geography/) page. Where this draft is out of date, the superseded
+> passage is left in place and flagged below. Summary of the changes:
+>
+> - **Twelve polities, not fourteen.** **Gablelund**, **Wellenlund** and the **Dominion of St. Lucas**
+>   have been cut entirely (all three were bare headings with no content).
+> - **Lysander is no longer an independent city state.** It now sits inside the new
+>   **Bishopric of St. Dunstan**, which joins St. Severinius, St. Mairin and Valdenwail in the South.
+> - **Patrilund** has moved to the North, and is the nearest of the northern kingdoms.
+> - **Renamed:** Isenwald → **Isenveld**. **Havilah** is now a chartered colony of Dunstanmoore.
+> - **Locked spellings:** Isenveld, Heirgallad, Dunstanmoore, Mairin, Ignatius.
+
 Governments of Avitus
 
 There are several different types of government in what was the Empire Of Avitus. Until the Revolution, the Empire was, strictly speaking, an Ecclesiarchy. It was ruled, at the top, by the Scion of St. Avitus, who was the head of the Primus Deus Fidelis. This `Empire' was a unified polity, subdivided into smaller ecclesiastic polities called diocses and bishoprics.
 
 After the Revolution, the Empire became fragmented, and several independent, different forms of government were formed. The most common forms of government include democracies, feudal kingdoms, and ecclesiarchies. There are some other, more obscure forms of government found in Avitus, but the three above represent the largest and most common.
+
+> **[Superseded 2026-07-14 — now 12 regions, not 14.]**
 
 Where there used to be one Empire, there is now in Avitus, 14 major political regions which may be thought of as countries. These are each independently ruled, with a head of state located within their borders. There are several smaller independent regions and large towns, and many small towns located between major polities that neither pay taxes, nor receive protection from the major polities (such as Eastwitch).
 
@@ -16,13 +31,16 @@ At the present time, the various countries that make up the `Empire' are in a st
 
 Democracies
 
-There are 3 major democracies in Avitus; The Waldheim Republic, The Freehold of Havilah and the Republic of Isenwald. The Waldheim Republic is the most prominent of these, though it is not a model democracy, to be sure. The Freehold of Havilah is a democracy in charter only, and not in practice (it is ruled by merchant guilds who fix elections by any means necessary). The Republic of Isenwald is more idealistic, and has the closest thing to a genuine democracy in Avitus.
+There are 3 major democracies in Avitus; The Waldheim Republic, The Freehold of Havilah and the Republic of Isenveld. The Waldheim Republic is the most prominent of these, though it is not a model democracy, to be sure. The Freehold of Havilah is a democracy in charter only, and not in practice (it is ruled by merchant guilds who fix elections by any means necessary). The Republic of Isenveld is more idealistic, and has the closest thing to a genuine democracy in Avitus.
 
 Feudal Kingdoms
 
 Feudal society is becoming more prominent in Avitus in the present day, despite what the `logic' of scholars and sociologists of the Universities in the cities would predict. With the decentralization of military power and the protection afforded most communities, after the Revolution (we need a new name for the Revolution) a more simplistic model of military organization and government emerged in many lands. The landed nobility, who have been responsible for fighting for centuries before the Revolution, became de facto warlords as soon as Imperial soldiers departed their lands. When raids from Ferals, Kells and other bandits began to increase over the decades that followed the Revolution, the fighting nobility was called upon for protection, and soon the old Feudal system, which had been dead for over 1000 years, had made a full resurgence.
 
-The major feudal kingdoms of Avitus include the Kingdom of Mantlethorn, Kingdom of Hiergallad, Gablelund and Patrilund. In each of these polities, a monarch reigns. The monarchs of these lands come to their seat of power through complex intermarriages, and no small amount of deceit, violence and plotting.
+> **[Superseded 2026-07-14 — Gablelund is cut. The northern kingdoms are Patrilund (nearest),
+> Mantlethorn and Heirgallad.]**
+
+The major feudal kingdoms of Avitus include the Kingdom of Mantlethorn, Kingdom of Heirgallad, Gablelund and Patrilund. In each of these polities, a monarch reigns. The monarchs of these lands come to their seat of power through complex intermarriages, and no small amount of deceit, violence and plotting.
 
 Beneath the monarchs, or suzerains are the greater landed nobility; dukes, counts, earls, barons and so forth. Beneath them are their vassals, the knights, who manage smaller fiefs. It is the greater nobility that owes service to their suzerain, which they get from their vassals. The vassals, of course, manage the serfs in their fiefdom, many of the strongest of which are trained as soldiers.
 
@@ -32,7 +50,12 @@ Because of the military nature of these government systems, the feudal kingdoms 
 
 Ecclesiarchies
 
-There are surprisingly few of these governments in Avitus, despite the heavy presence of religion in society. The main Ecclesiastical governments of Avitus include the City State of Lysander, Bishopric of St. Ignatius, Bishopric of St. Mairin, and the Dominion of St. Lucas. In each of these polities, religion has figured a little higher than the rest of the continent, and the churches have had too much power not to have seized control after the Revolution.
+There are surprisingly few of these governments in Avitus, despite the heavy presence of religion in society. > **[Superseded 2026-07-14 — the Dominion of St. Lucas is cut, and Lysander is no longer its own
+> state: it sits inside the Bishopric of St. Dunstan. The ecclesiastic states are now the Bishoprics
+> of St. Dunstan, St. Severinius and St. Mairin, plus the Imperial Ecclesiarchy of Valdenwail in the
+> South — and the Bishopric of St. Ignatius, which sits in the Centre.]**
+
+The main Ecclesiastical governments of Avitus include the City State of Lysander, Bishopric of St. Ignatius, Bishopric of St. Mairin, and the Dominion of St. Lucas. In each of these polities, religion has figured a little higher than the rest of the continent, and the churches have had too much power not to have seized control after the Revolution.
 
 These are the most uniform of all styles of government, because most are run by the tenets found in the Rule of St. Severinius. All of these states acknowledge the primogeniture of the Scion (though the Bishopric of St. Ignatius is presently causing many waves with regards to this), though they all run their states as autonomous entities. They are influenced heavily by the Primus Deus Fidelis, but do exert their own authority in their own states.
 
@@ -51,6 +74,9 @@ Population: About 200,000 in the City itself. Another 40,000 in the surrounding 
 Government: A secular, elected council of 11 men and women who then appoint a mayor.
 
 Lysander (Independent City State)
+
+> **[Superseded 2026-07-14 — Lysander is now the Crusader City seated inside the Bishopric of
+> St. Dunstan. The Council of War and everything below still stands; only its independence is gone.]**
 
 This region includes the City of Lysander and an area about 75 miles in radius around it. The City is found at an ancient nexus; it is close to the Sea of Sorrow, which is an inland sea that provides access to the West; it is on the northern shore of the Great Ocean (rename?), and it sits on the ancient trade road, which once connected the Empire with the West. This City has been the source of most of the global exchanges that have happened in the last 1000 years, limited though they might be now. It is an ancient city, with some very strange architecture that hearkens back to times of great population movements; the Colonization and the Crusades. Buildings of tremendous size and strange shapes and odd materials are found all throughout this ancient City.
 
@@ -88,11 +114,16 @@ Population: Perhaps 1000 total, including the 500 or so peasants that live in th
 
 Government: Absolute Monarchy of the descendants of Saint Avitus.
 
+> **[Superseded 2026-07-14 — these were never written. Of the stubs below, the Dominion of
+> St. Lucas, Wellenlund and Gablelund have been cut. The surviving seven, plus the four already
+> written up above, plus a Bishopric of St. Severinius still to be added to the South, make the
+> twelve.]**
+
 Kingdom of Mantlethorn
 
-Kingdom of Hiergallad
+Kingdom of Heirgallad
 
-Republic of Isenwald
+Republic of Isenveld
 
 Republic of Dunstanmoore
 

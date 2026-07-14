@@ -31,7 +31,7 @@ import {
     const list = tier === 'Minores' ? saintsByTier(tier) : orderedByOffice(tier);
     if (list.length === 0) return null;
     return (
-      <section class="tier">
+      <section class="tier" id={tier.toLowerCase()}>
         <h2>Sancti {tier}</h2>
         <p class="tier__intro">{TIER_BLURBS[tier]}</p>
         <ul class="grid">
