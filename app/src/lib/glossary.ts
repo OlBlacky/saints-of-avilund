@@ -29,6 +29,9 @@ export const GLOSSARY: Record<string, string> = {
   'milestone': 'A step of advancement; three make a level. Each milestone grants +1 Major and +1 Minor Advance.',
   'Ladder': 'A short track of escalating effect. Rank 1 is the base; the middle Ranks cost a Minor Advance each, and the top Rank costs a Major. Abilities, conditions, frequency, and more are all built as Ladders.',
   'Rank': 'A single step on a Ladder. You climb from Rank 1 (the base) upward, paying Advances as you go.',
+  'Off Guard': 'A target is Off Guard against you when it cannot see you, has not yet acted in the encounter, is Prone, Stunned or Immobilized, or an ability (a Feint) has left it so. On its own it does nothing — it is the key that unlocks the abilities written to use it.',
+  'flanked': 'A creature is flanked when you and an ally are both adjacent to it, on opposite sides. Abilities that trigger on an Off Guard target trigger equally on a flanked one.',
+  'flanking': 'You flank an enemy when you and an ally are both adjacent to it and stand on opposite sides. It needs no roll — either the geometry holds or it does not.',
 };
 
 // Inline abbreviations — decorated wherever they appear in body text (not only

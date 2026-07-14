@@ -1795,6 +1795,180 @@ const NEW_MAGIC: Ability[] = [
   },
 ];
 
+// ── The Lost (Scoundrel — Class) ────────────────────────────────
+// The Category's engine: a strike only pays when the mark is Off Guard or
+// flanked (see Combat). Everything else here exists to buy that condition.
+const OFF_GUARD_NOTE =
+  'The mark is Off Guard against you when it cannot see you, has not yet acted, is Prone, Stunned or Immobilized — or you have Feinted it. Flanking counts too.';
+
+// The Scoundrel's weapon hooks — the groups the Class and its three Paths train.
+const LOST_HOOKS: string[] = [
+  'Light Blades → the sneak damage counts one Rank higher',
+  'Thrown → the attack may be made at range (1×WRI), sneak damage and all',
+  'Crossbows → ignore the DR of armour',
+  'Hammers / Maces → on a hit against an Off Guard mark, it is also Dazed (no Reactions or Interrupts)',
+  'Unarmed / Natural → on a hit against an Off Guard mark, it is knocked Prone',
+];
+
+const THE_LOST: Ability[] = [
+  {
+    name: 'Sneak Attack', category: 'The Lost', role: 'Offensive', mode: 'Attack',
+    vars: {
+      frequency: FREQ_FULL,
+      action: { base: 'Standard' },
+      range: { base: 'Reach' },
+      targets: { base: 'One' },
+      attack: { base: 'Dexterity vs AC' },
+      damage: {
+        base: '1[W]',
+        advances: [
+          { value: '1[W] + 1', cost: 'm' },
+          { value: '1[W] + Dex', cost: 'm' },
+          { value: '2[W]', cost: 'M', note: 'L5' },
+        ],
+      },
+      effects: {
+        base: 'Against an Off Guard or flanked mark: +2 damage.',
+        advances: [
+          { value: '+4 damage', cost: 'm' },
+          { value: '+4 damage, and Bleed 1', cost: 'm' },
+          { value: '+6 damage, and Bleed 2', cost: 'M' },
+        ],
+      },
+      duration: { base: 'Instant (Bleed: save ends)' },
+    },
+    options: [
+      { label: 'The mark must be Off Guard', note: OFF_GUARD_NOTE, detail: 'Against anyone else this is an ordinary weapon strike — the Damage row and nothing more. The Effect row is the whole point of the Scoundrel, and it is the only row that cares how you got there.', placement: 'top' },
+      { label: 'Weapon Specialization Hooks', note: WEAPON_HOOK_NOTE, detail: LOST_HOOKS },
+    ],
+  },
+  {
+    name: 'Feint', category: 'The Lost', role: 'Debuff · setup', mode: 'Attack',
+    vars: {
+      frequency: FREQ_FULL,
+      action: { base: 'Standard', advances: [{ value: 'Move', cost: 'M' }, { value: 'Minor', cost: 'M' }] },
+      range: { base: 'Reach' },
+      targets: { base: 'One' },
+      attack: { base: 'Dexterity vs Unarmoured Wisdom' },
+      damage: { base: 'None — a false move, not a real one' },
+      effects: {
+        base: 'The mark is Off Guard against your attacks.',
+        advances: [
+          { value: 'Off Guard against your attacks and one ally’s', cost: 'm' },
+          { value: 'Off Guard against everyone’s attacks', cost: 'm' },
+          { value: 'Off Guard against everyone’s attacks, and Dazed (no Reactions or Interrupts)', cost: 'M' },
+        ],
+      },
+      duration: { base: 'Until the end of your next turn' },
+    },
+    options: [{ label: 'Weapon Specialization Hooks', note: WEAPON_HOOK_NOTE, detail: ['Light Blades → +2 to the Feint attack roll'] }],
+  },
+  {
+    name: 'Dirty Trick', category: 'The Lost', role: 'Debuff', mode: 'Attack',
+    vars: {
+      frequency: FREQ_ENC,
+      action: { base: 'Standard', advances: [{ value: 'Minor', cost: 'M' }] },
+      range: { base: 'Reach' },
+      targets: { base: 'One' },
+      attack: { base: 'Dexterity vs Unarmoured Dexterity' },
+      damage: { base: 'None — sand, ash, a flung cloak, a boot to the knee' },
+      effects: {
+        base: 'Sensory: −1 to the mark’s attack and Perception rolls.',
+        advances: [
+          { value: '−2 to attack and Perception', cost: 'm' },
+          { value: '−2, and no Interrupts or Reactions', cost: 'm' },
+          { value: 'Blinded', cost: 'M' },
+        ],
+      },
+      duration: { base: 'Save ends' },
+    },
+  },
+  {
+    name: 'Slip Away', category: 'The Lost', role: 'Defensive', mode: 'Effect',
+    vars: {
+      frequency: FREQ_ENC,
+      action: { base: 'Move', advances: [{ value: 'Minor', cost: 'M' }, { value: 'Interrupt — when an enemy attacks you', cost: 'M' }] },
+      range: { base: 'Self' },
+      effects: {
+        base: 'Shift 5′. The movement provokes no opportunity attacks.',
+        advances: [
+          { value: 'Shift 10′', cost: 'm' },
+          { value: 'Shift 10′, and the next attack against you this round takes −2', cost: 'm' },
+          { value: 'Shift 10′ — and if you end it out of the attacker’s reach, the triggering attack misses', cost: 'M' },
+        ],
+      },
+    },
+  },
+  {
+    name: 'Vanish', category: 'The Lost', role: 'Defensive · utility', mode: 'Effect',
+    vars: {
+      frequency: FREQ_ENC,
+      action: { base: 'Standard', advances: [{ value: 'Move', cost: 'M' }, { value: 'Minor', cost: 'M' }] },
+      range: { base: 'Self' },
+      effects: {
+        base: 'Hide (Stealth vs Perception) even while observed, so long as you have cover or concealment. Anyone who loses you is Off Guard against you.',
+        advances: [
+          { value: '+2 to the Stealth check', cost: 'm' },
+          { value: 'No cover needed — a shadow, a crowd, or a distraction is enough', cost: 'm' },
+          { value: 'Hide in plain sight, with nothing at all to hide behind', cost: 'M' },
+        ],
+      },
+      duration: { base: 'Until you attack or are found' },
+    },
+  },
+  {
+    name: 'Tumble', category: 'The Lost', role: 'Movement', mode: 'Effect',
+    vars: {
+      frequency: FREQ_FULL,
+      action: { base: 'Move', advances: [{ value: 'Minor', cost: 'M' }] },
+      range: { base: 'Self' },
+      effects: {
+        base: 'Move up to half your Speed, provoking no opportunity attacks.',
+        advances: [
+          { value: 'up to your full Speed', cost: 'm' },
+          { value: 'full Speed, and you may move through enemies’ squares', cost: 'm' },
+          { value: 'full Speed, and you may stand from Prone or escape a grab as part of the move', cost: 'M' },
+        ],
+      },
+    },
+  },
+  {
+    name: 'Light Fingers', category: 'The Lost', role: 'Utility', mode: 'Effect',
+    vars: {
+      frequency: { base: 'Encounter', advances: [{ value: 'At-Will', cost: 'M' }] },
+      action: { base: 'Standard', advances: [{ value: 'Move', cost: 'M' }, { value: 'Minor', cost: 'M' }] },
+      range: { base: 'Reach' },
+      targets: { base: 'One' },
+      attack: { base: 'Thievery vs the mark’s Perception' },
+      effects: {
+        base: 'Lift, palm, or plant a small unattended or pocketed item.',
+        advances: [
+          { value: 'An item on the mark’s belt or person — a purse, a key, a signet', cost: 'm' },
+          { value: 'An item in the mark’s hand', cost: 'm' },
+          { value: 'And the mark does not notice until the scene has ended — no second check', cost: 'M' },
+        ],
+      },
+    },
+  },
+  {
+    name: 'Lay Low', category: 'The Lost', role: 'Utility · non-combat', mode: 'Effect',
+    vars: {
+      frequency: { base: 'Daily' },
+      action: { base: '1 hour, in a settlement' },
+      range: { base: 'Self' },
+      effects: {
+        base: 'You go to ground: pursuers take −2 to find you, and you find a bed no one will speak of.',
+        advances: [
+          { value: 'You find the low houses too — a fence, a fixer, or a forger', cost: 'm' },
+          { value: 'You can hide the whole company, not only yourself', cost: 'm' },
+          { value: 'You disappear entirely: pursuit loses you outright unless it beats your Stealth', cost: 'M' },
+        ],
+      },
+      duration: { base: 'One night', advances: [{ value: 'Three nights', cost: 'm' }, { value: 'A week', cost: 'm' }, { value: 'As long as you care to stay lost', cost: 'M' }] },
+    },
+  },
+];
+
 export const CATEGORIES: CategoryGroup[] = [
   { name: 'Arms', source: 'Soldier — Class', blurb: 'The disciplined core of weapon-fighting: reliable strikes that grow with the weapon in your hands, plus the means to guard, disarm, focus, and read a fight.', abilities: ARMS },
   { name: 'Protection', source: 'Soldier — Vanguard', blurb: 'The defender’s toolkit: control strikes that pin and daze, shielding auras for your comrades, and the means to take a blow meant for someone else.', abilities: PROTECTION },
@@ -1806,5 +1980,6 @@ export const CATEGORIES: CategoryGroup[] = [
   { name: 'Letters', source: 'Scholar — Class', blurb: 'Scholarship, half academic and half arcane literacy: research and recall, a clever Int-based blade, and the reading of scrolls, spellbooks and rituals. No spells of its own.', abilities: LETTERS },
   { name: 'Medicine', source: 'Scholar — Physician', blurb: 'The non-magical physician: a surgeon’s cuts and crafted poisons, a guarded stance, and hands-on healing — combat dressings, condition care, and the long convalescence — drawing on a Healer’s Kit.', abilities: MEDICINE },
   { name: 'New Magic', source: 'Scholar — Arcanist', blurb: 'The Collegium’s disciplined, destructive art — and a spell-builder. Each offensive chassis (ranged or close, single or burst) is bought with ONE element and a name of your choosing, then re-bought to make another spell. Dexterity vs AC aims every attack; Intelligence powers the damage. An element’s signature Effect ladder unlocks only with its Mastery — [type] feat, and four implements (wand, staff, spellbook, scroll) each lend a hook.', abilities: NEW_MAGIC },
+  { name: 'The Lost', source: 'Scoundrel — Class', blurb: 'The outcast’s craft, built on one hard truth: a Scoundrel who is seen is a Scoundrel who is losing. The strike pays out only against a mark who is Off Guard or flanked, and everything else in the Category exists to buy that condition — the false move, the fistful of sand, the slip out of reach, and the art of vanishing in a city that would hang you.', abilities: THE_LOST },
   { name: 'Elder Magic', source: 'Scholar — Antiquarian', blurb: 'The recovered, fragmentary art of the Elders — subtle and controlling, worked by force of will (Charisma against a foe’s unguarded mind): the artefact engine, psychic dread, blinding, forced movement, outright domination, a withering doubt, and the ruin-delver’s craft. Every working carries a Feat Hook, for Elder magic comes only in studied fragments.', abilities: ELDER_MAGIC },
 ];

@@ -21,6 +21,21 @@ An attack rolls **d20 + your Offense vs the target's Defense** — meet or beat 
 - Most physical attacks target **AC** *(your Armoured Constitution Defense)*; magic that bypasses armour strikes an **Unarmoured** defense instead.
 - Ranged attacks lose nothing in the first range band, **−2** in the second, **−4** in the third.
 
+## Off Guard and flanking
+
+Some abilities — the Scoundrel's above all — pay out only against a foe who cannot properly defend itself. Two rules cover that.
+
+**Off Guard** is a condition: the target is not ready for *you*. Unlike the laddered conditions, it is simply on or off. A creature is **Off Guard against you** when any of these is true:
+
+- it **cannot see you** — you are Hidden, or it is Blind;
+- it has **not yet acted** in the encounter (it was surprised);
+- it is **Prone, Stunned, or Immobilized**;
+- an ability says so — a Feint, for instance, leaves the target Off Guard against your next attack.
+
+Off Guard is always *against someone*: a man watching you and not the thief behind him is Off Guard against the thief and ready for you. On its own it grants no penalty — it is the **key that unlocks** the abilities written to use it.
+
+**Flanking** is the other key. You **flank** an enemy when you and an ally are both adjacent to it and stand on **opposite sides** — directly across from one another. Flanking is not a condition and needs no roll; either the geometry holds or it does not. Abilities that trigger on an Off Guard target trigger equally on a flanked one, unless they say otherwise.
+
 ## Falling, dying, and death
 
 When you are reduced to **0 HP or lower** you fall **unconscious** and gain the **Dying** condition. At **−10 HP** you are dead.
