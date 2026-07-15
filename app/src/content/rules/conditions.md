@@ -61,7 +61,7 @@ A penalty to a chosen defense, escalating into Vulnerable.
 | 1 | −1 to a chosen defense | — |
 | 2 | −2 | <span class="pip pip--m">m</span> |
 | 3 | −2 and Vulnerable 1 | <span class="pip pip--m">m</span> |
-| 4 | −2 and Vulnerable 5 | <span class="pip pip--M">M</span> |
+| 4 | −2 and Vulnerable 3 | <span class="pip pip--M">M</span> |
 
 The penalty caps at −2; powerful abilities may apply it to all physical or all mental defenses at once. **Vulnerable N** means the target takes N extra damage — either from a chosen damage type, or against a specific defense.
 

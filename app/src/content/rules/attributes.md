@@ -24,6 +24,15 @@ Each attribute does double duty:
 
 Your **AC** — the number most physical blows must beat — is simply your **Armoured Constitution Defense**. Magic that ignores armour comes instead at an **Unarmoured** defense, so heavy plate is no help against a curse.
 
+## Difficulty Class
+
+A few abilities test themselves against a creature *as a whole* rather than at one particular Defense — reading it, outwitting it, or overcoming its general resilience. For these the target number is the creature's **Difficulty Class (DC)**:
+
+- For a **character**, DC = **10 + level**.
+- A **monster** states its own **DC** in its listing.
+
+It is the mirror of the DC your own abilities set for their saves *(your to-hit bonus + 10)*: where a save asks the target to beat *your* number, a DC is the number *you* must beat to get past the creature.
+
 ## Class Attributes climb higher
 
 Two of your six are **Class Attributes** — one from your **Class**, one from your **Path**. These are the attributes your character is built to excel in, and they reach further than the rest:

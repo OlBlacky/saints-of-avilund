@@ -32,7 +32,9 @@ export const GLOSSARY: Record<string, string> = {
   'Off Guard': 'A target is Off Guard against you when it cannot see you, has not yet acted in the encounter, is Prone, Stunned or Immobilized, or an ability (a Feint) has left it so. On its own it does nothing — it is the key that unlocks the abilities written to use it.',
   'flanked': 'A creature is flanked when you and an ally are both adjacent to it, on opposite sides. Abilities that trigger on an Off Guard target trigger equally on a flanked one.',
   'flanking': 'You flank an enemy when you and an ally are both adjacent to it and stand on opposite sides. It needs no roll — either the geometry holds or it does not.',
-  'Studied': 'A mark the Assassin has observed with Study the Mark. It stays Studied until the end of the encounter; Death Blow and Anatomist’s Cut deal their +Int only against a Studied mark.',
+  'Studied': 'A mark the Assassin has observed with Study the Mark. It stays Studied until the end of the encounter, adding Study the Mark’s bonus damage (+1, rising to +Int, then +2 × Int) to your Sneak Attack, Death Blow, and Anatomist’s Cut against it.',
+  'Difficulty Class': 'A creature’s DC — the target number to beat when an ability tests itself against the creature as a whole rather than one Defence. For a character it is 10 + level; a monster states its own DC in its listing.',
+  'DC': 'Difficulty Class — the target number to beat when an ability tests itself against a creature as a whole rather than one Defence. A character’s DC is 10 + level; a monster states its own.',
 };
 
 // Inline abbreviations — decorated wherever they appear in body text (not only
