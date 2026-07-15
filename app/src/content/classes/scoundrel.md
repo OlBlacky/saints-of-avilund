@@ -77,7 +77,7 @@ Every Scoundrel draws on **The Lost** from the Class, and a second Category from
 ### [The Lost](../../abilities/#the-lost) — *the Class category*
 The outcast's craft: the strike that only pays when you are unseen, and every trick that keeps you that way — vanishing, slipping the grasp, fighting dirty, and going to ground.
 
-*Sneak Attack · Feint · Dirty Trick · Slip Away · Vanish · Tumble · Light Fingers · Lay Low*
+*Sneak Attack · Feint · Dirty Trick · Nimble Evasion · Vanish · Tumble · Light Fingers · Lay Low*
 
 ### [Assassination](../../abilities/#assassination) — *Assassin*
 The studied kill: the mark read before the blow is struck, the poisoned edge, the cord, and the trade's least glamorous skill — leaving nothing behind that says you were there.

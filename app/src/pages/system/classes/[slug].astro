@@ -19,7 +19,7 @@ const { Content } = await render(entry);
   <p class="back-link"><a href={url('system/classes/')}>← Character Classes</a></p>
 
   <header class="saint-head">
-    {entry.data.portfolio && <p class="eyebrow">Portfolio of {entry.data.portfolio}</p>}
+    {entry.data.portfolio && <p class="eyebrow">{entry.data.portfolio}</p>}
     <h1>{entry.data.title}</h1>
   </header>
 

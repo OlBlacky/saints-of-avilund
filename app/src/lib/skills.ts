@@ -29,6 +29,7 @@ export const SKILLS: Skill[] = [
     how: 'Balance, tumble, and keep your feet where the footing is treacherous or enemies bar the way.',
     actions: [
       { name: 'Tumble', rule: 'Move through a space an enemy threatens without granting an opportunity strike: Acrobatics vs the foe’s Dexterity Offense.' },
+      { name: 'Slip Past', rule: 'Move through an enemy’s own square — under the arm, between the legs, over the back: Acrobatics vs the foe’s Dexterity Offense. You may not end your move there.' },
       { name: 'Balance', rule: 'Cross a narrow or unstable surface: Acrobatics vs a DC set by the width and conditions; a bad failure means a fall.' },
       { name: 'Break a Fall', rule: 'On a successful check, ignore the first 10′ when reckoning falling damage.' },
     ],
@@ -70,7 +71,7 @@ export const SKILLS: Skill[] = [
     how: 'Lie convincingly, feint, and pass off the implausible as true.',
     actions: [
       { name: 'Deceive', rule: 'Make a lie believed: Bluff opposed by the listener’s Sense Motive.' },
-      { name: 'Feint', rule: 'In combat, as a Standard action: Bluff vs the target’s Sense Motive; on a success it loses its Dexterity bonus to AC against your next attack.' },
+      { name: 'Feint', rule: 'In combat, as a Standard action: Bluff vs the target’s Sense Motive; on a success it is Off Guard against your next attack.' },
       { name: 'Create a Diversion', rule: 'Bluff vs Sense Motive to draw eyes away, letting an ally Hide or slip past.' },
     ],
   },

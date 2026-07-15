@@ -1817,28 +1817,27 @@ const THE_LOST: Ability[] = [
       frequency: FREQ_FULL,
       action: { base: 'Standard' },
       range: { base: 'Reach' },
-      targets: { base: 'One' },
+      targets: { base: 'One Off Guard or flanked opponent' },
       attack: { base: 'Dexterity vs AC' },
       damage: {
-        base: '1[W]',
+        base: '1[W] + 1',
         advances: [
-          { value: '1[W] + 1', cost: 'm' },
           { value: '1[W] + Dex', cost: 'm' },
-          { value: '2[W]', cost: 'M', note: 'L5' },
+          { value: '1[W] + 1d6', cost: 'm' },
+          { value: '2[W] + 1d6', cost: 'M', note: 'L5' },
         ],
       },
       effects: {
-        base: 'Against an Off Guard or flanked mark: +2 damage.',
+        base: 'None',
         advances: [
-          { value: '+4 damage', cost: 'm' },
-          { value: '+4 damage, and Bleed 1', cost: 'm' },
-          { value: '+6 damage, and Bleed 2', cost: 'M' },
+          { value: 'Bleed 1', cost: 'M' },
+          { value: 'Bleed 2', cost: 'M' },
         ],
       },
       duration: { base: 'Instant (Bleed: save ends)' },
     },
     options: [
-      { label: 'The mark must be Off Guard', note: OFF_GUARD_NOTE, detail: 'Against anyone else this is an ordinary weapon strike — the Damage row and nothing more. The Effect row is the whole point of the Scoundrel, and it is the only row that cares how you got there.', placement: 'top' },
+      { label: 'The mark must be Off Guard or flanked', note: OFF_GUARD_NOTE, detail: 'Sneak Attack can only be aimed at a mark who is Off Guard against you or whom you flank. Against anyone else there is no strike to make — this is the reward for getting behind a guard, not a general attack.', placement: 'top' },
       { label: 'Weapon Specialization Hooks', note: WEAPON_HOOK_NOTE, detail: LOST_HOOKS },
     ],
   },
@@ -1866,8 +1865,8 @@ const THE_LOST: Ability[] = [
   {
     name: 'Dirty Trick', category: 'The Lost', role: 'Debuff', mode: 'Attack',
     vars: {
-      frequency: FREQ_ENC,
-      action: { base: 'Standard', advances: [{ value: 'Minor', cost: 'M' }] },
+      frequency: FREQ_2ENC,
+      action: { base: 'Standard', advances: [{ value: 'Move', cost: 'M' }, { value: 'Minor', cost: 'M' }] },
       range: { base: 'Reach' },
       targets: { base: 'One' },
       attack: { base: 'Dexterity vs Unarmoured Dexterity' },
@@ -1880,11 +1879,17 @@ const THE_LOST: Ability[] = [
           { value: 'Blinded', cost: 'M' },
         ],
       },
-      duration: { base: 'Save ends' },
+      duration: {
+        base: 'Until the end of your next turn',
+        advances: [
+          { value: 'Dex rounds', cost: 'm' },
+          { value: 'Save ends', cost: 'M' },
+        ],
+      },
     },
   },
   {
-    name: 'Slip Away', category: 'The Lost', role: 'Defensive', mode: 'Effect',
+    name: 'Nimble Evasion', category: 'The Lost', role: 'Defensive', mode: 'Effect',
     vars: {
       frequency: FREQ_ENC,
       action: { base: 'Move', advances: [{ value: 'Minor', cost: 'M' }, { value: 'Interrupt — when an enemy attacks you', cost: 'M' }] },
@@ -1920,14 +1925,14 @@ const THE_LOST: Ability[] = [
     name: 'Tumble', category: 'The Lost', role: 'Movement', mode: 'Effect',
     vars: {
       frequency: FREQ_FULL,
-      action: { base: 'Move', advances: [{ value: 'Minor', cost: 'M' }] },
+      action: { base: 'Move' },
       range: { base: 'Self' },
       effects: {
         base: 'Move up to half your Speed, provoking no opportunity attacks.',
         advances: [
-          { value: 'up to your full Speed', cost: 'm' },
-          { value: 'full Speed, and you may move through enemies’ squares', cost: 'm' },
-          { value: 'full Speed, and you may stand from Prone or escape a grab as part of the move', cost: 'M' },
+          { value: 'As above, and you may move through enemies’ squares with no check', cost: 'm' },
+          { value: 'As above, at your full Speed', cost: 'm' },
+          { value: 'As above, and every enemy whose square you pass through is Off Guard until the end of your next turn', cost: 'M' },
         ],
       },
     },
@@ -1955,16 +1960,23 @@ const THE_LOST: Ability[] = [
     vars: {
       frequency: { base: 'Daily' },
       action: { base: '1 hour, in a settlement' },
-      range: { base: 'Self' },
-      effects: {
-        base: 'You go to ground: pursuers take −2 to find you, and you find a bed no one will speak of.',
+      targets: {
+        base: 'Self',
         advances: [
-          { value: 'You find the low houses too — a fence, a fixer, or a forger', cost: 'm' },
-          { value: 'You can hide the whole company, not only yourself', cost: 'm' },
-          { value: 'You disappear entirely: pursuit loses you outright unless it beats your Stealth', cost: 'M' },
+          { value: 'Self and 1 other', cost: 'm' },
+          { value: 'Self and 2 others', cost: 'm' },
+          { value: 'The entire party', cost: 'M' },
         ],
       },
-      duration: { base: 'One night', advances: [{ value: 'Three nights', cost: 'm' }, { value: 'A week', cost: 'm' }, { value: 'As long as you care to stay lost', cost: 'M' }] },
+      effects: {
+        base: 'You go to ground in some abandoned or hidden place. Opponents take −1 to locate you (Gather Information, or another relevant skill check).',
+        advances: [
+          { value: '−2 to locate you', cost: 'm' },
+          { value: '−2, and a failed check turns up a misdirection ("they left town", "took the river road")', cost: 'm' },
+          { value: '−2, and you may venture out up to 4 hours a day without compromising the hiding place', cost: 'M' },
+        ],
+      },
+      duration: { base: '24 hours', advances: [{ value: '48 hours', cost: 'm' }, { value: '72 hours', cost: 'm' }, { value: '1 week', cost: 'M' }] },
     },
   },
 ];
