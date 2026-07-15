@@ -2137,42 +2137,6 @@ const ASSASSINATION: Ability[] = [
 // rides the existing Control, Fear, and Off Guard rules.
 const GUILE: Ability[] = [
   {
-    name: 'Cutting Remark', category: 'Guile', role: 'Offensive · debuff', mode: 'Attack',
-    vars: {
-      frequency: FREQ_FULL,
-      action: { base: 'Standard', advances: [{ value: 'Move', cost: 'M' }, { value: 'Minor', cost: 'M' }] },
-      range: { base: "30'" },
-      targets: { base: 'One' },
-      attack: { base: 'Charisma vs Unarmoured Wisdom' },
-      effects: {
-        base: 'A jibe that stings and rattles: −1 to the mark’s attack rolls, and it is Off Guard against your next attack.',
-        advances: [
-          { value: '−2 to the mark’s attack rolls', cost: 'm' },
-          { value: 'Off Guard against your next attack and one ally’s', cost: 'm' },
-          { value: 'Off Guard against the whole party’s next attack', cost: 'M' },
-        ],
-      },
-      duration: { base: 'Off Guard: until the end of your next turn · −to-hit: save ends' },
-    },
-  },
-  {
-    name: 'Bluster', category: 'Guile', role: 'Buff · defensive', mode: 'Effect',
-    vars: {
-      frequency: FREQ_ENC,
-      action: { base: 'Move', advances: [{ value: 'Minor', cost: 'M' }, { value: 'Free', cost: 'M' }] },
-      range: { base: 'Self' },
-      effects: {
-        base: 'A brazen front: gain Cha Temp HP.',
-        advances: [
-          { value: 'And the next attack against you this round is at −2 (they hesitate)', cost: 'm' },
-          { value: 'And one enemy you face down cannot move closer to you until your next turn (Fear)', cost: 'm' },
-          { value: 'And that Fear spreads to all enemies within 15′', cost: 'M' },
-        ],
-      },
-      duration: { base: 'Until your next turn' },
-    },
-  },
-  {
     name: 'Misdirection', category: 'Guile', role: 'Debuff · Off Guard', mode: 'Attack',
     vars: {
       frequency: FREQ_FULL,
@@ -2192,74 +2156,58 @@ const GUILE: Ability[] = [
     },
   },
   {
-    name: 'Silver Tongue', category: 'Guile', role: 'Control', mode: 'Attack',
+    name: 'Cutting Remark', category: 'Guile', role: 'Debuff', mode: 'Attack',
     vars: {
-      frequency: FREQ_ENC,
-      action: { base: 'Standard' },
-      range: { base: "30' (you must be able to speak to it)" },
-      targets: { base: 'One' },
+      frequency: FREQ_FULL,
+      action: { base: 'Standard', advances: [{ value: 'Move', cost: 'M' }, { value: 'Minor', cost: 'M' }] },
+      range: { base: "30'" },
+      targets: { base: 'One', advances: [{ value: 'A second enemy within 10′ of the first', cost: 'M' }] },
       attack: { base: 'Charisma vs Unarmoured Wisdom' },
       effects: {
-        base: 'Confused — must roll to act as intended, else strike the nearest creature.',
+        base: 'A jibe that gets under the skin: −1 to the mark’s attack rolls.',
         advances: [
-          { value: 'Charmed — cannot attack you', cost: 'm' },
-          { value: 'Ensorcelled — cannot attack you, and may be compelled to strike the nearest', cost: 'm' },
-          { value: 'Dominated — you dictate the target’s actions', cost: 'M', note: 'L5' },
+          { value: '−2 to its attack rolls', cost: 'm' },
+          { value: '−2 to its attack and damage rolls', cost: 'm' },
+          { value: '−2 to attack and damage, and it cannot take Reactions or Interrupts', cost: 'M' },
         ],
       },
       duration: { base: 'Save ends' },
     },
-    options: [{ label: 'Talk, not sorcery', note: 'Silver Tongue rides the Control ladder by pure persuasion — no magic. It works only on a creature that can hear and understand you.', placement: 'top' }],
   },
   {
-    name: 'False Face', category: 'Guile', role: 'Utility · non-combat', mode: 'Effect',
+    name: 'Bluster', category: 'Guile', role: 'Debuff · defences', mode: 'Attack',
     vars: {
-      frequency: { base: 'Encounter' },
-      action: { base: 'A few minutes to prepare the look' },
-      range: { base: 'Self' },
+      frequency: FREQ_FULL,
+      action: { base: 'Standard', advances: [{ value: 'Move', cost: 'M' }, { value: 'Minor', cost: 'M' }] },
+      range: { base: "30'" },
+      targets: { base: 'One' },
+      attack: { base: 'Charisma vs Unarmoured Wisdom' },
       effects: {
-        base: 'You pass as another sort of person — a guardsman, a friar, a servant. Onlookers need Perception vs your Disguise to see through it.',
+        base: 'Bluff and bravado throw the mark off its guard: −1 to all its defences.',
         advances: [
-          { value: 'Impersonate a specific person you have observed', cost: 'm' },
-          { value: 'The face holds up under direct scrutiny and questioning', cost: 'm' },
-          { value: 'Even those who know the person well are fooled, for the whole scene', cost: 'M' },
+          { value: '−2 to all its defences', cost: 'm' },
+          { value: '−2, and Vulnerable 1', cost: 'm' },
+          { value: '−2, and Vulnerable 3', cost: 'M' },
         ],
       },
-      duration: { base: 'As long as you maintain the pretence' },
+      duration: { base: 'Save ends' },
     },
   },
   {
-    name: 'Slip the Knot', category: 'Guile', role: 'Defensive · escape', mode: 'Effect',
+    name: 'Confidence', category: 'Guile', role: 'Buff · self', mode: 'Effect',
     vars: {
       frequency: FREQ_ENC,
-      action: { base: 'Move', advances: [{ value: 'Minor', cost: 'M' }, { value: 'Interrupt — when you are grabbed or bound', cost: 'M' }] },
+      action: { base: 'Move', advances: [{ value: 'Minor', cost: 'M' }, { value: 'Free', cost: 'M' }] },
       range: { base: 'Self' },
       effects: {
-        base: 'You wriggle or talk your way free of a grab, bonds, or a manacle (Escape Artist, or Charisma vs the binder’s DC); you provoke nothing.',
+        base: 'A performer’s unshakeable front: gain Cha Temp HP.',
         advances: [
-          { value: 'And the one who held you is Off Guard against your next attack', cost: 'm' },
-          { value: 'And you shrug off one condition (save against it at once)', cost: 'm' },
-          { value: 'And you deflect the blame — an accusation or alarm lands on someone else of your choosing', cost: 'M' },
+          { value: 'And +1 to all your defences while the Temp HP lasts', cost: 'm' },
+          { value: 'And +2 to all your defences while the Temp HP lasts', cost: 'm' },
+          { value: 'And, while the Temp HP lasts, you cannot be made Off Guard', cost: 'M' },
         ],
       },
-    },
-  },
-  {
-    name: 'Confidence Game', category: 'Guile', role: 'Utility · non-combat', mode: 'Effect',
-    vars: {
-      frequency: { base: 'Daily' },
-      action: { base: 'Hours to days of working a mark' },
-      range: { base: 'Conversation' },
-      targets: { base: 'One mark (or household)' },
-      effects: {
-        base: 'You run a con for access, trust, or a modest sum — a forged introduction, a false pretext (Bluff vs the mark’s Sense Motive).',
-        advances: [
-          { value: 'A larger score, or a lasting false standing in the locale', cost: 'm' },
-          { value: 'The mark vouches for you to others', cost: 'm' },
-          { value: 'The mark never realizes — no later check reveals the con', cost: 'M' },
-        ],
-      },
-      duration: { base: 'Until the con is spent or exposed' },
+      duration: { base: 'Until you lose the Temp HP' },
     },
   },
 ];
@@ -2276,7 +2224,7 @@ export const CATEGORIES: CategoryGroup[] = [
   { name: 'Medicine', source: 'Scholar — Physician', blurb: 'The non-magical physician: a surgeon’s cuts and crafted poisons, a guarded stance, and hands-on healing — combat dressings, condition care, and the long convalescence — drawing on a Healer’s Kit.', abilities: MEDICINE },
   { name: 'New Magic', source: 'Scholar — Arcanist', blurb: 'The Collegium’s disciplined, destructive art — and a spell-builder. Each offensive chassis (ranged or close, single or burst) is bought with ONE element and a name of your choosing, then re-bought to make another spell. Dexterity vs AC aims every attack; Intelligence powers the damage. An element’s signature Effect ladder unlocks only with its Mastery — [type] feat, and four implements (wand, staff, spellbook, scroll) each lend a hook.', abilities: NEW_MAGIC },
   { name: 'The Lost', source: 'Scoundrel — Class', blurb: 'The outcast’s craft, built on one hard truth: a Scoundrel who is seen is a Scoundrel who is losing. The strike pays out only against a mark who is Off Guard or flanked, and everything else in the Category exists to buy that condition — the false move, the fistful of sand, the slip out of reach, and the art of vanishing in a city that would hang you.', abilities: THE_LOST },
-  { name: 'Guile', source: 'Scoundrel — Charlatan', blurb: 'The con man’s craft — Charisma against a foe’s nerve. A debuffer who also sets Off Guard for the whole party: cutting words that rattle and open a mark, a misdirection that turns a foe’s head, the smooth talk that stays a hand, a borrowed face, the wriggle out of the rope, and the long con. He rides the game’s own Control, Fear, and Off Guard rules — no new trick to track.', abilities: GUILE },
+  { name: 'Guile', source: 'Scoundrel — Charlatan', blurb: 'The con man’s craft — Charisma against a foe’s nerve. A debuffer who works the whole fight from the back: a misdirection that turns a foe’s head and leaves it Off Guard for the party, a cutting remark that blunts its attacks, a blustering bravado that drops its guard, and the unshakeable confidence that keeps the Charlatan himself standing. (More Guile — the con, the borrowed face — to come.)', abilities: GUILE },
   { name: 'Assassination', source: 'Scoundrel — Assassin', blurb: 'The studied kill. Study the Mark hangs a Studied marker on a target; the Death Blow — a rare, massive strike against a mark who is Studied and Off Guard — is the reward for setting it all up. Around it: the Physician’s Envenom (the same crafted-poison delivery, reused), a crippling anatomist’s cut, the garrote’s silent choke, a pointed interrogation that turns talk into a battle edge, and the trade’s least glamorous skill — leaving no trace. Dexterity plants every blade; Intelligence rides on the study.', abilities: ASSASSINATION },
   { name: 'Elder Magic', source: 'Scholar — Antiquarian', blurb: 'The recovered, fragmentary art of the Elders — subtle and controlling, worked by force of will (Charisma against a foe’s unguarded mind): the artefact engine, psychic dread, blinding, forced movement, outright domination, a withering doubt, and the ruin-delver’s craft. Every working carries a Feat Hook, for Elder magic comes only in studied fragments.', abilities: ELDER_MAGIC },
 ];

@@ -236,6 +236,16 @@ export const SAINTS: Saint[] = [
     slug: 'troy', name: 'Troy', tier: 'Minores', office: 'A saint of the Republic', noAutoLink: true,
     blurb: 'A saint of the Republic of Waldheim; the county and seat of St. Troy-on-the-Moor bears his name.',
   },
+
+  // ── Saints of the Bishopric of St. Ignatius ──────────────────
+  {
+    slug: 'cyprian', name: 'Cyprian', tier: 'Minores', office: 'Grammar & the Preserved Word',
+    blurb: 'A follower of St. Ignatius who, in the first years of the Repurgo, devised a wholly new alphabet and tongue — the Cyprian hand — into which the Bishopric’s scholars copied their books, hiding a library’s worth of learning in a script the burners could not read. For it he was put to death by an inquisitor in 1233; three-and-thirty years on, the Bishopric sainted the man its own age had killed. In the mountains of St. Ignatius his veneration runs as deep as the founder’s own, and every grammar school in the Bishopric is kept by the clergy of his canon, who teach the Cyprian letters to this day.',
+  },
+  {
+    slug: 'carpathius', name: 'Carpathius', tier: 'Minores', office: 'Founder of St. Carpathi',
+    blurb: 'The founder-saint of St. Carpathi, a hermit who climbed into the high valleys of the Bishopric of St. Ignatius some five centuries ago and gathered the first settlement about him. When a clan of Ferals came down from the peaks upon the young town, Carpathius fell defending it, and the folk held the ground he died on. Much of his remains lie in his shrine in the town that bears his name, and a single family, who trace their blood to him, have led St. Carpathi ever since.',
+  },
 ];
 
 export function saintsByTier(tier: Tier): Saint[] {
