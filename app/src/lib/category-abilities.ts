@@ -1981,6 +1981,171 @@ const THE_LOST: Ability[] = [
   },
 ];
 
+// ── Assassination (Scoundrel — Assassin) ────────────────────────
+// The studied kill. Study the Mark hangs a Studied marker on a target; Death
+// Blow and the surgical strikes pay off against it, and Intelligence rides on
+// the study. Dexterity still plants every blade (the Scoundrel rule).
+const STUDIED_NOTE =
+  'A mark you have Studied (with Study the Mark) is Studied by you until the end of the encounter. Death Blow and Anatomist’s Cut deal their +Int only against a Studied mark.';
+
+const ASSASSIN_HOOKS: string[] = [
+  'Light Blades → +Int damage',
+  'Thrown → the strike may be thrown (1×WRI), Studied bonus and all',
+  'Crossbows → ignore the DR of armour',
+  'Unarmed / Natural → on a hit against a Studied mark, it is also Off Guard against your next attack',
+];
+
+const ASSASSINATION: Ability[] = [
+  {
+    name: 'Study the Mark', category: 'Assassination', role: 'Setup', mode: 'Effect',
+    vars: {
+      frequency: { base: 'Encounter', advances: [{ value: 'At-Will', cost: 'M' }] },
+      action: { base: 'Minor (in combat) / a few minutes’ watching (out of combat)' },
+      range: { base: 'Sight' },
+      targets: { base: 'One', advances: [{ value: 'Two', cost: 'M' }] },
+      attack: { base: 'None — you observe; no roll' },
+      effects: {
+        base: 'The mark is Studied. You learn its softest Defence, and your Death Blow and Anatomist’s Cut deal +Int damage against it.',
+        advances: [
+          { value: 'You also learn its HP tier and all its Defences', cost: 'm' },
+          { value: '+2 to hit the mark with your Assassination abilities', cost: 'm' },
+          { value: 'The +Int becomes +2 × Int', cost: 'M' },
+        ],
+      },
+      duration: { base: 'Until the end of the encounter' },
+    },
+  },
+  {
+    name: 'Death Blow', category: 'Assassination', role: 'Offensive · finisher', mode: 'Attack',
+    vars: {
+      frequency: FREQ_ENC,
+      action: { base: 'Standard' },
+      range: { base: 'Reach' },
+      targets: { base: 'One Studied mark that is Off Guard or flanked' },
+      attack: { base: 'Dexterity vs AC' },
+      damage: {
+        base: '2[W] + Dex (+ Int, from the study)',
+        advances: [
+          { value: '3[W] + Dex', cost: 'm' },
+          { value: '3[W] + 2 × Dex', cost: 'm' },
+          { value: '4[W] + 2 × Dex', cost: 'M', note: 'L5' },
+        ],
+      },
+      effects: {
+        base: 'The blow ignores the mark’s DR.',
+        advances: [
+          { value: 'Ignores DR, and Bleed 2', cost: 'M' },
+          { value: 'Ignores DR, and Bleed 5', cost: 'M' },
+        ],
+      },
+      duration: { base: 'Instant (Bleed: save ends)' },
+    },
+    options: [
+      { label: 'Studied and Off Guard', note: STUDIED_NOTE, detail: 'Death Blow can only be aimed at a mark you have Studied who is also Off Guard against you or whom you flank. It is the patient kill — the reward for setting the whole thing up, not a strike you throw in a scramble.', placement: 'top' },
+      { label: 'Weapon Specialization Hooks', note: WEAPON_HOOK_NOTE, detail: ASSASSIN_HOOKS },
+    ],
+  },
+  {
+    name: 'Poisoned Blade', category: 'Assassination', role: 'Offensive', mode: 'Attack',
+    vars: {
+      frequency: FREQ_FULL,
+      action: { base: 'Standard — coats the blade and attacks in one' },
+      range: { base: 'Reach' },
+      targets: { base: 'One' },
+      attack: { base: 'Dexterity vs AC' },
+      damage: { base: '1[W]' },
+      effects: {
+        base: 'Delivers the Assassin’s own coating: Poison 1 / round (save ends).',
+        advances: [
+          { value: 'Poison 2 / round', cost: 'm' },
+          { value: 'Poison 3 / round', cost: 'm' },
+          { value: 'Poison 5 / round', cost: 'M' },
+        ],
+      },
+      duration: { base: 'Save ends' },
+    },
+    options: [
+      { label: 'With the Craft: Poison Feat', note: 'If you can craft poisons, Poisoned Blade is also your delivery for them:', detail: 'Instead of the coating above, deliver any poison you have crafted and hold a full dose of, exactly as the Physician’s Envenom does — with +1 to the poison’s save DC (rising with the ladder: +2, then +2 and +Int Intervals).' },
+      { label: 'Weapon Specialization Hooks', note: WEAPON_HOOK_NOTE, detail: ['Light Blades → +Int damage', "Thrown → may be thrown (1×WRI)"] },
+    ],
+  },
+  {
+    name: 'Anatomist’s Cut', category: 'Assassination', role: 'Debuff', mode: 'Attack',
+    vars: {
+      frequency: FREQ_FULL,
+      action: { base: 'Standard' },
+      range: { base: 'Reach' },
+      targets: { base: 'One' },
+      attack: { base: 'Dexterity vs AC' },
+      damage: { base: '1[W] + Dex (+ Int against a Studied mark)' },
+      effects: {
+        base: 'A crippling cut to nerve, tendon, or joint: −1 to a Defence of your choice.',
+        advances: [
+          { value: '−2 to the chosen Defence', cost: 'm' },
+          { value: '−2, and Vulnerable 1', cost: 'm' },
+          { value: '−2, and Vulnerable 5', cost: 'M' },
+        ],
+      },
+      duration: { base: 'Save ends' },
+    },
+    options: [{ label: 'Weapon Specialization Hooks', note: WEAPON_HOOK_NOTE, detail: ['Light Blades → the cut also Slows the mark (−5′ Speed) while it holds'] }],
+  },
+  {
+    name: 'Garrote', category: 'Assassination', role: 'Offensive · control', mode: 'Attack',
+    vars: {
+      frequency: FREQ_ENC,
+      action: { base: 'Standard' },
+      range: { base: 'Reach (from behind — the mark must be Off Guard)' },
+      targets: { base: 'One Off Guard opponent' },
+      attack: { base: 'Dexterity vs Armoured Strength (a choke, not a cut)' },
+      damage: { base: '1[W]' },
+      effects: {
+        base: 'The mark is Grabbed and silenced — no speech, no spell with a spoken part.',
+        advances: [
+          { value: 'And Dazed (no Reactions or Interrupts) while held', cost: 'm' },
+          { value: 'And Poison 2 / round (the strangle) while held', cost: 'm' },
+          { value: 'And Stunned while held — a full choke-out', cost: 'M' },
+        ],
+      },
+      duration: { base: 'While you sustain the grab (a Minor each round)' },
+    },
+    options: [{ label: 'Weapon Specialization Hooks', note: WEAPON_HOOK_NOTE, detail: ['Unarmed / Natural → +Int to the choke’s Poison, and you may drag the mark 5′ as you rise'] }],
+  },
+  {
+    name: 'Lie in Wait', category: 'Assassination', role: 'Setup · ambush', mode: 'Effect',
+    vars: {
+      frequency: FREQ_ENC,
+      action: { base: 'Minor — taken while Hidden' },
+      range: { base: 'Self' },
+      effects: {
+        base: 'While you stay Hidden, your first strike this encounter treats its target as Studied and Off Guard.',
+        advances: [
+          { value: 'That first strike also deals +Dex damage', cost: 'm' },
+          { value: 'The benefit holds even if you strike later than the first round', cost: 'm' },
+          { value: 'One ally you designate shares the ambush on their first strike', cost: 'M' },
+        ],
+      },
+      duration: { base: 'Until you make your first attack' },
+    },
+  },
+  {
+    name: 'Clean Kill', category: 'Assassination', role: 'Utility · non-combat', mode: 'Effect',
+    vars: {
+      frequency: { base: 'Encounter' },
+      action: { base: 'A few minutes with the body' },
+      range: { base: 'Touch' },
+      effects: {
+        base: 'You leave nothing behind: the death raises no alarm, and body and signs are hidden from a casual search.',
+        advances: [
+          { value: 'Even a deliberate search takes −2 to turn anything up', cost: 'm' },
+          { value: 'You can make the death read as natural or accidental', cost: 'm' },
+          { value: 'No trace at all — no Gather Information check can connect the death to you', cost: 'M' },
+        ],
+      },
+    },
+  },
+];
+
 export const CATEGORIES: CategoryGroup[] = [
   { name: 'Arms', source: 'Soldier — Class', blurb: 'The disciplined core of weapon-fighting: reliable strikes that grow with the weapon in your hands, plus the means to guard, disarm, focus, and read a fight.', abilities: ARMS },
   { name: 'Protection', source: 'Soldier — Vanguard', blurb: 'The defender’s toolkit: control strikes that pin and daze, shielding auras for your comrades, and the means to take a blow meant for someone else.', abilities: PROTECTION },
@@ -1993,5 +2158,6 @@ export const CATEGORIES: CategoryGroup[] = [
   { name: 'Medicine', source: 'Scholar — Physician', blurb: 'The non-magical physician: a surgeon’s cuts and crafted poisons, a guarded stance, and hands-on healing — combat dressings, condition care, and the long convalescence — drawing on a Healer’s Kit.', abilities: MEDICINE },
   { name: 'New Magic', source: 'Scholar — Arcanist', blurb: 'The Collegium’s disciplined, destructive art — and a spell-builder. Each offensive chassis (ranged or close, single or burst) is bought with ONE element and a name of your choosing, then re-bought to make another spell. Dexterity vs AC aims every attack; Intelligence powers the damage. An element’s signature Effect ladder unlocks only with its Mastery — [type] feat, and four implements (wand, staff, spellbook, scroll) each lend a hook.', abilities: NEW_MAGIC },
   { name: 'The Lost', source: 'Scoundrel — Class', blurb: 'The outcast’s craft, built on one hard truth: a Scoundrel who is seen is a Scoundrel who is losing. The strike pays out only against a mark who is Off Guard or flanked, and everything else in the Category exists to buy that condition — the false move, the fistful of sand, the slip out of reach, and the art of vanishing in a city that would hang you.', abilities: THE_LOST },
+  { name: 'Assassination', source: 'Scoundrel — Assassin', blurb: 'The studied kill. Study the Mark hangs a Studied marker on a target; the Death Blow — a rare, massive strike against a mark who is Studied and Off Guard — is the reward for setting it all up. Around it: the Assassin’s own poison, a crippling anatomist’s cut, the garrote’s silent choke, a Hidden ambush, and the trade’s least glamorous skill — leaving no trace. Dexterity plants every blade; Intelligence rides on the study.', abilities: ASSASSINATION },
   { name: 'Elder Magic', source: 'Scholar — Antiquarian', blurb: 'The recovered, fragmentary art of the Elders — subtle and controlling, worked by force of will (Charisma against a foe’s unguarded mind): the artefact engine, psychic dread, blinding, forced movement, outright domination, a withering doubt, and the ruin-delver’s craft. Every working carries a Feat Hook, for Elder magic comes only in studied fragments.', abilities: ELDER_MAGIC },
 ];

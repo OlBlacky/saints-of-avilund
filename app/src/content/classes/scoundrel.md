@@ -82,7 +82,7 @@ The outcast's craft: the strike that only pays when you are unseen, and every tr
 ### [Assassination](../../abilities/#assassination) — *Assassin*
 The studied kill: the mark read before the blow is struck, the poisoned edge, the cord, and the trade's least glamorous skill — leaving nothing behind that says you were there.
 
-*Death Blow · Poisoned Blade · Study the Mark · Anatomist's Cut · Garrote · Lie in Wait · Clean Kill*
+*Study the Mark · Death Blow · Poisoned Blade · Anatomist's Cut · Garrote · Lie in Wait · Clean Kill*
 
 ### [Guile](../../abilities/#guile) — *Charlatan*
 The confidence game, worked at knifepoint or over dinner: cutting words that land like blows, a borrowed face, the art of being blamed for nothing, and talking your way out of the rope.
