@@ -2271,15 +2271,15 @@ const GUILE: Ability[] = [
     vars: {
       frequency: { base: 'Daily' },
       action: { base: 'A rousing speech (a few minutes)' },
-      range: { base: 'All allies who can hear you' },
+      range: { base: 'You and all allies who can hear you' },
       targets: { base: 'The foe (or foes) your speech names' },
       attack: { base: 'Intimidate vs the named foe’s Unarmoured Wisdom' },
       effects: {
-        base: 'Allies who hear you gain Cha Temp HP, held until your next encounter with the named foe.',
+        base: 'You and your allies gain 1 Temp HP, held until your next encounter with the named foe.',
         advances: [
-          { value: 'Cha + 2 Temp HP', cost: 'm' },
-          { value: 'Cha + 4 Temp HP', cost: 'm' },
-          { value: 'Cha + 6 Temp HP', cost: 'M' },
+          { value: 'Cha Temp HP', cost: 'm' },
+          { value: 'Cha Temp HP, and +1 to AC', cost: 'm' },
+          { value: 'Cha + 1 Temp HP, and +1 to all defences', cost: 'M' },
         ],
       },
       duration: { base: 'Until the end of your next encounter with the named foe (or until the Temp HP is spent)' },
