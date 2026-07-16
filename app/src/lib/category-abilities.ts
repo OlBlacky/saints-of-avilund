@@ -1089,6 +1089,27 @@ const READ_SCROLLS: Ability = {
   extraVars: [SCRIBE_CREATE],
 };
 
+const READ_SPELLBOOKS: Ability = {
+  name: 'Read Spellbooks', category: 'Letters', role: 'Magic literacy', mode: 'Effect',
+  vars: {
+    frequency: { base: 'Daily', advances: [{ value: 'Encounter', cost: 'M' }, { value: '2 / encounter', cost: 'M', note: 'L3' }] },
+    action: { base: 'Full Round', advances: [{ value: 'Standard', cost: 'M' }] },
+    attack: { base: 'Int (+ Spellbook Specialization) vs the spell’s defence' },
+    effects: {
+      base: 'Read only — identify a spellbook’s spell. You must know its language. (Reusable; supply the components each casting.)',
+      advances: [
+        { value: 'cast Lesser spells', cost: 'm' },
+        { value: 'cast Greater spells', cost: 'M', note: 'L5' },
+      ],
+    },
+  },
+  options: [
+    { label: 'Generic Advancement Ladder', note: GA_NOTE('spellbook'), ladders: [GENERIC_ADV] },
+    { label: 'Implement Specialization Hooks', note: GA_MASTERY('spellbook', 'Spellbook Specialization') + ' A Spellbook Specialist also adds Int to a damaging spell’s damage.' },
+  ],
+  extraVars: [SCRIBE_CREATE],
+};
+
 const CONDUCT_RITUAL: Ability = {
   name: 'Conduct Ritual', category: 'Letters', role: 'Magic literacy', mode: 'Effect',
   vars: {
@@ -1171,26 +1192,7 @@ const LETTERS: Ability[] = [
     },
   },
   READ_SCROLLS,
-  {
-    name: 'Read Spellbooks', category: 'Letters', role: 'Magic literacy', mode: 'Effect',
-    vars: {
-      frequency: { base: 'Daily', advances: [{ value: 'Encounter', cost: 'M' }, { value: '2 / encounter', cost: 'M', note: 'L3' }] },
-      action: { base: 'Full Round', advances: [{ value: 'Standard', cost: 'M' }] },
-      attack: { base: 'Int (+ Spellbook Specialization) vs the spell’s defence' },
-      effects: {
-        base: 'Read only — identify a spellbook’s spell. You must know its language. (Reusable; supply the components each casting.)',
-        advances: [
-          { value: 'cast Lesser spells', cost: 'm' },
-          { value: 'cast Greater spells', cost: 'M', note: 'L5' },
-        ],
-      },
-    },
-    options: [
-      { label: 'Generic Advancement Ladder', note: GA_NOTE('spellbook'), ladders: [GENERIC_ADV] },
-      { label: 'Implement Specialization Hooks', note: GA_MASTERY('spellbook', 'Spellbook Specialization') + ' A Spellbook Specialist also adds Int to a damaging spell’s damage.' },
-    ],
-    extraVars: [SCRIBE_CREATE],
-  },
+  READ_SPELLBOOKS,
   CONDUCT_RITUAL,
   {
     name: 'Identify', category: 'Letters', role: 'Magic literacy · utility', mode: 'Effect',
@@ -1369,26 +1371,31 @@ const MEDICINE: Ability[] = [
 const STD_RANGE: Variable = { base: "30'", advances: [{ value: "60'", cost: 'm' }, { value: "90'", cost: 'm' }, { value: "120'", cost: 'M' }] };
 const FREQ_2ENC: Variable = { base: 'Daily', advances: [{ value: 'Encounter', cost: 'M' }, { value: 'Twice per encounter', cost: 'M' }] };
 
-const ELDER_MAGIC: Ability[] = [
-  {
-    name: 'Wield Artefact', category: 'Elder Magic', role: 'Utility · artefact engine', mode: 'Effect',
-    vars: {
-      frequency: { base: 'Daily (Overdraw)', advances: [{ value: 'Encounter', cost: 'M' }, { value: 'Twice per encounter', cost: 'M' }] },
-      action: { base: "The artefact's own activation" },
-      effects: {
-        base: "Sense and handle an artefact; wield common ones at their base values, drawing on the artefact's own ladders. (Overdraw spends the Frequency above for extra activations beyond its charge limit.)",
-        advances: [
-          { value: "Attune to draw on an artefact's full ladders reliably", cost: 'm' },
-          { value: 'Attune to powerful artefacts', cost: 'm' },
-          { value: 'Attune to the powerful or unstable relics others cannot safely wield', cost: 'M' },
-        ],
-      },
+// Wield Artefact — the artefact engine. Shared verbatim by Elder Magic (the
+// Antiquarian's) and Occult (the Occultist's): the same card in both lists.
+// The artefact's own tradition tag decides what it actually does.
+const WIELD_ARTEFACT: Ability = {
+  name: 'Wield Artefact', category: 'Elder Magic', role: 'Utility · artefact engine', mode: 'Effect',
+  vars: {
+    frequency: { base: 'Daily (Overdraw)', advances: [{ value: 'Encounter', cost: 'M' }, { value: 'Twice per encounter', cost: 'M' }] },
+    action: { base: "The artefact's own activation" },
+    effects: {
+      base: "Sense and handle an artefact; wield common ones at their base values, drawing on the artefact's own ladders. (Overdraw spends the Frequency above for extra activations beyond its charge limit.)",
+      advances: [
+        { value: "Attune to draw on an artefact's full ladders reliably", cost: 'm' },
+        { value: 'Attune to powerful artefacts', cost: 'm' },
+        { value: 'Attune to the powerful or unstable relics others cannot safely wield', cost: 'M' },
+      ],
     },
-    options: [
-      { label: 'Generic Advancement Ladder', note: GA_NOTE('artefact'), ladders: [GENERIC_ADV] },
-      { label: 'Implement Specialization Hooks', note: GA_MASTERY('artefact', 'Artefact Specialization'), detail: ['Feat Hook (a studied Elder fragment) → a bonus when wielding artefacts of that tradition — e.g. +1 to its boosts, or a safe Overdraw'] },
-    ],
   },
+  options: [
+    { label: 'Generic Advancement Ladder', note: GA_NOTE('artefact'), ladders: [GENERIC_ADV] },
+    { label: 'Implement Specialization Hooks', note: GA_MASTERY('artefact', 'Artefact Specialization'), detail: ['Feat Hook (a studied Elder fragment) → a bonus when wielding artefacts of that tradition — e.g. +1 to its boosts, or a safe Overdraw'] },
+  ],
+};
+
+const ELDER_MAGIC: Ability[] = [
+  WIELD_ARTEFACT,
   {
     name: 'Whispers from the Doomed', category: 'Elder Magic', role: 'Offensive', mode: 'Attack',
     vars: {
@@ -2299,142 +2306,98 @@ const GUILE: Ability[] = [
 // ── Occult (Occultist — Class; hosted by the Scoundrel's Blackcoat) ──
 // The Occultist's own Category, authored here ahead of that class. Wisdom —
 // not learning, but the low, unwanted knowing of one who has seen the other
-// side. Its engine is THE PRICE: every working takes something back. The Price
-// is a ladder row on each card; its top Rank does not erase the cost — it lets
-// you pay it in someone else's blood.
+// side.
+//
+// Occult is FORBIDDEN BUT BENIGN: it draws on sources the church would burn you
+// for, and uses them to see, to warn, to guard, and to bless. It has no attack
+// of any kind — the Blackcoat kills with The Lost and reaches for Occult for
+// everything else. The malevolent half (curses, compulsion, the wasting, the
+// bound shade, borrowed power against a debt) is deliberately NOT here: it is
+// parked for the future WITCHCRAFT Category.
+//
+// Its engine is THE PRICE: every working of its own takes something back. The
+// Price is a ladder row on each card. The line between the two Categories runs
+// through it — the Occultist bears his own cost, and at mastery the other side
+// gives freely because he asked properly. It is the WITCH who makes someone
+// else bleed.
 const PRICE_NOTE =
-  'Every Occult working has a Price, paid the moment you use it. Price damage cannot be prevented or reduced, and is not healed until your next rest. You pay it whether or not the working succeeds.';
+  'Every Occult working has a Price, paid the moment you use it. Price damage cannot be prevented or reduced, and is not healed until your next rest. You pay it whether or not the working succeeds — and you pay it yourself. Making another bear it is witchcraft, and no part of this Category.';
 
-// The common Price ladder. Buy it down — and at the top, put it on someone else.
-const PRICE_BLOOD: NamedLadder = {
+// The common Price ladder. Buy it down; at mastery, the other side gives freely.
+const PRICE_OCCULT: NamedLadder = {
   name: 'Price',
   base: '1d6 damage to you',
   advances: [
     { value: '1d4 damage to you', cost: 'm' },
     { value: '1 damage to you', cost: 'm' },
-    { value: 'Another’s blood — an adjacent willing or Grabbed creature pays the Price instead', cost: 'M' },
+    { value: 'No Price — what you draw on gives freely now, because you learned to ask properly', cost: 'M' },
   ],
 };
 
 const OCCULT: Ability[] = [
   {
-    name: 'Hex', category: 'Occult', role: 'Offensive · curse', mode: 'Attack',
-    vars: {
-      frequency: FREQ_FULL,
-      action: { base: 'Standard', advances: [{ value: 'Move', cost: 'M' }, { value: 'Minor', cost: 'M' }] },
-      range: STD_RANGE,
-      targets: { base: 'One', advances: [{ value: 'Two', cost: 'm' }, { value: 'Wis', cost: 'M' }] },
-      attack: { base: 'Wisdom vs Unarmoured Wisdom' },
-      effects: {
-        base: 'A muttered word and a wasting: Ongoing 1 Necrotic damage.',
-        advances: [
-          { value: 'Ongoing 2 Necrotic', cost: 'm' },
-          { value: 'Ongoing 3 Necrotic', cost: 'm' },
-          { value: 'Ongoing 5 Necrotic', cost: 'M' },
-        ],
-      },
-      duration: { base: 'Save ends' },
-    },
-    extraVars: [PRICE_BLOOD],
-    options: [{ label: 'The Price', note: PRICE_NOTE, detail: 'This is the whole shape of the Occult: it works, and it costs. The Price row is bought down like any other ladder — but the last Rank does not spare you the cost, it only moves it onto someone else. That is the bargain the Blackcoat did not read closely enough.', placement: 'top' }],
-  },
-  {
-    name: 'Evil Eye', category: 'Occult', role: 'Debuff · ill luck', mode: 'Attack',
-    vars: {
-      frequency: FREQ_FULL,
-      action: { base: 'Standard', advances: [{ value: 'Move', cost: 'M' }, { value: 'Minor', cost: 'M' }] },
-      range: STD_RANGE,
-      targets: { base: 'One' },
-      attack: { base: 'Wisdom vs Unarmoured Wisdom' },
-      effects: {
-        base: 'Ill luck settles on the Target: −1 to its saves.',
-        advances: [
-          { value: '−2 to its saves', cost: 'm' },
-          { value: '−2 to its saves and all skill checks', cost: 'm' },
-          { value: '−2 to saves and skill checks, and no ally may heal it while the Eye holds', cost: 'M' },
-        ],
-      },
-      duration: { base: 'Save ends' },
-    },
-    extraVars: [PRICE_BLOOD],
-  },
-  {
-    name: 'Grasp of the Grave', category: 'Occult', role: 'Control', mode: 'Attack',
-    vars: {
-      frequency: FREQ_2ENC,
-      action: { base: 'Standard' },
-      range: { base: "30' (10' burst)", advances: [{ value: "60' (10' burst)", cost: 'm' }, { value: "60' (15' burst)", cost: 'm' }, { value: "90' (20' burst)", cost: 'M' }] },
-      targets: { base: 'All enemies in the burst' },
-      attack: { base: 'Wisdom vs Armoured Strength (one roll vs all)' },
-      effects: {
-        base: 'Grey hands claw up through the ground: Slowed −5′.',
-        advances: [
-          { value: 'Slowed −10′', cost: 'm' },
-          { value: 'Slowed −15′', cost: 'm' },
-          { value: 'Immobilized', cost: 'M' },
-        ],
-      },
-      duration: { base: 'Save ends' },
-    },
-    extraVars: [PRICE_BLOOD],
-  },
-  {
-    name: 'Bargain', category: 'Occult', role: 'Buff · borrowed power', mode: 'Effect',
+    name: 'Second Sight', category: 'Occult', role: 'Utility · detection', mode: 'Effect',
     vars: {
       frequency: FREQ_ENC,
-      action: { base: 'Minor', advances: [{ value: 'Free', cost: 'M' }] },
-      range: { base: 'Self' },
+      action: { base: 'Minor (in combat) / instant (out of combat)' },
+      range: { base: "30'", advances: [{ value: "60'", cost: 'm' }, { value: "120'", cost: 'm' }] },
       effects: {
-        base: 'You ask, and something answers: +2 to your attack rolls until the end of the encounter.',
+        base: 'You see what ordinary eyes cannot: spirits, shades, and the invisible.',
         advances: [
-          { value: '+2 to your attack and damage rolls', cost: 'm' },
-          { value: '+2 to attack and damage, and Wis Temp HP', cost: 'm' },
-          { value: '+2 to attack and damage, Wis Temp HP, and one reroll of any d20 you like', cost: 'M' },
+          { value: 'You also see magic itself — wards, curses and enchantments, and on whom they lie', cost: 'm' },
+          { value: 'You also see through illusion and disguise', cost: 'm' },
+          { value: 'You see into the other side — the place the dead walk — and what stands there looking back', cost: 'M' },
         ],
       },
-      duration: { base: 'Until the end of the encounter' },
+      duration: { base: 'The scene' },
     },
-    extraVars: [
-      {
-        name: 'Price — the Debt',
-        base: 'At the start of your next encounter you begin Dazed and take 1d6 damage',
-        advances: [
-          { value: 'You take 1d4 damage (still Dazed)', cost: 'm' },
-          { value: 'You take 1d4 damage and are not Dazed', cost: 'm' },
-          { value: 'The debt falls due only when the GM chooses, once, before your next Long Rest', cost: 'M' },
-        ],
-      },
-    ],
-    options: [{ label: 'The debt always lands', note: 'Bargain is the deep end of the Occult: you borrow real power now and pay for it later, and unlike the other workings the Price cannot be bought away — only deferred, softened, or made to arrive at a worse moment. You cannot Bargain again until the last debt is paid.', placement: 'top' }],
+    extraVars: [PRICE_OCCULT],
+    options: [{ label: 'The Price', note: PRICE_NOTE, detail: 'This is the shape of the Occult: it works, and it costs — and the cost is yours. The Price row is bought down like any other ladder, and at its last Rank the other side simply gives, because by then you know how to ask. A Category that made someone else pay would be witchcraft.', placement: 'top' }],
   },
   {
-    name: 'Bind Spirit', category: 'Occult', role: 'Summon · servant', mode: 'Effect',
+    name: 'Boon of the Dead', category: 'Occult', role: 'Buff · party support', mode: 'Effect',
     vars: {
-      frequency: FREQ_ENC,
-      action: { base: 'Standard' },
-      range: { base: "Appears within 30'" },
-      targets: { base: 'One spirit you call and bind' },
+      frequency: { base: 'Daily' },
+      action: { base: 'A few minutes of asking' },
+      range: { base: 'Touch' },
+      targets: {
+        base: 'One ally',
+        advances: [
+          { value: 'Two allies', cost: 'm' },
+          { value: 'Wis allies', cost: 'm' },
+          { value: 'All allies', cost: 'M' },
+        ],
+      },
       effects: {
-        base: 'A faint, unwilling shade: once, it Aids — grant one ally within its reach +2 to a roll — then it fades.',
+        base: 'The favour of the dead settles on the blessed: +1 to their saves.',
         advances: [
-          { value: 'It lingers a round and may make one basic attack: Wisdom vs AC, Wis Necrotic damage', cost: 'm' },
-          { value: 'It lasts until the end of the encounter, attacking or Aiding once each round', cost: 'm' },
-          { value: 'It carries out any Standard action you direct, each round', cost: 'M' },
+          { value: '+1 to their saves and defences', cost: 'm' },
+          { value: '+1 to their saves, defences, and attack rolls', cost: 'm' },
+          { value: 'And once, the dead turn a blow: an attack that would hit a blessed ally misses instead', cost: 'M' },
         ],
       },
-      duration: { base: 'As the Effect ladder allows' },
+      duration: { base: 'Until your next rest' },
     },
-    extraVars: [
-      {
-        name: 'Price — the Binding',
-        base: '1d6 damage to you, and the shade is bound to you: while it stands, you take 1 Necrotic at the start of each of your turns',
+    extraVars: [PRICE_OCCULT],
+  },
+  {
+    name: 'Spirit Guide', category: 'Occult', role: 'Utility · non-combat', mode: 'Effect',
+    vars: {
+      frequency: { base: 'Daily' },
+      action: { base: 'A few minutes of asking' },
+      range: { base: 'A road, a route, or a way you name' },
+      effects: {
+        base: 'The dead know the road. You learn the safest route to a place you name, and cannot become lost upon it.',
         advances: [
-          { value: '1d4 damage, and 1 Necrotic each turn', cost: 'm' },
-          { value: '1 damage, and 1 Necrotic each turn', cost: 'm' },
-          { value: 'Another’s blood — a willing or Grabbed creature is bound instead, and takes the upkeep', cost: 'M' },
+          { value: 'You also learn what waits on that road — the number and nature of what lies in the way', cost: 'm' },
+          { value: 'You also learn who has passed this way lately, and when', cost: 'm' },
+          { value: 'You may ask after a place you have never seen, and the road that reaches it', cost: 'M' },
         ],
       },
-    ],
+      duration: { base: 'The journey' },
+    },
+    extraVars: [PRICE_OCCULT],
+    options: [{ label: 'The road, not the traveller', note: 'Spirit Guide asks the dead about places and ways — never about people, and never in conversation. What a particular dead man knew is not an Ability at all; see Deathwatch.', placement: 'top' }],
   },
   {
     name: 'Ward', category: 'Occult', role: 'Defensive', mode: 'Effect',
@@ -2447,42 +2410,12 @@ const OCCULT: Ability[] = [
         advances: [
           { value: 'They cannot cross it at all', cost: 'm' },
           { value: 'Nor can they reach across it — their attacks and effects stop at the line', cost: 'm' },
-          { value: 'And any that touch it take Wis Necrotic damage', cost: 'M' },
+          { value: 'And any that touch it are thrown back 10′', cost: 'M' },
         ],
       },
       duration: { base: 'Until the end of the encounter, or until the line is broken or scuffed' },
     },
-    extraVars: [PRICE_BLOOD],
-  },
-  {
-    name: 'Speak with the Dead', category: 'Occult', role: 'Utility · non-combat', mode: 'Attack',
-    vars: {
-      frequency: { base: 'Daily' },
-      action: { base: 'A quarter hour over the body' },
-      range: { base: 'Touch — a corpse dead no more than a day', advances: [{ value: 'Dead no more than a week', cost: 'm' }, { value: 'Dead no more than a year', cost: 'm' }, { value: 'Any remains, however old', cost: 'M' }] },
-      targets: { base: 'One corpse' },
-      attack: { base: 'Wisdom vs the dead creature’s Difficulty Class' },
-      effects: {
-        base: 'It answers one question, briefly and truthfully — it knows only what it knew in life.',
-        advances: [
-          { value: 'Two questions', cost: 'm' },
-          { value: 'Three questions, and it must answer fully', cost: 'm' },
-          { value: 'Wis questions — and it may answer about what it has learned since dying', cost: 'M' },
-        ],
-      },
-      duration: { base: 'The questioning' },
-    },
-    extraVars: [
-      {
-        name: 'Price — the Glimpse',
-        base: '1d6 damage to you, and for a moment you see what it sees now',
-        advances: [
-          { value: '1d4 damage', cost: 'm' },
-          { value: '1 damage', cost: 'm' },
-          { value: 'No damage — but the dead begin to know your name, and the GM may spend that', cost: 'M' },
-        ],
-      },
-    ],
+    extraVars: [PRICE_OCCULT],
   },
   {
     name: 'Deathwatch', category: 'Occult', role: 'Utility', mode: 'Effect',
@@ -2495,7 +2428,7 @@ const OCCULT: Ability[] = [
         advances: [
           { value: 'You see the shades of those who died here, and how recently', cost: 'm' },
           { value: 'You know how each of them died', cost: 'm' },
-          { value: 'You can put one question to the most recent of them, as Speak with the Dead', cost: 'M' },
+          { value: 'You sense the dead through earth and stone — buried bodies, hidden graves, walled-up remains, anywhere in range', cost: 'M' },
         ],
       },
       duration: { base: 'The scene' },
@@ -2507,41 +2440,16 @@ const OCCULT: Ability[] = [
         advances: [{ value: 'No Price at this depth — Deathwatch only looks', cost: 'm' }],
       },
     ],
+    options: [{ label: 'Deathwatch looks; it does not ask', note: 'Speaking with the dead is no Ability and cannot be bought. It is a rite — costly, rare, and found in play like any other spell (see Conduct Ritual). A campaign can be built on one such conversation, so it is the Game Master’s to give, at the Game Master’s price. Deathwatch reads the body and the ground; it never gets an answer.', placement: 'top' }],
   },
   // ── Object use. The Occultist has no Letters, so Occult carries its own
-  // literacy: its own relic engine, plus Read Scrolls and Conduct Ritual
-  // reused verbatim from Letters (the same cards, in both lists).
-  {
-    name: 'Wield Relic', category: 'Occult', role: 'Utility · relic engine', mode: 'Effect',
-    vars: {
-      frequency: { base: 'Daily (Overdraw)', advances: [{ value: 'Encounter', cost: 'M' }, { value: 'Twice per encounter', cost: 'M' }] },
-      action: { base: 'The relic’s own activation' },
-      effects: {
-        base: 'Sense and handle a profane relic — an idol, a charm, a coffin-nail, the coin they paid you with. Wield common ones at their base values, drawing on the relic’s own ladders. (Overdraw spends the Frequency above for activations beyond its charges.)',
-        advances: [
-          { value: 'Attune to draw on a relic’s full ladders reliably', cost: 'm' },
-          { value: 'Attune to powerful relics', cost: 'm' },
-          { value: 'Attune to the unstable and the hungry — relics no one else will hold', cost: 'M' },
-        ],
-      },
-    },
-    extraVars: [
-      {
-        name: 'Price — the Relic’s Due',
-        base: '1d6 damage to you each time you draw on it',
-        advances: [
-          { value: '1d4 damage', cost: 'm' },
-          { value: '1 damage', cost: 'm' },
-          { value: 'Another’s blood — an adjacent willing or Grabbed creature pays the Due instead', cost: 'M' },
-        ],
-      },
-    ],
-    options: [
-      { label: 'Generic Advancement Ladder', note: GA_NOTE('relic'), ladders: [GENERIC_ADV] },
-      { label: 'Implement Specialization Hooks', note: GA_MASTERY('relic', 'Artefact Specialization'), detail: ['Feat Hook (a Black Faith rite you have learned) → a bonus when wielding relics of that rite — e.g. +1 to its boosts, or an Overdraw that costs no Price'] },
-    ],
-  },
+  // literacy — all four reused verbatim from the categories that own them, one
+  // per kind of found magic: Wield Artefact from Elder Magic; Read Scrolls,
+  // Read Spellbooks and Conduct Ritual from Letters. The same cards, in both
+  // lists. Being borrowed, they carry no Price.
+  WIELD_ARTEFACT,
   READ_SCROLLS,
+  READ_SPELLBOOKS,
   CONDUCT_RITUAL,
 ];
 
@@ -2557,7 +2465,7 @@ export const CATEGORIES: CategoryGroup[] = [
   { name: 'Medicine', source: 'Scholar — Physician', blurb: 'The non-magical physician: a surgeon’s cuts and crafted poisons, a guarded stance, and hands-on healing — combat dressings, condition care, and the long convalescence — drawing on a Healer’s Kit.', abilities: MEDICINE },
   { name: 'New Magic', source: 'Scholar — Arcanist', blurb: 'The Collegium’s disciplined, destructive art — and a spell-builder. Each offensive chassis (ranged or close, single or burst) is bought with ONE element and a name of your choosing, then re-bought to make another spell. Dexterity vs AC aims every attack; Intelligence powers the damage. An element’s signature Effect ladder unlocks only with its Mastery — [type] feat, and four implements (wand, staff, spellbook, scroll) each lend a hook.', abilities: NEW_MAGIC },
   { name: 'The Lost', source: 'Scoundrel — Class', blurb: 'The outcast’s craft, built on one hard truth: a Scoundrel who is seen is a Scoundrel who is losing. The strike pays out only against a mark who is Off Guard or flanked, and everything else in the Category exists to buy that condition — the false move, the fistful of sand, the slip out of reach, and the art of vanishing in a city that would hang you.', abilities: THE_LOST },
-  { name: 'Occult', source: 'Occultist — Class *(hosted by the Scoundrel’s Blackcoat)*', blurb: 'The dead, the spirits, and what can be got from them — worked with Wisdom, which here is not learning but the low, unwanted knowing of one who has seen the other side. Its engine is THE PRICE: every working takes something back, paid the moment you use it, whether or not it succeeds — and Price damage is never healed until your next rest. The Price is a ladder like any other and can be bought down; but its last Rank does not spare you the cost, it only lets you pay it in someone else’s blood. Hexes and the evil eye, hands out of the ground, a bound shade to serve you, a warded circle, the questioned corpse — and Bargain, the deep end, where you borrow real power now against a debt that always lands. Because the Occultist has no Letters to fall back on, Occult carries its own object-use: a relic engine of its own, plus Read Scrolls and Conduct Ritual reused straight from Letters.', abilities: OCCULT },
+  { name: 'Occult', source: 'Occultist — Class *(hosted by the Scoundrel’s Blackcoat)*', blurb: 'The dead, the spirits, and what may be asked of them — worked with Wisdom, which here is not learning but the low, unwanted knowing of one who has seen the other side. Forbidden, but not wicked: it draws on sources the church would burn you for, and uses them to see, to warn, to guard, and to bless. It has NO attack of any kind. Its engine is THE PRICE — every working of its own takes something back, paid the moment you use it, whether or not it succeeds, and never healed until your next rest. The Price is a ladder like any other: buy it down, and at mastery the other side gives freely, because by then you know how to ask. The Occultist bears his own cost — making another bear it is witchcraft, and no part of this Category. Second sight, a boon from the dead, a road they will tell you, a warded circle, an eye for the buried. Note what is NOT here: the curses, the compulsion, the wasting, the bound shade, and power borrowed against a debt all belong to WITCHCRAFT, a Category still to come — as does speaking with the dead, which is no Ability at all but a rare and costly rite, found in play and the Game Master’s to give. And because the Occultist has no Letters to fall back on, Occult carries its own object-use, reused whole from the categories that own them — one per kind of found magic: Wield Artefact from Elder Magic; Read Scrolls, Read Spellbooks and Conduct Ritual from Letters. Being borrowed, those four carry no Price.', abilities: OCCULT },
   { name: 'Guile', source: 'Scoundrel — Charlatan', blurb: 'The con man’s craft — Charisma against a foe’s nerve. A debuffer who works the whole fight from the back: a misdirection that turns a foe’s head and leaves it Off Guard for the party, a cutting remark that blunts its attacks, a blustering bravado that drops its guard, and the unshakeable confidence that keeps the Charlatan himself standing. Out of the fight, three social crafts — each a skill against a Defence: the long con for coin (Bluff), the parley for terms (Diplomacy), and Contionem habere, the harangue that steels allies with Temp HP before a fight (Intimidate).', abilities: GUILE },
   { name: 'Assassination', source: 'Scoundrel — Assassin', blurb: 'The studied kill. Study the Mark hangs a Studied marker on a target; the Death Blow — a rare, massive strike against a mark who is Studied and Off Guard — is the reward for setting it all up. Around it: the Physician’s Envenom (the same crafted-poison delivery, reused), a crippling anatomist’s cut, the garrote’s silent choke, a pointed interrogation that turns talk into a battle edge, and the trade’s least glamorous skill — leaving no trace. Dexterity plants every blade; Intelligence rides on the study.', abilities: ASSASSINATION },
   { name: 'Elder Magic', source: 'Scholar — Antiquarian', blurb: 'The recovered, fragmentary art of the Elders — subtle and controlling, worked by force of will (Charisma against a foe’s unguarded mind): the artefact engine, psychic dread, blinding, forced movement, outright domination, a withering doubt, and the ruin-delver’s craft. Every working carries a Feat Hook, for Elder magic comes only in studied fragments.', abilities: ELDER_MAGIC },
