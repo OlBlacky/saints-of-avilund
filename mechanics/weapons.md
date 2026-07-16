@@ -63,7 +63,7 @@ Every weapon has the following traits:
 | **Damage** | Die rolled on a hit |
 | **Hands** | One-handed (1H) or Two-handed (2H) |
 | **Weight** | In lbs |
-| **Cost** | In-world price *(costs to be revised once currency is defined)* |
+| **Cost** | Price in Silver Pieces (sp) |
 | **Range** | *(Ranged and Thrown weapons only)* Three increments in feet |
 | **Special Properties** | See below |
 
@@ -95,50 +95,50 @@ Every weapon has the following traits:
 
 | Name | Group | Type | Damage | Hands | Weight | Cost | Range | Properties |
 |---|---|---|---|---|---|---|---|---|
-| **Dagger** | Light Blades | Piercing | 1d4 | 1H | 1 lb | 2 gp | 20/40/60 | Finesse, Thrown, Concealable |
-| **Parrying Dagger** | Light Blades | Piercing | 1d4 | 1H | 1 lb | 5 gp | — | Finesse, Defensive, Concealable |
-| **Shortsword** | Light Blades | Piercing | 1d6 | 1H | 2 lbs | 10 gp | — | Finesse |
-| **Scimitar** | Heavy Blades | Slashing | 1d6 | 1H | 3 lbs | 15 gp | — | Finesse |
-| **Rapier** | Light Blades | Piercing | 1d8 | 1H | 2 lbs | 25 gp | — | Finesse |
-| **Longsword** | Heavy Blades | Slashing | 1d8 | 1H | 3 lbs | 15 gp | — | Versatile (1d10) |
-| **Greatsword** | Heavy Blades | Slashing | 2d6 | 2H | 6 lbs | 50 gp | — | — |
-| **Bastard Sword** | Heavy Blades | Slashing | 1d10 | 1H | 6 lbs | 35 gp | — | Versatile (1d12) |
-| **Hatchet** | Axes | Slashing | 1d4 | 1H | 1 lb | 1 gp | 20/40/60 | Thrown |
-| **Handaxe** | Axes | Slashing | 1d6 | 1H | 2 lbs | 5 gp | 20/40/60 | Thrown |
-| **Battleaxe** | Axes | Slashing | 1d8 | 1H | 4 lbs | 10 gp | — | Versatile (1d10) |
-| **Greataxe** | Axes | Slashing | 1d12 | 2H | 7 lbs | 30 gp | — | — |
-| **Halberd** | Polearms | Slashing | 1d10 | 2H | 6 lbs | 20 gp | — | Reach |
-| **Light Hammer** | Hammers/Maces | Blunt | 1d4 | 1H | 2 lbs | 2 gp | 20/40/60 | Thrown |
-| **Mace** | Hammers/Maces | Blunt | 1d6 | 1H | 4 lbs | 5 gp | — | — |
-| **Warhammer** | Hammers/Maces | Blunt | 1d8 | 1H | 5 lbs | 15 gp | — | Versatile (1d10) |
-| **Flail** | Flails/Chains | Blunt | 1d8 | 1H | 3 lbs | 10 gp | — | — |
-| **Maul** | Hammers/Maces | Blunt | 2d6 | 2H | 10 lbs | 15 gp | — | — |
-| **Shortbow** | Bows | Piercing | 1d6 | 2H | 2 lbs | 25 gp | 60/120/180 | — |
-| **Longbow** | Bows | Piercing | 1d8 | 2H | 2 lbs | 50 gp | 100/200/300 | — |
-| **Hand Crossbow** | Crossbows | Piercing | 1d6 | 1H | 3 lbs | 75 gp | 30/60/90 | Loading, Concealable |
-| **Light Crossbow** | Crossbows | Piercing | 1d8 | 2H | 5 lbs | 25 gp | 80/160/240 | Loading |
-| **Crossbow** | Crossbows | Piercing | 1d10 | 2H | 6 lbs | 35 gp | 100/200/300 | Loading |
-| **Heavy Crossbow** | Crossbows | Piercing | 1d12 | 2H | 10 lbs | 50 gp | 120/240/360 | Loading |
-| **Javelin** | Thrown | Piercing | 1d6 | 1H | 2 lbs | 1 gp | 30/60/90 | Thrown |
-| **Spear** | Spears/Lances | Piercing | 1d6 | 1H | 3 lbs | 5 gp | 20/40/60 | Versatile (1d8), Reach, Thrown |
-| **Quarterstaff** | Staves | Blunt | 1d6 | 2H | 4 lbs | 1 gp | — | Defensive |
-| **Iron-Shod Staff** | Staves | Blunt | 1d8 | 2H | 6 lbs | 8 gp | — | Defensive |
+| **Dagger** | Light Blades | Piercing | 1d4 | 1H | 1 lb | 2 sp | 20/40/60 | Finesse, Thrown, Concealable |
+| **Parrying Dagger** | Light Blades | Piercing | 1d4 | 1H | 1 lb | 5 sp | — | Finesse, Defensive, Concealable |
+| **Shortsword** | Light Blades | Piercing | 1d6 | 1H | 2 lbs | 10 sp | — | Finesse |
+| **Scimitar** | Heavy Blades | Slashing | 1d6 | 1H | 3 lbs | 15 sp | — | Finesse |
+| **Rapier** | Light Blades | Piercing | 1d8 | 1H | 2 lbs | 25 sp | — | Finesse |
+| **Longsword** | Heavy Blades | Slashing | 1d8 | 1H | 3 lbs | 15 sp | — | Versatile (1d10) |
+| **Greatsword** | Heavy Blades | Slashing | 2d6 | 2H | 6 lbs | 50 sp | — | — |
+| **Bastard Sword** | Heavy Blades | Slashing | 1d10 | 1H | 6 lbs | 35 sp | — | Versatile (1d12) |
+| **Hatchet** | Axes | Slashing | 1d4 | 1H | 1 lb | 1 sp | 20/40/60 | Thrown |
+| **Handaxe** | Axes | Slashing | 1d6 | 1H | 2 lbs | 5 sp | 20/40/60 | Thrown |
+| **Battleaxe** | Axes | Slashing | 1d8 | 1H | 4 lbs | 10 sp | — | Versatile (1d10) |
+| **Greataxe** | Axes | Slashing | 1d12 | 2H | 7 lbs | 30 sp | — | — |
+| **Halberd** | Polearms | Slashing | 1d10 | 2H | 6 lbs | 20 sp | — | Reach |
+| **Light Hammer** | Hammers/Maces | Blunt | 1d4 | 1H | 2 lbs | 2 sp | 20/40/60 | Thrown |
+| **Mace** | Hammers/Maces | Blunt | 1d6 | 1H | 4 lbs | 5 sp | — | — |
+| **Warhammer** | Hammers/Maces | Blunt | 1d8 | 1H | 5 lbs | 15 sp | — | Versatile (1d10) |
+| **Flail** | Flails/Chains | Blunt | 1d8 | 1H | 3 lbs | 10 sp | — | — |
+| **Maul** | Hammers/Maces | Blunt | 2d6 | 2H | 10 lbs | 15 sp | — | — |
+| **Shortbow** | Bows | Piercing | 1d6 | 2H | 2 lbs | 25 sp | 60/120/180 | — |
+| **Longbow** | Bows | Piercing | 1d8 | 2H | 2 lbs | 50 sp | 100/200/300 | — |
+| **Hand Crossbow** | Crossbows | Piercing | 1d6 | 1H | 3 lbs | 75 sp | 30/60/90 | Loading, Concealable |
+| **Light Crossbow** | Crossbows | Piercing | 1d8 | 2H | 5 lbs | 25 sp | 80/160/240 | Loading |
+| **Crossbow** | Crossbows | Piercing | 1d10 | 2H | 6 lbs | 35 sp | 100/200/300 | Loading |
+| **Heavy Crossbow** | Crossbows | Piercing | 1d12 | 2H | 10 lbs | 50 sp | 120/240/360 | Loading |
+| **Javelin** | Thrown | Piercing | 1d6 | 1H | 2 lbs | 1 sp | 30/60/90 | Thrown |
+| **Spear** | Spears/Lances | Piercing | 1d6 | 1H | 3 lbs | 5 sp | 20/40/60 | Versatile (1d8), Reach, Thrown |
+| **Quarterstaff** | Staves | Blunt | 1d6 | 2H | 4 lbs | 1 sp | — | Defensive |
+| **Iron-Shod Staff** | Staves | Blunt | 1d8 | 2H | 6 lbs | 8 sp | — | Defensive |
 | **Club** | Hammers/Maces | Blunt | 1d4 | 1H | 2 lbs | — | — | — |
-| **War Pick** | Picks | Piercing | 1d8 | 1H | 4 lbs | 8 gp | — | — |
-| **Morningstar** | Hammers/Maces | Piercing | 1d8 | 1H | 4 lbs | 10 gp | — | — |
-| **Longspear** | Spears/Lances | Piercing | 1d8 | 2H | 5 lbs | 10 gp | — | Reach |
-| **Pike** | Spears/Lances | Piercing | 1d10 | 2H | 8 lbs | 15 gp | — | Reach |
-| **Lance** | Spears/Lances | Piercing | 1d10 | 1H | 7 lbs | 25 gp | — | Reach |
-| **Trident** | Spears/Lances | Piercing | 1d8 | 1H | 4 lbs | 12 gp | 10/20/30 | Thrown |
+| **War Pick** | Picks | Piercing | 1d8 | 1H | 4 lbs | 8 sp | — | — |
+| **Morningstar** | Hammers/Maces | Piercing | 1d8 | 1H | 4 lbs | 10 sp | — | — |
+| **Longspear** | Spears/Lances | Piercing | 1d8 | 2H | 5 lbs | 10 sp | — | Reach |
+| **Pike** | Spears/Lances | Piercing | 1d10 | 2H | 8 lbs | 15 sp | — | Reach |
+| **Lance** | Spears/Lances | Piercing | 1d10 | 1H | 7 lbs | 25 sp | — | Reach |
+| **Trident** | Spears/Lances | Piercing | 1d8 | 1H | 4 lbs | 12 sp | 10/20/30 | Thrown |
 | **Sling** | Slings | Blunt | 1d4 | 1H | — | 1 sp | 50/100/150 | — |
-| **Staff Sling** | Slings | Blunt | 1d6 | 2H | 3 lbs | 5 gp | 60/120/180 | — |
+| **Staff Sling** | Slings | Blunt | 1d6 | 2H | 3 lbs | 5 sp | 60/120/180 | — |
 | **Unarmed Strike** | Unarmed/Natural | Blunt | 1d4 | 1H | — | — | — | — |
-| **Cestus** | Unarmed/Natural | Blunt | 1d4 | 1H | 1 lb | 5 gp | — | Concealable |
-| **Flintlock Pistol** | Pistols | Piercing | 1d8 | 1H | 3 lbs | 100 gp | 40/80/120 | Loading, Concealable |
-| **Horse Pistol** | Pistols | Piercing | 1d10 | 1H | 4 lbs | 150 gp | 50/100/150 | Loading |
-| **Musket** | Rifles | Piercing | 1d12 | 2H | 10 lbs | 200 gp | 80/160/240 | Loading |
-| **Long Rifle** | Rifles | Piercing | 2d6 | 2H | 11 lbs | 350 gp | 120/240/360 | Loading |
-| **Fragmentation Grenade** | Grenades | Blunt | 2d6 | 1H | 1 lb | 50 gp | 20/40/60 | Thrown |
-| **Firebomb** | Grenades | Blunt | 1d6 | 1H | 1 lb | 25 gp | 20/40/60 | Thrown |
+| **Cestus** | Unarmed/Natural | Blunt | 1d4 | 1H | 1 lb | 5 sp | — | Concealable |
+| **Flintlock Pistol** | Pistols | Piercing | 1d8 | 1H | 3 lbs | 100 sp | 40/80/120 | Loading, Concealable |
+| **Horse Pistol** | Pistols | Piercing | 1d10 | 1H | 4 lbs | 150 sp | 50/100/150 | Loading |
+| **Musket** | Rifles | Piercing | 1d12 | 2H | 10 lbs | 200 sp | 80/160/240 | Loading |
+| **Long Rifle** | Rifles | Piercing | 2d6 | 2H | 11 lbs | 350 sp | 120/240/360 | Loading |
+| **Fragmentation Grenade** | Grenades | Blunt | 2d6 | 1H | 1 lb | 50 sp | 20/40/60 | Thrown |
+| **Firebomb** | Grenades | Blunt | 1d6 | 1H | 1 lb | 25 sp | 20/40/60 | Thrown |
 
 *Grenades are area weapons — blast radius and area-attack rules are still TBD.*

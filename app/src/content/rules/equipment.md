@@ -7,7 +7,95 @@ The gear of Avilund. Prices are in **Silver Pieces (sp)**.
 
 ## Weapons
 
-*The weapon list — the seventeen weapon groups and their arms, with damage, range, and properties — is in progress.*
+Every weapon belongs to one of **seventeen groups**. You are trained by the group, not by the weapon: proficiency in Heavy Blades means every heavy blade sits right in your hand. Wielding a weapon from a group you lack costs you **−1 to attack**. How proficiencies are granted, advanced, and specialized is covered under [Proficiencies](../proficiencies/).
+
+A weapon's **Type** — Piercing, Slashing, or Blunt — matters where a foe's hide, or a saint's ward, cares which.
+
+### Special Properties
+
+| Property | Effect |
+|---|---|
+| **Finesse** | Use Dexterity instead of Strength for attack and damage. |
+| **Reach** | Melee range is 10' instead of 5'. |
+| **Thrown** | May be thrown, using the listed range increments. |
+| **Versatile** | May be used one- or two-handed; two-handed steps the damage die up one. |
+| **Loading** | Costs a Minor action to reload between shots. |
+| **Concealable** | May be hidden on the body. |
+| **Defensive** | +1 to a Defence Target while wielded. |
+
+### Range
+
+Ranged and thrown weapons list three increments. Shooting further costs accuracy:
+
+| Increment | Penalty |
+|---|---|
+| 1st | — |
+| 2nd | −2 to attack |
+| 3rd | −4 to attack |
+| Beyond the 3rd | out of range |
+
+### Melee Weapons
+
+| Weapon | Group | Type | Damage | Hands | Weight | Cost | Range | Properties |
+|---|---|---|---|---|---|---|---|---|
+| Dagger | Light Blades | Piercing | 1d4 | 1H | 1 lb | 2 sp | 20/40/60 | Finesse, Thrown, Concealable |
+| Parrying Dagger | Light Blades | Piercing | 1d4 | 1H | 1 lb | 5 sp | — | Finesse, Defensive, Concealable |
+| Shortsword | Light Blades | Piercing | 1d6 | 1H | 2 lb | 10 sp | — | Finesse |
+| Rapier | Light Blades | Piercing | 1d8 | 1H | 2 lb | 25 sp | — | Finesse |
+| Scimitar | Heavy Blades | Slashing | 1d6 | 1H | 3 lb | 15 sp | — | Finesse |
+| Longsword | Heavy Blades | Slashing | 1d8 | 1H | 3 lb | 15 sp | — | Versatile *(1d10)* |
+| Bastard Sword | Heavy Blades | Slashing | 1d10 | 1H | 6 lb | 35 sp | — | Versatile *(1d12)* |
+| Greatsword | Heavy Blades | Slashing | 2d6 | 2H | 6 lb | 50 sp | — | — |
+| Hatchet | Axes | Slashing | 1d4 | 1H | 1 lb | 1 sp | 20/40/60 | Thrown |
+| Handaxe | Axes | Slashing | 1d6 | 1H | 2 lb | 5 sp | 20/40/60 | Thrown |
+| Battleaxe | Axes | Slashing | 1d8 | 1H | 4 lb | 10 sp | — | Versatile *(1d10)* |
+| Greataxe | Axes | Slashing | 1d12 | 2H | 7 lb | 30 sp | — | — |
+| Club | Hammers/Maces | Blunt | 1d4 | 1H | 2 lb | — | — | — |
+| Light Hammer | Hammers/Maces | Blunt | 1d4 | 1H | 2 lb | 2 sp | 20/40/60 | Thrown |
+| Mace | Hammers/Maces | Blunt | 1d6 | 1H | 4 lb | 5 sp | — | — |
+| Warhammer | Hammers/Maces | Blunt | 1d8 | 1H | 5 lb | 15 sp | — | Versatile *(1d10)* |
+| Morningstar | Hammers/Maces | Piercing | 1d8 | 1H | 4 lb | 10 sp | — | — |
+| Maul | Hammers/Maces | Blunt | 2d6 | 2H | 10 lb | 15 sp | — | — |
+| War Pick | Picks | Piercing | 1d8 | 1H | 4 lb | 8 sp | — | — |
+| Flail | Flails/Chains | Blunt | 1d8 | 1H | 3 lb | 10 sp | — | — |
+| Halberd | Polearms | Slashing | 1d10 | 2H | 6 lb | 20 sp | — | Reach |
+| Spear | Spears/Lances | Piercing | 1d6 | 1H | 3 lb | 5 sp | 20/40/60 | Versatile *(1d8)*, Reach, Thrown |
+| Trident | Spears/Lances | Piercing | 1d8 | 1H | 4 lb | 12 sp | 10/20/30 | Thrown |
+| Longspear | Spears/Lances | Piercing | 1d8 | 2H | 5 lb | 10 sp | — | Reach |
+| Pike | Spears/Lances | Piercing | 1d10 | 2H | 8 lb | 15 sp | — | Reach |
+| Lance | Spears/Lances | Piercing | 1d10 | 1H | 7 lb | 25 sp | — | Reach |
+| Quarterstaff | Staves | Blunt | 1d6 | 2H | 4 lb | 1 sp | — | Defensive |
+| Iron-Shod Staff | Staves | Blunt | 1d8 | 2H | 6 lb | 8 sp | — | Defensive |
+| Unarmed Strike | Unarmed/Natural | Blunt | 1d4 | 1H | — | — | — | — |
+| Cestus | Unarmed/Natural | Blunt | 1d4 | 1H | 1 lb | 5 sp | — | Concealable |
+
+### Ranged Weapons
+
+| Weapon | Group | Type | Damage | Hands | Weight | Cost | Range | Properties |
+|---|---|---|---|---|---|---|---|---|
+| Shortbow | Bows | Piercing | 1d6 | 2H | 2 lb | 25 sp | 60/120/180 | — |
+| Longbow | Bows | Piercing | 1d8 | 2H | 2 lb | 50 sp | 100/200/300 | — |
+| Hand Crossbow | Crossbows | Piercing | 1d6 | 1H | 3 lb | 75 sp | 30/60/90 | Loading, Concealable |
+| Light Crossbow | Crossbows | Piercing | 1d8 | 2H | 5 lb | 25 sp | 80/160/240 | Loading |
+| Crossbow | Crossbows | Piercing | 1d10 | 2H | 6 lb | 35 sp | 100/200/300 | Loading |
+| Heavy Crossbow | Crossbows | Piercing | 1d12 | 2H | 10 lb | 50 sp | 120/240/360 | Loading |
+| Sling | Slings | Blunt | 1d4 | 1H | — | 1 sp | 50/100/150 | — |
+| Staff Sling | Slings | Blunt | 1d6 | 2H | 3 lb | 5 sp | 60/120/180 | — |
+| Javelin | Thrown | Piercing | 1d6 | 1H | 2 lb | 1 sp | 30/60/90 | Thrown |
+| Flintlock Pistol | Pistols | Piercing | 1d8 | 1H | 3 lb | 100 sp | 40/80/120 | Loading, Concealable |
+| Horse Pistol | Pistols | Piercing | 1d10 | 1H | 4 lb | 150 sp | 50/100/150 | Loading |
+| Musket | Rifles | Piercing | 1d12 | 2H | 10 lb | 200 sp | 80/160/240 | Loading |
+| Long Rifle | Rifles | Piercing | 2d6 | 2H | 11 lb | 350 sp | 120/240/360 | Loading |
+| Firebomb | Grenades | Blunt | 1d6 | 1H | 1 lb | 25 sp | 20/40/60 | Thrown |
+| Fragmentation Grenade | Grenades | Blunt | 2d6 | 1H | 1 lb | 50 sp | 20/40/60 | Thrown |
+
+*Grenades are area weapons; their blast radius and the area-attack rules are still being written.*
+
+### What Arms Cost
+
+A stick is free and a knife is a day's wage, which is why the desperate of Avilund are armed with sticks and knives. A **Longsword at 15 sp** is a week's wages for a guilded man — a real purchase, made once, kept for life. A **Greatsword at 50 sp** is a month's earnings, and a **Longbow** the same.
+
+Powder arms are another matter entirely. A **Flintlock Pistol** costs two months' wages and a **Long Rifle** costs seven — more than any labourer will save in a year, and half again what a Breastplate costs. Guns in Avilund are not the weapons of common soldiers. They are owned by men who own things.
 
 ## Armour &amp; Shields
 
