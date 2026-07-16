@@ -2135,6 +2135,16 @@ const ASSASSINATION: Ability[] = [
 // debuffer who also sets Off Guard for the whole party — his tricks open a
 // mark for everyone's blades, his own Sneak Attack included. No new marker; he
 // rides the existing Control, Fear, and Off Guard rules.
+// The Charlatan's ranged debuffs share one Range and one Targets ladder.
+const GUILE_TARGETS: Variable = {
+  base: 'One',
+  advances: [
+    { value: 'Two', cost: 'm' },
+    { value: 'Cha', cost: 'm' },
+    { value: 'All opponents', cost: 'M' },
+  ],
+};
+
 const GUILE: Ability[] = [
   {
     name: 'Misdirection', category: 'Guile', role: 'Debuff · Off Guard', mode: 'Attack',
@@ -2142,14 +2152,7 @@ const GUILE: Ability[] = [
       frequency: FREQ_FULL,
       action: { base: 'Standard', advances: [{ value: 'Move', cost: 'M' }, { value: 'Minor', cost: 'M' }] },
       range: STD_RANGE,
-      targets: {
-        base: 'One',
-        advances: [
-          { value: 'Two', cost: 'm' },
-          { value: 'Cha', cost: 'm' },
-          { value: 'All opponents', cost: 'M' },
-        ],
-      },
+      targets: GUILE_TARGETS,
       attack: { base: 'Charisma vs Unarmoured Wisdom' },
       effects: {
         base: '“Look there.” The Target is Off Guard to your attacks.',
@@ -2167,8 +2170,8 @@ const GUILE: Ability[] = [
     vars: {
       frequency: FREQ_FULL,
       action: { base: 'Standard', advances: [{ value: 'Move', cost: 'M' }, { value: 'Minor', cost: 'M' }] },
-      range: { base: "30'" },
-      targets: { base: 'One' },
+      range: STD_RANGE,
+      targets: GUILE_TARGETS,
       attack: { base: 'Charisma vs Unarmoured Wisdom' },
       effects: {
         base: 'A jibe that gets under the skin: −1 to the Target’s attack rolls.',
@@ -2186,8 +2189,8 @@ const GUILE: Ability[] = [
     vars: {
       frequency: FREQ_FULL,
       action: { base: 'Standard', advances: [{ value: 'Move', cost: 'M' }, { value: 'Minor', cost: 'M' }] },
-      range: { base: "30'" },
-      targets: { base: 'One' },
+      range: STD_RANGE,
+      targets: GUILE_TARGETS,
       attack: { base: 'Charisma vs Unarmoured Wisdom' },
       effects: {
         base: 'Bluff and bravado throw the Target off its guard: −1 to a defence of your choice.',
@@ -2218,22 +2221,29 @@ const GUILE: Ability[] = [
     },
   },
   {
-    name: 'Confidence Game', category: 'Guile', role: 'Utility · non-combat', mode: 'Attack',
+    name: 'Swindle', category: 'Guile', role: 'Utility · non-combat', mode: 'Attack',
     vars: {
       frequency: { base: 'Daily' },
-      action: { base: 'Hours to days of working a mark' },
-      range: { base: 'Conversation' },
-      targets: { base: 'One mark (or household)' },
-      attack: { base: 'Bluff vs the mark’s Unarmoured Wisdom' },
-      effects: {
-        base: 'A short con — a forged introduction, a false pretext: access, trust, or a modest purse (a few days’ wages).',
+      action: {
+        base: '24 hours setting up the con',
         advances: [
-          { value: 'A serious score — a merchant’s strongbox, a season’s wages', cost: 'm' },
-          { value: 'The mark vouches for you to others, opening further doors', cost: 'm' },
-          { value: 'A grand swindle — a noble’s coffer or an estate’s ledger — and the mark never realizes (no later check reveals the con)', cost: 'M' },
+          { value: '12 hours', cost: 'm' },
+          { value: '6 hours', cost: 'm' },
+          { value: '1 hour', cost: 'M' },
         ],
       },
-      duration: { base: 'Until the con is spent or exposed' },
+      range: { base: 'Conversation' },
+      targets: { base: 'One person, household, business, or other organization' },
+      attack: { base: 'Bluff vs the Target’s Unarmoured Wisdom' },
+      effects: {
+        base: 'Con the Target out of 1d6 sp.',
+        advances: [
+          { value: '1d6 + Cha sp', cost: 'm' },
+          { value: '2d6 + Cha sp', cost: 'm' },
+          { value: '1d4 × 10 sp', cost: 'M' },
+        ],
+      },
+      duration: { base: 'Instant — the take is yours' },
     },
   },
   {
@@ -2245,15 +2255,16 @@ const GUILE: Ability[] = [
       targets: { base: 'One NPC' },
       attack: { base: 'Diplomacy vs the Target’s Unarmoured Charisma' },
       effects: {
-        base: 'Win a small concession — a delay, a passage, a scrap of information — or improve the Target’s attitude one step.',
+        base: 'Win a small concession — a delay, a passage, a scrap of information.',
         advances: [
           { value: 'A real concession: a truce, safe passage for the party, or a favour owed', cost: 'm' },
-          { value: 'You sway a whole household or crowd, not just the one before you', cost: 'm' },
+          { value: 'You win it from a whole household or crowd, not just the one before you', cost: 'm' },
           { value: 'You turn the Target from violence for the scene, or broker a lasting accord', cost: 'M' },
         ],
       },
       duration: { base: 'As negotiated' },
     },
+    options: [{ label: 'Terms, not warmth', note: 'Parley wins you something concrete. Shifting an NPC’s Attitude is the Diplomacy skill’s own Persuade action (and the Friar’s Preach to the Saintly) — Parley leaves that to them and extracts terms instead.', placement: 'top' }],
   },
   {
     name: 'Contionem habere', category: 'Guile', role: 'Utility · rally', mode: 'Attack',
