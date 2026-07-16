@@ -54,6 +54,23 @@ const NOTE: Record<string, string> = {
 
   <SystemNav slug={entry.slug} />
 
+  <script is:inline>
+    // Prose pages may break themselves into collapsed <details> folds
+    // (Equipment does). A link to one — from another page, or a search
+    // result — must open it, not land on a shut drawer.
+    function openHashFold() {
+      const id = decodeURIComponent(location.hash.slice(1));
+      if (!id) return;
+      const el = document.getElementById(id);
+      if (el && el.tagName === 'DETAILS') {
+        el.open = true;
+        el.scrollIntoView();
+      }
+    }
+    openHashFold();
+    window.addEventListener('hashchange', openHashFold);
+  </script>
+
   <style>
     .sys-status {
       display: inline-block;

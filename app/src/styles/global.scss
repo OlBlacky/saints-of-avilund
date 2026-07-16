@@ -273,6 +273,75 @@ figcaption { color: var(--ink-soft); font-size: 0.95rem; font-style: italic; mar
   font-style: italic; margin: 0 0 1.6rem; max-width: var(--measure);
 }
 
+// ── Folds: collapsible <details> sections in prose ───────────
+// Long reference pages (Equipment) are broken into folds so the page
+// reads as a contents list until you open what you want. Matches the
+// Category folds on the Abilities page.
+.prose details {
+  border: 1px solid var(--rule);
+  border-radius: 6px;
+  margin: 1.1rem 0;
+  background: var(--panel);
+  padding: 0 1.1rem;
+}
+.prose details > summary {
+  cursor: pointer;
+  list-style: none;
+  user-select: none;
+  display: flex;
+  align-items: baseline;
+  gap: 0.5rem;
+  margin: 0 -1.1rem;
+  padding: 0.85rem 1.1rem;
+  border-radius: 5px;
+  background: rgba(120, 90, 40, 0.10);
+  font-family: var(--display);
+  font-size: 1.35rem;
+  color: var(--oxblood);
+}
+.prose details > summary::-webkit-details-marker { display: none; }
+.prose details > summary::before {
+  content: '▸';
+  color: var(--gold);
+  font-size: 0.85em;
+}
+.prose details[open] > summary {
+  border-bottom: 1px solid var(--rule);
+  border-radius: 5px 5px 0 0;
+}
+.prose details[open] > summary::before { content: '▾'; }
+.prose details > summary:hover { background: rgba(120, 90, 40, 0.16); }
+.prose details .fold__meta {
+  margin-left: auto;
+  font-family: var(--serif);
+  font-size: 0.72rem;
+  font-variant: normal;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--ink-soft);
+  white-space: nowrap;
+}
+// The fold's first heading sits right under the summary; don't double the gap.
+.prose details > summary + * { margin-top: 1.1rem; }
+.prose details > :last-child { margin-bottom: 1.1rem; }
+
+// ── Wide tables ──────────────────────────────────────────────
+// The weapon lists run to nine columns — far past the prose measure.
+// Wrapping one in <div class="scroll"> lets it scroll itself rather
+// than crushing its cells or pushing the page sideways.
+.prose .scroll {
+  overflow-x: auto;
+  margin: 0 0 1.6rem;
+  -webkit-overflow-scrolling: touch;
+}
+.prose .scroll > table {
+  margin: 0;
+  min-width: 44rem;
+  font-size: 0.92rem;
+}
+.prose .scroll > table th,
+.prose .scroll > table td { white-space: nowrap; }
+
 // ── Tables (within prose) ────────────────────────────────────
 .prose table {
   width: 100%;

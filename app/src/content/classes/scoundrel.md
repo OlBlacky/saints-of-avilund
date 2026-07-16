@@ -1,11 +1,11 @@
 ---
 title: Scoundrel
 portfolio: The Lost
-summary: The one nobody claims — thief, killer, and liar, who wins by never being where the blow lands. Choose the Assassin, the Charlatan, or the Prowler.
+summary: The one nobody claims — thief, killer, and liar, who wins by never being where the blow lands. Choose the Assassin, the Charlatan, or the Burglar.
 order: 40
 ---
 
-The Scoundrel is the one nobody claims — the cutpurse, the cheat, the knife in the dark. Saint Irenaeus keeps the lost, the strayed and the forsaken, and it is under his name that the low houses of Avilund shelter: those who were never given a trade, and so took one. A Scoundrel does not win a fight, he *avoids* one, and then ends it from behind. The three Paths are three ways of getting what isn't yours: the **Assassin** takes a life, the **Charlatan** takes you in, and the **Prowler** simply takes.
+The Scoundrel is the one nobody claims — the cutpurse, the cheat, the knife in the dark. Saint Irenaeus keeps the lost, the strayed and the forsaken, and it is under his name that the low houses of Avilund shelter: those who were never given a trade, and so took one. A Scoundrel does not win a fight, he *avoids* one, and then ends it from behind. The three Paths are three ways of getting what isn't yours: the **Assassin** takes a life, the **Charlatan** takes you in, and the **Burglar** simply takes.
 
 ---
 
@@ -19,7 +19,7 @@ The Scoundrel is the one nobody claims — the cutpurse, the cheat, the knife in
 | **Class Skills** | Stealth, Thievery |
 | **Weapon Proficiencies** | Light Blades, Thrown |
 | **Armour Proficiencies** | Light Armour |
-| **Paths** | Assassin · Charlatan · Prowler |
+| **Paths** | Assassin · Charlatan · Burglar |
 
 ---
 
@@ -57,8 +57,8 @@ The confidence man — who would rather be invited through the front door than p
 | **Weapon Proficiencies** | Pistols |
 | **Armour Proficiencies** | *(none beyond the Class)* |
 
-### Prowler
-The burglar and housebreaker — patient, quiet, and awake at the hour when everyone else is not. Locks, traps, and second-storey windows are his trade. **Wisdom** is the Path's attribute: not cleverness but *attention*, the long watch and the noticed detail.
+### Burglar
+The housebreaker — patient, quiet, and awake at the hour when everyone else is not. Locks, traps, and second-storey windows are his trade. **Wisdom** is the Path's attribute: not cleverness but *attention*, the long watch and the noticed detail.
 
 | | |
 |---|---|
@@ -89,7 +89,7 @@ The con man's craft, worked from the back of the fight with Charisma against a f
 
 *Misdirection · Cutting Remark · Bluster · Confidence · Swindle · Parley · Contionem habere*
 
-### [Larceny](../../abilities/#larceny) — *Prowler*
+### [Larceny](../../abilities/#larceny) — *Burglar*
 The housebreaker's trade: locks and traps at both ends of the craft, the silent step, the climb to the upper window, and the ambush sprung on a man who never saw the room he walked into.
 
 *Pick Lock · Disarm Trap · Snare · Ambush from Cover · Silent Step · Second-Storey Work · Case the Joint*

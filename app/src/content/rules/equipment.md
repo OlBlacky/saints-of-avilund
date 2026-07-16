@@ -5,7 +5,8 @@ summary: The gear of Avilund — weapons, armour and shields, sundries, and coin
 
 The gear of Avilund. Prices are in **Silver Pieces (sp)**.
 
-## Weapons
+<details id="weapons">
+<summary>Weapons <span class="fold__meta">45 arms · 17 groups</span></summary>
 
 Every weapon belongs to one of **seventeen groups**. You are trained by the group, not by the weapon: proficiency in Heavy Blades means every heavy blade sits right in your hand. Wielding a weapon from a group you lack costs you **−1 to attack**. How proficiencies are granted, advanced, and specialized is covered under [Proficiencies](../proficiencies/).
 
@@ -35,6 +36,8 @@ Ranged and thrown weapons list three increments. Shooting further costs accuracy
 | Beyond the 3rd | out of range |
 
 ### Melee Weapons
+
+<div class="scroll">
 
 | Weapon | Group | Type | Damage | Hands | Weight | Cost | Range | Properties |
 |---|---|---|---|---|---|---|---|---|
@@ -69,7 +72,11 @@ Ranged and thrown weapons list three increments. Shooting further costs accuracy
 | Unarmed Strike | Unarmed/Natural | Blunt | 1d4 | 1H | — | — | — | — |
 | Cestus | Unarmed/Natural | Blunt | 1d4 | 1H | 1 lb | 5 sp | — | Concealable |
 
+</div>
+
 ### Ranged Weapons
+
+<div class="scroll">
 
 | Weapon | Group | Type | Damage | Hands | Weight | Cost | Range | Properties |
 |---|---|---|---|---|---|---|---|---|
@@ -89,6 +96,8 @@ Ranged and thrown weapons list three increments. Shooting further costs accuracy
 | Firebomb | Grenades | Blunt | 1d6 | 1H | 1 lb | 25 sp | 20/40/60 | Thrown |
 | Fragmentation Grenade | Grenades | Blunt | 2d6 | 1H | 1 lb | 50 sp | 20/40/60 | Thrown |
 
+</div>
+
 *Grenades are area weapons; their blast radius and the area-attack rules are still being written.*
 
 ### What Arms Cost
@@ -97,7 +106,10 @@ A stick is free and a knife is a day's wage, which is why the desperate of Avilu
 
 Powder arms are another matter entirely. A **Flintlock Pistol** costs two months' wages and a **Long Rifle** costs seven — more than any labourer will save in a year, and half again what a Breastplate costs. Guns in Avilund are not the weapons of common soldiers. They are owned by men who own things.
 
-## Armour &amp; Shields
+</details>
+
+<details id="armour">
+<summary>Armour &amp; Shields <span class="fold__meta">9 armours · 4 shields</span></summary>
 
 Armour raises your **Armoured Defenses** and grants **Damage Reduction (DR)**. There are four armour proficiencies — **Unarmoured, Light, Medium,** and **Heavy** — plus two shield proficiencies, **Light Shield** and **Heavy Shield**. (Unarmoured is a fighting *style* you take Feats in; there is nothing to buy.)
 
@@ -137,7 +149,10 @@ A shield's AC stacks on your armour's. **Raising a shield** can be done two ways
 - **Anyone proficient** may raise their shield as a **Standard action**, gaining its AC and DR until the start of their next turn — re-paid every turn.
 - The **Raise Shield** ability (Arms) does it far better: from a Move action down to **Free** — eventually every turn for nothing — and its Feats extend your Shield DR to the allies you protect.
 
-## Medical &amp; Ministration Kits
+</details>
+
+<details id="kits">
+<summary>Medical &amp; Ministration Kits <span class="fold__meta">kits · supplies</span></summary>
 
 A kit holds a **Supply** value of **0–20** — the consumables it spends in use. Hands-on healing and several abilities draw down Supplies; an empty kit is just the tools and the bag.
 
@@ -151,7 +166,10 @@ A kit holds a **Supply** value of **0–20** — the consumables it spends in us
 - The **Friar's Kit** is the spiritual counterpart — holy oils and incense — identical in weight, cost, and Supply mechanics, but **some ministrations require it instead of the Healer's Kit** (for instance, treating damage to the mind and soul).
 - A kit filled to 20 Supplies weighs about **5 lb** and costs about **12 sp**.
 
-## Poisons
+</details>
+
+<details id="poisons">
+<summary>Poisons <span class="fold__meta">crafting · a sample</span></summary>
 
 A poison is defined by its **Application** *(ingestion, inhaled, wound, or contact)*, a **Save DC**, an **Onset**, and then — once it takes hold — a **Duration** *(how long one interval lasts)* and an **Interval count** *(how many ticks it runs)*. At each interval the victim saves again, and the poison worsens or eases. Coating a weapon by the **Wound** method takes a Minor action and a Wisdom check *(DC 10)*; one dose serves a single weapon or missile and lasts 24 hours.
 
@@ -184,7 +202,10 @@ Each interval the victim climbs this track on a failed save, and descends on a s
 | **Time** | 8 hours per batch *(up to 10 doses at 10× ingredients)* |
 | **Price** | 8 sp / dose |
 
-## Wealth
+</details>
+
+<details id="wealth">
+<summary>Wealth <span class="fold__meta">coin · wages · prices</span></summary>
 
 The base coin of the realm is the **Silver Piece (sp)** — every price in this book is written in silver. But the coin in an ordinary hand is the **Copper Piece (cp)**. Copper buys a meal; silver buys a day; gold, most people never hold at all.
 
@@ -255,3 +276,5 @@ For orientation, in a working man's terms — he earns 2 sp a day and clears 7 s
 | Full Plate | 1,500 sp | two and a half years' wages — a third of a rowhome |
 
 **Full Plate is not equipment. It is property.** A harness of plate costs what a building costs, and it is owned by the sort of people who own buildings. Adventurers do not save up for it; they are granted it, left it, or take it off someone.
+
+</details>
