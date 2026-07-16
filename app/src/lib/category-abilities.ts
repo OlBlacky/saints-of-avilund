@@ -2141,37 +2141,44 @@ const GUILE: Ability[] = [
     vars: {
       frequency: FREQ_FULL,
       action: { base: 'Standard', advances: [{ value: 'Move', cost: 'M' }, { value: 'Minor', cost: 'M' }] },
-      range: { base: "30'" },
-      targets: { base: 'One' },
+      range: STD_RANGE,
+      targets: {
+        base: 'One',
+        advances: [
+          { value: 'Two', cost: 'm' },
+          { value: 'Cha', cost: 'm' },
+          { value: 'All opponents', cost: 'M' },
+        ],
+      },
       attack: { base: 'Charisma vs Unarmoured Wisdom' },
       effects: {
-        base: '“Look there.” The mark is Off Guard against your allies’ attacks, and cannot attack you until its next turn.',
+        base: '“Look there.” The Target is Off Guard to your attacks.',
         advances: [
-          { value: 'Off Guard against everyone’s attacks (yours included)', cost: 'm' },
-          { value: 'And you may shift one ally 5′ into the opening', cost: 'm' },
-          { value: 'And the mark is Dazed (no Reactions or Interrupts), save ends', cost: 'M' },
+          { value: 'The Target is Off Guard to all attacks', cost: 'm' },
+          { value: 'And you may Shift one Target 5′', cost: 'm' },
+          { value: 'And one Target is Dazed until the end of your next turn', cost: 'M' },
         ],
       },
       duration: { base: 'Until the end of your next turn' },
     },
   },
   {
-    name: 'Cutting Remark', category: 'Guile', role: 'Debuff', mode: 'Attack',
+    name: 'Cutting Remark', category: 'Guile', role: 'Debuff · offence', mode: 'Attack',
     vars: {
       frequency: FREQ_FULL,
       action: { base: 'Standard', advances: [{ value: 'Move', cost: 'M' }, { value: 'Minor', cost: 'M' }] },
       range: { base: "30'" },
-      targets: { base: 'One', advances: [{ value: 'A second enemy within 10′ of the first', cost: 'M' }] },
+      targets: { base: 'One' },
       attack: { base: 'Charisma vs Unarmoured Wisdom' },
       effects: {
-        base: 'A jibe that gets under the skin: −1 to the mark’s attack rolls.',
+        base: 'A jibe that gets under the skin: −1 to the Target’s attack rolls.',
         advances: [
-          { value: '−2 to its attack rolls', cost: 'm' },
+          { value: '−1 to its attack and damage rolls', cost: 'm' },
           { value: '−2 to its attack and damage rolls', cost: 'm' },
-          { value: '−2 to attack and damage, and it cannot take Reactions or Interrupts', cost: 'M' },
+          { value: '−2 to attack and damage, and the Target may not take Reactions or Interrupts', cost: 'M' },
         ],
       },
-      duration: { base: 'Save ends' },
+      duration: { base: 'Until the end of your next turn' },
     },
   },
   {
@@ -2183,9 +2190,9 @@ const GUILE: Ability[] = [
       targets: { base: 'One' },
       attack: { base: 'Charisma vs Unarmoured Wisdom' },
       effects: {
-        base: 'Bluff and bravado throw the mark off its guard: −1 to all its defences.',
+        base: 'Bluff and bravado throw the Target off its guard: −1 to a defence of your choice.',
         advances: [
-          { value: '−2 to all its defences', cost: 'm' },
+          { value: '−2 to the chosen defence', cost: 'm' },
           { value: '−2, and Vulnerable 1', cost: 'm' },
           { value: '−2, and Vulnerable 3', cost: 'M' },
         ],
@@ -2200,11 +2207,11 @@ const GUILE: Ability[] = [
       action: { base: 'Move', advances: [{ value: 'Minor', cost: 'M' }, { value: 'Free', cost: 'M' }] },
       range: { base: 'Self' },
       effects: {
-        base: 'A performer’s unshakeable front: gain Cha Temp HP.',
+        base: 'A performer’s unshakeable front: gain 1 Temp HP.',
         advances: [
-          { value: 'And +1 to all your defences while the Temp HP lasts', cost: 'm' },
-          { value: 'And +2 to all your defences while the Temp HP lasts', cost: 'm' },
-          { value: 'And, while the Temp HP lasts, you cannot be made Off Guard', cost: 'M' },
+          { value: 'Cha Temp HP', cost: 'm' },
+          { value: 'Cha Temp HP, and +1 to all your defences while the Temp HP lasts', cost: 'm' },
+          { value: 'And you cannot be made Off Guard while the Temp HP lasts', cost: 'M' },
         ],
       },
       duration: { base: 'Until you lose the Temp HP' },
