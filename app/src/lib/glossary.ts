@@ -33,7 +33,6 @@ export const GLOSSARY: Record<string, string> = {
   'flanked': 'A creature is flanked when you and an ally are both adjacent to it, on opposite sides. Abilities that trigger on an Off Guard target trigger equally on a flanked one.',
   'flanking': 'You flank an enemy when you and an ally are both adjacent to it and stand on opposite sides. It needs no roll — either the geometry holds or it does not.',
   'Studied': 'A mark the Assassin has observed with Study the Mark. It stays Studied until the end of the encounter, adding Study the Mark’s bonus damage (+1, rising to +Int, then +2 × Int) to your Sneak Attack, Death Blow, and Anatomist’s Cut against it.',
-  'Price': 'The cost every Occult working takes back, paid the moment you use it — whether or not it succeeds. Price damage cannot be prevented or reduced, and is not healed until your next rest. It is a ladder like any other and can be bought down; its last Rank lets you pay it in someone else’s blood instead.',
   'Difficulty Class': 'A creature’s DC — the target number to beat when an ability tests itself against the creature as a whole rather than one Defence. For a character it is 10 + level; a monster states its own DC in its listing.',
   'DC': 'Difficulty Class — the target number to beat when an ability tests itself against a creature as a whole rather than one Defence. A character’s DC is 10 + level; a monster states its own.',
 };
