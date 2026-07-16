@@ -90,6 +90,6 @@ The con man's craft, worked from the back of the fight with Charisma against a f
 *Misdirection · Cutting Remark · Bluster · Confidence · Swindle · Parley · Contionem habere*
 
 ### [Occult](../../abilities/#occult) — *Blackcoat*
-The Occultist's own craft, borrowed by a man with no business holding it: hexes and the evil eye, hands out of the ground, a bound shade to run his errands, a warded circle, a questioned corpse. Every working has a **Price**, paid the moment he uses it — and the last thing he learns is how to make somebody else pay it.
+The Occultist's own craft, borrowed by a man with no business holding it: hexes and the evil eye, hands out of the ground, a bound shade to run his errands, a warded circle, a questioned corpse — and the objects and rites themselves, for the Blackcoat has no scholarship to fall back on and Occult must teach him its own reading. Every working has a **Price**, paid the moment he uses it — and the last thing he learns is how to make somebody else pay it.
 
-*Hex · Evil Eye · Grasp of the Grave · Bargain · Bind Spirit · Ward · Speak with the Dead · Deathwatch*
+*Hex · Evil Eye · Grasp of the Grave · Bargain · Bind Spirit · Ward · Speak with the Dead · Deathwatch · Wield Relic · Read Scrolls · Conduct Ritual*

@@ -157,6 +157,26 @@ A shield's AC stacks on your armour's. **Raising a shield** can be done two ways
 
 </details>
 
+<details id="masterwork">
+<summary>Masterwork <span class="fold__meta">commissioned · one grade better</span></summary>
+
+Masterwork is a master's own hands rather than his shop's. It is **commissioned, never stocked**: you pay the surcharge, name the piece, and wait while he makes it. An item is masterwork or it is not — the grade never stacks with itself.
+
+| Item | Benefit | Surcharge | The master's time |
+|---|---|---|---|
+| Shield | −5 lb | +50 sp | 5 days |
+| Tools | +1 to checks made with them | +100 sp | 10 days |
+| Weapon | +1 to attack | +200 sp | 20 days |
+| Armour | −10 lb, and one drawback eased *(Stealth by 1, or Speed by 5')* | +300 sp | 30 days |
+
+- The surcharge is **added to the base price**. A masterwork Longsword is 15 + 200 = **215 sp**.
+- A weapon's **+1 stacks with your proficiency** — a master at +2 wielding a masterwork blade attacks at **+3**.
+- Tools likewise **stack past a skill's training cap**. Fine instruments let a man punch above his training.
+- **Light armour** has no drawbacks to ease, so it gains only the weight. No armour drops below **5 lb**.
+- The surcharge is the master's time at his own wage *(8–10 sp a day — see the [Wealth](#wealth) fold)*. In a village there is no one to ask.
+
+</details>
+
 <details id="gear">
 <summary>Adventuring Gear <span class="fold__meta">packs · light · camp · tools</span></summary>
 

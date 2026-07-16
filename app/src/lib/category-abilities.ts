@@ -1064,6 +1064,49 @@ const SPIRITUAL: Ability[] = [
 // ── Letters (Scholar — Class) ───────────────────────────────────
 // Scholarship: academic utility, a clever Int-based blade, and the
 // literacy that reads scrolls, spellbooks and rituals. No spells of its own.
+// Read Scrolls and Conduct Ritual — the found-magic literacy. Shared verbatim
+// by Letters (the Scholar's class category) and Occult (the Occultist's): the
+// same cards in both lists. The Scholar's Paths get their literacy from Letters;
+// the Occultist has no Letters, so Occult must carry its own.
+const READ_SCROLLS: Ability = {
+  name: 'Read Scrolls', category: 'Letters', role: 'Magic literacy', mode: 'Effect',
+  vars: {
+    frequency: { base: 'Daily', advances: [{ value: 'Encounter', cost: 'M' }, { value: '2 / encounter', cost: 'M', note: 'L3' }] },
+    action: { base: 'Full Round', advances: [{ value: 'Standard', cost: 'M' }] },
+    attack: { base: 'Int (+ Scroll Specialization) vs the spell’s defence' },
+    effects: {
+      base: 'Read only — identify a scroll’s spell. You must know its language (e.g. Elder Arcana).',
+      advances: [
+        { value: 'cast Lesser spells from a scroll (consumed on use)', cost: 'm' },
+        { value: 'cast Greater spells', cost: 'M', note: 'L5' },
+      ],
+    },
+  },
+  options: [
+    { label: 'Generic Advancement Ladder', note: GA_NOTE('scroll'), ladders: [GENERIC_ADV] },
+    { label: 'Implement Specialization Hooks', note: GA_MASTERY('scroll', 'Scroll Specialization') },
+  ],
+  extraVars: [SCRIBE_CREATE],
+};
+
+const CONDUCT_RITUAL: Ability = {
+  name: 'Conduct Ritual', category: 'Letters', role: 'Magic literacy', mode: 'Effect',
+  vars: {
+    action: { base: 'The ritual’s own casting time' },
+    effects: {
+      base: 'Anyone with the materials and the language may perform a ritual at its base. Conduct Ritual lets you improve one, applying your Generic Advances (below) to its variables — e.g. shortening its casting time.',
+    },
+  },
+  options: [
+    { label: 'Generic Advancement Ladder', note: GA_NOTE('ritual'), ladders: [GENERIC_ADV] },
+    { label: 'Ritual Specialization Hooks', note: GA_MASTERY('ritual', 'Ritual Specialist') + ' A Ritual Specialist also gains +1 to any d20 roll for the ritual.' },
+  ],
+  extraVars: [
+    { name: 'Participant Ladder', base: '—', advances: [{ value: 'improved one degree (more effect from fewer participants)', cost: 'M' }] },
+    SCRIBE_CREATE,
+  ],
+};
+
 const LETTERS: Ability[] = [
   {
     name: 'Research', category: 'Letters', role: 'Utility · non-combat', mode: 'Effect',
@@ -1127,26 +1170,7 @@ const LETTERS: Ability[] = [
       },
     },
   },
-  {
-    name: 'Read Scrolls', category: 'Letters', role: 'Magic literacy', mode: 'Effect',
-    vars: {
-      frequency: { base: 'Daily', advances: [{ value: 'Encounter', cost: 'M' }, { value: '2 / encounter', cost: 'M', note: 'L3' }] },
-      action: { base: 'Full Round', advances: [{ value: 'Standard', cost: 'M' }] },
-      attack: { base: 'Int (+ Scroll Specialization) vs the spell’s defence' },
-      effects: {
-        base: 'Read only — identify a scroll’s spell. You must know its language (e.g. Elder Arcana).',
-        advances: [
-          { value: 'cast Lesser spells from a scroll (consumed on use)', cost: 'm' },
-          { value: 'cast Greater spells', cost: 'M', note: 'L5' },
-        ],
-      },
-    },
-    options: [
-      { label: 'Generic Advancement Ladder', note: GA_NOTE('scroll'), ladders: [GENERIC_ADV] },
-      { label: 'Implement Specialization Hooks', note: GA_MASTERY('scroll', 'Scroll Specialization') },
-    ],
-    extraVars: [SCRIBE_CREATE],
-  },
+  READ_SCROLLS,
   {
     name: 'Read Spellbooks', category: 'Letters', role: 'Magic literacy', mode: 'Effect',
     vars: {
@@ -1167,23 +1191,7 @@ const LETTERS: Ability[] = [
     ],
     extraVars: [SCRIBE_CREATE],
   },
-  {
-    name: 'Conduct Ritual', category: 'Letters', role: 'Magic literacy', mode: 'Effect',
-    vars: {
-      action: { base: 'The ritual’s own casting time' },
-      effects: {
-        base: 'Anyone with the materials and the language may perform a ritual at its base. Conduct Ritual lets you improve one, applying your Generic Advances (below) to its variables — e.g. shortening its casting time.',
-      },
-    },
-    options: [
-      { label: 'Generic Advancement Ladder', note: GA_NOTE('ritual'), ladders: [GENERIC_ADV] },
-      { label: 'Ritual Specialization Hooks', note: GA_MASTERY('ritual', 'Ritual Specialist') + ' A Ritual Specialist also gains +1 to any d20 roll for the ritual.' },
-    ],
-    extraVars: [
-      { name: 'Participant Ladder', base: '—', advances: [{ value: 'improved one degree (more effect from fewer participants)', cost: 'M' }] },
-      SCRIBE_CREATE,
-    ],
-  },
+  CONDUCT_RITUAL,
   {
     name: 'Identify', category: 'Letters', role: 'Magic literacy · utility', mode: 'Effect',
     vars: {
@@ -2500,6 +2508,41 @@ const OCCULT: Ability[] = [
       },
     ],
   },
+  // ── Object use. The Occultist has no Letters, so Occult carries its own
+  // literacy: its own relic engine, plus Read Scrolls and Conduct Ritual
+  // reused verbatim from Letters (the same cards, in both lists).
+  {
+    name: 'Wield Relic', category: 'Occult', role: 'Utility · relic engine', mode: 'Effect',
+    vars: {
+      frequency: { base: 'Daily (Overdraw)', advances: [{ value: 'Encounter', cost: 'M' }, { value: 'Twice per encounter', cost: 'M' }] },
+      action: { base: 'The relic’s own activation' },
+      effects: {
+        base: 'Sense and handle a profane relic — an idol, a charm, a coffin-nail, the coin they paid you with. Wield common ones at their base values, drawing on the relic’s own ladders. (Overdraw spends the Frequency above for activations beyond its charges.)',
+        advances: [
+          { value: 'Attune to draw on a relic’s full ladders reliably', cost: 'm' },
+          { value: 'Attune to powerful relics', cost: 'm' },
+          { value: 'Attune to the unstable and the hungry — relics no one else will hold', cost: 'M' },
+        ],
+      },
+    },
+    extraVars: [
+      {
+        name: 'Price — the Relic’s Due',
+        base: '1d6 damage to you each time you draw on it',
+        advances: [
+          { value: '1d4 damage', cost: 'm' },
+          { value: '1 damage', cost: 'm' },
+          { value: 'Another’s blood — an adjacent willing or Grabbed creature pays the Due instead', cost: 'M' },
+        ],
+      },
+    ],
+    options: [
+      { label: 'Generic Advancement Ladder', note: GA_NOTE('relic'), ladders: [GENERIC_ADV] },
+      { label: 'Implement Specialization Hooks', note: GA_MASTERY('relic', 'Artefact Specialization'), detail: ['Feat Hook (a Black Faith rite you have learned) → a bonus when wielding relics of that rite — e.g. +1 to its boosts, or an Overdraw that costs no Price'] },
+    ],
+  },
+  READ_SCROLLS,
+  CONDUCT_RITUAL,
 ];
 
 export const CATEGORIES: CategoryGroup[] = [
@@ -2514,7 +2557,7 @@ export const CATEGORIES: CategoryGroup[] = [
   { name: 'Medicine', source: 'Scholar — Physician', blurb: 'The non-magical physician: a surgeon’s cuts and crafted poisons, a guarded stance, and hands-on healing — combat dressings, condition care, and the long convalescence — drawing on a Healer’s Kit.', abilities: MEDICINE },
   { name: 'New Magic', source: 'Scholar — Arcanist', blurb: 'The Collegium’s disciplined, destructive art — and a spell-builder. Each offensive chassis (ranged or close, single or burst) is bought with ONE element and a name of your choosing, then re-bought to make another spell. Dexterity vs AC aims every attack; Intelligence powers the damage. An element’s signature Effect ladder unlocks only with its Mastery — [type] feat, and four implements (wand, staff, spellbook, scroll) each lend a hook.', abilities: NEW_MAGIC },
   { name: 'The Lost', source: 'Scoundrel — Class', blurb: 'The outcast’s craft, built on one hard truth: a Scoundrel who is seen is a Scoundrel who is losing. The strike pays out only against a mark who is Off Guard or flanked, and everything else in the Category exists to buy that condition — the false move, the fistful of sand, the slip out of reach, and the art of vanishing in a city that would hang you.', abilities: THE_LOST },
-  { name: 'Occult', source: 'Occultist — Class *(hosted by the Scoundrel’s Blackcoat)*', blurb: 'The dead, the spirits, and what can be got from them — worked with Wisdom, which here is not learning but the low, unwanted knowing of one who has seen the other side. Its engine is THE PRICE: every working takes something back, paid the moment you use it, whether or not it succeeds — and Price damage is never healed until your next rest. The Price is a ladder like any other and can be bought down; but its last Rank does not spare you the cost, it only lets you pay it in someone else’s blood. Hexes and the evil eye, hands out of the ground, a bound shade to serve you, a warded circle, the questioned corpse — and Bargain, the deep end, where you borrow real power now against a debt that always lands.', abilities: OCCULT },
+  { name: 'Occult', source: 'Occultist — Class *(hosted by the Scoundrel’s Blackcoat)*', blurb: 'The dead, the spirits, and what can be got from them — worked with Wisdom, which here is not learning but the low, unwanted knowing of one who has seen the other side. Its engine is THE PRICE: every working takes something back, paid the moment you use it, whether or not it succeeds — and Price damage is never healed until your next rest. The Price is a ladder like any other and can be bought down; but its last Rank does not spare you the cost, it only lets you pay it in someone else’s blood. Hexes and the evil eye, hands out of the ground, a bound shade to serve you, a warded circle, the questioned corpse — and Bargain, the deep end, where you borrow real power now against a debt that always lands. Because the Occultist has no Letters to fall back on, Occult carries its own object-use: a relic engine of its own, plus Read Scrolls and Conduct Ritual reused straight from Letters.', abilities: OCCULT },
   { name: 'Guile', source: 'Scoundrel — Charlatan', blurb: 'The con man’s craft — Charisma against a foe’s nerve. A debuffer who works the whole fight from the back: a misdirection that turns a foe’s head and leaves it Off Guard for the party, a cutting remark that blunts its attacks, a blustering bravado that drops its guard, and the unshakeable confidence that keeps the Charlatan himself standing. Out of the fight, three social crafts — each a skill against a Defence: the long con for coin (Bluff), the parley for terms (Diplomacy), and Contionem habere, the harangue that steels allies with Temp HP before a fight (Intimidate).', abilities: GUILE },
   { name: 'Assassination', source: 'Scoundrel — Assassin', blurb: 'The studied kill. Study the Mark hangs a Studied marker on a target; the Death Blow — a rare, massive strike against a mark who is Studied and Off Guard — is the reward for setting it all up. Around it: the Physician’s Envenom (the same crafted-poison delivery, reused), a crippling anatomist’s cut, the garrote’s silent choke, a pointed interrogation that turns talk into a battle edge, and the trade’s least glamorous skill — leaving no trace. Dexterity plants every blade; Intelligence rides on the study.', abilities: ASSASSINATION },
   { name: 'Elder Magic', source: 'Scholar — Antiquarian', blurb: 'The recovered, fragmentary art of the Elders — subtle and controlling, worked by force of will (Charisma against a foe’s unguarded mind): the artefact engine, psychic dread, blinding, forced movement, outright domination, a withering doubt, and the ruin-delver’s craft. Every working carries a Feat Hook, for Elder magic comes only in studied fragments.', abilities: ELDER_MAGIC },
