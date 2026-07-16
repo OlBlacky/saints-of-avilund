@@ -100,12 +100,6 @@ Ranged and thrown weapons list three increments. Shooting further costs accuracy
 
 *Grenades are area weapons; their blast radius and the area-attack rules are still being written.*
 
-### What Arms Cost
-
-A stick is free and a knife is a day's wage, which is why the desperate of Avilund are armed with sticks and knives. A **Longsword at 15 sp** is a week's wages for a guilded man — a real purchase, made once, kept for life. A **Greatsword at 50 sp** is a month's earnings, and a **Longbow** the same.
-
-Powder arms are another matter entirely. A **Flintlock Pistol** costs two months' wages and a **Long Rifle** costs seven — more than any labourer will save in a year, and half again what a Breastplate costs. Guns in Avilund are not the weapons of common soldiers. They are owned by men who own things.
-
 </details>
 
 <details id="armour">
@@ -154,10 +148,6 @@ A shield's AC stacks on your armour's. **Raising a shield** can be done two ways
 <details id="gear">
 <summary>Adventuring Gear <span class="fold__meta">packs · light · camp · tools</span></summary>
 
-The unglamorous half of the kit. A man can carry a sword into a ruin and still die in it for want of a rope, a lamp, or a day's bread.
-
-Prices here are worth reading against a wage. A guilded labourer earns **2 sp a day** and clears about **7 sp a month** once he has eaten and paid his rent — so a torch is an hour of his life, a backpack is a day, and a spyglass is most of a year.
-
 ### Packs &amp; Containers
 
 | Item | Cost | Weight |
@@ -203,8 +193,6 @@ Prices here are worth reading against a wage. A guilded labourer earns **2 sp a 
 | Tent, one man | 8 sp | 20 lb |
 | Tent, pavilion *(four)* | 30 sp | 60 lb |
 
-A day's **trail rations** at 5 cp cost about what a day's meals cost in town — preserving food is most of the price of it.
-
 ### Rope, Iron &amp; Climbing
 
 | Item | Cost | Weight |
@@ -246,14 +234,9 @@ A day's **trail rations** at 5 cp cost about what a day's meals cost in town —
 | Lock, superior | 8 sp | 1 lb |
 | Magnifying glass | 10 sp | — |
 | Mirror, small steel | 10 sp | ½ lb |
-| Lock, masterwork | 15 sp | 1 lb |
 | Hourglass | 25 sp | 1 lb |
 | Thieves' tools | 30 sp | 1 lb |
-| Artisan's tools, masterwork | 55 sp | 5 lb |
-| Thieves' tools, masterwork | 100 sp | 2 lb |
 | Spyglass | 150 sp | 1 lb |
-
-**Ink at 8 sp the ounce** costs four days' labour, which is worth remembering before a character scribbles a note. Writing is expensive in Avilund, and that is a large part of why the Library matters and why a scribe is paid better than a labourer.
 
 ### Clothing
 
@@ -271,11 +254,9 @@ A day's **trail rations** at 5 cp cost about what a day's meals cost in town —
 | Courtier's outfit | 30 sp | 6 lb |
 | Noble's outfit | 75 sp | 10 lb |
 
-A **noble's outfit at 75 sp** is a month and a half of a working man's wages worn on the back. That is the point of it. Clothing in Avilund is not decoration but declaration, and dressing above your station is the cheapest way to be taken for something you are not — which is precisely the Charlatan's trade.
-
 ### Faith &amp; Superstition
 
-Carried by nearly everyone, and mechanically inert — which is not the same as useless.
+*Carried by nearly everyone; mechanically inert.*
 
 | Item | Cost | Weight |
 |---|---|---|
@@ -287,14 +268,10 @@ Carried by nearly everyone, and mechanically inert — which is not the same as 
 | Saint's medal, silver | 5 sp | — |
 | Reliquary, empty | 20 sp | 2 lb |
 
-A tin medal of your saint costs a tenth of a day and is worn by carters, soldiers, and thieves alike. Whether it does anything is a matter between the wearer and the saint. The **empty reliquary** is sold openly at 20 sp; what goes in it is not.
-
 </details>
 
 <details id="services">
 <summary>Lodging, Travel &amp; Hire <span class="fold__meta">board · mounts · hirelings</span></summary>
-
-What things cost when you are the one paying, rather than the one being paid. Every fee here is somebody's wage — read this fold against the [Wealth](#wealth) fold and the whole economy closes into a loop.
 
 ### Food &amp; Drink
 
@@ -325,8 +302,6 @@ What things cost when you are the one paying, rather than the one being paid. Ev
 | Private room, good | 2 sp |
 | Fine lodging | 5 sp |
 
-The tradesman of the [Wealth](#wealth) fold pays **5 cp a night** for his room, which is less than an inn charges for a shut door — he is a tenant, and the inn deals in strangers. Transience is a tax on the traveller, and adventurers are always travellers.
-
 ### Mounts &amp; Vehicles
 
 | Item | Cost | Weight |
@@ -346,8 +321,6 @@ The tradesman of the [Wealth](#wealth) fold pays **5 cp a night** for his room, 
 | Draught horse | 200 sp | — |
 | Rowboat | 50 sp | — |
 | Warhorse, heavy | 400 sp | — |
-
-A **mule at 8 sp** is four days' wages and the most sensible purchase a poor party will ever make. A **heavy warhorse at 400 sp** is eight months of a labourer's life, and is not sold to labourers.
 
 ### Passage
 

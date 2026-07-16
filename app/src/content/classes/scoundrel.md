@@ -89,7 +89,7 @@ The con man's craft, worked from the back of the fight with Charisma against a f
 
 *Misdirection · Cutting Remark · Bluster · Confidence · Swindle · Parley · Contionem habere*
 
-### [Larceny](../../abilities/#larceny) — *Burglar*
-The housebreaker's trade: locks and traps at both ends of the craft, the silent step, the climb to the upper window, and the ambush sprung on a man who never saw the room he walked into.
+### [Occult](../../abilities/#occult) — *Blackcoat*
+The Occultist's own craft, borrowed by a man with no business holding it: hexes and the evil eye, hands out of the ground, a bound shade to run his errands, a warded circle, a questioned corpse. Every working has a **Price**, paid the moment he uses it — and the last thing he learns is how to make somebody else pay it.
 
-*Pick Lock · Disarm Trap · Snare · Ambush from Cover · Silent Step · Second-Storey Work · Case the Joint*
+*Hex · Evil Eye · Grasp of the Grave · Bargain · Bind Spirit · Ward · Speak with the Dead · Deathwatch*
