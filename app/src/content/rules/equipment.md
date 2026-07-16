@@ -151,6 +151,233 @@ A shield's AC stacks on your armour's. **Raising a shield** can be done two ways
 
 </details>
 
+<details id="gear">
+<summary>Adventuring Gear <span class="fold__meta">packs · light · camp · tools</span></summary>
+
+The unglamorous half of the kit. A man can carry a sword into a ruin and still die in it for want of a rope, a lamp, or a day's bread.
+
+Prices here are worth reading against a wage. A guilded labourer earns **2 sp a day** and clears about **7 sp a month** once he has eaten and paid his rent — so a torch is an hour of his life, a backpack is a day, and a spyglass is most of a year.
+
+### Packs &amp; Containers
+
+| Item | Cost | Weight |
+|---|---|---|
+| Belt pouch | 5 cp | — |
+| Sack, large | 2 cp | 1 lb |
+| Basket | 4 cp | 1 lb |
+| Satchel | 1 sp | 1 lb |
+| Backpack | 2 sp | 2 lb |
+| Waterskin *(full)* | 1 sp | 4 lb |
+| Flask, tin | 3 cp | — |
+| Vial, glass | 5 cp | — |
+| Chest, wooden | 2 sp | 25 lb |
+| Strongbox, iron-bound *(with lock)* | 10 sp | 15 lb |
+| Barrel | 2 sp | 30 lb |
+| Saddlebags | 4 sp | 8 lb |
+
+### Light &amp; Fire
+
+| Item | Cost | Weight | Light | Burns |
+|---|---|---|---|---|
+| Candle | 1 cp | — | 5' | 1 hour |
+| Torch | 1 cp | 1 lb | 20' | 1 hour |
+| Flask of oil | 1 cp | 1 lb | — | 6 hours *(in a lamp)* |
+| Tinderbox | 5 cp | 1 lb | — | — |
+| Lamp, common | 1 sp | 1 lb | 15' | per flask |
+| Hooded lantern | 7 sp | 2 lb | 30' | per flask |
+| Bullseye lantern | 12 sp | 3 lb | 60' *(cone)* | per flask |
+
+*The light radii and burn times above are provisional — the rules for darkness and vision have not been written yet, and will settle these numbers when they are.*
+
+### Camp &amp; Trail
+
+| Item | Cost | Weight |
+|---|---|---|
+| Bedroll | 2 cp | 5 lb |
+| Blanket, wool | 5 cp | 3 lb |
+| Whetstone | 1 cp | 1 lb |
+| Cooking pot | 3 cp | 4 lb |
+| Rations, trail *(one day)* | 5 cp | 1 lb |
+| Fishing tackle | 1 sp | 2 lb |
+| Fishing net | 4 sp | 5 lb |
+| Tent, one man | 8 sp | 20 lb |
+| Tent, pavilion *(four)* | 30 sp | 60 lb |
+
+A day's **trail rations** at 5 cp cost about what a day's meals cost in town — preserving food is most of the price of it.
+
+### Rope, Iron &amp; Climbing
+
+| Item | Cost | Weight |
+|---|---|---|
+| Piton | 1 cp | ½ lb |
+| Hammer | 5 cp | 2 lb |
+| Ladder, 10' | 5 cp | 20 lb |
+| Grappling hook | 8 cp | 4 lb |
+| Rope, hemp *(50')* | 1 sp | 10 lb |
+| Caltrops *(bag)* | 1 sp | 2 lb |
+| Crowbar | 2 sp | 5 lb |
+| Shovel | 2 sp | 8 lb |
+| Chain, 10' | 3 sp | 10 lb |
+| Miner's pick | 3 sp | 10 lb |
+| Climber's kit | 8 sp | 5 lb |
+| Rope, silk *(50')* | 10 sp | 5 lb |
+| Manacles | 15 sp | 2 lb |
+
+### Tools &amp; Implements
+
+| Item | Cost | Weight |
+|---|---|---|
+| Chalk | 1 cp | — |
+| Soap | 1 cp | — |
+| Sealing wax | 1 cp | — |
+| Quill | 1 cp | — |
+| Parchment *(sheet)* | 2 cp | — |
+| Paper *(sheet)* | 4 cp | — |
+| Whistle | 5 cp | — |
+| Sewing needle | 5 cp | — |
+| Bell | 1 sp | — |
+| Signal horn | 1 sp | 2 lb |
+| Lock, simple | 2 sp | 1 lb |
+| Merchant's scale | 2 sp | 1 lb |
+| Lock, good | 4 sp | 1 lb |
+| Artisan's tools | 5 sp | 5 lb |
+| Signet ring | 5 sp | — |
+| Ink *(1 oz)* | 8 sp | — |
+| Lock, superior | 8 sp | 1 lb |
+| Magnifying glass | 10 sp | — |
+| Mirror, small steel | 10 sp | ½ lb |
+| Lock, masterwork | 15 sp | 1 lb |
+| Hourglass | 25 sp | 1 lb |
+| Thieves' tools | 30 sp | 1 lb |
+| Artisan's tools, masterwork | 55 sp | 5 lb |
+| Thieves' tools, masterwork | 100 sp | 2 lb |
+| Spyglass | 150 sp | 1 lb |
+
+**Ink at 8 sp the ounce** costs four days' labour, which is worth remembering before a character scribbles a note. Writing is expensive in Avilund, and that is a large part of why the Library matters and why a scribe is paid better than a labourer.
+
+### Clothing
+
+| Item | Cost | Weight |
+|---|---|---|
+| Hat | 2 cp | — |
+| Cloak, wool | 5 cp | 2 lb |
+| Common outfit | 1 sp | 3 lb |
+| Traveller's outfit | 1 sp | 5 lb |
+| Boots, sturdy | 1 sp | 2 lb |
+| Oilskin cloak | 2 sp | 3 lb |
+| Scholar's robes | 5 sp | 6 lb |
+| Cleric's vestments | 5 sp | 6 lb |
+| Cold-weather outfit | 8 sp | 7 lb |
+| Courtier's outfit | 30 sp | 6 lb |
+| Noble's outfit | 75 sp | 10 lb |
+
+A **noble's outfit at 75 sp** is a month and a half of a working man's wages worn on the back. That is the point of it. Clothing in Avilund is not decoration but declaration, and dressing above your station is the cheapest way to be taken for something you are not — which is precisely the Charlatan's trade.
+
+### Faith &amp; Superstition
+
+Carried by nearly everyone, and mechanically inert — which is not the same as useless.
+
+| Item | Cost | Weight |
+|---|---|---|
+| Votive candle | 1 cp | — |
+| Incense *(stick)* | 2 cp | — |
+| Saint's medal, tin | 2 cp | — |
+| Pilgrim's badge | 3 cp | — |
+| Prayer beads | 5 cp | — |
+| Saint's medal, silver | 5 sp | — |
+| Reliquary, empty | 20 sp | 2 lb |
+
+A tin medal of your saint costs a tenth of a day and is worn by carters, soldiers, and thieves alike. Whether it does anything is a matter between the wearer and the saint. The **empty reliquary** is sold openly at 20 sp; what goes in it is not.
+
+</details>
+
+<details id="services">
+<summary>Lodging, Travel &amp; Hire <span class="fold__meta">board · mounts · hirelings</span></summary>
+
+What things cost when you are the one paying, rather than the one being paid. Every fee here is somebody's wage — read this fold against the [Wealth](#wealth) fold and the whole economy closes into a loop.
+
+### Food &amp; Drink
+
+| Item | Cost |
+|---|---|
+| Bread, loaf | 1 cp |
+| Cheese, wedge | 1 cp |
+| Ale, mug | 1 cp |
+| Meat, joint | 2 cp |
+| Wine, common *(pitcher)* | 2 cp |
+| Ale, gallon | 5 cp |
+| Wine, fine *(bottle)* | 1 sp |
+| Meal, poor | 1 cp |
+| Meal, common | 2 cp |
+| Meal, good | 5 cp |
+| Banquet *(per head)* | 1 sp |
+
+### Lodging
+
+| Item | Cost per night |
+|---|---|
+| Space on the common-room floor | 2 cp |
+| A bed in the common room | 4 cp |
+| Private room, modest | 8 cp |
+| Stabling *(per animal)* | 5 cp |
+| Bath | 1 cp |
+| Laundry | 1 cp |
+| Private room, good | 2 sp |
+| Fine lodging | 5 sp |
+
+The tradesman of the [Wealth](#wealth) fold pays **5 cp a night** for his room, which is less than an inn charges for a shut door — he is a tenant, and the inn deals in strangers. Transience is a tax on the traveller, and adventurers are always travellers.
+
+### Mounts &amp; Vehicles
+
+| Item | Cost | Weight |
+|---|---|---|
+| Feed *(per day)* | 5 cp | 10 lb |
+| Bit and bridle | 2 sp | 1 lb |
+| Pack saddle | 5 sp | 15 lb |
+| Mule or donkey | 8 sp | — |
+| Riding saddle | 10 sp | 25 lb |
+| Cart | 15 sp | 200 lb |
+| Military saddle | 20 sp | 30 lb |
+| Pony | 30 sp | — |
+| Wagon | 35 sp | 400 lb |
+| Riding horse | 75 sp | — |
+| Carriage | 100 sp | — |
+| Warhorse, light | 150 sp | — |
+| Draught horse | 200 sp | — |
+| Rowboat | 50 sp | — |
+| Warhorse, heavy | 400 sp | — |
+
+A **mule at 8 sp** is four days' wages and the most sensible purchase a poor party will ever make. A **heavy warhorse at 400 sp** is eight months of a labourer's life, and is not sold to labourers.
+
+### Passage
+
+| Passage | Cost |
+|---|---|
+| By coach | 1 cp per mile |
+| By river barge | 1 cp per 2 miles |
+| By ship, coastal | 1 sp per day |
+
+### Hire
+
+A hireling's fee is simply his wage, with a premium for danger. These rates come straight off the wage ladder in the [Wealth](#wealth) fold.
+
+| Hireling | Fee |
+|---|---|
+| Porter | 1 sp per day |
+| Messenger | 2 cp per mile |
+| Untrained labourer | 1 sp per day |
+| Guide | 3 sp per day |
+| Guard or sword-for-hire | 3 sp per day |
+| Scribe | 3 sp per day |
+| Teamster *(with wagon)* | 5 sp per day |
+| Barrister | 5 sp per day |
+| Physician *(per visit)* | 5 sp |
+| Master craftsman | 8–10 sp per day |
+
+Note what a **sword-for-hire costs: 3 sp a day** — half again a labourer's wage, and no more. Violence is not expensive in Avilund. It is only expensive to survive, which is why the men who sell it are poor and the men who buy it are not.
+
+</details>
+
 <details id="kits">
 <summary>Medical &amp; Ministration Kits <span class="fold__meta">kits · supplies</span></summary>
 

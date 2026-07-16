@@ -1,11 +1,11 @@
 ---
 title: Scoundrel
 portfolio: The Lost
-summary: The one nobody claims — thief, killer, and liar, who wins by never being where the blow lands. Choose the Assassin, the Charlatan, or the Burglar.
+summary: The one nobody claims — thief, killer, and liar, who wins by never being where the blow lands. Choose the Assassin, the Charlatan, or the Blackcoat.
 order: 40
 ---
 
-The Scoundrel is the one nobody claims — the cutpurse, the cheat, the knife in the dark. Saint Irenaeus keeps the lost, the strayed and the forsaken, and it is under his name that the low houses of Avilund shelter: those who were never given a trade, and so took one. A Scoundrel does not win a fight, he *avoids* one, and then ends it from behind. The three Paths are three ways of getting what isn't yours: the **Assassin** takes a life, the **Charlatan** takes you in, and the **Burglar** simply takes.
+The Scoundrel is the one nobody claims — the cutpurse, the cheat, the knife in the dark. Saint Irenaeus keeps the lost, the strayed and the forsaken, and it is under his name that the low houses of Avilund shelter: those who were never given a trade, and so took one. A Scoundrel does not win a fight, he *avoids* one, and then ends it from behind. The three Paths are three ways of getting what isn't yours: the **Assassin** takes a life, the **Charlatan** takes you in, and the **Blackcoat** took the coin.
 
 ---
 
@@ -19,7 +19,7 @@ The Scoundrel is the one nobody claims — the cutpurse, the cheat, the knife in
 | **Class Skills** | Stealth, Thievery |
 | **Weapon Proficiencies** | Light Blades, Thrown |
 | **Armour Proficiencies** | Light Armour |
-| **Paths** | Assassin · Charlatan · Burglar |
+| **Paths** | Assassin · Charlatan · Blackcoat |
 
 ---
 
@@ -57,22 +57,22 @@ The confidence man — who would rather be invited through the front door than p
 | **Weapon Proficiencies** | Pistols |
 | **Armour Proficiencies** | *(none beyond the Class)* |
 
-### Burglar
-The housebreaker — patient, quiet, and awake at the hour when everyone else is not. Locks, traps, and second-storey windows are his trade. **Wisdom** is the Path's attribute: not cleverness but *attention*, the long watch and the noticed detail.
+### Blackcoat
+He took the Black Faith's coin — a few jobs, no questions — and got in deeper than he meant to. Now something answers when he calls, and the price is never quite what he was quoted. *Blackcoat* is what the low houses call one of their paid men; it is not a title he chose. **Wisdom** is the Path's attribute — not learning, but the low, unwanted knowing of a man who has seen what is on the other side.
 
 | | |
 |---|---|
 | **Class Attribute** | Wisdom |
-| **Ability Category** | Larceny |
-| **Additional Class Skills** | Perception, Search |
-| **Weapon Proficiencies** | Hammers/Maces *(the sap and the prybar)* |
+| **Ability Category** | Occult |
+| **Additional Class Skills** | Religion (Black Faith), The Planes |
+| **Implement Proficiencies** | Artefacts |
 | **Armour Proficiencies** | *(none beyond the Class)* |
 
 ---
 
 ## Abilities
 
-Every Scoundrel draws on **The Lost** from the Class, and a second Category from the chosen Path. Attacks in all four Categories are aimed with **Dexterity** — the Path attribute carries the study, the nerve, or the patience behind the blow. The complete cards — with every advancement — live in the **Abilities** section; here is what each Ability Category brings.
+Every Scoundrel draws on **The Lost** from the Class, and a second Category from the chosen Path. **Dexterity** plants every blade the Class itself carries; each Path then brings its own key — the Assassin's **Intelligence** on the study, the Charlatan's **Charisma** against a foe's nerve, the Blackcoat's **Wisdom** on things better left alone. The complete cards — with every advancement — live in the **Abilities** section; here is what each Ability Category brings.
 
 ### [The Lost](../../abilities/#the-lost) — *the Class category*
 The outcast's craft: the strike that only pays when you are unseen, and every trick that keeps you that way — vanishing, slipping the grasp, fighting dirty, and going to ground.
