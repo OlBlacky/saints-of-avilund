@@ -100,6 +100,18 @@ Ranged and thrown weapons list three increments. Shooting further costs accuracy
 
 *Grenades are area weapons; their blast radius and the area-attack rules are still being written.*
 
+### Ammunition
+
+| Item | Cost | Weight |
+|---|---|---|
+| Sling bullets *(10)* | 1 cp | 5 lb |
+| Arrows *(20)* | 1 sp | 3 lb |
+| Quiver *(holds 20)* | 1 sp | 2 lb |
+| Crossbow bolts *(10)* | 1 sp | 1 lb |
+| Bolt case *(holds 10)* | 1 sp | 1 lb |
+| Powder horn | 2 sp | 1 lb |
+| Powder and shot *(10 rounds)* | 3 sp | 2 lb |
+
 </details>
 
 <details id="armour">
@@ -332,7 +344,7 @@ A shield's AC stacks on your armour's. **Raising a shield** can be done two ways
 
 ### Hire
 
-A hireling's fee is simply his wage, with a premium for danger. These rates come straight off the wage ladder in the [Wealth](#wealth) fold.
+*A hireling's fee is his wage, with a premium for danger — see the [Wealth](#wealth) fold.*
 
 | Hireling | Fee |
 |---|---|
@@ -346,8 +358,6 @@ A hireling's fee is simply his wage, with a premium for danger. These rates come
 | Barrister | 5 sp per day |
 | Physician *(per visit)* | 5 sp |
 | Master craftsman | 8–10 sp per day |
-
-Note what a **sword-for-hire costs: 3 sp a day** — half again a labourer's wage, and no more. Violence is not expensive in Avilund. It is only expensive to survive, which is why the men who sell it are poor and the men who buy it are not.
 
 </details>
 
