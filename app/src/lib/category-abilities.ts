@@ -2317,7 +2317,7 @@ const GUILE: Ability[] = [
 // user, applied when the Ability is used. Each has its own Price ladder, bought
 // down like any other.
 const PRICE_NOTE =
-  'Some Occult Abilities carry a special property called the Price: a negative effect on you, applied when you use the Ability. Each Price is a ladder like any other, and can be bought down.';
+  'Some Occult Abilities carry a special property called the Price: a negative effect on you, applied when you use the Ability. Each Price is a ladder like any other, and can be bought down. The Grey Faith Feat (which requires training in the Black Faith) improves the Price ladder of every Occult ability you own by one Rank.';
 
 // The common Price ladder — shared by Third Eye and Dark Blessing.
 const PRICE_MAXHP: NamedLadder = {

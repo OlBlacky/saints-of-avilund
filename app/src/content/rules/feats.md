@@ -42,4 +42,14 @@ There are nine, one for each damage type imagined so far:
 
 Every Mastery Feat also grants an **automatic +1 to hit** with spells of its damage type, on top of the ladders it unlocks.
 
+## Grey Faith
+
+*Prerequisite: trained in **Religion (Black Faith)**.*
+
+A **gateway** Feat (a Major). Your **Price** ladder improves by **one Rank** on every [Occult](../abilities/#occult) ability you own: the base Price pays out as though it were Rank 2, Rank 2 as Rank 3, and so on. It cannot climb past the top of a ladder.
+
+On the common Occult Price — *−2 Maximum HP until a long rest → −1 until a long rest → −1 until a short rest → no Price* — a Blackcoat with Grey Faith who has bought no Price Ranks at all still pays only **−1 Maximum HP until a long rest**.
+
+It costs a **Major** because it buys like one. A Price ladder's upper Ranks cost a Major each, and Grey Faith grants a Rank on *every* Occult ability you own — so a Blackcoat with three of them may be saving several Majors at a stroke. Gateway pricing is what keeps that honest.
+
 The complete Feat lists, and how Feats sit within the Advance economy, will be written up here as they firm up.
