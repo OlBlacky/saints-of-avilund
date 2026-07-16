@@ -1856,7 +1856,7 @@ const THE_LOST: Ability[] = [
       duration: { base: 'Instant (Bleed: save ends)' },
     },
     options: [
-      { label: 'The mark must be Off Guard or flanked', note: OFF_GUARD_NOTE, detail: 'Sneak Attack can only be aimed at a mark who is Off Guard against you or whom you flank. Against anyone else there is no strike to make — this is the reward for getting behind a guard, not a general attack.', placement: 'top' },
+      { label: 'The mark must be Off Guard or flanked', note: OFF_GUARD_NOTE, placement: 'top' },
       { label: 'Weapon Specialization Hooks', note: WEAPON_HOOK_NOTE, detail: LOST_HOOKS },
     ],
   },
@@ -2062,7 +2062,7 @@ const ASSASSINATION: Ability[] = [
       duration: { base: 'Instant (Bleed: save ends)' },
     },
     options: [
-      { label: 'Studied and Off Guard', note: STUDIED_NOTE, detail: 'Death Blow can only be aimed at a mark you have Studied who is also Off Guard against you or whom you flank. It is the patient kill — the reward for setting the whole thing up, not a strike you throw in a scramble.', placement: 'top' },
+      { label: 'Studied and Off Guard', note: STUDIED_NOTE, detail: 'Death Blow can only be aimed at a mark you have Studied who is also Off Guard against you, or whom you flank.', placement: 'top' },
       { label: 'Weapon Specialization Hooks', note: WEAPON_HOOK_NOTE, detail: DEATHBLOW_HOOKS },
     ],
   },
@@ -2279,7 +2279,7 @@ const GUILE: Ability[] = [
       },
       duration: { base: 'As negotiated' },
     },
-    options: [{ label: 'Terms, not warmth', note: 'Parley wins you something concrete. Shifting an NPC’s Attitude is the Diplomacy skill’s own Persuade action (and the Friar’s Preach to the Saintly) — Parley leaves that to them and extracts terms instead.', placement: 'top' }],
+    options: [{ label: 'Terms, not Attitude', note: 'Parley wins concessions. Shifting an NPC’s Attitude is the Diplomacy skill’s Persuade action, and the Friar’s Preach to the Saintly — not this.', placement: 'top' }],
   },
   {
     name: 'Contionem habere', category: 'Guile', role: 'Utility · rally', mode: 'Attack',
@@ -2299,7 +2299,7 @@ const GUILE: Ability[] = [
       },
       duration: { base: 'Until the end of your next encounter with the named foe (or until the Temp HP is spent)' },
     },
-    options: [{ label: 'Contionem habere', note: 'Auld Imperial: “to hold forth” — a public harangue that steels your own before the fight.', placement: 'top' }],
+    options: [{ label: 'Contionem habere', note: 'Auld Imperial: “to hold forth.”', placement: 'top' }],
   },
 ];
 
@@ -2407,19 +2407,19 @@ const OCCULT: Ability[] = [
 ];
 
 export const CATEGORIES: CategoryGroup[] = [
-  { name: 'Arms', source: 'Soldier — Class', blurb: 'The disciplined core of weapon-fighting: reliable strikes that grow with the weapon in your hands, plus the means to guard, disarm, focus, and read a fight.', abilities: ARMS },
-  { name: 'Protection', source: 'Soldier — Vanguard', blurb: 'The defender’s toolkit: control strikes that pin and daze, shielding auras for your comrades, and the means to take a blow meant for someone else.', abilities: PROTECTION },
-  { name: 'Leadership', source: 'Soldier — Commander', blurb: 'Command and rally: granting allies free attacks, calling focus-fire targets, bracing the line, and bolstering the whole company at once.', abilities: LEADERSHIP },
-  { name: 'Marksmanship', source: 'Soldier — Marksman', blurb: 'Ranged mastery: the bread-and-butter shot that fits any ranged weapon, fire that pins and cripples, covering an ally, and shooting on the move.', abilities: MARKSMANSHIP },
-  { name: 'Mercy', source: 'Friar — Class', blurb: 'The body-mender’s kit, with no attacks at all: quiet, underpowered healing, blessings and saves, and the camp and social rites that keep a company whole.', abilities: MERCY },
-  { name: 'Forbearance', source: 'Friar — Mendicant', blurb: 'The pacifist martyr’s discipline: binding Vows, Temp HP wrung from his own suffering, and the endurance to keep standing. Vows break only under compulsion — and stay lost until he Atones.', abilities: FORBEARANCE },
-  { name: 'Spiritual', source: 'Friar — Confessor', blurb: 'The soul-mender and inquisitor — a debuffer who fights with Charisma against a foe’s Unarmoured Wisdom: softening strikes, a staggering rebuke, an area buff-purge, a burst of holy dread, an exorcism, and the means to wring out the truth.', abilities: SPIRITUAL },
-  { name: 'Letters', source: 'Scholar — Class', blurb: 'Scholarship, half academic and half arcane literacy: research and recall, a clever Int-based blade, and the reading of scrolls, spellbooks and rituals. No spells of its own.', abilities: LETTERS },
-  { name: 'Medicine', source: 'Scholar — Physician', blurb: 'The non-magical physician: a surgeon’s cuts and crafted poisons, a guarded stance, and hands-on healing — combat dressings, condition care, and the long convalescence — drawing on a Healer’s Kit.', abilities: MEDICINE },
-  { name: 'New Magic', source: 'Scholar — Arcanist', blurb: 'The Collegium’s disciplined, destructive art — and a spell-builder. Each offensive chassis (ranged or close, single or burst) is bought with ONE element and a name of your choosing, then re-bought to make another spell. Dexterity vs AC aims every attack; Intelligence powers the damage. An element’s signature Effect ladder unlocks only with its Mastery — [type] feat, and four implements (wand, staff, spellbook, scroll) each lend a hook.', abilities: NEW_MAGIC },
-  { name: 'The Lost', source: 'Scoundrel — Class', blurb: 'The outcast’s craft, built on one hard truth: a Scoundrel who is seen is a Scoundrel who is losing. The strike pays out only against a mark who is Off Guard or flanked, and everything else in the Category exists to buy that condition — the false move, the fistful of sand, the slip out of reach, and the art of vanishing in a city that would hang you.', abilities: THE_LOST },
-  { name: 'Occult', source: 'Occultist — Class *(hosted by the Scoundrel’s Blackcoat)*', blurb: 'The dead, the spirits, and what may be asked of them — worked with Wisdom. Forbidden but benign: it draws on sources the church would burn you for, and uses them to see and to bless. It has no attacks. **The Price:** some Occult Abilities carry a special property called the Price — a negative effect on the user, applied when the Ability is used. Each Price is a ladder like any other and can be bought down. Curses, compulsion, the wasting, the bound shade, and power borrowed against a debt are not here: those belong to WITCHCRAFT, a Category still to come. Nor is speaking with the dead — that is no Ability but a rare and costly rite, found in play and the Game Master’s to give. Because the Occultist has no Letters to fall back on, Occult carries its own object-use, reused whole from the categories that own them — one per kind of found magic: Wield Artefact from Elder Magic; Read Scrolls, Read Spellbooks and Conduct Ritual from Letters.', abilities: OCCULT },
-  { name: 'Guile', source: 'Scoundrel — Charlatan', blurb: 'The con man’s craft — Charisma against a foe’s nerve. A debuffer who works the whole fight from the back: a misdirection that turns a foe’s head and leaves it Off Guard for the party, a cutting remark that blunts its attacks, a blustering bravado that drops its guard, and the unshakeable confidence that keeps the Charlatan himself standing. Out of the fight, three social crafts — each a skill against a Defence: the long con for coin (Bluff), the parley for terms (Diplomacy), and Contionem habere, the harangue that steels allies with Temp HP before a fight (Intimidate).', abilities: GUILE },
-  { name: 'Assassination', source: 'Scoundrel — Assassin', blurb: 'The studied kill. Study the Mark hangs a Studied marker on a target; the Death Blow — a rare, massive strike against a mark who is Studied and Off Guard — is the reward for setting it all up. Around it: the Physician’s Envenom (the same crafted-poison delivery, reused), a crippling anatomist’s cut, the garrote’s silent choke, a pointed interrogation that turns talk into a battle edge, and the trade’s least glamorous skill — leaving no trace. Dexterity plants every blade; Intelligence rides on the study.', abilities: ASSASSINATION },
-  { name: 'Elder Magic', source: 'Scholar — Antiquarian', blurb: 'The recovered, fragmentary art of the Elders — subtle and controlling, worked by force of will (Charisma against a foe’s unguarded mind): the artefact engine, psychic dread, blinding, forced movement, outright domination, a withering doubt, and the ruin-delver’s craft. Every working carries a Feat Hook, for Elder magic comes only in studied fragments.', abilities: ELDER_MAGIC },
+  { name: 'Arms', source: 'Soldier — Class', blurb: 'Str. Weapon-fighting: strikes that scale with the weapon, plus guard, disarm, focus, and read-a-fight.', abilities: ARMS },
+  { name: 'Protection', source: 'Soldier — Vanguard', blurb: 'Str hits, Con endures. Control strikes, shielding auras for allies, and taking a blow meant for someone else.', abilities: PROTECTION },
+  { name: 'Leadership', source: 'Soldier — Commander', blurb: 'Cha. Grants allies free attacks, calls focus-fire targets, braces the line, and buffs the company.', abilities: LEADERSHIP },
+  { name: 'Marksmanship', source: 'Soldier — Marksman', blurb: 'Dex. Ranged: the all-weapon shot, fire that pins and cripples, covering an ally, and shooting on the move.', abilities: MARKSMANSHIP },
+  { name: 'Mercy', source: 'Friar — Class', blurb: 'Wis. No attacks. Deliberately underpowered healing, blessings and saves, plus camp and social rites.', abilities: MERCY },
+  { name: 'Forbearance', source: 'Friar — Mendicant', blurb: 'Con. Binding Vows, Temp HP wrung from the Mendicant’s own suffering, and endurance. Vows break only under compulsion, and stay lost until he Atones.', abilities: FORBEARANCE },
+  { name: 'Spiritual', source: 'Friar — Confessor', blurb: 'Cha vs Unarmoured Wisdom. A debuffer: softening strikes, a staggering rebuke, an area buff-purge, holy dread, exorcism, and wringing out the truth.', abilities: SPIRITUAL },
+  { name: 'Letters', source: 'Scholar — Class', blurb: 'Int. Scholarship — research, recall, languages, a clever blade, and the reading of scrolls, spellbooks and rituals. No spells of its own; other classes borrow it.', abilities: LETTERS },
+  { name: 'Medicine', source: 'Scholar — Physician', blurb: 'Non-magical. A surgeon’s cuts and crafted poisons, a guarded stance, and hands-on healing (dressings, condition care, convalescence) drawing on a Healer’s Kit.', abilities: MEDICINE },
+  { name: 'New Magic', source: 'Scholar — Arcanist', blurb: 'A spell-builder. Each offensive chassis (ranged or close, single or burst) is bought with ONE element and a name of your choosing, then re-bought to make another spell. Dex vs AC aims every attack; Int powers the damage. An element’s signature Effect ladder unlocks only with its Mastery — [type] feat; wand, staff, spellbook and scroll each lend a hook.', abilities: NEW_MAGIC },
+  { name: 'The Lost', source: 'Scoundrel — Class', blurb: 'Dex. The strike pays out only against a mark who is Off Guard or flanked; everything else in the Category exists to buy that condition.', abilities: THE_LOST },
+  { name: 'Occult', source: 'Occultist — Class *(hosted by the Scoundrel’s Blackcoat)*', blurb: 'Wis. No attacks. **The Price:** some Occult Abilities carry a special property called the Price — a negative effect on the user, applied when the Ability is used. Each Price is a ladder like any other and can be bought down.', abilities: OCCULT },
+  { name: 'Guile', source: 'Scoundrel — Charlatan', blurb: 'Cha vs Unarmoured Wisdom. A debuffer that also sets Off Guard for the party. Out of the fight, three social crafts, each a skill vs a Defence: Bluff (coin), Diplomacy (terms), Intimidate (a pre-fight rally).', abilities: GUILE },
+  { name: 'Assassination', source: 'Scoundrel — Assassin', blurb: 'Dex plants every blade; Int rides on the study. Study the Mark hangs a Studied marker; Death Blow needs the mark Studied AND Off Guard or flanked. Envenom is reused from Medicine.', abilities: ASSASSINATION },
+  { name: 'Elder Magic', source: 'Scholar — Antiquarian', blurb: 'Cha vs a foe’s unguarded mind. The artefact engine, psychic dread, blinding, forced movement, domination, withering doubt, and the ruin-delver’s craft. Every working carries a Feat Hook.', abilities: ELDER_MAGIC },
 ];

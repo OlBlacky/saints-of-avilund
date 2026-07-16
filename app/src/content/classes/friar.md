@@ -1,11 +1,11 @@
 ---
 title: Friar
 portfolio: Mercy
-summary: The body-mender of Avilund — physician of the faithful, who walks toward suffering when others walk away. Choose the Chaplain, the Confessor, or the Mendicant.
+summary: Wisdom · Mercy · HP 2. Choose the Chaplain, the Confessor, or the Mendicant.
 order: 20
 ---
 
-The Friar is the body-mender of Avilund — physician of the faithful, who walks toward suffering when others turn away. In this world **Mercy is the healing of the body**: medicine, herb-craft, the tending of wounds. War belongs to the Soldier and the dead to the Occultist, so the Friar is no armoured war-priest — his gift is to keep a company whole. His three Paths run along a single spectrum of how much steel a man of Mercy will touch: the **Chaplain** who marches with the war-band, the **Confessor** who mends the soul and hunts the Black Faith, and the **Mendicant** who lifts no weapon at all and gives himself for others.
+<!-- CUE — identity: the body-mender; walks toward suffering. In this world Mercy = healing of the BODY (medicine, herb-craft, wounds) — war belongs to the Soldier, the dead to the Occultist, so he is no armoured war-priest. His gift is keeping a company whole. The three Paths run a spectrum of how much steel a man of Mercy will touch: Chaplain (marches with the war-band) → Confessor (mends the soul, hunts the Black Faith) → Mendicant (lifts no weapon, gives himself). -->
 
 ---
 
@@ -25,9 +25,7 @@ The Friar is the body-mender of Avilund — physician of the faithful, who walks
 
 ## Class Features
 
-A Friar brings **Wisdom** as their Class Attribute and the **Mercy** Ability Category, with a modest **Class HP of 2**. They are trained in the **Heal** skill and in **Religion (Saintly Faith)**, and they carry only the old clerical arms — the **Hammers/Maces** and **Staves** that shed no blood. They wear no trained armour; a Friar's protection comes from his Path and his faith.
-
-The **Mercy** Category has no attacks of any kind. It is quiet, deliberately underpowered healing — a base mending of little more than your Wisdom — together with blessings, wards against affliction, and the camp and social rites that hold a company together. Conspicuous, miraculous healing is the work of a seasoned saint, not a starting trick.
+<!-- CUE — Mercy has NO attacks. Quiet, deliberately underpowered healing (a base mending of little more than Wisdom), plus blessings, wards against affliction, and the camp/social rites. Conspicuous miraculous healing is a seasoned saint's work, not a starting trick. Weapons are the old clerical arms that shed no blood (mace, staff); no trained armour — protection comes from the Path. -->
 
 Your chosen **Path** adds a second Class Attribute, a second Ability Category, two more Class Skills, and further proficiencies — see below.
 
@@ -36,7 +34,8 @@ Your chosen **Path** adds a second Class Attribute, a second Ability Category, t
 ## Paths
 
 ### Chaplain
-The most warlike of the three — the fighting priest who marches with the war-band and takes up arms to hold the line. He heals with Wisdom and hits with Strength, but he is no Soldier: just enough armour to stand in the press, and the mace and staff he already carries.
+
+<!-- CUE — most warlike; the fighting priest with the war-band, holds the line. Heals with Wis, hits with Str. No Soldier though: just enough armour to stand in the press, and the mace and staff he already carries. -->
 
 | | |
 |---|---|
@@ -47,7 +46,8 @@ The most warlike of the three — the fighting priest who marches with the war-b
 | **Armour Proficiencies** | Light Armour, Medium Armour, Light Shield |
 
 ### Confessor
-The tender of souls — exorcist and inquisitor, who breaks possession, cows the wicked, and stands against the Black Faith. A debuffer: he doesn't out-damage a foe, he *unmakes* them, fighting with Charisma against the enemy's own resolve. His battles are partly spiritual, sometimes violent.
+
+<!-- CUE — tender of souls; exorcist and inquisitor; breaks possession, cows the wicked, stands against the Black Faith. A DEBUFFER: doesn't out-damage, unmakes. Cha against the enemy's own resolve. Battles partly spiritual, sometimes violent. -->
 
 | | |
 |---|---|
@@ -58,7 +58,8 @@ The tender of souls — exorcist and inquisitor, who breaks possession, cows the
 | **Armour Proficiencies** | Light Armour |
 
 ### Mendicant
-The least warlike — barefoot, weaponless, owning nothing, who will not raise a hand even to defend himself, only to shield others. He absorbs harm and gives it back as grace: the company's Temp HP flows from his own suffering.
+
+<!-- CUE — least warlike; barefoot, weaponless, owns nothing; won't raise a hand even for himself, only to shield others. Absorbs harm and gives it back as grace — the company's Temp HP flows from his own suffering. -->
 
 | | |
 |---|---|
@@ -72,24 +73,28 @@ The least warlike — barefoot, weaponless, owning nothing, who will not raise a
 
 ## Abilities
 
-Every Friar draws on **Mercy** from the Class, and a second Category from the chosen Path. The complete cards — with every advancement — live in the **Abilities** section; here is what each Ability Category brings.
+<!-- CUE — Mercy from the Class, a second Category from the Path. Full cards in the Abilities section. -->
 
 ### [Mercy](../../abilities/#mercy) — *the Class category*
-No attacks at all. Quiet, underpowered healing, blessings and saves, and the camp and social rites that keep a company whole.
+
+<!-- CUE — no attacks. Underpowered healing, blessings and saves, camp and social rites. -->
 
 *Mending Touch · Stabilise · Blessing · Prayer for the Saintly · Preach to the Saintly · Tend the Wounded*
 
 ### [Arms](../../abilities/#arms) — *Chaplain*
-The Chaplain takes up the Soldier's own **Arms** toolkit — reliable weapon strikes, the means to guard, disarm, focus, and read a fight — wielded with mace and staff.
+
+<!-- CUE — the Chaplain takes up the Soldier's own Arms toolkit wholesale, wielded with mace and staff. -->
 
 *Martial Strike · Power Attack · Defensive Strike · Parry · Disarming Strike · Martial Focus · Raise Shield · Measure the Foe*
 
 ### [Spiritual](../../abilities/#spiritual) — *Confessor*
-The soul-mender and inquisitor's debuffing craft: softening strikes and a staggering rebuke, an area buff-purge, a burst of holy dread, a vow against the unclean, an exorcism, and the means to wring out the truth.
+
+<!-- CUE — the inquisitor's debuffing craft; Cha vs Unarmoured Wisdom. Softening strikes, a staggering rebuke, an area buff-purge, holy dread, a vow against the unclean, exorcism, and wringing out the truth. -->
 
 *Censure · Rebuke · Kerrigan's Prayer · Fly the Wicked · Vow of Nicetus · Exorcism · Ferret the Wicked*
 
 ### [Forbearance](../../abilities/#forbearance) — *Mendicant*
-The pacifist martyr's discipline: three binding **Vows**, Temp HP wrung from his own suffering, and the sheer endurance to keep standing when he should have fallen.
+
+<!-- CUE — the pacifist martyr's discipline: three binding Vows, Temp HP wrung from his own suffering, endurance to keep standing. Vows break only under compulsion and stay lost until he Atones. -->
 
 *Vow of Mercy · Vow of Poverty · Vow of Abstinence · Flesh of the Martyr · Nimbus of the Martyr · Endurance of the Saintly · Pilgrim's Endurance*

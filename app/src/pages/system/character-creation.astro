@@ -201,6 +201,39 @@ const soldier = url('system/classes/soldier/');
     </aside>
   </section>
 
+  <!-- Step 5 -->
+  <section class="cc-row">
+    <div class="cc-row__body">
+      <h2>Step 5 · Take a Quirk (optional)</h2>
+      <p>
+        The last thing you do, once everything else is spent, is roll a
+        <strong>Quirk</strong> — the wild card. A quirk <strong>gives you something and takes
+        something away</strong>: one small mechanical edge, and one thing your character simply
+        will or will not do. No two are weighed against each other, and none of them are fair.
+        That is the point. Two Soldiers built from the same eleven Major Advances are still two
+        different people once they have rolled.
+      </p>
+      <p>
+        You take <strong>one</strong>, and you do not choose it. Whatever the roll gives you is
+        who you turned out to be.
+      </p>
+      <p class="cc-note">
+        The button opposite rolls freely, so you can see what quirks are like. When the character
+        generator arrives, the roll will be committed to your sheet — once.
+      </p>
+    </div>
+    <aside class="eg">
+      <p class="eg__tag">The wild card</p>
+      <button id="quirk-roll" class="quirk-btn" type="button">Show me a Quirk</button>
+      <div id="quirk-out" class="quirk-out" hidden>
+        <h4 class="eg__title" id="quirk-name"></h4>
+        <p class="quirk-mech" id="quirk-mech"></p>
+        <p class="quirk-eso" id="quirk-eso"></p>
+      </div>
+      <p class="eg__note" id="quirk-hint">Press it. Press it again.</p>
+    </aside>
+  </section>
+
   <!-- Your numbers -->
   <section class="cc-row">
     <div class="cc-row__body">
@@ -265,6 +298,31 @@ const soldier = url('system/classes/soldier/');
 
   <SystemNav slug="character-creation" />
 
+  <script>
+    import { rollQuirk } from '../../lib/quirks';
+
+    const btn = document.getElementById('quirk-roll');
+    const out = document.getElementById('quirk-out');
+    const hint = document.getElementById('quirk-hint');
+    const nameEl = document.getElementById('quirk-name');
+    const mechEl = document.getElementById('quirk-mech');
+    const esoEl = document.getElementById('quirk-eso');
+
+    btn?.addEventListener('click', () => {
+      const q = rollQuirk();
+      nameEl!.textContent = q.name;
+      mechEl!.textContent = q.mechanic;
+      esoEl!.textContent = q.esoteric;
+      out!.hidden = false;
+      btn.textContent = 'Roll another';
+      hint!.textContent = 'Slotted details — the saint, the place, the weapon — are drawn fresh each roll.';
+      // Re-run the fade so a repeat roll reads as a new card, not edited text.
+      out!.classList.remove('is-new');
+      void out!.offsetWidth;
+      out!.classList.add('is-new');
+    });
+  </script>
+
   <style>
     /* Two-column step layout: prose left, the running example in the right rail. */
     .cc-row {
@@ -324,6 +382,36 @@ const soldier = url('system/classes/soldier/');
     .eg__note {
       margin: 0.7rem 0 0; color: var(--ink-soft); font-style: italic; font-size: 0.85rem;
       line-height: 1.45;
+    }
+
+    /* Step 5 — the quirk roller. Lives in the example rail, so it inherits the
+       parchment card; only the button and the rolled text need styling. */
+    .cc-note {
+      color: var(--ink-soft); font-style: italic; font-size: 0.9rem;
+      border-left: 2px solid var(--rule); padding-left: 0.8rem; margin-top: 1.2rem;
+    }
+    .quirk-btn {
+      display: block; width: 100%;
+      font-family: var(--display); font-size: 0.98rem;
+      color: var(--oxblood); background: transparent;
+      border: 1px solid var(--gold); border-radius: 3px;
+      padding: 0.5rem 0.7rem; cursor: pointer;
+      transition: background 0.15s ease, color 0.15s ease;
+    }
+    .quirk-btn:hover, .quirk-btn:focus-visible { background: var(--gold); color: var(--panel); }
+    .quirk-out { margin-top: 0.9rem; padding-top: 0.8rem; border-top: 1px dotted var(--rule); }
+    .quirk-out.is-new { animation: quirk-in 0.28s ease-out; }
+    @keyframes quirk-in {
+      from { opacity: 0; transform: translateY(-3px); }
+      to   { opacity: 1; transform: none; }
+    }
+    .quirk-mech { margin: 0 0 0.5rem; font-size: 0.9rem; }
+    .quirk-eso {
+      margin: 0; color: var(--ink-soft); font-style: italic;
+      font-size: 0.88rem; line-height: 1.5;
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .quirk-out.is-new { animation: none; }
     }
 
     /* Stack on narrow screens; the panel becomes a normal block under the text. */

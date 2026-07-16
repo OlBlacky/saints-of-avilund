@@ -1,11 +1,11 @@
 ---
 title: Scholar
 portfolio: Letters
-summary: The learned heart of a company — researcher, linguist, and the one who reads the magic no one else can. Choose the Antiquarian, the Arcanist, or the Physician.
+summary: Intelligence · Letters · HP 1. Choose the Antiquarian, the Arcanist, or the Physician.
 order: 30
 ---
 
-The Scholar is the learned heart of a company — the one who knows the history, reads the dead tongues, and makes sense of the magic everyone else only fears. The Scholar's craft is **Letters**: pure scholarship, of use to any party and borrowed by investigators and antiquaries in other walks of life. What turns a scholar into something more is the **Path** — and two of the three are the wizards of Avilund, for in this world magic *is* a kind of reading. The **Antiquarian** recovers the Elder Magic; the **Arcanist** wields the New; and the **Physician** sets the books aside for the surer science of the body.
+<!-- CUE — identity: the learned heart of a company; knows the history, reads the dead tongues, makes sense of the magic everyone else fears. His craft is Letters = pure scholarship, useful to any party and borrowed by other classes' investigators and antiquaries. What turns a scholar into something more is the PATH — and two of the three are the wizards of Avilund, because in this world magic *is* a kind of reading. Antiquarian recovers the Elder Magic; Arcanist wields the New; Physician sets the books aside for the surer science of the body. -->
 
 ---
 
@@ -26,16 +26,17 @@ The Scholar is the learned heart of a company — the one who knows the history,
 
 ## Class Features
 
-A Scholar brings **Intelligence** as their Class Attribute and the **Letters** Ability Category, with a frail **Class HP of 1**. They are trained in **History** and **Decipher Script**, read the learned tongue **Auld Imperial**, and carry a **Staff** — a walking-stick and a weapon of last resort.
+<!-- CUE — Letters is LITERALLY scholarship: research, recall, languages, and the *reading* of magic (scrolls and spellbooks alike). Nothing in it is itself a spell. It's the Category other classes borrow for their investigators and antiquaries. The magic — and the medicine — live in the Paths. Staff = a walking-stick and a weapon of last resort. -->
 
-The **Letters** Category is **literally scholarship** — research, recall, languages, and the *reading* of magic *(scrolls and spellbooks alike)* — and nothing in it is itself a spell. It is a Category other classes borrow, too, for their investigators and antiquaries. The magic, and the medicine, live in the **Paths**.
+Your chosen **Path** adds a second Class Attribute, a second Ability Category, two more Class Skills, and further proficiencies — see below.
 
 ---
 
 ## Paths
 
 ### Antiquarian
-The seeker of **Elder Magic** — the recovered, half-understood art of the Elders, subtle and controlling. Where the Arcanist breaks things, the Antiquarian *bends* them: he works by force of will, **Charisma against a foe's unguarded mind**, and draws power from the relics he recovers. Saint Ignatius, Guardian of Insight, is his patron — the ruin-delver.
+
+<!-- CUE — seeker of Elder Magic: the recovered, half-understood art of the Elders; subtle and controlling. Where the Arcanist breaks things, the Antiquarian *bends* them — force of will, Cha against a foe's unguarded mind, power drawn from recovered relics. Patron: Saint Ignatius, Guardian of Insight — the ruin-delver. -->
 
 | | |
 |---|---|
@@ -46,7 +47,8 @@ The seeker of **Elder Magic** — the recovered, half-understood art of the Elde
 | **Armour Proficiencies** | None |
 
 ### Arcanist
-The master of **New Magic** — the Collegium's disciplined, destructive art, channelled through wands and staves. It is a **spell-builder**: pick an element, build a chassis, name it your own, and buy it again to make another. **Dexterity** aims the spell; **Intelligence** powers the damage. Saint Anselm, who broke the Elder magic and remade it, is its patron.
+
+<!-- CUE — master of New Magic: the Collegium's disciplined, destructive art, channelled through wands and staves. A SPELL-BUILDER — pick an element, build a chassis, name it your own, buy it again to make another. Dex aims the spell, Int powers the damage. Patron: Saint Anselm, who broke the Elder magic and remade it. -->
 
 | | |
 |---|---|
@@ -57,7 +59,8 @@ The master of **New Magic** — the Collegium's disciplined, destructive art, ch
 | **Armour Proficiencies** | None |
 
 ### Physician
-No magic at all — the science of the body, the art Saint Gratus is said to have learned from the dying Elders. He stitches, drugs, and poisons; his lane is afflictions, not miracles.
+
+<!-- CUE — no magic at all: the science of the body, the art Saint Gratus is said to have learned from the dying Elders. Stitches, drugs, and poisons. His lane is afflictions, not miracles. -->
 
 | | |
 |---|---|
@@ -71,24 +74,28 @@ No magic at all — the science of the body, the art Saint Gratus is said to hav
 
 ## Abilities
 
-Every Scholar draws on **Letters** from the Class, and a second Category from the chosen Path. The complete cards live in the **Abilities** section; here is what each brings.
+<!-- CUE — Letters from the Class, a second Category from the Path. Full cards in the Abilities section. -->
 
 ### [Letters](../../abilities/#letters) — *the Class category*
-Scholarship, half academic and half arcane literacy: research and recall, a clever blade, and the reading of scrolls, spellbooks and rituals.
+
+<!-- CUE — scholarship, half academic and half arcane literacy: research and recall, a clever Int-based blade, and the reading of scrolls, spellbooks and rituals. No spells of its own. -->
 
 *Research · Scholar's Strike · Evade · Recall · Read Scrolls · Read Spellbooks · Conduct Ritual · Identify*
 
 ### [Elder Magic](../../abilities/#elder-magic) — *Antiquarian*
-The subtle, controlling craft of the Elders, all worked with Charisma against an unguarded mind — and every working carries a Feat Hook, for Elder magic comes only in fragments.
+
+<!-- CUE — the subtle, controlling craft of the Elders; Cha against an unguarded mind. Every working carries a Feat Hook, because Elder magic comes only in studied fragments. -->
 
 *Wield Artefact · Whispers from the Doomed · Memory of Celestia · Figments of Forgotten Places · Edict for the Thralls · Pall of Doubt · Psychometry · Lessons from Dark Places*
 
 ### [New Magic](../../abilities/#new-magic) — *Arcanist*
-The Collegium's destructive art, built as spells of your own: four elemental chassis — ranged or close, single or burst — each bought with one element and a name, then re-bought to make another. An element's signature effect is unlocked by its Mastery feat; wand, staff, spellbook and scroll each lend a further hook.
+
+<!-- CUE — the Collegium's destructive art, built as spells of your own: four elemental chassis (ranged/close, single/burst), each bought with one element and a name, then re-bought to make another. An element's signature effect unlocks with its Mastery feat; wand, staff, spellbook and scroll each lend a further hook. -->
 
 *Telum Eminus (ranged) · Tactus Comminus (close) · Globus Eminus (ranged burst) · Corona Comminus (close burst) · Lorica Arcana (arcane armour) · Scutum Virium (force shield) · Manus Eminus (telekinesis) · Lumen Arcanum (light)*
 
 ### [Medicine](../../abilities/#medicine) — *Physician*
-The non-magical physician's kit: a surgeon's cuts and crafted poisons, a guarded stance, and the hands-on healing — combat dressings, condition care, and the long convalescence — that draws on a Healer's Kit.
+
+<!-- CUE — the non-magical physician's kit: a surgeon's cuts and crafted poisons, a guarded stance, and hands-on healing (combat dressings, condition care, the long convalescence) drawing on a Healer's Kit. -->
 
 *Surgeon's Strike · Envenom · Guard Vitals · Field Dressing · Field Medicine · Tend the Wounded · Convalescence*
