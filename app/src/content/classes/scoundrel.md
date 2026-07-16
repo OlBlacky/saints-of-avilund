@@ -85,9 +85,9 @@ The studied kill: the mark read before the blow is struck, the poisoned edge, th
 *Study the Mark · Death Blow · Envenom · Anatomist's Cut · Garrote · Pointed Inquiry · Clean Kill*
 
 ### [Guile](../../abilities/#guile) — *Charlatan*
-The con man's craft, worked from the back of the fight with Charisma against a foe's nerve: a misdirection that turns a head, a cutting remark that blunts a blow, a bluster that drops a guard, and the confidence that keeps the Charlatan whole.
+The con man's craft, worked from the back of the fight with Charisma against a foe's nerve — a misdirection that turns a head, a cutting remark that blunts a blow, a bluster that drops a guard, the confidence that keeps the Charlatan whole — and, out of the fight, three social crafts for coin, for terms, and for rousing a crowd.
 
-*Misdirection · Cutting Remark · Bluster · Confidence*
+*Misdirection · Cutting Remark · Bluster · Confidence · Confidence Game · Parley · Contionem habere*
 
 ### [Larceny](../../abilities/#larceny) — *Prowler*
 The housebreaker's trade: locks and traps at both ends of the craft, the silent step, the climb to the upper window, and the ambush sprung on a man who never saw the room he walked into.

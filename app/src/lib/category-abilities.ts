@@ -2217,6 +2217,64 @@ const GUILE: Ability[] = [
       duration: { base: 'Until you lose the Temp HP' },
     },
   },
+  {
+    name: 'Confidence Game', category: 'Guile', role: 'Utility · non-combat', mode: 'Attack',
+    vars: {
+      frequency: { base: 'Daily' },
+      action: { base: 'Hours to days of working a mark' },
+      range: { base: 'Conversation' },
+      targets: { base: 'One mark (or household)' },
+      attack: { base: 'Bluff vs the mark’s Unarmoured Wisdom' },
+      effects: {
+        base: 'A short con — a forged introduction, a false pretext: access, trust, or a modest purse (a few days’ wages).',
+        advances: [
+          { value: 'A serious score — a merchant’s strongbox, a season’s wages', cost: 'm' },
+          { value: 'The mark vouches for you to others, opening further doors', cost: 'm' },
+          { value: 'A grand swindle — a noble’s coffer or an estate’s ledger — and the mark never realizes (no later check reveals the con)', cost: 'M' },
+        ],
+      },
+      duration: { base: 'Until the con is spent or exposed' },
+    },
+  },
+  {
+    name: 'Parley', category: 'Guile', role: 'Utility · social', mode: 'Attack',
+    vars: {
+      frequency: { base: 'Encounter' },
+      action: { base: 'A conversation (a Standard in a tense standoff)' },
+      range: { base: 'Conversation' },
+      targets: { base: 'One NPC' },
+      attack: { base: 'Diplomacy vs the Target’s Unarmoured Charisma' },
+      effects: {
+        base: 'Win a small concession — a delay, a passage, a scrap of information — or improve the Target’s attitude one step.',
+        advances: [
+          { value: 'A real concession: a truce, safe passage for the party, or a favour owed', cost: 'm' },
+          { value: 'You sway a whole household or crowd, not just the one before you', cost: 'm' },
+          { value: 'You turn the Target from violence for the scene, or broker a lasting accord', cost: 'M' },
+        ],
+      },
+      duration: { base: 'As negotiated' },
+    },
+  },
+  {
+    name: 'Contionem habere', category: 'Guile', role: 'Utility · rally', mode: 'Attack',
+    vars: {
+      frequency: { base: 'Daily' },
+      action: { base: 'A rousing speech (a few minutes)' },
+      range: { base: 'All allies who can hear you' },
+      targets: { base: 'The foe (or foes) your speech names' },
+      attack: { base: 'Intimidate vs the named foe’s Unarmoured Wisdom' },
+      effects: {
+        base: 'Allies who hear you gain Cha Temp HP, held until your next encounter with the named foe.',
+        advances: [
+          { value: 'Cha + 2 Temp HP', cost: 'm' },
+          { value: 'Cha + 4 Temp HP', cost: 'm' },
+          { value: 'Cha + 6 Temp HP', cost: 'M' },
+        ],
+      },
+      duration: { base: 'Until the end of your next encounter with the named foe (or until the Temp HP is spent)' },
+    },
+    options: [{ label: 'Contionem habere', note: 'Auld Imperial: “to hold forth” — a public harangue that steels your own before the fight.', placement: 'top' }],
+  },
 ];
 
 export const CATEGORIES: CategoryGroup[] = [
@@ -2231,7 +2289,7 @@ export const CATEGORIES: CategoryGroup[] = [
   { name: 'Medicine', source: 'Scholar — Physician', blurb: 'The non-magical physician: a surgeon’s cuts and crafted poisons, a guarded stance, and hands-on healing — combat dressings, condition care, and the long convalescence — drawing on a Healer’s Kit.', abilities: MEDICINE },
   { name: 'New Magic', source: 'Scholar — Arcanist', blurb: 'The Collegium’s disciplined, destructive art — and a spell-builder. Each offensive chassis (ranged or close, single or burst) is bought with ONE element and a name of your choosing, then re-bought to make another spell. Dexterity vs AC aims every attack; Intelligence powers the damage. An element’s signature Effect ladder unlocks only with its Mastery — [type] feat, and four implements (wand, staff, spellbook, scroll) each lend a hook.', abilities: NEW_MAGIC },
   { name: 'The Lost', source: 'Scoundrel — Class', blurb: 'The outcast’s craft, built on one hard truth: a Scoundrel who is seen is a Scoundrel who is losing. The strike pays out only against a mark who is Off Guard or flanked, and everything else in the Category exists to buy that condition — the false move, the fistful of sand, the slip out of reach, and the art of vanishing in a city that would hang you.', abilities: THE_LOST },
-  { name: 'Guile', source: 'Scoundrel — Charlatan', blurb: 'The con man’s craft — Charisma against a foe’s nerve. A debuffer who works the whole fight from the back: a misdirection that turns a foe’s head and leaves it Off Guard for the party, a cutting remark that blunts its attacks, a blustering bravado that drops its guard, and the unshakeable confidence that keeps the Charlatan himself standing. (More Guile — the con, the borrowed face — to come.)', abilities: GUILE },
+  { name: 'Guile', source: 'Scoundrel — Charlatan', blurb: 'The con man’s craft — Charisma against a foe’s nerve. A debuffer who works the whole fight from the back: a misdirection that turns a foe’s head and leaves it Off Guard for the party, a cutting remark that blunts its attacks, a blustering bravado that drops its guard, and the unshakeable confidence that keeps the Charlatan himself standing. Out of the fight, three social crafts — each a skill against a Defence: the long con for coin (Bluff), the parley for terms (Diplomacy), and Contionem habere, the harangue that steels allies with Temp HP before a fight (Intimidate).', abilities: GUILE },
   { name: 'Assassination', source: 'Scoundrel — Assassin', blurb: 'The studied kill. Study the Mark hangs a Studied marker on a target; the Death Blow — a rare, massive strike against a mark who is Studied and Off Guard — is the reward for setting it all up. Around it: the Physician’s Envenom (the same crafted-poison delivery, reused), a crippling anatomist’s cut, the garrote’s silent choke, a pointed interrogation that turns talk into a battle edge, and the trade’s least glamorous skill — leaving no trace. Dexterity plants every blade; Intelligence rides on the study.', abilities: ASSASSINATION },
   { name: 'Elder Magic', source: 'Scholar — Antiquarian', blurb: 'The recovered, fragmentary art of the Elders — subtle and controlling, worked by force of will (Charisma against a foe’s unguarded mind): the artefact engine, psychic dread, blinding, forced movement, outright domination, a withering doubt, and the ruin-delver’s craft. Every working carries a Feat Hook, for Elder magic comes only in studied fragments.', abilities: ELDER_MAGIC },
 ];
