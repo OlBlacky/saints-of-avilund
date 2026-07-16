@@ -52,6 +52,7 @@ export const SYSTEM: SystemPart[] = [
     items: [
       { slug: 'combat', title: 'Combat', blurb: 'The turn and its actions, attack resolution, and the rules for falling, dying, and recovery.', status: 'progress' },
       { slug: 'conditions', title: 'Conditions', blurb: 'The laddered conditions — Daze, Control, Movement, Debuff, and the rest.', status: 'live' },
+      { slug: 'light', title: 'Light & Darkness', blurb: 'The ladder from Daylight down to the Void, what each rung costs you, and what can reach it.', status: 'live' },
     ],
   },
   {

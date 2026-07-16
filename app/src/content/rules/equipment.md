@@ -209,7 +209,7 @@ Masterwork is a master's own hands rather than his shop's. It is **commissioned,
 | Hooded lantern | 7 sp | 2 lb | 30' | per flask |
 | Bullseye lantern | 12 sp | 3 lb | 60' *(cone)* | per flask |
 
-*The light radii and burn times above are provisional — the rules for darkness and vision have not been written yet, and will settle these numbers when they are.*
+*A source is **Bright** within the radius given and **Dim** for the same distance again beyond — see [Light &amp; Darkness](../light/).*
 
 ### Camp &amp; Trail
 
