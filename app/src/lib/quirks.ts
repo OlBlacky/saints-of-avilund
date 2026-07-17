@@ -91,18 +91,20 @@ export const LANGUAGES: SlotEntry[] = [
   { value: 'Common Feral', tags: ['foreign'] },
 ];
 
+// 'martial' = what an army actually issues and drills with — the pool a war
+// veteran's quirk should draw from. It deliberately spans melee and ranged.
 export const WEAPONS: SlotEntry[] = [
-  { value: 'Axes', tags: ['melee'] },
-  { value: 'Heavy Blades', tags: ['melee'] },
+  { value: 'Axes', tags: ['melee', 'martial'] },
+  { value: 'Heavy Blades', tags: ['melee', 'martial'] },
   { value: 'Light Blades', tags: ['melee'] },
-  { value: 'Hammers/Maces', tags: ['melee'] },
+  { value: 'Hammers/Maces', tags: ['melee', 'martial'] },
   { value: 'Picks', tags: ['melee'] },
   { value: 'Flails/Chains', tags: ['melee'] },
   { value: 'Polearms', tags: ['melee', 'martial'] },
   { value: 'Spears/Lances', tags: ['melee', 'martial'] },
   { value: 'Staves', tags: ['melee'] },
-  { value: 'Bows', tags: ['ranged'] },
-  { value: 'Crossbows', tags: ['ranged'] },
+  { value: 'Bows', tags: ['ranged', 'martial'] },
+  { value: 'Crossbows', tags: ['ranged', 'martial'] },
   { value: 'Slings', tags: ['ranged'] },
   { value: 'Thrown', tags: ['ranged'] },
 ];
