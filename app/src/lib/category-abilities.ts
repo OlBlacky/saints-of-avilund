@@ -37,6 +37,32 @@ const STRIKE_DAMAGE: Variable = {
   ],
 };
 
+// ── Standard Ongoing Damage ─────────────────────────────────────
+// Ongoing damage is the most dangerous ladder in the game: it ignores DR (a
+// tick isn't an attack) and repeats every round, so against small HP it is
+// worth ~2× its face value. Per the small-numbers rule it stays tiny — the tick
+// caps at 3, and the Major buys PERSISTENCE (a harder save), not a bigger
+// number. Pair the amount (ongoingDamage) with the duration (ongoingDuration):
+// the effect ends on a save OR when the round-cap runs out, whichever comes
+// first; climbing the duration raises the cap, and its Major removes it (pure
+// save-ends, no limit). `attr` is the attribute of the ability's Category/Path.
+const ongoingDamage = (type: string): Variable => ({
+  base: `Ongoing 1 ${type}`,
+  advances: [
+    { value: `Ongoing 2 ${type}`, cost: 'm' },
+    { value: `Ongoing 3 ${type}`, cost: 'm' },
+    { value: `Ongoing 3 ${type}, and −2 to the save against it`, cost: 'M' },
+  ],
+});
+const ongoingDuration = (attr: string): Variable => ({
+  base: `${attr} rounds, and save ends`,
+  advances: [
+    { value: `${attr} + 1 rounds, and save ends`, cost: 'm' },
+    { value: `${attr} + 2 rounds, and save ends`, cost: 'm' },
+    { value: 'Save ends (no round limit)', cost: 'M' },
+  ],
+});
+
 // Specialization-hook helpers. Hooks are shown in a labelled card section
 // (Weapon / Armour / Implement Specialization Hooks); the note states the gate.
 const WEAPON_HOOK_NOTE = 'With the Weapon Specialization Feat for the weapon you wield:';
@@ -1247,15 +1273,8 @@ const MEDICINE: Ability[] = [
       targets: { base: 'One' },
       attack: { base: 'Intelligence vs AC (Light Blade)' },
       damage: { base: '1[W] (fixed)' },
-      effects: {
-        base: 'Bleed 1 / round.',
-        advances: [
-          { value: 'Bleed 2 / round', cost: 'm' },
-          { value: 'Bleed 3 / round', cost: 'm' },
-          { value: 'Bleed 5 / round', cost: 'M' },
-        ],
-      },
-      duration: { base: 'Save ends (or a Heal action stops it)' },
+      effects: ongoingDamage('Bleed'),
+      duration: ongoingDuration('Int'),
     },
     options: [{ label: 'Weapon Specialization Hooks', note: WEAPON_HOOK_NOTE, detail: ['Light Blades → +Int damage'] }],
   },
@@ -1368,7 +1387,11 @@ const MEDICINE: Ability[] = [
 // carries a Feat Hook, for Elder magic comes only in studied fragments.
 // His own ladders — Sensory, Flat Debuff, Control, and Psychic damage —
 // are reserved away from the Arcanist.
-const STD_RANGE: Variable = { base: "30'", advances: [{ value: "60'", cost: 'm' }, { value: "90'", cost: 'm' }, { value: "120'", cost: 'M' }] };
+// The Standard Range Ladder. Principle: a Major DOUBLES the reach (60' → 120'),
+// while a Minor adds only a fraction (30' → 45' → 60', +15' a step). The big
+// jump is what a Major buys. Shared by many Abilities; inlined replicas (e.g.
+// the burst spells' range column) follow the same 30/45/60/120 shape.
+const STD_RANGE: Variable = { base: "30'", advances: [{ value: "45'", cost: 'm' }, { value: "60'", cost: 'm' }, { value: "120'", cost: 'M' }] };
 const FREQ_2ENC: Variable = { base: 'Daily', advances: [{ value: 'Encounter', cost: 'M' }, { value: 'Twice per encounter', cost: 'M' }] };
 
 // Wield Artefact — the artefact engine. Shared verbatim by Elder Magic (the
@@ -1437,7 +1460,7 @@ const ELDER_MAGIC: Ability[] = [
     vars: {
       frequency: FREQ_ENC,
       action: { base: 'Full Round', advances: [{ value: 'Standard', cost: 'M' }] },
-      range: { base: "30' (5' burst)", advances: [{ value: "60' (10' burst)", cost: 'm' }, { value: "90' (15' burst)", cost: 'm' }, { value: "120' (20' burst)", cost: 'M' }] },
+      range: { base: "30' (5' burst)", advances: [{ value: "45' (10' burst)", cost: 'm' }, { value: "60' (15' burst)", cost: 'm' }, { value: "120' (20' burst)", cost: 'M' }] },
       targets: { base: 'One enemy in the burst', advances: [{ value: 'Cha enemies', cost: 'm' }, { value: 'Cha + 1 enemies', cost: 'm' }, { value: 'all enemies in the burst', cost: 'M' }] },
       attack: { base: 'Charisma vs Unarmoured Will' },
       effects: {
@@ -1571,13 +1594,16 @@ const NM_HOOK_NOTE = 'You gain +1 to hit with the spell if your Mastery Feat and
 
 // The four New Magic Effect ladders, each tied to its damage types. Same on
 // every offensive chassis (any element can be built into any chassis).
+// Follows the Standard Ongoing Damage amount (caps at 3; the Major buys a
+// harder save, not a bigger tick). New Magic ongoing is a spell rider, so it
+// keeps the elemental "/ round" phrasing and has no separate duration ladder.
 const EFL_ONGOING: NamedLadder = {
   name: 'Ongoing Damage — Fire & Acid',
   base: '1 damage / round',
   advances: [
     { value: '2 / round', cost: 'm' },
     { value: '3 / round', cost: 'm' },
-    { value: '5 / round', cost: 'M' },
+    { value: '3 / round, and −2 to the save against it', cost: 'M' },
   ],
 };
 const EFL_MOVEMENT: NamedLadder = {
@@ -1700,7 +1726,7 @@ const NEW_MAGIC: Ability[] = [
     vars: {
       frequency: FREQ_2ENC,
       action: { base: 'Standard' },
-      range: { base: "30' (5' burst)", advances: [{ value: "60' (10' burst)", cost: 'm' }, { value: "90' (15' burst)", cost: 'm' }, { value: "120' (20' burst)", cost: 'M' }] },
+      range: { base: "30' (5' burst)", advances: [{ value: "45' (10' burst)", cost: 'm' }, { value: "60' (15' burst)", cost: 'm' }, { value: "120' (20' burst)", cost: 'M' }] },
       targets: NM_AOE_TARGETS,
       attack: { base: 'Dexterity vs AC' },
       damage: RANGED_AOE_DMG,
@@ -1809,7 +1835,7 @@ const NEW_MAGIC: Ability[] = [
     },
     options: [
       { label: 'Mastery Hooks', detail: ['Mastery — Fire → the light is a magical, unquenchable flame (and behaves like a torch for setting things alight)'] },
-      { label: 'Implement Specialization Hooks', detail: ["Wand → adds a Range ladder (30'/60'/90'/120') that tracks the Brightness Rank — place the light as far as it reaches"] },
+      { label: 'Implement Specialization Hooks', detail: ["Wand → adds a Range ladder (30'/45'/60'/120') that tracks the Brightness Rank — place the light as far as it reaches"] },
     ],
   },
 ];
@@ -2406,9 +2432,9 @@ const OCCULT: Ability[] = [
   CONDUCT_RITUAL,
 ];
 
-// ── Witchcraft (Occultist — Warlock) ────────────────────────────
+// ── Witchcraft (Occultist — Witch/Warlock) ────────────────────────────
 // The malevolent half of the Occult line, and the Occultist's teeth. The
-// Warlock never knelt at the Black Faith's altar — he worked out what its
+// Witch/Warlock never knelt at the Black Faith's altar — he worked out what its
 // worship actually *pays*, and cut out the priest, so the power is his and the
 // sin is not. Charisma vs a foe's Unarmoured Wisdom, the debuffer chassis.
 //
@@ -2450,15 +2476,8 @@ const WITCHCRAFT: Ability[] = [
       range: STD_RANGE,
       targets: { base: 'One', advances: [{ value: 'Two', cost: 'm' }, { value: 'Cha targets', cost: 'M' }] },
       attack: { base: 'Charisma vs Unarmoured Wisdom' },
-      effects: {
-        base: 'Ongoing 1 Necrotic damage — the wasting curse.',
-        advances: [
-          { value: 'Ongoing 2 Necrotic', cost: 'm' },
-          { value: 'Ongoing 3 Necrotic', cost: 'm' },
-          { value: 'Ongoing 5 Necrotic', cost: 'M' },
-        ],
-      },
-      duration: { base: 'Save ends' },
+      effects: ongoingDamage('Necrotic'),
+      duration: ongoingDuration('Cha'),
     },
   },
   {
@@ -2474,7 +2493,7 @@ const WITCHCRAFT: Ability[] = [
         advances: [
           { value: '−2 to all its saves', cost: 'm' },
           { value: '−2 to its saves and all its skill checks', cost: 'm' },
-          { value: 'And no ally may lift or heal the ill luck for it', cost: 'M' },
+          { value: '−2 to its saves and all its skill checks, and −2 to all its attacks', cost: 'M' },
         ],
       },
       duration: { base: 'Save ends' },
@@ -2488,8 +2507,8 @@ const WITCHCRAFT: Ability[] = [
       range: {
         base: "30' range, 10' burst",
         advances: [
-          { value: "60' range, 15' burst", cost: 'm' },
-          { value: "90' range, 20' burst", cost: 'm' },
+          { value: "45' range, 15' burst", cost: 'm' },
+          { value: "60' range, 20' burst", cost: 'm' },
         ],
       },
       targets: { base: 'All enemies in the burst' },
@@ -2546,20 +2565,20 @@ const WITCHCRAFT: Ability[] = [
 ];
 
 export const CATEGORIES: CategoryGroup[] = [
-  { name: 'Arms', source: 'Soldier — Class', blurb: 'Str. Weapon-fighting: strikes that scale with the weapon, plus guard, disarm, focus, and read-a-fight.', abilities: ARMS },
-  { name: 'Protection', source: 'Soldier — Vanguard', blurb: 'Str hits, Con endures. Control strikes, shielding auras for allies, and taking a blow meant for someone else.', abilities: PROTECTION },
-  { name: 'Leadership', source: 'Soldier — Commander', blurb: 'Cha. Grants allies free attacks, calls focus-fire targets, braces the line, and buffs the company.', abilities: LEADERSHIP },
-  { name: 'Marksmanship', source: 'Soldier — Marksman', blurb: 'Dex. Ranged: the all-weapon shot, fire that pins and cripples, covering an ally, and shooting on the move.', abilities: MARKSMANSHIP },
-  { name: 'Mercy', source: 'Friar — Class', blurb: 'Wis. No attacks. Deliberately underpowered healing, blessings and saves, plus camp and social rites.', abilities: MERCY },
-  { name: 'Forbearance', source: 'Friar — Mendicant', blurb: 'Con. Binding Vows, Temp HP wrung from the Mendicant’s own suffering, and endurance. Vows break only under compulsion, and stay lost until he Atones.', abilities: FORBEARANCE },
-  { name: 'Spiritual', source: 'Friar — Confessor', blurb: 'Cha vs Unarmoured Wisdom. A debuffer: softening strikes, a staggering rebuke, an area buff-purge, holy dread, exorcism, and wringing out the truth.', abilities: SPIRITUAL },
-  { name: 'Letters', source: 'Scholar — Class', blurb: 'Int. Scholarship — research, recall, languages, a clever blade, and the reading of scrolls, spellbooks and rituals. No spells of its own; other classes borrow it.', abilities: LETTERS },
-  { name: 'Medicine', source: 'Scholar — Physician', blurb: 'Non-magical. A surgeon’s cuts and crafted poisons, a guarded stance, and hands-on healing (dressings, condition care, convalescence) drawing on a Healer’s Kit.', abilities: MEDICINE },
-  { name: 'New Magic', source: 'Scholar — Arcanist', blurb: 'A spell-builder. Each offensive chassis (ranged or close, single or burst) is bought with ONE element and a name of your choosing, then re-bought to make another spell. Dex vs AC aims every attack; Int powers the damage. An element’s signature Effect ladder unlocks only with its Mastery — [type] feat; wand, staff, spellbook and scroll each lend a hook.', abilities: NEW_MAGIC },
-  { name: 'The Lost', source: 'Scoundrel — Class', blurb: 'Dex. The strike pays out only against a mark who is Off Guard or flanked; everything else in the Category exists to buy that condition.', abilities: THE_LOST },
-  { name: 'Occult', source: 'Occultist — Class *(hosted by the Scoundrel’s Blackcoat)*', blurb: 'Wis. No attacks. **The Price:** some Occult Abilities carry a special property called the Price — a negative effect on the user, applied when the Ability is used. Each Price is a ladder like any other and can be bought down.', abilities: OCCULT },
-  { name: 'Witchcraft', source: 'Occultist — Warlock', blurb: 'Cha vs Unarmoured Wisdom — the Occultist’s teeth and the malevolent half of the Occult line: a wasting curse, ill luck, the grasping dead, power borrowed against a Debt that always lands, and the only bound servant in the game. Where Occult bears its own cost, Witchcraft makes another bleed — softened, at its height, onto a willing **coven**.', abilities: WITCHCRAFT },
-  { name: 'Guile', source: 'Scoundrel — Charlatan', blurb: 'Cha vs Unarmoured Wisdom. A debuffer that also sets Off Guard for the party. Out of the fight, three social crafts, each a skill vs a Defence: Bluff (coin), Diplomacy (terms), Intimidate (a pre-fight rally).', abilities: GUILE },
-  { name: 'Assassination', source: 'Scoundrel — Assassin', blurb: 'Dex plants every blade; Int rides on the study. Study the Mark hangs a Studied marker; Death Blow needs the mark Studied AND Off Guard or flanked. Envenom is reused from Medicine.', abilities: ASSASSINATION },
-  { name: 'Elder Magic', source: 'Scholar — Antiquarian *(also the Occultist’s Grave Robber)*', blurb: 'Cha vs a foe’s unguarded mind. The artefact engine, psychic dread, blinding, forced movement, domination, withering doubt, and the ruin-delver’s craft. Every working carries a Feat Hook.', abilities: ELDER_MAGIC },
+  { name: 'Arms', source: 'Soldier — Class', blurb: '[[text here]]', abilities: ARMS },
+  { name: 'Protection', source: 'Soldier — Vanguard', blurb: '[[text here]]', abilities: PROTECTION },
+  { name: 'Leadership', source: 'Soldier — Commander', blurb: '[[text here]]', abilities: LEADERSHIP },
+  { name: 'Marksmanship', source: 'Soldier — Marksman', blurb: '[[text here]]', abilities: MARKSMANSHIP },
+  { name: 'Mercy', source: 'Friar — Class', blurb: '[[text here]]', abilities: MERCY },
+  { name: 'Forbearance', source: 'Friar — Mendicant', blurb: '[[text here]]', abilities: FORBEARANCE },
+  { name: 'Spiritual', source: 'Friar — Confessor', blurb: '[[text here]]', abilities: SPIRITUAL },
+  { name: 'Letters', source: 'Scholar — Class', blurb: '[[text here]]', abilities: LETTERS },
+  { name: 'Medicine', source: 'Scholar — Physician', blurb: '[[text here]]', abilities: MEDICINE },
+  { name: 'New Magic', source: 'Scholar — Arcanist', blurb: '[[text here]]', abilities: NEW_MAGIC },
+  { name: 'The Lost', source: 'Scoundrel — Class', blurb: '[[text here]]', abilities: THE_LOST },
+  { name: 'Occult', source: 'Occultist — Class *(hosted by the Scoundrel’s Blackcoat)*', blurb: '[[text here]]', abilities: OCCULT },
+  { name: 'Witchcraft', source: 'Occultist — Witch/Warlock', blurb: '[[text here]]', abilities: WITCHCRAFT },
+  { name: 'Guile', source: 'Scoundrel — Charlatan', blurb: '[[text here]]', abilities: GUILE },
+  { name: 'Assassination', source: 'Scoundrel — Assassin', blurb: '[[text here]]', abilities: ASSASSINATION },
+  { name: 'Elder Magic', source: 'Scholar — Antiquarian *(also the Occultist’s Grave Robber)*', blurb: '[[text here]]', abilities: ELDER_MAGIC },
 ];

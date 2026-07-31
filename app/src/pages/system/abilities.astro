@@ -7,6 +7,8 @@ import { CATEGORIES } from '../../lib/category-abilities';
 
 // Abilities reference — a hand-built route (stub: false in system.ts). Each
 // Category is a collapsible <details>; inside are its Ability cards in Build view.
+// Categories are listed alphabetically by name (standing order).
+const categories = [...CATEGORIES].sort((a, b) => a.name.localeCompare(b.name));
 ---
 
 <Base title="Abilities" description="The Ability Categories of Saints of Avilund and the cards within them, each shown with its full advancement.">
@@ -23,7 +25,7 @@ import { CATEGORIES } from '../../lib/category-abilities';
     <span class="pip pip--M">M</span> (Major). Expand a Category to read its cards.
   </p>
 
-  {CATEGORIES.map((cat) => (
+  {categories.map((cat) => (
     <details class="cat" id={cat.name.toLowerCase().replace(/\s+/g, '-')}>
       <summary class="cat__summary">
         <span class="cat__name">{cat.name}</span>
