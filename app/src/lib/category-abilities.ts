@@ -2406,6 +2406,145 @@ const OCCULT: Ability[] = [
   CONDUCT_RITUAL,
 ];
 
+// ── Witchcraft (Occultist — Warlock) ────────────────────────────
+// The malevolent half of the Occult line, and the Occultist's teeth. The
+// Warlock never knelt at the Black Faith's altar — he worked out what its
+// worship actually *pays*, and cut out the priest, so the power is his and the
+// sin is not. Charisma vs a foe's Unarmoured Wisdom, the debuffer chassis.
+//
+// Where Occult bears its own cost (the Price), Witchcraft makes ANOTHER bleed.
+// Its two costed workings soften, at their height, onto a COVEN — willing
+// sisters who share what would otherwise fall on a victim. (Grey Faith is an
+// Occult Feat and does not touch these.)
+
+// Bargain's Debt: borrowed power that always comes due. Unlike the Occult
+// Price, it cannot be bought away — the ladder only defers and softens it.
+const PRICE_DEBT: NamedLadder = {
+  name: 'The Debt',
+  base: 'At the start of your next encounter you begin Dazed and take 1d6 Necrotic. The Debt always lands — it cannot be prevented, only deferred and softened. You cannot Bargain again until it is paid.',
+  advances: [
+    { value: '1d4 Necrotic instead of 1d6', cost: 'm' },
+    { value: '1d4, and you do not begin Dazed', cost: 'm' },
+    { value: 'The Debt falls due when the GM chooses — once, before your next Long Rest — not necessarily the next encounter', cost: 'M' },
+  ],
+};
+
+// Bind Spirit's Binding: the shade strains against the leash. Its top rank is
+// the coven reframe — the upkeep falls on a willing sister, not a victim.
+const BIND_UPKEEP: NamedLadder = {
+  name: 'The Binding',
+  base: '1d6 Necrotic when you bind it, then 1 Necrotic upkeep on each of your turns while it stands.',
+  advances: [
+    { value: '1d4 Necrotic to bind it', cost: 'm' },
+    { value: 'No upkeep on a turn it acts for you', cost: 'm' },
+    { value: "A willing coven-sister within 30' pays the upkeep in your stead", cost: 'M' },
+  ],
+};
+
+const WITCHCRAFT: Ability[] = [
+  {
+    name: 'Hex', category: 'Witchcraft', role: 'Offensive · curse', mode: 'Attack',
+    vars: {
+      frequency: FREQ_FULL,
+      action: { base: 'Standard' },
+      range: STD_RANGE,
+      targets: { base: 'One', advances: [{ value: 'Two', cost: 'm' }, { value: 'Cha targets', cost: 'M' }] },
+      attack: { base: 'Charisma vs Unarmoured Wisdom' },
+      effects: {
+        base: 'Ongoing 1 Necrotic damage — the wasting curse.',
+        advances: [
+          { value: 'Ongoing 2 Necrotic', cost: 'm' },
+          { value: 'Ongoing 3 Necrotic', cost: 'm' },
+          { value: 'Ongoing 5 Necrotic', cost: 'M' },
+        ],
+      },
+      duration: { base: 'Save ends' },
+    },
+  },
+  {
+    name: 'Evil Eye', category: 'Witchcraft', role: 'Offensive · debuff', mode: 'Attack',
+    vars: {
+      frequency: FREQ_FULL,
+      action: { base: 'Standard' },
+      range: STD_RANGE,
+      targets: { base: 'One' },
+      attack: { base: 'Charisma vs Unarmoured Wisdom' },
+      effects: {
+        base: 'Ill luck settles on the target: −1 to all its saves.',
+        advances: [
+          { value: '−2 to all its saves', cost: 'm' },
+          { value: '−2 to its saves and all its skill checks', cost: 'm' },
+          { value: 'And no ally may lift or heal the ill luck for it', cost: 'M' },
+        ],
+      },
+      duration: { base: 'Save ends' },
+    },
+  },
+  {
+    name: 'Grasp of the Grave', category: 'Witchcraft', role: 'Control · area', mode: 'Attack',
+    vars: {
+      frequency: FREQ_ENC,
+      action: ACTION_SMM,
+      range: {
+        base: "30' range, 10' burst",
+        advances: [
+          { value: "60' range, 15' burst", cost: 'm' },
+          { value: "90' range, 20' burst", cost: 'm' },
+        ],
+      },
+      targets: { base: 'All enemies in the burst' },
+      attack: { base: 'Charisma vs Armoured Strength (one roll vs all)' },
+      effects: {
+        base: "Hands claw up from the earth: Slowed — Speed −5'.",
+        advances: [
+          { value: "Speed −10'", cost: 'm' },
+          { value: "Speed −15'", cost: 'm' },
+          { value: 'Immobilized — Speed 0', cost: 'M' },
+        ],
+      },
+      duration: { base: 'Save ends' },
+    },
+  },
+  {
+    name: 'Bargain', category: 'Witchcraft', role: 'Buff · self', mode: 'Effect',
+    vars: {
+      frequency: FREQ_ENC,
+      action: { base: 'Minor' },
+      range: { base: 'You' },
+      effects: {
+        base: 'Borrow power now, pay later: +2 to your attack rolls.',
+        advances: [
+          { value: '+2 to your attack rolls and damage', cost: 'm' },
+          { value: 'And Cha Temp HP', cost: 'm' },
+          { value: 'And one reroll — keep the better result, on any d20 roll', cost: 'M' },
+        ],
+      },
+      duration: { base: 'Until the end of the encounter' },
+    },
+    extraVars: [PRICE_DEBT],
+    options: [{ label: 'The Debt', note: "Witchcraft's deep end: power taken on credit. Unlike the Occult Price, the Debt cannot be bought away — its ladder only defers and softens it. It always lands.", placement: 'top' }],
+  },
+  {
+    name: 'Bind Spirit', category: 'Witchcraft', role: 'Summon · servant', mode: 'Effect',
+    vars: {
+      frequency: FREQ_ENC,
+      action: { base: 'Standard' },
+      range: STD_RANGE,
+      effects: {
+        base: 'You bind an unwilling shade to your will. It aids you once — a single task within its power — then fades.',
+        advances: [
+          { value: 'It lingers a round: once on your turn it may make a basic attack, Charisma vs AC for Cha Necrotic', cost: 'm' },
+          { value: 'It lasts the encounter, acting on each of your turns', cost: 'm' },
+          { value: 'It carries out any single Standard action you direct each turn', cost: 'M' },
+        ],
+      },
+      duration: { base: 'One task, then the encounter (see the ladder)' },
+    },
+    extraVars: [BIND_UPKEEP],
+    options: [{ label: 'The Binding', note: 'The only bound servant in the game. Binding costs you blood when cast, and the shade strains against the leash each turn it stands.', placement: 'top' }],
+  },
+];
+
 export const CATEGORIES: CategoryGroup[] = [
   { name: 'Arms', source: 'Soldier — Class', blurb: 'Str. Weapon-fighting: strikes that scale with the weapon, plus guard, disarm, focus, and read-a-fight.', abilities: ARMS },
   { name: 'Protection', source: 'Soldier — Vanguard', blurb: 'Str hits, Con endures. Control strikes, shielding auras for allies, and taking a blow meant for someone else.', abilities: PROTECTION },
@@ -2419,7 +2558,8 @@ export const CATEGORIES: CategoryGroup[] = [
   { name: 'New Magic', source: 'Scholar — Arcanist', blurb: 'A spell-builder. Each offensive chassis (ranged or close, single or burst) is bought with ONE element and a name of your choosing, then re-bought to make another spell. Dex vs AC aims every attack; Int powers the damage. An element’s signature Effect ladder unlocks only with its Mastery — [type] feat; wand, staff, spellbook and scroll each lend a hook.', abilities: NEW_MAGIC },
   { name: 'The Lost', source: 'Scoundrel — Class', blurb: 'Dex. The strike pays out only against a mark who is Off Guard or flanked; everything else in the Category exists to buy that condition.', abilities: THE_LOST },
   { name: 'Occult', source: 'Occultist — Class *(hosted by the Scoundrel’s Blackcoat)*', blurb: 'Wis. No attacks. **The Price:** some Occult Abilities carry a special property called the Price — a negative effect on the user, applied when the Ability is used. Each Price is a ladder like any other and can be bought down.', abilities: OCCULT },
+  { name: 'Witchcraft', source: 'Occultist — Warlock', blurb: 'Cha vs Unarmoured Wisdom — the Occultist’s teeth and the malevolent half of the Occult line: a wasting curse, ill luck, the grasping dead, power borrowed against a Debt that always lands, and the only bound servant in the game. Where Occult bears its own cost, Witchcraft makes another bleed — softened, at its height, onto a willing **coven**.', abilities: WITCHCRAFT },
   { name: 'Guile', source: 'Scoundrel — Charlatan', blurb: 'Cha vs Unarmoured Wisdom. A debuffer that also sets Off Guard for the party. Out of the fight, three social crafts, each a skill vs a Defence: Bluff (coin), Diplomacy (terms), Intimidate (a pre-fight rally).', abilities: GUILE },
   { name: 'Assassination', source: 'Scoundrel — Assassin', blurb: 'Dex plants every blade; Int rides on the study. Study the Mark hangs a Studied marker; Death Blow needs the mark Studied AND Off Guard or flanked. Envenom is reused from Medicine.', abilities: ASSASSINATION },
-  { name: 'Elder Magic', source: 'Scholar — Antiquarian', blurb: 'Cha vs a foe’s unguarded mind. The artefact engine, psychic dread, blinding, forced movement, domination, withering doubt, and the ruin-delver’s craft. Every working carries a Feat Hook.', abilities: ELDER_MAGIC },
+  { name: 'Elder Magic', source: 'Scholar — Antiquarian *(also the Occultist’s Grave Robber)*', blurb: 'Cha vs a foe’s unguarded mind. The artefact engine, psychic dread, blinding, forced movement, domination, withering doubt, and the ruin-delver’s craft. Every working carries a Feat Hook.', abilities: ELDER_MAGIC },
 ];
