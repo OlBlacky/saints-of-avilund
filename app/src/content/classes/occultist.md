@@ -87,7 +87,7 @@ Your chosen **Path** adds a second Class Attribute, a second Ability Category, t
 
 <!-- CUE — Cha against a foe's Unarmoured Wisdom. Two curse-builders (like the wizard's spell-builders): whisper a curse at one, or shout it over many — each built by choosing a Malediction (Wasting/Ill Luck/Palsy/Stupor/Enfeeblement/Dread) as the wizard chooses an element. Plus the Witch's Vow and the only bound servant in the game. -->
 
-*Dictiones Atras Susurrare · Dictiones Atras Clamare · Renunciation of Nicetus · Bind Spirit*
+*Dictiones Atras Susurrare · Dictiones Atras Clamare · Renunciation of Nicetus · Aversio Fontis · Votum Sinistrum · Bind Spirit*
 
 ### [Elder Magic](../../abilities/#elder-magic) — *Grave Robber*
 

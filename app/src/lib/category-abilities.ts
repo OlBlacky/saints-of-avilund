@@ -2491,11 +2491,11 @@ const MAL_STUPOR: NamedLadder = {
 };
 const MAL_ENFEEBLEMENT: NamedLadder = {
   name: 'Enfeeblement',
-  base: '−1 to its attack and damage rolls',
+  base: '−1 to its damage rolls',
   advances: [
+    { value: '−1 to its attack and damage rolls', cost: 'm' },
     { value: '−2 to its attack and damage rolls', cost: 'm' },
-    { value: '−2, and −2 to its Strength and Dexterity defences', cost: 'm' },
-    { value: '−2, and its attacks deal half damage', cost: 'M' },
+    { value: '−2 to its attack rolls, and its attacks deal half damage', cost: 'M' },
   ],
 };
 const MAL_DREAD: NamedLadder = {
@@ -2521,7 +2521,7 @@ const CURSE_IMPL_LIST = [
 const CURSE_MASTERY_NOTE = 'With the matching Mastery — [Malediction] Feat (requires Language (Black Tongue) and Religion (Black Faith)): +1 to hit when you curse with that Malediction, plus an automatic Hook:';
 const CURSE_MASTERY_HOOKS = [
   'Wasting → +1 to all Necrotic damage you deal',
-  'Ill Luck → the first time each round the target rolls a natural 1, you know it, and it cannot reroll that die',
+  'Ill Luck → the cursed target may not use rerolls',
   'Palsy → a Palsied target also cannot take Reactions or Opportunity Attacks',
   'Stupor → a Stupored target takes −2 to its save against the curse',
   'Enfeeblement → the target cannot gain Temp HP while cursed',
@@ -2537,10 +2537,11 @@ const WITCHCRAFT: Ability[] = [
       range: STD_RANGE,
       targets: { base: 'One' },
       attack: { base: 'Charisma vs Unarmoured Wisdom' },
-      effects: { base: 'Your chosen Malediction (see below).' },
+      effects: { base: 'Your chosen Malediction (see below). The whispered curse clings: the target takes −2 to its save against it.' },
       duration: ongoingDuration('Cha'),
     },
     builder: true,
+    builderNoun: 'Curse',
     options: [
       { label: 'Malediction', detail: 'Choose one Malediction when you whisper this curse, as an Arcanist picks an element — it is the curse’s effect, and advances on its own ladder. Buy this Ability again to whisper another curse with a different Malediction.', placement: 'top' },
       { label: 'The Maledictions — choose one', ladders: CURSE_MALEDICTIONS },
@@ -2560,6 +2561,7 @@ const WITCHCRAFT: Ability[] = [
       duration: ongoingDuration('Cha'),
     },
     builder: true,
+    builderNoun: 'Curse',
     options: [
       { label: 'Malediction', detail: 'As Dictiones Atras Susurrare, but proclaimed over an area — choose one Malediction and it strikes every enemy in the burst. Buy this Ability again for another curse with a different Malediction.', placement: 'top' },
       { label: 'The Maledictions — choose one', ladders: CURSE_MALEDICTIONS },
@@ -2574,6 +2576,26 @@ const WITCHCRAFT: Ability[] = [
       effects: {
         base: '+1 to all your defences. The Renunciation: you have renounced the Saintly Faith. You may not willingly enter their churches or other places of worship, may not invoke the Saints’ names, and may not receive benefit from any Saintly source (a Friar of the Saintly Faith’s healing, a blessing, a relic).',
         advances: [{ value: '+2 to all your defences', cost: 'M', note: 'L5' }],
+      },
+    },
+  },
+  {
+    name: 'Aversio Fontis', category: 'Witchcraft', role: 'Vow', mode: 'Passive',
+    vars: {
+      frequency: { base: 'Passive (always on)' },
+      effects: {
+        base: 'DR 1. The Renunciation: you have vowed never to willingly bathe in clean water.',
+        advances: [{ value: 'DR 2', cost: 'M', note: 'L5' }],
+      },
+    },
+  },
+  {
+    name: 'Votum Sinistrum', category: 'Witchcraft', role: 'Vow', mode: 'Passive',
+    vars: {
+      frequency: { base: 'Passive (always on)' },
+      effects: {
+        base: 'One reroll per day — keep the better result, on any d20 roll. The Renunciation: you do everything with the left hand, and whenever you are in doubt which way to go, you always turn left.',
+        advances: [{ value: 'One reroll per encounter', cost: 'M', note: 'L5' }],
       },
     },
   },

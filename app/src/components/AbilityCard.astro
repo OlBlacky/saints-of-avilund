@@ -42,8 +42,8 @@ const bottomOpts = opts.filter((o) => o.placement !== 'top');
 
   {ability.builder && (
     <p class="acard__builder">
-      <strong>Spell Builder</strong> — this Ability can be taken multiple times, allowing you to build many
-      different spells with the building blocks below. You can rename this and any other new spell you create.
+      <strong>{ability.builderNoun ?? 'Spell'} Builder</strong> — this Ability can be taken multiple times, allowing you to build many
+      different {(ability.builderNoun ?? 'Spell').toLowerCase()}s with the building blocks below. You can rename this and any other new {(ability.builderNoun ?? 'Spell').toLowerCase()} you create.
     </p>
   )}
 

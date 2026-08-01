@@ -51,7 +51,7 @@ A family of **specialist** Feats (a **Minor** each), one per Malediction of the 
 | Mastery Feat | Automatic Hook |
 |---|---|
 | **Mastery — Wasting** | +1 to all Necrotic damage you deal |
-| **Mastery — Ill Luck** | the first time each round the target rolls a natural 1, you know it — and it cannot reroll that die |
+| **Mastery — Ill Luck** | the cursed target may not use rerolls |
 | **Mastery — Palsy** | a Palsied target also cannot take Reactions or Opportunity Attacks |
 | **Mastery — Stupor** | a Stupored target takes −2 to its save against the curse |
 | **Mastery — Enfeeblement** | the target cannot gain Temp Hit Points while cursed |
