@@ -5,7 +5,7 @@ summary: Intelligence · Letters · HP 1. Choose the Antiquarian, the Arcanist, 
 order: 30
 ---
 
-<!-- CUE — identity: the learned heart of a company; knows the history, reads the dead tongues, makes sense of the magic everyone else fears. His craft is Letters = pure scholarship, useful to any party and borrowed by other classes' investigators and antiquaries. What turns a scholar into something more is the PATH — and two of the three are the wizards of Avilund, because in this world magic *is* a kind of reading. Antiquarian recovers the Elder Magic; Arcanist wields the New; Physician sets the books aside for the surer science of the body. -->
+<!-- CUE — identity: the learned heart of a company; knows the history, reads the dead tongues, makes sense of the magic everyone else fears. His craft is Letters = pure scholarship, useful to any party and borrowed by other Classes' investigators and antiquaries. What turns a scholar into something more is the PATH — and two of the three are the wizards of Avilund, because in this world magic *is* a kind of reading. Antiquarian recovers the Elder Magic; Arcanist wields the New; Physician sets the books aside for the surer science of the body. -->
 
 ---
 
@@ -14,7 +14,7 @@ order: 30
 | | |
 |---|---|
 | **Class Attribute** | Intelligence |
-| **Primary Ability Category** | Letters *(scholarship)* |
+| **Ability Category** | Letters *(scholarship)* |
 | **Class HP** | 1 |
 | **Class Skills** | History, Decipher Script |
 | **Languages** | Auld Imperial *(plus Imperial)* |
@@ -26,7 +26,7 @@ order: 30
 
 ## Class Features
 
-<!-- CUE — Letters is LITERALLY scholarship: research, recall, languages, and the *reading* of magic (scrolls and spellbooks alike). Nothing in it is itself a spell. It's the Category other classes borrow for their investigators and antiquaries. The magic — and the medicine — live in the Paths. Staff = a walking-stick and a weapon of last resort. -->
+<!-- CUE — Letters is LITERALLY scholarship: research, recall, languages, and the *reading* of magic (scrolls and spellbooks alike). Nothing in it is itself a spell. It's the Category other Classes borrow for their investigators and antiquaries. The magic — and the medicine — live in the Paths. Staff = a walking-stick and a weapon of last resort. -->
 
 Your chosen **Path** adds a second Class Attribute, a second Ability Category, two more Class Skills, and further proficiencies — see below.
 
@@ -76,7 +76,7 @@ Your chosen **Path** adds a second Class Attribute, a second Ability Category, t
 
 <!-- CUE — Letters from the Class, a second Category from the Path. Full cards in the Abilities section. -->
 
-### [Letters](../../abilities/#letters) — *the Class category*
+### [Letters](../../abilities/#letters) — *the Class Category*
 
 <!-- CUE — scholarship, half academic and half arcane literacy: research and recall, a clever Int-based blade, and the reading of scrolls, spellbooks and rituals. No spells of its own. -->
 
@@ -96,6 +96,6 @@ Your chosen **Path** adds a second Class Attribute, a second Ability Category, t
 
 ### [Medicine](../../abilities/#medicine) — *Physician*
 
-<!-- CUE — the non-magical physician's kit: a surgeon's cuts and crafted poisons, a guarded stance, and hands-on healing (combat dressings, condition care, the long convalescence) drawing on a Healer's Kit. -->
+<!-- CUE — the non-magical physician's kit: a surgeon's cuts and crafted poisons, a guarded stance, and hands-on healing (combat dressings, Condition care, the long convalescence) drawing on a Healer's Kit. -->
 
 *Surgeon's Strike · Envenom · Guard Vitals · Field Dressing · Field Medicine · Tend the Wounded · Convalescence*

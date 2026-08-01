@@ -14,7 +14,7 @@ order: 20
 | | |
 |---|---|
 | **Class Attribute** | Wisdom |
-| **Primary Ability Category** | Mercy |
+| **Ability Category** | Mercy |
 | **Class HP** | 2 |
 | **Class Skills** | Heal, Religion (Saintly Faith) |
 | **Weapon Proficiencies** | Hammers/Maces, Staves |
@@ -75,9 +75,9 @@ Your chosen **Path** adds a second Class Attribute, a second Ability Category, t
 
 <!-- CUE — Mercy from the Class, a second Category from the Path. Full cards in the Abilities section. -->
 
-### [Mercy](../../abilities/#mercy) — *the Class category*
+### [Mercy](../../abilities/#mercy) — *the Class Category*
 
-<!-- CUE — no attacks. Underpowered healing, blessings and saves, camp and social rites. -->
+<!-- CUE — no attacks. Underpowered healing, blessings and Saves, camp and social rites. -->
 
 *Mending Touch · Stabilize · Blessing · Prayer for the Saintly · Preach to the Saintly · Tend the Wounded*
 

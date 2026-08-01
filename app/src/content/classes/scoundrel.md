@@ -14,7 +14,7 @@ order: 40
 | | |
 |---|---|
 | **Class Attribute** | Dexterity |
-| **Primary Ability Category** | The Lost |
+| **Ability Category** | The Lost |
 | **Class HP** | 2 |
 | **Class Skills** | Stealth, Thievery |
 | **Weapon Proficiencies** | Light Blades, Thrown |
@@ -25,7 +25,7 @@ order: 40
 
 ## Class Features
 
-<!-- CUE — The Lost: seen = losing. Strikes only pay against a mark who is Off Guard or flanked; everything else in the Category exists to buy that condition (vanish, slip away, sand in the eyes, go to ground). -->
+<!-- CUE — The Lost: seen = losing. Strikes only pay against a mark who is Off Guard or flanked; everything else in the Category exists to buy that Condition (vanish, slip away, sand in the eyes, go to ground). -->
 
 Your chosen **Path** adds a second Class Attribute, a second Ability Category, two more Class Skills, and further proficiencies — see below.
 
@@ -75,7 +75,7 @@ Your chosen **Path** adds a second Class Attribute, a second Ability Category, t
 
 <!-- CUE — The Lost from the Class, a second Category from the Path. Dex plants every blade the Class carries; each Path brings its own key: Assassin Int (the study), Charlatan Cha (the nerve), Blackcoat Wis. Full cards in the Abilities section. -->
 
-### [The Lost](../../abilities/#the-lost) — *the Class category*
+### [The Lost](../../abilities/#the-lost) — *the Class Category*
 
 <!-- CUE — the strike that only pays when the mark is Off Guard or flanked, and every trick that buys it. -->
 
@@ -95,6 +95,6 @@ Your chosen **Path** adds a second Class Attribute, a second Ability Category, t
 
 ### [Occult](../../abilities/#occult) — *Blackcoat*
 
-<!-- CUE — the Occultist's craft in the hands of a man with no business holding it. Forbidden but not wicked; no attacks (he kills with The Lost). Sight, blessing, guidance — plus the object-use, because he has no scholarship of his own. Some of it carries a Price. Cursing/compelling/borrowing against a debt is witchcraft, not this. -->
+<!-- CUE — the Occultist's craft in the hands of a man with no business holding it. Forbidden but not wicked; no attacks (he kills with The Lost). Sight, blessing, guidance — plus the object-use, because he has no scholarship of his own. Some of it carries a Price. Cursing/compelling/borrowing against a debt is Witchcraft, not this. -->
 
 *Third Eye · Dark Blessing · Spirit Guide · Wield Artefact · Read Scrolls · Read Spellbooks · Conduct Ritual*

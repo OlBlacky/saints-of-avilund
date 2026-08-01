@@ -31,11 +31,11 @@ export const SYSTEM: SystemPart[] = [
   {
     part: 'I · Foundations',
     items: [
-      { slug: 'introduction', title: 'Introduction & How to Play', blurb: 'What the game is, the d20 core it runs on, and the Ladders and Ranks every ability is built from.', status: 'live' },
-      { slug: 'character-creation', title: 'Character Creation', blurb: 'Advances (Major & Minor), levels 0–11, and milestone advancement.', status: 'live', stub: false },
+      { slug: 'introduction', title: 'Introduction & How to Play', blurb: 'What the game is, the d20 core it runs on, and the Ladders and Ranks every Ability is built from.', status: 'live' },
+      { slug: 'character-creation', title: 'Character Creation', blurb: 'Advances (Major & Minor), Levels 0–11, and Milestone advancement.', status: 'live', stub: false },
       { slug: 'character-sheet', title: 'Character Sheet', blurb: 'A look at the digital character sheet — the example Soldier laid out across four pages.', status: 'live', stub: false },
-      { slug: 'attributes', title: 'Attributes, Offences & Defences', blurb: 'The six attributes, AC, and the Armoured / Unarmoured defences.', status: 'live' },
-      { slug: 'skills', title: 'Skills', blurb: 'The skills of Avilund, each tied to an attribute — with the Heal skill in play.', status: 'live', stub: false },
+      { slug: 'attributes', title: 'Attributes, Offences & Defences', blurb: 'The six Attributes, AC, and the Armoured / Unarmoured Defences.', status: 'live' },
+      { slug: 'skills', title: 'Skills', blurb: 'The Skills of Avilund, each tied to an Attribute — with the Heal Skill in play.', status: 'live', stub: false },
       { slug: 'proficiencies', title: 'Proficiencies', blurb: 'Weapon groups (magic items included), armour, and how training in them is granted, advanced, and specialized.', status: 'live' },
     ],
   },
@@ -51,8 +51,8 @@ export const SYSTEM: SystemPart[] = [
     part: 'III · Combat',
     items: [
       { slug: 'combat', title: 'Combat', blurb: 'The turn and its actions, attack resolution, and the rules for falling, dying, and recovery.', status: 'progress' },
-      { slug: 'conditions', title: 'Conditions', blurb: 'The laddered conditions — Ongoing Damage, Action Denial, Movement, Control, and the rest.', status: 'live' },
-      { slug: 'light', title: 'Light & Darkness', blurb: 'The ladder from Daylight down to the Void, what each rung costs you, and what can reach it.', status: 'live' },
+      { slug: 'conditions', title: 'Conditions', blurb: 'The laddered Conditions — Ongoing Damage, Action Denial, Movement, Control, and the rest.', status: 'live' },
+      { slug: 'light', title: 'Light & Darkness', blurb: 'The Ladder from Daylight down to the Void, what each rung costs you, and what can reach it.', status: 'live' },
     ],
   },
   {
@@ -64,7 +64,7 @@ export const SYSTEM: SystemPart[] = [
   {
     part: 'V · Magic',
     items: [
-      { slug: 'magic', title: 'Magic', blurb: 'Spells found, not chosen — scrolls, spellbooks and rituals, and the feats that wield magic items.', status: 'progress' },
+      { slug: 'magic', title: 'Magic', blurb: 'Spells found, not chosen — scrolls, spellbooks and rituals, and the Feats that wield magic items.', status: 'progress' },
     ],
   },
   {

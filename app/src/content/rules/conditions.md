@@ -1,17 +1,17 @@
 ---
 title: Conditions
-summary: The laddered conditions — ongoing damage and the debuff scales — and how they are applied, advanced, and ended.
+summary: The laddered Conditions — Ongoing Damage and the debuff scales — and how they are applied, advanced, and ended.
 ---
 
-A **Condition** is a lasting effect an Ability hangs on its target — as opposed to an instant Effect, which resolves at once. Rather than a long list of separate conditions, Avilund uses a handful of **laddered scales**: each is four Ranks deep, and the familiar names (Dazed, Stunned, Slowed, and the rest) are simply labels for Ranks on those Ladders.
+A **Condition** is a lasting effect an Ability hangs on its target — as opposed to an instant Effect, which resolves at once. Rather than a long list of separate Conditions, Avilund uses a handful of **laddered scales**: each is four Ranks deep, and the familiar names (Dazed, Stunned, Slowed, and the rest) are simply labels for Ranks on those Ladders.
 
-## How a condition works
+## How a Condition works
 
-- **Four ranks.** Rank 1 usually comes with the Ability; **Ranks 2 and 3 each cost a Minor** Advance (<span class="pip pip--m">m</span>), and **Rank 4 costs a Major** (<span class="pip pip--M">M</span>).
-- **Flat numbers only.** Avilund uses no advantage or disadvantage — conditions apply flat penalties and bonuses.
-- **Ending a condition.** Most are **save ends**: at the end of the target's turn they make a save — **d20 + the attribute of the defence the condition struck, against the Ability's DC** (its to-hit bonus + 10). Some end instead through **an action and a check** (First Aid to stop a Bleed), or simply run out on the Ability's **Duration**.
+- **Four Ranks.** Rank 1 usually comes with the Ability; **Ranks 2 and 3 each cost a Minor** Advance (<span class="pip pip--m">m</span>), and **Rank 4 costs a Major** (<span class="pip pip--M">M</span>).
+- **Flat numbers only.** Avilund uses no advantage or disadvantage — Conditions apply flat penalties and bonuses.
+- **Ending a Condition.** Most are **Save ends**: at the end of the target's turn they make a Save — **d20 + the Attribute of the Defence the Condition struck, against the Ability's DC** (its to-hit bonus + 10). Some end instead through **an action and a check** (First Aid to stop a Bleed), or simply run out on the Ability's **Duration**.
 
-## The ladders
+## The Ladders
 
 ### Ongoing Damage
 Typed damage each round — **Bleed, Fire, Poison** (and Acid, Cold, Necrotic, Lightning, Radiant, Eldritch). The type lets resistance, immunity, and Vulnerable interact. **Eldritch Damage** ignores Temp HP — the mark of [The Outside](../abilities/#the-outside).
@@ -29,8 +29,8 @@ Strips actions from the target — the Dazed-to-Stunned axis.
 | Rank | Effect | Cost |
 |---|---|---|
 | 1 | no Reactions or Interrupts (Dazed) | — |
-| 2 | + no Minor action (Dazed) | <span class="pip pip--m">m</span> |
-| 3 | + no Move action (Dazed) | <span class="pip pip--m">m</span> |
+| 2 | + no Minor Action (Dazed) | <span class="pip pip--m">m</span> |
+| 3 | + no Move Action (Dazed) | <span class="pip pip--m">m</span> |
 | 4 | no actions at all (Stunned) | <span class="pip pip--M">M</span> |
 
 ### Movement
@@ -54,16 +54,16 @@ Dims the senses — blinds and deafens.
 | 4 | Blind or Deaf | <span class="pip pip--M">M</span> |
 
 ### Flat Debuff
-A penalty to a chosen defence, escalating into Vulnerable.
+A penalty to a chosen Defence, escalating into Vulnerable.
 
 | Rank | Effect | Cost |
 |---|---|---|
-| 1 | −1 to a chosen defence | — |
+| 1 | −1 to a chosen Defence | — |
 | 2 | −2 | <span class="pip pip--m">m</span> |
 | 3 | −2 and Vulnerable 1 | <span class="pip pip--m">m</span> |
 | 4 | −2 and Vulnerable 3 | <span class="pip pip--M">M</span> |
 
-The penalty caps at −2; powerful abilities may apply it to all physical or all mental defences at once. **Vulnerable N** means the target takes N extra damage — either from a chosen damage type, or against a specific defence.
+The penalty caps at −2; powerful Abilities may apply it to all physical or all mental Defences at once. **Vulnerable N** means the target takes N extra damage — either from a chosen damage type, or against a specific Defence.
 
 ### Control
 Bends the target's will toward the source of the effect.
@@ -95,7 +95,7 @@ Drives the target away from the source — the *object*, which is the caster by 
 | 4 | flees the object until the Duration expires | <span class="pip pip--M">M</span> |
 
 ### Madness
-The mind coming apart — it worsens the Confusion roll, then breaks it entirely. The signature ladder of [The Outside](../abilities/#the-outside).
+The mind coming apart — it worsens the Confusion roll, then breaks it entirely. The signature Ladder of [The Outside](../abilities/#the-outside).
 
 | Rank | Effect | Cost |
 |---|---|---|

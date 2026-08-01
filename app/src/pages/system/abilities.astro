@@ -29,7 +29,7 @@ const categories = [...CATEGORIES].sort((a, b) => a.name.localeCompare(b.name));
     <details class="cat" id={cat.name.toLowerCase().replace(/\s+/g, '-')}>
       <summary class="cat__summary">
         <span class="cat__name">{cat.name}</span>
-        <span class="cat__meta">{cat.source} · {cat.abilities.length} abilities</span>
+        <span class="cat__meta">{cat.source} · {cat.abilities.length} Abilities</span>
       </summary>
       <div class="cat__body">
         <p class="cat__blurb">{cat.blurb}</p>

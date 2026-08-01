@@ -49,7 +49,7 @@ export const SKILLS: Skill[] = [
     note: 'Prerequisite: Language (Elder Arcana).',
     how: 'The scholar’s reading of magic — its traditions, enchanted things, and arcane phenomena.',
     actions: [
-      { name: 'Identify Magic', rule: 'Read an unknown magical thing’s tradition, level, and function: Arcana vs the object’s DC. (See the Identify ability for the deeper read.)' },
+      { name: 'Identify Magic', rule: 'Read an unknown magical thing’s tradition, level, and function: Arcana vs the object’s DC. (See the Identify Ability for the deeper read.)' },
       { name: 'Recall Arcane Lore', rule: 'A Knowledge check on a tradition, item, or arcane event: Arcana vs a GM DC.' },
       { name: 'Identify a Spell', rule: 'Name a spell as it is cast, or from its lingering effect: Arcana vs the spell’s DC.' },
       { name: 'Read an Effect', rule: 'Work out how to interact with or disrupt an ongoing magical effect: an Arcana check.' },
@@ -71,7 +71,7 @@ export const SKILLS: Skill[] = [
     how: 'Lie convincingly, feint, and pass off the implausible as true.',
     actions: [
       { name: 'Deceive', rule: 'Make a lie believed: Bluff opposed by the listener’s Sense Motive.' },
-      { name: 'Feint', rule: 'In combat, as a Standard action: Bluff vs the target’s Sense Motive; on a success it is Off Guard against your next attack.' },
+      { name: 'Feint', rule: 'In combat, as a Standard Action: Bluff vs the target’s Sense Motive; on a success it is Off Guard against your next attack.' },
       { name: 'Create a Diversion', rule: 'Bluff vs Sense Motive to draw eyes away, letting an ally Hide or slip past.' },
     ],
   },
@@ -193,14 +193,14 @@ export const SKILLS: Skill[] = [
     actions: [
       { name: 'Calm or Control', rule: 'Steady a frightened or hostile beast: Handle Animal vs a DC by the animal.' },
       { name: 'Train', rule: 'Teach an animal a task over time: Handle Animal vs the trick’s DC.' },
-      { name: 'Push', rule: 'In play, goad a trained animal to act: Handle Animal as a Move action.' },
+      { name: 'Push', rule: 'In play, goad a trained animal to act: Handle Animal as a Move Action.' },
     ],
   },
   {
     name: 'Heal',
     attrs: 'Wis, Int',
     note: 'The Physician and the Friar carry far stronger versions of all three. (See Combat for the dying and Wounded rules these treat.)',
-    how: 'Treat wounds, illness, poison, and the dying with the consumable Supplies of a Healer’s Kit. Anyone trained in Heal can do three things with no special ability:',
+    how: 'Treat wounds, illness, poison, and the dying with the consumable Supplies of a Healer’s Kit. Anyone trained in Heal can do three things with no special Ability:',
     actions: [
       { name: 'Diagnose', rule: 'Read an affliction: what poison or disease, and how grave.' },
       { name: 'Stabilize', rule: 'Steady a dying creature: a Heal check at DC 10 + how far below 0 HP they are.' },
@@ -221,7 +221,7 @@ export const SKILLS: Skill[] = [
     how: 'Bend others by threat — a raised fist (Strength) or a cold word (Charisma).',
     actions: [
       { name: 'Coerce', rule: 'Force compliance or an answer: Intimidate vs the target’s Sense Motive (or a GM DC).' },
-      { name: 'Demoralize', rule: 'In combat, as a Standard action: Intimidate vs the foe’s resolve; on a success it is Shaken — −1 to attacks (Fear) — until it saves.' },
+      { name: 'Demoralize', rule: 'In combat, as a Standard Action: Intimidate vs the foe’s resolve; on a success it is Shaken — −1 to attacks (Fear) — until it Saves.' },
     ],
   },
   {
@@ -295,7 +295,7 @@ export const SKILLS: Skill[] = [
     actions: [
       { name: 'Control Mount', rule: 'Keep a spooked or hard-pressed mount under control: Ride vs a DC.' },
       { name: 'Fight from the Saddle', rule: 'Stay mounted and effective in a melee: a Ride check; a fall on a bad miss.' },
-      { name: 'Fast Mount or Dismount', rule: 'Get on or off in a hurry: Ride as a Free action on a success.' },
+      { name: 'Fast Mount or Dismount', rule: 'Get on or off in a hurry: Ride as a Free Action on a success.' },
     ],
   },
   {
@@ -340,7 +340,7 @@ export const SKILLS: Skill[] = [
     attrs: 'Dex, Wis',
     how: 'Move unseen and unheard, and stay hidden.',
     actions: [
-      { name: 'Hide', rule: 'As a Move action, Stealth opposed by onlookers’ Perception; success means you are unseen.' },
+      { name: 'Hide', rule: 'As a Move Action, Stealth opposed by onlookers’ Perception; success means you are unseen.' },
       { name: 'Sneak', rule: 'Move quietly past, or up on, a target: Stealth vs Perception.' },
       { name: 'Ambush', rule: 'Stay hidden to strike first: a won Stealth grants the surprise.' },
     ],

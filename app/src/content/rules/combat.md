@@ -9,47 +9,47 @@ summary: The turn and its actions, how attacks are resolved, and the rules for f
 
 On your turn you have, to spend in any order:
 
-- **1 Standard**, **1 Move**, **1 Minor**, and any number of **Free** actions.
+- **1 Standard**, **1 Move**, **1 Minor**, and any number of **Free** Actions.
 - You may always trade **down** the chain: a Standard can become a Move or a Minor; a Move can become a Minor.
-- Outside your turn you get **one Interrupt *or* one Reaction** — the two share a slot — unless an ability grants more.
+- Outside your turn you get **one Interrupt *or* one Reaction** — the two share a slot — unless an Ability grants more.
 
 ## Making an attack
 
 An attack rolls **d20 + your Offence vs the target's Defence** — meet or beat it to hit. There is **no advantage or disadvantage**; every modifier is a flat number.
 
-- Each attribute has an **Offence** (your bonus to hit with attacks keyed off it) and two **Defences** — an **Unarmoured** and an **Armoured** value. Armour raises the Armoured ones.
-- Most physical attacks target **AC** *(your Armoured Constitution Defence)*; magic that bypasses armour strikes an **Unarmoured** defence instead.
+- Each Attribute has an **Offence** (your bonus to hit with attacks keyed off it) and two **Defences** — an **Unarmoured** and an **Armoured** value. Armour raises the Armoured ones.
+- Most physical attacks target **AC** *(your Armoured Constitution Defence)*; magic that bypasses armour strikes an **Unarmoured** Defence instead.
 - Ranged attacks lose nothing in the first range band, **−2** in the second, **−4** in the third.
 
 ## Off Guard and flanking
 
-Some abilities — the Scoundrel's above all — pay out only against a foe who cannot properly defend itself. Two rules cover that.
+Some Abilities — the Scoundrel's above all — pay out only against a foe who cannot properly defend itself. Two rules cover that.
 
-**Off Guard** is a condition: the target is not ready for *you*. Unlike the laddered conditions, it is simply on or off. A creature is **Off Guard against you** when any of these is true:
+**Off Guard** is a Condition: the target is not ready for *you*. Unlike the laddered Conditions, it is simply on or off. A creature is **Off Guard against you** when any of these is true:
 
 - it **cannot see you** — you are Hidden, or it is Blind;
 - it has **not yet acted** in the encounter (it was surprised);
 - it is **Prone, Stunned, or Immobilized**;
-- an ability says so — a Feint, for instance, leaves the target Off Guard against your next attack.
+- an Ability says so — a Feint, for instance, leaves the target Off Guard against your next attack.
 
-Off Guard is always *against someone*: a man watching you and not the thief behind him is Off Guard against the thief and ready for you. On its own it grants no penalty — it is the **key that unlocks** the abilities written to use it.
+Off Guard is always *against someone*: a man watching you and not the thief behind him is Off Guard against the thief and ready for you. On its own it grants no penalty — it is the **key that unlocks** the Abilities written to use it.
 
-**Flanking** is the other key. You **flank** an enemy when you and an ally are both adjacent to it and stand on **opposite sides** — directly across from one another. Flanking is not a condition and needs no roll; either the geometry holds or it does not. Abilities that trigger on an Off Guard target trigger equally on a flanked one, unless they say otherwise.
+**Flanking** is the other key. You **flank** an enemy when you and an ally are both adjacent to it and stand on **opposite sides** — directly across from one another. Flanking is not a Condition and needs no roll; either the geometry holds or it does not. Abilities that trigger on an Off Guard target trigger equally on a flanked one, unless they say otherwise.
 
 ## Falling, dying, and death
 
-When you are reduced to **0 HP or lower** you fall **unconscious** and gain the **Dying** condition. At **−10 HP** you are dead.
+When you are reduced to **0 HP or lower** you fall **unconscious** and gain the **Dying** Condition. At **−10 HP** you are dead.
 
-- While Dying, at the **start of each of your turns** you may attempt to **self-stabilize**: a **Constitution save**, **DC = 10 + how far below 0 you are** *(−4 HP → DC 14)*. Succeed, and you stop dying.
-- Others can stabilize you with the right ability, or a **Heal check** at that same DC.
+- While Dying, at the **start of each of your turns** you may attempt to **self-stabilize**: a **Constitution Save**, **DC = 10 + how far below 0 you are** *(−4 HP → DC 14)*. Succeed, and you stop dying.
+- Others can stabilize you with the right Ability, or a **Heal check** at that same DC.
 
-Once stabilized, you gain the **Wounded** condition.
+Once stabilized, you gain the **Wounded** Condition.
 
-### The Wounded condition
+### The Wounded Condition
 
 Wounded **stacks** — each time you are dropped and revived, its Rank rises *(down, up, down again = Wounded 2)*. **Per Rank**, it imposes:
 
-- **−5 Speed**, **−1 to all offences**, **−1 to all defences**, and **−2 to your Maximum HP**.
+- **−5 Speed**, **−1 to all Offences**, **−1 to all Defences**, and **−2 to your Maximum HP**.
 
 Wounds are **not** shrugged off mid-fight — only rare, powerful magic does that, and certain trained healers *(the Physician's **Convalescence**, the Friar's **Vigil**)*.
 
@@ -57,19 +57,19 @@ Wounds are **not** shrugged off mid-fight — only rare, powerful magic does tha
 
 **Natural healing.** You recover **1 HP per day** while active, **2 HP per day** on full bed rest.
 
-**Recovering from Wounds.** Absent a special ability, after **7 days** you roll **Heal or Constitution** *(whichever is better)*, **once per Wound**, to shed it:
+**Recovering from Wounds.** Absent a special Ability, after **7 days** you roll **Heal or Constitution** *(whichever is better)*, **once per Wound**, to shed it:
 
 | Conditions | Save DC | Supplies |
 |---|---|---|
-| Bed rest, attended by a healer | 11 + Wound Rank | 3 / wound |
-| Active, attended | 16 + Wound Rank | 7 / wound |
+| Bed rest, attended by a healer | 11 + Wound Rank | 3 / Wound |
+| Active, attended | 16 + Wound Rank | 7 / Wound |
 | Bed rest, no attendant | 15 + Wound Rank | — *(a natural 1 worsens the Wound)* |
 | Active, no attendant | 18 + Wound Rank | — *(a natural 1 worsens the Wound)* |
 
 ## Ability-score damage
 
-Dire foes and curses can **drain attribute scores** — a Wrath that saps Constitution, a hex that gnaws at the mind. Unless the source says otherwise, the damage can mend on its own: after **7 days**, a **Constitution check** *(for Str/Dex/Con)* or **Wisdom check** *(for Int/Wis/Cha)* against the **hazard's DC** restores **1 point**.
+Dire foes and curses can **drain Attribute scores** — a Wrath that saps Constitution, a hex that gnaws at the mind. Unless the source says otherwise, the damage can mend on its own: after **7 days**, a **Constitution check** *(for Str/Dex/Con)* or **Wisdom check** *(for Int/Wis/Cha)* against the **hazard's DC** restores **1 point**.
 
 - **Full bed rest** lowers that DC by **5**.
-- An **attendant** with the **Heal** skill may roll Heal in place of the save, spending **3 Supplies** *(rested)* or **7** *(active)*.
+- An **attendant** with the **Heal** Skill may roll Heal in place of the Save, spending **3 Supplies** *(rested)* or **7** *(active)*.
 - The **Physician** treats the physical three, the **Friar** the mental three — each far faster than nature alone.

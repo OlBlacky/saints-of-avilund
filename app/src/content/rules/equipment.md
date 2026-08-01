@@ -8,7 +8,7 @@ The gear of Avilund. Prices are in **Silver Pieces (sp)**.
 <details id="weapons">
 <summary>Weapons <span class="fold__meta">45 arms · 17 groups</span></summary>
 
-Every weapon belongs to one of **seventeen groups**. You are trained by the group, not by the weapon: proficiency in Heavy Blades means every heavy blade sits right in your hand. Wielding a weapon from a group you lack costs you **−1 to attack**. How proficiencies are granted, advanced, and specialized is covered under [Proficiencies](../proficiencies/).
+Every weapon belongs to one of **seventeen groups**. You are trained by the group, not by the weapon: Proficiency in Heavy Blades means every heavy blade sits right in your hand. Wielding a weapon from a group you lack costs you **−1 to attack**. How Proficiencies are granted, advanced, and specialized is covered under [Proficiencies](../proficiencies/).
 
 A weapon's **Type** — Piercing, Slashing, or Blunt — matters where a foe's hide, or a saint's ward, cares which.
 
@@ -20,7 +20,7 @@ A weapon's **Type** — Piercing, Slashing, or Blunt — matters where a foe's h
 | **Reach** | Melee range is 10' instead of 5'. |
 | **Thrown** | May be thrown, using the listed range increments. |
 | **Versatile** | May be used one- or two-handed; two-handed steps the damage die up one. |
-| **Loading** | Costs a Minor action to reload between shots. |
+| **Loading** | Costs a Minor Action to reload between shots. |
 | **Concealable** | May be hidden on the body. |
 | **Defensive** | +1 to a Defence Target while wielded. |
 
@@ -117,7 +117,7 @@ Ranged and thrown weapons list three increments. Shooting further costs accuracy
 <details id="armour">
 <summary>Armour &amp; Shields <span class="fold__meta">9 armours · 4 shields</span></summary>
 
-Armour raises your **Armoured Defences** and grants **Damage Reduction (DR)**. There are five armour proficiencies — **Light, Medium,** and **Heavy** armour, plus **Light Shield** and **Heavy Shield**. (Unarmoured is a fighting *style* you take Feats in; there is nothing to buy.)
+Armour raises your **Armoured Defences** and grants **Damage Reduction (DR)**. There are five armour Proficiencies — **Light, Medium,** and **Heavy** armour, plus **Light Shield** and **Heavy Shield**. (Unarmoured is a fighting *style* you take Feats in; there is nothing to buy.)
 
 Your **AC** is your Armoured Constitution Defence — the number most physical attacks must beat. Armour's bonus is flat **by tier**: Light **+1**, Medium **+2**, Heavy **+3** to your Armoured Defences. *Within* a tier, the heavier pieces buy more **DR** (and a small Trait on the third) at the price of weight, coin, and drawback.
 
@@ -137,7 +137,7 @@ Your **AC** is your Armoured Constitution Defence — the number most physical a
 
 - **Light** armour carries **no penalties** at all.
 - **Medium** armour takes **−1 Stealth** — the **Breastplate** keeps the Stealth penalty but loses the Speed penalty (its **Mobility**).
-- **Heavy** armour takes **−10' Speed and −2 Stealth**, and needs the listed **Strength**. Your proficiency advances and Armour Specialization Feats buy these drawbacks back down.
+- **Heavy** armour takes **−10' Speed and −2 Stealth**, and needs the listed **Strength**. Your Proficiency Advances and Armour Specialization Feats buy these drawbacks back down.
 
 ### Shields
 
@@ -152,8 +152,8 @@ A shield gives **both its AC and its DR only while it is raised** — nothing is
 
 A shield's AC stacks on your armour's. **Raising a shield** can be done two ways:
 
-- **Anyone proficient** may raise their shield as a **Standard action**, gaining its AC and DR until the start of their next turn — re-paid every turn.
-- The **Raise Shield** ability (Arms) does it far better: from a Move action down to **Free** — eventually every turn for nothing — and its Feats extend your Shield DR to the allies you protect.
+- **Anyone proficient** may raise their shield as a **Standard Action**, gaining its AC and DR until the start of their next turn — re-paid every turn.
+- The **Raise Shield** Ability (Arms) does it far better: from a Move Action down to **Free** — eventually every turn for nothing — and its Feats extend your Shield DR to the allies you protect.
 
 </details>
 
@@ -170,8 +170,8 @@ Masterwork is a master's own hands rather than his shop's. It is **commissioned,
 | Armour | −10 lb, and one drawback eased *(Stealth by 1, or Speed by 5')* | +300 sp | 30 days |
 
 - The surcharge is **added to the base price**. A masterwork Longsword is 15 + 200 = **215 sp**.
-- A weapon's **+1 stacks with your proficiency** — a master at +2 wielding a masterwork blade attacks at **+3**.
-- Tools likewise **stack past a skill's training cap**. Fine instruments let a man punch above his training.
+- A weapon's **+1 stacks with your Proficiency** — a master at +2 wielding a masterwork blade attacks at **+3**.
+- Tools likewise **stack past a Skill's training cap**. Fine instruments let a man punch above his training.
 - **Light armour** has no drawbacks to ease, so it gains only the weight. No armour drops below **5 lb**.
 - The surcharge is the master's time at his own wage *(8–10 sp a day — see the [Wealth](#wealth) fold)*. In a village there is no one to ask.
 
@@ -384,7 +384,7 @@ Masterwork is a master's own hands rather than his shop's. It is **commissioned,
 <details id="kits">
 <summary>Medical &amp; Ministration Kits <span class="fold__meta">kits · supplies</span></summary>
 
-A kit holds a **Supply** value of **0–20** — the consumables it spends in use. Hands-on healing and several abilities draw down Supplies; an empty kit is just the tools and the bag.
+A kit holds a **Supply** value of **0–20** — the consumables it spends in use. Hands-on healing and several Abilities draw down Supplies; an empty kit is just the tools and the bag.
 
 | Item | Supply | Cost | Weight |
 |---|---|---|---|
@@ -392,7 +392,7 @@ A kit holds a **Supply** value of **0–20** — the consumables it spends in us
 | **Friar's Kit** *(empty — oils, incense &amp; implements)* | — | 10 sp | 3 lb |
 | Supplies *(per 10)* | +10 | 1 sp | 1 lb |
 
-- The **Healer's Kit** holds bandages, salves, and thread — the physician's consumables. Its Supplies fuel hands-on medicine: a trained healer's **Tend Wounded**, and the Physician's healing abilities.
+- The **Healer's Kit** holds bandages, salves, and thread — the physician's consumables. Its Supplies fuel hands-on medicine: a trained healer's **Tend Wounded**, and the Physician's healing Abilities.
 - The **Friar's Kit** is the spiritual counterpart — holy oils and incense — identical in weight, cost, and Supply mechanics, but **some ministrations require it instead of the Healer's Kit** (for instance, treating damage to the mind and soul).
 - A kit filled to 20 Supplies weighs about **5 lb** and costs about **12 sp**.
 
@@ -401,9 +401,9 @@ A kit holds a **Supply** value of **0–20** — the consumables it spends in us
 <details id="poisons">
 <summary>Poisons <span class="fold__meta">crafting · a sample</span></summary>
 
-A poison is defined by its **Application** *(ingestion, inhaled, wound, or contact)*, a **Save DC**, an **Onset**, and then — once it takes hold — a **Duration** *(how long one interval lasts)* and an **Interval count** *(how many ticks it runs)*. At each interval the victim saves again, and the poison worsens or eases. Coating a weapon by the **Wound** method takes a Minor action and a Wisdom check *(DC 10)*; one dose serves a single weapon or missile and lasts 24 hours.
+A poison is defined by its **Application** *(ingestion, inhaled, wound, or contact)*, a **Save DC**, an **Onset**, and then — once it takes hold — a **Duration** *(how long one Interval lasts)* and an **Interval count** *(how many ticks it runs)*. At each Interval the victim saves again, and the poison worsens or eases. Coating a weapon by the **Wound** method takes a Minor Action and a Wisdom check *(DC 10)*; one dose serves a single weapon or missile and lasts 24 hours.
 
-Poisons are **crafted** with the **Craft (Poison)** skill — here is a sample.
+Poisons are **crafted** with the **Craft (Poison)** Skill — here is a sample.
 
 ### Gaul's Thistle Oil
 
@@ -414,9 +414,9 @@ Poisons are **crafted** with the **Craft (Poison)** skill — here is a sample.
 | **Application** | Wound |
 | **Save DC** | 15 |
 | **Onset** | 1 round |
-| **Duration / Intervals** | 1 round, for 5 intervals |
+| **Duration / Intervals** | 1 round, for 5 Intervals |
 
-Each interval the victim climbs this track on a failed save, and descends on a success:
+Each Interval the victim climbs this track on a failed Save, and descends on a success:
 
 | Rank | Effect |
 |---|---|

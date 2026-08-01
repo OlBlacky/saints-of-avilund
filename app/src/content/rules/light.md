@@ -1,11 +1,11 @@
 ---
 title: Light &amp; Darkness
-summary: The ladder from Daylight down to the Void — what each rung costs you, and what can reach it.
+summary: The Ladder from Daylight down to the Void — what each rung costs you, and what can reach it.
 ---
 
-Every space stands on a rung of one ladder. Light and darkness are not a tally of lumens but a scale of **reach**: what a torch can do, what magic can do, and what only the world itself can do.
+Every space stands on a rung of one Ladder. Light and darkness are not a tally of lumens but a scale of **reach**: what a torch can do, what magic can do, and what only the world itself can do.
 
-## The ladder
+## The Ladder
 
 | | Rung | Whose reach |
 |---|---|---|
@@ -17,11 +17,11 @@ Every space stands on a rung of one ladder. Light and darkness are not a tally o
 | **−2** | **Magical Darkness** | the floor of magic |
 | **−3** | **Void** | the world's own — no spell makes a Void |
 
-Magical Light is not *brighter* than a torch; it is **stronger**. That is the whole point of the ladder. A flame cannot lift Magical Darkness and magic cannot make a sun, and so the rungs sit where they do.
+Magical Light is not *brighter* than a torch; it is **stronger**. That is the whole point of the Ladder. A flame cannot lift Magical Darkness and magic cannot make a sun, and so the rungs sit where they do.
 
 ## What each rung costs
 
-A rung imposes its Rank on the [Sensory ladder](../conditions/#the-ladders) for as long as you stand in it. There is **no save** — you are not afflicted, you are simply somewhere.
+A rung imposes its Rank on the [Sensory Ladder](../conditions/#the-ladders) for as long as you stand in it. There is **no Save** — you are not afflicted, you are simply somewhere.
 
 | Rung | Effect |
 |---|---|

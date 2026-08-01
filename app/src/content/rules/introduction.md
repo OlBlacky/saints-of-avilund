@@ -1,6 +1,6 @@
 ---
 title: Introduction & How to Play
-summary: What the game is, the d20 core it runs on, and the Ladders and Ranks that shape every ability.
+summary: What the game is, the d20 core it runs on, and the Ladders and Ranks that shape every Ability.
 ---
 
 Saints of Avilund is a tabletop roleplaying game. One player is the **Game Master**, who narrates the world and plays everyone in it; the others each take a single character through it. Play is conversation, punctuated by dice when the outcome is in doubt.
@@ -9,11 +9,11 @@ Saints of Avilund is a tabletop roleplaying game. One player is the **Game Maste
 
 When an action could fail, you roll a **twenty-sided die (d20)**, add the relevant bonuses, and compare the total to a target number. Meet or beat it and you succeed.
 
-**d20 + attribute + other bonuses ≥ the target.**
+**d20 + Attribute + other bonuses ≥ the target.**
 
-Attacks roll against a **Defence**; skill checks roll against a difficulty the Game Master sets. There is no advantage or disadvantage — every modifier is a flat number, added or subtracted. That keeps the maths quick and the table moving.
+Attacks roll against a **Defence**; Skill checks roll against a difficulty the Game Master sets. There is no advantage or disadvantage — every modifier is a flat number, added or subtracted. That keeps the maths quick and the table moving.
 
-Characters grow by spending **Advances**, which come in two sizes — **Major** and **Minor**. You earn one of each at every milestone. Where those go is the subject of [Character Creation](../character-creation/); how each is *worth* is the subject of the rest of this section.
+Characters grow by spending **Advances**, which come in two sizes — **Major** and **Minor**. You earn one of each at every Milestone. Where those go is the subject of [Character Creation](../character-creation/); how each is *worth* is the subject of the rest of this section.
 
 ## Ladders and Ranks
 
@@ -25,11 +25,11 @@ The pattern is consistent enough to learn once and apply everywhere:
 - **The middle Ranks** each cost one **Minor** Advance.
 - **The top Rank** costs a **Major** Advance.
 
-So a fresh ability is a Ladder with only its first Rank lit. Over a career you spend Advances to light the higher Ranks, one at a time.
+So a fresh Ability is a Ladder with only its first Rank lit. Over a career you spend Advances to light the higher Ranks, one at a time.
 
-### An ability Ladder
+### An Ability Ladder
 
-Take the Soldier's **Parry**. Its effect is a Ladder four Ranks deep:
+Take the Soldier's **Parry**. Its Effect is a Ladder four Ranks deep:
 
 | Rank | Effect | Cost |
 |---|---|---|
@@ -38,11 +38,11 @@ Take the Soldier's **Parry**. Its effect is a Ladder four Ranks deep:
 | 3 | −4 | Minor |
 | 4 | −4, **and** you may strike back (riposte) | Major |
 
-A first-level Soldier who buys Parry gets Rank 1. Spend a Minor later and the same ability now shaves 3 off the blow; spend the Major and a parried attacker eats a counterstrike.
+A first-Level Soldier who buys Parry gets Rank 1. Spend a Minor later and the same Ability now shaves 3 off the blow; spend the Major and a parried attacker eats a counterstrike.
 
-### A condition Ladder
+### A Condition Ladder
 
-The same shape governs the harm an ability inflicts. **Ongoing Damage** — Bleed, Fire, Poison, and the rest — is one Ladder:
+The same shape governs the harm an Ability inflicts. **Ongoing Damage** — Bleed, Fire, Poison, and the rest — is one Ladder:
 
 | Rank | Effect | Cost |
 |---|---|---|
@@ -53,14 +53,14 @@ The same shape governs the harm an ability inflicts. **Ongoing Damage** — Blee
 
 An attack that sets a target Bleeding starts at Rank 1; you raise the bite of it by climbing the Ladder, exactly as you raised Parry.
 
-### One Rank per level
+### One Rank per Level
 
-A Ladder is climbed **a single Rank at a time**: you may raise any one Ladder by **at most one Rank per level**. The base Rank and the first Advance may both be taken when you first buy the thing — but after that, each further Rank waits for a new level.
+A Ladder is climbed **a single Rank at a time**: you may raise any one Ladder by **at most one Rank per Level**. The base Rank and the first Advance may both be taken when you first buy the thing — but after that, each further Rank waits for a new Level.
 
-This paces a Ladder for you. Take a four-Rank ability bought at creation: you light Rank 1 and may buy Rank 2 straight away, but Rank 3 must wait until you begin **Level 1**, and Rank 4 until **Level 2**. A four-Rank Ladder therefore tops out as you enter Level 2 on its own — without anyone writing a level on it. When a Rank *does* carry a level (you'll see it noted, like *L5*), that Rank opens **later** than this natural pace, not sooner. The limit is per Ladder: two different parts of the same ability may each climb a Rank in the same level.
+This paces a Ladder for you. Take a four-Rank Ability bought at creation: you light Rank 1 and may buy Rank 2 straight away, but Rank 3 must wait until you begin **Level 1**, and Rank 4 until **Level 2**. A four-Rank Ladder therefore tops out as you enter Level 2 on its own — without anyone writing a Level on it. When a Rank *does* carry a Level (you'll see it noted, like *L5*), that Rank opens **later** than this natural pace, not sooner. The limit is per Ladder: two different parts of the same Ability may each climb a Rank in the same Level.
 
 ### One pattern, learned once
 
-Because the structure repeats, you only ever learn it once. **Frequency** (Daily → Encounter → At-Will), an ability's damage, the reach of a buff, the depth of a [Condition](../conditions/) — all of them are Ladders, all measured in Ranks, all climbed with the same two Advances. Read a Ladder, and you can see at a glance what a character can do now and what the next Advance will buy.
+Because the structure repeats, you only ever learn it once. **Frequency** (Daily → Encounter → At-Will), an Ability's damage, the reach of a buff, the depth of a [Condition](../conditions/) — all of them are Ladders, all measured in Ranks, all climbed with the same two Advances. Read a Ladder, and you can see at a glance what a character can do now and what the next Advance will buy.
 
 Throughout these rules, then: a **Ladder** is the track; a **Rank** is a step on it.

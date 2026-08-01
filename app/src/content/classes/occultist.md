@@ -14,7 +14,7 @@ order: 50
 | | |
 |---|---|
 | **Class Attribute** | Wisdom |
-| **Primary Ability Category** | Occult *(the gateway — sight & literacy, no attacks)* |
+| **Ability Category** | Occult *(the gateway — sight & literacy, no attacks)* |
 | **Class HP** | 1 |
 | **Class Skills** | The Planes, Religion (Black Faith) |
 | **Languages** | Black Tongue *(plus Imperial)* |
@@ -61,7 +61,7 @@ Your chosen **Path** adds a second Class Attribute, a second Ability Category, t
 
 ### Cosmologist
 
-<!-- CUE — draws on the Outside (the Eldritch mythos — nobody's god, older than the Saints). His learning is Wis/Int but his *power* is measured in Con — how much of himself he can spend before the Outside hollows him out; attacks run off Wis (class attr), Con carries the toll (the Vanguard precedent). Category name + tongue now set (The Outside · Eldritch Tongue); the CARDS still need a design pass. -->
+<!-- CUE — draws on the Outside (the Eldritch mythos — nobody's god, older than the Saints). His learning is Wis/Int but his *power* is measured in Con — how much of himself he can spend before the Outside hollows him out; attacks run off Wis (Class attr), Con carries the toll (the Vanguard precedent). Category name + tongue now set (The Outside · Eldritch Tongue); the CARDS still need a design pass. -->
 
 | | |
 |---|---|
@@ -78,7 +78,7 @@ Your chosen **Path** adds a second Class Attribute, a second Ability Category, t
 
 <!-- CUE — Occult from the Class, a second Category from the Path. Wis reads every sign the Class gathers; each Path brings its own key: Witch/Warlock Cha (the nerve), Grave Robber Int (the study), Cosmologist Con (the toll). Full cards in the Abilities section. -->
 
-### [Occult](../../abilities/#occult) — *the Class category*
+### [Occult](../../abilities/#occult) — *the Class Category*
 
 <!-- CUE — sight and literacy of the supernatural, plus the object-use (the Occultist has no Letters of his own). No attacks. Some workings carry the Price. -->
 
@@ -98,6 +98,6 @@ Your chosen **Path** adds a second Class Attribute, a second Ability Category, t
 
 ### [The Outside](../../abilities/#the-outside) — *Cosmologist*
 
-<!-- CUE — the dangerous blaster. Eldritch damage only (attacks AC, ignores Temp HP); high-risk high-damage via Overload (Con is the fuse — push for more, save or take backlash); chaos via the Madness ladder (Confused → Insane). Bespoke, not a builder. Card names provisional; the transformative Vows are still to come (Les designing). -->
+<!-- CUE — the dangerous blaster. Eldritch damage only (attacks AC, ignores Temp HP); high-risk high-damage via Overload (Con is the fuse — push for more, Save or take backlash); chaos via the Madness Ladder (Confused → Insane). Bespoke, not a builder. Card names provisional; the transformative Vows are still to come (Les designing). -->
 
 *Eldritch Blast · Unraveling Gaze · Pandemonium · Impossible Visage · Conversant with the Outside · Observer of the Outside · Traveller · Wield Orb*

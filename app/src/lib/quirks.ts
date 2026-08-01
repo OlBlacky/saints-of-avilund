@@ -197,7 +197,7 @@ export const QUIRKS: Quirk[] = [
   {
     id: 'the-third-milestone',
     name: 'The Third Milestone',
-    mechanic: '+1 to Dexterity saves.',
+    mechanic: '+1 to Dexterity Saves.',
     esoteric:
       'You must touch every roadside shrine you pass. Prevented, you are foul company until the next one.',
     effects: [{ kind: 'saveMod', value: 1, attr: 'Dexterity' }],
@@ -207,11 +207,11 @@ export const QUIRKS: Quirk[] = [
     id: 'read-one-page-too-many',
     name: 'Read One Page Too Many',
     mechanic:
-      '+1 to History. −1 on your first save against anything written in Elder Arcana.',
+      '+1 to History. −1 on your first Save against anything written in Elder Arcana.',
     esoteric: 'You always read it before you resist it.',
     effects: [
       { kind: 'skillMod', value: 1, skill: 'History' },
-      { kind: 'saveMod', value: -1, attr: 'Intelligence', when: { language: 'Elder Arcana', note: 'first save only' } },
+      { kind: 'saveMod', value: -1, attr: 'Intelligence', when: { language: 'Elder Arcana', note: 'first Save only' } },
     ],
     tags: ['learned', 'arcane'],
   },
@@ -227,7 +227,7 @@ export const QUIRKS: Quirk[] = [
   {
     id: 'owed-a-saints-debt',
     name: "Owed a Saint's Debt",
-    mechanic: '+1 to Constitution saves.',
+    mechanic: '+1 to Constitution Saves.',
     esoteric:
       'You will not take payment for work done on the feast day of {saint} — and there are more feast days than you would think.',
     slots: { saint: { table: 'saint' } },

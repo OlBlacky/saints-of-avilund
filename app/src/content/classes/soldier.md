@@ -14,7 +14,7 @@ order: 10
 | | |
 |---|---|
 | **Class Attribute** | Strength |
-| **Primary Ability Category** | Arms |
+| **Ability Category** | Arms |
 | **Class HP** | 3 |
 | **Class Skills** | Endurance, Intimidate |
 | **Weapon Proficiencies** | Heavy Blades, Polearms, Crossbows |
@@ -75,7 +75,7 @@ Your chosen **Path** adds a second Class Attribute, a second Ability Category, t
 
 <!-- CUE — Arms from the Class, a second Category from the Path. Each Category offers a full spread: a couple of offensive options, a hybrid and a defensive one, a buff or debuff, and a utility. Full cards in the Abilities section. -->
 
-### [Arms](../../abilities/#arms) — *the Class category*
+### [Arms](../../abilities/#arms) — *the Class Category*
 
 <!-- CUE — reliable weapon strikes that grow with the weapon; guard, disarm, focus, read a fight. -->
 

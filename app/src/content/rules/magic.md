@@ -1,6 +1,6 @@
 ---
 title: Magic
-summary: How spells work in Avilund — found, not chosen; cast from scrolls, spellbooks, and rituals; and the feats that let you wield magic items.
+summary: How spells work in Avilund — found, not chosen; cast from scrolls, spellbooks, and rituals; and the Feats that let you wield magic items.
 ---
 
 Magic in Avilund is not a list you shop from at level-up. **There are no spell lists for players.** Your **Abilities** are yours from the start, bought and improved like any other; **spells you find** — written on scrolls, bound in spellbooks, carved on a wall, whispered by a dying Elder. What a character can cast is a record of what they have *recovered*, not what they chose.
@@ -9,7 +9,7 @@ Magic in Avilund is not a list you shop from at level-up. **There are no spell l
 
 ## What a spell is
 
-A spell is built exactly like an [Ability](../abilities/): a chassis of **variables** — range, targets, effect, duration, and so on — each a **Ladder** of escalating power. On top of that, every spell carries four things an ability doesn't:
+A spell is built exactly like an [Ability](../abilities/): a chassis of **variables** — Range, Targets, Effect, Duration, and so on — each a **Ladder** of escalating power. On top of that, every spell carries four things an Ability doesn't:
 
 - **Level** — **Lesser**, **Greater**, or **Legendary**.
 - **Tradition** — the kind of magic it is (New Magic, Elder Magic, and others). You can only cast a spell whose **language you can read**.
@@ -22,19 +22,19 @@ When you find a spell, its variables show their full *potential*; what you actua
 
 Three kinds of source, three ways to cast:
 
-- **Scrolls** are single-use. Their components were spent when the scroll was scribed, so casting from one needs none — but the scroll is consumed. The **Use Scroll** ability governs this.
-- **Spellbooks** are reusable. You may cast a spell again and again, but you must supply its **components** each time. The **Read Spellbook** ability governs this.
-- **Rituals** are open to nearly anyone: with the **materials** and the ability to **read the language**, you can perform one — no special training needed. The **Conduct Ritual** ability lets a scholar improve a ritual beyond what a layman could.
+- **Scrolls** are single-use. Their components were spent when the scroll was scribed, so casting from one needs none — but the scroll is consumed. The **Use Scroll** Ability governs this.
+- **Spellbooks** are reusable. You may cast a spell again and again, but you must supply its **components** each time. The **Read Spellbook** Ability governs this.
+- **Rituals** are open to nearly anyone: with the **materials** and the ability to **read the language**, you can perform one — no special training needed. The **Conduct Ritual** Ability lets a scholar improve a ritual beyond what a layman could.
 
-A trained caster's advances decide how much of a found spell they realize — how high up its Ladders they can push it, how often they can cast, and what Level of spell they can manage at all.
+A trained caster's Advances decide how much of a found spell they realize — how high up its Ladders they can push it, how often they can cast, and what Level of spell they can manage at all.
 
 ### Rituals in more detail
 
-A ritual is simply a spell whose Casting Time is a Ritual. Many have a **Casting DC** *(rolled by the Ritual Leader with the **Rituals** skill)* and a **Participant Ladder** — more hands, meeting the ritual's requirements, unlock greater effects. *(A worked ritual, **Locate Person**, will appear here.)*
+A ritual is simply a spell whose Casting Time is a Ritual. Many have a **Casting DC** *(rolled by the Ritual Leader with the **Rituals** Skill)* and a **Participant Ladder** — more hands, meeting the ritual's requirements, unlock greater effects. *(A worked ritual, **Locate Person**, will appear here.)*
 
 ## Wielding magic items
 
-A wand, staff, scroll, spellbook, or Elder artefact is wielded through an **Implement Proficiency** — its own family *(**Wands, Magic Staves, Spellbooks, Scrolls, Orbs, Artefacts**)*, granted and advanced exactly like a weapon group. The difference: an implement **attacks with a mental or nimble attribute** — usually **Intelligence**, though some casters aim with **Dexterity**. Their **Implement Specialization Feats** carry the signature hooks *(a Scroll specialist has a chance not to burn the scroll; a Spellbook specialist adds his Intelligence to a damaging spell's damage)*.
+A wand, staff, scroll, spellbook, or Elder artefact is wielded through an **Implement Proficiency** — its own family *(**Wands, Magic Staves, Spellbooks, Scrolls, Orbs, Artefacts**)*, granted and advanced exactly like a weapon group. The difference: an implement **attacks with a mental or nimble Attribute** — usually **Intelligence**, though some casters aim with **Dexterity**. Their **Implement Specialization Feats** carry the signature hooks *(a Scroll specialist has a chance not to burn the scroll; a Spellbook specialist adds his Intelligence to a damaging spell's damage)*.
 
 **Passive** magic items — a warded cloak, a keen blade — need no training at all. *(See [Proficiencies](../proficiencies/).)*
 
