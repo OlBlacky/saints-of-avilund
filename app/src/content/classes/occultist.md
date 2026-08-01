@@ -5,7 +5,7 @@ summary: Wisdom · Occult · HP 1. Choose the Witch/Warlock, the Grave Robber, o
 order: 50
 ---
 
-<!-- CUE — identity: the supernatural generalist under St. [Death saint TBC]. His class craft (Occult) is a GATEWAY, not a power: he sees the unseen, names which of the six wells he's looking at, and deals with the gentlest of it (the lingering dead) — no attacks, ever. All real force lives out in the deep water, and each Path is the door he walked through to reach one well. Two disreputable, one scholarly-forbidden: Witch/Warlock takes the Black Faith's power without kneeling; Grave Robber follows the dead into their tombs and the Elder work buried there; the Cosmologist looked too far out and something looked back. -->
+<!-- CUE — identity: the supernatural generalist under St. Cuthman (the Coaevus who was a priest of Tarsis, buried the last of the Elders, and is "most forgotten of his order" — a fittingly grey, marginal patron; his tangle with the dead AND the Elders mirrors the Grave Robber). His class craft (Occult) is a GATEWAY, not a power: he sees the unseen, names which of the six wells he's looking at, and deals with the gentlest of it (the lingering dead) — no attacks, ever. All real force lives out in the deep water, and each Path is the door he walked through to reach one well. Two disreputable, one scholarly-forbidden: Witch/Warlock takes the Black Faith's power without kneeling; Grave Robber follows the dead into their tombs and the Elder work buried there; the Cosmologist looked too far out and something looked back. -->
 
 ---
 
