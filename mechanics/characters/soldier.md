@@ -41,7 +41,7 @@ The armoured anchor of the line. Vanguards hold ground, shield their comrades, a
 | **Weapon Proficiencies** | Hammers/Maces, Spears/Lances |
 | **Armour Proficiencies** | Heavy Armour, Heavy Shield |
 
-*Note: Constitution never powers an attack, so a Vanguard's Protection attacks run off **Strength**; Constitution carries their defenses, HP, and saves — "Strength hits, Constitution endures."*
+*Note: Constitution never powers an attack, so a Vanguard's Protection attacks run off **Strength**; Constitution carries their defences, HP, and saves — "Strength hits, Constitution endures."*
 
 ### Commander
 The officer who fights by making everyone around them fight better — calling targets, rallying the line, and leading from the front with sabre and sidearm.
@@ -88,7 +88,7 @@ Your bread-and-butter attack, and the one most shaped by your weapon.
 | Axes | Bleed 1 |
 | Spears/Polearms | +5' reach |
 | Flails/Chains | ignore the target's shield bonus to AC |
-| Staves | +1 to one of your defenses until your next turn |
+| Staves | +1 to one of your defences until your next turn |
 | Bows/Crossbows | may be made as a ranged attack (1×WRI) |
 
 **Power Attack** — *Offensive · the heavy blow*
@@ -98,9 +98,9 @@ Your bread-and-butter attack, and the one most shaped by your weapon.
 - **Feat:** Heavy Blade or Hammer Specialization → +2 damage (Hammer also Push 5')
 
 **Defensive Strike** — *Offensive + Defensive*
-- **Attack:** Strength vs AC · **1[W]**; on a hit, **+1 to one of your defenses** until your next turn
+- **Attack:** Strength vs AC · **1[W]**; on a hit, **+1 to one of your defences** until your next turn
 - **Ladder:** +1 → +2; further: longer duration, and "applies even on a miss" (via Feat)
-- **Feat:** Shield Specialization → +1 additional defense; Staff → shove the attacker / +defense vs them
+- **Feat:** Shield Specialization → +1 additional defence; Staff → shove the attacker / +defence vs them
 
 **Parry** — *Defensive*
 - **Action:** Move → Minor → Interrupt
@@ -149,14 +149,14 @@ Your bread-and-butter attack, and the one most shaped by your weapon.
 
 **Measure the Foe** — *Utility (non-combat)*
 - **Action:** Minor (in combat) / instant (out of combat) · Range 30'
-- **Effect:** learn a creature's HP tier and its highest Offense or softest Defense.
+- **Effect:** learn a creature's HP tier and its highest Offence or softest Defence.
 - **Ladder:** more targets · deeper information · greater range.
 
 ---
 
 ### Protection *(Vanguard)*
 
-*Protection attacks run off **Strength**; Constitution carries the Vanguard's defenses and HP.*
+*Protection attacks run off **Strength**; Constitution carries the Vanguard's defences and HP.*
 
 **Shield Bash** — *Offensive · control*
 - **Attack:** Strength vs AC · light/shield damage + **Daze** on hit
@@ -273,7 +273,7 @@ The no-damage twin of Commander's Strike: no attack roll, just call the target �
 
 **Rally** — *Defensive*
 - **Action:** Standard → Move → Minor · **Frequency:** Daily → Encounter → At-Will
-- **Effect ladder** (allies gain +1 to all defenses until your next turn; range widens):
+- **Effect ladder** (allies gain +1 to all defences until your next turn; range widens):
 
 | Rank | Effect |
 |---|---|
@@ -303,7 +303,7 @@ The offensive mirror of Rally.
 
 ### Marksmanship *(Marksman)*
 
-*All shots use **Dexterity** Offense on the Weapon Range Increment (WRI) track, with −0 / −2 / −4 penalties by band.*
+*All shots use **Dexterity** Offence on the Weapon Range Increment (WRI) track, with −0 / −2 / −4 penalties by band.*
 
 **Marksman's Shot** — *Offensive · the canvas*
 The ranged counterpart to Martial Strike.
@@ -327,7 +327,7 @@ The ranged counterpart to Martial Strike.
 
 **Skirmishing Shot** — *Offensive + Defensive*
 - **Attack:** Dexterity vs AC · **W** · **Frequency:** Daily → Encounter
-- **Effect:** on a hit, shift 5' and gain +1 to a defense until your next turn (scales: shift 5'→10', defense +1→+2)
+- **Effect:** on a hit, shift 5' and gain +1 to a defence until your next turn (scales: shift 5'→10', defence +1→+2)
 
 **Covering Fire** — *Defensive*
 - **Action:** Interrupt only · **Frequency:** Daily → Encounter
@@ -358,12 +358,12 @@ The ranged counterpart to Martial Strike.
 
 | Rank | Effect |
 |---|---|
-| 1 | −1 to a chosen defense |
+| 1 | −1 to a chosen defence |
 | 2 | −2 |
 | 3 | −2 **+ Vulnerable 1** |
 | 4 | −2 **+ Vulnerable 5** |
 
-*(Vulnerable N = the target takes N extra damage vs a chosen damage type or a specific defense.)*
+*(Vulnerable N = the target takes N extra damage vs a chosen damage type or a specific defence.)*
 
 **Marksman's Eye** — *Utility (non-combat)*
 - **Frequency:** Daily → Encounter

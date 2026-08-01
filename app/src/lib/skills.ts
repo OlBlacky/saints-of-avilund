@@ -5,7 +5,7 @@
 // enables. `attrs` lists the attribute(s) you may roll it with; `field` marks a
 // speciality skill (taken in a named field). `note` is an optional extra line
 // (a prerequisite, a cross-reference). DRAFT CONTENT — to be revised by the
-// designer; only Heal carries finalised, canon rules so far.
+// designer; only Heal carries finalized, canon rules so far.
 
 export interface SkillAction {
   name: string;   // the thing you do
@@ -28,8 +28,8 @@ export const SKILLS: Skill[] = [
     attrs: 'Dex',
     how: 'Balance, tumble, and keep your feet where the footing is treacherous or enemies bar the way.',
     actions: [
-      { name: 'Tumble', rule: 'Move through a space an enemy threatens without granting an opportunity strike: Acrobatics vs the foe’s Dexterity Offense.' },
-      { name: 'Slip Past', rule: 'Move through an enemy’s own square — under the arm, between the legs, over the back: Acrobatics vs the foe’s Dexterity Offense. You may not end your move there.' },
+      { name: 'Tumble', rule: 'Move through a space an enemy threatens without granting an Opportunity Attack: Acrobatics vs the foe’s Dexterity Offence.' },
+      { name: 'Slip Past', rule: 'Move through an enemy’s own square — under the arm, between the legs, over the back: Acrobatics vs the foe’s Dexterity Offence. You may not end your move there.' },
       { name: 'Balance', rule: 'Cross a narrow or unstable surface: Acrobatics vs a DC set by the width and conditions; a bad failure means a fall.' },
       { name: 'Break a Fall', rule: 'On a successful check, ignore the first 10′ when reckoning falling damage.' },
     ],
@@ -155,7 +155,7 @@ export const SKILLS: Skill[] = [
     how: 'Slip bonds, grapples, and tight spaces.',
     actions: [
       { name: 'Escape Bonds', rule: 'Wriggle free of ropes or manacles: Escape Artist vs the binder’s Use Rope (or the restraint’s DC).' },
-      { name: 'Break a Grapple', rule: 'Slip a hold: Escape Artist vs the grappler’s relevant Offense.' },
+      { name: 'Break a Grapple', rule: 'Slip a hold: Escape Artist vs the grappler’s relevant Offence.' },
       { name: 'Squeeze Through', rule: 'Pass a gap almost too tight: Escape Artist vs a GM DC.' },
     ],
   },
@@ -238,7 +238,7 @@ export const SKILLS: Skill[] = [
     how: 'Plants, animals, weather, and herb-craft.',
     actions: [
       { name: 'Recall Nature Lore', rule: 'A Knowledge check on wildlife, plants, and natural phenomena.' },
-      { name: 'Identify a Plant or Herb', rule: 'Recognise a herb, fungus, or natural hazard: Nature vs a GM DC.' },
+      { name: 'Identify a Plant or Herb', rule: 'Recognize a herb, fungus, or natural hazard: Nature vs a GM DC.' },
       { name: 'Predict Weather', rule: 'Read the coming weather: a Nature check.' },
     ],
   },
@@ -285,7 +285,7 @@ export const SKILLS: Skill[] = [
     how: 'Theology, rites, and lore of a named faith — Religion (Saintly Faith), Religion (Black Faith), and others. Each faith is taken separately.',
     actions: [
       { name: 'Recall Religious Lore', rule: 'A Knowledge check on the named faith’s doctrine, saints, and rites.' },
-      { name: 'Identify the Sacred or Profane', rule: 'Recognise a rite, relic, or heresy of the faith: Religion vs a GM DC.' },
+      { name: 'Identify the Sacred or Profane', rule: 'Recognize a rite, relic, or heresy of the faith: Religion vs a GM DC.' },
     ],
   },
   {
@@ -361,7 +361,7 @@ export const SKILLS: Skill[] = [
     how: 'Planar cosmology and the entities beyond — the Abyss and the realms that touch the world.',
     actions: [
       { name: 'Recall Planar Lore', rule: 'A Knowledge check on the planes and the beings (demons, spirits) bound to them vs a GM DC.' },
-      { name: 'Identify the Extraplanar', rule: 'Recognise a being’s plane and nature: The Planes vs a DC.' },
+      { name: 'Identify the Extraplanar', rule: 'Recognize a being’s plane and nature: The Planes vs a DC.' },
     ],
   },
   {

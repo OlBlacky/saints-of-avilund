@@ -15,10 +15,10 @@ On your turn you have, to spend in any order:
 
 ## Making an attack
 
-An attack rolls **d20 + your Offense vs the target's Defense** — meet or beat it to hit. There is **no advantage or disadvantage**; every modifier is a flat number.
+An attack rolls **d20 + your Offence vs the target's Defence** — meet or beat it to hit. There is **no advantage or disadvantage**; every modifier is a flat number.
 
-- Each attribute has an **Offense** (your bonus to hit with attacks keyed off it) and two **Defenses** — an **Unarmoured** and an **Armoured** value. Armour raises the Armoured ones.
-- Most physical attacks target **AC** *(your Armoured Constitution Defense)*; magic that bypasses armour strikes an **Unarmoured** defense instead.
+- Each attribute has an **Offence** (your bonus to hit with attacks keyed off it) and two **Defences** — an **Unarmoured** and an **Armoured** value. Armour raises the Armoured ones.
+- Most physical attacks target **AC** *(your Armoured Constitution Defence)*; magic that bypasses armour strikes an **Unarmoured** defence instead.
 - Ranged attacks lose nothing in the first range band, **−2** in the second, **−4** in the third.
 
 ## Off Guard and flanking

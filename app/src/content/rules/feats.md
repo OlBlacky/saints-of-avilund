@@ -1,6 +1,6 @@
 ---
 title: Feats
-summary: The specialist pillar — conditional perks that reshape your abilities, gated by your Class and Path.
+summary: The specialist pillar — conditional edges that reshape your Abilities, gated by your Class and Path.
 ---
 
 > *A first draft — the principles are settled; the full catalogue is still being written.*
@@ -54,7 +54,7 @@ A family of **specialist** Feats (a **Minor** each), one per Malediction of the 
 | **Specialization — Ill Luck** | the cursed target may not use rerolls |
 | **Specialization — Palsy** | a Palsied target also cannot take Reactions or Opportunity Attacks |
 | **Specialization — Stupor** | a Stupored target takes −2 to its save against the curse |
-| **Specialization — Enfeeblement** | the target cannot gain Temp Hit Points while cursed |
+| **Specialization — Enfeeblement** | the target cannot gain Temp HP while cursed |
 | **Specialization — Dread** | allies within 10′ of the cursed target also take −1 to their attacks (Fear) |
 
 These are open to the Witch **and to any other** who learns the Black Tongue and the Black Faith — the curse answers the tongue that shapes it, not the class.

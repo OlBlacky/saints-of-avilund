@@ -1,6 +1,6 @@
 ---
-title: Attributes, Offenses & Defenses
-summary: The six attributes, the Offense and two Defenses each carries, and how Class Attributes climb higher than the rest.
+title: Attributes, Offences & Defences
+summary: The six attributes, the Offence and two Defences each carries, and how Class Attributes climb higher than the rest.
 ---
 
 Every character is built on **six attributes**:
@@ -13,20 +13,20 @@ Every character is built on **six attributes**:
 
 An attribute is written as a **modifier** *(+2, +3…)* — the number you add to rolls — not a 3–18 score.
 
-## Offense and Defense
+## Offence and Defence
 
 Each attribute does double duty:
 
-- Its **Offense** is your bonus **to hit** with attacks keyed off it *(a Strength weapon, an Intelligence wand)*.
-- It carries **two Defenses** — an **Unarmoured** and an **Armoured** value:
-  - **Unarmoured** = **10 + the attribute + any defense ranks** you've bought.
-  - **Armoured** = the Unarmoured value **plus your armour's bonus** *(which armour pieces protect which defenses is part of the gear)*.
+- Its **Offence** is your bonus **to hit** with attacks keyed off it *(a Strength weapon, an Intelligence wand)*.
+- It carries **two Defences** — an **Unarmoured** and an **Armoured** value:
+  - **Unarmoured** = **10 + the attribute + any defence ranks** you've bought.
+  - **Armoured** = the Unarmoured value **plus your armour's bonus** *(which armour pieces protect which defences is part of the gear)*.
 
-Your **AC** — the number most physical blows must beat — is simply your **Armoured Constitution Defense**. Magic that ignores armour comes instead at an **Unarmoured** defense, so heavy plate is no help against a curse.
+Your **AC** — the number most physical blows must beat — is simply your **Armoured Constitution Defence**. Magic that ignores armour comes instead at an **Unarmoured** defence, so heavy plate is no help against a curse.
 
 ## Difficulty Class
 
-A few abilities test themselves against a creature *as a whole* rather than at one particular Defense — reading it, outwitting it, or overcoming its general resilience. For these the target number is the creature's **Difficulty Class (DC)**:
+A few abilities test themselves against a creature *as a whole* rather than at one particular Defence — reading it, outwitting it, or overcoming its general resilience. For these the target number is the creature's **Difficulty Class (DC)**:
 
 - For a **character**, DC = **10 + level**.
 - A **monster** states its own **DC** in its listing.

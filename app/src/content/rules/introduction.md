@@ -11,7 +11,7 @@ When an action could fail, you roll a **twenty-sided die (d20)**, add the releva
 
 **d20 + attribute + other bonuses ≥ the target.**
 
-Attacks roll against a **Defense**; skill checks roll against a difficulty the Game Master sets. There is no advantage or disadvantage — every modifier is a flat number, added or subtracted. That keeps the maths quick and the table moving.
+Attacks roll against a **Defence**; skill checks roll against a difficulty the Game Master sets. There is no advantage or disadvantage — every modifier is a flat number, added or subtracted. That keeps the maths quick and the table moving.
 
 Characters grow by spending **Advances**, which come in two sizes — **Major** and **Minor**. You earn one of each at every milestone. Where those go is the subject of [Character Creation](../character-creation/); how each is *worth* is the subject of the rest of this section.
 
@@ -49,7 +49,7 @@ The same shape governs the harm an ability inflicts. **Ongoing Damage** — Blee
 | 1 | 1 damage per round | — |
 | 2 | 2 per round | Minor |
 | 3 | 3 per round | Minor |
-| 4 | 5 per round | Major |
+| 4 | 3 per round, and the target saves at −2 | Major |
 
 An attack that sets a target Bleeding starts at Rank 1; you raise the bite of it by climbing the Ladder, exactly as you raised Parry.
 

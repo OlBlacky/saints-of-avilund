@@ -117,13 +117,13 @@ Ranged and thrown weapons list three increments. Shooting further costs accuracy
 <details id="armour">
 <summary>Armour &amp; Shields <span class="fold__meta">9 armours · 4 shields</span></summary>
 
-Armour raises your **Armoured Defenses** and grants **Damage Reduction (DR)**. There are four armour proficiencies — **Unarmoured, Light, Medium,** and **Heavy** — plus two shield proficiencies, **Light Shield** and **Heavy Shield**. (Unarmoured is a fighting *style* you take Feats in; there is nothing to buy.)
+Armour raises your **Armoured Defences** and grants **Damage Reduction (DR)**. There are five armour proficiencies — **Light, Medium,** and **Heavy** armour, plus **Light Shield** and **Heavy Shield**. (Unarmoured is a fighting *style* you take Feats in; there is nothing to buy.)
 
-Your **AC** is your Armoured Constitution Defense — the number most physical attacks must beat. Armour's bonus is flat **by tier**: Light **+1**, Medium **+2**, Heavy **+3** to your Armoured Defenses. *Within* a tier, the heavier pieces buy more **DR** (and a small perk on the third) at the price of weight, coin, and drawback.
+Your **AC** is your Armoured Constitution Defence — the number most physical attacks must beat. Armour's bonus is flat **by tier**: Light **+1**, Medium **+2**, Heavy **+3** to your Armoured Defences. *Within* a tier, the heavier pieces buy more **DR** (and a small Trait on the third) at the price of weight, coin, and drawback.
 
 ### Armour
 
-| Armour | Tier | AC | DR | Perk | Speed | Stealth | Str | Cost | Weight |
+| Armour | Tier | AC | DR | Trait | Speed | Stealth | Str | Cost | Weight |
 |---|---|---|---|---|---|---|---|---|---|
 | Leather | Light | +1 | 0 | — | — | — | — | 10 sp | 15 lb |
 | Studded Leather | Light | +1 | 1 | — | — | — | — | 25 sp | 20 lb |

@@ -55,13 +55,33 @@ const ongoingDamage = (type: string): Variable => ({
   ],
 });
 const ongoingDuration = (attr: string): Variable => ({
-  base: `${attr} rounds, and save ends`,
+  base: `${attr} rounds, and Save ends`,
   advances: [
-    { value: `${attr} + 1 rounds, and save ends`, cost: 'm' },
-    { value: `${attr} + 2 rounds, and save ends`, cost: 'm' },
+    { value: `${attr} + 1 rounds, and Save ends`, cost: 'm' },
+    { value: `${attr} + 2 rounds, and Save ends`, cost: 'm' },
     { value: 'Save ends (no round limit)', cost: 'M' },
   ],
 });
+
+// The Standard Range Ladder. Principle: a Major DOUBLES the reach (60' → 120'),
+// while a Minor adds only a fraction (30' → 45' → 60', +15' a step). The big
+// jump is what a Major buys. Shared by many Abilities; inlined replicas (e.g.
+// the burst spells' range column) follow the same 30/45/60/120 shape. When a
+// burst radius rides the range column, EVERY step prices as a Major — the
+// area rule below outranks the range pricing.
+const STD_RANGE: Variable = { base: "30'", advances: [{ value: "45'", cost: 'm' }, { value: "60'", cost: 'm' }, { value: "120'", cost: 'M' }] };
+
+// The Standard Area Ladder — the radius of a burst. EVERY step is a Major:
+// growing the radius sweeps in far more targets, so each increase is worth a
+// Major on its own. Sits in the `targets` field (who the effect catches).
+const STD_AREA: Variable = {
+  base: "All enemies in a 5' radius",
+  advances: [
+    { value: "10' radius", cost: 'M' },
+    { value: "15' radius", cost: 'M' },
+    { value: "20' radius", cost: 'M' },
+  ],
+};
 
 // Specialization-hook helpers. Hooks are shown in a labelled card section
 // (Weapon / Armour / Implement Specialization Hooks); the note states the gate.
@@ -75,7 +95,7 @@ const MARTIAL_HOOKS: string[] = [
   'Axes → Bleed 1',
   "Spears / Polearms → +5' reach",
   "Flails / Chains → ignore the target's shield bonus to AC",
-  'Staves → +1 to one of your defenses until your next turn',
+  'Staves → +1 to one of your defences until your next turn',
   'Bows / Crossbows → may be made as a ranged attack (1×WRI)',
 ];
 
@@ -107,6 +127,19 @@ const GA_NOTE = (item: string): string =>
   `purchase Generic Advances per the Ladder below (each Advance raises one variable a Rank), then apply them to any variable the ${item} allows.`;
 const GA_SPECIALIZATION = (item: string, feat: string): string =>
   `Additionally, with the ${feat} Feat you gain a second Generic Advances Ladder — apply it to a second variable the ${item} allows.`;
+
+// Shared by Wield Orb and Wield Artefact — the two are near-identical. An
+// implement holds power(s) with their own ladders; you get Rank 1 of a power,
+// and deepen ONE of its ladders by improving this Ability. (The Generic Advances
+// Ladder on the card improves ADDITIONAL ladders.) `impl` is 'Orb' or 'Artefact'.
+const WIELD_EFFECTS = (impl: string): Variable => ({
+  base: `You understand the nature of ${impl}s and can identify what power(s) they contain, and you can use those powers.`,
+  advances: [
+    { value: 'You can improve one of a power’s ladders (Range, Damage, Effect, …) by 1 Rank', cost: 'm' },
+    { value: 'Improve one ladder by 2 Ranks', cost: 'm' },
+    { value: 'Improve one ladder by 3 Ranks', cost: 'M' },
+  ],
+});
 
 // The crafting track on Read Scrolls / Read Spellbooks: Scribe copies from a
 // source you hold; Create makes one from scratch. Four Major, level-gated steps.
@@ -158,12 +191,12 @@ const ARMS: Ability[] = [
       targets: { base: 'One' },
       attack: { base: 'Strength vs AC' },
       damage: { base: '1[W]' },
-      effects: { base: 'On a hit, +1 to one of your defenses until your next turn.', advances: [{ value: '+2 to one of your defenses', cost: 'm' }] },
+      effects: { base: 'On a hit, +1 to one of your defences until your next turn.', advances: [{ value: '+2 to one of your defences', cost: 'm' }] },
       duration: { base: 'Until your next turn' },
     },
     options: [
-      { label: 'Armour Specialization Hooks', note: ARMOUR_HOOK_NOTE, detail: ['Shields → +1 additional defense'] },
-      { label: 'Weapon Specialization Hooks', note: WEAPON_HOOK_NOTE, detail: ['Staves → shove the attacker, or +1 defense against them'] },
+      { label: 'Armour Specialization Hooks', note: ARMOUR_HOOK_NOTE, detail: ['Shields → +1 additional defence'] },
+      { label: 'Weapon Specialization Hooks', note: WEAPON_HOOK_NOTE, detail: ['Staves → shove the attacker, or +1 defence against them'] },
     ],
   },
   {
@@ -239,8 +272,8 @@ const ARMS: Ability[] = [
       range: { base: '30\'', advances: [{ value: '60\'', cost: 'm' }] },
       targets: { base: 'One', advances: [{ value: 'Two', cost: 'm' }] },
       effects: {
-        base: 'Learn the creature’s HP tier and its highest Offense or softest Defense.',
-        advances: [{ value: 'Also learn all of its defenses', cost: 'm' }],
+        base: 'Learn the creature’s HP tier and its highest Offence or softest Defence.',
+        advances: [{ value: 'Also learn all of its defences', cost: 'm' }],
       },
     },
   },
@@ -323,7 +356,7 @@ const PROTECTION: Ability[] = [
     options: [{ label: 'Armour Specialization Hooks', note: ARMOUR_HOOK_NOTE, detail: ['Light / Heavy Shields → apply your Shield’s DR to the protected'] }],
   },
   {
-    name: 'Intercept', category: 'Protection', role: 'Defensive · maneuver', mode: 'Effect',
+    name: 'Intercept', category: 'Protection', role: 'Defensive · manoeuvre', mode: 'Effect',
     vars: {
       frequency: FREQ_ENC,
       action: { base: 'Reaction — when an adjacent ally is hit' },
@@ -332,7 +365,7 @@ const PROTECTION: Ability[] = [
         base: 'Trade places with the endangered ally, then take the damage in their stead.',
         advances: [
           { value: 'You take the damage, reduced by your Armour DR.', cost: 'm' },
-          { value: 'Instead, the opponent must make the attack against you, resolved normally — they may miss your defenses entirely.', cost: 'm' },
+          { value: 'Instead, the opponent must make the attack against you, resolved normally — they may miss your defences entirely.', cost: 'm' },
           { value: 'As above, and you may intercept for an ally up to 10\' (2 squares) away.', cost: 'M' },
         ],
       },
@@ -347,15 +380,15 @@ const PROTECTION: Ability[] = [
       action: { base: 'Move', advances: [{ value: 'Minor', cost: 'M' }] },
       range: { base: 'Self' },
       effects: {
-        base: 'Gain 2 temporary Hit Points.',
+        base: 'Gain 2 Temp HP.',
         advances: [
-          { value: '3 temporary Hit Points', cost: 'm' },
-          { value: '4 temporary Hit Points', cost: 'm' },
-          { value: '5 temporary Hit Points and +1 DR for 1 round', cost: 'M' },
+          { value: '3 Temp HP', cost: 'm' },
+          { value: '4 Temp HP', cost: 'm' },
+          { value: '5 Temp HP and +1 DR for 1 round', cost: 'M' },
         ],
       },
     },
-    options: [{ label: 'Armour Specialization Hooks', note: ARMOUR_HOOK_NOTE, detail: ['Medium Armour → +2 temp HP', 'Heavy Armour → +3 temp HP'] }],
+    options: [{ label: 'Armour Specialization Hooks', note: ARMOUR_HOOK_NOTE, detail: ['Medium Armour → +2 Temp HP', 'Heavy Armour → +3 Temp HP'] }],
   },
   {
     name: 'Stand Watch', category: 'Protection', role: 'Utility', mode: 'Effect',
@@ -459,11 +492,11 @@ const LEADERSHIP: Ability[] = [
       action: { base: 'Standard', advances: [{ value: 'Move', cost: 'M' }, { value: 'Minor', cost: 'M' }] },
       range: { base: 'Allies within 10\' (widens)' },
       effects: {
-        base: 'Allies within 10\' gain +1 to all defenses until your next turn.',
+        base: 'Allies within 10\' gain +1 to all defences until your next turn.',
         advances: [
           { value: 'within 20\'', cost: 'm' },
           { value: 'within 30\'', cost: 'm' },
-          { value: 'within 30\', and gain 2 temporary Hit Points', cost: 'M', note: 'L5' },
+          { value: 'within 30\', and gain 2 Temp HP', cost: 'M', note: 'L5' },
         ],
       },
       duration: { base: 'Until your next turn' },
@@ -505,7 +538,7 @@ const LEADERSHIP: Ability[] = [
         advances: [
           { value: 'shake a condition, with +1', cost: 'm' },
           { value: 'shake a condition, with +2', cost: 'm' },
-          { value: 'shake a condition with +2, and gain 2 temporary Hit Points', cost: 'M' },
+          { value: 'shake a condition with +2, and gain 2 Temp HP', cost: 'M' },
         ],
       },
       duration: { base: 'Instant' },
@@ -547,7 +580,7 @@ const MARKSMANSHIP: Ability[] = [
           { value: 'Immobilized', cost: 'M' },
         ],
       },
-      duration: { base: 'Save ends (Con Save vs the attacker’s Dex Offense)' },
+      duration: { base: 'Save ends (Con Save vs the attacker’s Dex Offence)' },
     },
   },
   {
@@ -560,10 +593,10 @@ const MARKSMANSHIP: Ability[] = [
       attack: { base: 'Dexterity vs AC' },
       damage: { base: 'W' },
       effects: {
-        base: 'On a hit, shift 5\' and gain +1 to a defense until your next turn.',
+        base: 'On a hit, shift 5\' and gain +1 to a defence until your next turn.',
         advances: [
-          { value: 'shift 10\'; +1 to a defense', cost: 'm' },
-          { value: 'shift 10\'; +2 to a defense', cost: 'm' },
+          { value: 'shift 10\'; +1 to a defence', cost: 'm' },
+          { value: 'shift 10\'; +2 to a defence', cost: 'm' },
         ],
       },
       duration: { base: 'Until your next turn' },
@@ -593,9 +626,9 @@ const MARKSMANSHIP: Ability[] = [
       effects: {
         base: 'Shift 5\'.',
         advances: [
-          { value: 'Shift 5\' and +1 to a chosen defense until the end of your turn', cost: 'm' },
-          { value: 'Shift 5\' and +2 to a chosen defense until the end of your turn', cost: 'm' },
-          { value: 'Shift 10\' and +2 to all defenses until the end of your turn', cost: 'M' },
+          { value: 'Shift 5\' and +1 to a chosen defence until the end of your turn', cost: 'm' },
+          { value: 'Shift 5\' and +2 to a chosen defence until the end of your turn', cost: 'm' },
+          { value: 'Shift 10\' and +2 to all defences until the end of your turn', cost: 'M' },
         ],
       },
       duration: { base: 'Instant' },
@@ -618,14 +651,14 @@ const MARKSMANSHIP: Ability[] = [
       },
       damage: { base: 'W' },
       effects: {
-        base: '−1 to a chosen defense.',
+        base: '−1 to a chosen defence.',
         advances: [
           { value: '−2', cost: 'm' },
           { value: '−2 and Vulnerable 1', cost: 'm' },
           { value: '−2 and Vulnerable 3', cost: 'M' },
         ],
       },
-      duration: { base: 'Save ends (Con Save vs the attacker’s Dex Offense)' },
+      duration: { base: 'Save ends (Con Save vs the attacker’s Dex Offence)' },
     },
   },
   {
@@ -663,14 +696,14 @@ const MERCY: Ability[] = [
         advances: [
           { value: 'Heal Wis + 1', cost: 'm' },
           { value: 'Heal Wis + 2', cost: 'm' },
-          { value: 'Heal Wis + 1d6, and the target may make one saving throw of their choice against any condition affecting them', cost: 'M' },
+          { value: 'Heal Wis + 1d6, and the target may make one Save of their choice against any condition affecting them', cost: 'M' },
         ],
       },
       duration: { base: 'Instant' },
     },
   },
   {
-    name: 'Stabilise', category: 'Mercy', role: 'Healing', mode: 'Effect',
+    name: 'Stabilize', category: 'Mercy', role: 'Healing', mode: 'Effect',
     vars: {
       frequency: FREQ_FRIAR,
       action: ACTION_SMM,
@@ -702,9 +735,9 @@ const MERCY: Ability[] = [
         ],
       },
       effects: {
-        base: '+1 to all saving throws.',
+        base: '+1 to all Saves.',
         advances: [
-          { value: '+2 to all saving throws', cost: 'm' },
+          { value: '+2 to all Saves', cost: 'm' },
           { value: '+2, and may attempt a save now', cost: 'm' },
           { value: '+2, may attempt a save now, and if it succeeds, immunity to that effect for the encounter', cost: 'M' },
         ],
@@ -824,7 +857,7 @@ const FORBEARANCE: Ability[] = [
     vars: {
       frequency: { base: 'Passive (always on)' },
       effects: {
-        base: '+1 to all saving throws. The Vow: you may never imbibe alcohol, tobacco, or similar substances, nor drink potions or willingly receive any healing or magical benefit that is not from a Saintly source.',
+        base: '+1 to all Saves. The Vow: you may never imbibe alcohol, tobacco, or similar substances, nor drink potions or willingly receive any healing or magical benefit that is not from a Saintly source.',
         advances: [{ value: '+2', cost: 'M', note: 'L5' }],
       },
     },
@@ -978,21 +1011,14 @@ const SPIRITUAL: Ability[] = [
     vars: {
       frequency: FREQ_ENC,
       action: ACTION_SMM,
-      range: { base: '30\'', advances: [{ value: '60\'', cost: 'm' }, { value: '90\'', cost: 'm' }] },
-      targets: {
-        base: 'Opponents in a 10\' burst',
-        advances: [
-          { value: '15\' burst', cost: 'm' },
-          { value: '20\' burst', cost: 'm' },
-          { value: '30\' burst', cost: 'M' },
-        ],
-      },
+      range: STD_RANGE,
+      targets: STD_AREA,
       effects: {
         base: 'All opponents lose all Temp HP.',
         advances: [
           { value: '+ lose 1 beneficial effect (your choice)', cost: 'm' },
           { value: '+ lose all beneficial effects', cost: 'm' },
-          { value: '+ a debuff preventing new buffs or Temp HP, save ends', cost: 'M' },
+          { value: '+ a debuff preventing new buffs or Temp HP, Save ends', cost: 'M' },
         ],
       },
       duration: { base: 'Instant' },
@@ -1003,22 +1029,8 @@ const SPIRITUAL: Ability[] = [
     vars: {
       frequency: FREQ_ENC,
       action: ACTION_SMM,
-      range: {
-        base: 'Close burst 10\', centred on you',
-        advances: [
-          { value: '15\' burst', cost: 'm' },
-          { value: '20\' burst', cost: 'm' },
-          { value: '30\' burst', cost: 'M' },
-        ],
-      },
-      targets: {
-        base: '1 enemy in the burst',
-        advances: [
-          { value: '2 enemies', cost: 'm' },
-          { value: '3 enemies', cost: 'm' },
-          { value: 'all enemies in the burst', cost: 'M' },
-        ],
-      },
+      range: { base: 'Close burst, centred on you' },
+      targets: STD_AREA,
       attack: { base: 'Charisma vs Unarmoured Wisdom (one roll vs all)' },
       effects: {
         base: '−1 to attack rolls (Fear).',
@@ -1146,7 +1158,7 @@ const CONDUCT_RITUAL: Ability = {
   },
   options: [
     { label: 'Generic Advancement Ladder', note: GA_NOTE('ritual'), ladders: [GENERIC_ADV] },
-    { label: 'Ritual Specialization Hooks', note: GA_SPECIALIZATION('ritual', 'Ritual Specialist') + ' A Ritual Specialist also gains +1 to any d20 roll for the ritual.' },
+    { label: 'Ritual Specialization Hooks', note: GA_SPECIALIZATION('ritual', 'Ritual Specialization') + ' A Ritual Specialist also gains +1 to any d20 roll for the ritual.' },
   ],
   extraVars: [
     { name: 'Participant Ladder', base: '—', advances: [{ value: 'improved one degree (more effect from fewer participants)', cost: 'M' }] },
@@ -1181,7 +1193,7 @@ const LETTERS: Ability[] = [
       damage: { base: '1[W] (fixed)' },
       duration: { base: 'Instant' },
     },
-    options: [{ label: 'Weapon Specialization Hooks', note: WEAPON_HOOK_NOTE, detail: ['Light Blades → +1 to hit', 'Staves → +1 to one of your defenses until your next turn'] }],
+    options: [{ label: 'Weapon Specialization Hooks', note: WEAPON_HOOK_NOTE, detail: ['Light Blades → +1 to hit', 'Staves → +1 to one of your defences until your next turn'] }],
   },
   {
     name: 'Evade', category: 'Letters', role: 'Defensive · mobility', mode: 'Attack',
@@ -1387,23 +1399,6 @@ const MEDICINE: Ability[] = [
 // carries a Feat Hook, for Elder magic comes only in studied fragments.
 // His own ladders — Sensory, Flat Debuff, Control, and Psychic damage —
 // are reserved away from the Arcanist.
-// The Standard Range Ladder. Principle: a Major DOUBLES the reach (60' → 120'),
-// while a Minor adds only a fraction (30' → 45' → 60', +15' a step). The big
-// jump is what a Major buys. Shared by many Abilities; inlined replicas (e.g.
-// the burst spells' range column) follow the same 30/45/60/120 shape.
-const STD_RANGE: Variable = { base: "30'", advances: [{ value: "45'", cost: 'm' }, { value: "60'", cost: 'm' }, { value: "120'", cost: 'M' }] };
-
-// The Standard Area Ladder — the radius of a burst. EVERY step is a Major:
-// growing the radius sweeps in far more targets, so each increase is worth a
-// Major on its own. Sits in the `targets` field (who the effect catches).
-const STD_AREA: Variable = {
-  base: "All enemies in a 5' radius",
-  advances: [
-    { value: "10' radius", cost: 'M' },
-    { value: "15' radius", cost: 'M' },
-    { value: "20' radius", cost: 'M' },
-  ],
-};
 const FREQ_2ENC: Variable = { base: 'Daily', advances: [{ value: 'Encounter', cost: 'M' }, { value: 'Twice per encounter', cost: 'M' }] };
 
 // Wield Artefact — the artefact engine. Shared verbatim by Elder Magic (the
@@ -1412,20 +1407,13 @@ const FREQ_2ENC: Variable = { base: 'Daily', advances: [{ value: 'Encounter', co
 const WIELD_ARTEFACT: Ability = {
   name: 'Wield Artefact', category: 'Elder Magic', role: 'Utility · artefact engine', mode: 'Effect',
   vars: {
-    frequency: { base: 'Daily (Overdraw)', advances: [{ value: 'Encounter', cost: 'M' }, { value: 'Twice per encounter', cost: 'M' }] },
+    frequency: { base: 'Daily', advances: [{ value: 'Encounter', cost: 'M' }, { value: 'Twice per encounter', cost: 'M' }] },
     action: { base: "The artefact's own activation" },
-    effects: {
-      base: "Sense and handle an artefact; wield common ones at their base values, drawing on the artefact's own ladders. (Overdraw spends the Frequency above for extra activations beyond its charge limit.)",
-      advances: [
-        { value: "Attune to draw on an artefact's full ladders reliably", cost: 'm' },
-        { value: 'Attune to powerful artefacts', cost: 'm' },
-        { value: 'Attune to the powerful or unstable relics others cannot safely wield', cost: 'M' },
-      ],
-    },
+    effects: WIELD_EFFECTS('Artefact'),
   },
   options: [
     { label: 'Generic Advancement Ladder', note: GA_NOTE('artefact'), ladders: [GENERIC_ADV] },
-    { label: 'Implement Specialization Hooks', note: GA_SPECIALIZATION('artefact', 'Artefact Specialization'), detail: ['Feat Hook (a studied Elder fragment) → a bonus when wielding artefacts of that tradition — e.g. +1 to its boosts, or a safe Overdraw'] },
+    { label: 'Implement Specialization Hooks', note: GA_SPECIALIZATION('artefact', 'Artefact Specialization'), detail: ['Feat Hook (a studied Elder fragment) → a bonus when wielding artefacts of that tradition — e.g. +1 to its boosts'] },
   ],
 };
 
@@ -1442,7 +1430,7 @@ const ELDER_MAGIC: Ability[] = [
       damage: { base: 'Cha (Psychic)', advances: [{ value: 'Cha + 1', cost: 'm' }, { value: 'Cha + 1d6', cost: 'm' }, { value: 'Cha + 2d6', cost: 'M', note: 'L5' }] },
       duration: { base: 'Instant' },
     },
-    options: [{ label: 'Specialization Hooks', detail: ['Specialization — Psychic → automatic +1 to hit and a critical hit on 19–20; unlocks a purchasable Fear ladder (−1 to attack → can’t move closer → can’t attack you → flees; save ends)'] }],
+    options: [{ label: 'Specialization Hooks', detail: ['Specialization — Psychic → automatic +1 to hit and a critical hit on 19–20; unlocks a purchasable Fear ladder (−1 to attack → can’t move closer → can’t attack you → flees; Save ends)'] }],
   },
   {
     name: 'Memory of Celestia', category: 'Elder Magic', role: 'Control · debuff', mode: 'Attack',
@@ -1472,7 +1460,7 @@ const ELDER_MAGIC: Ability[] = [
     vars: {
       frequency: FREQ_ENC,
       action: { base: 'Full Round', advances: [{ value: 'Standard', cost: 'M' }] },
-      range: { base: "30' (5' burst)", advances: [{ value: "45' (10' burst)", cost: 'm' }, { value: "60' (15' burst)", cost: 'm' }, { value: "120' (20' burst)", cost: 'M' }] },
+      range: { base: "30' (5' burst)", advances: [{ value: "45' (10' burst)", cost: 'M' }, { value: "60' (15' burst)", cost: 'M' }, { value: "120' (20' burst)", cost: 'M' }] },
       targets: { base: 'One enemy in the burst', advances: [{ value: 'Cha enemies', cost: 'm' }, { value: 'Cha + 1 enemies', cost: 'm' }, { value: 'all enemies in the burst', cost: 'M' }] },
       attack: { base: 'Charisma vs Unarmoured Will' },
       effects: {
@@ -1480,13 +1468,13 @@ const ELDER_MAGIC: Ability[] = [
         advances: [
           { value: "Shift 2 (10')", cost: 'm' },
           { value: 'Shift 2, and Slowed 5 (1 round)', cost: 'm' },
-          { value: 'Shift 3, and Slowed 5 (save ends)', cost: 'M' },
+          { value: 'Shift 3, and Slowed 5 (Save ends)', cost: 'M' },
         ],
       },
-      duration: { base: 'Instant (Slowed: save ends)' },
+      duration: { base: 'Instant (Slowed: Save ends)' },
     },
     options: [
-      { label: 'Specialization Hooks', detail: ['Specialization — Psychic → adds a Psychic damage ladder onto the Effect (1 → Cha → Cha + 1 → Cha + 1 and Ongoing 1, save ends)'] },
+      { label: 'Specialization Hooks', detail: ['Specialization — Psychic → adds a Psychic damage ladder onto the Effect (1 → Cha → Cha + 1 → Cha + 1 and Ongoing 1, Save ends)'] },
       { label: 'Implement Specialization Hooks', detail: ["Spellbook → +5' to the burst, and unlocks a Movement debuff ladder (−5'/−10'/−15'/Immobilized) that replaces the Slowed conditions"] },
     ],
   },
@@ -1522,7 +1510,7 @@ const ELDER_MAGIC: Ability[] = [
       targets: { base: 'One' },
       attack: { base: 'Charisma vs Unarmoured Will' },
       effects: {
-        base: '−1 to a chosen defense (Flat Debuff)',
+        base: '−1 to a chosen defence (Flat Debuff)',
         advances: [
           { value: '−2', cost: 'm' },
           { value: '−2 and Vulnerable 1', cost: 'm' },
@@ -1557,7 +1545,7 @@ const ELDER_MAGIC: Ability[] = [
     vars: {
       frequency: FREQ_ENC,
       action: { base: 'Standard (exploration)', advances: [{ value: 'Interrupt', cost: 'M' }] },
-      range: { base: "Detect hazards & secret doors within 10' (Dungeoneering or History check)", advances: [{ value: "20'", cost: 'm' }, { value: "30'", cost: 'm' }, { value: "60'", cost: 'M' }] },
+      range: { base: "Detect hazards & secret doors within 30' (Dungeoneering or History check)", advances: [{ value: "45'", cost: 'm' }, { value: "60'", cost: 'm' }, { value: "120'", cost: 'M' }] },
       effects: {
         base: 'Resolve a delving hazard with a Dungeoneering or History check in place of the save or skill it requires (+0 to the check).',
         advances: [
@@ -1738,7 +1726,7 @@ const NEW_MAGIC: Ability[] = [
     vars: {
       frequency: FREQ_2ENC,
       action: { base: 'Standard' },
-      range: { base: "30' (5' burst)", advances: [{ value: "45' (10' burst)", cost: 'm' }, { value: "60' (15' burst)", cost: 'm' }, { value: "120' (20' burst)", cost: 'M' }] },
+      range: { base: "30' (5' burst)", advances: [{ value: "45' (10' burst)", cost: 'M' }, { value: "60' (15' burst)", cost: 'M' }, { value: "120' (20' burst)", cost: 'M' }] },
       targets: NM_AOE_TARGETS,
       attack: { base: 'Dexterity vs AC' },
       damage: RANGED_AOE_DMG,
@@ -1757,7 +1745,7 @@ const NEW_MAGIC: Ability[] = [
     vars: {
       frequency: FREQ_2ENC,
       action: { base: 'Standard' },
-      range: { base: "5' burst (centred on you)", advances: [{ value: "10' burst", cost: 'm' }, { value: "15' burst", cost: 'm' }, { value: "20' burst", cost: 'M' }] },
+      range: { base: "5' burst (centred on you)", advances: [{ value: "10' burst", cost: 'M' }, { value: "15' burst", cost: 'M' }, { value: "20' burst", cost: 'M' }] },
       targets: NM_AOE_TARGETS,
       attack: { base: 'Dexterity vs AC' },
       damage: CLOSE_AOE_DMG,
@@ -1840,7 +1828,7 @@ const NEW_MAGIC: Ability[] = [
         advances: [
           { value: "bright 20' radius", cost: 'm' },
           { value: "bright 20' (+ dim 20' beyond); you may move it or affix it to a moving object", cost: 'm' },
-          { value: "Daylight, bright 30' (counts as sunlight; dispels magical darkness)", cost: 'M' },
+          { value: "Magical Light, 30' radius — the ceiling of magic; where it overlaps Magical Darkness the two cancel. It is not a sun.", cost: 'M' },
         ],
       },
       duration: { base: '1 hour', advances: [{ value: '2 hours', cost: 'm' }, { value: '4 hours', cost: 'm' }, { value: 'until you dismiss it', cost: 'M' }] },
@@ -1891,7 +1879,7 @@ const THE_LOST: Ability[] = [
           { value: 'Bleed 2', cost: 'M' },
         ],
       },
-      duration: { base: 'Instant (Bleed: save ends)' },
+      duration: { base: 'Instant (Bleed: Save ends)' },
     },
     options: [
       { label: 'The mark must be Off Guard or flanked', note: OFF_GUARD_NOTE, placement: 'top' },
@@ -2097,7 +2085,7 @@ const ASSASSINATION: Ability[] = [
           { value: 'Bleed 2', cost: 'M' },
         ],
       },
-      duration: { base: 'Instant (Bleed: save ends)' },
+      duration: { base: 'Instant (Bleed: Save ends)' },
     },
     options: [
       { label: 'Studied and Off Guard', note: STUDIED_NOTE, detail: 'Death Blow can only be aimed at a mark you have Studied who is also Off Guard against you, or whom you flank.', placement: 'top' },
@@ -2140,7 +2128,7 @@ const ASSASSINATION: Ability[] = [
         advances: [
           { value: 'And takes 1[W] damage every round while held', cost: 'm' },
           { value: 'And Dazed (no Reactions or Interrupts) while held', cost: 'm' },
-          { value: 'And, from the second round it is held, it must make a Constitution save (vs your Strength Offense + 10) each round or fall Unconscious', cost: 'M' },
+          { value: 'And, from the second round it is held, it must make a Constitution save (vs your Strength Offence + 10) each round or fall Unconscious', cost: 'M' },
         ],
       },
       duration: { base: 'While you sustain the grab (a Minor each round)' },
@@ -2626,7 +2614,12 @@ const WITCHCRAFT: Ability[] = [
 // Madness ladder (Confused → Insane, see the Conditions page). Card names are
 // provisional (Les to bless/rename); the transformative Vows come later.
 const ELDRITCH_NOTE = 'Eldritch Damage ignores Temp HP.';
+// Overload is per-card — the Surge clause differs by Ability; the save/backlash
+// tail is the same. OVERLOAD_NOTE is the default (+Con damage or +1 target).
 const OVERLOAD_NOTE = 'Overload — when you use this Ability you may Overload it. You may choose to do +Con Damage or hit +1 target within range. Then make a Constitution save against this Ability’s own save DC. On a failure you take 1d4 Eldritch damage (it cannot be reduced); on a critical failure you are also Dazed until your next turn.';
+const OVERLOAD_GAZE = 'Overload — when you use this Ability you may Overload it. You may choose to do +1 target within range, or increase the Effect or Duration Ladder by one step. Then make a Constitution save against this Ability’s own save DC. On a failure you take 1d4 Eldritch damage (it cannot be reduced); on a critical failure you are also Dazed until your next turn.';
+const OVERLOAD_PANDEMONIUM = 'Overload — when you use this Ability you may Overload it. You may choose to increase the Range, Area Effect, Effects or Duration ladders by one step. Then make a Constitution save against this Ability’s own save DC. On a failure you take 1d6 Eldritch damage (it cannot be reduced); on a critical failure you are also Dazed until your next turn.';
+const OVERLOAD_VISAGE = 'Overload — when you use this Ability you may Overload it. You may choose to replace the −# to attack with “roll twice and take the worst result”, or +Con Eldritch damage. Then make a Constitution save against this Ability’s own save DC. On a failure you take 1d6 Eldritch damage (it cannot be reduced); on a critical failure you are also Dazed until your next turn.';
 const ORB_HOOK = ['Orb → +1 to your Overload Constitution saves (the globe steadies the channel)'];
 // Fuller implement hooks for the ability cards (Orb is the Cosmologist's own;
 // the rest are off-list, via multiclass), parallel to New Magic's.
@@ -2634,7 +2627,7 @@ const OUTSIDE_IMPL = [
   'Orb → +1 to your Overload Constitution saves (the globe steadies the channel)',
   'Wand → +1 to hit',
   'Magic Staff → +1 to one Defence until your next round',
-  'Spellbook → the Madness ladder lands one Rank higher, or +Wis to a damaging Ability’s damage',
+  'Spellbook → Range, Damage, Effect or Duration ladder can be increased one step',
   'Scroll → once per encounter, cast without consuming the scroll',
 ];
 const ELDRITCH_DMG: Variable = { base: '1d6 Eldritch', advances: [{ value: '1d6 + Wis Eldritch', cost: 'm' }, { value: '1d8 + Wis Eldritch', cost: 'm' }, { value: '2d8 + Wis Eldritch', cost: 'M', note: 'L5' }] };
@@ -2648,21 +2641,16 @@ const MAD_LADDER: Variable = {
   ],
 };
 
+const OVERLOAD_ORB = 'Overload — when you use this Ability you may Overload it. You may choose to do +Con Damage for any damaging effect, or hit +1 target within range, or improve one ladder by one rank. Then make a Constitution save against this Ability’s own save DC. On a failure you take 1d4 Eldritch damage (it cannot be reduced); on a critical failure you are also Dazed until your next turn.';
 const WIELD_ORB: Ability = {
   name: 'Wield Orb', category: 'The Outside', role: 'Utility · orb engine', mode: 'Effect',
   vars: {
     frequency: { base: 'Daily', advances: [{ value: 'Encounter', cost: 'M' }, { value: 'Twice per encounter', cost: 'M' }] },
     action: { base: "The orb's own activation" },
-    effects: {
-      base: 'Sense and handle a scrying-orb: gaze into it to see the distant or the hidden, and channel its stored workings at their base values.',
-      advances: [
-        { value: 'Draw on an orb’s full ladders reliably', cost: 'm' },
-        { value: 'Wield powerful orbs', cost: 'm' },
-        { value: 'Wield the unstable orbs others dare not gaze into', cost: 'M' },
-      ],
-    },
+    effects: WIELD_EFFECTS('Orb'),
   },
   options: [
+    { label: 'Overload', note: OVERLOAD_ORB, placement: 'top' },
     { label: 'Generic Advancement Ladder', note: GA_NOTE('orb'), ladders: [GENERIC_ADV] },
     { label: 'Implement Specialization Hooks', note: GA_SPECIALIZATION('orb', 'Orb Specialization'), detail: ORB_HOOK },
   ],
@@ -2698,7 +2686,7 @@ const OUTSIDE: Ability[] = [
       duration: ongoingDuration('Wis'),
     },
     options: [
-      { label: 'Overload', note: OVERLOAD_NOTE, placement: 'top' },
+      { label: 'Overload', note: OVERLOAD_GAZE, placement: 'top' },
       { label: 'Implement Specialization Hooks', detail: OUTSIDE_IMPL },
     ],
   },
@@ -2715,50 +2703,37 @@ const OUTSIDE: Ability[] = [
       duration: ongoingDuration('Wis'),
     },
     options: [
-      { label: 'Overload', note: OVERLOAD_NOTE, placement: 'top' },
+      { label: 'Overload', note: OVERLOAD_PANDEMONIUM, placement: 'top' },
       { label: 'Eldritch Damage', note: ELDRITCH_NOTE },
       { label: 'Implement Specialization Hooks', detail: OUTSIDE_IMPL },
     ],
   },
   {
-    name: 'Fold Space', category: 'The Outside', role: 'Utility · movement', mode: 'Effect',
+    name: 'Impossible Visage', category: 'The Outside', role: 'Defensive', mode: 'Effect',
     vars: {
-      frequency: FREQ_ENC,
-      action: { base: 'Move' },
-      range: { base: 'Self' },
-      effects: {
-        base: "You fold the space between here and there and step through — teleport up to 20'.",
-        advances: [
-          { value: "Teleport up to 30'", cost: 'm' },
-          { value: "Teleport up to 45', and bring one adjacent willing creature", cost: 'm' },
-          { value: "Teleport up to 60', bring one creature, and you are insubstantial until your next turn", cost: 'M' },
-        ],
-      },
-      duration: { base: 'Instant' },
-    },
-    options: [
-      { label: 'Overload', note: OVERLOAD_NOTE, placement: 'top' },
-      { label: 'Implement Specialization Hooks', detail: OUTSIDE_IMPL },
-    ],
-  },
-  {
-    name: 'Wrongness', category: 'The Outside', role: 'Defensive', mode: 'Effect',
-    vars: {
-      frequency: FREQ_FULL,
+      frequency: FREQ_2ENC,
       action: { base: 'Minor' },
       range: { base: 'Self' },
       effects: {
-        base: 'You are wrong to look upon. Until your next turn, the first creature that attacks you takes −1 to its attack roll.',
+        base: 'You are wrong to look upon: −1 for all opponents to attack you directly.',
         advances: [
-          { value: '−2 to that attack', cost: 'm' },
-          { value: 'every creature that attacks you takes −2', cost: 'm' },
-          { value: 'and any attacker that misses you must save or be Confused', cost: 'M' },
+          { value: '−2 for all opponents to attack you directly', cost: 'm' },
+          { value: '−2 for all opponents to attack you directly, and those that do take 1 Eldritch damage', cost: 'm' },
+          { value: '−2 for all opponents to attack you directly, and those that do take Wis Eldritch damage', cost: 'M' },
         ],
       },
-      duration: { base: 'Until your next turn' },
+      duration: {
+        base: 'Wis rounds',
+        advances: [
+          { value: 'Wis + 1 rounds', cost: 'm' },
+          { value: 'Wis + 2 rounds', cost: 'm' },
+          { value: 'The encounter', cost: 'M' },
+        ],
+      },
     },
     options: [
-      { label: 'Overload', note: OVERLOAD_NOTE, placement: 'top' },
+      { label: 'Overload', note: OVERLOAD_VISAGE, placement: 'top' },
+      { label: 'Eldritch Damage', note: ELDRITCH_NOTE },
       { label: 'Implement Specialization Hooks', detail: OUTSIDE_IMPL },
     ],
   },

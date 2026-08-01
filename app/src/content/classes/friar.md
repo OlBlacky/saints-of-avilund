@@ -79,7 +79,7 @@ Your chosen **Path** adds a second Class Attribute, a second Ability Category, t
 
 <!-- CUE — no attacks. Underpowered healing, blessings and saves, camp and social rites. -->
 
-*Mending Touch · Stabilise · Blessing · Prayer for the Saintly · Preach to the Saintly · Tend the Wounded*
+*Mending Touch · Stabilize · Blessing · Prayer for the Saintly · Preach to the Saintly · Tend the Wounded*
 
 ### [Arms](../../abilities/#arms) — *Chaplain*
 

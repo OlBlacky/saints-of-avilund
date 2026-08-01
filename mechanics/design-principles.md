@@ -16,6 +16,7 @@ Read this before authoring any new mechanic, Ability, Feat, or Quirk. When a new
 - Attribute caps enforce this: Class Attributes reach +3 (then +4 at level 5, +5 at level 10); all other attributes cap at +2.
 - Class Skills raise to +2; other skills cap at +1. Masterwork's +1 deliberately stacks past these caps — that's the exception, and it's paid for.
 - Any new bonus source must justify itself against this ceiling. Unconditional flat bonuses are the enemy; conditional ones (the Feat "specialist economy") are the pattern.
+- Sanctioned exceptions: Masterwork's +1 (paid for in coin), and the transformative **Vows** (Vow of Abstinence, Renunciation) — the vow itself is the price. Exceptions are named here or they aren't exceptions.
 
 ## 3. Major doubles, Minor adds a fraction
 

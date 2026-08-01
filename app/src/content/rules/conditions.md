@@ -7,9 +7,9 @@ A **Condition** is a lasting effect an Ability hangs on its target — as oppose
 
 ## How a condition works
 
-- **Four ranks.** Rank 1 usually comes with the Ability; **Ranks 2 and 3 each cost a Minor** improvement (<span class="pip pip--m">m</span>), and **Rank 4 costs a Major** (<span class="pip pip--M">M</span>).
+- **Four ranks.** Rank 1 usually comes with the Ability; **Ranks 2 and 3 each cost a Minor** Advance (<span class="pip pip--m">m</span>), and **Rank 4 costs a Major** (<span class="pip pip--M">M</span>).
 - **Flat numbers only.** Avilund uses no advantage or disadvantage — conditions apply flat penalties and bonuses.
-- **Ending a condition.** Most are **save ends**: at the end of the target's turn they make a save — **d20 + the attribute of the defense the condition struck, against the Ability's DC** (its to-hit bonus + 10). Some end instead through **an action and a check** (First Aid to stop a Bleed), or simply run out on the Ability's **Duration**.
+- **Ending a condition.** Most are **save ends**: at the end of the target's turn they make a save — **d20 + the attribute of the defence the condition struck, against the Ability's DC** (its to-hit bonus + 10). Some end instead through **an action and a check** (First Aid to stop a Bleed), or simply run out on the Ability's **Duration**.
 
 ## The ladders
 
@@ -21,7 +21,7 @@ Typed damage each round — **Bleed, Fire, Poison** (and Acid, Cold, Necrotic, L
 | 1 | 1 damage per round | — |
 | 2 | 2 per round | <span class="pip pip--m">m</span> |
 | 3 | 3 per round | <span class="pip pip--m">m</span> |
-| 4 | 5 per round | <span class="pip pip--M">M</span> |
+| 4 | 3 per round, and the target saves at **−2** | <span class="pip pip--M">M</span> |
 
 ### Action Denial
 Strips actions from the target — the Dazed-to-Stunned axis.
@@ -54,16 +54,16 @@ Dims the senses — blinds and deafens.
 | 4 | Blind or Deaf | <span class="pip pip--M">M</span> |
 
 ### Flat Debuff
-A penalty to a chosen defense, escalating into Vulnerable.
+A penalty to a chosen defence, escalating into Vulnerable.
 
 | Rank | Effect | Cost |
 |---|---|---|
-| 1 | −1 to a chosen defense | — |
+| 1 | −1 to a chosen defence | — |
 | 2 | −2 | <span class="pip pip--m">m</span> |
 | 3 | −2 and Vulnerable 1 | <span class="pip pip--m">m</span> |
 | 4 | −2 and Vulnerable 3 | <span class="pip pip--M">M</span> |
 
-The penalty caps at −2; powerful abilities may apply it to all physical or all mental defenses at once. **Vulnerable N** means the target takes N extra damage — either from a chosen damage type, or against a specific defense.
+The penalty caps at −2; powerful abilities may apply it to all physical or all mental defences at once. **Vulnerable N** means the target takes N extra damage — either from a chosen damage type, or against a specific defence.
 
 ### Control
 Bends the target's will toward the source of the effect.

@@ -69,7 +69,7 @@ Your chosen **Path** adds a second Class Attribute, a second Ability Category, t
 | **Ability Category** | The Outside |
 | **Additional Class Skills** | Arcana, Concentration |
 | **Languages** | Eldritch Tongue |
-| **Implement Proficiencies** | Orb |
+| **Implement Proficiencies** | Orbs |
 | **Armour Proficiencies** | *(none beyond the Class)* |
 
 ---
@@ -100,4 +100,4 @@ Your chosen **Path** adds a second Class Attribute, a second Ability Category, t
 
 <!-- CUE — the dangerous blaster. Eldritch damage only (attacks AC, ignores Temp HP); high-risk high-damage via Overload (Con is the fuse — push for more, save or take backlash); chaos via the Madness ladder (Confused → Insane). Bespoke, not a builder. Card names provisional; the transformative Vows are still to come (Les designing). -->
 
-*Eldritch Blast · Unraveling Gaze · Pandemonium · Fold Space · Wrongness · Wield Orb* — *(transformative Vows to come)*
+*Eldritch Blast · Unraveling Gaze · Pandemonium · Impossible Visage · Wield Orb* — *(transformative Vows to come)*

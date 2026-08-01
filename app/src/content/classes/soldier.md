@@ -95,6 +95,6 @@ Your chosen **Path** adds a second Class Attribute, a second Ability Category, t
 
 ### [Marksmanship](../../abilities/#marksmanship) — *Marksman*
 
-<!-- CUE — ranged mastery: the bread-and-butter shot for any ranged weapon, fire that pins and cripples, covering an ally, shooting on the move. -->
+<!-- CUE — the marksman's art: the bread-and-butter shot for any ranged weapon, fire that pins and cripples, covering an ally, shooting on the move. -->
 
 *Marksman's Shot · Pinning Shot · Skirmishing Shot · Covering Fire · Run and Gun · Debilitating Shot · Marksman's Eye*

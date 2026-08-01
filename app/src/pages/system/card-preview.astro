@@ -48,7 +48,7 @@ const guard: Ability = {
 };
 
 const intercept: Ability = {
-  name: 'Intercept', category: 'Protection', role: 'Defensive · maneuver', mode: 'Effect',
+  name: 'Intercept', category: 'Protection', role: 'Defensive · manoeuvre', mode: 'Effect',
   vars: {
     frequency: { base: 'Daily', advances: [{ value: 'Encounter', cost: 'M' }] },
     action: { base: 'Reaction — when an adjacent ally is hit' },
@@ -57,7 +57,7 @@ const intercept: Ability = {
       base: 'Trade places with the endangered ally, then you take the damage in their stead.',
       advances: [
         { value: 'You take the damage, reduced by your Armour DR.', cost: 'm' },
-        { value: 'Instead of simply taking it, the opponent must make the attack against you, resolved normally — they may miss your defenses entirely.', cost: 'm' },
+        { value: 'Instead of simply taking it, the opponent must make the attack against you, resolved normally — they may miss your defences entirely.', cost: 'm' },
         { value: 'As above, and you may intercept for an ally up to 10′ (2 squares) away, not just an adjacent one.', cost: 'M' },
       ],
     },

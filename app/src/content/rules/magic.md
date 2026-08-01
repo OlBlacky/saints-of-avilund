@@ -26,7 +26,7 @@ Three kinds of source, three ways to cast:
 - **Spellbooks** are reusable. You may cast a spell again and again, but you must supply its **components** each time. The **Read Spellbook** ability governs this.
 - **Rituals** are open to nearly anyone: with the **materials** and the ability to **read the language**, you can perform one — no special training needed. The **Conduct Ritual** ability lets a scholar improve a ritual beyond what a layman could.
 
-A trained caster's advances decide how much of a found spell they realise — how high up its Ladders they can push it, how often they can cast, and what Level of spell they can manage at all.
+A trained caster's advances decide how much of a found spell they realize — how high up its Ladders they can push it, how often they can cast, and what Level of spell they can manage at all.
 
 ### Rituals in more detail
 
@@ -34,7 +34,7 @@ A ritual is simply a spell whose Casting Time is a Ritual. Many have a **Casting
 
 ## Wielding magic items
 
-A wand, staff, scroll, spellbook, or Elder artefact is wielded through an **Implement Proficiency** — its own family *(**Wands, Magic Staves, Spellbooks, Scrolls, Orbs, Artefacts**)*, granted and advanced exactly like a weapon group. The difference: an implement **attacks with a mental or nimble attribute** — usually **Intelligence**, though some casters aim with **Dexterity**. Their **Implement Specialization Feats** carry the signature perks *(a Scroll specialist may not burn the scroll; a Spellbook specialist adds his Intelligence to a damaging spell's damage)*.
+A wand, staff, scroll, spellbook, or Elder artefact is wielded through an **Implement Proficiency** — its own family *(**Wands, Magic Staves, Spellbooks, Scrolls, Orbs, Artefacts**)*, granted and advanced exactly like a weapon group. The difference: an implement **attacks with a mental or nimble attribute** — usually **Intelligence**, though some casters aim with **Dexterity**. Their **Implement Specialization Feats** carry the signature hooks *(a Scroll specialist has a chance not to burn the scroll; a Spellbook specialist adds his Intelligence to a damaging spell's damage)*.
 
 **Passive** magic items — a warded cloak, a keen blade — need no training at all. *(See [Proficiencies](../proficiencies/).)*
 

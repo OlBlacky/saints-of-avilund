@@ -44,7 +44,7 @@ Average parish priests, as I said above, should just be common men (and/or women
 
 However, a few Rules, Orders and Societies should exist that provide us with our PC adventurers. Each of these should venerate a specific Saint, as they do in the Catholic church.
 
-Rules are monasteries, with monks. Within these, the majority of the monks are just normal commoners, though a select few are chosen to train for the defense of the monastery (the monk class.)
+Rules are monasteries, with monks. Within these, the majority of the monks are just normal commoners, though a select few are chosen to train for the defence of the monastery (the monk class.)
 
 Orders are knightly or crusader groupings of Paladins.
 

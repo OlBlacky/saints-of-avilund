@@ -6,7 +6,7 @@
 export const GLOSSARY: Record<string, string> = {
   'Advances': 'The universal currency of character growth, spent to improve a character. They come in two sizes — Major and Minor.',
   'Major Advances': 'The larger Advance — used mainly to raise attributes and buy Abilities. You gain one per milestone.',
-  'Minor Advances': 'The smaller Advance — used for offenses, defenses, Hit Points, skill ranks, proficiencies, Feats, and languages.',
+  'Minor Advances': 'The smaller Advance — used for offences, defences, Hit Points, skill ranks, proficiencies, Feats, and languages.',
   'Level 0': 'Where every character begins. Characters rise from Level 0 to a cap of Level 11.',
   'Level 11': 'The level cap, reached after 33 milestones.',
   'Hit Points': 'Your health. Everyone starts with 5, plus whatever you buy with Minor Advances at your Class HP rate.',
@@ -18,15 +18,15 @@ export const GLOSSARY: Record<string, string> = {
   'Path': 'A specialization within your Class — it adds a second Class Attribute, a second Ability Category, more Class Skills, and more proficiencies.',
   'Class Skills': 'The skills your Class and Path train (the Path’s are listed as Additional Class Skills); you may raise these to +2, where other skills cap at +1.',
   'Additional Class Skills': 'The two extra Class Skills your Path trains — they work exactly like your Class’s, raising to +2.',
-  'proficiencies': 'Training in a weapon or armour group; without it you take a penalty when you use it.',
-  'Feats': 'Conditional perks bought with Minor Advances that sharpen your abilities under specific circumstances.',
-  'Offense': 'Your attack bonus with an attribute — the attribute’s value plus any offense ranks.',
-  'Defense': 'A target number an attacker must beat: 10 + attribute + defense ranks (plus armour, if Armoured).',
-  'AC': 'Armour Class — your Armoured Constitution Defense, the number most physical attacks must beat.',
-  'Armoured': 'A defense that includes your armour’s bonus, as opposed to its Unarmoured version.',
+  'Proficiencies': 'Training in a weapon or armour group; without it you take a penalty when you use it.',
+  'Feats': 'Conditional edges bought with Minor Advances that sharpen your Abilities under specific circumstances.',
+  'Offence': 'Your attack bonus with an attribute — the attribute’s value plus any offence ranks.',
+  'Defence': 'A target number an attacker must beat: 10 + attribute + defence ranks (plus armour, if Armoured).',
+  'AC': 'Armour Class — your Armoured Constitution Defence, the number most physical attacks must beat.',
+  'Armoured': 'A defence that includes your armour’s bonus, as opposed to its Unarmoured version.',
   'Ability': 'An active power, bought for 1 Major Advance from one of your Ability Categories and improved dial by dial.',
   'Frequency': 'How often an Ability may be used — once per day, once per encounter, or at-will.',
-  'milestone': 'A step of advancement; three make a level. Each milestone grants +1 Major and +1 Minor Advance.',
+  'Milestone': 'A step of advancement; three make a level. Each milestone grants +1 Major and +1 Minor Advance.',
   'Ladder': 'A short track of escalating effect. Rank 1 is the base; the middle Ranks cost a Minor Advance each, and the top Rank costs a Major. Abilities, conditions, frequency, and more are all built as Ladders.',
   'Rank': 'A single step on a Ladder. You climb from Rank 1 (the base) upward, paying Advances as you go.',
   'Off Guard': 'A target is Off Guard against you when it cannot see you, has not yet acted in the encounter, is Prone, Stunned or Immobilized, or an ability (a Feint) has left it so. On its own it does nothing — it is the key that unlocks the abilities written to use it.',
@@ -40,5 +40,5 @@ export const GLOSSARY: Record<string, string> = {
 // Inline abbreviations — decorated wherever they appear in body text (not only
 // when bold), on System pages. Kept small and specific to avoid false matches.
 export const INLINE_TERMS: Record<string, string> = {
-  'WRI': 'Weapon Range Increment — a ranged weapon’s base distance (e.g. 10′ for a knife, 30′ for a short bow). You can fire out to three increments, at 0 / −2 / −4 to hit; Range advances make each increment larger.',
+  'WRI': 'Weapon Range Increment — a ranged weapon’s base distance (e.g. 20′ for a thrown dagger, 60′ for a shortbow). You can fire out to three increments, at 0 / −2 / −4 to hit; Range advances make each increment larger.',
 };
