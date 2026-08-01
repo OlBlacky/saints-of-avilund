@@ -14,7 +14,7 @@ A **Condition** is a lasting effect an Ability hangs on its target — as oppose
 ## The ladders
 
 ### Ongoing Damage
-Typed damage each round — **Bleed, Fire, Poison** (and Acid, Cold, Necrotic, Lightning, Radiant). The type lets resistance, immunity, and Vulnerable interact.
+Typed damage each round — **Bleed, Fire, Poison** (and Acid, Cold, Necrotic, Lightning, Radiant, Eldritch). The type lets resistance, immunity, and Vulnerable interact. **Eldritch** is the odd one: it attacks AC, **ignores Temp HP**, and almost nothing in the world resists it — the mark of [The Outside](../abilities/#the-outside).
 
 | Rank | Effect | Cost |
 |---|---|---|
@@ -70,10 +70,19 @@ Bends the target's will toward the source of the effect.
 
 | Rank | Effect | Cost |
 |---|---|---|
-| 1 | **Confused** — must roll to act as intended, else strike the nearest creature | — |
+| 1 | **Confused** — at the start of each of its turns, roll on the **Confusion table** below | — |
 | 2 | **Charmed** — cannot attack the source | <span class="pip pip--m">m</span> |
 | 3 | **Ensorcelled** — cannot attack the source, and may be compelled to strike the nearest creature | <span class="pip pip--m">m</span> |
 | 4 | **Dominated** — the source dictates the target's actions | <span class="pip pip--M">M</span> |
+
+**The Confusion table.** A **Confused** creature, at the start of each of its turns, rolls a d6 to see what it does that turn:
+
+| d6 | The creature… |
+|---|---|
+| 1–2 | attacks the **nearest** creature it can reach — ally or foe |
+| 3–4 | lurches its full Speed in a **random direction**, and does nothing else |
+| 5 | stands **inert** — no actions |
+| 6 | acts **normally** |
 
 ### Fear
 Drives the target away from the source — the *object*, which is the caster by default, or whatever the Ability designates.
@@ -84,3 +93,13 @@ Drives the target away from the source — the *object*, which is the caster by 
 | 2 | −1 to attack, and cannot move closer to the object | <span class="pip pip--m">m</span> |
 | 3 | as above, and cannot attack the object | <span class="pip pip--m">m</span> |
 | 4 | flees the object until the Duration expires | <span class="pip pip--M">M</span> |
+
+### Madness
+The mind coming apart — it worsens the Confusion roll, then breaks it entirely. The signature ladder of [The Outside](../abilities/#the-outside).
+
+| Rank | Effect | Cost |
+|---|---|---|
+| 1 | **Confused** — roll on the Confusion table (under Control, above) | — |
+| 2 | Confused, and **−1** to the Confusion roll *(a lower roll is worse)* | <span class="pip pip--m">m</span> |
+| 3 | Confused, and **−2** to the Confusion roll | <span class="pip pip--m">m</span> |
+| 4 | **Insane** — no roll: it may take only a single action each turn, an unarmed attack against itself | <span class="pip pip--M">M</span> |

@@ -31,6 +31,7 @@ source/           # Original source archive — reference only
 ## Working Conventions
 
 - Primarily a design and documentation project; the one code component is the website in `app/` (see "The Website" below)
+- **Read `mechanics/design-principles.md` (the Rails) before authoring any new mechanic, Ability, Feat, or Quirk** — it holds the cardinal rules: small numbers, the +5 ceiling, reuse of standard ladders and cards, pacing caps, benchmarks
 - Write mechanics in plain language first, formal notation second
 - Do not commit unless explicitly asked
 - Do not push unless explicitly asked

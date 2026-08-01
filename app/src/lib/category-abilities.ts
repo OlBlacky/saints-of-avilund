@@ -2619,6 +2619,143 @@ const WITCHCRAFT: Ability[] = [
   },
 ];
 
+// ── The Outside (Occultist — Cosmologist) ───────────────────────
+// The dangerous blaster — bespoke, not a builder. Wis aims every attack; Con is
+// the fuse (Overload). Eldritch is his only damage type: it attacks AC and
+// ignores Temp HP, and almost nothing in the world resists it. His chaos is the
+// Madness ladder (Confused → Insane, see the Conditions page). Card names are
+// provisional (Les to bless/rename); the transformative Vows come later.
+const ELDRITCH_NOTE = 'Eldritch damage attacks AC and ignores Temp HP — borrowed hit points do not stop it, and almost nothing in the world resists it.';
+const OVERLOAD_NOTE = 'Overload — when you use this Ability you may Overload it. The Surge (choose one): +Con Eldritch damage; or push one of this Ability’s effect ladders one Rank higher for this use; or +1 target (or +5\' to a burst). Then the fuse bites: make a Constitution save against this Ability’s own save DC. On a failure you take 1d4 Eldritch damage (it cannot be reduced); on a critical failure (a natural 1) you are also Dazed until your next turn.';
+const ORB_HOOK = ['Orb → +1 to your Overload Constitution saves (the globe steadies the channel)'];
+const ELDRITCH_DMG: Variable = { base: '1d6 Eldritch', advances: [{ value: '1d6 + Wis Eldritch', cost: 'm' }, { value: '1d8 + Wis Eldritch', cost: 'm' }, { value: '2d8 + Wis Eldritch', cost: 'M', note: 'L5' }] };
+// Mirrors the Madness ladder on the Conditions page.
+const MAD_LADDER: Variable = {
+  base: 'Confused — it rolls on the Confusion table each turn',
+  advances: [
+    { value: 'Confused, −1 to the Confusion roll', cost: 'm' },
+    { value: 'Confused, −2 to the Confusion roll', cost: 'm' },
+    { value: 'Insane — a single action each turn: an unarmed attack against itself', cost: 'M' },
+  ],
+};
+
+const WIELD_ORB: Ability = {
+  name: 'Wield Orb', category: 'The Outside', role: 'Utility · orb engine', mode: 'Effect',
+  vars: {
+    frequency: { base: 'Daily', advances: [{ value: 'Encounter', cost: 'M' }, { value: 'Twice per encounter', cost: 'M' }] },
+    action: { base: "The orb's own activation" },
+    effects: {
+      base: 'Sense and handle a scrying-orb: gaze into it to see the distant or the hidden, and channel its stored workings at their base values.',
+      advances: [
+        { value: 'Draw on an orb’s full ladders reliably', cost: 'm' },
+        { value: 'Wield powerful orbs', cost: 'm' },
+        { value: 'Wield the unstable orbs others dare not gaze into', cost: 'M' },
+      ],
+    },
+  },
+  options: [
+    { label: 'Generic Advancement Ladder', note: GA_NOTE('orb'), ladders: [GENERIC_ADV] },
+    { label: 'Implement Specialization Hooks', note: GA_MASTERY('orb', 'Orb Specialization'), detail: ORB_HOOK },
+  ],
+};
+
+const OUTSIDE: Ability[] = [
+  {
+    name: 'Rupture', category: 'The Outside', role: 'Offensive · blast', mode: 'Attack',
+    vars: {
+      frequency: FREQ_ATWILL_L3,
+      action: { base: 'Standard' },
+      range: STD_RANGE,
+      targets: { base: 'One' },
+      attack: { base: 'Wisdom vs AC' },
+      damage: ELDRITCH_DMG,
+      duration: { base: 'Instant' },
+    },
+    options: [
+      { label: 'Overload', note: OVERLOAD_NOTE, placement: 'top' },
+      { label: 'Eldritch', note: ELDRITCH_NOTE },
+      { label: 'Implement Specialization Hooks', detail: ORB_HOOK },
+    ],
+  },
+  {
+    name: 'Unraveling Gaze', category: 'The Outside', role: 'Offensive · Madness', mode: 'Attack',
+    vars: {
+      frequency: FREQ_FULL,
+      action: { base: 'Standard' },
+      range: STD_RANGE,
+      targets: { base: 'One' },
+      attack: { base: 'Wisdom vs Unarmoured Wisdom' },
+      effects: MAD_LADDER,
+      duration: ongoingDuration('Wis'),
+    },
+    options: [
+      { label: 'Overload', note: OVERLOAD_NOTE, placement: 'top' },
+      { label: 'Implement Specialization Hooks', detail: ORB_HOOK },
+    ],
+  },
+  {
+    name: 'Pandemonium', category: 'The Outside', role: 'Control · area', mode: 'Attack',
+    vars: {
+      frequency: FREQ_2ENC,
+      action: { base: 'Standard' },
+      range: STD_RANGE,
+      targets: STD_AREA,
+      attack: { base: 'Wisdom vs Unarmoured Wisdom (one roll vs all)' },
+      damage: { base: 'Wis Eldritch' },
+      effects: MAD_LADDER,
+      duration: ongoingDuration('Wis'),
+    },
+    options: [
+      { label: 'Overload', note: OVERLOAD_NOTE, placement: 'top' },
+      { label: 'Eldritch', note: ELDRITCH_NOTE },
+      { label: 'Implement Specialization Hooks', detail: ORB_HOOK },
+    ],
+  },
+  {
+    name: 'Fold Space', category: 'The Outside', role: 'Utility · movement', mode: 'Effect',
+    vars: {
+      frequency: FREQ_ENC,
+      action: { base: 'Move' },
+      range: { base: 'Self' },
+      effects: {
+        base: "You fold the space between here and there and step through — teleport up to 20'.",
+        advances: [
+          { value: "Teleport up to 30'", cost: 'm' },
+          { value: "Teleport up to 45', and bring one adjacent willing creature", cost: 'm' },
+          { value: "Teleport up to 60', bring one creature, and you are insubstantial until your next turn", cost: 'M' },
+        ],
+      },
+      duration: { base: 'Instant' },
+    },
+    options: [
+      { label: 'Overload', note: OVERLOAD_NOTE, placement: 'top' },
+      { label: 'Implement Specialization Hooks', detail: ORB_HOOK },
+    ],
+  },
+  {
+    name: 'Wrongness', category: 'The Outside', role: 'Defensive', mode: 'Effect',
+    vars: {
+      frequency: FREQ_FULL,
+      action: { base: 'Minor' },
+      range: { base: 'Self' },
+      effects: {
+        base: 'You are wrong to look upon. Until your next turn, the first creature that attacks you takes −1 to its attack roll.',
+        advances: [
+          { value: '−2 to that attack', cost: 'm' },
+          { value: 'every creature that attacks you takes −2', cost: 'm' },
+          { value: 'and any attacker that misses you must save or be Confused', cost: 'M' },
+        ],
+      },
+      duration: { base: 'Until your next turn' },
+    },
+    options: [
+      { label: 'Overload', note: OVERLOAD_NOTE, placement: 'top' },
+      { label: 'Implement Specialization Hooks', detail: ORB_HOOK },
+    ],
+  },
+  WIELD_ORB,
+];
+
 export const CATEGORIES: CategoryGroup[] = [
   { name: 'Arms', source: 'Soldier — Class', blurb: '[[text here]]', abilities: ARMS },
   { name: 'Protection', source: 'Soldier — Vanguard', blurb: '[[text here]]', abilities: PROTECTION },
@@ -2633,6 +2770,7 @@ export const CATEGORIES: CategoryGroup[] = [
   { name: 'The Lost', source: 'Scoundrel — Class', blurb: '[[text here]]', abilities: THE_LOST },
   { name: 'Occult', source: 'Occultist — Class *(hosted by the Scoundrel’s Blackcoat)*', blurb: '[[text here]]', abilities: OCCULT },
   { name: 'Witchcraft', source: 'Occultist — Witch/Warlock', blurb: '[[text here]]', abilities: WITCHCRAFT },
+  { name: 'The Outside', source: 'Occultist — Cosmologist', blurb: '[[text here]]', abilities: OUTSIDE },
   { name: 'Guile', source: 'Scoundrel — Charlatan', blurb: '[[text here]]', abilities: GUILE },
   { name: 'Assassination', source: 'Scoundrel — Assassin', blurb: '[[text here]]', abilities: ASSASSINATION },
   { name: 'Elder Magic', source: 'Scholar — Antiquarian *(also the Occultist’s Grave Robber)*', blurb: '[[text here]]', abilities: ELDER_MAGIC },

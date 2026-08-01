@@ -69,6 +69,7 @@ Your chosen **Path** adds a second Class Attribute, a second Ability Category, t
 | **Ability Category** | The Outside |
 | **Additional Class Skills** | Arcana, Concentration |
 | **Languages** | Eldritch Tongue |
+| **Implement Proficiencies** | Orb |
 | **Armour Proficiencies** | *(none beyond the Class)* |
 
 ---
@@ -95,8 +96,8 @@ Your chosen **Path** adds a second Class Attribute, a second Ability Category, t
 
 *Wield Artefact · Whispers from the Doomed · Memory of Celestia · Figments of Forgotten Places · Edict for the Thralls · Pall of Doubt · Psychometry · Lessons from Dark Places*
 
-### The Outside — *Cosmologist*
+### [The Outside](../../abilities/#the-outside) — *Cosmologist*
 
-<!-- CUE — named (The Outside · Eldritch Tongue), but the cards still need a design pass, like Witchcraft had. No card list or #the-outside link until the cards exist. Flavour may reference the Eldritch. -->
+<!-- CUE — the dangerous blaster. Eldritch damage only (attacks AC, ignores Temp HP); high-risk high-damage via Overload (Con is the fuse — push for more, save or take backlash); chaos via the Madness ladder (Confused → Insane). Bespoke, not a builder. Card names provisional; the transformative Vows are still to come (Les designing). -->
 
-*(cards to come — the category is named, the design pass is next)*
+*Rupture · Unraveling Gaze · Pandemonium · Fold Space · Wrongness · Wield Orb* — *(transformative Vows to come)*

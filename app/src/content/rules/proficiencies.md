@@ -36,7 +36,8 @@ Anything that *casts* is wielded through an **Implement Proficiency** — the sa
 | **Magic Staves** | the greater casting staves |
 | **Spellbooks** | bound, reusable spells |
 | **Scrolls** | single-use written spells |
-| **Artefacts** | any unusual magic item — rings, orbs, amulets, and the like |
+| **Orbs** | scrying-globes that focus a channel — the implement of The Outside |
+| **Artefacts** | any unusual magic item — rings, amulets, and the like |
 
 Unlike a sword or bow, an implement's attack uses a **mental or nimble attribute** rather than brawn — most often **Intelligence**, though some casters aim with **Dexterity**, as the wielding ability specifies. Their **Implement Specialization Feats** carry the signature perks — a *Scroll* specialist has a chance not to burn the scroll; a *Spellbook* specialist adds his Intelligence to a damaging spell's damage.
 
