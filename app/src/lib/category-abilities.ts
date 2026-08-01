@@ -2616,15 +2616,15 @@ const WITCHCRAFT: Ability[] = [
 const ELDRITCH_NOTE = 'Eldritch Damage ignores Temp HP.';
 // Overload is per-card — the Surge clause differs by Ability; the save/backlash
 // tail is the same. OVERLOAD_NOTE is the default (+Con damage or +1 target).
-const OVERLOAD_NOTE = 'Overload — when you use this Ability you may Overload it. You may choose to do +Con Damage or hit +1 target within range. Then make a Constitution save against this Ability’s own save DC. On a failure you take 1d4 Eldritch damage (it cannot be reduced); on a critical failure you are also Dazed until your next turn.';
-const OVERLOAD_GAZE = 'Overload — when you use this Ability you may Overload it. You may choose to do +1 target within range, or increase the Effect or Duration Ladder by one step. Then make a Constitution save against this Ability’s own save DC. On a failure you take 1d4 Eldritch damage (it cannot be reduced); on a critical failure you are also Dazed until your next turn.';
-const OVERLOAD_PANDEMONIUM = 'Overload — when you use this Ability you may Overload it. You may choose to increase the Range, Area Effect, Effects or Duration ladders by one step. Then make a Constitution save against this Ability’s own save DC. On a failure you take 1d6 Eldritch damage (it cannot be reduced); on a critical failure you are also Dazed until your next turn.';
-const OVERLOAD_VISAGE = 'Overload — when you use this Ability you may Overload it. You may choose to replace the −# to attack with “roll twice and take the worst result”, or +Con Eldritch damage. Then make a Constitution save against this Ability’s own save DC. On a failure you take 1d6 Eldritch damage (it cannot be reduced); on a critical failure you are also Dazed until your next turn.';
+const OVERLOAD_NOTE = 'Overload — when you use this Ability you may Overload it. You may choose to do +Con Damage or hit +1 target within range. Then make a Constitution save against this Ability’s own save DC. On a failure you take 1d4 Eldritch damage (it cannot be reduced); on a critical failure you are also Dazed (no Reactions or Interrupts) until your next turn.';
+const OVERLOAD_GAZE = 'Overload — when you use this Ability you may Overload it. You may choose to do +1 target within range, or increase the Effect or Duration Ladder by one step. Then make a Constitution save against this Ability’s own save DC. On a failure you take 1d4 Eldritch damage (it cannot be reduced); on a critical failure you are also Dazed (no Reactions or Interrupts) until your next turn.';
+const OVERLOAD_PANDEMONIUM = 'Overload — when you use this Ability you may Overload it. You may choose to increase the Range, Area Effect, Effects or Duration ladders by one step. Then make a Constitution save against this Ability’s own save DC. On a failure you take 1d6 Eldritch damage (it cannot be reduced); on a critical failure you are also Dazed (no Reactions, Interrupts, or Minor action) until your next turn.';
+const OVERLOAD_VISAGE = 'Overload — when you use this Ability you may Overload it. You may choose to replace the −# to attack with “roll twice and take the worst result”, or +Con Eldritch damage. Then make a Constitution save against this Ability’s own save DC. On a failure you take 1d6 Eldritch damage (it cannot be reduced); on a critical failure you are also Dazed (no Reactions, Interrupts, or Minor action) until your next turn.';
 const ORB_HOOK = ['Orb → +1 to your Overload Constitution saves (the globe steadies the channel)'];
 // Fuller implement hooks for the ability cards (Orb is the Cosmologist's own;
 // the rest are off-list, via multiclass), parallel to New Magic's.
 const OUTSIDE_IMPL = [
-  'Orb → +1 to your Overload Constitution saves (the globe steadies the channel)',
+  'Orb → +1 to your Overload Constitution saves',
   'Wand → +1 to hit',
   'Magic Staff → +1 to one Defence until your next round',
   'Spellbook → Range, Damage, Effect or Duration ladder can be increased one step',
@@ -2641,7 +2641,7 @@ const MAD_LADDER: Variable = {
   ],
 };
 
-const OVERLOAD_ORB = 'Overload — when you use this Ability you may Overload it. You may choose to do +Con Damage for any damaging effect, or hit +1 target within range, or improve one ladder by one rank. Then make a Constitution save against this Ability’s own save DC. On a failure you take 1d4 Eldritch damage (it cannot be reduced); on a critical failure you are also Dazed until your next turn.';
+const OVERLOAD_ORB = 'Overload — when you use this Ability you may Overload it. You may choose to do +Con Damage for any damaging effect, or hit +1 target within range, or improve one ladder by one rank. Then make a Constitution save against this Ability’s own save DC. On a failure you take 1d4 Eldritch damage (it cannot be reduced); on a critical failure you are also Dazed (no Reactions or Interrupts) until your next turn.';
 const WIELD_ORB: Ability = {
   name: 'Wield Orb', category: 'The Outside', role: 'Utility · orb engine', mode: 'Effect',
   vars: {
@@ -2736,6 +2736,33 @@ const OUTSIDE: Ability[] = [
       { label: 'Eldritch Damage', note: ELDRITCH_NOTE },
       { label: 'Implement Specialization Hooks', detail: OUTSIDE_IMPL },
     ],
+  },
+  {
+    name: 'Conversant with the Outside', category: 'The Outside', role: 'Vow', mode: 'Passive',
+    vars: {
+      frequency: { base: 'Passive (always on)' },
+      effects: {
+        base: '+1 to your Wisdom Defence and Wisdom Saves, and DR 3 against Psychic damage. The cost: −1 Charisma.',
+      },
+    },
+  },
+  {
+    name: 'Observer of the Outside', category: 'The Outside', role: 'Vow', mode: 'Passive',
+    vars: {
+      frequency: { base: 'Passive (always on)' },
+      effects: {
+        base: '+1 to your Intelligence Defence and Intelligence Saves, and DR 3 against Radiant damage. The cost: −1 Dexterity.',
+      },
+    },
+  },
+  {
+    name: 'Traveller', category: 'The Outside', role: 'Vow', mode: 'Passive',
+    vars: {
+      frequency: { base: 'Passive (always on)' },
+      effects: {
+        base: '+1 to your Constitution Defence and Constitution Saves, and DR 3 against Cold damage. The cost: −1 Strength.',
+      },
+    },
   },
   WIELD_ORB,
 ];
