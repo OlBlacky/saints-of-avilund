@@ -42,6 +42,23 @@ There are nine, one for each damage type imagined so far:
 
 Every Mastery Feat also grants an **automatic +1 to hit** with spells of its damage type, on top of the ladders it unlocks.
 
+## Malediction Mastery
+
+*Prerequisite: **Language (Black Tongue)** and trained in **Religion (Black Faith)**.*
+
+A family of **specialist** Feats (a **Minor** each), one per Malediction of the [Witchcraft](../abilities/#witchcraft) curse-builders — **Mastery — Wasting**, **Mastery — Ill Luck**, and so on. Like the damage-type Masteries, each grants an automatic **+1 to hit** when you curse with that Malediction, and bolts on a standing **Hook**:
+
+| Mastery Feat | Automatic Hook |
+|---|---|
+| **Mastery — Wasting** | +1 to all Necrotic damage you deal |
+| **Mastery — Ill Luck** | the first time each round the target rolls a natural 1, you know it — and it cannot reroll that die |
+| **Mastery — Palsy** | a Palsied target also cannot take Reactions or Opportunity Attacks |
+| **Mastery — Stupor** | a Stupored target takes −2 to its save against the curse |
+| **Mastery — Enfeeblement** | the target cannot gain Temp Hit Points while cursed |
+| **Mastery — Dread** | allies within 10′ of the cursed target also take −1 to their attacks (Fear) |
+
+These are open to the Witch **and to any other** who learns the Black Tongue and the Black Faith — the curse answers the tongue that shapes it, not the class.
+
 ## Grey Faith
 
 *Prerequisite: trained in **Religion (Black Faith)**.*

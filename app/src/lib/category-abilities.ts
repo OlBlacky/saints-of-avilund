@@ -1392,6 +1392,18 @@ const MEDICINE: Ability[] = [
 // jump is what a Major buys. Shared by many Abilities; inlined replicas (e.g.
 // the burst spells' range column) follow the same 30/45/60/120 shape.
 const STD_RANGE: Variable = { base: "30'", advances: [{ value: "45'", cost: 'm' }, { value: "60'", cost: 'm' }, { value: "120'", cost: 'M' }] };
+
+// The Standard Area Ladder — the radius of a burst. EVERY step is a Major:
+// growing the radius sweeps in far more targets, so each increase is worth a
+// Major on its own. Sits in the `targets` field (who the effect catches).
+const STD_AREA: Variable = {
+  base: "All enemies in a 5' radius",
+  advances: [
+    { value: "10' radius", cost: 'M' },
+    { value: "15' radius", cost: 'M' },
+    { value: "20' radius", cost: 'M' },
+  ],
+};
 const FREQ_2ENC: Variable = { base: 'Daily', advances: [{ value: 'Encounter', cost: 'M' }, { value: 'Twice per encounter', cost: 'M' }] };
 
 // Wield Artefact — the artefact engine. Shared verbatim by Elder Magic (the
@@ -2443,124 +2455,145 @@ const OCCULT: Ability[] = [
 // sisters who share what would otherwise fall on a victim. (Grey Faith is an
 // Occult Feat and does not touch these.)
 
-// Bargain's Debt: borrowed power that always comes due. Unlike the Occult
-// Price, it cannot be bought away — the ladder only defers and softens it.
-const PRICE_DEBT: NamedLadder = {
-  name: 'The Debt',
-  base: 'At the start of your next encounter you begin Dazed and take 1d6 Necrotic. The Debt always lands — it cannot be prevented, only deferred and softened. You cannot Bargain again until it is paid.',
+// ── The Maledictions — the "elements" of the Curse Builder ──────
+// A Witch chooses ONE Malediction when she whispers a curse (as an Arcanist
+// picks an element); it is the curse's effect and advances on its own ladder.
+// Wasting is the Standard Ongoing Damage; the rest are save-ends afflictions
+// (all carried by the card's Standard Ongoing Duration ladder). Hex, Evil Eye
+// and Grasp of the Grave are subsumed here as Wasting, Ill Luck and Palsy.
+const MAL_WASTING: NamedLadder = { name: 'Wasting (Necrotic)', ...ongoingDamage('Necrotic') };
+const MAL_ILL_LUCK: NamedLadder = {
+  name: 'Ill Luck',
+  base: '−1 to all its saves',
   advances: [
-    { value: '1d4 Necrotic instead of 1d6', cost: 'm' },
-    { value: '1d4, and you do not begin Dazed', cost: 'm' },
-    { value: 'The Debt falls due when the GM chooses — once, before your next Long Rest — not necessarily the next encounter', cost: 'M' },
+    { value: '−2 to all its saves', cost: 'm' },
+    { value: '−2 to its saves and all its skill checks', cost: 'm' },
+    { value: '−2 to its saves and skill checks, and −2 to all its attacks', cost: 'M' },
   ],
 };
-
-// Bind Spirit's Binding: the shade strains against the leash. Its top rank is
-// the coven reframe — the upkeep falls on a willing sister, not a victim.
-const BIND_UPKEEP: NamedLadder = {
-  name: 'The Binding',
-  base: '1d6 Necrotic when you bind it, then 1 Necrotic upkeep on each of your turns while it stands.',
+const MAL_PALSY: NamedLadder = {
+  name: 'Palsy',
+  base: "Slowed — Speed −5'",
   advances: [
-    { value: '1d4 Necrotic to bind it', cost: 'm' },
-    { value: 'No upkeep on a turn it acts for you', cost: 'm' },
-    { value: "A willing coven-sister within 30' pays the upkeep in your stead", cost: 'M' },
+    { value: "Speed −10'", cost: 'm' },
+    { value: "Speed −15'", cost: 'm' },
+    { value: 'Immobilized — Speed 0', cost: 'M' },
   ],
 };
+const MAL_STUPOR: NamedLadder = {
+  name: 'Stupor',
+  base: 'Dazed — no Reactions or Interrupts',
+  advances: [
+    { value: '+ no Minor action', cost: 'm' },
+    { value: '+ no Move action', cost: 'm' },
+    { value: 'Stunned — no actions', cost: 'M' },
+  ],
+};
+const MAL_ENFEEBLEMENT: NamedLadder = {
+  name: 'Enfeeblement',
+  base: '−1 to its attack and damage rolls',
+  advances: [
+    { value: '−2 to its attack and damage rolls', cost: 'm' },
+    { value: '−2, and −2 to its Strength and Dexterity defences', cost: 'm' },
+    { value: '−2, and its attacks deal half damage', cost: 'M' },
+  ],
+};
+const MAL_DREAD: NamedLadder = {
+  name: 'Dread (Fear)',
+  base: '−1 to its attack rolls (Fear)',
+  advances: [
+    { value: '−1, and it cannot move closer to you', cost: 'm' },
+    { value: '+ it cannot attack you', cost: 'm' },
+    { value: 'It flees you until it saves', cost: 'M' },
+  ],
+};
+const CURSE_MALEDICTIONS = [MAL_WASTING, MAL_ILL_LUCK, MAL_PALSY, MAL_STUPOR, MAL_ENFEEBLEMENT, MAL_DREAD];
+// Implement hooks — parallel to New Magic's, to keep the two builders level.
+const CURSE_IMPL_LIST = [
+  'Wand → +1 to hit',
+  'Magic Staff → +1 to one Defence until your next round',
+  'Spellbook → the chosen Malediction ladder lands one Rank higher',
+  'Scroll → once per encounter, whisper the curse without consuming the scroll',
+];
+// Malediction Mastery hooks — the automatic rider each "Mastery — [Malediction]"
+// Feat bolts on (see the Feats page). The Feat also grants +1 to hit with that
+// Malediction. Prerequisite: Black Tongue + Religion (Black Faith), a Minor each.
+const CURSE_MASTERY_NOTE = 'With the matching Mastery — [Malediction] Feat (requires Language (Black Tongue) and Religion (Black Faith)): +1 to hit when you curse with that Malediction, plus an automatic Hook:';
+const CURSE_MASTERY_HOOKS = [
+  'Wasting → +1 to all Necrotic damage you deal',
+  'Ill Luck → the first time each round the target rolls a natural 1, you know it, and it cannot reroll that die',
+  'Palsy → a Palsied target also cannot take Reactions or Opportunity Attacks',
+  'Stupor → a Stupored target takes −2 to its save against the curse',
+  'Enfeeblement → the target cannot gain Temp HP while cursed',
+  "Dread → allies within 10' of the cursed target also take −1 to their attacks (Fear)",
+];
 
 const WITCHCRAFT: Ability[] = [
   {
-    name: 'Hex', category: 'Witchcraft', role: 'Offensive · curse', mode: 'Attack',
+    name: 'Dictiones Atras Susurrare', category: 'Witchcraft', role: 'Offensive · curse · curse-builder', mode: 'Attack',
     vars: {
-      frequency: FREQ_FULL,
-      action: { base: 'Standard' },
-      range: STD_RANGE,
-      targets: { base: 'One', advances: [{ value: 'Two', cost: 'm' }, { value: 'Cha targets', cost: 'M' }] },
-      attack: { base: 'Charisma vs Unarmoured Wisdom' },
-      effects: ongoingDamage('Necrotic'),
-      duration: ongoingDuration('Cha'),
-    },
-  },
-  {
-    name: 'Evil Eye', category: 'Witchcraft', role: 'Offensive · debuff', mode: 'Attack',
-    vars: {
-      frequency: FREQ_FULL,
+      frequency: FREQ_ATWILL_L3,
       action: { base: 'Standard' },
       range: STD_RANGE,
       targets: { base: 'One' },
       attack: { base: 'Charisma vs Unarmoured Wisdom' },
-      effects: {
-        base: 'Ill luck settles on the target: −1 to all its saves.',
-        advances: [
-          { value: '−2 to all its saves', cost: 'm' },
-          { value: '−2 to its saves and all its skill checks', cost: 'm' },
-          { value: '−2 to its saves and all its skill checks, and −2 to all its attacks', cost: 'M' },
-        ],
-      },
-      duration: { base: 'Save ends' },
+      effects: { base: 'Your chosen Malediction (see below).' },
+      duration: ongoingDuration('Cha'),
     },
+    builder: true,
+    options: [
+      { label: 'Malediction', detail: 'Choose one Malediction when you whisper this curse, as an Arcanist picks an element — it is the curse’s effect, and advances on its own ladder. Buy this Ability again to whisper another curse with a different Malediction.', placement: 'top' },
+      { label: 'The Maledictions — choose one', ladders: CURSE_MALEDICTIONS },
+      { label: 'Malediction Mastery Hooks', note: CURSE_MASTERY_NOTE, detail: CURSE_MASTERY_HOOKS },
+      { label: 'Implement Specialization Hooks', detail: CURSE_IMPL_LIST },
+    ],
   },
   {
-    name: 'Grasp of the Grave', category: 'Witchcraft', role: 'Control · area', mode: 'Attack',
+    name: 'Dictiones Atras Clamare', category: 'Witchcraft', role: 'Offensive · curse burst · curse-builder', mode: 'Attack',
     vars: {
-      frequency: FREQ_ENC,
-      action: ACTION_SMM,
-      range: {
-        base: "30' range, 10' burst",
-        advances: [
-          { value: "45' range, 15' burst", cost: 'm' },
-          { value: "60' range, 20' burst", cost: 'm' },
-        ],
-      },
-      targets: { base: 'All enemies in the burst' },
-      attack: { base: 'Charisma vs Armoured Strength (one roll vs all)' },
-      effects: {
-        base: "Hands claw up from the earth: Slowed — Speed −5'.",
-        advances: [
-          { value: "Speed −10'", cost: 'm' },
-          { value: "Speed −15'", cost: 'm' },
-          { value: 'Immobilized — Speed 0', cost: 'M' },
-        ],
-      },
-      duration: { base: 'Save ends' },
+      frequency: FREQ_2ENC,
+      action: { base: 'Standard' },
+      range: STD_RANGE,
+      targets: STD_AREA,
+      attack: { base: 'Charisma vs Unarmoured Wisdom (one roll vs all)' },
+      effects: { base: 'Your chosen Malediction (see below), on every enemy in the burst.' },
+      duration: ongoingDuration('Cha'),
     },
+    builder: true,
+    options: [
+      { label: 'Malediction', detail: 'As Dictiones Atras Susurrare, but proclaimed over an area — choose one Malediction and it strikes every enemy in the burst. Buy this Ability again for another curse with a different Malediction.', placement: 'top' },
+      { label: 'The Maledictions — choose one', ladders: CURSE_MALEDICTIONS },
+      { label: 'Malediction Mastery Hooks', note: CURSE_MASTERY_NOTE, detail: CURSE_MASTERY_HOOKS },
+      { label: 'Implement Specialization Hooks', detail: CURSE_IMPL_LIST },
+    ],
   },
   {
-    name: 'Bargain', category: 'Witchcraft', role: 'Buff · self', mode: 'Effect',
+    name: 'Renunciation of Nicetus', category: 'Witchcraft', role: 'Vow', mode: 'Passive',
     vars: {
-      frequency: FREQ_ENC,
-      action: { base: 'Minor' },
-      range: { base: 'You' },
+      frequency: { base: 'Passive (always on)' },
       effects: {
-        base: 'Borrow power now, pay later: +2 to your attack rolls.',
-        advances: [
-          { value: '+2 to your attack rolls and damage', cost: 'm' },
-          { value: 'And Cha Temp HP', cost: 'm' },
-          { value: 'And one reroll — keep the better result, on any d20 roll', cost: 'M' },
-        ],
+        base: '+1 to all your defences. The Renunciation: you have renounced the Saintly Faith. You may not willingly enter their churches or other places of worship, may not invoke the Saints’ names, and may not receive benefit from any Saintly source (a Friar of the Saintly Faith’s healing, a blessing, a relic).',
+        advances: [{ value: '+2 to all your defences', cost: 'M', note: 'L5' }],
       },
-      duration: { base: 'Until the end of the encounter' },
     },
-    extraVars: [PRICE_DEBT],
-    options: [{ label: 'The Debt', note: "Witchcraft's deep end: power taken on credit. Unlike the Occult Price, the Debt cannot be bought away — its ladder only defers and softens it. It always lands.", placement: 'top' }],
   },
   {
     name: 'Bind Spirit', category: 'Witchcraft', role: 'Summon · servant', mode: 'Effect',
     vars: {
       frequency: FREQ_ENC,
-      action: { base: 'Standard' },
+      action: { base: 'Ritual', advances: [{ value: 'Full-round action', cost: 'm' }, { value: 'Standard action', cost: 'm' }] },
       range: STD_RANGE,
       effects: {
-        base: 'You bind an unwilling shade to your will. It aids you once — a single task within its power — then fades.',
+        base: 'You summon a shade that performs tasks for the Duration. It has Speed 15, 5 HP, and all defences 11, and is invulnerable to every kind of damage but Radiant and Force (and weapons made to battle the undead).',
         advances: [
-          { value: 'It lingers a round: once on your turn it may make a basic attack, Charisma vs AC for Cha Necrotic', cost: 'm' },
-          { value: 'It lasts the encounter, acting on each of your turns', cost: 'm' },
-          { value: 'It carries out any single Standard action you direct each turn', cost: 'M' },
+          { value: 'It will fight your enemies: spend a Move action to command it, and it may take a move and a Standard action. Its Standard-action attack uses your Charisma attack bonus and deals 1d4 Necrotic.', cost: 'm' },
+          { value: 'You may command it with a Minor action instead of a Move action.', cost: 'm' },
+          { value: 'The shade grows stronger: Speed 20, 10 HP, all defences 12, and its attack deals 1d6 Necrotic.', cost: 'M' },
         ],
       },
-      duration: { base: 'One task, then the encounter (see the ladder)' },
+      duration: { base: '1 minute', advances: [{ value: '5 minutes', cost: 'm' }, { value: '10 minutes', cost: 'm' }, { value: '1 hour', cost: 'M' }] },
     },
-    extraVars: [BIND_UPKEEP],
-    options: [{ label: 'The Binding', note: 'The only bound servant in the game. Binding costs you blood when cast, and the shade strains against the leash each turn it stands.', placement: 'top' }],
+    options: [{ label: 'The Binding', note: 'Each casting consumes 1 sp worth of powdered obsidian — the shade’s tether.' }],
   },
 ];
 

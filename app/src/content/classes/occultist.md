@@ -85,9 +85,9 @@ Your chosen **Path** adds a second Class Attribute, a second Ability Category, t
 
 ### [Witchcraft](../../abilities/#witchcraft) — *Witch/Warlock*
 
-<!-- CUE — Cha against a foe's Unarmoured Wisdom: the wasting curse, ill luck, the grasping dead, power borrowed against a Debt that always lands, and the only bound servant in the game. Its costs are paid in blood — softened, at the top, onto a willing coven. -->
+<!-- CUE — Cha against a foe's Unarmoured Wisdom. Two curse-builders (like the wizard's spell-builders): whisper a curse at one, or shout it over many — each built by choosing a Malediction (Wasting/Ill Luck/Palsy/Stupor/Enfeeblement/Dread) as the wizard chooses an element. Plus the Witch's Vow and the only bound servant in the game. -->
 
-*Hex · Evil Eye · Grasp of the Grave · Bargain · Bind Spirit*
+*Dictiones Atras Susurrare · Dictiones Atras Clamare · Renunciation of Nicetus · Bind Spirit*
 
 ### [Elder Magic](../../abilities/#elder-magic) — *Grave Robber*
 
