@@ -2767,6 +2767,158 @@ const OUTSIDE: Ability[] = [
   WIELD_ORB,
 ];
 
+// ── Harvest (Naturalist — Class) ────────────────────────────────
+// The common country craft, wholly mundane — what every village expects of
+// the land-wise. No attacks: the teeth live in the Paths (Old Magic, the
+// Botanist's learning, the Hound Master's dog). Mechanical theme: TEMP HP AS
+// COMFORT — a full belly, a dry bed, a warm welcome. Kept small (2s and 3s,
+// Bulwark's range), granted out of combat and carried into the day; it stacks
+// with other small sources per the small-numbers rule. Distinct lanes held:
+// no HP healing (Mercy is the floor), supply-of-comfort not ascetic-immunity
+// (that's Pilgrim's Endurance), and nothing animal (saved for Husbandry).
+const HARVEST: Ability[] = [
+  {
+    name: 'Provender', category: 'Harvest', role: 'Utility · provision', mode: 'Effect',
+    vars: {
+      frequency: { base: 'Daily' },
+      action: { base: 'Foraging and gathering, over the day’s travel or rest' },
+      range: { base: 'The surrounding country' },
+      targets: {
+        base: 'Yourself and Wis others',
+        advances: [
+          { value: 'Twice Wis others', cost: 'm' },
+          { value: 'A whole company (a score of mouths)', cost: 'm' },
+          { value: 'A column — as many as there are hands to gather', cost: 'M' },
+        ],
+      },
+      effects: {
+        base: 'The land feeds them: a day’s food and water, and the makings your craft needs (herbs, simples, salves). Those who eat the hot meal gain 2 Temp HP.',
+        advances: [
+          { value: '3 Temp HP', cost: 'm' },
+          { value: '3 Temp HP, even in hard country (moor, marsh, mountain)', cost: 'm' },
+          { value: '3 Temp HP, even in barren or blighted land — the land always yields to you', cost: 'M' },
+        ],
+      },
+      duration: { base: 'The day (Temp HP until lost)' },
+    },
+  },
+  {
+    name: 'Simples', category: 'Harvest', role: 'Remedy', mode: 'Effect',
+    vars: {
+      frequency: { base: 'Daily' },
+      action: { base: 'Brewing, during a rest; a Minor action to drink' },
+      range: { base: 'The draught is carried and drunk' },
+      targets: {
+        base: 'One draught',
+        advances: [
+          { value: 'Two draughts', cost: 'm' },
+          { value: 'Wis draughts', cost: 'm' },
+          { value: 'Wis draughts, and they keep for a week', cost: 'M' },
+        ],
+      },
+      effects: {
+        base: 'The drinker takes +2 on Saves against poison and disease (a poison’s Interval Saves included).',
+        advances: [
+          { value: 'And may attempt a Save at once, when the draught is drunk, against one poison or disease already in them', cost: 'm' },
+          { value: 'And it comforts: 2 Temp HP when drunk', cost: 'm' },
+          { value: 'A sovereign draught: +3 on the Saves, and 3 Temp HP', cost: 'M' },
+        ],
+      },
+      duration: { base: 'Until the drinker’s next rest' },
+    },
+  },
+  {
+    name: 'Hedge-Wise', category: 'Harvest', role: 'Movement · defensive', mode: 'Passive',
+    vars: {
+      frequency: { base: 'Passive (always on)' },
+      targets: {
+        base: 'Self',
+        advances: [
+          { value: 'Self + one ally following your line', cost: 'm' },
+          { value: 'Self + Wis allies following your line', cost: 'm' },
+          { value: 'The whole company, single file at your pace', cost: 'M' },
+        ],
+      },
+      effects: {
+        base: 'Living growth is no obstacle: ignore Difficult Terrain from vegetation — hedge, briar, crop and root neither slow you nor tear at you.',
+        advances: [
+          { value: 'The green hides you: +1 to Stealth checks while in growth', cost: 'm' },
+          { value: 'You leave no trail through growing country, and cannot be tracked there', cost: 'm' },
+          { value: 'The hedge shelters you: while in growth, +1 AC against ranged attacks', cost: 'M' },
+        ],
+      },
+    },
+  },
+  {
+    name: 'Sky-Wise', category: 'Harvest', role: 'Utility', mode: 'Effect',
+    vars: {
+      frequency: { base: 'Daily' },
+      action: { base: 'A reading of the sky (a few minutes)' },
+      range: { base: 'The country around you' },
+      targets: { base: 'You and your company' },
+      effects: {
+        base: 'Read the coming weather truly, a day ahead — no check; the sky tells you plainly what the Nature skill can only guess at.',
+        advances: [
+          { value: 'Three days ahead', cost: 'm' },
+          { value: 'A week ahead, and you always know the hour a turn will come', cost: 'm' },
+          { value: 'Never caught out: weather you foresaw cannot harm or hinder the company — shelter is found or made before it breaks', cost: 'M' },
+        ],
+      },
+      duration: { base: 'Until the weather it read has passed' },
+    },
+  },
+  {
+    name: 'Tend the Field', category: 'Harvest', role: 'Utility · non-combat', mode: 'Effect',
+    vars: {
+      frequency: { base: 'Daily' },
+      action: { base: 'A day’s labour, or a season’s tending' },
+      range: { base: 'The land under your hands' },
+      targets: {
+        base: 'A garden, beast-plot or single field',
+        advances: [
+          { value: 'A farm', cost: 'm' },
+          { value: 'A village’s lands', cost: 'm' },
+          { value: 'An estate — a manor, an abbey’s holdings', cost: 'M' },
+        ],
+      },
+      effects: {
+        base: 'Under your hand things grow: the land yields as if the season were kind — a failed harvest made poor, a poor one fair, a fair one good. You judge soil, seed and stock truly.',
+        advances: [
+          { value: 'Mend blight: halt a crop-sickness or a murrain, and save what remains', cost: 'm' },
+          { value: 'Out of season: coax green growth, ripen early, or keep a store sweet past its time', cost: 'm' },
+          { value: 'The land remembers: your tending holds a full year without you', cost: 'M' },
+        ],
+      },
+      duration: { base: 'The season' },
+    },
+  },
+  {
+    name: 'Countryman’s Welcome', category: 'Harvest', role: 'Utility · social', mode: 'Effect',
+    vars: {
+      frequency: { base: 'Daily' },
+      action: { base: 'An evening’s fellowship' },
+      range: { base: 'A farmstead, hamlet or village' },
+      targets: {
+        base: 'One household',
+        advances: [
+          { value: 'A hamlet', cost: 'm' },
+          { value: 'A village', cost: 'm' },
+          { value: 'The countryside — word travels ahead of you', cost: 'M' },
+        ],
+      },
+      effects: {
+        base: 'Country folk take you for their own: board and lodging offered where strangers are turned away, and rural NPC Attitude starts one step better toward you and your company.',
+        advances: [
+          { value: 'The hearth restores: a night under their roof grants each guest 2 Temp HP come morning', cost: 'm' },
+          { value: 'The talk flows: rumours and local knowledge given freely, without coin', cost: 'm' },
+          { value: 'Their own to the end: at need they will hide you, feed you and say nothing', cost: 'M' },
+        ],
+      },
+      duration: { base: 'The stay' },
+    },
+  },
+];
+
 export const CATEGORIES: CategoryGroup[] = [
   { name: 'Arms', source: 'Soldier — Class', blurb: '[[text here]]', abilities: ARMS },
   { name: 'Protection', source: 'Soldier — Vanguard', blurb: '[[text here]]', abilities: PROTECTION },
@@ -2785,4 +2937,5 @@ export const CATEGORIES: CategoryGroup[] = [
   { name: 'Guile', source: 'Scoundrel — Charlatan', blurb: '[[text here]]', abilities: GUILE },
   { name: 'Assassination', source: 'Scoundrel — Assassin', blurb: '[[text here]]', abilities: ASSASSINATION },
   { name: 'Elder Magic', source: 'Scholar — Antiquarian *(also the Occultist’s Grave Robber)*', blurb: '[[text here]]', abilities: ELDER_MAGIC },
+  { name: 'Harvest', source: 'Naturalist — Class', blurb: '[[text here]]', abilities: HARVEST },
 ];
