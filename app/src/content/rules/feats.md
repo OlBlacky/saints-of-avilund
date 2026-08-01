@@ -22,40 +22,40 @@ The clearest example is **Specialization**. A **Weapon Specialization Feat** doe
 - **Hammers** → your strikes can *Push*; **Light Blades** → a *riposte* on a Parry; **Staves** → a guard bonus.
 - **Magic items** specialize the same way: a **Scroll** specialist has a chance not to burn the scroll; a **Spellbook** specialist adds his Intelligence to a damaging spell's damage.
 
-## Mastery Feats
+## Damage-Type Specializations
 
-Some Feats key off a **damage type** rather than gear. These are the **Mastery** Feats — **Mastery — Fire**, **Mastery — Acid**, and so on. A spell or ability always deals its chosen damage type at baseline; the matching Mastery Feat **unlocks that type's signature effect** on top — an Effect ladder (a condition), and, on the Arcanist's elemental spells, a further combat hook. Without it, a spell of that type does only its base damage.
+Some Specializations key off a **damage type** rather than gear — **Specialization — Fire**, **Specialization — Acid**, and so on. A spell or ability always deals its chosen damage type at baseline; the matching Specialization Feat **unlocks that type's signature effect** on top — an Effect ladder (a condition), and, on the Arcanist's elemental spells, a further combat hook. Without it, a spell of that type does only its base damage.
 
 There are nine, one for each damage type imagined so far:
 
-| Mastery Feat | Signature Effect | Arcanist hook |
+| Specialization Feat | Signature Effect | Arcanist hook |
 |---|---|---|
-| **Mastery — Fire** | Ongoing Damage | Pierce *(ranged)* / Retaliation *(close)* |
-| **Mastery — Acid** | Ongoing Damage | Splash / Lingering *(area)* |
-| **Mastery — Cold** | Movement *(Slow → Immobilize)* | Glancing |
-| **Mastery — Lightning** | Action Denial *(Daze → Stun)* | Pierce *(ranged)* / Retaliation *(close)* |
-| **Mastery — Sonic** | Action Denial *(Daze → Stun)* | Splash / Lingering *(area)* |
-| **Mastery — Force** | Push *(and Prone)* | Glancing |
-| **Mastery — Radiant** | a Radiant damage ladder | — |
-| **Mastery — Necrotic** | Necrotic damage and its withering effects *(Death-aligned casters)* | — |
-| **Mastery — Psychic** | a wider crit range (19–20), and Fear | — |
+| **Specialization — Fire** | Ongoing Damage | Pierce *(ranged)* / Retaliation *(close)* |
+| **Specialization — Acid** | Ongoing Damage | Splash / Lingering *(area)* |
+| **Specialization — Cold** | Movement *(Slow → Immobilize)* | Glancing |
+| **Specialization — Lightning** | Action Denial *(Daze → Stun)* | Pierce *(ranged)* / Retaliation *(close)* |
+| **Specialization — Sonic** | Action Denial *(Daze → Stun)* | Splash / Lingering *(area)* |
+| **Specialization — Force** | Push *(and Prone)* | Glancing |
+| **Specialization — Radiant** | a Radiant damage ladder | — |
+| **Specialization — Necrotic** | Necrotic damage and its withering effects *(Death-aligned casters)* | — |
+| **Specialization — Psychic** | a wider crit range (19–20), and Fear | — |
 
-Every Mastery Feat also grants an **automatic +1 to hit** with spells of its damage type, on top of the ladders it unlocks.
+Every damage-type Specialization also grants an **automatic +1 to hit** with spells of its damage type, on top of the ladders it unlocks.
 
-## Malediction Mastery
+## Malediction Specializations
 
 *Prerequisite: **Language (Black Tongue)** and trained in **Religion (Black Faith)**.*
 
-A family of **specialist** Feats (a **Minor** each), one per Malediction of the [Witchcraft](../abilities/#witchcraft) curse-builders — **Mastery — Wasting**, **Mastery — Ill Luck**, and so on. Like the damage-type Masteries, each grants an automatic **+1 to hit** when you curse with that Malediction, and bolts on a standing **Hook**:
+A family of **specialist** Feats (a **Minor** each), one per Malediction of the [Witchcraft](../abilities/#witchcraft) curse-builders — **Specialization — Wasting**, **Specialization — Ill Luck**, and so on. Like the damage-type Specializations, each grants an automatic **+1 to hit** when you curse with that Malediction, and bolts on a standing **Hook**:
 
-| Mastery Feat | Automatic Hook |
+| Specialization Feat | Automatic Hook |
 |---|---|
-| **Mastery — Wasting** | +1 to all Necrotic damage you deal |
-| **Mastery — Ill Luck** | the cursed target may not use rerolls |
-| **Mastery — Palsy** | a Palsied target also cannot take Reactions or Opportunity Attacks |
-| **Mastery — Stupor** | a Stupored target takes −2 to its save against the curse |
-| **Mastery — Enfeeblement** | the target cannot gain Temp Hit Points while cursed |
-| **Mastery — Dread** | allies within 10′ of the cursed target also take −1 to their attacks (Fear) |
+| **Specialization — Wasting** | +1 to all Necrotic damage you deal |
+| **Specialization — Ill Luck** | the cursed target may not use rerolls |
+| **Specialization — Palsy** | a Palsied target also cannot take Reactions or Opportunity Attacks |
+| **Specialization — Stupor** | a Stupored target takes −2 to its save against the curse |
+| **Specialization — Enfeeblement** | the target cannot gain Temp Hit Points while cursed |
+| **Specialization — Dread** | allies within 10′ of the cursed target also take −1 to their attacks (Fear) |
 
 These are open to the Witch **and to any other** who learns the Black Tongue and the Black Faith — the curse answers the tongue that shapes it, not the class.
 

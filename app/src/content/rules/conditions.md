@@ -14,7 +14,7 @@ A **Condition** is a lasting effect an Ability hangs on its target — as oppose
 ## The ladders
 
 ### Ongoing Damage
-Typed damage each round — **Bleed, Fire, Poison** (and Acid, Cold, Necrotic, Lightning, Radiant, Eldritch). The type lets resistance, immunity, and Vulnerable interact. **Eldritch** is the odd one: it attacks AC, **ignores Temp HP**, and almost nothing in the world resists it — the mark of [The Outside](../abilities/#the-outside).
+Typed damage each round — **Bleed, Fire, Poison** (and Acid, Cold, Necrotic, Lightning, Radiant, Eldritch). The type lets resistance, immunity, and Vulnerable interact. **Eldritch Damage** ignores Temp HP — the mark of [The Outside](../abilities/#the-outside).
 
 | Rank | Effect | Cost |
 |---|---|---|

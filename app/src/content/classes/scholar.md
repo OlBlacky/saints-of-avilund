@@ -90,7 +90,7 @@ Your chosen **Path** adds a second Class Attribute, a second Ability Category, t
 
 ### [New Magic](../../abilities/#new-magic) — *Arcanist*
 
-<!-- CUE — the Collegium's destructive art, built as spells of your own: four elemental chassis (ranged/close, single/burst), each bought with one element and a name, then re-bought to make another. An element's signature effect unlocks with its Mastery feat; wand, staff, spellbook and scroll each lend a further hook. -->
+<!-- CUE — the Collegium's destructive art, built as spells of your own: four elemental chassis (ranged/close, single/burst), each bought with one element and a name, then re-bought to make another. An element's signature effect unlocks with its Specialization Feat; wand, staff, spellbook and scroll each lend a further hook. -->
 
 *Telum Eminus (ranged) · Tactus Comminus (close) · Globus Eminus (ranged burst) · Corona Comminus (close burst) · Lorica Arcana (arcane armour) · Scutum Virium (force shield) · Manus Eminus (telekinesis) · Lumen Arcanum (light)*
 

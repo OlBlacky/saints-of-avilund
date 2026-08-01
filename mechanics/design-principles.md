@@ -64,7 +64,7 @@ Every new Ability gets eyeballed against a reference card of the same shape befo
 ## 9. One language, capitalized
 
 - **Capitalize every game concept and title**: Ability, Save, Major Advance, Minor Advance, Class, Path, Feat, Quirk, Rank, Ladder, Condition, Wounded, DC. If it's a defined game term, it wears a capital; if it doesn't deserve a capital, it isn't a term.
-- **One name per concept, one concept per name.** Pick the canonical term and use it everywhere — e.g. **Mastery** is the damage-type feat family ("Mastery — Fire"); **Specialization** is the implement/weapon/armour family. Never blur them.
+- **One name per concept, one concept per name.** Pick the canonical term and use it everywhere. When two near-synonyms compete, collapse them — e.g. **Specialization** is the one specialist-Feat term, covering weapons, armour, implements, damage types ("Specialization — Fire"), and Maledictions alike ("Mastery" is retired).
 - Established canonical terms: Class Attribute (not Primary/Key Attribute), Ability Category (not bare "Category"), Class Skills / Additional Class Skills, Feats (not "Perks").
 - Canadian spelling: -ize/-ization with a z (Specialization), but keep -our/-re/-ce (armour, defence).
 - On renaming a term, sweep every occurrence — mechanics, rulebook, site data — in the same pass. A half-renamed term is worse than a bad name.

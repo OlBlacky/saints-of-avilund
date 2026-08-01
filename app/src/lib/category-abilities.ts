@@ -105,7 +105,7 @@ const GA_NOTE = (item: string): string =>
   `Unlike most Abilities, this Ability is closely tied to a particular ${item}, which has its own Ability defined. ` +
   `While most characters can use only that Ability's baseline variables, this Ability lets you select its Advancements: ` +
   `purchase Generic Advances per the Ladder below (each Advance raises one variable a Rank), then apply them to any variable the ${item} allows.`;
-const GA_MASTERY = (item: string, feat: string): string =>
+const GA_SPECIALIZATION = (item: string, feat: string): string =>
   `Additionally, with the ${feat} Feat you gain a second Generic Advances Ladder — apply it to a second variable the ${item} allows.`;
 
 // The crafting track on Read Scrolls / Read Spellbooks: Scribe copies from a
@@ -1110,7 +1110,7 @@ const READ_SCROLLS: Ability = {
   },
   options: [
     { label: 'Generic Advancement Ladder', note: GA_NOTE('scroll'), ladders: [GENERIC_ADV] },
-    { label: 'Implement Specialization Hooks', note: GA_MASTERY('scroll', 'Scroll Specialization') },
+    { label: 'Implement Specialization Hooks', note: GA_SPECIALIZATION('scroll', 'Scroll Specialization') },
   ],
   extraVars: [SCRIBE_CREATE],
 };
@@ -1131,7 +1131,7 @@ const READ_SPELLBOOKS: Ability = {
   },
   options: [
     { label: 'Generic Advancement Ladder', note: GA_NOTE('spellbook'), ladders: [GENERIC_ADV] },
-    { label: 'Implement Specialization Hooks', note: GA_MASTERY('spellbook', 'Spellbook Specialization') + ' A Spellbook Specialist also adds Int to a damaging spell’s damage.' },
+    { label: 'Implement Specialization Hooks', note: GA_SPECIALIZATION('spellbook', 'Spellbook Specialization') + ' A Spellbook Specialist also adds Int to a damaging spell’s damage.' },
   ],
   extraVars: [SCRIBE_CREATE],
 };
@@ -1146,7 +1146,7 @@ const CONDUCT_RITUAL: Ability = {
   },
   options: [
     { label: 'Generic Advancement Ladder', note: GA_NOTE('ritual'), ladders: [GENERIC_ADV] },
-    { label: 'Ritual Specialization Hooks', note: GA_MASTERY('ritual', 'Ritual Specialist') + ' A Ritual Specialist also gains +1 to any d20 roll for the ritual.' },
+    { label: 'Ritual Specialization Hooks', note: GA_SPECIALIZATION('ritual', 'Ritual Specialist') + ' A Ritual Specialist also gains +1 to any d20 roll for the ritual.' },
   ],
   extraVars: [
     { name: 'Participant Ladder', base: '—', advances: [{ value: 'improved one degree (more effect from fewer participants)', cost: 'M' }] },
@@ -1425,7 +1425,7 @@ const WIELD_ARTEFACT: Ability = {
   },
   options: [
     { label: 'Generic Advancement Ladder', note: GA_NOTE('artefact'), ladders: [GENERIC_ADV] },
-    { label: 'Implement Specialization Hooks', note: GA_MASTERY('artefact', 'Artefact Specialization'), detail: ['Feat Hook (a studied Elder fragment) → a bonus when wielding artefacts of that tradition — e.g. +1 to its boosts, or a safe Overdraw'] },
+    { label: 'Implement Specialization Hooks', note: GA_SPECIALIZATION('artefact', 'Artefact Specialization'), detail: ['Feat Hook (a studied Elder fragment) → a bonus when wielding artefacts of that tradition — e.g. +1 to its boosts, or a safe Overdraw'] },
   ],
 };
 
@@ -1442,7 +1442,7 @@ const ELDER_MAGIC: Ability[] = [
       damage: { base: 'Cha (Psychic)', advances: [{ value: 'Cha + 1', cost: 'm' }, { value: 'Cha + 1d6', cost: 'm' }, { value: 'Cha + 2d6', cost: 'M', note: 'L5' }] },
       duration: { base: 'Instant' },
     },
-    options: [{ label: 'Mastery Hooks', detail: ['Mastery — Psychic → automatic +1 to hit and a critical hit on 19–20; unlocks a purchasable Fear ladder (−1 to attack → can’t move closer → can’t attack you → flees; save ends)'] }],
+    options: [{ label: 'Specialization Hooks', detail: ['Specialization — Psychic → automatic +1 to hit and a critical hit on 19–20; unlocks a purchasable Fear ladder (−1 to attack → can’t move closer → can’t attack you → flees; save ends)'] }],
   },
   {
     name: 'Memory of Celestia', category: 'Elder Magic', role: 'Control · debuff', mode: 'Attack',
@@ -1463,7 +1463,7 @@ const ELDER_MAGIC: Ability[] = [
       duration: { base: 'Save ends' },
     },
     options: [
-      { label: 'Mastery Hooks', detail: ['Mastery — Radiant (off-list — typically via multiclass) → +1 to hit, and unlocks a Radiant damage ladder (Cha → Cha + 1 → Cha + 1d6 → Cha + 2d6 at L5)'] },
+      { label: 'Specialization Hooks', detail: ['Specialization — Radiant (off-list — typically via multiclass) → +1 to hit, and unlocks a Radiant damage ladder (Cha → Cha + 1 → Cha + 1d6 → Cha + 2d6 at L5)'] },
       { label: 'Implement Specialization Hooks', detail: ["Artefact → Push 5'"] },
     ],
   },
@@ -1486,7 +1486,7 @@ const ELDER_MAGIC: Ability[] = [
       duration: { base: 'Instant (Slowed: save ends)' },
     },
     options: [
-      { label: 'Mastery Hooks', detail: ['Mastery — Psychic → adds a Psychic damage ladder onto the Effect (1 → Cha → Cha + 1 → Cha + 1 and Ongoing 1, save ends)'] },
+      { label: 'Specialization Hooks', detail: ['Specialization — Psychic → adds a Psychic damage ladder onto the Effect (1 → Cha → Cha + 1 → Cha + 1 and Ongoing 1, save ends)'] },
       { label: 'Implement Specialization Hooks', detail: ["Spellbook → +5' to the burst, and unlocks a Movement debuff ladder (−5'/−10'/−15'/Immobilized) that replaces the Slowed conditions"] },
     ],
   },
@@ -1509,7 +1509,7 @@ const ELDER_MAGIC: Ability[] = [
       duration: { base: 'Save ends' },
     },
     options: [
-      { label: 'Mastery Hooks', detail: ['Mastery — Psychic → 1 Psychic damage each round it stays bound'] },
+      { label: 'Specialization Hooks', detail: ['Specialization — Psychic → 1 Psychic damage each round it stays bound'] },
       { label: 'Implement Specialization Hooks', detail: ['Spellbook → unlocks a Targets ladder (+1 / +2 / +3 / +4 targets)', 'Artefact → while you hold the artefact, the target takes −1 to its saves against the Edict'] },
     ],
   },
@@ -1532,7 +1532,7 @@ const ELDER_MAGIC: Ability[] = [
       duration: { base: 'Save ends' },
     },
     options: [
-      { label: 'Mastery Hooks', detail: ['Mastery — Psychic → 1 Psychic damage each round the target is affected'] },
+      { label: 'Specialization Hooks', detail: ['Specialization — Psychic → 1 Psychic damage each round the target is affected'] },
       { label: 'Implement Specialization Hooks', detail: ["Magic Staff (off-list — typically via multiclass) → +1 to your AC while any target remains under the Effect", "Artefact → −1 to the target's saves, and unlocks a Targets ladder (+1 / +2 / +3 / all enemies in range)"] },
     ],
   },
@@ -1576,7 +1576,7 @@ const ELDER_MAGIC: Ability[] = [
 // chassis is bought with ONE element + a custom name, then re-bought to
 // make another spell. Dexterity vs AC aims; Intelligence powers damage.
 // An element's signature Effect ladder is FEAT-GATED (the matching
-// Mastery — [type] feat), so those ladders live in each card's Feats line;
+// Specialization — [type] feat), so those ladders live in each card's Feats line;
 // the Effect(s) row shows only the baseline (damage, or a Defence ladder
 // on the close chassis). Implements (wand/staff/spellbook/scroll) lend hooks.
 const FREQ_ATWILL_L3: Variable = { base: 'Daily', advances: [{ value: 'Encounter', cost: 'M' }, { value: 'At-Will', cost: 'M', note: 'L3' }] };
@@ -1588,21 +1588,21 @@ const CLOSE_AOE_DMG: Variable = { base: 'Int', advances: [{ value: '1d4 + Int', 
 const NM_DEFENCE: Variable = { base: '+1 to one Defence (until your next turn)', advances: [{ value: '+1 to all Defences', cost: 'm' }, { value: '+2 to all Defences', cost: 'm' }, { value: '+2 to all Defences and DR 1', cost: 'M' }] };
 const NM_AOE_TARGETS: Variable = { base: 'Each creature in the burst — one Dexterity vs AC roll resolved against each (friendly fire included)' };
 
-const NM_ELEMENT_DETAIL = 'Choose one elemental damage type when you build the spell — Fire, Acid, Cold, Lightning, Sonic, or Force. This is the damage type of the Ability, and you can unlock additional effects if you have the Mastery Feat for that element.';
+const NM_ELEMENT_DETAIL = 'Choose one elemental damage type when you build the spell — Fire, Acid, Cold, Lightning, Sonic, or Force. This is the damage type of the Ability, and you can unlock additional effects if you have the Specialization Feat for that element.';
 const NM_IMPL_LIST = [
   'Wand → +1 to hit',
   'Magic Staff → +1 to one Defence until your next round',
-  'Spellbook → the Elemental Mastery Effect ladder lands one Rank higher',
+  'Spellbook → the Elemental Specialization Effect ladder lands one Rank higher',
   'Scroll → once per encounter, cast without consuming the scroll',
 ];
 const NM_IMPL_AOE_LIST = [
   'Wand → +1 to hit',
   "Magic Staff → +5' burst radius",
-  'Spellbook → the Elemental Mastery Effect ladder lands one Rank higher',
+  'Spellbook → the Elemental Specialization Effect ladder lands one Rank higher',
   'Scroll → once per encounter, cast without consuming the scroll',
 ];
-const NM_MASTERY_NOTE = 'Your spell does the damage based on your Damage Ladder above, and you can additionally purchase from the relevant Effect Ladder below.';
-const NM_HOOK_NOTE = 'You gain +1 to hit with the spell if your Mastery Feat and the Damage Type are the same. Additionally, you get an automatic Effect which improves as you Advance the Damage Ladder in the spell, as follows:';
+const NM_SPECIALIZATION_NOTE = 'Your spell does the damage based on your Damage Ladder above, and you can additionally purchase from the relevant Effect Ladder below.';
+const NM_HOOK_NOTE = 'You gain +1 to hit with the spell if your Specialization Feat and the Damage Type are the same. Additionally, you get an automatic Effect which improves as you Advance the Damage Ladder in the spell, as follows:';
 
 // The four New Magic Effect ladders, each tied to its damage types. Same on
 // every offensive chassis (any element can be built into any chassis).
@@ -1707,8 +1707,8 @@ const NEW_MAGIC: Ability[] = [
     builder: true,
     options: [
       { label: 'Element', detail: NM_ELEMENT_DETAIL, placement: 'top' },
-      { label: 'Elemental Mastery - Automatic Hooks', note: NM_HOOK_NOTE, hideCosts: true, ladders: [HKL_PIERCE, HKL_SPLASH, HKL_GLANCING] },
-      { label: 'Elemental Mastery - Optional Hooks', note: NM_MASTERY_NOTE, baseCost: 'm', ladders: NM_EFFECT_LADDERS },
+      { label: 'Elemental Specialization - Automatic Hooks', note: NM_HOOK_NOTE, hideCosts: true, ladders: [HKL_PIERCE, HKL_SPLASH, HKL_GLANCING] },
+      { label: 'Elemental Specialization - Optional Hooks', note: NM_SPECIALIZATION_NOTE, baseCost: 'm', ladders: NM_EFFECT_LADDERS },
       { label: 'Implement Specialization Hooks', detail: NM_IMPL_LIST },
     ],
   },
@@ -1728,8 +1728,8 @@ const NEW_MAGIC: Ability[] = [
     options: [
       { label: 'Defence (baseline)', detail: 'The Effect row’s Defence ladder is always on — no element or feat needed.' },
       { label: 'Element', detail: NM_ELEMENT_DETAIL, placement: 'top' },
-      { label: 'Elemental Mastery - Automatic Hooks', note: NM_HOOK_NOTE, hideCosts: true, ladders: [HKL_RETAL, HKL_SPLASH, HKL_GLANCING] },
-      { label: 'Elemental Mastery - Optional Hooks', note: NM_MASTERY_NOTE, baseCost: 'm', ladders: NM_EFFECT_LADDERS },
+      { label: 'Elemental Specialization - Automatic Hooks', note: NM_HOOK_NOTE, hideCosts: true, ladders: [HKL_RETAL, HKL_SPLASH, HKL_GLANCING] },
+      { label: 'Elemental Specialization - Optional Hooks', note: NM_SPECIALIZATION_NOTE, baseCost: 'm', ladders: NM_EFFECT_LADDERS },
       { label: 'Implement Specialization Hooks', detail: NM_IMPL_LIST },
     ],
   },
@@ -1747,8 +1747,8 @@ const NEW_MAGIC: Ability[] = [
     builder: true,
     options: [
       { label: 'Element', detail: NM_ELEMENT_DETAIL, placement: 'top' },
-      { label: 'Elemental Mastery - Automatic Hooks', note: NM_HOOK_NOTE, hideCosts: true, ladders: [HKL_PIERCE, HKL_LINGER, HKL_GLANCING] },
-      { label: 'Elemental Mastery - Optional Hooks', note: NM_MASTERY_NOTE, baseCost: 'm', ladders: NM_EFFECT_LADDERS },
+      { label: 'Elemental Specialization - Automatic Hooks', note: NM_HOOK_NOTE, hideCosts: true, ladders: [HKL_PIERCE, HKL_LINGER, HKL_GLANCING] },
+      { label: 'Elemental Specialization - Optional Hooks', note: NM_SPECIALIZATION_NOTE, baseCost: 'm', ladders: NM_EFFECT_LADDERS },
       { label: 'Implement Specialization Hooks', detail: NM_IMPL_AOE_LIST },
     ],
   },
@@ -1768,8 +1768,8 @@ const NEW_MAGIC: Ability[] = [
     options: [
       { label: 'Defence (baseline)', detail: 'The Effect row’s Defence ladder is always on — you stand in your own burst, so it needs no element or feat.' },
       { label: 'Element', detail: NM_ELEMENT_DETAIL, placement: 'top' },
-      { label: 'Elemental Mastery - Automatic Hooks', note: NM_HOOK_NOTE, hideCosts: true, ladders: [HKL_RETAL, HKL_LINGER, HKL_GLANCING] },
-      { label: 'Elemental Mastery - Optional Hooks', note: NM_MASTERY_NOTE, baseCost: 'm', ladders: NM_EFFECT_LADDERS },
+      { label: 'Elemental Specialization - Automatic Hooks', note: NM_HOOK_NOTE, hideCosts: true, ladders: [HKL_RETAL, HKL_LINGER, HKL_GLANCING] },
+      { label: 'Elemental Specialization - Optional Hooks', note: NM_SPECIALIZATION_NOTE, baseCost: 'm', ladders: NM_EFFECT_LADDERS },
       { label: 'Implement Specialization Hooks', detail: NM_IMPL_AOE_LIST },
     ],
   },
@@ -1808,7 +1808,7 @@ const NEW_MAGIC: Ability[] = [
       duration: { base: 'Until the start of your next turn' },
     },
     options: [
-      { label: 'Mastery Hooks', detail: ['Mastery — Force → the bonus applies to all Armoured Defences, not just AC'] },
+      { label: 'Specialization Hooks', detail: ['Specialization — Force → the bonus applies to all Armoured Defences, not just AC'] },
       { label: 'Implement Specialization Hooks', detail: ['Magic Staff → +1 to both AC and DR'] },
     ],
   },
@@ -1846,7 +1846,7 @@ const NEW_MAGIC: Ability[] = [
       duration: { base: '1 hour', advances: [{ value: '2 hours', cost: 'm' }, { value: '4 hours', cost: 'm' }, { value: 'until you dismiss it', cost: 'M' }] },
     },
     options: [
-      { label: 'Mastery Hooks', detail: ['Mastery — Fire → the light is a magical, unquenchable flame (and behaves like a torch for setting things alight)'] },
+      { label: 'Specialization Hooks', detail: ['Specialization — Fire → the light is a magical, unquenchable flame (and behaves like a torch for setting things alight)'] },
       { label: 'Implement Specialization Hooks', detail: ["Wand → adds a Range ladder (30'/45'/60'/120') that tracks the Brightness Rank — place the light as far as it reaches"] },
     ],
   },
@@ -2515,11 +2515,11 @@ const CURSE_IMPL_LIST = [
   'Spellbook → the chosen Malediction ladder lands one Rank higher',
   'Scroll → once per encounter, whisper the curse without consuming the scroll',
 ];
-// Malediction Mastery hooks — the automatic rider each "Mastery — [Malediction]"
+// Malediction Specialization hooks — the automatic rider each "Specialization — [Malediction]"
 // Feat bolts on (see the Feats page). The Feat also grants +1 to hit with that
 // Malediction. Prerequisite: Black Tongue + Religion (Black Faith), a Minor each.
-const CURSE_MASTERY_NOTE = 'With the matching Mastery — [Malediction] Feat (requires Language (Black Tongue) and Religion (Black Faith)): +1 to hit when you curse with that Malediction, plus an automatic Hook:';
-const CURSE_MASTERY_HOOKS = [
+const CURSE_SPECIALIZATION_NOTE = 'With the matching Specialization — [Malediction] Feat (requires Language (Black Tongue) and Religion (Black Faith)): +1 to hit when you curse with that Malediction, plus an automatic Hook:';
+const CURSE_SPECIALIZATION_HOOKS = [
   'Wasting → +1 to all Necrotic damage you deal',
   'Ill Luck → the cursed target may not use rerolls',
   'Palsy → a Palsied target also cannot take Reactions or Opportunity Attacks',
@@ -2545,7 +2545,7 @@ const WITCHCRAFT: Ability[] = [
     options: [
       { label: 'Malediction', detail: 'Choose one Malediction when you whisper this curse, as an Arcanist picks an element — it is the curse’s effect, and advances on its own ladder. Buy this Ability again to whisper another curse with a different Malediction.', placement: 'top' },
       { label: 'The Maledictions — choose one', ladders: CURSE_MALEDICTIONS },
-      { label: 'Malediction Mastery Hooks', note: CURSE_MASTERY_NOTE, detail: CURSE_MASTERY_HOOKS },
+      { label: 'Malediction Specialization Hooks', note: CURSE_SPECIALIZATION_NOTE, detail: CURSE_SPECIALIZATION_HOOKS },
       { label: 'Implement Specialization Hooks', detail: CURSE_IMPL_LIST },
     ],
   },
@@ -2565,7 +2565,7 @@ const WITCHCRAFT: Ability[] = [
     options: [
       { label: 'Malediction', detail: 'As Dictiones Atras Susurrare, but proclaimed over an area — choose one Malediction and it strikes every enemy in the burst. Buy this Ability again for another curse with a different Malediction.', placement: 'top' },
       { label: 'The Maledictions — choose one', ladders: CURSE_MALEDICTIONS },
-      { label: 'Malediction Mastery Hooks', note: CURSE_MASTERY_NOTE, detail: CURSE_MASTERY_HOOKS },
+      { label: 'Malediction Specialization Hooks', note: CURSE_SPECIALIZATION_NOTE, detail: CURSE_SPECIALIZATION_HOOKS },
       { label: 'Implement Specialization Hooks', detail: CURSE_IMPL_LIST },
     ],
   },
@@ -2625,9 +2625,18 @@ const WITCHCRAFT: Ability[] = [
 // ignores Temp HP, and almost nothing in the world resists it. His chaos is the
 // Madness ladder (Confused → Insane, see the Conditions page). Card names are
 // provisional (Les to bless/rename); the transformative Vows come later.
-const ELDRITCH_NOTE = 'Eldritch damage attacks AC and ignores Temp HP — borrowed hit points do not stop it, and almost nothing in the world resists it.';
-const OVERLOAD_NOTE = 'Overload — when you use this Ability you may Overload it. The Surge (choose one): +Con Eldritch damage; or push one of this Ability’s effect ladders one Rank higher for this use; or +1 target (or +5\' to a burst). Then the fuse bites: make a Constitution save against this Ability’s own save DC. On a failure you take 1d4 Eldritch damage (it cannot be reduced); on a critical failure (a natural 1) you are also Dazed until your next turn.';
+const ELDRITCH_NOTE = 'Eldritch Damage ignores Temp HP.';
+const OVERLOAD_NOTE = 'Overload — when you use this Ability you may Overload it. You may choose to do +Con Damage or hit +1 target within range. Then make a Constitution save against this Ability’s own save DC. On a failure you take 1d4 Eldritch damage (it cannot be reduced); on a critical failure you are also Dazed until your next turn.';
 const ORB_HOOK = ['Orb → +1 to your Overload Constitution saves (the globe steadies the channel)'];
+// Fuller implement hooks for the ability cards (Orb is the Cosmologist's own;
+// the rest are off-list, via multiclass), parallel to New Magic's.
+const OUTSIDE_IMPL = [
+  'Orb → +1 to your Overload Constitution saves (the globe steadies the channel)',
+  'Wand → +1 to hit',
+  'Magic Staff → +1 to one Defence until your next round',
+  'Spellbook → the Madness ladder lands one Rank higher, or +Wis to a damaging Ability’s damage',
+  'Scroll → once per encounter, cast without consuming the scroll',
+];
 const ELDRITCH_DMG: Variable = { base: '1d6 Eldritch', advances: [{ value: '1d6 + Wis Eldritch', cost: 'm' }, { value: '1d8 + Wis Eldritch', cost: 'm' }, { value: '2d8 + Wis Eldritch', cost: 'M', note: 'L5' }] };
 // Mirrors the Madness ladder on the Conditions page.
 const MAD_LADDER: Variable = {
@@ -2655,13 +2664,13 @@ const WIELD_ORB: Ability = {
   },
   options: [
     { label: 'Generic Advancement Ladder', note: GA_NOTE('orb'), ladders: [GENERIC_ADV] },
-    { label: 'Implement Specialization Hooks', note: GA_MASTERY('orb', 'Orb Specialization'), detail: ORB_HOOK },
+    { label: 'Implement Specialization Hooks', note: GA_SPECIALIZATION('orb', 'Orb Specialization'), detail: ORB_HOOK },
   ],
 };
 
 const OUTSIDE: Ability[] = [
   {
-    name: 'Rupture', category: 'The Outside', role: 'Offensive · blast', mode: 'Attack',
+    name: 'Eldritch Blast', category: 'The Outside', role: 'Offensive · blast', mode: 'Attack',
     vars: {
       frequency: FREQ_ATWILL_L3,
       action: { base: 'Standard' },
@@ -2673,8 +2682,8 @@ const OUTSIDE: Ability[] = [
     },
     options: [
       { label: 'Overload', note: OVERLOAD_NOTE, placement: 'top' },
-      { label: 'Eldritch', note: ELDRITCH_NOTE },
-      { label: 'Implement Specialization Hooks', detail: ORB_HOOK },
+      { label: 'Eldritch Damage', note: ELDRITCH_NOTE },
+      { label: 'Implement Specialization Hooks', detail: OUTSIDE_IMPL },
     ],
   },
   {
@@ -2690,7 +2699,7 @@ const OUTSIDE: Ability[] = [
     },
     options: [
       { label: 'Overload', note: OVERLOAD_NOTE, placement: 'top' },
-      { label: 'Implement Specialization Hooks', detail: ORB_HOOK },
+      { label: 'Implement Specialization Hooks', detail: OUTSIDE_IMPL },
     ],
   },
   {
@@ -2707,8 +2716,8 @@ const OUTSIDE: Ability[] = [
     },
     options: [
       { label: 'Overload', note: OVERLOAD_NOTE, placement: 'top' },
-      { label: 'Eldritch', note: ELDRITCH_NOTE },
-      { label: 'Implement Specialization Hooks', detail: ORB_HOOK },
+      { label: 'Eldritch Damage', note: ELDRITCH_NOTE },
+      { label: 'Implement Specialization Hooks', detail: OUTSIDE_IMPL },
     ],
   },
   {
@@ -2729,7 +2738,7 @@ const OUTSIDE: Ability[] = [
     },
     options: [
       { label: 'Overload', note: OVERLOAD_NOTE, placement: 'top' },
-      { label: 'Implement Specialization Hooks', detail: ORB_HOOK },
+      { label: 'Implement Specialization Hooks', detail: OUTSIDE_IMPL },
     ],
   },
   {
@@ -2750,7 +2759,7 @@ const OUTSIDE: Ability[] = [
     },
     options: [
       { label: 'Overload', note: OVERLOAD_NOTE, placement: 'top' },
-      { label: 'Implement Specialization Hooks', detail: ORB_HOOK },
+      { label: 'Implement Specialization Hooks', detail: OUTSIDE_IMPL },
     ],
   },
   WIELD_ORB,
