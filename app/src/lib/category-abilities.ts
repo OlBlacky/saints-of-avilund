@@ -2784,23 +2784,24 @@ const HARVEST: Ability[] = [
       action: { base: 'Foraging and gathering, over the day’s travel or rest' },
       range: { base: 'The surrounding country' },
       targets: {
-        base: 'Yourself and Wis others',
+        base: 'Yourself',
         advances: [
-          { value: 'Twice Wis others', cost: 'm' },
-          { value: 'A whole company (a score of mouths)', cost: 'm' },
-          { value: 'A column — as many as there are hands to gather', cost: 'M' },
+          { value: 'And your immediate travelling companions', cost: 'm' },
+          { value: 'Up to 10 people', cost: 'm' },
+          { value: 'Up to 20 people', cost: 'M' },
         ],
       },
       effects: {
-        base: 'The land feeds them: a day’s food and water, and the makings your craft needs (herbs, simples, salves). Those who eat the hot meal gain 2 Temp HP.',
+        base: 'The land feeds them: a day’s food and water, and the makings your craft needs (herbs, simples, salves). Those who eat the hot meal gain 1 Temp HP.',
         advances: [
+          { value: '2 Temp HP', cost: 'm' },
           { value: '3 Temp HP', cost: 'm' },
-          { value: '3 Temp HP, even in hard country (moor, marsh, mountain)', cost: 'm' },
-          { value: '3 Temp HP, even in barren or blighted land — the land always yields to you', cost: 'M' },
+          { value: '3 Temp HP, +1 to Saves, and you discover 1d4 Supply for a Herbalist’s Bag', cost: 'M' },
         ],
       },
       duration: { base: 'The day (Temp HP until lost)' },
     },
+    options: [{ label: 'Ingredients', note: 'The Naturalist will need 1 cp worth of seasonings for every 10 people.' }],
   },
   {
     name: 'Simples', category: 'Harvest', role: 'Remedy', mode: 'Effect',
@@ -2813,19 +2814,20 @@ const HARVEST: Ability[] = [
         advances: [
           { value: 'Two draughts', cost: 'm' },
           { value: 'Wis draughts', cost: 'm' },
-          { value: 'Wis draughts, and they keep for a week', cost: 'M' },
+          { value: 'Wis + 2 draughts, and they keep for a week', cost: 'M' },
         ],
       },
       effects: {
-        base: 'The drinker takes +2 on Saves against poison and disease (a poison’s Interval Saves included).',
+        base: 'The drinker takes +1 on Saves against poison and disease (a poison’s Interval Saves included).',
         advances: [
-          { value: 'And may attempt a Save at once, when the draught is drunk, against one poison or disease already in them', cost: 'm' },
-          { value: 'And it comforts: 2 Temp HP when drunk', cost: 'm' },
-          { value: 'A sovereign draught: +3 on the Saves, and 3 Temp HP', cost: 'M' },
+          { value: 'And may make a Save immediately', cost: 'm' },
+          { value: 'And 1 Temp HP', cost: 'm' },
+          { value: '+2 on the Saves, and 2 Temp HP', cost: 'M' },
         ],
       },
-      duration: { base: 'Until the drinker’s next rest' },
+      duration: { base: 'The draughts are meant to be drunk within 24 hours (the Targets ladder can extend their keeping); the Save bonus and Temp HP also last 24 hours.' },
     },
+    options: [{ label: 'Materials', note: 'Requires a Herbalist’s Bag, and uses 1 Supply per draught. Draughts not drunk right away need a suitable vessel (bottle, flask, or the like).' }],
   },
   {
     name: 'Hedge-Wise', category: 'Harvest', role: 'Movement · defensive', mode: 'Passive',
@@ -2839,58 +2841,30 @@ const HARVEST: Ability[] = [
           { value: 'The whole company, single file at your pace', cost: 'M' },
         ],
       },
-      effects: {
-        base: 'Living growth is no obstacle: ignore Difficult Terrain from vegetation — hedge, briar, crop and root neither slow you nor tear at you.',
-        advances: [
-          { value: 'The green hides you: +1 to Stealth checks while in growth', cost: 'm' },
-          { value: 'You leave no trail through growing country, and cannot be tracked there', cost: 'm' },
-          { value: 'The hedge shelters you: while in growth, +1 AC against ranged attacks', cost: 'M' },
-        ],
-      },
     },
-  },
-  {
-    name: 'Sky-Wise', category: 'Harvest', role: 'Utility', mode: 'Effect',
-    vars: {
-      frequency: { base: 'Daily' },
-      action: { base: 'A reading of the sky (a few minutes)' },
-      range: { base: 'The country around you' },
-      targets: { base: 'You and your company' },
-      effects: {
-        base: 'Read the coming weather truly, a day ahead — no check; the sky tells you plainly what the Nature skill can only guess at.',
+    extraVars: [
+      {
+        name: 'Effect(s) — In Combat',
+        base: 'You ignore Difficult Terrain movement penalties from vegetation.',
         advances: [
-          { value: 'Three days ahead', cost: 'm' },
-          { value: 'A week ahead, and you always know the hour a turn will come', cost: 'm' },
-          { value: 'Never caught out: weather you foresaw cannot harm or hinder the company — shelter is found or made before it breaks', cost: 'M' },
+          { value: 'And +1 Stealth while in vegetation', cost: 'm' },
+          { value: 'And +1 AC while in vegetation', cost: 'm' },
+          { value: 'And DR 2 while in vegetation', cost: 'M' },
         ],
       },
-      duration: { base: 'Until the weather it read has passed' },
-    },
-  },
-  {
-    name: 'Tend the Field', category: 'Harvest', role: 'Utility · non-combat', mode: 'Effect',
-    vars: {
-      frequency: { base: 'Daily' },
-      action: { base: 'A day’s labour, or a season’s tending' },
-      range: { base: 'The land under your hands' },
-      targets: {
-        base: 'A garden, beast-plot or single field',
+      {
+        name: 'Effect(s) — Overland',
+        base: 'You ignore Difficult Terrain movement penalties from vegetation.',
         advances: [
-          { value: 'A farm', cost: 'm' },
-          { value: 'A village’s lands', cost: 'm' },
-          { value: 'An estate — a manor, an abbey’s holdings', cost: 'M' },
+          { value: 'And +1 Stealth and +1 Initiative while travelling where the vegetation is high or dense enough to partially conceal the travellers', cost: 'm' },
+          { value: 'And the DC to track the travellers is increased by 1', cost: 'm' },
+          { value: '+2 Stealth and Initiative, and the tracking DC is increased by 2', cost: 'M' },
         ],
       },
-      effects: {
-        base: 'Under your hand things grow: the land yields as if the season were kind — a failed harvest made poor, a poor one fair, a fair one good. You judge soil, seed and stock truly.',
-        advances: [
-          { value: 'Mend blight: halt a crop-sickness or a murrain, and save what remains', cost: 'm' },
-          { value: 'Out of season: coax green growth, ripen early, or keep a store sweet past its time', cost: 'm' },
-          { value: 'The land remembers: your tending holds a full year without you', cost: 'M' },
-        ],
-      },
-      duration: { base: 'The season' },
-    },
+    ],
+    options: [
+      { label: 'Two Ladders', note: 'The In-Combat and Overland Effect Ladders are bought and climbed separately. The Targets Ladder extends the Overland effects only — in combat, Hedge-Wise is always Self.' },
+    ],
   },
   {
     name: 'Countryman’s Welcome', category: 'Harvest', role: 'Utility · social', mode: 'Effect',
@@ -2899,23 +2873,67 @@ const HARVEST: Ability[] = [
       action: { base: 'An evening’s fellowship' },
       range: { base: 'A farmstead, hamlet or village' },
       targets: {
-        base: 'One household',
+        base: 'Self',
         advances: [
-          { value: 'A hamlet', cost: 'm' },
-          { value: 'A village', cost: 'm' },
-          { value: 'The countryside — word travels ahead of you', cost: 'M' },
+          { value: 'Self + 1 Ally', cost: 'm' },
+          { value: 'Self + Wis Allies', cost: 'm' },
+          { value: 'Self and all Allies', cost: 'm' },
+          { value: 'And you can extend the welcome to Wis days', cost: 'M' },
         ],
       },
       effects: {
         base: 'Country folk take you for their own: board and lodging offered where strangers are turned away, and rural NPC Attitude starts one step better toward you and your company.',
         advances: [
-          { value: 'The hearth restores: a night under their roof grants each guest 2 Temp HP come morning', cost: 'm' },
-          { value: 'The talk flows: rumours and local knowledge given freely, without coin', cost: 'm' },
-          { value: 'Their own to the end: at need they will hide you, feed you and say nothing', cost: 'M' },
+          { value: 'And the lodging, hearth and fellowship provide 1 Temp HP', cost: 'm' },
+          { value: '2 Temp HP', cost: 'm' },
+          { value: 'And they will provide you with material aid, per the DM’s adjudication', cost: 'M' },
         ],
       },
-      duration: { base: 'The stay' },
+      duration: { base: 'Temp HP last 24 hours' },
     },
+  },
+  {
+    name: 'Beast-Wise', category: 'Harvest', role: 'Utility · animals', mode: 'Passive',
+    vars: {
+      frequency: { base: 'Passive (always on)' },
+      targets: { base: 'Self' },
+      effects: {
+        base: '+1 to Handle Animal checks.',
+        advances: [
+          { value: 'And you may Push a trained animal as a Minor Action (the skill’s own ceiling is a Move Action)', cost: 'm' },
+          { value: 'And Calm or Control extends to wild animals, and training an animal takes days, not weeks', cost: 'm' },
+          { value: '+2 to Handle Animal, Push as a Free Action (once per turn), and Calm or Control works even on beasts set against you — another’s guard-dog, a war-trained mount', cost: 'M' },
+        ],
+      },
+    },
+  },
+  {
+    name: 'Eola-Gesta', category: 'Harvest', role: 'Utility · social', mode: 'Effect',
+    vars: {
+      frequency: { base: 'Daily' },
+      action: { base: 'An evening’s cavorting at a pub, inn, festival or similar gathering' },
+      range: { base: 'The building or event' },
+      targets: { base: 'Self' },
+      effects: {
+        base: 'The Naturalist becomes trained in Gather Information, which is Wis-based and can only be used with this Ability.',
+        advances: [
+          { value: 'And +1 to Gather Information rolls', cost: 'm' },
+          { value: 'And NPC Attitudes toward you are improved by 1 step', cost: 'm' },
+          { value: '+2 to Gather Information, and 2 steps of NPC Attitude improvement', cost: 'M' },
+        ],
+      },
+    },
+    extraVars: [
+      {
+        name: 'Cost',
+        base: '2 sp worth of drink and food, supplied or purchased',
+        advances: [
+          { value: '1 sp', cost: 'm' },
+          { value: '5 cp', cost: 'm' },
+          { value: 'Free', cost: 'M' },
+        ],
+      },
+    ],
   },
 ];
 

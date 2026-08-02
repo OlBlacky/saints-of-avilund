@@ -1,7 +1,7 @@
 ---
 title: Naturalist
 portfolio: Harvest
-summary: Wisdom · Harvest · HP 2. Choose the Botanist, the Hound Master, or the Cunning Man.
+summary: Wisdom · Harvest · HP 2. Choose the Botanist, the Shepherd, or the Drymann.
 order: 60
 ---
 
@@ -19,7 +19,7 @@ order: 60
 | **Class Skills** | Nature, Handle Animal |
 | **Weapon Proficiencies** | Flails/Chains, Staves *(the threshing flail and the walking staff)* |
 | **Armour Proficiencies** | Light Armour |
-| **Paths** | Botanist · Hound Master · Cunning Man |
+| **Paths** | Botanist · Shepherd · Drymann |
 
 ---
 
@@ -45,21 +45,21 @@ Your chosen **Path** adds a second Class Attribute, a second Ability Category, t
 | **Weapon Proficiencies** | *(none beyond the Class)* |
 | **Armour Proficiencies** | *(none beyond the Class)* |
 
-### Hound Master
+### Shepherd
 
-<!-- CUE — dogs, deliberately: not a menagerie, the DOG — the one beast that chose us back. Hounds for the hunt, the herd, the door and the fight. The hound does the fighting; the master directs (the "one attribute hits, another endures" precedent — the Ability commands run off Wis, Str is the master's own rough work; Str provisional). Husbandry will carry the game's animal-companion mechanics — a living beast, kin to Bind Spirit but no summon. All animal material lives here, held out of Harvest on purpose. -->
+<!-- CUE — dogs, deliberately: not a menagerie, the DOG — the one beast that chose us back. The shepherd and his dog are one working animal in two bodies: the flock, the fold, the door and the wolf. The dog does the fighting; the shepherd directs (the "one attribute hits, another endures" precedent — the Ability commands run off Wis, Str is his own rough work; Str provisional). Husbandry will carry the game's animal-companion mechanics — a living beast, kin to Bind Spirit but no summon. All animal material lives here, held out of Harvest on purpose. -->
 
 | | |
 |---|---|
 | **Class Attribute** | Strength |
 | **Ability Category** | Husbandry |
 | **Additional Class Skills** | Survival, Perception |
-| **Weapon Proficiencies** | Spears/Lances *(the huntsman's spear)* |
+| **Weapon Proficiencies** | Spears/Lances *(the wolf-spear)* |
 | **Armour Proficiencies** | *(none beyond the Class)* |
 
-### Cunning Man
+### Drymann
 
-<!-- CUE — TITLE PROVISIONAL (Les rethinking it). The sixth well lands here: Old Magic, the animism of the oldest peoples — spirits of place, beast, storm and stone; Kell-flavoured but a substratum under everywhere. Cha because animism is PARLEY: you bargain with spirits, you never command them. The least forbidden deep water — old and honoured, distrusted by the church but never evil; the church has an animist grandmother, so the village priest looks away. Reusable later by a Scout Path. -->
+<!-- CUE — the name: from the old word "drȳ", a worker of magic (the Kells' own word, worn smooth by Imperial mouths). The sixth well lands here: Old Magic, the animism of the oldest peoples — spirits of place, beast, storm and stone; Kell-flavoured but a substratum under everywhere. Cha because animism is PARLEY: you bargain with spirits, you never command them. The least forbidden deep water — old and honoured, distrusted by the church but never evil; the church has an animist grandmother, so the village priest looks away. Reusable later by a Scout Path. -->
 
 | | |
 |---|---|
@@ -74,13 +74,13 @@ Your chosen **Path** adds a second Class Attribute, a second Ability Category, t
 
 ## Abilities
 
-<!-- CUE — Harvest from the Class, a second Category from the Path. Wis is the land-sense every card leans on; each Path brings its own key: Botanist Int (the schooling), Hound Master Str (the rough work — the hound carries the teeth), Cunning Man Cha (the parley). Full cards in the Abilities section. -->
+<!-- CUE — Harvest from the Class, a second Category from the Path. Wis is the land-sense every card leans on; each Path brings its own key: Botanist Int (the schooling), Shepherd Str (the rough work — the dog carries the teeth), Drymann Cha (the parley). Full cards in the Abilities section. -->
 
 ### [Harvest](../../abilities/#harvest) — *the Class Category*
 
 <!-- CUE — the common country craft, no attacks. Comfort as armour: the meal, the draught, the hearth — small Temp HP, stacking. -->
 
-*Provender · Simples · Hedge-Wise · Sky-Wise · Tend the Field · Countryman's Welcome*
+*Provender · Simples · Hedge-Wise · Beast-Wise · Countryman's Welcome · Eola-Gesta*
 
 ### Botany — *Botanist*
 
@@ -88,13 +88,13 @@ Your chosen **Path** adds a second Class Attribute, a second Ability Category, t
 
 *(cards to come)*
 
-### Husbandry — *Hound Master*
+### Husbandry — *Shepherd*
 
-<!-- CUE — cards not yet built. The animal-companion mechanics live here: the hound itself, its training, the work it does at the master's word. No link until cards exist. -->
+<!-- CUE — cards not yet built. The animal-companion mechanics live here: the dog itself, its training, the work it does at the shepherd's word. No link until cards exist. -->
 
 *(cards to come)*
 
-### Old Magic — *Cunning Man*
+### Old Magic — *Drymann*
 
 <!-- CUE — cards not yet built; needs its design pass (the well is defined in the setting: spirits of place/beast/storm/stone, bargained with in Kellish). No link until cards exist. -->
 
