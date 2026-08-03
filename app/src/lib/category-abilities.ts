@@ -2940,7 +2940,9 @@ const HARVEST: Ability[] = [
 // ── Husbandry (Naturalist — Shepherd) ───────────────────────────
 // The Shepherd's craft: the dog. Home of the game's first Animal Companion.
 // COMPANION RULES (general — locked by Les, Aug 2 2026, for ALL Companions):
-// a Companion has its own Level — 0 when bonded, rising whenever its owner
+// a Companion is nameable and describable by the player (the future Character
+// Builder must carry fields for both on every Companion card).
+// A Companion has its own Level — 0 when bonded, rising whenever its owner
 // levels thereafter, so one taken late or replaced lags naturally. Each of its
 // own levels earns it 1 Minor, and every third level a Major (m-m-M) —
 // slimmer than a PC's curve, so the beast stays a beast. The owner may ALSO
@@ -3018,7 +3020,7 @@ const HUSBANDRY: Ability[] = [
       },
       {
         label: 'A Companion',
-        note: 'The dog has its own Level: 0 when bonded, rising whenever its owner levels thereafter — one taken late, or a replacement, lags behind. Each of its own levels earns it 1 Minor Advance, and every third level a Major (the rule for all Companions). Its owner may also spend his own Advances on these Ladders.',
+        note: 'The dog is a character: give it a name and a description of its own — every Companion card carries both. It has its own Level: 0 when bonded, rising whenever its owner levels thereafter — one taken late, or a replacement, lags behind. Each of its own levels earns it 1 Minor Advance, and every third level a Major (the rule for all Companions). Its owner may also spend his own Advances on these Ladders.',
       },
       {
         label: 'Loss',
@@ -3070,11 +3072,23 @@ const HUSBANDRY: Ability[] = [
     name: 'Turn the Wolf', category: 'Husbandry', role: 'Defensive · control', mode: 'Attack',
     vars: {
       frequency: FREQ_ENC,
-      action: { base: 'Interrupt — when an opponent charges or moves toward you or an ally' },
+      action: {
+        base: 'Reaction — at the end of an opponent’s move, only if it moved closer to or adjacent to an ally',
+        advances: [
+          { value: 'Interrupt — at any point during an opponent’s move, if it attempted to move closer or adjacent to an ally', cost: 'm' },
+        ],
+      },
       range: { base: 'Sling, 1×WRI' },
       targets: { base: 'The moving opponent' },
       attack: { base: 'Dex vs AC' },
-      damage: { base: 'W (the sling stone — this card is not for killing)' },
+      damage: {
+        base: 'W',
+        advances: [
+          { value: 'W + 1', cost: 'm' },
+          { value: 'W + Dex', cost: 'm' },
+          { value: '2[W] + Dex', cost: 'M', note: 'L5' },
+        ],
+      },
       effects: {
         base: 'On a hit, the advance breaks: the target’s movement ends where it stands.',
         advances: [
@@ -3091,11 +3105,23 @@ const HUSBANDRY: Ability[] = [
     name: 'Ward the Fold', category: 'Husbandry', role: 'Defensive', mode: 'Attack',
     vars: {
       frequency: FREQ_ENC,
-      action: { base: 'Interrupt — when an opponent moves adjacent to an ally within your spear’s reach' },
+      action: {
+        base: 'Reaction — at the end of an opponent’s move, only if it moved closer to or adjacent to an ally',
+        advances: [
+          { value: 'Interrupt — at any point during an opponent’s move, if it attempted to move closer or adjacent to an ally', cost: 'm' },
+        ],
+      },
       range: { base: 'Spear’s reach' },
       targets: { base: 'The approaching opponent' },
       attack: { base: 'Dex vs AC' },
-      damage: { base: 'W (the wolf-spear — a jab, not a slaughter)' },
+      damage: {
+        base: 'W',
+        advances: [
+          { value: 'W + 1', cost: 'm' },
+          { value: 'W + Str', cost: 'm' },
+          { value: '2[W] + Str', cost: 'M', note: 'L5' },
+        ],
+      },
       effects: {
         base: 'On a hit, Push the opponent 5\', away from the ally.',
         advances: [
