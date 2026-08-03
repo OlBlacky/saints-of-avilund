@@ -1175,11 +1175,11 @@ const RESEARCH: Ability = {
     frequency: { base: 'Uncapped (limited by time)' },
     action: { base: '8 hours of study', advances: [{ value: '6 hours', cost: 'm' }, { value: '4 hours', cost: 'm' }, { value: '1 hour', cost: 'M' }] },
     effects: {
-      base: 'With relevant written sources, make a Knowledge Skill check vs a GM-set DC, with a +2 research bonus.',
+      base: 'With relevant written sources, make a Knowledge Skill check vs a GM-set DC, with a +1 research bonus.',
       advances: [
-        { value: 'the bonus is +3', cost: 'm' },
-        { value: '+4', cost: 'm' },
-        { value: '+5, and you may reroll (keep the better)', cost: 'M' },
+        { value: 'the bonus is +2', cost: 'm' },
+        { value: '+3', cost: 'm' },
+        { value: '+3, and you may reroll (keep the better)', cost: 'M' },
       ],
     },
   },
@@ -1188,14 +1188,16 @@ const RESEARCH: Ability = {
 const RECALL: Ability = {
   name: 'Recall', category: 'Letters', role: 'Utility', mode: 'Effect',
   vars: {
-    frequency: FREQ_FRIAR,
-    action: { base: 'Standard', advances: [{ value: 'Move', cost: 'M' }, { value: 'Minor', cost: 'M' }, { value: 'Free', cost: 'M' }] },
+    // Daily→Encounter as a MINOR is deliberate (Les, Aug 2026) — a mercy for
+    // this utility card; everywhere else that step prices as a Major.
+    frequency: { base: 'Daily', advances: [{ value: 'Encounter', cost: 'm' }, { value: 'Twice per Encounter', cost: 'M' }] },
+    action: { base: 'Standard', advances: [{ value: 'Move', cost: 'm' }, { value: 'Minor', cost: 'm' }, { value: 'Free', cost: 'M' }] },
     effects: {
       base: 'Make a Knowledge Skill check to recall a detail relevant to the situation or foe.',
       advances: [
         { value: 'the check is at +1', cost: 'm' },
         { value: 'at +2', cost: 'm' },
-        { value: 'at +2 — or make it with a Knowledge Skill you are untrained in', cost: 'M' },
+        { value: '+2, and you get a reroll — keep the highest', cost: 'M' },
       ],
     },
   },
@@ -1272,11 +1274,11 @@ const ENVENOM: Ability = {
     attack: { base: 'Intelligence vs AC (Light Blade)' },
     damage: { base: '1[W]' },
     effects: {
-      base: 'Delivers a crafted poison of your choice (you must have a full dose); +1 to the poison’s Save DC.',
+      base: 'Delivers the crafted poison of your choice (you must have a full dose).',
       advances: [
-        { value: '+2 to the poison’s DC', cost: 'm' },
-        { value: '+2 DC, and +1 Interval', cost: 'm' },
-        { value: '+2 DC, and +Int Intervals', cost: 'M' },
+        { value: '+1 to the poison’s DC', cost: 'm' },
+        { value: '+1 Interval', cost: 'm' },
+        { value: '+2 to the DC, and +2 Intervals', cost: 'M' },
       ],
     },
   },
