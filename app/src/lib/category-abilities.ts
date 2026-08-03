@@ -2937,6 +2937,218 @@ const HARVEST: Ability[] = [
   },
 ];
 
+// ── Husbandry (Naturalist — Shepherd) ───────────────────────────
+// The Shepherd's craft: the dog. Home of the game's first Animal Companion.
+// COMPANION RULES (general — locked by Les, Aug 2 2026, for ALL Companions):
+// a Companion has its own Level — 0 when bonded, rising whenever its owner
+// levels thereafter, so one taken late or replaced lags naturally. Each of its
+// own levels earns it 1 Minor, and every third level a Major (m-m-M) —
+// slimmer than a PC's curve, so the beast stays a beast. The owner may ALSO
+// spend his own Advances on the Companion's Ladders (normal pacing). If the
+// Companion dies, the owner's invested Advances return to him, to respend on
+// himself or on a new companion; the beast's own earned Advances die with it.
+const HUSBANDRY: Ability[] = [
+  {
+    name: 'Shepherd’s Dog', category: 'Husbandry', role: 'Companion', mode: 'Passive',
+    vars: {
+      frequency: { base: 'Passive (the dog is always with you)' },
+    },
+    extraVars: [
+      {
+        name: 'Defences',
+        base: 'AC 12, other Defences 10',
+        advances: [
+          { value: '+1 AC, DR 1, Resist Cold 1', cost: 'm' },
+          { value: '+1 to all other Defences', cost: 'm' },
+          { value: '+2 AC and DR 2', cost: 'M' },
+        ],
+      },
+      {
+        name: 'Attack',
+        base: 'Bite +2, 1d4',
+        advances: [
+          { value: '+3, 1d4', cost: 'm' },
+          { value: '+3, 1d6', cost: 'm' },
+          { value: '+4, 1d6+1', cost: 'M' },
+        ],
+      },
+      {
+        name: 'HP',
+        base: '5',
+        advances: [
+          { value: '7', cost: 'm' },
+          { value: '9', cost: 'm' },
+          { value: '12', cost: 'M' },
+        ],
+      },
+      {
+        name: 'Speed',
+        base: "40'",
+        advances: [
+          { value: "45'", cost: 'm' },
+          { value: "50'", cost: 'm' },
+          { value: "60'", cost: 'M' },
+        ],
+      },
+      {
+        name: 'Tricks',
+        base: 'As many tricks as its owner’s Wis',
+        advances: [
+          { value: '+1', cost: 'm' },
+          { value: '+2', cost: 'm' },
+          { value: '+4', cost: 'M' },
+        ],
+      },
+    ],
+    options: [
+      {
+        label: 'The Guard Dog',
+        note: 'An average guard dog, Level 0:',
+        detail: [
+          "HP 5 · Speed 40'",
+          'AC 12 · other Defences 10 · DC 10 (= 10 + its Level)',
+          'Bite +2 vs AC, 1d4 damage',
+          'Senses: keen nose and ears — Perception +3, and it smells what no man can',
+        ],
+        placement: 'top',
+      },
+      {
+        label: 'Interpose',
+        note: 'Built in. Interrupt, when an opponent attempts to move adjacent to an ally: the dog may shift 10\' and snap at them — the opponent takes −1 on attacks until the end of its next turn.',
+      },
+      {
+        label: 'A Companion',
+        note: 'The dog has its own Level: 0 when bonded, rising whenever its owner levels thereafter — one taken late, or a replacement, lags behind. Each of its own levels earns it 1 Minor Advance, and every third level a Major (the rule for all Companions). Its owner may also spend his own Advances on these Ladders.',
+      },
+      {
+        label: 'Loss',
+        note: 'If the dog dies, the Advances its owner invested return to him — to respend on himself, or on a new companion. A new dog starts at Level 0 and takes weeks of training to bond (days, with Beast-Wise).',
+      },
+    ],
+  },
+  {
+    name: 'Worry', category: 'Husbandry', role: 'Offensive · control', mode: 'Effect',
+    vars: {
+      frequency: FREQ_FULL,
+      action: { base: 'Standard', advances: [{ value: 'Move', cost: 'M' }, { value: 'Minor', cost: 'M' }] },
+      range: { base: 'The dog, within earshot of your whistle' },
+      targets: { base: 'One opponent the dog can reach' },
+      attack: { base: 'The dog’s Bite vs AC' },
+      damage: { base: 'The dog’s Bite (its Attack Ladder)' },
+      effects: {
+        base: 'On a hit, the dog worries what it grips: the target is Slowed (half Speed) until the end of its next turn.',
+        advances: [
+          { value: 'And it cannot shift while the dog is adjacent', cost: 'm' },
+          { value: 'Held: Immobilized while the dog stays adjacent, until the end of its next turn', cost: 'm' },
+          { value: 'Dragged down: and knocked Prone', cost: 'M' },
+        ],
+      },
+      duration: { base: 'Until the end of the target’s next turn' },
+    },
+    options: [{ label: 'The Dog', note: 'Requires your dog in the field.' }],
+  },
+  {
+    name: 'The Dog Watches', category: 'Husbandry', role: 'Utility · camp', mode: 'Effect',
+    vars: {
+      frequency: { base: 'Daily' },
+      action: { base: 'Set during a rest — the dog stands sentry while the whole company sleeps' },
+      range: { base: 'The camp' },
+      targets: { base: 'You and all who rest with you' },
+      effects: {
+        base: 'The camp cannot be surprised while the dog watches: 2 hours of the rest, guarded by its nose and ears (Perception +3).',
+        advances: [
+          { value: '4 hours', cost: 'm' },
+          { value: 'The whole rest', cost: 'm' },
+          { value: 'And it wakes you quietly, and in time: the company meets any night attack on its feet, weapons in hand', cost: 'M' },
+        ],
+      },
+      duration: { base: 'The rest' },
+    },
+    options: [{ label: 'The Dog', note: 'No one stands watch rotation — the dog does. The company sleeps whole.' }],
+  },
+  {
+    name: 'Turn the Wolf', category: 'Husbandry', role: 'Defensive · control', mode: 'Attack',
+    vars: {
+      frequency: FREQ_ENC,
+      action: { base: 'Interrupt — when an opponent charges or moves toward you or an ally' },
+      range: { base: 'Sling, 1×WRI' },
+      targets: { base: 'The moving opponent' },
+      attack: { base: 'Dex vs AC' },
+      damage: { base: 'W (the sling stone — this card is not for killing)' },
+      effects: {
+        base: 'On a hit, the advance breaks: the target’s movement ends where it stands.',
+        advances: [
+          { value: 'And −1 to its attacks until the end of its next turn', cost: 'm' },
+          { value: 'And it must end its turn where it stands', cost: 'm' },
+          { value: 'Turned: it cannot willingly approach your flock (you, and allies within 10\' of you) until the end of its next turn', cost: 'M' },
+        ],
+      },
+      duration: { base: 'Until the end of the target’s next turn' },
+    },
+    options: [{ label: 'Specialization Hook', note: 'With the Slings Specialization Feat: the stone also Pushes the target 5\'.' }],
+  },
+  {
+    name: 'Ward the Fold', category: 'Husbandry', role: 'Defensive', mode: 'Attack',
+    vars: {
+      frequency: FREQ_ENC,
+      action: { base: 'Interrupt — when an opponent moves adjacent to an ally within your spear’s reach' },
+      range: { base: 'Spear’s reach' },
+      targets: { base: 'The approaching opponent' },
+      attack: { base: 'Dex vs AC' },
+      damage: { base: 'W (the wolf-spear — a jab, not a slaughter)' },
+      effects: {
+        base: 'On a hit, Push the opponent 5\', away from the ally.',
+        advances: [
+          { value: 'Push 10\'', cost: 'm' },
+          { value: 'And −1 to its attacks until the end of its next turn', cost: 'm' },
+          { value: 'Driven off: it cannot approach that ally again until the end of its next turn', cost: 'M' },
+        ],
+      },
+      duration: { base: 'Until the end of the target’s next turn' },
+    },
+    options: [{ label: 'Specialization Hook', note: 'With the Spears/Polearms Specialization Feat: your reach for this Interrupt extends 5\'.' }],
+  },
+  {
+    name: 'Drive Them', category: 'Husbandry', role: 'Offensive · control', mode: 'Attack',
+    vars: {
+      frequency: FREQ_ENC,
+      action: { base: 'Standard' },
+      range: { base: 'An opponent adjacent to you or your dog' },
+      targets: {
+        base: 'One opponent',
+        advances: [{ value: 'Two opponents (each adjacent to you or the dog)', cost: 'm' }],
+      },
+      attack: { base: 'Wis vs Unarmoured Wisdom — man or beast, the pair work them like sheep' },
+      damage: { base: '—' },
+      effects: {
+        base: 'Slide the target 5\' in a direction of your choice — bunch the pack together, or cut one out from it.',
+        advances: [
+          { value: 'Slide 10\'', cost: 'm' },
+          { value: 'And the dog may shift 5\' to keep the press', cost: 'm' },
+          { value: 'Driven: the target cannot willingly move back the way it was driven until the end of its next turn', cost: 'M' },
+        ],
+      },
+      duration: { base: 'Instant' },
+    },
+    options: [{ label: 'The Dog', note: 'Requires your dog in the field.' }],
+  },
+  {
+    name: 'Ninety and Nine', category: 'Husbandry', role: 'Utility', mode: 'Passive',
+    vars: {
+      frequency: { base: 'Passive (always on)' },
+      targets: { base: 'Your company — those who travel and camp with you' },
+      effects: {
+        base: 'Counting without counting: you know at a glance whether the company is whole, and notice at once when someone slips away or is taken, within your senses or the dog’s.',
+        advances: [
+          { value: 'You know the moment one strays beyond a bowshot of the company, wherever you are', cost: 'm' },
+          { value: 'And the direction they lie in', cost: 'm' },
+          { value: 'And the dog can follow their trail unerringly, up to a day cold', cost: 'M' },
+        ],
+      },
+    },
+  },
+];
+
 export const CATEGORIES: CategoryGroup[] = [
   { name: 'Arms', source: 'Soldier — Class', blurb: '[[text here]]', abilities: ARMS },
   { name: 'Protection', source: 'Soldier — Vanguard', blurb: '[[text here]]', abilities: PROTECTION },
@@ -2956,4 +3168,5 @@ export const CATEGORIES: CategoryGroup[] = [
   { name: 'Assassination', source: 'Scoundrel — Assassin', blurb: '[[text here]]', abilities: ASSASSINATION },
   { name: 'Elder Magic', source: 'Scholar — Antiquarian *(also the Occultist’s Grave Robber)*', blurb: '[[text here]]', abilities: ELDER_MAGIC },
   { name: 'Harvest', source: 'Naturalist — Class', blurb: '[[text here]]', abilities: HARVEST },
+  { name: 'Husbandry', source: 'Naturalist — Shepherd', blurb: '[[text here]]', abilities: HUSBANDRY },
 ];

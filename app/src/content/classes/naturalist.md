@@ -47,14 +47,14 @@ Your chosen **Path** adds a second Class Attribute, a second Ability Category, t
 
 ### Shepherd
 
-<!-- CUE — dogs, deliberately: not a menagerie, the DOG — the one beast that chose us back. The shepherd and his dog are one working animal in two bodies: the flock, the fold, the door and the wolf. The dog does the fighting; the shepherd directs (the "one attribute hits, another endures" precedent — the Ability commands run off Wis, Str is his own rough work; Str provisional). Husbandry will carry the game's animal-companion mechanics — a living beast, kin to Bind Spirit but no summon. All animal material lives here, held out of Harvest on purpose. -->
+<!-- CUE — dogs, deliberately: not a menagerie, the DOG — the one beast that chose us back. The shepherd and his dog are one working animal in two bodies: the flock, the fold, the door and the wolf. He doesn't kill wolves, he makes them leave: sling and spear drive off, the dog controls the ground. The dog does the fighting; the shepherd directs (commands run off Wis — the dog is Wis made flesh; Dex is the sling arm). Husbandry carries the game's first Animal Companion — a living beast, kin to Bind Spirit but no summon. All animal material lives here, held out of Harvest on purpose. -->
 
 | | |
 |---|---|
-| **Class Attribute** | Strength |
+| **Class Attribute** | Dexterity |
 | **Ability Category** | Husbandry |
 | **Additional Class Skills** | Survival, Perception |
-| **Weapon Proficiencies** | Spears/Lances *(the wolf-spear)* |
+| **Weapon Proficiencies** | Slings *(his main arm)*, Spears/Lances *(the wolf-spear)* |
 | **Armour Proficiencies** | *(none beyond the Class)* |
 
 ### Drymann
@@ -74,7 +74,7 @@ Your chosen **Path** adds a second Class Attribute, a second Ability Category, t
 
 ## Abilities
 
-<!-- CUE — Harvest from the Class, a second Category from the Path. Wis is the land-sense every card leans on; each Path brings its own key: Botanist Int (the schooling), Shepherd Str (the rough work — the dog carries the teeth), Drymann Cha (the parley). Full cards in the Abilities section. -->
+<!-- CUE — Harvest from the Class, a second Category from the Path. Wis is the land-sense every card leans on; each Path brings its own key: Botanist Int (the schooling), Shepherd Dex (the sling arm — the dog carries the teeth), Drymann Cha (the parley). Full cards in the Abilities section. -->
 
 ### [Harvest](../../abilities/#harvest) — *the Class Category*
 
@@ -88,11 +88,11 @@ Your chosen **Path** adds a second Class Attribute, a second Ability Category, t
 
 *(cards to come)*
 
-### Husbandry — *Shepherd*
+### [Husbandry](../../abilities/#husbandry) — *Shepherd*
 
-<!-- CUE — cards not yet built. The animal-companion mechanics live here: the dog itself, its training, the work it does at the shepherd's word. No link until cards exist. -->
+<!-- CUE — the dog itself, its training, the work it does at the shepherd's word. Shepherd's Dog is the game's first Animal Companion: its own stat block, its own Level and Advances (m-m-M, the rule for all Companions), the owner's Advances refundable at its death. Remaining six cards agreed in outline: Worry · The Dog Watches · Turn the Wolf (sling) · Ward the Fold (spear) · Drive Them · Ninety and Nine. -->
 
-*(cards to come)*
+*Shepherd's Dog · Worry · The Dog Watches · Turn the Wolf · Ward the Fold · Drive Them · Ninety and Nine*
 
 ### Old Magic — *Drymann*
 
