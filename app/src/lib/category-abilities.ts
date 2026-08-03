@@ -1166,22 +1166,43 @@ const CONDUCT_RITUAL: Ability = {
   ],
 };
 
-const LETTERS: Ability[] = [
-  {
-    name: 'Research', category: 'Letters', role: 'Utility · non-combat', mode: 'Effect',
-    vars: {
-      frequency: { base: 'Uncapped (limited by time)' },
-      action: { base: '8 hours of study', advances: [{ value: '6 hours', cost: 'm' }, { value: '4 hours', cost: 'm' }, { value: '1 hour', cost: 'M' }] },
-      effects: {
-        base: 'With relevant written sources, make a Knowledge Skill check vs a GM-set DC, with a +2 research bonus.',
-        advances: [
-          { value: 'the bonus is +3', cost: 'm' },
-          { value: '+4', cost: 'm' },
-          { value: '+5, and you may reroll (keep the better)', cost: 'M' },
-        ],
-      },
+// Research and Recall — the scholar's study and memory. Shared verbatim by
+// Letters (the Scholar's class category) and Botany (the Naturalist's
+// Botanist): the Naturalist has no Letters, so his schooled Path carries them.
+const RESEARCH: Ability = {
+  name: 'Research', category: 'Letters', role: 'Utility · non-combat', mode: 'Effect',
+  vars: {
+    frequency: { base: 'Uncapped (limited by time)' },
+    action: { base: '8 hours of study', advances: [{ value: '6 hours', cost: 'm' }, { value: '4 hours', cost: 'm' }, { value: '1 hour', cost: 'M' }] },
+    effects: {
+      base: 'With relevant written sources, make a Knowledge Skill check vs a GM-set DC, with a +2 research bonus.',
+      advances: [
+        { value: 'the bonus is +3', cost: 'm' },
+        { value: '+4', cost: 'm' },
+        { value: '+5, and you may reroll (keep the better)', cost: 'M' },
+      ],
     },
   },
+};
+
+const RECALL: Ability = {
+  name: 'Recall', category: 'Letters', role: 'Utility', mode: 'Effect',
+  vars: {
+    frequency: FREQ_FRIAR,
+    action: { base: 'Standard', advances: [{ value: 'Move', cost: 'M' }, { value: 'Minor', cost: 'M' }, { value: 'Free', cost: 'M' }] },
+    effects: {
+      base: 'Make a Knowledge Skill check to recall a detail relevant to the situation or foe.',
+      advances: [
+        { value: 'the check is at +1', cost: 'm' },
+        { value: 'at +2', cost: 'm' },
+        { value: 'at +2 — or make it with a Knowledge Skill you are untrained in', cost: 'M' },
+      ],
+    },
+  },
+};
+
+const LETTERS: Ability[] = [
+  RESEARCH,
   {
     name: 'Scholar’s Strike', category: 'Letters', role: 'Offensive', mode: 'Attack',
     vars: {
@@ -1214,21 +1235,7 @@ const LETTERS: Ability[] = [
       duration: { base: 'Instant' },
     },
   },
-  {
-    name: 'Recall', category: 'Letters', role: 'Utility', mode: 'Effect',
-    vars: {
-      frequency: FREQ_FRIAR,
-      action: { base: 'Standard', advances: [{ value: 'Move', cost: 'M' }, { value: 'Minor', cost: 'M' }, { value: 'Free', cost: 'M' }] },
-      effects: {
-        base: 'Make a Knowledge Skill check to recall a detail relevant to the situation or foe.',
-        advances: [
-          { value: 'the check is at +1', cost: 'm' },
-          { value: 'at +2', cost: 'm' },
-          { value: 'at +2 — or make it with a Knowledge Skill you are untrained in', cost: 'M' },
-        ],
-      },
-    },
-  },
+  RECALL,
   READ_SCROLLS,
   READ_SPELLBOOKS,
   CONDUCT_RITUAL,
@@ -1253,7 +1260,8 @@ const LETTERS: Ability[] = [
 // Non-magical: a surgeon’s cuts and crafted poisons, a guarded stance,
 // and hands-on healing that draws on a Healer’s Kit and its Supplies.
 // Envenom — the crafted-poison delivery. Shared verbatim by the Physician
-// (Medicine) and the Assassin (Assassination): the same card in both lists.
+// (Medicine), the Assassin (Assassination), and the Botanist (Botany): the
+// same card in all three lists.
 const ENVENOM: Ability = {
   name: 'Envenom', category: 'Medicine', role: 'Offensive', mode: 'Attack',
   vars: {
@@ -3175,6 +3183,141 @@ const HUSBANDRY: Ability[] = [
   },
 ];
 
+// ── Botany (Naturalist — Botanist) ──────────────────────────────
+// The formally educated man of science: plant chemistry as power. The
+// Physician keeps surgery and healing; Simples keeps the kindly draughts;
+// Botany is the dark green chemistry — poisons, distillates, fumes — plus
+// the learning that schooled him. Three cards reused verbatim: Envenom
+// (Medicine), Research and Recall (Letters — the Naturalist has no Letters,
+// so his schooled Path carries the study). All attacks aim with Int.
+// The preparations draw on the Herbalist's Bag and its Supplies, and
+// Brew Poison is the poison system's player-facing craftsman.
+const BOTANY: Ability[] = [
+  ENVENOM,
+  RESEARCH,
+  RECALL,
+  {
+    name: 'Brew Poison', category: 'Botany', role: 'Utility · craft', mode: 'Effect',
+    vars: {
+      frequency: { base: 'Uncapped (limited by time and makings)' },
+      action: { base: 'Brewing, during a rest' },
+      targets: {
+        base: 'One dose',
+        advances: [
+          { value: 'Two doses', cost: 'm' },
+          { value: 'Int doses', cost: 'm' },
+          { value: 'Int doses, and they keep a season', cost: 'M' },
+        ],
+      },
+      effects: {
+        base: 'Brew a poison whose receipt you know, at its stated Save DC, Onset and potency. Receipts are found, bought, or taught — as spells are.',
+        advances: [
+          { value: 'Fresher, subtler: +1 to the Save DC of poisons you brew', cost: 'm' },
+          { value: 'And you may adjust the Onset one step — quicker or slower — as you brew', cost: 'm' },
+          { value: '+2 to the Save DC, and half the makings (1 Supply per dose)', cost: 'M' },
+        ],
+      },
+    },
+    options: [
+      { label: 'Materials', note: 'Requires a Herbalist’s Bag; 2 Supplies per dose. What you brew follows the poison rules — Application, Onset, Duration, Intervals, Save DC.' },
+    ],
+  },
+  {
+    name: 'Vitriol', category: 'Botany', role: 'Offensive', mode: 'Attack',
+    vars: {
+      frequency: FREQ_FULL,
+      action: { base: 'Standard' },
+      range: { base: 'Thrown, 15\'', advances: [{ value: '30\'', cost: 'm' }] },
+      targets: { base: 'One' },
+      attack: { base: 'Int vs AC' },
+      damage: { base: '1d4 Acid' },
+      effects: ongoingDamage('Acid'),
+      duration: ongoingDuration('Int'),
+    },
+    options: [
+      { label: 'Materials', note: 'Each flask is prepared in advance, during a rest, from your Herbalist’s Bag — 1 Supply per flask.' },
+    ],
+  },
+  {
+    name: 'Stupefying Fumes', category: 'Botany', role: 'Offensive · control', mode: 'Attack',
+    vars: {
+      frequency: FREQ_ENC,
+      action: { base: 'Standard' },
+      range: { base: 'Thrown, 15\'', advances: [{ value: '30\'', cost: 'm' }] },
+      targets: {
+        base: 'All creatures in a 5\' radius — the fumes do not pick sides',
+        advances: [
+          { value: '10\' radius', cost: 'M' },
+          { value: '15\' radius', cost: 'M' },
+        ],
+      },
+      attack: { base: 'Int vs Unarmoured Constitution' },
+      effects: {
+        base: 'Sickened: −1 to attacks and Saves while in the cloud, and for 1 round after leaving it.',
+        advances: [
+          { value: '−2 to attacks and Saves', cost: 'm' },
+          { value: 'And Dazed while in the cloud (a Standard or a Move, not both)', cost: 'm' },
+          { value: 'The fumes cling: the effects persist Int rounds after leaving (Save ends)', cost: 'M' },
+        ],
+      },
+      duration: {
+        base: 'The cloud lasts 1 round',
+        advances: [
+          { value: '2 rounds', cost: 'm' },
+          { value: '3 rounds', cost: 'm' },
+          { value: 'Int rounds', cost: 'M' },
+        ],
+      },
+    },
+    options: [
+      { label: 'Materials', note: 'Each fume-pot is prepared in advance, during a rest, from your Herbalist’s Bag — 1 Supply per pot. A strong wind clears the cloud in 1 round.' },
+    ],
+  },
+  {
+    name: 'Toxicologist’s Eye', category: 'Botany', role: 'Utility', mode: 'Effect',
+    vars: {
+      frequency: { base: 'Uncapped' },
+      action: { base: 'A minute’s examination' },
+      effects: {
+        base: 'Examine a wound, a dish, a corpse: learn whether poison or disease is at work, and its Application method.',
+        advances: [
+          { value: 'Name it exactly — Onset, Intervals and all — and gain +2 on checks and Saves to treat or resist it', cost: 'm' },
+          { value: 'And read the maker: the tradition, the skill of the hand, how recently it was brewed', cost: 'm' },
+          { value: 'At a glance, from symptoms alone — no examination needed; and your allies share your +2', cost: 'M' },
+        ],
+      },
+    },
+  },
+  {
+    name: 'Laudanum', category: 'Botany', role: 'Utility · succour', mode: 'Effect',
+    vars: {
+      frequency: { base: 'At-Will — one prepared dose per use' },
+      action: { base: 'Minor — administer a prepared dose' },
+      range: { base: 'Touch' },
+      targets: { base: 'One creature' },
+      effects: {
+        base: 'The dose quiets pain: suppress the penalties of one bodily Condition — not cured, only stilled.',
+        advances: [
+          { value: 'Also suppress its ongoing damage', cost: 'm' },
+          { value: 'Two Conditions', cost: 'm' },
+          { value: 'And the Wounded Condition’s penalties too', cost: 'M' },
+        ],
+      },
+      duration: {
+        base: 'The scene',
+        advances: [
+          { value: '1 hour', cost: 'm' },
+          { value: 'Until the next rest', cost: 'M' },
+        ],
+      },
+    },
+    options: [
+      { label: 'The Numbing', note: 'The dose dulls as it soothes: −1 to Perception and to Int-based checks while it lasts.' },
+      { label: 'Materials', note: 'Each dose is prepared in advance, during a rest, from your Herbalist’s Bag — 1 Supply per dose.' },
+    ],
+  },
+];
+
 export const CATEGORIES: CategoryGroup[] = [
   { name: 'Arms', source: 'Soldier — Class', blurb: '[[text here]]', abilities: ARMS },
   { name: 'Protection', source: 'Soldier — Vanguard', blurb: '[[text here]]', abilities: PROTECTION },
@@ -3195,4 +3338,5 @@ export const CATEGORIES: CategoryGroup[] = [
   { name: 'Elder Magic', source: 'Scholar — Antiquarian *(also the Occultist’s Grave Robber)*', blurb: '[[text here]]', abilities: ELDER_MAGIC },
   { name: 'Harvest', source: 'Naturalist — Class', blurb: '[[text here]]', abilities: HARVEST },
   { name: 'Husbandry', source: 'Naturalist — Shepherd', blurb: '[[text here]]', abilities: HUSBANDRY },
+  { name: 'Botany', source: 'Naturalist — Botanist', blurb: '[[text here]]', abilities: BOTANY },
 ];

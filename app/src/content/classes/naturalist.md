@@ -35,12 +35,12 @@ Your chosen **Path** adds a second Class Attribute, a second Ability Category, t
 
 ### Botanist
 
-<!-- CUE — the formally educated one: a schooled man of science among hedge-wise folk, herbals and Latin names, specimens pressed in paper. Int. His teeth are preparations — poisons, physics, distillations. OPEN DECISION: bespoke Botany category vs hosting the Scholar's Medicine wholesale (Envenom and Surgeon's Strike read perfectly as a poisoner-herbalist's kit). Skills provisional. -->
+<!-- CUE — the formally educated one: a schooled man of science among hedge-wise folk, herbals and Latin names, specimens pressed in paper. Int. His teeth are preparations — poisons, distillates, fumes; his learning is borrowed whole from the college (Research and Recall, from Letters — the Naturalist has no Letters, so the schooled Path carries the study). The Physician keeps surgery; Simples keeps the kindly draughts; Botany is the dark green chemistry, and Brew Poison makes him the poison system's craftsman. Skills provisional. -->
 
 | | |
 |---|---|
 | **Class Attribute** | Intelligence |
-| **Ability Category** | Botany *(to decide: bespoke, or the Scholar's Medicine reused)* |
+| **Ability Category** | Botany |
 | **Additional Class Skills** | Heal, History |
 | **Weapon Proficiencies** | *(none beyond the Class)* |
 | **Armour Proficiencies** | *(none beyond the Class)* |
@@ -82,11 +82,11 @@ Your chosen **Path** adds a second Class Attribute, a second Ability Category, t
 
 *Provender · Simples · Hedge-Wise · Beast-Wise · Countryman's Welcome · Eola-Gesta*
 
-### Botany — *Botanist*
+### [Botany](../../abilities/#botany) — *Botanist*
 
-<!-- CUE — cards not yet built; category itself still to decide (bespoke vs the Scholar's Medicine reused). No link until cards exist. -->
+<!-- CUE — the dark green chemistry plus the borrowed learning. Three cards reused verbatim: Envenom (Medicine), Research and Recall (Letters). All attacks aim with Int; the preparations spend the Herbalist's Bag's Supplies. -->
 
-*(cards to come)*
+*Envenom · Research · Recall · Brew Poison · Vitriol · Stupefying Fumes · Toxicologist's Eye · Laudanum*
 
 ### [Husbandry](../../abilities/#husbandry) — *Shepherd*
 
