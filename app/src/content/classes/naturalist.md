@@ -35,13 +35,13 @@ Your chosen **Path** adds a second Class Attribute, a second Ability Category, t
 
 ### Botanist
 
-<!-- CUE — the formally educated one: a schooled man of science among hedge-wise folk, herbals and Latin names, specimens pressed in paper. Int. His teeth are preparations — poisons, distillates, fumes; his learning is borrowed whole from the college (Research and Recall, from Letters — the Naturalist has no Letters, so the schooled Path carries the study). The Physician keeps surgery; Simples keeps the kindly draughts; Botany is the dark green chemistry, and Brew Poison makes him the poison system's craftsman. Skills provisional. -->
+<!-- CUE — the formally educated one: a schooled man of science among hedge-wise folk, herbals and Latin names, specimens pressed in paper. Int. His teeth are preparations — poisons, distillates, fumes; his learning is borrowed whole from the college (Research and Recall, from Letters — the Naturalist has no Letters, so the schooled Path carries the study). The Physician keeps surgery; Simples keeps the kindly draughts; Botany is the dark green chemistry, and Brew Poison makes him the poison system's craftsman. -->
 
 | | |
 |---|---|
 | **Class Attribute** | Intelligence |
 | **Ability Category** | Botany |
-| **Additional Class Skills** | Heal, History |
+| **Additional Class Skills** | Heal, Profession (Apothecary) |
 | **Weapon Proficiencies** | *(none beyond the Class)* |
 | **Armour Proficiencies** | *(none beyond the Class)* |
 
@@ -59,14 +59,14 @@ Your chosen **Path** adds a second Class Attribute, a second Ability Category, t
 
 ### Drymann
 
-<!-- CUE — the name: from the old word "drȳ", a worker of magic (the Kells' own word, worn smooth by Imperial mouths). The sixth well lands here: Old Magic, the animism of the oldest peoples — spirits of place, beast, storm and stone; Kell-flavoured but a substratum under everywhere. Cha because animism is PARLEY: you bargain with spirits, you never command them. The least forbidden deep water — old and honoured, distrusted by the church but never evil; the church has an animist grandmother, so the village priest looks away. Reusable later by a Scout Path. -->
+<!-- CUE — the name: from the old word "drȳ", a worker of magic (an old word worn smooth by Imperial mouths). The sixth well lands here: Old Magic, the animism of the oldest peoples — spirits of place, beast, storm and stone; strongest among the Kells but a substratum under everywhere. The spirits are addressed in the FIRST TONGUE — the ur-speech older than any folk (NOT Kellish; most Drymanns are no Kells, and Kellish stays uncommon for now — Les). Cha because animism is PARLEY: you bargain with spirits, you never command them. Everything is a favour asked, and favours are paid in OFFERINGS (the Offerings Bag — filled with effort, not coin). The least forbidden deep water — old and honoured, distrusted by the church but never evil; the church has an animist grandmother, so the village priest looks away. Reusable later by a Scout Path. -->
 
 | | |
 |---|---|
 | **Class Attribute** | Charisma |
 | **Ability Category** | Old Magic |
 | **Additional Class Skills** | Rituals, Local Knowledge |
-| **Languages** | Kellish |
+| **Languages** | First Tongue |
 | **Weapon Proficiencies** | Light Blades *(the sickle)* |
 | **Armour Proficiencies** | *(none beyond the Class)* |
 
@@ -94,8 +94,8 @@ Your chosen **Path** adds a second Class Attribute, a second Ability Category, t
 
 *Shepherd's Dog · Worry · The Dog Watches · Turn the Wolf · Ward the Fold · Drive Them · Ninety and Nine*
 
-### Old Magic — *Drymann*
+### [Old Magic](../../abilities/#old-magic) — *Drymann*
 
-<!-- CUE — cards not yet built; needs its design pass (the well is defined in the setting: spirits of place/beast/storm/stone, bargained with in Kellish). No link until cards exist. -->
+<!-- CUE — everything is a favour asked, and NOTHING SHOWS (Les's law: Old Magic never does anything the world couldn't have done on its own — the fever breaks, the stranger balks, the dog calms; nothing you could point at in a church court). Lanes: healing, protection, communing with beasts, spirits and trees. OFFERINGS power the workings (the Offerings Bag, filled with effort via The Old Custom). Cha aims the parley; the First Tongue speaks it. One quiet stick: The Warning (Fear ladder, W fixed). -->
 
-*(cards to come)*
+*The Old Custom · Sitting Up with the Sick · The Warning · Parley with Beasts · The Standing People · Threshold Ward · The Grandmother's Blessing*

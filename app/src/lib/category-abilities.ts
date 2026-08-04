@@ -3343,6 +3343,180 @@ const BOTANY: Ability[] = [
   },
 ];
 
+// ── Old Magic (Naturalist — Drymann) ────────────────────────────
+// The sixth well: animism — spirits of place, beast, storm and stone,
+// bargained with, never commanded. Two spines give the category its feel:
+// OFFERINGS — every potent working spends Supplies from the Offerings Bag
+// (fetishes and humble gifts, gathered with effort via The Old Custom, not
+// coin); and PLACE — the Drymann wakes what is already there (root, stone,
+// current, wind), so his power is keyed to the ground he stands on. All
+// attacks aim with Cha (the parley). The spirits are addressed in the First
+// Tongue (NOT Kellish — most Drymanns are no Kells). Distinct lanes held:
+// no curses (Witchcraft), no elements hurled (New Magic), no dead (Occult).
+const OLD_MAGIC: Ability[] = [
+  {
+    name: 'The Old Custom', category: 'Old Magic', role: 'Utility · foundation', mode: 'Effect',
+    vars: {
+      frequency: { base: 'Uncapped' },
+      action: { base: 'A few minutes among the spirits of a place' },
+      range: { base: 'The place you stand in' },
+      effects: {
+        base: 'See and address the spirits of place, beast, storm and stone, in the First Tongue. Learn the spirit’s temper, and what it treasures.',
+        advances: [
+          { value: 'Ask what it has seen: the place answers as a witness — who passed, what was done, within the last day', cost: 'm' },
+          { value: 'Within the last week', cost: 'm' },
+          { value: 'Within the living memory of the place — old spirits remember long', cost: 'M' },
+        ],
+      },
+    },
+    options: [
+      {
+        label: 'Filling the Bag',
+        note: 'An hour spent attending a place’s spirits gathers what they treasure — feathers, bone, river-glass, old iron, bread put by: 1d4 Supplies for an Offerings Bag. Effort, not coin — the only other way to fill it is buying (1 sp per 10).',
+      },
+    ],
+  },
+  {
+    name: 'Sitting Up with the Sick', category: 'Old Magic', role: 'Healing · camp', mode: 'Effect',
+    vars: {
+      frequency: { base: 'Daily' },
+      action: { base: 'A night’s tending, through a rest' },
+      targets: {
+        base: 'One patient',
+        advances: [
+          { value: 'Two patients', cost: 'm' },
+          { value: 'Three patients', cost: 'm' },
+          { value: 'All who rest in his care', cost: 'M' },
+        ],
+      },
+      effects: {
+        base: 'Tended sleep mends: the patient recovers an extra 2 HP from the rest.',
+        advances: [
+          { value: 'And the slow tables hurry: the day counts twice toward recovering Wounds and drained Attributes', cost: 'm' },
+          { value: 'And the night passes kindly: no poison or disease Interval falls while he tends them', cost: 'm' },
+          { value: 'And death keeps its distance: the dying stabilize under his hands without a Save', cost: 'M' },
+        ],
+      },
+      duration: { base: 'The rest' },
+    },
+    options: [
+      { label: 'Offerings', note: '1 Supply from the Offerings Bag per patient — a candle kept burning, salt at the bedposts. Nothing shows: he only sat with them through the night, and the fever broke.' },
+    ],
+  },
+  {
+    name: 'The Warning', category: 'Old Magic', role: 'Defensive · deterrent', mode: 'Attack',
+    vars: {
+      frequency: FREQ_FULL,
+      action: { base: 'Standard' },
+      range: { base: 'Staff’s reach' },
+      targets: { base: 'One' },
+      attack: { base: 'Cha vs AC (Staff)' },
+      damage: { base: 'W (fixed — a rap, not a wound)' },
+      effects: {
+        base: '−1 to its attack rolls (Fear).',
+        advances: [
+          { value: '−1, and it cannot move closer to you', cost: 'm' },
+          { value: '+ it cannot attack you', cost: 'm' },
+          { value: 'It flees you until it Saves', cost: 'M' },
+        ],
+      },
+      duration: { base: 'Save ends' },
+    },
+  },
+  {
+    name: 'Parley with Beasts', category: 'Old Magic', role: 'Utility', mode: 'Effect',
+    vars: {
+      frequency: FREQ_ENC,
+      action: { base: 'A minute’s quiet talk' },
+      targets: { base: 'One beast' },
+      effects: {
+        base: 'Converse with a beast: simple questions, honest answers as its wits allow — what it saw, smelled, feared.',
+        advances: [
+          { value: 'Ask a small favour — carry a message, watch a path — and it may ask one of you in return', cost: 'm' },
+          { value: 'The beasts seek him out: once a day, some local creature brings news unasked', cost: 'm' },
+          { value: 'The council of the small: question all the beasts of a place at once — the wood tells everything it knows', cost: 'M' },
+        ],
+      },
+    },
+    options: [
+      { label: 'Offerings', note: '1 Supply from the Offerings Bag — a morsel, given first. The talk is in Common Feral; this working carries it.' },
+    ],
+  },
+  {
+    name: 'The Standing People', category: 'Old Magic', role: 'Utility · commune', mode: 'Effect',
+    vars: {
+      frequency: { base: 'Daily' },
+      action: { base: 'A quiet hour beneath the tree' },
+      targets: { base: 'One old tree' },
+      effects: {
+        base: 'The tree remembers: ask what has passed beneath it within the year — who, when, carrying what.',
+        advances: [
+          { value: 'Within its lifetime — and old trees are very old', cost: 'm' },
+          { value: 'The wood opens: paths part for you and yours — you cannot be lost among trees, and travel there at full pace', cost: 'm' },
+          { value: 'The wood shelters: your camp beneath the boughs is hidden from searchers and sheltered from weather, and no dead limb falls on the unwary', cost: 'M' },
+        ],
+      },
+      duration: { base: 'The asking; the wood’s favour lasts a day' },
+    },
+    options: [
+      { label: 'Offerings', note: '1 Supply from the Offerings Bag — water poured at the roots.' },
+    ],
+  },
+  {
+    name: 'Threshold Ward', category: 'Old Magic', role: 'Defensive · home-magic', mode: 'Effect',
+    vars: {
+      frequency: { base: 'Daily' },
+      action: { base: 'Laying the ward — salt at the sill, rowan at the door; 10 minutes' },
+      targets: { base: 'One threshold — a door, a gate, the mouth of a camp' },
+      effects: {
+        base: 'None with ill intent crosses unnoticed: the ward cries out, and all within wake alert.',
+        advances: [
+          { value: 'And the unwelcome dead and spirits cannot cross at all', cost: 'm' },
+          { value: 'And ill-meant magic frays at the line: +1 to all Saves within', cost: 'm' },
+          { value: 'And uninvited flesh balks: crossing costs a foe its whole Move that round', cost: 'M' },
+        ],
+      },
+      duration: {
+        base: 'Until the next dawn',
+        advances: [
+          { value: 'A full day and night', cost: 'm' },
+          { value: 'Until broken or unmade — one standing ward at a time', cost: 'M' },
+        ],
+      },
+    },
+    options: [
+      { label: 'Offerings', note: '2 Supplies from the Offerings Bag, laid into the ward.' },
+    ],
+  },
+  {
+    name: 'The Grandmother’s Blessing', category: 'Old Magic', role: 'Buff · charm', mode: 'Effect',
+    vars: {
+      frequency: { base: 'Daily' },
+      action: { base: 'A minute’s charm-work — a knot, a whisper, a pinch of salt in the pocket' },
+      targets: {
+        base: 'One creature',
+        advances: [
+          { value: 'Two creatures', cost: 'm' },
+          { value: 'Cha creatures', cost: 'm' },
+          { value: 'Cha creatures, and yourself', cost: 'M' },
+        ],
+      },
+      effects: {
+        base: 'A charm against the uncanny: +1 to Saves against magic, curses and spirits.',
+        advances: [
+          { value: '+2 to those Saves', cost: 'm' },
+          { value: 'And the charm-bearer cannot be Off Guard to spirits and the unseen', cost: 'm' },
+          { value: 'And the first hostile working to land each day is taken by the charm instead — then it is spent', cost: 'M' },
+        ],
+      },
+      duration: { base: 'Until the next dawn' },
+    },
+    options: [
+      { label: 'Offerings', note: '1 Supply from the Offerings Bag, worked into the charm.' },
+    ],
+  },
+];
+
 export const CATEGORIES: CategoryGroup[] = [
   { name: 'Arms', source: 'Soldier — Class', blurb: '[[text here]]', abilities: ARMS },
   { name: 'Protection', source: 'Soldier — Vanguard', blurb: '[[text here]]', abilities: PROTECTION },
@@ -3364,4 +3538,5 @@ export const CATEGORIES: CategoryGroup[] = [
   { name: 'Harvest', source: 'Naturalist — Class', blurb: '[[text here]]', abilities: HARVEST },
   { name: 'Husbandry', source: 'Naturalist — Shepherd', blurb: '[[text here]]', abilities: HUSBANDRY },
   { name: 'Botany', source: 'Naturalist — Botanist', blurb: '[[text here]]', abilities: BOTANY },
+  { name: 'Old Magic', source: 'Naturalist — Drymann', blurb: '[[text here]]', abilities: OLD_MAGIC },
 ];

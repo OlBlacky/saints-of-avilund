@@ -391,11 +391,13 @@ A kit holds a **Supply** value of **0–20** — the consumables it spends in us
 | **Healer's Kit** *(empty — tools &amp; bag)* | — | 10 sp | 3 lb |
 | **Friar's Kit** *(empty — oils, incense &amp; implements)* | — | 10 sp | 3 lb |
 | **Herbalist's Bag** *(empty — knives, mortar &amp; pouches)* | — | 10 sp | 3 lb |
+| **Offerings Bag** *(empty — pouches, knots &amp; charms)* | — | 10 sp | 3 lb |
 | Supplies *(per 10)* | +10 | 1 sp | 1 lb |
 
 - The **Healer's Kit** holds bandages, salves, and thread — the physician's consumables. Its Supplies fuel hands-on medicine: a trained healer's **Tend Wounded**, and the Physician's healing Abilities.
 - The **Friar's Kit** is the spiritual counterpart — holy oils and incense — identical in weight, cost, and Supply mechanics, but **some ministrations require it instead of the Healer's Kit** (for instance, treating damage to the mind and soul).
 - The **Herbalist's Bag** is the land-wise counterpart — gathering knives, a mortar, and herb-pouches — identical in weight, cost, and Supply mechanics. Its Supplies fuel the Naturalist's craft: **Simples** spends 1 Supply per draught brewed.
+- The **Offerings Bag** is the Drymann's — fetishes and humble gifts: bread and salt, feathers and bone, river-glass, old iron, a stoppered splash of ale. Identical mechanics, but rarely bought: its Supplies are mostly **gathered with effort, not coin** — see **The Old Custom** (Old Magic). Its Supplies are scattered, poured out, and burned to power the Drymann's workings.
 - A kit filled to 20 Supplies weighs about **5 lb** and costs about **12 sp**.
 
 </details>
