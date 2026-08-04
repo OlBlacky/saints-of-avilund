@@ -34,6 +34,7 @@ Read this before authoring any new mechanic, Ability, Feat, or Quirk. When a new
 Live in `app/src/lib/category-abilities.ts` as shared consts — import them, don't retype them.
 
 - **Standard Range** (`STD_RANGE`): 30' / 45' (m) / 60' (m) / 120' (M)
+- **Standard Thrown Range** (`STD_THROWN`): 10' / 20' (m) / 30' (m) / 60' (M) — for hurled things (flasks, fume-pots, stones)
 - **Standard Area** (`STD_AREA`): burst radius 5' / 10' (M) / 15' (M) / 20' (M) — every step a Major
 - **Standard Ongoing Damage** (`ongoingDamage()` + `ongoingDuration()`): tick caps at 3; Major buys −2 to the save; duration is mercy-capped save-ends scaling with the Category/Path attribute
 - **Sensory / Light & Darkness ladder**: 7 rungs, bands of reach (mundane ±1, magic ±2, world ±3)

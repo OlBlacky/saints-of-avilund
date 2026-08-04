@@ -35,10 +35,15 @@ export const GLOSSARY: Record<string, string> = {
   'Studied': 'A mark the Assassin has observed with Study the Mark. It stays Studied until the end of the encounter, adding Study the Mark’s bonus damage (+1, rising to +Int, then +2 × Int) to your Sneak Attack, Death Blow, and Anatomist’s Cut against it.',
   'Difficulty Class': 'A creature’s DC — the target number to beat when an Ability tests itself against the creature as a whole rather than one Defence. For a character it is 10 + Level; a monster states its own DC in its listing.',
   'DC': 'Difficulty Class — the target number to beat when an Ability tests itself against a creature as a whole rather than one Defence. A character’s DC is 10 + Level; a monster states its own.',
+  'Reroll': 'Roll the die again and keep the better of the two results. Every Reroll in the game works this way — you never keep the worse roll.',
 };
 
 // Inline abbreviations — decorated wherever they appear in body text (not only
 // when bold), on System pages. Kept small and specific to avoid false matches.
 export const INLINE_TERMS: Record<string, string> = {
   'WRI': 'Weapon Range Increment — a ranged weapon’s base distance (e.g. 20′ for a thrown dagger, 60′ for a shortbow). You can fire out to three increments, at 0 / −2 / −4 to hit; Range Advances make each increment larger.',
+  // Plural before singular: the decorator's regex alternation tries keys in
+  // order, and 'Reroll' alone would leave the trailing 's' undecorated.
+  'Rerolls': 'Roll the die again and keep the better of the two results. Every Reroll in the game works this way — you never keep the worse roll.',
+  'Reroll': 'Roll the die again and keep the better of the two results. Every Reroll in the game works this way — you never keep the worse roll.',
 };

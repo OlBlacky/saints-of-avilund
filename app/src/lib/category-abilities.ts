@@ -71,6 +71,11 @@ const ongoingDuration = (attr: string): Variable => ({
 // area rule below outranks the range pricing.
 const STD_RANGE: Variable = { base: "30'", advances: [{ value: "45'", cost: 'm' }, { value: "60'", cost: 'm' }, { value: "120'", cost: 'M' }] };
 
+// The Standard Thrown Range Ladder (Les, Aug 2026) — for hurled things (flasks,
+// fume-pots, stones): shorter than STD_RANGE, same shape — Minors add a step,
+// the Major doubles. First used by Vitriol.
+const STD_THROWN: Variable = { base: "10'", advances: [{ value: "20'", cost: 'm' }, { value: "30'", cost: 'm' }, { value: "60'", cost: 'M' }] };
+
 // The Standard Area Ladder — the radius of a burst. EVERY step is a Major:
 // growing the radius sweeps in far more targets, so each increase is worth a
 // Major on its own. Sits in the `targets` field (who the effect catches).
@@ -767,11 +772,11 @@ const MERCY: Ability[] = [
         ],
       },
       effects: {
-        base: 'Grant 1 reroll, shared by the blessed — keep the better result, on any d20 roll.',
+        base: 'Grant 1 Reroll, shared by the blessed, on any d20 roll.',
         advances: [
-          { value: '2 rerolls, shared', cost: 'm' },
-          { value: '3 rerolls, shared', cost: 'm' },
-          { value: 'Each blessed ally gets their own reroll', cost: 'M' },
+          { value: '2 Rerolls, shared', cost: 'm' },
+          { value: '3 Rerolls, shared', cost: 'm' },
+          { value: 'Each blessed ally gets their own Reroll', cost: 'M' },
         ],
       },
       duration: { base: 'Until your next rest' },
@@ -1179,7 +1184,7 @@ const RESEARCH: Ability = {
       advances: [
         { value: 'the bonus is +2', cost: 'm' },
         { value: '+3', cost: 'm' },
-        { value: '+3, and you may reroll (keep the better)', cost: 'M' },
+        { value: '+3, and a Reroll', cost: 'M' },
       ],
     },
   },
@@ -1197,7 +1202,7 @@ const RECALL: Ability = {
       advances: [
         { value: 'the check is at +1', cost: 'm' },
         { value: 'at +2', cost: 'm' },
-        { value: '+2, and you get a reroll — keep the highest', cost: 'M' },
+        { value: '+2, and a Reroll', cost: 'M' },
       ],
     },
   },
@@ -2405,7 +2410,7 @@ const OCCULT: Ability[] = [
         advances: [
           { value: '+1 to their Saves and Defences', cost: 'm' },
           { value: '+1 to their Saves, Defences, and attack rolls', cost: 'm' },
-          { value: 'And one reroll for the party — keep the better result, on any d20 roll', cost: 'M' },
+          { value: 'And one Reroll for the party, on any d20 roll', cost: 'M' },
         ],
       },
       duration: { base: 'Until your next rest' },
@@ -2419,17 +2424,17 @@ const OCCULT: Ability[] = [
       action: { base: 'A few minutes of asking' },
       range: { base: 'You (the party, from Rank 2)' },
       effects: {
-        base: 'You gain 1 reroll during the Duration, for any non-combat roll.',
+        base: 'You gain 1 Reroll during the Duration, for any non-combat roll.',
         advances: [
-          { value: 'The party gains 1 reroll', cost: 'm' },
-          { value: 'The party gains 2 rerolls', cost: 'm' },
+          { value: 'The party gains 1 Reroll', cost: 'm' },
+          { value: 'The party gains 2 Rerolls', cost: 'm' },
           { value: 'And you know the direction to a safe place', cost: 'M' },
         ],
       },
       duration: { base: '1 hour', advances: [{ value: '4 hours', cost: 'm' }, { value: '8 hours', cost: 'm' }, { value: '24 hours', cost: 'M' }] },
     },
     extraVars: [PRICE_MAXHP],
-    options: [{ label: 'Special', note: 'If you name the kind of roll you are asking after when you ask — Dungeoneering, Survival, and so on — you gain +2 to rolls of that kind, and to the reroll.' }],
+    options: [{ label: 'Special', note: 'If you name the kind of roll you are asking after when you ask — Dungeoneering, Survival, and so on — you gain +2 to rolls of that kind, and to the Reroll.' }],
   },
   // ── Object use. The Occultist has no Letters, so Occult carries its own
   // literacy — all four reused verbatim from the categories that own them, one
@@ -2519,7 +2524,7 @@ const CURSE_IMPL_LIST = [
 const CURSE_SPECIALIZATION_NOTE = 'With the matching Specialization — [Malediction] Feat (requires Language (Black Tongue) and Religion (Black Faith)): +1 to hit when you curse with that Malediction, plus an automatic Hook:';
 const CURSE_SPECIALIZATION_HOOKS = [
   'Wasting → +1 to all Necrotic damage you deal',
-  'Ill Luck → the cursed target may not use rerolls',
+  'Ill Luck → the cursed target may not use Rerolls',
   'Palsy → a Palsied target also cannot take Reactions or Opportunity Attacks',
   'Stupor → a Stupored target takes −2 to its Save against the curse',
   'Enfeeblement → the target cannot gain Temp HP while cursed',
@@ -2592,8 +2597,8 @@ const WITCHCRAFT: Ability[] = [
     vars: {
       frequency: { base: 'Passive (always on)' },
       effects: {
-        base: 'One reroll per day — keep the better result, on any d20 roll. The Renunciation: you do everything with the left hand, and whenever you are in doubt which way to go, you always turn left.',
-        advances: [{ value: 'One reroll per encounter', cost: 'M', note: 'L5' }],
+        base: 'One Reroll per day, on any d20 roll. The Renunciation: you do everything with the left hand, and whenever you are in doubt which way to go, you always turn left.',
+        advances: [{ value: 'One Reroll per encounter', cost: 'M', note: 'L5' }],
       },
     },
   },
@@ -3202,42 +3207,74 @@ const BOTANY: Ability[] = [
     name: 'Brew Poison', category: 'Botany', role: 'Utility · craft', mode: 'Effect',
     vars: {
       frequency: { base: 'Uncapped (limited by time and makings)' },
-      action: { base: 'Brewing, during a rest' },
-      targets: {
-        base: 'One dose',
+      action: {
+        base: 'A full day brewing',
         advances: [
-          { value: 'Two doses', cost: 'm' },
+          { value: '8 hours', cost: 'm' },
+          { value: '4 hours', cost: 'm' },
+          { value: '2 hours', cost: 'M' },
+        ],
+      },
+      targets: {
+        base: '1 dose',
+        advances: [
+          { value: '2 doses', cost: 'm' },
           { value: 'Int doses', cost: 'm' },
-          { value: 'Int doses, and they keep a season', cost: 'M' },
+          { value: 'Int ×2 doses', cost: 'M' },
         ],
       },
       effects: {
-        base: 'Brew a poison whose receipt you know, at its stated Save DC, Onset and potency. Receipts are found, bought, or taught — as spells are.',
+        base: 'Brew a poison whose recipe you know, at its stated Save DC, Onset and potency. Recipes are found, bought, or taught — as spells are.',
         advances: [
-          { value: 'Fresher, subtler: +1 to the Save DC of poisons you brew', cost: 'm' },
-          { value: 'And you may adjust the Onset one step — quicker or slower — as you brew', cost: 'm' },
-          { value: '+2 to the Save DC, and half the makings (1 Supply per dose)', cost: 'M' },
+          { value: '+1 to the Save DC', cost: 'm' },
+          { value: 'And adjust the Onset by one Rank, faster or slower', cost: 'm' },
+          { value: '+2 to the Save DC', cost: 'M' },
+        ],
+      },
+      duration: {
+        base: 'The brew keeps 1 day',
+        advances: [
+          { value: 'Int days', cost: 'm' },
+          { value: '7 days', cost: 'm' },
+          { value: '30 days', cost: 'M' },
         ],
       },
     },
     options: [
-      { label: 'Materials', note: 'Requires a Herbalist’s Bag; 2 Supplies per dose. What you brew follows the poison rules — Application, Onset, Duration, Intervals, Save DC.' },
+      { label: 'Materials', note: 'Requires a recipe and a Herbalist’s Bag; 2 Supplies per dose. What you brew follows the poison rules — Application, Onset, Duration, Intervals, Save DC.' },
     ],
   },
   {
     name: 'Vitriol', category: 'Botany', role: 'Offensive', mode: 'Attack',
     vars: {
-      frequency: FREQ_FULL,
-      action: { base: 'Standard' },
-      range: { base: 'Thrown, 15\'', advances: [{ value: '30\'', cost: 'm' }] },
-      targets: { base: 'One' },
+      frequency: FREQ_FRIAR,
+      action: {
+        base: 'Full Round (you mix the ingredients and throw them)',
+        advances: [{ value: 'Standard (you mixed them beforehand)', cost: 'M' }],
+      },
+      range: STD_THROWN,
+      targets: { base: '1', advances: [{ value: '5\' radius splash', cost: 'M' }] },
       attack: { base: 'Int vs AC' },
-      damage: { base: '1d4 Acid' },
-      effects: ongoingDamage('Acid'),
+      damage: {
+        base: '1d4 Acid',
+        advances: [
+          { value: '1d4 + 1 Acid', cost: 'm' },
+          { value: '1d4 + Int Acid', cost: 'm' },
+          { value: '2d4 + Int Acid', cost: 'M', note: 'L5' },
+        ],
+      },
+      effects: {
+        base: 'Ongoing 1 Acid',
+        advances: [
+          { value: 'Ongoing 2 Acid', cost: 'm' },
+          { value: 'Ongoing 2 Acid, and −1 to the Save against it', cost: 'm' },
+          { value: 'Ongoing 3 Acid, and −1 to the Save against it', cost: 'M' },
+        ],
+      },
       duration: ongoingDuration('Int'),
     },
     options: [
-      { label: 'Materials', note: 'Each flask is prepared in advance, during a rest, from your Herbalist’s Bag — 1 Supply per flask.' },
+      { label: 'Materials', note: '2 Supplies from a Herbalist’s Bag per attack.' },
     ],
   },
   {
@@ -3245,7 +3282,7 @@ const BOTANY: Ability[] = [
     vars: {
       frequency: FREQ_ENC,
       action: { base: 'Standard' },
-      range: { base: 'Thrown, 15\'', advances: [{ value: '30\'', cost: 'm' }] },
+      range: STD_THROWN,
       targets: {
         base: 'All creatures in a 5\' radius — the fumes do not pick sides',
         advances: [
@@ -3255,40 +3292,25 @@ const BOTANY: Ability[] = [
       },
       attack: { base: 'Int vs Unarmoured Constitution' },
       effects: {
-        base: 'Sickened: −1 to attacks and Saves while in the cloud, and for 1 round after leaving it.',
+        base: 'Dazed — no Reactions or Interrupts.',
         advances: [
-          { value: '−2 to attacks and Saves', cost: 'm' },
-          { value: 'And Dazed while in the cloud (a Standard or a Move, not both)', cost: 'm' },
-          { value: 'The fumes cling: the effects persist Int rounds after leaving (Save ends)', cost: 'M' },
+          { value: '+ no Minor Action', cost: 'm' },
+          { value: '+ no Move Action', cost: 'm' },
+          { value: 'Stunned — no actions', cost: 'M' },
         ],
       },
       duration: {
         base: 'The cloud lasts 1 round',
         advances: [
-          { value: '2 rounds', cost: 'm' },
-          { value: '3 rounds', cost: 'm' },
-          { value: 'Int rounds', cost: 'M' },
+          { value: 'Int rounds', cost: 'm' },
+          { value: 'Int + 1 rounds', cost: 'm' },
+          { value: 'Int ×2 rounds', cost: 'M' },
         ],
       },
     },
     options: [
-      { label: 'Materials', note: 'Each fume-pot is prepared in advance, during a rest, from your Herbalist’s Bag — 1 Supply per pot. A strong wind clears the cloud in 1 round.' },
+      { label: 'Materials', note: '2 Supplies from a Herbalist’s Bag per pot. A strong wind clears the cloud in 1 round.' },
     ],
-  },
-  {
-    name: 'Toxicologist’s Eye', category: 'Botany', role: 'Utility', mode: 'Effect',
-    vars: {
-      frequency: { base: 'Uncapped' },
-      action: { base: 'A minute’s examination' },
-      effects: {
-        base: 'Examine a wound, a dish, a corpse: learn whether poison or disease is at work, and its Application method.',
-        advances: [
-          { value: 'Name it exactly — Onset, Intervals and all — and gain +2 on checks and Saves to treat or resist it', cost: 'm' },
-          { value: 'And read the maker: the tradition, the skill of the hand, how recently it was brewed', cost: 'm' },
-          { value: 'At a glance, from symptoms alone — no examination needed; and your allies share your +2', cost: 'M' },
-        ],
-      },
-    },
   },
   {
     name: 'Laudanum', category: 'Botany', role: 'Utility · succour', mode: 'Effect',
@@ -3306,10 +3328,11 @@ const BOTANY: Ability[] = [
         ],
       },
       duration: {
-        base: 'The scene',
+        base: '1 minute',
         advances: [
+          { value: '10 minutes', cost: 'm' },
           { value: '1 hour', cost: 'm' },
-          { value: 'Until the next rest', cost: 'M' },
+          { value: '8 hours', cost: 'M' },
         ],
       },
     },

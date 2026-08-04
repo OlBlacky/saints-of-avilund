@@ -51,7 +51,7 @@ A family of **specialist** Feats (a **Minor** each), one per Malediction of the 
 | Specialization Feat | Automatic Hook |
 |---|---|
 | **Specialization — Wasting** | +1 to all Necrotic damage you deal |
-| **Specialization — Ill Luck** | the cursed target may not use rerolls |
+| **Specialization — Ill Luck** | the cursed target may not use Rerolls |
 | **Specialization — Palsy** | a Palsied target also cannot take Reactions or Opportunity Attacks |
 | **Specialization — Stupor** | a Stupored target takes −2 to its Save against the curse |
 | **Specialization — Enfeeblement** | the target cannot gain Temp HP while cursed |

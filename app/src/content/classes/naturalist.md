@@ -86,7 +86,7 @@ Your chosen **Path** adds a second Class Attribute, a second Ability Category, t
 
 <!-- CUE — the dark green chemistry plus the borrowed learning. Three cards reused verbatim: Envenom (Medicine), Research and Recall (Letters). All attacks aim with Int; the preparations spend the Herbalist's Bag's Supplies. -->
 
-*Envenom · Research · Recall · Brew Poison · Vitriol · Stupefying Fumes · Toxicologist's Eye · Laudanum*
+*Envenom · Research · Recall · Brew Poison · Vitriol · Stupefying Fumes · Laudanum*
 
 ### [Husbandry](../../abilities/#husbandry) — *Shepherd*
 
