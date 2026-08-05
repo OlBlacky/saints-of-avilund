@@ -5,7 +5,7 @@ summary: Wisdom · Harvest · HP 2. Choose the Botanist, the Shepherd, or the Dr
 order: 60
 ---
 
-<!-- CUE — identity: the land-wise; the Harvest portfolio made a person. Not a wanderer (the road belongs to the Scout) and not a warrior of the hearth (that's the Warden) — his ground is the WORKED land: field, flock, hedgerow, weather, and the old knowledge that runs under all of it. The village's indispensable man: he feeds you, doses you, reads the sky, mends the harvest. Harvest's mechanical theme is comfort made armour — Temp HP from a full belly, a dry bed, a warm welcome. Patron saint of Harvest TBC. -->
+<!-- CUE — identity: the land-wise; the Harvest portfolio made a person. Not a wanderer (the road belongs to the Scout) and not a warrior of the hearth (that's the Warden) — his ground is the WORKED land: field, flock, hedgerow, weather, and the old knowledge that runs under all of it. The village's indispensable man: he feeds you, doses you, reads the sky, mends the harvest. Harvest's mechanical theme is comfort made armour — Temp HP from a full belly, a dry bed, a warm welcome. PATRON: Mairin (Primi, Fundator) is the principal — mother of the common folk, cultivation as the furthering of life, and her prognostication side quietly rhymes with the Drymann. Secondary colourings: a Naturalist under Eligius (Secundi — the plain working farmer) or under Judith (Coaevi — agriculture as Man's triumph over Nature, breeder of beasts; a counter-note to the Drymann's parley, a wink at the Shepherd) reads very differently. -->
 
 ---
 

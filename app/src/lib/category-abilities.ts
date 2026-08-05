@@ -1387,14 +1387,7 @@ const MEDICINE: Ability[] = [
     vars: {
       frequency: { base: '24 hours of care, per patient' },
       action: { base: 'Patient at complete rest, no activity' },
-      targets: {
-        base: '1 patient',
-        advances: [
-          { value: '2 patients', cost: 'm' },
-          { value: 'Int patients', cost: 'm' },
-          { value: '10 patients', cost: 'M' },
-        ],
-      },
+      targets: campTargets('Int'),
       effects: {
         base: 'Tend 1 Wound OR 1 Ability-Damage point as though 7 days had passed (your Heal roll replaces the Save; 2 Supplies each). +3 HP bundled. At most 1 point per Ability Score per day.',
         advances: [
