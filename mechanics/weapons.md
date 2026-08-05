@@ -24,11 +24,11 @@ Every weapon belongs to one of **17 Weapon Proficiency groups**. Being proficien
 ## Advancement: Gaining Proficiencies
 
 - Every **Class** comes with **1–3 Weapon Proficiencies**, and you receive **all** of them when you take the Class — no choosing.
-- Every **Path** likewise comes with **1–3 Weapon Proficiencies**, and you receive **all** of them.
-- The number (1–3) depends on the martial nature of the Class or Path.
+- Every **Subclass** likewise comes with **1–3 Weapon Proficiencies**, and you receive **all** of them.
+- The number (1–3) depends on the martial nature of the Class or Subclass.
 - Example — the **Soldier** comes with **Heavy Blades, Polearms, and Crossbows**.
 
-Beyond your Class/Path grants, **any character may buy any Weapon Proficiency** for a **Minor Advance** — but a proficiency gained this way sits at +0 forever and **can never be advanced** (see below).
+Beyond your Class/Subclass grants, **any character may buy any Weapon Proficiency** for a **Minor Advance** — but a proficiency gained this way sits at +0 forever and **can never be advanced** (see below).
 
 ### Proficiency Bonus
 
@@ -39,8 +39,8 @@ Beyond your Class/Path grants, **any character may buy any Weapon Proficiency** 
 
 ### Improving a Proficiency
 
-- Only your **Class** and **Path** proficiencies can be advanced. Proficiencies bought separately with a Minor Advance stay at +0.
-- A **Minor Advance** can buy **+1** to a Class/Path proficiency.
+- Only your **Class** and **Subclass** proficiencies can be advanced. Proficiencies bought separately with a Minor Advance stay at +0.
+- A **Minor Advance** can buy **+1** to a Class/Subclass proficiency.
 - At **5th level**, you may buy a **second +1** in that proficiency.
 - A proficiency is **capped at +2**.
 

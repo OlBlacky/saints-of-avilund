@@ -57,7 +57,7 @@ object with no condition attached.
 | `saveMod` | ±1 to a save with one attribute | one of the six attributes |
 | `defenceMod` | ±1 to an attribute Defence | one of the six attributes |
 | `attackMod` | ±1 to hit — **condition required** | set by the condition |
-| `grantProficiency` | a Weapon Proficiency the Class/Path would not allow | one of the 17 groups |
+| `grantProficiency` | a Weapon Proficiency the Class/Subclass would not allow | one of the 17 groups |
 | `grantLanguage` | a language | one of the seven |
 | `socialPenalty` | −1 on social checks, scoped | by language, region, culture, or faith |
 

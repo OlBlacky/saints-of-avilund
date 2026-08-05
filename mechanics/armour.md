@@ -36,9 +36,9 @@ This means the attacker always has options — a heavily armoured Fighter can st
 
 ## Armour Proficiencies
 
-Every **Class** grants some Armour Proficiencies; some **Paths** grant additional ones. You receive **all** of your Class's and Path's armour proficiencies automatically.
+Every **Class** grants some Armour Proficiencies; some **Subclasses** grant additional ones. You receive **all** of your Class's and Subclass's armour proficiencies automatically.
 
-*Example — the **Soldier** comes with Light Armour, Medium Armour, and Light Shield. The **Vanguard** Path additionally grants Heavy Armour and Heavy Shield.*
+*Example — the **Soldier** comes with Light Armour, Medium Armour, and Light Shield. The **Vanguard** Subclass additionally grants Heavy Armour and Heavy Shield.*
 
 The five proficiencies and what they unlock:
 
@@ -50,7 +50,7 @@ The five proficiencies and what they unlock:
 | Light Shield | Light Shield |
 | Heavy Shield | Heavy Shield |
 
-Beyond your Class/Path grants, **any character may buy any Armour Proficiency** for a **Minor Advance** — but a proficiency gained this way stays at base and **can never be advanced**. Only your Class/Path armour proficiencies climb the scale below.
+Beyond your Class/Subclass grants, **any character may buy any Armour Proficiency** for a **Minor Advance** — but a proficiency gained this way stays at base and **can never be advanced**. Only your Class/Subclass armour proficiencies climb the scale below.
 
 ### Non-Proficiency Penalty
 
@@ -96,7 +96,7 @@ Like Weapon Proficiencies, each Armour Proficiency has a scale improved through 
 
 ### Armour Specialization Feats
 
-Some Classes and Paths have access to **Armour Specialization Feats**, gated by Class/Path. These **modify your defensive Abilities** when wearing the relevant armour type — the armour counterpart to the Weapon Specialization Feats that modify offensive abilities (see [weapons.md](weapons.md)).
+Some Classes and Subclasses have access to **Armour Specialization Feats**, gated by Class/Subclass. These **modify your defensive Abilities** when wearing the relevant armour type — the armour counterpart to the Weapon Specialization Feats that modify offensive abilities (see [weapons.md](weapons.md)).
 
 Armour Specialization Feats can only be taken at **Level 2 or higher**.
 

@@ -19,23 +19,23 @@ order: 60
 | **Class Skills** | Nature, Handle Animal |
 | **Weapon Proficiencies** | Flails/Chains, Staves *(the threshing flail and the walking staff)* |
 | **Armour Proficiencies** | Light Armour |
-| **Paths** | Botanist · Shepherd · Drymann |
+| **Subclasses** | Botanist · Shepherd · Drymann |
 
 ---
 
 ## Class Features
 
-<!-- CUE — Harvest carries no attacks, like Mercy: all three Paths bring the teeth (the Botanist's preparations, the hound, the spirits). What the Class gives is the comfort economy — Provender's hot meal, Simples' draughts, the hearth of Countryman's Welcome — small Temp HP from several sources, stacking per the small-numbers rule. His arms are farm arms: the flail from the threshing floor, the staff from the road between villages. -->
+<!-- CUE — Harvest carries no attacks, like Mercy: all three Subclasses bring the teeth (the Botanist's preparations, the hound, the spirits). What the Class gives is the comfort economy — Provender's hot meal, Simples' draughts, the hearth of Countryman's Welcome — small Temp HP from several sources, stacking per the small-numbers rule. His arms are farm arms: the flail from the threshing floor, the staff from the road between villages. -->
 
-Your chosen **Path** adds a second Class Attribute, a second Ability Category, two more Class Skills, and further proficiencies — see below.
+Your chosen **Subclass** adds a second Class Attribute, a second Ability Category, two more Class Skills, and further proficiencies — see below.
 
 ---
 
-## Paths
+## Subclasses
 
 ### Botanist
 
-<!-- CUE — the formally educated one: a schooled man of science among hedge-wise folk, herbals and Latin names, specimens pressed in paper. Int. His teeth are preparations — poisons, distillates, fumes; his learning is borrowed whole from the college (Research and Recall, from Letters — the Naturalist has no Letters, so the schooled Path carries the study). The Physician keeps surgery; Simples keeps the kindly draughts; Botany is the dark green chemistry, and Brew Poison makes him the poison system's craftsman. -->
+<!-- CUE — the formally educated one: a schooled man of science among hedge-wise folk, herbals and Latin names, specimens pressed in paper. Int. His teeth are preparations — poisons, distillates, fumes; his learning is borrowed whole from the college (Research and Recall, from Letters — the Naturalist has no Letters, so the schooled Subclass carries the study). The Physician keeps surgery; Simples keeps the kindly draughts; Botany is the dark green chemistry, and Brew Poison makes him the poison system's craftsman. -->
 
 | | |
 |---|---|
@@ -59,7 +59,7 @@ Your chosen **Path** adds a second Class Attribute, a second Ability Category, t
 
 ### Drymann
 
-<!-- CUE — the name: from the old word "drȳ", a worker of magic (an old word worn smooth by Imperial mouths). The sixth well lands here: Old Magic, the animism of the oldest peoples — spirits of place, beast, storm and stone; strongest among the Kells but a substratum under everywhere. The spirits are addressed in the FIRST TONGUE — the ur-speech older than any folk (NOT Kellish; most Drymanns are no Kells, and Kellish stays uncommon for now — Les). Cha because animism is PARLEY: you bargain with spirits, you never command them. Everything is a favour asked, and favours are paid in OFFERINGS (the Offerings Bag — filled with effort, not coin). The least forbidden deep water — old and honoured, distrusted by the church but never evil; the church has an animist grandmother, so the village priest looks away. Reusable later by a Scout Path. -->
+<!-- CUE — the name: from the old word "drȳ", a worker of magic (an old word worn smooth by Imperial mouths). The sixth well lands here: Old Magic, the animism of the oldest peoples — spirits of place, beast, storm and stone; strongest among the Kells but a substratum under everywhere. The spirits are addressed in the FIRST TONGUE — the ur-speech older than any folk (NOT Kellish; most Drymanns are no Kells, and Kellish stays uncommon for now — Les). Cha because animism is PARLEY: you bargain with spirits, you never command them. Everything is a favour asked, and favours are paid in OFFERINGS (the Offerings Bag — filled with effort, not coin). The least forbidden deep water — old and honoured, distrusted by the church but never evil; the church has an animist grandmother, so the village priest looks away. Reusable later by a Scout Subclass. -->
 
 | | |
 |---|---|
@@ -74,7 +74,7 @@ Your chosen **Path** adds a second Class Attribute, a second Ability Category, t
 
 ## Abilities
 
-<!-- CUE — Harvest from the Class, a second Category from the Path. Wis is the land-sense every card leans on; each Path brings its own key: Botanist Int (the schooling), Shepherd Dex (the sling arm — the dog carries the teeth), Drymann Cha (the parley). Full cards in the Abilities section. -->
+<!-- CUE — Harvest from the Class, a second Category from the Subclass. Wis is the land-sense every card leans on; each Subclass brings its own key: Botanist Int (the schooling), Shepherd Dex (the sling arm — the dog carries the teeth), Drymann Cha (the parley). Full cards in the Abilities section. -->
 
 ### [Harvest](../../abilities/#harvest) — *the Class Category*
 
@@ -98,4 +98,4 @@ Your chosen **Path** adds a second Class Attribute, a second Ability Category, t
 
 <!-- CUE — everything is a favour asked, and NOTHING SHOWS (Les's law: Old Magic never does anything the world couldn't have done on its own — the fever breaks, the stranger balks, the dog calms; nothing you could point at in a church court). Lanes: healing, protection, communing with beasts, spirits and trees. OFFERINGS power the workings (the Offerings Bag, filled with effort via The Old Custom). Cha aims the parley; the First Tongue speaks it. One quiet stick: The Warning (Fear ladder, W fixed). -->
 
-*The Old Custom · Dream Beneath the Yew Bough · The Warning · Parley with Beasts · The Standing People · Threshold Ward · The Grandmother's Blessing*
+*The Old Custom · Dream Beneath the Yew Bough · The Warning · Favour of the Fauna · Threshold Ward · Drymann's Token*

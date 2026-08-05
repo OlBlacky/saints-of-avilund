@@ -20,19 +20,19 @@ order: 30
 | **Languages** | Auld Imperial *(plus Imperial)* |
 | **Weapon Proficiencies** | Staves |
 | **Armour Proficiencies** | None |
-| **Paths** | Antiquarian · Arcanist · Physician |
+| **Subclasses** | Antiquarian · Arcanist · Physician |
 
 ---
 
 ## Class Features
 
-<!-- CUE — Letters is LITERALLY scholarship: research, recall, languages, and the *reading* of magic (scrolls and spellbooks alike). Nothing in it is itself a spell. It's the Category other Classes borrow for their investigators and antiquaries. The magic — and the medicine — live in the Paths. Staff = a walking-stick and a weapon of last resort. -->
+<!-- CUE — Letters is LITERALLY scholarship: research, recall, languages, and the *reading* of magic (scrolls and spellbooks alike). Nothing in it is itself a spell. It's the Category other Classes borrow for their investigators and antiquaries. The magic — and the medicine — live in the Subclasses. Staff = a walking-stick and a weapon of last resort. -->
 
-Your chosen **Path** adds a second Class Attribute, a second Ability Category, two more Class Skills, and further proficiencies — see below.
+Your chosen **Subclass** adds a second Class Attribute, a second Ability Category, two more Class Skills, and further proficiencies — see below.
 
 ---
 
-## Paths
+## Subclasses
 
 ### Antiquarian
 
@@ -74,7 +74,7 @@ Your chosen **Path** adds a second Class Attribute, a second Ability Category, t
 
 ## Abilities
 
-<!-- CUE — Letters from the Class, a second Category from the Path. Full cards in the Abilities section. -->
+<!-- CUE — Letters from the Class, a second Category from the Subclass. Full cards in the Abilities section. -->
 
 ### [Letters](../../abilities/#letters) — *the Class Category*
 

@@ -7,7 +7,7 @@ import type { Ability, Variable, NamedLadder } from './abilities';
 
 export interface CategoryGroup {
   name: string;
-  source: string;     // which Class/Path the category comes from
+  source: string;     // which Class/Subclass the category comes from
   blurb: string;
   abilities: Ability[];
 }
@@ -45,7 +45,7 @@ const STRIKE_DAMAGE: Variable = {
 // number. Pair the amount (ongoingDamage) with the duration (ongoingDuration):
 // the effect ends on a save OR when the round-cap runs out, whichever comes
 // first; climbing the duration raises the cap, and its Major removes it (pure
-// save-ends, no limit). `attr` is the attribute of the ability's Category/Path.
+// save-ends, no limit). `attr` is the attribute of the ability's Category/Subclass.
 const ongoingDamage = (type: string): Variable => ({
   base: `Ongoing 1 ${type}`,
   advances: [
@@ -1115,7 +1115,7 @@ const SPIRITUAL: Ability[] = [
 // literacy that reads scrolls, spellbooks and rituals. No spells of its own.
 // Read Scrolls and Conduct Ritual — the found-magic literacy. Shared verbatim
 // by Letters (the Scholar's class category) and Occult (the Occultist's): the
-// same cards in both lists. The Scholar's Paths get their literacy from Letters;
+// same cards in both lists. The Scholar's Subclasses get their literacy from Letters;
 // the Occultist has no Letters, so Occult must carry its own.
 const READ_SCROLLS: Ability = {
   name: 'Read Scrolls', category: 'Letters', role: 'Magic literacy', mode: 'Effect',
@@ -1179,7 +1179,7 @@ const CONDUCT_RITUAL: Ability = {
 
 // Research and Recall — the scholar's study and memory. Shared verbatim by
 // Letters (the Scholar's class category) and Botany (the Naturalist's
-// Botanist): the Naturalist has no Letters, so his schooled Path carries them.
+// Botanist): the Naturalist has no Letters, so his schooled Subclass carries them.
 const RESEARCH: Ability = {
   name: 'Research', category: 'Letters', role: 'Utility · non-combat', mode: 'Effect',
   vars: {
@@ -1860,7 +1860,7 @@ const NEW_MAGIC: Ability[] = [
 const OFF_GUARD_NOTE =
   'The mark is Off Guard against you when it cannot see you, has not yet acted, is Prone, Stunned or Immobilized — or you have Feinted it. Flanking counts too.';
 
-// The Scoundrel's weapon hooks — the groups the Class and its three Paths train.
+// The Scoundrel's weapon hooks — the groups the Class and its three Subclasses train.
 const LOST_HOOKS: string[] = [
   'Light Blades → the sneak damage counts one Rank higher',
   'Thrown → the attack may be made at range (1×WRI), sneak damage and all',
@@ -2783,7 +2783,7 @@ const OUTSIDE: Ability[] = [
 
 // ── Harvest (Naturalist — Class) ────────────────────────────────
 // The common country craft, wholly mundane — what every village expects of
-// the land-wise. No attacks: the teeth live in the Paths (Old Magic, the
+// the land-wise. No attacks: the teeth live in the Subclasses (Old Magic, the
 // Botanist's learning, the Hound Master's dog). Mechanical theme: TEMP HP AS
 // COMFORT — a full belly, a dry bed, a warm welcome. Kept small (2s and 3s,
 // Bulwark's range), granted out of combat and carried into the day; it stacks
@@ -3195,7 +3195,7 @@ const HUSBANDRY: Ability[] = [
 // Botany is the dark green chemistry — poisons, distillates, fumes — plus
 // the learning that schooled him. Three cards reused verbatim: Envenom
 // (Medicine), Research and Recall (Letters — the Naturalist has no Letters,
-// so his schooled Path carries the study). All attacks aim with Int.
+// so his schooled Subclass carries the study). All attacks aim with Int.
 // The preparations draw on the Herbalist's Bag and its Supplies, and
 // Brew Poison is the poison system's player-facing craftsman.
 const BOTANY: Ability[] = [
@@ -3360,11 +3360,11 @@ const OLD_MAGIC: Ability[] = [
       action: { base: 'A few minutes among the spirits of a place' },
       range: { base: 'The place you stand in' },
       effects: {
-        base: 'See and address the spirits of place, beast, storm and stone, in the First Tongue. Learn the spirit’s temper, and what it treasures.',
+        base: 'See and address the spirits of place and tree, beast, storm and stone, in the First Tongue. Learn the spirit’s temper, and what it treasures.',
         advances: [
           { value: 'Ask what it has seen: the place answers as a witness — who passed, what was done, within the last day', cost: 'm' },
           { value: 'Within the last week', cost: 'm' },
-          { value: 'Within the living memory of the place — old spirits remember long', cost: 'M' },
+          { value: 'Within the living memory of the place — old spirits remember long, and old trees longest of all', cost: 'M' },
         ],
       },
     },
@@ -3398,7 +3398,7 @@ const OLD_MAGIC: Ability[] = [
   {
     name: 'The Warning', category: 'Old Magic', role: 'Defensive · deterrent', mode: 'Attack',
     vars: {
-      frequency: FREQ_FULL,
+      frequency: FREQ_FRIAR,
       action: { base: 'Standard' },
       range: { base: 'Staff’s reach' },
       targets: { base: 'One' },
@@ -3416,95 +3416,94 @@ const OLD_MAGIC: Ability[] = [
     },
   },
   {
-    name: 'Parley with Beasts', category: 'Old Magic', role: 'Utility', mode: 'Effect',
+    name: 'Favour of the Fauna', category: 'Old Magic', role: 'Utility', mode: 'Effect',
     vars: {
       frequency: FREQ_ENC,
-      action: { base: 'A minute’s quiet talk' },
-      targets: { base: 'One beast' },
-      effects: {
-        base: 'Converse with a beast: simple questions, honest answers as its wits allow — what it saw, smelled, feared.',
+      action: {
+        base: '1 minute of discussion with a beast',
+        advances: [{ value: 'Full Round Action, in an encounter', cost: 'M' }],
+      },
+      range: STD_RANGE,
+      targets: {
+        base: '1 small animal (a bird, a squirrel)',
         advances: [
-          { value: 'Ask a small favour — carry a message, watch a path — and it may ask one of you in return', cost: 'm' },
-          { value: 'The beasts seek him out: once a day, some local creature brings news unasked', cost: 'm' },
-          { value: 'The council of the small: question all the beasts of a place at once — the wood tells everything it knows', cost: 'M' },
+          { value: 'Cha small animals, or 1 medium animal (a fox, a badger)', cost: 'm' },
+          { value: 'Cha ×2 small animals, or 2 medium animals', cost: 'm' },
+          { value: 'A swarm of small animals, Cha medium animals, or 1 large animal (a wolf, a black bear)', cost: 'M' },
+        ],
+      },
+      effects: {
+        base: 'Converse with the animal(s) — simple questions and answers, as its wits allow — and its Attitude improves one step.',
+        advances: [
+          { value: 'And the animal will do a brief favour for you, and may ask one in return', cost: 'm' },
+          { value: 'And the animal will provide friendly advice and service for up to 4 hours, depending on its nature; its Attitude improves two steps', cost: 'm' },
+          { value: 'And the animal will fight for you for a short time, as its abilities and bravery allow — it will not sacrifice itself', cost: 'M' },
         ],
       },
     },
     options: [
-      { label: 'Offerings', note: '1 Supply from the Offerings Bag — a morsel, given first. The talk is in Common Feral; this working carries it.' },
-    ],
-  },
-  {
-    name: 'The Standing People', category: 'Old Magic', role: 'Utility · commune', mode: 'Effect',
-    vars: {
-      frequency: { base: 'Daily' },
-      action: { base: 'A quiet hour beneath the tree' },
-      targets: { base: 'One old tree' },
-      effects: {
-        base: 'The tree remembers: ask what has passed beneath it within the year — who, when, carrying what.',
-        advances: [
-          { value: 'Within its lifetime — and old trees are very old', cost: 'm' },
-          { value: 'The wood opens: paths part for you and yours — you cannot be lost among trees, and travel there at full pace', cost: 'm' },
-          { value: 'The wood shelters: your camp beneath the boughs is hidden from searchers and sheltered from weather, and no dead limb falls on the unwary', cost: 'M' },
-        ],
-      },
-      duration: { base: 'The asking; the wood’s favour lasts a day' },
-    },
-    options: [
-      { label: 'Offerings', note: '1 Supply from the Offerings Bag — water poured at the roots.' },
+      { label: 'Offerings', note: '1–6 Supplies from the Offerings Bag, depending on the number and size of the animals and the favour asked (the DM adjudicates).' },
     ],
   },
   {
     name: 'Threshold Ward', category: 'Old Magic', role: 'Defensive · home-magic', mode: 'Effect',
     vars: {
       frequency: { base: 'Daily' },
-      action: { base: 'Laying the ward — salt at the sill, rowan at the door; 10 minutes' },
-      targets: { base: 'One threshold — a door, a gate, the mouth of a camp' },
-      effects: {
-        base: 'None with ill intent crosses unnoticed: the ward cries out, and all within wake alert.',
+      action: { base: 'Depends on Target and Duration — anywhere from a few minutes to an hour of work, or several days carving stones if Permanent' },
+      targets: {
+        base: 'A threshold — a door, gate, or the entrance of a camp',
         advances: [
-          { value: 'And the unwelcome dead and spirits cannot cross at all', cost: 'm' },
-          { value: 'And ill-meant magic frays at the line: +1 to all Saves within', cost: 'm' },
-          { value: 'And uninvited flesh balks: crossing costs a foe its whole Move that round', cost: 'M' },
+          { value: 'A 10\' radius circle', cost: 'm' },
+          { value: '15\' radius', cost: 'm' },
+          { value: '20\' radius', cost: 'M' },
+        ],
+      },
+      effects: {
+        base: 'Any creature crossing the boundary activates the Ward, notifying the Drymann or everyone inside (the Drymann chooses upon creation).',
+        advances: [
+          { value: 'Undead may not cross the Ward', cost: 'm' },
+          { value: 'Any uninvited creature must make a Wis Save to cross the Ward, or to attack anyone inside', cost: 'm' },
+          { value: 'Those inside the Ward have +1 to all Defences and Saves', cost: 'M' },
         ],
       },
       duration: {
-        base: 'Until the next dawn',
+        base: '24 hours',
         advances: [
-          { value: 'A full day and night', cost: 'm' },
-          { value: 'Until broken or unmade — one standing ward at a time', cost: 'M' },
+          { value: '1 week', cost: 'm' },
+          { value: '1 month', cost: 'm' },
+          { value: 'Permanent', cost: 'M' },
         ],
       },
     },
     options: [
-      { label: 'Offerings', note: '2 Supplies from the Offerings Bag, laid into the ward.' },
+      { label: 'Offerings', note: 'Depends on Duration: 1 Supply for 24 hours, 2 Supplies for 1 week, 4 Supplies for 1 month. A Permanent ward requires the runes be carved into stone in the First Tongue, and consumes 10 Supplies.' },
     ],
   },
   {
-    name: 'The Grandmother’s Blessing', category: 'Old Magic', role: 'Buff · charm', mode: 'Effect',
+    name: 'Drymann’s Token', category: 'Old Magic', role: 'Buff · charm', mode: 'Effect',
     vars: {
       frequency: { base: 'Daily' },
       action: { base: 'A minute’s charm-work — a knot, a whisper, a pinch of salt in the pocket' },
       targets: {
-        base: 'One creature',
+        base: '1 creature',
         advances: [
-          { value: 'Two creatures', cost: 'm' },
           { value: 'Cha creatures', cost: 'm' },
-          { value: 'Cha creatures, and yourself', cost: 'M' },
+          { value: 'Cha + 1 creatures', cost: 'm' },
+          { value: 'All creatures in company', cost: 'M' },
         ],
       },
       effects: {
-        base: 'A charm against the uncanny: +1 to Saves against magic, curses and spirits.',
+        base: '+1 to Wis, Cha and Con Saves.',
         advances: [
-          { value: '+2 to those Saves', cost: 'm' },
-          { value: 'And the charm-bearer cannot be Off Guard to spirits and the unseen', cost: 'm' },
-          { value: 'And the first hostile working to land each day is taken by the charm instead — then it is spent', cost: 'M' },
+          { value: '+1 to all Saves and Defences vs the undead and spirits', cost: 'm' },
+          { value: '+2 to Wis, Cha and Con Saves', cost: 'm' },
+          { value: 'Target gets one Reroll on any Save', cost: 'M' },
         ],
       },
-      duration: { base: 'Until the next dawn' },
+      duration: { base: '24 hours' },
     },
     options: [
-      { label: 'Offerings', note: '1 Supply from the Offerings Bag, worked into the charm.' },
+      { label: 'Offerings', note: '1 Supply from the Offerings Bag per target, worked into the token.' },
     ],
   },
 ];

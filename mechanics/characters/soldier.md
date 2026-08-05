@@ -2,7 +2,7 @@
 
 *Portfolio of Arms*
 
-The Soldier is the trained fighting professional of Avilund — the disciplined core of any company, whether holding a shield-wall, carrying the banner, or laying down fire from the line. Where others fight, the Soldier *soldiers*: drilled, equipped, and dependable. The three Paths carry that discipline in different directions — the **Vanguard** who will not be moved, the **Commander** who turns a mob into a unit, and the **Marksman** who ends a fight before it closes to arm's reach.
+The Soldier is the trained fighting professional of Avilund — the disciplined core of any company, whether holding a shield-wall, carrying the banner, or laying down fire from the line. Where others fight, the Soldier *soldiers*: drilled, equipped, and dependable. The three Subclasses carry that discipline in different directions — the **Vanguard** who will not be moved, the **Commander** who turns a mob into a unit, and the **Marksman** who ends a fight before it closes to arm's reach.
 
 ---
 
@@ -16,7 +16,7 @@ The Soldier is the trained fighting professional of Avilund — the disciplined 
 | **Primary Skills** | Endurance, Intimidate |
 | **Weapon Proficiencies** | Heavy Blades, Polearms, Crossbows |
 | **Armour Proficiencies** | Light Armour, Medium Armour, Light Shield |
-| **Paths** | Vanguard · Commander · Marksman |
+| **Subclasses** | Vanguard · Commander · Marksman |
 
 ---
 
@@ -24,11 +24,11 @@ The Soldier is the trained fighting professional of Avilund — the disciplined 
 
 A Soldier brings **Strength** as their Class Attribute and the **Arms** ability Category, backed by a sturdy **Class HP of 3**. They are trained in the **Endurance** and **Intimidate** skills, in the **Heavy Blades, Polearms,** and **Crossbows** weapon groups, and in **Light Armour, Medium Armour,** and the **Light Shield**.
 
-Your chosen **Path** adds a second Class Attribute, a second ability Category, two more skills, and further proficiencies — see below.
+Your chosen **Subclass** adds a second Class Attribute, a second ability Category, two more skills, and further proficiencies — see below.
 
 ---
 
-## Paths
+## Subclasses
 
 ### Vanguard
 The armoured anchor of the line. Vanguards hold ground, shield their comrades, and punish anything that tries to push through.

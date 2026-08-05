@@ -35,7 +35,7 @@ It is the mirror of the DC your own Abilities set for their Saves *(your to-hit 
 
 ## Class Attributes climb higher
 
-Two of your six are **Class Attributes** — one from your **Class**, one from your **Path**. These are the Attributes your character is built to excel in, and they reach further than the rest:
+Two of your six are **Class Attributes** — one from your **Class**, one from your **Subclass**. These are the Attributes your character is built to excel in, and they reach further than the rest:
 
 - A **Class Attribute** can rise to **+3**, then **+4 at 5th Level**, then **+5 at 10th**.
 - Every **other** Attribute caps at **+2**.

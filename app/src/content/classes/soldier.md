@@ -5,7 +5,7 @@ summary: Strength · Arms · HP 3. Choose the Vanguard, the Commander, or the Ma
 order: 10
 ---
 
-<!-- CUE — identity: the trained fighting professional; the disciplined core of a company. Where others fight, the Soldier *soldiers* — drilled, equipped, dependable. Three Paths carry the discipline different ways: Vanguard (won't be moved), Commander (turns a mob into a unit), Marksman (ends it before it closes to arm's reach). -->
+<!-- CUE — identity: the trained fighting professional; the disciplined core of a company. Where others fight, the Soldier *soldiers* — drilled, equipped, dependable. Three Subclasses carry the discipline different ways: Vanguard (won't be moved), Commander (turns a mob into a unit), Marksman (ends it before it closes to arm's reach). -->
 
 ---
 
@@ -19,7 +19,7 @@ order: 10
 | **Class Skills** | Endurance, Intimidate |
 | **Weapon Proficiencies** | Heavy Blades, Polearms, Crossbows |
 | **Armour Proficiencies** | Light Armour, Medium Armour, Light Shield |
-| **Paths** | Vanguard · Commander · Marksman |
+| **Subclasses** | Vanguard · Commander · Marksman |
 
 ---
 
@@ -27,11 +27,11 @@ order: 10
 
 <!-- CUE — Arms: the disciplined core of weapon-fighting. Reliable strikes that grow with the weapon in your hands, plus the means to guard, disarm, focus, and read a fight. The generalist's kit. -->
 
-Your chosen **Path** adds a second Class Attribute, a second Ability Category, two more Class Skills, and further proficiencies — see below.
+Your chosen **Subclass** adds a second Class Attribute, a second Ability Category, two more Class Skills, and further proficiencies — see below.
 
 ---
 
-## Paths
+## Subclasses
 
 ### Vanguard
 
@@ -73,7 +73,7 @@ Your chosen **Path** adds a second Class Attribute, a second Ability Category, t
 
 ## Abilities
 
-<!-- CUE — Arms from the Class, a second Category from the Path. Each Category offers a full spread: a couple of offensive options, a hybrid and a defensive one, a buff or debuff, and a utility. Full cards in the Abilities section. -->
+<!-- CUE — Arms from the Class, a second Category from the Subclass. Each Category offers a full spread: a couple of offensive options, a hybrid and a defensive one, a buff or debuff, and a utility. Full cards in the Abilities section. -->
 
 ### [Arms](../../abilities/#arms) — *the Class Category*
 

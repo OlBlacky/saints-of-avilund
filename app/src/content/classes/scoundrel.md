@@ -5,7 +5,7 @@ summary: Dexterity · The Lost · HP 2. Choose the Assassin, the Charlatan, or t
 order: 40
 ---
 
-<!-- CUE — identity: nobody's trade, so he took one. Under St. Irenaeus (the lost, the strayed, the forsaken); the low houses. Doesn't win a fight, avoids it and ends it from behind. Three Paths = three ways of taking what isn't yours: Assassin takes a life, Charlatan takes you in, Blackcoat took the coin. -->
+<!-- CUE — identity: nobody's trade, so he took one. Under St. Irenaeus (the lost, the strayed, the forsaken); the low houses. Doesn't win a fight, avoids it and ends it from behind. Three Subclasses = three ways of taking what isn't yours: Assassin takes a life, Charlatan takes you in, Blackcoat took the coin. -->
 
 ---
 
@@ -19,7 +19,7 @@ order: 40
 | **Class Skills** | Stealth, Thievery |
 | **Weapon Proficiencies** | Light Blades, Thrown |
 | **Armour Proficiencies** | Light Armour |
-| **Paths** | Assassin · Charlatan · Blackcoat |
+| **Subclasses** | Assassin · Charlatan · Blackcoat |
 
 ---
 
@@ -27,11 +27,11 @@ order: 40
 
 <!-- CUE — The Lost: seen = losing. Strikes only pay against a mark who is Off Guard or flanked; everything else in the Category exists to buy that Condition (vanish, slip away, sand in the eyes, go to ground). -->
 
-Your chosen **Path** adds a second Class Attribute, a second Ability Category, two more Class Skills, and further proficiencies — see below.
+Your chosen **Subclass** adds a second Class Attribute, a second Ability Category, two more Class Skills, and further proficiencies — see below.
 
 ---
 
-## Paths
+## Subclasses
 
 ### Assassin
 
@@ -73,7 +73,7 @@ Your chosen **Path** adds a second Class Attribute, a second Ability Category, t
 
 ## Abilities
 
-<!-- CUE — The Lost from the Class, a second Category from the Path. Dex plants every blade the Class carries; each Path brings its own key: Assassin Int (the study), Charlatan Cha (the nerve), Blackcoat Wis. Full cards in the Abilities section. -->
+<!-- CUE — The Lost from the Class, a second Category from the Subclass. Dex plants every blade the Class carries; each Subclass brings its own key: Assassin Int (the study), Charlatan Cha (the nerve), Blackcoat Wis. Full cards in the Abilities section. -->
 
 ### [The Lost](../../abilities/#the-lost) — *the Class Category*
 

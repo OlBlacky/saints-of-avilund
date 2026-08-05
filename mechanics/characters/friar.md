@@ -2,7 +2,7 @@
 
 *Portfolio of Mercy*
 
-The Friar is the body-mender of Avilund — physician of the faithful, who walks toward suffering when others turn away. In this world **Mercy is the healing of the body**: medicine, herb-craft, the tending of wounds. War belongs to the Soldier and the dead to the Occultist, so the Friar is no armoured war-priest — his gift is to keep a company whole. His three Paths run along a single spectrum of how much steel a man of Mercy will touch: the **Chaplain** who marches with the war-band, the **Confessor** who mends the soul and hunts the Black Faith, and the **Mendicant** who lifts no weapon at all and gives himself for others.
+The Friar is the body-mender of Avilund — physician of the faithful, who walks toward suffering when others turn away. In this world **Mercy is the healing of the body**: medicine, herb-craft, the tending of wounds. War belongs to the Soldier and the dead to the Occultist, so the Friar is no armoured war-priest — his gift is to keep a company whole. His three Subclasses run along a single spectrum of how much steel a man of Mercy will touch: the **Chaplain** who marches with the war-band, the **Confessor** who mends the soul and hunts the Black Faith, and the **Mendicant** who lifts no weapon at all and gives himself for others.
 
 ---
 
@@ -16,21 +16,21 @@ The Friar is the body-mender of Avilund — physician of the faithful, who walks
 | **Class Skills** | Heal, Religion (Saintly Faith) |
 | **Weapon Proficiencies** | Hammers/Maces, Staves |
 | **Armour Proficiencies** | None |
-| **Paths** | Chaplain · Confessor · Mendicant |
+| **Subclasses** | Chaplain · Confessor · Mendicant |
 
 ---
 
 ## Class Features
 
-A Friar brings **Wisdom** as their Class Attribute and the **Mercy** Ability Category, with a modest **Class HP of 2**. They are trained in the **Heal** skill and in **Religion (Saintly Faith)**, and they carry only the old clerical arms — the **Hammers/Maces** and **Staves** that shed no blood. They wear no trained armour; a Friar's protection comes from his Path and his faith.
+A Friar brings **Wisdom** as their Class Attribute and the **Mercy** Ability Category, with a modest **Class HP of 2**. They are trained in the **Heal** skill and in **Religion (Saintly Faith)**, and they carry only the old clerical arms — the **Hammers/Maces** and **Staves** that shed no blood. They wear no trained armour; a Friar's protection comes from his Subclass and his faith.
 
 The **Mercy** Category has no attacks of any kind. It is quiet, deliberately underpowered healing — a base mending of little more than your Wisdom — together with blessings, wards against affliction, and the camp and social rites that hold a company together. Conspicuous, miraculous healing is the work of a seasoned saint, not a starting trick.
 
-Your chosen **Path** adds a second Class Attribute, a second Ability Category, two more Class Skills, and further proficiencies.
+Your chosen **Subclass** adds a second Class Attribute, a second Ability Category, two more Class Skills, and further proficiencies.
 
 ---
 
-## Paths
+## Subclasses
 
 ### Chaplain
 The most warlike of the three — the fighting priest who marches with the war-band and takes up arms to hold the line. He heals with Wisdom and hits with Strength, but he is no Soldier: just enough armour to stand in the press, and the mace and staff he already carries.

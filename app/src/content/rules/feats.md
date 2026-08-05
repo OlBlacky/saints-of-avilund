@@ -1,6 +1,6 @@
 ---
 title: Feats
-summary: The specialist pillar — conditional edges that reshape your Abilities, gated by your Class and Path.
+summary: The specialist pillar — conditional edges that reshape your Abilities, gated by your Class and Subclass.
 ---
 
 > *A first draft — the principles are settled; the full catalogue is still being written.*
@@ -10,7 +10,7 @@ summary: The specialist pillar — conditional edges that reshape your Abilities
 ## How Feats work
 
 - Feats come in **two sizes**: **gateway** Feats, bought with a **Major** Advance, open a whole capability; **specialist** Feats, bought with a **Minor**, sharpen one thing.
-- **Availability is gated by your Class and Path** — each opens a particular pool of Feats. You can't take what your training never offered.
+- **Availability is gated by your Class and Subclass** — each opens a particular pool of Feats. You can't take what your training never offered.
 - They form a **specialist economy**: a single Feat often improves *many* things at once, but only **under a specific condition** — cheap to buy, powerful only if your build leans into it.
 
 A Feat may **unlock conditional Effects on your Abilities**, sharpen a **Skill**, or grant **access** to special gear, networks, or techniques.

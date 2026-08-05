@@ -5,7 +5,7 @@ summary: Wisdom · Occult · HP 1. Choose the Witch/Warlock, the Grave Robber, o
 order: 50
 ---
 
-<!-- CUE — identity: the supernatural generalist under St. Cuthman (the Coaevus who was a priest of Tarsis, buried the last of the Elders, and is "most forgotten of his order" — a fittingly grey, marginal patron; his tangle with the dead AND the Elders mirrors the Grave Robber). His class craft (Occult) is a GATEWAY, not a power: he sees the unseen, names which of the six wells he's looking at, and deals with the gentlest of it (the lingering dead) — no attacks, ever. All real force lives out in the deep water, and each Path is the door he walked through to reach one well. Two disreputable, one scholarly-forbidden: Witch/Warlock takes the Black Faith's power without kneeling; Grave Robber follows the dead into their tombs and the Elder work buried there; the Cosmologist looked too far out and something looked back. -->
+<!-- CUE — identity: the supernatural generalist under St. Cuthman (the Coaevus who was a priest of Tarsis, buried the last of the Elders, and is "most forgotten of his order" — a fittingly grey, marginal patron; his tangle with the dead AND the Elders mirrors the Grave Robber). His class craft (Occult) is a GATEWAY, not a power: he sees the unseen, names which of the six wells he's looking at, and deals with the gentlest of it (the lingering dead) — no attacks, ever. All real force lives out in the deep water, and each Subclass is the door he walked through to reach one well. Two disreputable, one scholarly-forbidden: Witch/Warlock takes the Black Faith's power without kneeling; Grave Robber follows the dead into their tombs and the Elder work buried there; the Cosmologist looked too far out and something looked back. -->
 
 ---
 
@@ -20,19 +20,19 @@ order: 50
 | **Languages** | Black Tongue *(plus Imperial)* |
 | **Weapon Proficiencies** | Staves |
 | **Armour Proficiencies** | None |
-| **Paths** | Witch/Warlock · Grave Robber · Cosmologist |
+| **Subclasses** | Witch/Warlock · Grave Robber · Cosmologist |
 
 ---
 
 ## Class Features
 
-<!-- CUE — Occult is literacy, not power: see the unseen (Third Eye), read a curse or corpse for which well it came from, and deal with the harmless lingering dead. No attack of any kind — the teeth come from the Path. Some Occult workings carry the Price (a cost on the user). Staff = a walking-stick and a ritual focus. -->
+<!-- CUE — Occult is literacy, not power: see the unseen (Third Eye), read a curse or corpse for which well it came from, and deal with the harmless lingering dead. No attack of any kind — the teeth come from the Subclass. Some Occult workings carry the Price (a cost on the user). Staff = a walking-stick and a ritual focus. -->
 
-Your chosen **Path** adds a second Class Attribute, a second Ability Category, two more Class Skills, and further proficiencies — see below.
+Your chosen **Subclass** adds a second Class Attribute, a second Ability Category, two more Class Skills, and further proficiencies — see below.
 
 ---
 
-## Paths
+## Subclasses
 
 ### Witch/Warlock
 
@@ -76,7 +76,7 @@ Your chosen **Path** adds a second Class Attribute, a second Ability Category, t
 
 ## Abilities
 
-<!-- CUE — Occult from the Class, a second Category from the Path. Wis reads every sign the Class gathers; each Path brings its own key: Witch/Warlock Cha (the nerve), Grave Robber Int (the study), Cosmologist Con (the toll). Full cards in the Abilities section. -->
+<!-- CUE — Occult from the Class, a second Category from the Subclass. Wis reads every sign the Class gathers; each Subclass brings its own key: Witch/Warlock Cha (the nerve), Grave Robber Int (the study), Cosmologist Con (the toll). Full cards in the Abilities section. -->
 
 ### [Occult](../../abilities/#occult) — *the Class Category*
 

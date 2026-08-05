@@ -5,7 +5,7 @@ summary: Wisdom · Mercy · HP 2. Choose the Chaplain, the Confessor, or the Men
 order: 20
 ---
 
-<!-- CUE — identity: the body-mender; walks toward suffering. In this world Mercy = healing of the BODY (medicine, herb-craft, wounds) — war belongs to the Soldier, the dead to the Occultist, so he is no armoured war-priest. His gift is keeping a company whole. The three Paths run a spectrum of how much steel a man of Mercy will touch: Chaplain (marches with the war-band) → Confessor (mends the soul, hunts the Black Faith) → Mendicant (lifts no weapon, gives himself). -->
+<!-- CUE — identity: the body-mender; walks toward suffering. In this world Mercy = healing of the BODY (medicine, herb-craft, wounds) — war belongs to the Soldier, the dead to the Occultist, so he is no armoured war-priest. His gift is keeping a company whole. The three Subclasses run a spectrum of how much steel a man of Mercy will touch: Chaplain (marches with the war-band) → Confessor (mends the soul, hunts the Black Faith) → Mendicant (lifts no weapon, gives himself). -->
 
 ---
 
@@ -19,19 +19,19 @@ order: 20
 | **Class Skills** | Heal, Religion (Saintly Faith) |
 | **Weapon Proficiencies** | Hammers/Maces, Staves |
 | **Armour Proficiencies** | None |
-| **Paths** | Chaplain · Confessor · Mendicant |
+| **Subclasses** | Chaplain · Confessor · Mendicant |
 
 ---
 
 ## Class Features
 
-<!-- CUE — Mercy has NO attacks. Quiet, deliberately underpowered healing (a base mending of little more than Wisdom), plus blessings, wards against affliction, and the camp/social rites. Conspicuous miraculous healing is a seasoned saint's work, not a starting trick. Weapons are the old clerical arms that shed no blood (mace, staff); no trained armour — protection comes from the Path. -->
+<!-- CUE — Mercy has NO attacks. Quiet, deliberately underpowered healing (a base mending of little more than Wisdom), plus blessings, wards against affliction, and the camp/social rites. Conspicuous miraculous healing is a seasoned saint's work, not a starting trick. Weapons are the old clerical arms that shed no blood (mace, staff); no trained armour — protection comes from the Subclass. -->
 
-Your chosen **Path** adds a second Class Attribute, a second Ability Category, two more Class Skills, and further proficiencies — see below.
+Your chosen **Subclass** adds a second Class Attribute, a second Ability Category, two more Class Skills, and further proficiencies — see below.
 
 ---
 
-## Paths
+## Subclasses
 
 ### Chaplain
 
@@ -73,7 +73,7 @@ Your chosen **Path** adds a second Class Attribute, a second Ability Category, t
 
 ## Abilities
 
-<!-- CUE — Mercy from the Class, a second Category from the Path. Full cards in the Abilities section. -->
+<!-- CUE — Mercy from the Class, a second Category from the Subclass. Full cards in the Abilities section. -->
 
 ### [Mercy](../../abilities/#mercy) — *the Class Category*
 

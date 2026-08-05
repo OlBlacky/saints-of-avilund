@@ -4,17 +4,19 @@ import { url } from '../../../lib/url';
 import { getCollection } from 'astro:content';
 import SystemNav from '../../../components/SystemNav.astro';
 
+// Alphabetical by title (standing order, matching the Abilities page);
+// the frontmatter `order` field is retired for sorting.
 const classes = (await getCollection('classes'))
-  .sort((a, b) => a.data.order - b.data.order);
+  .sort((a, b) => a.data.title.localeCompare(b.data.title));
 ---
 
-<Base title="Character Classes" description="The eleven character Classes of Saints of Avilund — their Attributes, Paths, and Abilities.">
+<Base title="Character Classes" description="The eleven character Classes of Saints of Avilund — their Attributes, Subclasses, and Abilities.">
   <p class="back-link"><a href={url('system/')}>← The System</a></p>
 
   <p class="eyebrow">The System</p>
   <h1>Character Classes</h1>
   <p class="lede">
-    Eleven Classes, each with three Paths — distinct builds that share a common core.
+    Eleven Classes, each with three Subclasses — distinct builds that share a common core.
     (More Classes will appear here as they are finished.)
   </p>
 

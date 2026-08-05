@@ -42,7 +42,7 @@ export const SYSTEM: SystemPart[] = [
   {
     part: 'II · Classes & Abilities',
     items: [
-      { slug: 'classes', title: 'Classes & Paths', blurb: 'Eleven vocations, each with three Paths. The Soldier is written up in full.', status: 'live', stub: false },
+      { slug: 'classes', title: 'Classes & Subclasses', blurb: 'Eleven vocations, each with three Subclasses. The Soldier is written up in full.', status: 'live', stub: false },
       { slug: 'abilities', title: 'Abilities', blurb: 'Ability Categories, and the chassis of eight dials each power is built from.', status: 'live', stub: false },
       { slug: 'feats', title: 'Feats', blurb: 'The specialist economy — conditional edges that reshape your Abilities.', status: 'progress' },
     ],

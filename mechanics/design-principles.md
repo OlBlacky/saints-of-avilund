@@ -37,7 +37,7 @@ Live in `app/src/lib/category-abilities.ts` as shared consts — import them, do
 - **Standard Thrown Range** (`STD_THROWN`): 10' / 20' (m) / 30' (m) / 60' (M) — for hurled things (flasks, fume-pots, stones)
 - **Standard Camp Targets** (`campTargets(attr)`): 1 patient / [attr] patients (m) / [attr] + 1 patients (m) / All in his company (M) — for camp-scale ministrations (rest-time heals and tendings)
 - **Standard Area** (`STD_AREA`): burst radius 5' / 10' (M) / 15' (M) / 20' (M) — every step a Major
-- **Standard Ongoing Damage** (`ongoingDamage()` + `ongoingDuration()`): tick caps at 3; Major buys −2 to the save; duration is mercy-capped save-ends scaling with the Category/Path attribute
+- **Standard Ongoing Damage** (`ongoingDamage()` + `ongoingDuration()`): tick caps at 3; Major buys −2 to the save; duration is mercy-capped save-ends scaling with the Category/Subclass attribute
 - **Sensory / Light & Darkness ladder**: 7 rungs, bands of reach (mundane ±1, magic ±2, world ±3)
 
 (When a new ladder earns its place, add it to this list.)
@@ -66,9 +66,9 @@ Every new Ability gets eyeballed against a reference card of the same shape befo
 
 ## 9. One language, capitalized
 
-- **Capitalize every game concept and title**: Ability, Save, Major Advance, Minor Advance, Class, Path, Feat, Quirk, Rank, Ladder, Condition, Wounded, DC. If it's a defined game term, it wears a capital; if it doesn't deserve a capital, it isn't a term.
+- **Capitalize every game concept and title**: Ability, Save, Major Advance, Minor Advance, Class, Subclass, Feat, Quirk, Rank, Ladder, Condition, Wounded, DC. If it's a defined game term, it wears a capital; if it doesn't deserve a capital, it isn't a term.
 - **One name per concept, one concept per name.** Pick the canonical term and use it everywhere. When two near-synonyms compete, collapse them — e.g. **Specialization** is the one specialist-Feat term, covering weapons, armour, implements, damage types ("Specialization — Fire"), and Maledictions alike ("Mastery" is retired).
-- Established canonical terms: Class Attribute (not Primary/Key Attribute), Ability Category (not bare "Category"), Class Skills / Additional Class Skills, Feats (not "Perks").
+- Established canonical terms: Class Attribute (not Primary/Key Attribute), Ability Category (not bare "Category"), Class Skills / Additional Class Skills, Feats (not "Perks"), **Subclass** (not "Path" — renamed Aug 2026; fix stragglers on contact).
 - Canadian spelling: -ize/-ization with a z (Specialization), but keep -our/-re/-ce (armour, defence).
 - On renaming a term, sweep every occurrence — mechanics, rulebook, site data — in the same pass. A half-renamed term is worse than a bad name.
 

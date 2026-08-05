@@ -177,7 +177,7 @@ export const QUIRKS: Quirk[] = [
   {
     id: 'bought-a-bow-in-waldheim',
     name: 'Bought a Bow in Waldheim',
-    mechanic: 'Proficiency with {weapon}, whatever your Class and Path allow. It sits at +0 forever.',
+    mechanic: 'Proficiency with {weapon}, whatever your Class and Subclass allow. It sits at +0 forever.',
     esoteric: 'You paid a man named Hesk for it, and you still owe him.',
     slots: { weapon: { table: 'weapon', tag: 'ranged' } },
     effects: [{ kind: 'grantProficiency', group: '{weapon}' }],
