@@ -76,6 +76,19 @@ const STD_RANGE: Variable = { base: "30'", advances: [{ value: "45'", cost: 'm' 
 // the Major doubles. First used by Vitriol.
 const STD_THROWN: Variable = { base: "10'", advances: [{ value: "20'", cost: 'm' }, { value: "30'", cost: 'm' }, { value: "60'", cost: 'M' }] };
 
+// The Standard Camp Targets Ladder (Les, Aug 2026) — how many people a
+// camp-scale ministration (a rest-time heal or tending) can cover. `attr` is
+// the tending Category's attribute. Shared by the Friar's, Physician's, and
+// Drymann's camp heals.
+const campTargets = (attr: string): Variable => ({
+  base: '1 patient',
+  advances: [
+    { value: `${attr} patients`, cost: 'm' },
+    { value: `${attr} + 1 patients`, cost: 'm' },
+    { value: 'All in his company', cost: 'M' },
+  ],
+});
+
 // The Standard Area Ladder — the radius of a burst. EVERY step is a Major:
 // growing the radius sweeps in far more targets, so each increase is worth a
 // Major on its own. Sits in the `targets` field (who the effect catches).
@@ -811,20 +824,13 @@ const MERCY: Ability[] = [
       frequency: { base: 'Daily' },
       action: { base: 'Ministration, during a rest' },
       range: { base: 'Those resting in camp' },
-      targets: {
-        base: 'One ally',
-        advances: [
-          { value: 'Two allies', cost: 'm' },
-          { value: 'Three allies', cost: 'm' },
-          { value: 'All who rest in camp', cost: 'M' },
-        ],
-      },
+      targets: campTargets('Wis'),
       effects: {
         base: 'Tended allies recover an extra Wis HP on the rest, and may make one Save against a bodily affliction (+0). Bodily afflictions only.',
         advances: [
           { value: 'Wis + 1 HP; the Save is at +1', cost: 'm' },
           { value: 'Wis + 2 HP; the Save is at +2', cost: 'm' },
-          { value: 'Wis + 1d6 HP; a Save against each bodily affliction, at +2', cost: 'M' },
+          { value: 'Wis + 1d6 HP; a Save against each bodily affliction, at +2; and heal 1 point of Int, Wis or Cha Ability damage', cost: 'M' },
         ],
       },
       duration: { base: 'The rest' },
@@ -1364,20 +1370,13 @@ const MEDICINE: Ability[] = [
       frequency: { base: 'Daily' },
       action: { base: 'During a rest (Healer’s Kit; 1 Supply per target)' },
       range: { base: 'Those resting in camp' },
-      targets: {
-        base: 'One ally',
-        advances: [
-          { value: 'Two allies', cost: 'm' },
-          { value: 'Three allies', cost: 'm' },
-          { value: 'All who rest in camp', cost: 'M' },
-        ],
-      },
+      targets: campTargets('Int'),
       effects: {
         base: 'Each recovers +Int HP on the rest, and may Save (+0) against a bodily affliction.',
         advances: [
           { value: '+Int + 1 HP; the Save is at +1', cost: 'm' },
           { value: '+Int + 2 HP; the Save is at +2', cost: 'm' },
-          { value: '+Int + 1d6 HP; a Save vs each affliction at +2', cost: 'M' },
+          { value: '+Int + 1d6 HP; a Save vs each affliction at +2; and heal 1 point of Str, Dex or Con Ability damage', cost: 'M' },
         ],
       },
       duration: { base: 'The rest' },
@@ -3377,24 +3376,17 @@ const OLD_MAGIC: Ability[] = [
     ],
   },
   {
-    name: 'Sitting Up with the Sick', category: 'Old Magic', role: 'Healing · camp', mode: 'Effect',
+    name: 'Dream Beneath the Yew Bough', category: 'Old Magic', role: 'Healing · camp', mode: 'Effect',
     vars: {
       frequency: { base: 'Daily' },
       action: { base: 'A night’s tending, through a rest' },
-      targets: {
-        base: 'One patient',
-        advances: [
-          { value: 'Two patients', cost: 'm' },
-          { value: 'Three patients', cost: 'm' },
-          { value: 'All who rest in his care', cost: 'M' },
-        ],
-      },
+      targets: campTargets('Cha'),
       effects: {
-        base: 'Tended sleep mends: the patient recovers an extra 2 HP from the rest.',
+        base: 'Tended sleep mends: targets recover 1 extra HP after the rest.',
         advances: [
-          { value: 'And the slow tables hurry: the day counts twice toward recovering Wounds and drained Attributes', cost: 'm' },
-          { value: 'And the night passes kindly: no poison or disease Interval falls while he tends them', cost: 'm' },
-          { value: 'And death keeps its distance: the dying stabilize under his hands without a Save', cost: 'M' },
+          { value: '2 HP', cost: 'm' },
+          { value: 'And they may make a Save against any poison or disease they are currently suffering from', cost: 'm' },
+          { value: 'And they may attempt to recover from 1 Wound or 1 point of Ability Score damage (DC as Full Bed Rest with a Healer or Attendant)', cost: 'M' },
         ],
       },
       duration: { base: 'The rest' },

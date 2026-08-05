@@ -51,7 +51,7 @@ Wounded **stacks** — each time you are dropped and revived, its Rank rises *(d
 
 - **−5 Speed**, **−1 to all Offences**, **−1 to all Defences**, and **−2 to your Maximum HP**.
 
-Wounds are **not** shrugged off mid-fight — only rare, powerful magic does that, and certain trained healers *(the Physician's **Convalescence**, the Friar's **Vigil**)*.
+Wounds are **not** shrugged off mid-fight — only rare, powerful magic does that, and certain trained healers *(the Physician's **Convalescence**, the Drymann's **Dream Beneath the Yew Bough**)*.
 
 ## Healing and recovery
 
@@ -72,4 +72,4 @@ Dire foes and curses can **drain Attribute scores** — a Wrath that saps Consti
 
 - **Full bed rest** lowers that DC by **5**.
 - An **attendant** with the **Heal** Skill may roll Heal in place of the Save, spending **3 Supplies** *(rested)* or **7** *(active)*.
-- The **Physician** treats the physical three, the **Friar** the mental three — each far faster than nature alone.
+- The **Physician** treats the physical three, the **Friar** the mental three — each far faster than nature alone. The **Drymann** tends all six, though less surely: his patient still rolls.

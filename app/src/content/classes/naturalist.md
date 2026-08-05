@@ -98,4 +98,4 @@ Your chosen **Path** adds a second Class Attribute, a second Ability Category, t
 
 <!-- CUE — everything is a favour asked, and NOTHING SHOWS (Les's law: Old Magic never does anything the world couldn't have done on its own — the fever breaks, the stranger balks, the dog calms; nothing you could point at in a church court). Lanes: healing, protection, communing with beasts, spirits and trees. OFFERINGS power the workings (the Offerings Bag, filled with effort via The Old Custom). Cha aims the parley; the First Tongue speaks it. One quiet stick: The Warning (Fear ladder, W fixed). -->
 
-*The Old Custom · Sitting Up with the Sick · The Warning · Parley with Beasts · The Standing People · Threshold Ward · The Grandmother's Blessing*
+*The Old Custom · Dream Beneath the Yew Bough · The Warning · Parley with Beasts · The Standing People · Threshold Ward · The Grandmother's Blessing*
