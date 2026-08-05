@@ -1,4 +1,8 @@
-.claude/
+# Claude local state stays ignored, but the shared paradigm files are tracked
+.claude/*
+!.claude/WORKING_AGREEMENT.md
+!.claude/ENGINEERING.md
+!.claude/LESSONS.md
 
 # Retired map — kept locally, not committed
 app/public/images/map-of-avilund.jpg
