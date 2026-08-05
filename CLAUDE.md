@@ -36,6 +36,25 @@ source/           # Original source archive — reference only
 - Do not commit unless explicitly asked
 - Do not push unless explicitly asked
 
+## Must-Never-Miss Rules
+
+These are inlined here because this is the only file Claude auto-loads. The Required Reading below expands on them.
+
+1. **Ask before git.** Never commit, push, or otherwise publish without explicit permission. **CLEAN** (see Shorthand Commands) is that permission.
+2. **Plan first when the blast radius is real.** Architectural decisions, multi-file refactors, anything hard to reverse: plan and check in before building. Clear bug fixes and small edits: just do them.
+3. **Verify, don't guess.** Never trust training data for package/tool versions — check live sources. Marking work done is a claim that it works: run it, test it, open the page. If you can't verify, say so.
+4. **Tests are part of the work.** New logic in `app/` ships with tests (Vitest). Rules-engine code especially — pure functions, testable without mocks.
+5. **Red-team non-trivial changes.** Before finishing anything that touches shared structure or data models, ask "is there a more elegant way?" and "how does this break?" If a fix feels hacky, redo it.
+6. **Learn from corrections.** When the user corrects you, append the pattern to `.claude/LESSONS.md`, and read that file at the start of a task.
+
+## Required Reading
+
+Not auto-loaded — open these at the start of a task:
+
+- `.claude/WORKING_AGREEMENT.md` — how we collaborate on this solo project. Applies to every task.
+- `.claude/ENGINEERING.md` — code, test, and site conventions. Applies whenever you write or change code in `app/`.
+- `.claude/LESSONS.md` — running log of corrections and patterns to avoid.
+
 ## Shorthand Commands
 
 **CLEAN** — When the user writes this word, commit all outstanding changes and push to remote (sync). Stage everything, write a sensible commit message based on what changed, commit, and push.
