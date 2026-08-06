@@ -1,13 +1,25 @@
 ---
 import Base from '../../../layouts/Base.astro';
 import { url } from '../../../lib/url';
+import { classById, classSummary } from '../../../lib/classes';
 import { getCollection } from 'astro:content';
 import SystemNav from '../../../components/SystemNav.astro';
 
 // Alphabetical by title (standing order, matching the Abilities page);
-// the frontmatter `order` field is retired for sorting.
+// the frontmatter `order` field is retired for sorting. Portfolio and
+// summary come from the rules data (single source), with frontmatter as
+// the fallback for classes not yet in it.
 const classes = (await getCollection('classes'))
-  .sort((a, b) => a.data.title.localeCompare(b.data.title));
+  .sort((a, b) => a.data.title.localeCompare(b.data.title))
+  .map((entry) => {
+    const cls = classById(entry.id);
+    return {
+      id: entry.id,
+      title: entry.data.title,
+      portfolio: cls?.portfolio ?? entry.data.portfolio,
+      summary: (cls && classSummary(cls)) ?? entry.data.summary,
+    };
+  });
 ---
 
 <Base title="Character Classes" description="The eleven character Classes of Saints of Avilund — their Attributes, Subclasses, and Abilities.">
@@ -24,9 +36,9 @@ const classes = (await getCollection('classes'))
     {classes.map((c) => (
       <li>
         <div class="doc-list__text">
-          <a class="title" href={url(`system/classes/${c.id}/`)}>{c.data.title}</a>
-          {c.data.portfolio && <div class="by"><em>{c.data.portfolio}</em></div>}
-          {c.data.summary && <p class="card__blurb">{c.data.summary}</p>}
+          <a class="title" href={url(`system/classes/${c.id}/`)}>{c.title}</a>
+          {c.portfolio && <div class="by"><em>{c.portfolio}</em></div>}
+          {c.summary && <p class="card__blurb">{c.summary}</p>}
         </div>
       </li>
     ))}

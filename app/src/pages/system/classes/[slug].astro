@@ -1,6 +1,7 @@
 ---
 import Base from '../../../layouts/Base.astro';
 import { url } from '../../../lib/url';
+import { classById, classSummary } from '../../../lib/classes';
 import { getCollection, render } from 'astro:content';
 
 export async function getStaticPaths() {
@@ -13,13 +14,19 @@ export async function getStaticPaths() {
 
 const { entry } = Astro.props;
 const { Content } = await render(entry);
+
+// Mechanical identity comes from the rules data (single source); the
+// markdown frontmatter keeps only page identity (title, order).
+const cls = classById(entry.id);
+const portfolio = cls?.portfolio ?? entry.data.portfolio;
+const summary = (cls && classSummary(cls)) ?? entry.data.summary;
 ---
 
-<Base title={entry.data.title} description={entry.data.summary}>
+<Base title={entry.data.title} description={summary}>
   <p class="back-link"><a href={url('system/classes/')}>← Character Classes</a></p>
 
   <header class="saint-head">
-    {entry.data.portfolio && <p class="eyebrow">{entry.data.portfolio}</p>}
+    {portfolio && <p class="eyebrow">{portfolio}</p>}
     <h1>{entry.data.title}</h1>
   </header>
 

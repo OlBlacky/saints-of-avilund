@@ -261,6 +261,91 @@ There is **no** print option for individual cut-out Ability cards. Abilities liv
 
 ---
 
+## 9. The Data Model (draft for review)
+
+Two layers and a bridge. **Layer A** is the game — read-only rules data shipped with the site. **Layer B** is the player's property — the character record. The bridge is the computation that turns one applied to the other into a character sheet.
+
+### Layer A — Rules data
+
+**One typed module per pillar**, all under `app/src/lib/` (several already exist):
+
+| Pillar | Status |
+|---|---|
+| Abilities (chassis + all Category corpora) | ✅ exists (`abilities.ts`, `category-abilities.ts`) |
+| Skills | ✅ exists |
+| Quirks (engine, slots, typed effects) | ✅ exists |
+| **Classes & Subclasses** | ❌ extract — mechanical data currently lives in markdown tables; it moves to a typed `classes.ts` and the class pages **render from data** (single-source rule; the prose and cues stay in markdown) |
+| **Feats** | ❌ new — with `brief` + `full` texts and the shared effect vocabulary |
+| **Gear** (weapons, armour, equipment) | ❌ new — stat blocks, weight, traits, sell-criteria tags, container coefficients |
+| **Markets** | ❌ new — per `mechanics/markets.md` |
+| Chronicle Entries | ❌ new — content collection with metadata (visibility, tags, codes) |
+
+**Three rules that govern all of it:**
+
+1. **Stable IDs.** Every entity — class, Ability, Feat, item, Market, CE — carries a permanent `id` that never changes once published. Renaming changes the display name, never the id. Save files, the event log, and Foundry export all reference ids only.
+2. **The notation, formalized.** Card values stay authorable strings — `1[W]+Str`, `30'`, `Wis rounds`, `1/enc` — but the notation becomes *defined*: a small grammar with a build-time parser. Every value in the corpus must parse, or **the build fails loudly** with the card and field named. This is the bridge that makes twenty-six hundred existing lines of ability data machine-computable (sheet math, Foundry export) **without re-authoring any of it** — and it keeps future authoring human-friendly.
+3. **One effect vocabulary.** The typed effects already in `quirks.ts` (`skillMod`, `attackMod`+condition, `grantProficiency`…) grow into the shared vocabulary for Feats, Quirks, and gear properties — the long-promised Feat/Quirk convergence, now load-bearing: it's how a Feat's +1 shows up itemized in a skill's Misc column automatically.
+
+### Layer B — The character record
+
+**The record is a log of events, and the sheet is always a replay.** A character file is not a bag of current numbers — it is the ordered list of everything that ever happened: every grant, purchase, roll, transfer, transaction, share, and adjustment. The "current character" is *computed* by replaying the log against the rules data. This is the design §§3–8 have been assuming all along, made explicit:
+
+- **Audit-ability** (§3): the sheet is back-trackable because the log *is* the sheet.
+- **Undo & Retraining** (§7): undo removes a recent event; retraining appends a retrain event. Nothing is ever silently edited.
+- **Provenance** (§4), **transfers** (§8), **Session Adjustment batches**, **the Quirk roll with its reroll count** — each is just an event type with a payload.
+- **No drift, structurally**: derived state is never stored, so it can never disagree with the build.
+- **The log stores decisions, not outcomes.** Events reference rules by stable id and record the choice made — never the resulting numbers. So retuning an Ability rewrites *nobody*: every sheet replays against current rules and is simply correct on next load. Changes that invalidate a past decision surface through the keep-and-flag validator plus the rules-version stamp ("the rules changed — here's what it means for you": Chunk 2's review flow). And the growing corpus costs boot nothing: the corpus is validated **at build time** (a malformed card fails the deploy); the browser only ever replays one character's log — milliseconds, cacheable.
+
+Around the log, the small cast of §3: a **Character** (identity fields — mutable, not logged; the Identity Box writes here) owning **versions** (official, campaign-bound | sandbox), each version owning its own log. **Forking copies the whole log** — history travels, then unteathers. Sandbox builds may additionally be edited loosely (their privilege); official versions only ever append.
+
+**Play-state lives outside the log entirely** — the In Play scratch layer (current HP, pips, active Conditions) is a separate, resettable blob that the log never sees.
+
+**Every record file carries two version stamps**: its own schema version, and the rules-data version it was last valid against — the hooks that Chunk 2 (saving & rule drift) will hang migrations on.
+
+### The bridge — computation, and where the tests live
+
+Pure functions, all of it (per `.claude/ENGINEERING.md`): `replay(log) → state`, `validate(state, rules) → flags` (the §6 keep-and-flag validator and §7 hard-blocker are the same function), and `derive(state, rules) → the sheet`. One design rule with teeth: **derivation returns breakdowns, not bare numbers** — every computed value comes back as a list of labeled components ("Str +3", "Offence Rank +1", "Masterwork +1"). Show-the-work (§8) is therefore not a display feature bolted on; it is the shape of the engine's output. These three functions plus the notation parser are where the bulk of the Vitest suite lives — data in, results out, zero mocks.
+
+### Migration path (no big-bang)
+
+The builder consumes pillars in v1 order: classes (extracted first), abilities, skills — then feats, gear, markets as their data lands. Nothing existing is re-authored wholesale; the parser meets the corpus where it is.
+
+---
+
+## 10. Saving, Files & Rule Drift (draft for review)
+
+### Where characters live (v1)
+
+In the browser's local database (IndexedDB), on the player's own device — the §2 promise made concrete. **Every event autosaves as it's appended** — the diary design makes saving atomic and continuous; there is no Save button to forget.
+
+Local storage is fragile (clearing browser data deletes it), so the app is politely paranoid:
+
+- After significant moments — crystallization, a Milestone, a Session Adjustment — it **nudges the player to export a backup**.
+- **Deleting is hard** (§3): a deliberate typed confirmation, and the app always offers an export first. No swipe, no side effect, no bulk delete.
+
+### The character file
+
+One export format: a single JSON file (friendly extension, e.g. `.avilund.json`) containing the whole Character — identity, every version, every log, both version stamps. Fully self-contained and re-importable anywhere; this is the backup format, the move-to-another-device format, and — deliberately — **the future wire format**: when accounts arrive, uploading a local character *is* this file, designed once. Print/PDF is output, never a save format.
+
+### Schema migrations
+
+The record file carries its **schema version**; the app ships pure, tested migration functions (v1→v2→…) applied on load. A file is never silently rewritten — it migrates in memory, and persists in the new format on the next write.
+
+### Rule drift — "the rules changed while you were away"
+
+The record's second stamp is the **rules version** it was last valid against (bumped whenever rules data changes; the site build knows its own version). On load, if the stamps differ, the app replays and validates against current rules:
+
+- **Clean replay** (the common case — most retunes don't invalidate decisions): the sheet is simply current, the stamp updates, and a small notice says the rules moved on with nothing affecting this character.
+- **Flags raised** (an Ability removed, a Ladder shortened, a Category reassigned): the player gets the **review flow** — "The rules changed since you last played. Here's what it means for Gareth" — with each broken decision listed. Resolving works like §6's keep-and-flag: invalidated purchases are **refunded automatically as a logged reconciliation event** (system-sourced, labeled — not a retcon, not a retrain) and the player respends. The log stays honest: anyone reading it later sees exactly when the world shifted underfoot.
+
+During the playtest era this will fire often — that's by design; it's the mechanism that makes mid-playtest retuning *safe*. In the campaign era, a GM sees their players' reconciliations.
+
+### Devices
+
+v1 has no sync: one device holds the truth, and export/import is how a character travels. Accounts (someday) turn the same file into an upload.
+
+---
+
 ## Parking Lot — flagged for later chunks
 
 - **Custom-input Abilities** (for the data-model chunk): some Abilities carry player input — purchase-time choices (damage type, weapon group), free-text naming, **sub-sheets** (Companions run as little characters on the same engine, with invested-advance refunds), and **in-play collections** (spellbooks — spells are found, so a new spell is a granted event like gear/CEs; Malediction/recipe builders). The validator must understand dependencies on these (retraining away the Companion ability orphans the dog); print treats them as first-class cards.

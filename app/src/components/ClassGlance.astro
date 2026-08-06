@@ -1,0 +1,63 @@
+---
+// The "At a Glance" grant table for a Class, rendered from src/lib/classes.ts
+// (single source — the class pages no longer hand-copy these values).
+import { classById } from '../lib/classes';
+
+interface Props {
+  classId: string;
+}
+
+const { classId } = Astro.props;
+const cls = classById(classId);
+if (!cls) {
+  throw new Error(`ClassGlance: unknown class id "${classId}"`);
+}
+
+const list = (xs: readonly string[]) => xs.join(', ');
+const subclassNames = cls.subclasses.map((s) => s.name).join(' · ');
+---
+
+<table>
+  <tbody>
+    <tr>
+      <td><strong>Class Attribute</strong></td>
+      <td>{cls.classAttribute}</td>
+    </tr>
+    <tr>
+      <td><strong>Ability Category</strong></td>
+      <td>{cls.abilityCategory}{cls.notes?.category && <em> ({cls.notes.category})</em>}</td>
+    </tr>
+    <tr>
+      <td><strong>Class HP</strong></td>
+      <td>{cls.classHP}</td>
+    </tr>
+    <tr>
+      <td><strong>Class Skills</strong></td>
+      <td>{list(cls.classSkills)}</td>
+    </tr>
+    {cls.languages && cls.languages.length > 0 && (
+      <tr>
+        <td><strong>Languages</strong></td>
+        <td>{list(cls.languages)}{cls.notes?.languages && <em> ({cls.notes.languages})</em>}</td>
+      </tr>
+    )}
+    <tr>
+      <td><strong>Weapon Proficiencies</strong></td>
+      <td>
+        {cls.weaponProficiencies.length > 0 ? list(cls.weaponProficiencies) : 'None'}
+        {cls.notes?.weapons && <em> ({cls.notes.weapons})</em>}
+      </td>
+    </tr>
+    <tr>
+      <td><strong>Armour Proficiencies</strong></td>
+      <td>
+        {cls.armourProficiencies.length > 0 ? list(cls.armourProficiencies) : 'None'}
+        {cls.notes?.armour && <em> ({cls.notes.armour})</em>}
+      </td>
+    </tr>
+    <tr>
+      <td><strong>Subclasses</strong></td>
+      <td>{subclassNames}</td>
+    </tr>
+  </tbody>
+</table>

@@ -24,7 +24,8 @@ export type WeaponGroup =
 
 export type Language =
   | 'Imperial' | 'Auld Imperial' | 'Elder' | 'Elder Arcana'
-  | 'Black Tongue' | 'Kellish' | 'Common Feral';
+  | 'Black Tongue' | 'Kellish' | 'Common Feral'
+  | 'First Tongue' | 'Archipelago' | 'Eldritch Tongue';
 
 /** The circumstances under which an effect fires. An empty condition = always. */
 export interface Condition {

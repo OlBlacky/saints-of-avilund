@@ -1,0 +1,79 @@
+---
+// The grant table for one Subclass, rendered from src/lib/classes.ts
+// (single source — the class pages no longer hand-copy these values).
+import { subclassById } from '../lib/classes';
+
+interface Props {
+  subclassId: string;
+}
+
+const { subclassId } = Astro.props;
+const found = subclassById(subclassId);
+if (!found) {
+  throw new Error(`SubclassGlance: unknown subclass id "${subclassId}"`);
+}
+const { cls, sub } = found;
+
+const list = (xs: readonly string[]) => xs.join(', ');
+
+// Empty grant rows read like the hand-written pages did: a parenthetical
+// "none beyond the Class" when the Class grants some, a plain "None" when
+// the Class grants none either.
+const noneText = (classHasAny: boolean) =>
+  classHasAny ? 'none beyond the Class' : 'None';
+---
+
+<table>
+  <tbody>
+    <tr>
+      <td><strong>Class Attribute</strong></td>
+      <td>{sub.classAttribute}</td>
+    </tr>
+    <tr>
+      <td><strong>Ability Category</strong></td>
+      <td>{sub.abilityCategory}{sub.notes?.category && <em> ({sub.notes.category})</em>}</td>
+    </tr>
+    <tr>
+      <td><strong>Additional Class Skills</strong></td>
+      <td>{list(sub.additionalClassSkills)}</td>
+    </tr>
+    {sub.languages && sub.languages.length > 0 && (
+      <tr>
+        <td><strong>Languages</strong></td>
+        <td>{list(sub.languages)}{sub.notes?.languages && <em> ({sub.notes.languages})</em>}</td>
+      </tr>
+    )}
+    <tr>
+      <td><strong>Weapon Proficiencies</strong></td>
+      <td>
+        {sub.weaponProficiencies.length > 0 ? (
+          <>
+            {list(sub.weaponProficiencies)}
+            {sub.notes?.weapons && <em> ({sub.notes.weapons})</em>}
+          </>
+        ) : (
+          <em>({sub.notes?.weapons ?? noneText(cls.weaponProficiencies.length > 0)})</em>
+        )}
+      </td>
+    </tr>
+    {sub.implementProficiencies && sub.implementProficiencies.length > 0 && (
+      <tr>
+        <td><strong>Implement Proficiencies</strong></td>
+        <td>{list(sub.implementProficiencies)}</td>
+      </tr>
+    )}
+    <tr>
+      <td><strong>Armour Proficiencies</strong></td>
+      <td>
+        {sub.armourProficiencies.length > 0 ? (
+          <>
+            {list(sub.armourProficiencies)}
+            {sub.notes?.armour && <em> ({sub.notes.armour})</em>}
+          </>
+        ) : (
+          <em>({sub.notes?.armour ?? noneText(cls.armourProficiencies.length > 0)})</em>
+        )}
+      </td>
+    </tr>
+  </tbody>
+</table>
