@@ -66,9 +66,9 @@ Wounds are **not** shrugged off mid-fight — only rare, powerful magic does tha
 | Bed rest, no attendant | 15 + Wound Rank | — *(a natural 1 worsens the Wound)* |
 | Active, no attendant | 18 + Wound Rank | — *(a natural 1 worsens the Wound)* |
 
-## Ability-score damage
+## Attribute Damage
 
-Dire foes and curses can **drain Attribute scores** — a Wrath that saps Constitution, a hex that gnaws at the mind. Unless the source says otherwise, the damage can mend on its own: after **7 days**, a **Constitution check** *(for Str/Dex/Con)* or **Wisdom check** *(for Int/Wis/Cha)* against the **hazard's DC** restores **1 point**.
+Dire foes and curses can inflict **Attribute Damage** — a Wrath that saps Constitution, a hex that gnaws at the mind. Unless the source says otherwise, the damage can mend on its own: after **7 days**, a **Constitution check** *(for Str/Dex/Con)* or **Wisdom check** *(for Int/Wis/Cha)* against the **hazard's DC** restores **1 point**.
 
 - **Full bed rest** lowers that DC by **5**.
 - An **attendant** with the **Heal** Skill may roll Heal in place of the Save, spending **3 Supplies** *(rested)* or **7** *(active)*.

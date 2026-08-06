@@ -830,7 +830,7 @@ const MERCY: Ability[] = [
         advances: [
           { value: 'Wis + 1 HP; the Save is at +1', cost: 'm' },
           { value: 'Wis + 2 HP; the Save is at +2', cost: 'm' },
-          { value: 'Wis + 1d6 HP; a Save against each bodily affliction, at +2; and heal 1 point of Int, Wis or Cha Ability damage', cost: 'M' },
+          { value: 'Wis + 1d6 HP; a Save against each bodily affliction, at +2; and heal 1 point of Int, Wis or Cha Attribute Damage', cost: 'M' },
         ],
       },
       duration: { base: 'The rest' },
@@ -1376,7 +1376,7 @@ const MEDICINE: Ability[] = [
         advances: [
           { value: '+Int + 1 HP; the Save is at +1', cost: 'm' },
           { value: '+Int + 2 HP; the Save is at +2', cost: 'm' },
-          { value: '+Int + 1d6 HP; a Save vs each affliction at +2; and heal 1 point of Str, Dex or Con Ability damage', cost: 'M' },
+          { value: '+Int + 1d6 HP; a Save vs each affliction at +2; and heal 1 point of Str, Dex or Con Attribute Damage', cost: 'M' },
         ],
       },
       duration: { base: 'The rest' },
@@ -1389,11 +1389,11 @@ const MEDICINE: Ability[] = [
       action: { base: 'Patient at complete rest, no activity' },
       targets: campTargets('Int'),
       effects: {
-        base: 'Tend 1 Wound OR 1 Ability-Damage point as though 7 days had passed (your Heal roll replaces the Save; 2 Supplies each). +3 HP bundled. At most 1 point per Ability Score per day.',
+        base: 'Tend 1 Wound OR 1 Attribute Damage point as though 7 days had passed (your Heal roll replaces the Save; 2 Supplies each). +3 HP bundled. At most 1 point per Attribute per day.',
         advances: [
-          { value: '2 Wounds or Ability-Damage points', cost: 'm' },
+          { value: '2 Wounds or Attribute Damage points', cost: 'm' },
           { value: 'Int Wounds or points', cost: 'm' },
-          { value: 'all Wounds and Ability-Damage points', cost: 'M' },
+          { value: 'all Wounds and Attribute Damage points', cost: 'M' },
         ],
       },
     },
@@ -3349,7 +3349,7 @@ const OLD_MAGIC: Ability[] = [
   {
     name: 'The Old Custom', category: 'Old Magic', role: 'Utility · foundation', mode: 'Effect',
     vars: {
-      frequency: { base: 'Uncapped' },
+      frequency: { base: 'Daily', advances: [{ value: 'Encounter', cost: 'm' }] },
       action: { base: 'A few minutes among the spirits of a place' },
       range: { base: 'The place you stand in' },
       effects: {
@@ -3379,7 +3379,7 @@ const OLD_MAGIC: Ability[] = [
         advances: [
           { value: '2 HP', cost: 'm' },
           { value: 'And they may make a Save against any poison or disease they are currently suffering from', cost: 'm' },
-          { value: 'And they may attempt to recover from 1 Wound or 1 point of Ability Score damage (DC as Full Bed Rest with a Healer or Attendant)', cost: 'M' },
+          { value: 'And they may attempt to recover from 1 Wound or 1 point of Attribute Damage (DC as Full Bed Rest with a Healer or Attendant)', cost: 'M' },
         ],
       },
       duration: { base: 'The rest' },

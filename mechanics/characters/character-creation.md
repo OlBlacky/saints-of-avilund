@@ -209,7 +209,7 @@ Taking a second class delivers the same starting bundle as your first — free b
 
 Gaining a level is straightforward: **receive 100 AP and spend it however you choose.**
 
-There are no mandatory choices tied to any given level. No prescribed ability score increases, no fixed feature slots. Your character grows in whatever direction you invest in.
+There are no mandatory choices tied to any given level. No prescribed attribute score increases, no fixed feature slots. Your character grows in whatever direction you invest in.
 
 The only constraint is what you can afford. Raising an attribute to +3 is accessible early; pushing it to +5 requires sustained investment over multiple levels.
 
