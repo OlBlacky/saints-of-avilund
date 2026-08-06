@@ -1469,7 +1469,7 @@ const ELDER_MAGIC: Ability[] = [
       action: { base: 'Full Round', advances: [{ value: 'Standard', cost: 'M' }] },
       range: { base: "30' (5' burst)", advances: [{ value: "45' (10' burst)", cost: 'M' }, { value: "60' (15' burst)", cost: 'M' }, { value: "120' (20' burst)", cost: 'M' }] },
       targets: { base: 'One enemy in the burst', advances: [{ value: 'Cha enemies', cost: 'm' }, { value: 'Cha + 1 enemies', cost: 'm' }, { value: 'all enemies in the burst', cost: 'M' }] },
-      attack: { base: 'Charisma vs Unarmoured Will' },
+      attack: { base: 'Charisma vs Unarmoured Wisdom' },
       effects: {
         base: "Shift the target 1 (5')",
         advances: [
@@ -1492,7 +1492,7 @@ const ELDER_MAGIC: Ability[] = [
       action: { base: 'Full Round', advances: [{ value: 'Standard', cost: 'M' }] },
       range: STD_RANGE,
       targets: { base: 'One' },
-      attack: { base: 'Charisma vs Unarmoured Will' },
+      attack: { base: 'Charisma vs Unarmoured Wisdom' },
       effects: {
         base: 'Confused — must roll to act as intended, else strike the nearest creature',
         advances: [
@@ -1515,7 +1515,7 @@ const ELDER_MAGIC: Ability[] = [
       action: { base: 'Full Round', advances: [{ value: 'Standard', cost: 'M' }] },
       range: STD_RANGE,
       targets: { base: 'One' },
-      attack: { base: 'Charisma vs Unarmoured Will' },
+      attack: { base: 'Charisma vs Unarmoured Wisdom' },
       effects: {
         base: '−1 to a chosen Defence (Flat Debuff)',
         advances: [
