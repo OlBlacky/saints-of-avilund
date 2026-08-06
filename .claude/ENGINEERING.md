@@ -48,3 +48,5 @@ Conventions for the one code component in this repo: the Astro site in `app/`. A
 17. **Verify versions against live sources.** Never trust training data for package versions — check npm or the official docs before writing a version into `package.json` or a workflow file.
 
 18. Styling goes through `app/src/styles/global.scss` and the parchment theme's existing variables — don't introduce one-off inline styles or a second styling system.
+
+19. **Everything must be translatable to a Foundry VTT package.** A Foundry source pack for the game is planned (one-way export, this site stays the system of record). So the rules data layer must always be expressible as structured data: fields over prose, stable IDs on every entity (classes, abilities, items, Chronicle Entries), machine-readable effects rather than English-only descriptions. When choosing between a human-only representation and a structured one, choose structured and render the prose from it.
