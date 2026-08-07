@@ -2,15 +2,12 @@
 // component renders it in either "build" mode (every variable + all possible
 // advancements, tagged m/M) or "play" mode (only the values a character has).
 //
-// ── Advancement pacing (the one-Rank-per-level rule) ────────────────────────
-// You may climb any one variable's Ladder by AT MOST ONE RANK PER LEVEL. (The
-// base Rank and the first Advance may both be taken when the Ability is first
-// bought.) So a four-Rank Ladder paces itself: Rank 2 at creation (Level 0),
-// Rank 3 over Level 1, Rank 4 over Level 2 — with no explicit gate. Because of
-// this, a low-level gate like "L2" on a four-Rank ladder is almost always
-// redundant; reserve `note` for a Rank that opens LATER than the natural pace
-// (e.g. "L3", "L5"). The limit is per (Ability, variable): two different
-// variables of the same Ability may each advance in the same level.
+// ── Advancement pacing (one Minor + one Major per Ability per Level) ────────
+// Each Ability may take AT MOST ONE MINOR-COST AND ONE MAJOR-COST advance per
+// Level, across all its Ladders — creation (Level 0) counts as its own
+// allotment. Ranks within one Ladder are still taken in order. A `note` like
+// "L5" marks a Rank that opens later than the natural pace; the record engine
+// enforces both the pacing and the notes (replay.ts, ruled Aug 7 2026).
 
 export type VarKey =
   | 'frequency' | 'action' | 'range' | 'targets'

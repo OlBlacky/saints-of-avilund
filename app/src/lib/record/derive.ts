@@ -8,7 +8,7 @@
 // Armour/gear contributions join when the gear pillar lands.
 
 import { classById, DEFAULT_LANGUAGE } from '../classes';
-import { GEAR } from '../gear';
+import { GEAR, STARTING_COIN } from '../gear';
 import { ATTR_FULL, parseAttr } from '../notation';
 import { fill, fillEffect, QUIRKS } from '../quirks';
 import type { Attribute, Condition, Effect } from '../quirks';
@@ -78,6 +78,10 @@ export interface DerivedSheet {
   proficiencies: { group: string; rank: number; advanceable: boolean }[];
   /** Conditional modifiers from the Quirk & Gear package (later: Feats). */
   situational: SituationalMod[];
+  /** Starting coin in sp, set by the Gear roll's category — bad 200,
+   * neutral 150, good 100. Absent until the package is rolled (or on a
+   * pre-gear log). Becomes the Wealth ledger's opening balance later. */
+  startingCoin?: Breakdown;
 }
 
 // ── The package's effects ───────────────────────────────────────────────────
@@ -279,6 +283,16 @@ export function derive(state: CharacterState): DerivedSheet {
     ...[...new Set(grantedByPackage)].map((group) => ({ group, rank: 0, advanceable: false })),
   ];
 
+  // Coin re-derives from the gear card's category, like everything else —
+  // re-pool a card and every sheet's purse updates on the next replay.
+  const gearCard = state.gear?.id ? GEAR.find((g) => g.id === state.gear!.id) : undefined;
+  const startingCoin = gearCard
+    ? sum([{
+        label: `${gearCard.category[0].toUpperCase()}${gearCard.category.slice(1)} Gear`,
+        value: STARTING_COIN[gearCard.category],
+      }])
+    : undefined;
+
   return {
     level: levelFor(state.milestones, state.crystallized),
     attributes,
@@ -288,6 +302,7 @@ export function derive(state: CharacterState): DerivedSheet {
     languages,
     proficiencies,
     situational,
+    ...(startingCoin ? { startingCoin } : {}),
   };
 }
 

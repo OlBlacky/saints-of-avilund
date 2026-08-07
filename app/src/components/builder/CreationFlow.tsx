@@ -10,6 +10,8 @@
 
 import { useEffect, useMemo, useState } from 'preact/hooks';
 
+import { VAR_LABELS, VAR_ORDER, resolveValue } from '../../lib/abilities';
+import { briefFor } from '../../lib/ability-briefs';
 import { CATEGORIES } from '../../lib/category-abilities';
 import {
   ARMOUR_PROFICIENCIES,
@@ -20,6 +22,7 @@ import {
   classById,
 } from '../../lib/classes';
 import { rollPackage } from '../../lib/gear';
+import { PLACES } from '../../lib/quirks';
 import type { Attribute, SeesawCategory } from '../../lib/quirks';
 import { SKILLS } from '../../lib/skills';
 import { derive } from '../../lib/record/derive';
@@ -259,7 +262,14 @@ export default function CreationFlow() {
             <p class="cf-how">Editable at any time — none of this is mechanical.</p>
             <div class="cf-identity">
               <label>Name <input value={draft.identity.name} onInput={(e) => setIdentity('name', (e.target as HTMLInputElement).value)} placeholder="Unnamed" /></label>
-              <label>Country of origin <input value={draft.identity.origin} onInput={(e) => setIdentity('origin', (e.target as HTMLInputElement).value)} /></label>
+              <label>Place of origin
+                <select value={draft.identity.origin} onChange={(e) => setIdentity('origin', (e.target as HTMLSelectElement).value)}>
+                  <option value=""></option>
+                  {PLACES.map((p) => (
+                    <option key={p.value} value={p.value}>{p.value}</option>
+                  ))}
+                </select>
+              </label>
               <label>Age <input value={draft.identity.age} onInput={(e) => setIdentity('age', (e.target as HTMLInputElement).value)} /></label>
               <label>Height <input value={draft.identity.height} onInput={(e) => setIdentity('height', (e.target as HTMLInputElement).value)} /></label>
               <label>Weight <input value={draft.identity.weight} onInput={(e) => setIdentity('weight', (e.target as HTMLInputElement).value)} /></label>
@@ -315,17 +325,46 @@ export default function CreationFlow() {
               <p class="cf-how">Attributes climb the triangular curve (+1 costs 1, +2 costs 2 more, +3 costs 3 more). Abilities cost 1 Major from your two Categories.</p>
 
               <h3>Attributes</h3>
+              <p class="cf-how">Step any Attribute down past +0 to take a Flaw — up to two Attributes may drop to −1, each granting +1 Major.</p>
               <div class="cf-attrs">
                 {ATTRIBUTES.map((a) => {
                   const val = sheet.attributes.find((x) => x.attr === a)!.value.total;
                   const isClassAttr = cls!.classAttribute === a || sub.classAttribute === a;
-                  const warn = warnFor((e) => e.type === 'attribute-bought' && e.attr === a);
+                  const warn = warnFor(
+                    (e) =>
+                      (e.type === 'attribute-bought' || e.type === 'flaw-taken') && e.attr === a,
+                  );
+                  const bought = state.attributeRanks[a] ?? 0;
+                  const flawed = state.flaws.includes(a);
+                  const FLAW_RULE =
+                    'Reduce up to 2 Attributes by 1 at creation — each grants +1 Major.';
+
+                  // The down-step: refund bought points first; below +0 it
+                  // takes the Flaw. The up-step restores a Flaw before buying.
+                  const flawWhy = why(mk('flaw-taken', { attr: a }));
+                  const downTitle = bought > 0 ? 'refund the last point' : (flawWhy ?? FLAW_RULE);
+                  const downDisabled = crystallized || (bought === 0 && flawWhy !== null);
+                  const onDown = () => {
+                    if (bought > 0) removeLast((e) => e.type === 'attribute-bought' && e.attr === a);
+                    else append(mk('flaw-taken', { attr: a }));
+                  };
+
+                  const upEv = mk('attribute-bought', { attr: a });
+                  const upWhy = flawed ? null : why(upEv);
+                  const upTitle = flawed ? `restore ${a} (returns the Flaw’s Major)` : (upWhy ?? undefined);
+                  const onUp = () => {
+                    if (flawed) removeLast((e) => e.type === 'flaw-taken' && e.attr === a);
+                    else append(upEv);
+                  };
+
                   return (
                     <div key={a} class={`cf-attr ${warn ? 'warn' : ''}`}>
                       <span class="cf-attr-name">{a}{isClassAttr && <span class="star" title="Class Attribute"> ★</span>}<Warn msg={warn} /></span>
-                      <Undo pred={(e) => e.type === 'attribute-bought' && e.attr === a} title="refund the last point" />
-                      <span class="cf-attr-val">{val >= 0 ? `+${val}` : `−${Math.abs(val)}`}</span>
-                      <Buy ev={mk('attribute-bought', { attr: a })} label="+1" />
+                      <button type="button" class="undo" disabled={downDisabled} title={downTitle} onClick={onDown}>−</button>
+                      <span class="cf-attr-val" title={val < 0 ? FLAW_RULE : undefined}>
+                        {val >= 0 ? `+${val}` : `−${Math.abs(val)}`}
+                      </span>
+                      <button type="button" class="buy" disabled={crystallized || upWhy !== null} title={upTitle} onClick={onUp}>+1</button>
                     </div>
                   );
                 })}
@@ -363,47 +402,96 @@ export default function CreationFlow() {
                   </div>
                 );
               })()}
+              <p class="cf-how">
+                An Ability costs 1 Major. Each owned Ability may also take one Minor and one Major
+                advance per Level — the 0-level allotment included.
+              </p>
               {accessibleCategories(state).map((catName) => {
                 const cat = CATEGORIES.find((c) => c.name === catName);
                 if (!cat) return null;
                 return (
                   <div key={catName} class="cf-abilities">
                     <h4>{catName}</h4>
-                    <div class="cf-chiprow">
-                      {cat.abilities.map((ab) => {
-                        const owned = state.abilities.some(
-                          (o) => o.ref.category === catName && o.ref.ability === ab.name,
-                        );
-                        const ref = { category: catName, ability: ab.name };
-                        return owned ? (
-                          <span key={ab.name} class="cf-chip owned">
-                            {ab.name}
-                            {!crystallized && (
-                              <button
-                                type="button"
-                                class="undo"
-                                title="refund"
-                                onClick={() =>
-                                  removeLast(
-                                    (e) =>
-                                      (e.type === 'ability-bought' &&
-                                        e.ref.category === catName &&
-                                        e.ref.ability === ab.name) ||
-                                      (e.type === 'ability-advanced' &&
-                                        e.ref.category === catName &&
-                                        e.ref.ability === ab.name),
-                                  )
-                                }
-                              >
-                                −
-                              </button>
-                            )}
-                          </span>
-                        ) : (
-                          <Buy key={ab.name} ev={mk('ability-bought', { ref })} label={ab.name} />
-                        );
-                      })}
-                    </div>
+                    <table class="cf-abtable">
+                      <tbody>
+                        {cat.abilities.map((ab) => {
+                          const owned = state.abilities.find(
+                            (o) => o.ref.category === catName && o.ref.ability === ab.name,
+                          );
+                          const ref = { category: catName, ability: ab.name };
+                          const brief = briefFor(catName, ab.name);
+                          return (
+                            <>
+                              <tr key={ab.name} class={owned ? 'owned' : ''}>
+                                <td class="cf-abname">{ab.name}</td>
+                                <td class="cf-abbrief">{brief}</td>
+                                <td class="cf-abctl">
+                                  {owned ? (
+                                    !crystallized && (
+                                      <button
+                                        type="button"
+                                        class="undo"
+                                        title="refund this Ability and its advances"
+                                        onClick={() =>
+                                          removeLast(
+                                            (e) =>
+                                              (e.type === 'ability-bought' &&
+                                                e.ref.category === catName &&
+                                                e.ref.ability === ab.name) ||
+                                              (e.type === 'ability-advanced' &&
+                                                e.ref.category === catName &&
+                                                e.ref.ability === ab.name),
+                                          )
+                                        }
+                                      >
+                                        −
+                                      </button>
+                                    )
+                                  ) : (
+                                    <Buy ev={mk('ability-bought', { ref })} label="Buy · 1 M" />
+                                  )}
+                                </td>
+                              </tr>
+                              {owned && (
+                                <tr class="cf-abadv">
+                                  <td colspan={3}>
+                                    {VAR_ORDER.filter((k) => ab.vars[k]?.advances?.length).map((k) => {
+                                      const variable = ab.vars[k]!;
+                                      const rank = owned.ranks[k] ?? 0;
+                                      const next = variable.advances![rank];
+                                      const current = resolveValue(variable, rank);
+                                      return (
+                                        <span key={k} class="cf-advline">
+                                          <span class="cf-advlabel">{VAR_LABELS[k]}</span>
+                                          <span class="cf-advval" title={current}>{current}</span>
+                                          {rank > 0 && (
+                                            <Undo
+                                              pred={(e) =>
+                                                e.type === 'ability-advanced' &&
+                                                e.ref.category === catName &&
+                                                e.ref.ability === ab.name &&
+                                                e.variable === k
+                                              }
+                                              title="refund the last Rank"
+                                            />
+                                          )}
+                                          {next && (
+                                            <Buy
+                                              ev={mk('ability-advanced', { ref, variable: k, toRank: rank + 1 })}
+                                              label={`→ ${next.value.length > 34 ? `${next.value.slice(0, 32)}…` : next.value} · ${next.cost}`}
+                                            />
+                                          )}
+                                        </span>
+                                      );
+                                    })}
+                                  </td>
+                                </tr>
+                              )}
+                            </>
+                          );
+                        })}
+                      </tbody>
+                    </table>
                   </div>
                 );
               })}
@@ -528,34 +616,14 @@ export default function CreationFlow() {
             </section>
           )}
 
-          {/* ── Step 5 · Flaw ── */}
-          {sub && (
-            <section class="cf-step">
-              <h2>Step 5 · Take a Flaw <span class="cf-opt">(optional)</span></h2>
-              <p class="cf-how">Lower up to two Attributes by −1 for +1 Major each.</p>
-              <div class="cf-chiprow">
-                {ATTRIBUTES.map((a) => {
-                  const has = state.flaws.includes(a);
-                  return has ? (
-                    <span key={a} class="cf-chip owned">
-                      {a} −1
-                      <Undo pred={(e) => e.type === 'flaw-taken' && e.attr === a} title="remove the Flaw" />
-                    </span>
-                  ) : (
-                    <Buy key={a} ev={mk('flaw-taken', { attr: a })} label={`${a} −1`} />
-                  );
-                })}
-              </div>
-            </section>
-          )}
-
-          {/* ── Step 6 · The Finale ── */}
+          {/* ── Step 5 · The Finale ── */}
           {sub && (
             <section class="cf-step cf-finale">
-              <h2>Step 6 · Quirk &amp; Starting Gear</h2>
+              <h2>Step 5 · Quirk &amp; Starting Gear</h2>
               <p class="cf-how">
                 Rolled together, never chosen — the seesaw pairs a Good Quirk with Bad Gear and
-                the reverse; Neutral pulls Neutral. Two rerolls, whole package, take-the-last.
+                the reverse; Neutral pulls Neutral. Starting coin leans against the Gear: 200 sp
+                for Bad, 150 for Neutral, 100 for Good. Two rerolls, whole package, take-the-last.
               </p>
               {draft.quirkText && (
                 <div class="cf-package">
@@ -571,6 +639,9 @@ export default function CreationFlow() {
                       <h4>{draft.gearText.name}</h4>
                       <p class="cf-quirk-mech">{draft.gearText.mechanic}</p>
                       <p class="cf-quirk-eso">{draft.gearText.provenance}</p>
+                      {sheet.startingCoin && (
+                        <p class="cf-quirk-mech"><strong>Starting coin: {sheet.startingCoin.total} sp</strong></p>
+                      )}
                     </div>
                   )}
                 </div>
@@ -658,6 +729,9 @@ export default function CreationFlow() {
               <p class="cf-eyebrow">The Package</p>
               {state.quirk && <p class="cf-railline">{state.quirk.name}</p>}
               {state.gear && <p class="cf-railline">{state.gear.name}</p>}
+              {sheet.startingCoin && (
+                <p class="cf-railline">Coin: {sheet.startingCoin.total} sp</p>
+              )}
               {sheet.situational.map((s) => (
                 <p key={`${s.source}·${s.text}`} class="cf-railline cf-sit" title={s.source}>
                   {s.text}

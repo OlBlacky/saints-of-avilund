@@ -47,11 +47,13 @@ const blurb = 'Build a character of Avilund: Class, Subclass, Advances, and the 
   .cf-identity { display: grid; grid-template-columns: repeat(auto-fit, minmax(11rem, 1fr)); gap: 0.6rem 1rem; }
   .cf-identity label { display: flex; flex-direction: column; font-size: 0.82rem; color: var(--ink-soft); gap: 0.15rem; }
   .cf-identity label.wide { grid-column: 1 / -1; }
-  .cf-identity input {
+  .cf-identity input,
+  .cf-identity select {
     font: inherit; padding: 0.3rem 0.5rem;
     border: 1px solid var(--rule); border-radius: 3px;
     background: transparent; color: inherit;
   }
+  .cf-identity select option { background: var(--panel); color: var(--ink, inherit); }
 
   /* Choice cards */
   .cf-cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(12rem, 1fr)); gap: 0.6rem; }
@@ -130,6 +132,29 @@ const blurb = 'Build a character of Avilund: Class, Subclass, Advances, and the 
   }
   .cf-chip.owned { border-color: var(--gold); background: color-mix(in srgb, var(--gold) 10%, transparent); }
   .cf-abilities { margin-bottom: 0.4rem; }
+
+  /* The abilities table: name · brief · control, advances beneath owned rows */
+  .cf-abtable { width: 100%; border-collapse: collapse; }
+  .cf-abtable td { padding: 0.3rem 0.5rem; border-bottom: 1px dotted var(--rule); vertical-align: baseline; }
+  .cf-abtable tr.owned td { background: color-mix(in srgb, var(--gold) 7%, transparent); }
+  .cf-abtable tr.owned td.cf-abname { color: var(--oxblood); }
+  .cf-abname { font-weight: bold; white-space: nowrap; width: 11rem; }
+  .cf-abbrief { color: var(--ink-soft); font-size: 0.87rem; font-style: italic; }
+  .cf-abctl { text-align: right; white-space: nowrap; width: 6.5rem; }
+  .cf-abadv td {
+    background: color-mix(in srgb, var(--gold) 4%, transparent);
+    padding: 0.35rem 0.5rem 0.5rem 1.4rem;
+  }
+  .cf-advline {
+    display: inline-flex; align-items: center; gap: 0.35rem;
+    margin: 0.1rem 1.1rem 0.1rem 0; font-size: 0.84rem;
+  }
+  .cf-advlabel { font-variant: small-caps; letter-spacing: 0.05em; color: var(--gold); }
+  .cf-advval {
+    color: var(--ink-soft); max-width: 11rem; overflow: hidden;
+    text-overflow: ellipsis; white-space: nowrap;
+  }
+  .cf-advline .buy { font-size: 0.78rem; max-width: 20rem; overflow: hidden; text-overflow: ellipsis; }
 
   .cf-picker { display: inline-flex; gap: 0.4rem; align-items: center; }
   .cf-picker select {

@@ -208,9 +208,11 @@ export function replay(events: RecordEvent[]): ReplayResult {
   };
   const flags: Flag[] = [];
 
-  // Per-window bookkeeping for pacing rules.
+  // Per-window bookkeeping for pacing rules. Ability advancement paces per
+  // ABILITY: one Minor-cost and one Major-cost advance per Level (creation
+  // counts as its own window — the 0-level allotment).
   let hpWindow = -1;
-  const ladderWindow = new Map<string, number>(); // "cat/ability/variable" → window
+  const advanceSlots = new Set<string>(); // "cat/ability/m|M/window"
 
   const flag = (e: RecordEvent, code: Flag['code'], message: string) =>
     flags.push({ eventId: e.id, code, message });
@@ -323,15 +325,26 @@ export function replay(events: RecordEvent[]): ReplayResult {
           flag(e, 'wrong-order', `${e.variable} is at Rank ${current}; next is ${current + 1}, not ${e.toRank}`);
           break;
         }
-        const key = `${e.ref.category}/${e.ref.ability}/${e.variable}`;
-        const window = windowFor(state.milestones);
-        if (ladderWindow.get(key) === window) {
-          flag(e, 'ladder-pace', `${e.variable} already climbed this Level`);
+        // A Rank noted "L5" (etc.) opens later than the natural pace.
+        const gate = advance.note?.match(/^L(\d+)$/);
+        if (gate && levelFor(state.milestones, state.crystallized) < Number(gate[1])) {
+          flag(e, 'over-cap', `that ${e.variable} Rank opens at Level ${gate[1]}`);
+          break;
+        }
+        // Pacing: each Ability may take one Minor-cost and one Major-cost
+        // advance per Level (the 0-level allotment included).
+        const slot = `${e.ref.category}/${e.ref.ability}/${advance.cost}/${windowFor(state.milestones)}`;
+        if (advanceSlots.has(slot)) {
+          flag(
+            e,
+            'ladder-pace',
+            `${e.ref.ability} already took its ${advance.cost === 'M' ? 'Major' : 'Minor'} advance this Level`,
+          );
           break;
         }
         if (!spend(e, advance.cost === 'M' ? 'major' : 'minor', 1)) break;
         owned.ranks[e.variable] = e.toRank;
-        ladderWindow.set(key, window);
+        advanceSlots.add(slot);
         break;
       }
 

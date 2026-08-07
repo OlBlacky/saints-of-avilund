@@ -182,25 +182,60 @@ describe('enforcement', () => {
     expect(nextWindow.state.hpPurchases).toBe(2);
   });
 
-  it('paces any one Ladder to one Rank per Level', () => {
+  it('paces each Ability to one Minor and one Major advance per Level', () => {
+    const ms = { category: 'Arms', ability: 'Martial Strike' };
     const base = [
       ev('class-chosen', { classId: 'soldier' }),
       ev('subclass-chosen', { subclassId: 'vanguard' }),
-      ev('ability-bought', { ref: { category: 'Arms', ability: 'Martial Strike' } }),
-      ev('ability-advanced', { ref: { category: 'Arms', ability: 'Martial Strike' }, variable: 'damage', toRank: 1 }),
+      ev('ability-bought', { ref: ms }),
+      // The 0-level allotment: one m (damage Rank 1) + one M (frequency Rank 1).
+      ev('ability-advanced', { ref: ms, variable: 'damage', toRank: 1 }),
+      ev('ability-advanced', { ref: ms, variable: 'frequency', toRank: 1 }),
     ];
-    const tooFast = replay([
-      ...base,
-      ev('ability-advanced', { ref: { category: 'Arms', ability: 'Martial Strike' }, variable: 'damage', toRank: 2 }),
-    ]);
-    expect(tooFast.flags.some((f) => f.code === 'ladder-pace')).toBe(true);
+    expect(replay(base).flags).toEqual([]);
 
+    // A second Minor-cost advance in the same Level is refused…
+    const secondMinor = replay([
+      ...base,
+      ev('ability-advanced', { ref: ms, variable: 'damage', toRank: 2 }),
+    ]);
+    expect(secondMinor.flags.some((f) => f.code === 'ladder-pace')).toBe(true);
+
+    // …and opens again at the next Milestone.
     const paced = replay([
       ...base,
       ev('milestone-granted', {}),
-      ev('ability-advanced', { ref: { category: 'Arms', ability: 'Martial Strike' }, variable: 'damage', toRank: 2 }),
+      ev('ability-advanced', { ref: ms, variable: 'damage', toRank: 2 }),
     ]);
     expect(paced.flags).toEqual([]);
+  });
+
+  it('enforces a Rank’s own Level note (damage 2[W] waits for L5)', () => {
+    const ms = { category: 'Arms', ability: 'Martial Strike' };
+    const toRank3 = (extra: RecordEvent[]) =>
+      replay([
+        ev('class-chosen', { classId: 'soldier' }),
+        ev('subclass-chosen', { subclassId: 'vanguard' }),
+        ev('quirk-rolled', { quirkName: 'Q', slots: {}, rerollsUsed: 0, gearName: 'G', gearSlots: {} }),
+        ev('crystallized', {}),
+        ev('ability-bought', { ref: ms }),
+        ev('ability-advanced', { ref: ms, variable: 'damage', toRank: 1 }),
+        ev('milestone-granted', {}),
+        ev('ability-advanced', { ref: ms, variable: 'damage', toRank: 2 }),
+        ...extra,
+        ev('ability-advanced', { ref: ms, variable: 'damage', toRank: 3 }),
+      ]);
+    // Milestone 2 — nowhere near Level 5: the L5-noted Rank refuses.
+    expect(
+      toRank3([ev('milestone-granted', {})]).flags.some((f) =>
+        f.message.includes('Level 5'),
+      ),
+    ).toBe(true);
+    // 12 milestones in → Level 5: it opens.
+    const open = toRank3(
+      Array.from({ length: 11 }, () => ev('milestone-granted', {})),
+    );
+    expect(open.flags).toEqual([]);
   });
 
   it('runs the Skill track: Trained +0, +1 open, +2 at Level 3, +3 at Level 5', () => {
@@ -296,6 +331,109 @@ describe('enforcement', () => {
     expect(accessibleCategories(state)).toEqual(
       expect.arrayContaining(['Arms', 'Protection', 'Mercy', 'Forbearance', 'Letters', 'Medicine']),
     );
+  });
+});
+
+describe('the package deploys to the sheet', () => {
+  const base = () => [
+    ev('class-chosen', { classId: 'soldier' }),
+    ev('subclass-chosen', { subclassId: 'vanguard' }),
+  ];
+  /** A finale event from real corpus cards, with the fills a roll would draw. */
+  const pkg = (
+    quirkId: string, quirkName: string, slots: Record<string, string>,
+    gearId: string, gearName: string, gearSlots: Record<string, string>,
+  ) => ev('quirk-rolled', { quirkId, quirkName, slots, rerollsUsed: 0, gearId, gearName, gearSlots });
+
+  it('folds unconditional modifiers into the breakdowns, labeled with their source', () => {
+    // Left the Order at Compline: +1 Wisdom Defence, unconditional.
+    const { state } = replay([...base(), pkg(
+      'left-the-order-at-compline', 'Left the Order at Compline', { saint: 'St. Avitus' },
+      'a-cursed-rabbits-foot', "A Cursed Rabbit's Foot", {},
+    )]);
+    const sheet = derive(state);
+    const wis = sheet.attributes.find((a) => a.attr === 'Wisdom')!;
+    expect(wis.unarmouredDefence.total).toBe(11);
+    expect(wis.unarmouredDefence.parts).toContainEqual({
+      label: 'Quirk · Left the Order at Compline', value: 1,
+    });
+    // The foot's −1 Dex Saves is conditional (while carried) — never summed.
+    expect(sheet.attributes.find((a) => a.attr === 'Dexterity')!.save.total).toBe(0);
+    expect(sheet.situational).toContainEqual({
+      source: 'Gear · A Cursed Rabbit’s Foot',
+      text: '−1 Dexterity Saves (while carried)',
+    });
+  });
+
+  it('surfaces a skill modifier even on an Untrained skill, penalty and all', () => {
+    // Hands Like a Cooper: +1 Craft — not a Soldier Class Skill.
+    const { state } = replay([...base(), pkg(
+      'hands-like-a-cooper', 'Hands Like a Cooper', {},
+      'another-mans-weapon', "Another Man's {weapon}", { weapon: 'Axes', place: 'Waldheim' },
+    )]);
+    const sheet = derive(state);
+    const craft = sheet.skills.find((s) => s.skill === 'Craft')!;
+    expect(craft.untrained).toBe(true);
+    expect(craft.value.parts).toContainEqual({ label: 'Untrained', value: -1 });
+    expect(craft.value.parts).toContainEqual({ label: 'Quirk · Hands Like a Cooper', value: 1 });
+    // The stolen weapon's scoped penalty resolves its {place} fill.
+    expect(sheet.situational).toContainEqual({
+      source: 'Gear · Another Man’s Axes',
+      text: '−1 social checks (in Waldheim)',
+    });
+  });
+
+  it('turns grants into real languages and proficiencies', () => {
+    // Gutter Auld grants Auld Imperial; Bought a Bow grants a {weapon} group.
+    const auld = replay([...base(), pkg(
+      'gutter-auld', 'Gutter Auld', {},
+      'a-physicians-chest', 'A Physician’s Chest', {},
+    )]);
+    expect(derive(auld.state).languages).toContain('Auld Imperial');
+
+    const bow = replay([...base(), pkg(
+      'bought-a-bow-in-waldheim', 'Bought a Bow in Waldheim', { weapon: 'Bows' },
+      'a-black-tongue-pamphlet', 'A Black Tongue Pamphlet', {},
+    )]);
+    const bows = derive(bow.state).proficiencies.find((p) => p.group === 'Bows');
+    expect(bows).toMatchObject({ rank: 0, advanceable: false });
+  });
+
+  it('refuses to crystallize on half a package', () => {
+    const { flags } = replay([
+      ...base(),
+      ev('quirk-rolled', { quirkName: 'Q', slots: {}, rerollsUsed: 0 }),
+      ev('crystallized', {}),
+    ]);
+    expect(flags.some((f) => f.code === 'wrong-order' && f.message.includes('package'))).toBe(true);
+  });
+
+  it('a reroll replaces both halves — the package is one draw', () => {
+    const { state } = replay([
+      ...base(),
+      pkg('gutter-auld', 'Gutter Auld', {}, 'a-physicians-chest', 'A Physician’s Chest', {}),
+      pkg('hands-like-a-cooper', 'Hands Like a Cooper', {}, 'a-debt-come-due', 'A Debt Come Due', { place: 'Lysander' }),
+    ]);
+    expect(state.quirk?.id).toBe('hands-like-a-cooper');
+    expect(state.gear?.id).toBe('a-debt-come-due');
+    // No trace of the first roll's grants survives the replacement.
+    expect(derive(state).languages).not.toContain('Auld Imperial');
+  });
+
+  it('starting coin leans against the Gear roll: bad 200, neutral 150, good 100', () => {
+    const coin = (quirkId: string, quirkName: string, gearId: string, gearName: string) => {
+      const { state } = replay([...base(), pkg(quirkId, quirkName, {}, gearId, gearName, {})]);
+      return derive(state).startingCoin;
+    };
+    // Good quirk → bad gear → the fattest purse.
+    expect(coin('hands-like-a-cooper', 'Hands Like a Cooper', 'a-cursed-rabbits-foot', 'A Cursed Rabbit’s Foot'))
+      .toEqual({ total: 200, parts: [{ label: 'Bad Gear', value: 200 }] });
+    expect(coin('gutter-auld', 'Gutter Auld', 'a-physicians-chest', 'A Physician’s Chest')?.total).toBe(150);
+    expect(coin('the-arrow-stayed-in', 'The Arrow Stayed In', 'a-masters-work', 'A Master’s Work')?.total).toBe(100);
+
+    // A pre-gear log (or an unknown card) has no purse to derive.
+    const legacy = replay([...base(), ev('quirk-rolled', { quirkName: 'Q', slots: {}, rerollsUsed: 0, gearName: 'G', gearSlots: {} })]);
+    expect(derive(legacy.state).startingCoin).toBeUndefined();
   });
 });
 

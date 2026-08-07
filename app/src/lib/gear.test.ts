@@ -3,7 +3,7 @@
 // skill that does not exist fails here, not at the table.
 
 import { describe, expect, it } from 'vitest';
-import { GEAR, OPPOSITE, resolveGear, rollPackage } from './gear';
+import { GEAR, OPPOSITE, resolveGear, rollPackage, STARTING_COIN } from './gear';
 import { QUIRKS, resolveQuirk, rollQuirk, type SeesawCategory } from './quirks';
 import { SKILLS } from './skills';
 
@@ -76,6 +76,15 @@ describe('the seesaw', () => {
 
   it('neutral pulls neutral', () => {
     expect(OPPOSITE.neutral).toBe('neutral');
+  });
+
+  it('coin leans against the gear: bad pays best', () => {
+    expect(STARTING_COIN).toEqual({ bad: 200, neutral: 150, good: 100 });
+    const rng = seeded(5);
+    for (let i = 0; i < 100; i++) {
+      const { gear } = rollPackage(rng);
+      expect(gear.coin).toBe(STARTING_COIN[gear.category]);
+    }
   });
 
   it('a category-confined quirk roll stays in its pool', () => {

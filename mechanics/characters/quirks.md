@@ -193,16 +193,43 @@ its two halves are:
 The corpus lives in `app/src/lib/gear.ts`. Full weapon and armour stat blocks
 are the Gear pillar's job later; until then each card is self-contained.
 
-### What each pool means
+### Starting coin — the money leg of the seesaw
 
-- **Good gear is a genuinely fine thing** — masterwork, rare, sacred, or
-  simply worth real coin. It may trail a story, but the story has no dice.
-- **Bad gear is a problem you carry** — a curse, a debt, contraband, a stolen
-  crest. Never merely a shoddy version of normal kit: a junk sword is a dull
-  result, a stolen one is a story. Bad gear pairs with a Good quirk, so it can
-  afford to be genuinely inconvenient.
-- **Neutral gear is a strange thing** — no modifier, all hook. A broken orb, a
-  key without a lock. The maybe-powerful, maybe-not pieces live here.
+The Gear roll also sets your **starting coin**. It leans against the gear:
+
+| Gear rolled | Starting coin |
+|---|---|
+| **Bad** | **200 sp** — the thing you started with was useless or worse |
+| **Neutral** | **150 sp** — you started with something useful, worth ~50 sp or more |
+| **Good** | **100 sp** — you started with something really nice |
+
+The Quirk plays no part; **coin follows the Gear alone**. With coin counted,
+a Bad or Neutral start is worth roughly 200 sp — and a Good start is
+**deliberately worth a little more** (100 sp plus a 150–350 sp thing): a fine
+piece of gear you never asked for, but might well use, is allowed to
+overshoot. The amounts are fixed, not rolled: the package already carries all
+the dice this step needs. (This supersedes the earlier "coin rolls
+separately" note in the builder spec.)
+
+### What each pool means (price-anchored)
+
+The pools are anchored against the Equipment page's real prices — everyday
+kit is cheap in this economy (a stocked Healer's Kit is 12 sp, a mule 8 sp,
+most weapons 5–35 sp), so "useful and worth 50 sp" is genuinely a cut above
+ordinary:
+
+- **Good gear is a really nice thing, roughly 150–350 sp** — a suit of
+  armour (Splint Mail 200 sp), a masterwork weapon (~215 sp) or masterwork
+  tools (+100 sp), a firearm (100–350 sp). It may trail a story, but the
+  story has no dice.
+- **Neutral gear is useful, relevant kit worth ~50–100 sp** — a Chain Shirt
+  (50 sp), a 50 sp-tier weapon, a Hand Crossbow (75 sp), a fitted
+  physician's chest (~60 sp).
+- **Bad gear is useless or worse** — worthless curios (a broken orb, a key
+  without a lock), curses, debts, contraband, a stolen crest. Never merely a
+  shoddy version of normal kit: a junk sword is a dull result, a stolen one
+  is a story. Bad gear pairs with a Good quirk and the fattest purse, so it
+  can afford to be genuinely worthless or inconvenient.
 
 The rolled piece sits **on top of** ordinary equipment: shopping with starting
 coin happens after the roll (see `mechanics/markets.md`), so nobody is armed or
@@ -210,28 +237,50 @@ unarmed by the seesaw alone.
 
 ### The gear corpus
 
-Fourteen to start.
+Sixteen so far.
 
 | Gear | Category | The one idea |
 |---|---|---|
 | **A Master's Work** | Good | A weapon better than your station, and questions to match. |
 | **A Relic of {saint}** | Good | A dying pilgrim's mistake is your blessing. |
 | **A Letter of Passage** | Good | A door your grandparents opened is still ajar. |
-| **A Wheellock Pistol** | Good | A year's wages that fires twenty times. |
-| **A Physician's Kit, Fully Stocked** | Good | A dead man's trade, ready for a living pair of hands. |
-| **A Broken Orb** | Neutral | It does nothing, except on feast days, when it hums. |
-| **A Dead Man's Diary** | Neutral | The last entry stops mid-sentence. |
-| **A Key Without a Lock** | Neutral | Your mother sewed it into her hem and never said why. |
+| **A Wheellock Pistol** | Good | A winter's keep that fires twenty times. |
+| **A Suit of Splint Mail** | Good | Armour made for a man who never came to collect it. |
+| **A Master's Tools** | Good | Every handle carries a name tradesmen still ask after. |
 | **A Soldier's {weapon}** | Neutral | Seventeen notches, and room left for more. |
-| **A Dog of No Particular Breed** | Neutral | It was waiting at your door as though you were late. |
+| **A Chain Shirt of Good Make** | Neutral | One ring over the heart is mended in the wrong colour. |
+| **A Hand Crossbow** | Neutral | Sold as a lady's hunting piece; it has killed a man. |
+| **A Physician's Chest** | Neutral | A dead man's trade, ready for a living pair of hands. |
+| **A Broken Orb** | Bad | It does nothing, except on feast days, when it hums. |
+| **A Dead Man's Diary** | Bad | The last entry stops mid-sentence. |
+| **A Key Without a Lock** | Bad | Your mother sewed it into her hem and never said why. |
+| **A Dog of No Particular Breed** | Bad | It was waiting at your door as though you were late. |
 | **A Cursed Rabbit's Foot** | Bad | You cannot lose it, and it will not let you be lucky. |
 | **A Debt Come Due** | Bad | You do not remember signing. It is your signature. |
 | **Another Man's {weapon}** | Bad | A fine blade wearing somebody else's crest. |
 | **A Black Tongue Pamphlet** | Bad | You cannot read it, and you keep it anyway. |
 
+(Eighteen rows, sixteen — the hooks that began as "Neutral" moved to Bad in
+the price-anchored re-pool of Aug 2026: an all-hook curio is *useless* gear,
+which is exactly what the 200 sp purse compensates for.)
+
+### Context-aware draws (planned)
+
+The gear picker will eventually read the **character**, not just the dice:
+
+- **Proficiencies** — a character proficient with Heavy Blades should have a
+  real chance that the soldier's weapon, the fine weapon, or the masterwork
+  one is a blade he can actually use; masterwork artisan tools and kits
+  should likewise lean toward his trade skills.
+- **Place of Origin** — the builder's identity field (a dropdown of the
+  polity list plus an Other) biases `{place}` fills toward home.
+
+Weighted draws, never guarantees — the roll stays a roll. Pure-random remains
+the fallback for the demo button and context-free rolls.
+
 ### Still to author
 
-- More cards in every pool, Bad and Neutral quirks first.
-- The starting-coin roll (separate, not seesawed — amount and dice TBD).
+- More cards in every pool — Good and Neutral are thinner than Bad.
+- More Bad and Neutral **quirks** (the quirk pools lean Good).
 - Gear cards that open a Market (the Black Tongue Pamphlet gestures at this;
   see `mechanics/markets.md` for access rules).
