@@ -39,9 +39,15 @@ export type RecordEvent =
   | (BaseEvent & { type: 'subclass-chosen'; subclassId: string })
   /** Creation-only: −1 to an Attribute for +1 Major (at most two). */
   | (BaseEvent & { type: 'flaw-taken'; attr: Attribute })
-  /** The finale: the rolled Quirk (and, later, Gear) package. Stores the
-   * card id + drawn slot fills — the texts re-derive from the corpus. */
-  | (BaseEvent & { type: 'quirk-rolled'; quirkId?: string; quirkName: string; slots: Record<string, string>; rerollsUsed: number })
+  /** The finale: the seesawed Quirk + Starting Gear package, one roll. Stores
+   * card ids + drawn slot fills — texts and effects re-derive from the corpora.
+   * Gear fields are absent only on logs from before the gear tables existed. */
+  | (BaseEvent & {
+      type: 'quirk-rolled';
+      quirkId?: string; quirkName: string; slots: Record<string, string>;
+      rerollsUsed: number;
+      gearId?: string; gearName?: string; gearSlots?: Record<string, string>;
+    })
   /** The point of no return — the spine locks, play begins at Level 1. */
   | (BaseEvent & { type: 'crystallized' })
 

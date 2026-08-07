@@ -170,7 +170,7 @@ The mechanical build is step-wise by nature and done in order, following the liv
 Last comes the game's quirkiest moment. **Quirk and Starting Gear are rolled, together, as one package** — a specific feature (and a strange, maybe-powerful, maybe-not bit of unique gear: a cursed rabbit's foot, a rare musket, a broken orb) that the character didn't bargain for.
 
 - **The app rolls digitally.** No table dice, no typed-in results.
-- **The seesaw (working design):** Quirks and Gear each come in three categories — Bad / Neutral / Good — and the package balances them: a Bad Quirk pulls a Good Gear roll, and vice versa. The wildness lives inside each roll; only the sum is tamed — no double-cursed starts, no double jackpots. (Every Quirk therefore needs a category tag, and Gear needs three tables — authoring work noted.)
+- **The seesaw (confirmed Aug 7 2026, built):** Quirks and Gear each come in three categories — Bad / Neutral / Good — and the package balances them: a Bad Quirk pulls a Good Gear roll, and vice versa; Neutral pulls Neutral. Category rolls first, even thirds; then a uniform draw within each pool. The wildness lives inside each roll; only the sum is tamed — no double-cursed starts, no double jackpots. Categories are judged by the **mechanical net alone** (the esoteric sting never counts). Engine: `rollPackage` in `lib/gear.ts`; design record in `mechanics/characters/quirks.md`.
 - **Rerolls: 2, take-the-last.** A reroll rerolls the *whole package* — Quirk and Gear update together (the seesaw makes every reroll a devil's bargain, not shopping). Each reroll discards what you had; there is no going back and no picking among results seen. Accept the current package (or exhaust your rerolls) and the character **crystallizes**: the spine locks, creation ends, and the character enters normal state.
 - **Sandbox builds reroll freely** — it's the play-around space, and the GM-approval gate (§3) protects campaigns from Quirk-fishing.
 - **Starting coin** rolls separately and is not seesawed. *(Confirm when the gear mechanic is built.)*
@@ -178,8 +178,8 @@ Last comes the game's quirkiest moment. **Quirk and Starting Gear are rolled, to
 
 ### Mechanics Prerequisites (authoring work this flow is waiting on)
 
-- **Starting Gear** — the rolled-gear mechanic, its three tables, and starting coin.
-- **Quirk category tags** — Bad/Neutral/Good classification across the Quirk roster.
+- **Starting Gear** — ✅ the rolled-gear mechanic and its three tables exist (`lib/gear.ts`, 14 cards); still to author: starting coin, and more cards in every pool.
+- **Quirk category tags** — ✅ done (Aug 7 2026): every Quirk carries a category; roster now 12 (6 Good / 3 Neutral / 3 Bad — Bad and Neutral need growth).
 - **Doc cleanup** — `mechanics/characters/character-creation.md` is stale AP-era design; the live site page `system/character-creation` is the canon but needs: the Level-derivation correction from §7 ("out of Level 0 and working on 1" is no longer right), and the **new Skill track** (ruled Aug 6 2026 — Untrained −1 / Trained +0, Class Skills Trained free, Ranks 1 Minor each climbing +1 → +2 @L3 → +3 @L5, off-list Trained buyable but capped +1; the page and its Gareth example still show the old "+1 any / +2 Class Skill" model). The `system/skills` page needs the same, plus a **Can't-Use-Untrained flag** inventoried across the Skill roster.
 
 ---
@@ -276,7 +276,7 @@ Two layers and a bridge. **Layer A** is the game — read-only rules data shippe
 | Quirks (engine, slots, typed effects) | ✅ exists |
 | **Classes & Subclasses** | ❌ extract — mechanical data currently lives in markdown tables; it moves to a typed `classes.ts` and the class pages **render from data** (single-source rule; the prose and cues stay in markdown) |
 | **Feats** | ❌ new — with `brief` + `full` texts and the shared effect vocabulary |
-| **Gear** (weapons, armour, equipment) | ❌ new — stat blocks, weight, traits, sell-criteria tags, container coefficients |
+| **Gear** (weapons, armour, equipment) | 🟡 started — `gear.ts` holds the Starting Gear corpus + the package roll; still to come: stat blocks, weight, traits, sell-criteria tags, container coefficients |
 | **Markets** | ❌ new — per `mechanics/markets.md` |
 | Chronicle Entries | ❌ new — content collection with metadata (visibility, tags, codes) |
 

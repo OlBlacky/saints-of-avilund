@@ -29,6 +29,39 @@ probably neither is good.
 
 ---
 
+## Categories and the seesaw
+
+Every quirk carries a category — **Good, Neutral, or Bad** — judged by the
+**mechanical net alone**. The esoteric sting never counts toward the category:
+
+- **Good** — the give outweighs the take. The cost lives in the sting.
+- **Neutral** — the gives and takes balance. Most give-and-take quirks land here.
+- **Bad** — the take outweighs. The gift, if any, lives in the story.
+
+The authoring standard is unchanged by the category: every quirk, in every pool,
+still has both halves and still passes the one-idea test. A Good quirk is not a
+sting-free quirk; it is a quirk whose sting has no dice attached.
+
+**The seesaw.** Quirk and Starting Gear are rolled together, as one package, at
+the very end of creation. The roll goes:
+
+1. **Roll the category** — even thirds. (The seesaw already tames the sum, so
+   the extreme packages — the fun ones — stay common.)
+2. **Roll a quirk** from that pool, uniformly.
+3. **Roll gear from the opposite pool** — a Bad quirk pulls Good gear, a Good
+   quirk pulls Bad gear, Neutral pulls Neutral.
+
+No double-cursed starts, no double jackpots: the wildness lives inside each
+roll, and only the sum is tamed. Rerolls (two, whole-package, take-the-last),
+crystallization, and the sandbox exemption are the builder's business — see
+`app/character-builder-spec.md`, §The Finale. **Starting coin rolls separately**
+and is not seesawed.
+
+The engine lives in `app/src/lib/gear.ts` (`rollPackage`); the demo button on
+the rules page still rolls quirks freely across all three pools.
+
+---
+
 ## Slots
 
 Quirks are hand-authored, but the esoteric half is fill-in-the-blank. A slot is
@@ -92,24 +125,29 @@ prose the player has to remember.
 
 ## The corpus
 
-Ten to start. The list lives in `app/src/lib/quirks.ts` as the machine-readable
+Twelve so far. The list lives in `app/src/lib/quirks.ts` as the machine-readable
 source; this section is the design record of what each one is *for*.
 
-| Quirk | The one idea |
-|---|---|
-| **Veteran of the Ferals War** | You learned one enemy and one weapon too well to sleep easy. |
-| **Salt-Blooded** | *(weakest of the ten — the swim penalty and the fish taboo are two ideas; rewrite or cut.)* |
-| **Gutter Auld** | You have the church's tongue and the parish's mouth. |
-| **Left the Order at Compline** | You walked out with your conviction intact and your welcome spent. |
-| **Bought a Bow in Waldheim** | You own a weapon your training never gave you, and a debt with it. |
-| **Cousin to the Kellish** | The tongue that opens one door closes another. |
-| **The Third Milestone** | The habit that keeps you quick is the habit that owns you. |
-| **Read One Page Too Many** | You always read it before you resist it. |
-| **Hands Like a Cooper** | The eye that makes a thing well will not let you break one. |
-| **Owed a Saint's Debt** | The saint who keeps you standing also keeps your calendar. |
+| Quirk | Category | The one idea |
+|---|---|---|
+| **Veteran of the Ferals War** | Good | You learned one enemy and one weapon too well to sleep easy. |
+| **Left the Order at Compline** | Good | You walked out with your conviction intact and your welcome spent. |
+| **Bought a Bow in Waldheim** | Good | You own a weapon your training never gave you, and a debt with it. |
+| **The Third Milestone** | Good | The habit that keeps you quick is the habit that owns you. |
+| **Hands Like a Cooper** | Good | The eye that makes a thing well will not let you break one. |
+| **Owed a Saint's Debt** | Good | The saint who keeps you standing also keeps your calendar. |
+| **Gutter Auld** | Neutral | You have the church's tongue and the parish's mouth. |
+| **Cousin to the Kellish** | Neutral | The tongue that opens one door closes another. |
+| **Read One Page Too Many** | Neutral | You always read it before you resist it. |
+| **Pulled from the Water** | Bad | You drowned once, and the water knows it as well as you do. |
+| **The Arrow Stayed In** | Bad | The wound healed around what it could not give back. |
+| **The Magistrate's Mark** | Bad | The brand answers a question you hope nobody asks. |
 
-*Salt-Blooded* is kept as a deliberate counter-example: it is the failure the
-authoring standard exists to catch.
+*Salt-Blooded*, the corpus's original counter-example — a swim penalty and a
+fish taboo, two ideas wearing one name — was rewritten in August 2026 as
+*Pulled from the Water*, where the near-drowning explains the penalty, the
+behaviour, and a hook besides. The lesson stands in the authoring standard
+above.
 
 ### Target size
 
@@ -117,6 +155,11 @@ Thirty quirks is enough that a table of five sees no repeats. A hundred is enoug
 that a player on their twelfth character is still surprised — but at this
 standard a hundred is real authoring work, and it goes stale if burned through in
 one sitting. Add in batches; let slots do the multiplying.
+
+**Authoring priority:** grow the pools toward parity. The give-and-take habit
+naturally produces Good quirks (a mechanical plus, an esoteric sting), so Bad
+and Neutral need the deliberate effort — and a thin pool means the same card
+comes up every time its third of the seesaw lands.
 
 ---
 
@@ -135,7 +178,60 @@ which is all it needs to do.
 
 ---
 
-## Gear
+## Starting Gear
 
-The gear roll rides the same engine: same slot resolution, same rolling, a
-different table. It is not built yet.
+The other half of the package. A gear card is authored exactly like a quirk —
+same slot resolution, same effect vocabulary, same one-idea discipline — but
+its two halves are:
+
+- A **mechanic** — what the thing is and does, with typed effects where the
+  shared vocabulary reaches.
+- A **provenance** — where it came from; the story riding on the object. The
+  provenance is to gear what the esoteric clause is to a quirk: it must explain
+  the mechanic.
+
+The corpus lives in `app/src/lib/gear.ts`. Full weapon and armour stat blocks
+are the Gear pillar's job later; until then each card is self-contained.
+
+### What each pool means
+
+- **Good gear is a genuinely fine thing** — masterwork, rare, sacred, or
+  simply worth real coin. It may trail a story, but the story has no dice.
+- **Bad gear is a problem you carry** — a curse, a debt, contraband, a stolen
+  crest. Never merely a shoddy version of normal kit: a junk sword is a dull
+  result, a stolen one is a story. Bad gear pairs with a Good quirk, so it can
+  afford to be genuinely inconvenient.
+- **Neutral gear is a strange thing** — no modifier, all hook. A broken orb, a
+  key without a lock. The maybe-powerful, maybe-not pieces live here.
+
+The rolled piece sits **on top of** ordinary equipment: shopping with starting
+coin happens after the roll (see `mechanics/markets.md`), so nobody is armed or
+unarmed by the seesaw alone.
+
+### The gear corpus
+
+Fourteen to start.
+
+| Gear | Category | The one idea |
+|---|---|---|
+| **A Master's Work** | Good | A weapon better than your station, and questions to match. |
+| **A Relic of {saint}** | Good | A dying pilgrim's mistake is your blessing. |
+| **A Letter of Passage** | Good | A door your grandparents opened is still ajar. |
+| **A Wheellock Pistol** | Good | A year's wages that fires twenty times. |
+| **A Physician's Kit, Fully Stocked** | Good | A dead man's trade, ready for a living pair of hands. |
+| **A Broken Orb** | Neutral | It does nothing, except on feast days, when it hums. |
+| **A Dead Man's Diary** | Neutral | The last entry stops mid-sentence. |
+| **A Key Without a Lock** | Neutral | Your mother sewed it into her hem and never said why. |
+| **A Soldier's {weapon}** | Neutral | Seventeen notches, and room left for more. |
+| **A Dog of No Particular Breed** | Neutral | It was waiting at your door as though you were late. |
+| **A Cursed Rabbit's Foot** | Bad | You cannot lose it, and it will not let you be lucky. |
+| **A Debt Come Due** | Bad | You do not remember signing. It is your signature. |
+| **Another Man's {weapon}** | Bad | A fine blade wearing somebody else's crest. |
+| **A Black Tongue Pamphlet** | Bad | You cannot read it, and you keep it anyway. |
+
+### Still to author
+
+- More cards in every pool, Bad and Neutral quirks first.
+- The starting-coin roll (separate, not seesawed — amount and dice TBD).
+- Gear cards that open a Market (the Black Tongue Pamphlet gestures at this;
+  see `mechanics/markets.md` for access rules).

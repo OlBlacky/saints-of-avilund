@@ -46,7 +46,9 @@ export interface CharacterState {
   proficiencyRanks: Record<string, number>;
   languages: string[];
   abilities: OwnedAbility[];
-  quirk?: { name: string; slots: Record<string, string>; rerollsUsed: number };
+  quirk?: { id?: string; name: string; slots: Record<string, string>; rerollsUsed: number };
+  /** The other half of the finale package (absent on pre-gear logs). */
+  gear?: { id?: string; name: string; slots: Record<string, string> };
   crystallized: boolean;
   milestones: number;
   /** Advances granted minus spent. */
@@ -254,13 +256,17 @@ export function replay(events: RecordEvent[]): ReplayResult {
 
       case 'quirk-rolled': {
         if (state.quirk && state.crystallized) { flag(e, 'duplicate', 'the Quirk is already rolled and locked'); break; }
-        state.quirk = { name: e.quirkName, slots: e.slots, rerollsUsed: e.rerollsUsed };
+        state.quirk = { id: e.quirkId, name: e.quirkName, slots: e.slots, rerollsUsed: e.rerollsUsed };
+        // Quirk and Gear travel as one package: a reroll replaces both.
+        state.gear = e.gearName
+          ? { id: e.gearId, name: e.gearName, slots: e.gearSlots ?? {} }
+          : undefined;
         break;
       }
 
       case 'crystallized': {
         if (!state.classId || !state.subclassId) { flag(e, 'wrong-order', 'cannot crystallize without a Class and Subclass'); break; }
-        if (!state.quirk) { flag(e, 'wrong-order', 'the Quirk is rolled before crystallization'); break; }
+        if (!state.quirk || !state.gear) { flag(e, 'wrong-order', 'the Quirk & Starting Gear package is rolled before crystallization'); break; }
         state.crystallized = true;
         break;
       }

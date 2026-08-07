@@ -19,8 +19,8 @@ import {
   WEAPON_GROUPS,
   classById,
 } from '../../lib/classes';
-import type { Attribute } from '../../lib/quirks';
-import { rollQuirk } from '../../lib/quirks';
+import { rollPackage } from '../../lib/gear';
+import type { Attribute, SeesawCategory } from '../../lib/quirks';
 import { SKILLS } from '../../lib/skills';
 import { derive } from '../../lib/record/derive';
 import type { RecordEvent } from '../../lib/record/events';
@@ -51,8 +51,9 @@ interface Draft {
   identity: Identity;
   events: RecordEvent[];
   rerollsLeft: number;
-  /** Display texts of the current Quirk roll (the event stores id + fills). */
-  quirkText?: { name: string; mechanic: string; esoteric: string };
+  /** Display texts of the current package roll (the event stores ids + fills). */
+  quirkText?: { name: string; mechanic: string; esoteric: string; category?: SeesawCategory };
+  gearText?: { name: string; mechanic: string; provenance: string; category?: SeesawCategory };
 }
 
 const EMPTY_DRAFT: Draft = {
@@ -134,6 +135,22 @@ export default function CreationFlow() {
     return fs.length ? fs.map((f) => f.message).join('; ') : null;
   };
 
+  /** Flagged events, for marking the damage where it lives in the UI. */
+  const flaggedById = useMemo(() => new Map(flags.map((f) => [f.eventId, f.message])), [flags]);
+  const warnFor = (pred: (e: RecordEvent) => boolean): string | undefined => {
+    const msgs = events
+      .filter((e) => flaggedById.has(e.id) && pred(e))
+      .map((e) => flaggedById.get(e.id)!);
+    return msgs.length ? msgs.join('; ') : undefined;
+  };
+
+  const Warn = ({ msg }: { msg?: string }) =>
+    msg ? (
+      <span class="warnmark" title={msg}>
+        ⚑
+      </span>
+    ) : null;
+
   const crystallized = state.crystallized;
   const cls = state.classId ? classById(state.classId) : undefined;
   const sub = cls?.subclasses.find((s) => s.id === state.subclassId);
@@ -180,23 +197,29 @@ export default function CreationFlow() {
   // ── The finale ──────────────────────────────────────────────────────────
 
   const doRoll = () => {
-    const isReroll = quirkRolled;
+    // A quirk without gear is a pre-package draft; rolling it again is a
+    // fresh roll, not a reroll.
+    const isReroll = Boolean(state.quirk && state.gear);
     if (isReroll && draft.rerollsLeft <= 0) return;
-    const q = rollQuirk();
+    const { quirk: q, gear: g } = rollPackage();
     const used = isReroll ? REROLLS - draft.rerollsLeft + 1 : 0;
     setDraft((d) => ({
       ...d,
       rerollsLeft: isReroll ? d.rerollsLeft - 1 : d.rerollsLeft,
-      quirkText: { name: q.name, mechanic: q.mechanic, esoteric: q.esoteric },
+      quirkText: { name: q.name, mechanic: q.mechanic, esoteric: q.esoteric, category: q.category },
+      gearText: { name: g.name, mechanic: g.mechanic, provenance: g.provenance, category: g.category },
       events: [
         ...d.events.filter((x) => x.type !== 'quirk-rolled'),
-        mk('quirk-rolled', { quirkId: q.id, quirkName: q.name, slots: q.fills, rerollsUsed: used }),
+        mk('quirk-rolled', {
+          quirkId: q.id, quirkName: q.name, slots: q.fills, rerollsUsed: used,
+          gearId: g.id, gearName: g.name, gearSlots: g.fills,
+        }),
       ],
     }));
   };
 
   const canCrystallize =
-    !crystallized && cls && sub && quirkRolled && flags.length === 0;
+    !crystallized && cls && sub && quirkRolled && Boolean(state.gear) && flags.length === 0;
 
   // ── Render ──────────────────────────────────────────────────────────────
 
@@ -204,10 +227,12 @@ export default function CreationFlow() {
 
   return (
     <div class="cf">
-      {/* The keep-and-flag panel: errors block finishing, never browsing. */}
+      {/* The keep-and-flag panel: errors block finishing, never browsing.
+          Sticky, so an upstream change can never break something off-screen
+          without notice. */}
       {flags.length > 0 && (
         <div class="cf-flags">
-          <strong>To resolve before the finale:</strong>
+          <strong>A choice changed something below — to resolve before the finale:</strong>
           <ul>
             {flags.map((f) => (
               <li key={f.eventId}>
@@ -294,9 +319,10 @@ export default function CreationFlow() {
                 {ATTRIBUTES.map((a) => {
                   const val = sheet.attributes.find((x) => x.attr === a)!.value.total;
                   const isClassAttr = cls!.classAttribute === a || sub.classAttribute === a;
+                  const warn = warnFor((e) => e.type === 'attribute-bought' && e.attr === a);
                   return (
-                    <div key={a} class="cf-attr">
-                      <span class="cf-attr-name">{a}{isClassAttr && <span class="star" title="Class Attribute"> ★</span>}</span>
+                    <div key={a} class={`cf-attr ${warn ? 'warn' : ''}`}>
+                      <span class="cf-attr-name">{a}{isClassAttr && <span class="star" title="Class Attribute"> ★</span>}<Warn msg={warn} /></span>
                       <Undo pred={(e) => e.type === 'attribute-bought' && e.attr === a} title="refund the last point" />
                       <span class="cf-attr-val">{val >= 0 ? `+${val}` : `−${Math.abs(val)}`}</span>
                       <Buy ev={mk('attribute-bought', { attr: a })} label="+1" />
@@ -306,6 +332,37 @@ export default function CreationFlow() {
               </div>
 
               <h3>Abilities</h3>
+              {/* Purchases stranded by an upstream change (their Category is
+                  no longer accessible) stay visible here, marked, until
+                  resolved — they never silently vanish. */}
+              {(() => {
+                const orphans = events.filter(
+                  (e) =>
+                    flaggedById.has(e.id) &&
+                    (e.type === 'ability-bought' || e.type === 'ability-advanced'),
+                );
+                if (orphans.length === 0) return null;
+                return (
+                  <div class="cf-chiprow">
+                    {orphans.map((e) => (
+                      <span key={e.id} class="cf-chip warn">
+                        <Warn msg={flaggedById.get(e.id)} />
+                        {e.type === 'ability-bought' || e.type === 'ability-advanced'
+                          ? `${e.ref.ability} (${e.ref.category})`
+                          : ''}
+                        <button
+                          type="button"
+                          class="undo"
+                          title="remove this purchase"
+                          onClick={() => removeLast((x) => x.id === e.id)}
+                        >
+                          −
+                        </button>
+                      </span>
+                    ))}
+                  </div>
+                );
+              })()}
               {accessibleCategories(state).map((catName) => {
                 const cat = CATEGORIES.find((c) => c.name === catName);
                 if (!cat) return null;
@@ -359,23 +416,30 @@ export default function CreationFlow() {
               <h2>Step 4 · Spend your Minor Advances</h2>
 
               <h3>Offences &amp; Defences</h3>
-              <div class="cf-attrs">
+              <p class="cf-how">One Rank track lifts Defence and Save together.</p>
+              <div class="cf-od">
+                <span class="cf-od-h"></span>
+                <span class="cf-od-h num">Offence</span>
+                <span class="cf-od-h"></span>
+                <span class="cf-od-h num">Save · Def</span>
+                <span class="cf-od-h"></span>
                 {ATTRIBUTES.map((a) => {
                   const da = sheet.attributes.find((x) => x.attr === a)!;
+                  const f = (n: number) => (n >= 0 ? `+${n}` : `−${Math.abs(n)}`);
                   return (
-                    <div key={a} class="cf-attr wide2">
-                      <span class="cf-attr-name">{a}</span>
-                      <span class="cf-duo">
-                        Off {da.offence.total >= 0 ? `+${da.offence.total}` : da.offence.total}
+                    <>
+                      <span class="cf-od-name">{a}</span>
+                      <span class="cf-od-val">{f(da.offence.total)}</span>
+                      <span class="cf-od-btns">
                         <Undo pred={(e) => e.type === 'offence-bought' && e.attr === a} title="refund" />
                         <Buy ev={mk('offence-bought', { attr: a })} label="+1" />
                       </span>
-                      <span class="cf-duo">
-                        Def/Save
+                      <span class="cf-od-val">{f(da.save.total)} · {da.unarmouredDefence.total}</span>
+                      <span class="cf-od-btns">
                         <Undo pred={(e) => e.type === 'defence-bought' && e.attr === a} title="refund" />
                         <Buy ev={mk('defence-bought', { attr: a })} label="+1" />
                       </span>
-                    </div>
+                    </>
                   );
                 })}
               </div>
@@ -413,7 +477,7 @@ export default function CreationFlow() {
                 />
               </div>
 
-              <h3>Proficiencies &amp; Languages</h3>
+              <h3>Proficiencies</h3>
               <div class="cf-chiprow">
                 {sheet.proficiencies.map((p) => (
                   <span key={p.group} class="cf-chip owned">
@@ -439,6 +503,21 @@ export default function CreationFlow() {
                   disabled={crystallized}
                   onPick={(group) => append(mk('proficiency-bought', { group: group as never }))}
                 />
+              </div>
+
+              <h3>Languages</h3>
+              <div class="cf-chiprow">
+                {sheet.languages.map((l) => {
+                  const bought = state.languages.includes(l);
+                  return (
+                    <span key={l} class={`cf-chip ${bought ? 'trained' : 'owned'}`}>
+                      {l}
+                      {bought && <Undo pred={(e) => e.type === 'language-bought' && e.language === l} title="refund" />}
+                    </span>
+                  );
+                })}
+              </div>
+              <div class="cf-line">
                 <GroupPicker
                   label="Buy a language (1 m)"
                   options={LANGUAGES.filter((l) => !sheet.languages.includes(l))}
@@ -473,28 +552,39 @@ export default function CreationFlow() {
           {/* ── Step 6 · The Finale ── */}
           {sub && (
             <section class="cf-step cf-finale">
-              <h2>Step 6 · The Quirk &amp; Crystallization</h2>
+              <h2>Step 6 · Quirk &amp; Starting Gear</h2>
               <p class="cf-how">
-                Rolled, never chosen. Two rerolls, take-the-last — each discards what you had.
-                <em> (Starting Gear joins this roll when its tables are built.)</em>
+                Rolled together, never chosen — the seesaw pairs a Good Quirk with Bad Gear and
+                the reverse; Neutral pulls Neutral. Two rerolls, whole package, take-the-last.
               </p>
               {draft.quirkText && (
-                <div class="cf-quirk">
-                  <h4>{draft.quirkText.name}</h4>
-                  <p class="cf-quirk-mech">{draft.quirkText.mechanic}</p>
-                  <p class="cf-quirk-eso">{draft.quirkText.esoteric}</p>
+                <div class="cf-package">
+                  <div class="cf-quirk">
+                    <p class="cf-quirk-eyebrow">Quirk{draft.quirkText.category ? ` · ${draft.quirkText.category}` : ''}</p>
+                    <h4>{draft.quirkText.name}</h4>
+                    <p class="cf-quirk-mech">{draft.quirkText.mechanic}</p>
+                    <p class="cf-quirk-eso">{draft.quirkText.esoteric}</p>
+                  </div>
+                  {draft.gearText && (
+                    <div class="cf-quirk">
+                      <p class="cf-quirk-eyebrow">Starting Gear{draft.gearText.category ? ` · ${draft.gearText.category}` : ''}</p>
+                      <h4>{draft.gearText.name}</h4>
+                      <p class="cf-quirk-mech">{draft.gearText.mechanic}</p>
+                      <p class="cf-quirk-eso">{draft.gearText.provenance}</p>
+                    </div>
+                  )}
                 </div>
               )}
               {!crystallized && (
                 <div class="cf-line">
-                  <button type="button" class="cf-roll" onClick={doRoll} disabled={quirkRolled && draft.rerollsLeft <= 0}>
-                    {quirkRolled ? `Reroll (${draft.rerollsLeft} left — take the last)` : 'Roll your Quirk'}
+                  <button type="button" class="cf-roll" onClick={doRoll} disabled={quirkRolled && Boolean(state.gear) && draft.rerollsLeft <= 0}>
+                    {quirkRolled && state.gear ? `Reroll the package (${draft.rerollsLeft} left — take the last)` : 'Roll your Quirk & Gear'}
                   </button>
                   <button
                     type="button"
                     class="cf-crystallize"
                     disabled={!canCrystallize}
-                    title={canCrystallize ? undefined : 'Needs a Class, a Subclass, a rolled Quirk, and no unresolved flags'}
+                    title={canCrystallize ? undefined : 'Needs a Class, a Subclass, the rolled Quirk & Gear package, and no unresolved flags'}
                     onClick={() => append(mk('crystallized', {}))}
                   >
                     Crystallize — begin play at Level 1
@@ -542,15 +632,20 @@ export default function CreationFlow() {
                 <tr><th>Attr</th><th>Val</th><th>Off</th><th>Save</th><th>Def</th></tr>
               </thead>
               <tbody>
-                {sheet.attributes.map((a) => (
-                  <tr key={a.attr}>
-                    <td>{a.attr.slice(0, 3)}</td>
-                    <td>{a.value.total}</td>
-                    <td>{a.offence.total}</td>
-                    <td>{a.save.total}</td>
-                    <td>{a.unarmouredDefence.total}</td>
-                  </tr>
-                ))}
+                {sheet.attributes.map((a) => {
+                  // Modifiers wear their sign (+3, −1); Defence targets are
+                  // plain numbers (13), not modifiers.
+                  const f = (n: number) => (n > 0 ? `+${n}` : n < 0 ? `−${Math.abs(n)}` : '0');
+                  return (
+                    <tr key={a.attr}>
+                      <td>{a.attr.slice(0, 3)}</td>
+                      <td>{f(a.value.total)}</td>
+                      <td>{f(a.offence.total)}</td>
+                      <td>{f(a.save.total)}</td>
+                      <td>{a.unarmouredDefence.total}</td>
+                    </tr>
+                  );
+                })}
               </tbody>
             </table>
             <p class="cf-railline">HP {sheet.hitPoints.total} · Speed {sheet.speed.total}'</p>
@@ -558,6 +653,18 @@ export default function CreationFlow() {
               <p class="cf-railline">{sheet.languages.join(' · ')}</p>
             )}
           </div>
+          {(state.quirk || sheet.situational.length > 0) && (
+            <div class="cf-railbox">
+              <p class="cf-eyebrow">The Package</p>
+              {state.quirk && <p class="cf-railline">{state.quirk.name}</p>}
+              {state.gear && <p class="cf-railline">{state.gear.name}</p>}
+              {sheet.situational.map((s) => (
+                <p key={`${s.source}·${s.text}`} class="cf-railline cf-sit" title={s.source}>
+                  {s.text}
+                </p>
+              ))}
+            </div>
+          )}
         </aside>
       </div>
     </div>

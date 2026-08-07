@@ -54,7 +54,7 @@ function gareth(): RecordEvent[] {
     ev('proficiency-advanced', { group: 'Heavy Blades' }),
     ev('language-bought', { language: 'Kellish' }),
     // The finale
-    ev('quirk-rolled', { quirkName: 'Gutter Auld', slots: {}, rerollsUsed: 1 }),
+    ev('quirk-rolled', { quirkName: 'Gutter Auld', slots: {}, rerollsUsed: 1, gearName: 'The Rare Musket', gearSlots: {} }),
     ev('crystallized', {}),
   ];
 }
@@ -146,7 +146,7 @@ describe('enforcement', () => {
       ev('attribute-bought', { attr: 'Strength' }),
       ev('attribute-bought', { attr: 'Strength' }),
       ev('attribute-bought', { attr: 'Strength' }),
-      ev('quirk-rolled', { quirkName: 'Q', slots: {}, rerollsUsed: 0 }),
+      ev('quirk-rolled', { quirkName: 'Q', slots: {}, rerollsUsed: 0, gearName: 'G', gearSlots: {} }),
       ev('crystallized', {}),
     ];
     const blocked = replay([...base, ev('attribute-bought', { attr: 'Strength' })]);
@@ -207,7 +207,7 @@ describe('enforcement', () => {
     const base = [
       ev('class-chosen', { classId: 'soldier' }),
       ev('subclass-chosen', { subclassId: 'vanguard' }),
-      ev('quirk-rolled', { quirkName: 'Q', slots: {}, rerollsUsed: 0 }),
+      ev('quirk-rolled', { quirkName: 'Q', slots: {}, rerollsUsed: 0, gearName: 'G', gearSlots: {} }),
       ev('crystallized', {}),
       ev('skill-advanced', { skill: 'Endurance' }),
     ];
@@ -266,7 +266,7 @@ describe('enforcement', () => {
     const late = replay([
       ev('class-chosen', { classId: 'soldier' }),
       ev('subclass-chosen', { subclassId: 'vanguard' }),
-      ev('quirk-rolled', { quirkName: 'Q', slots: {}, rerollsUsed: 0 }),
+      ev('quirk-rolled', { quirkName: 'Q', slots: {}, rerollsUsed: 0, gearName: 'G', gearSlots: {} }),
       ev('crystallized', {}),
       ev('flaw-taken', { attr: 'Wisdom' }),
     ]);

@@ -16,9 +16,7 @@ const blurb = 'Build a character of Avilund: Class, Subclass, Advances, and the 
   </header>
 
   <p class="lede">
-    Everything here is the real rules engine: costs are computed, illegal purchases refuse
-    themselves, and your draft saves in this browser as you go. Walk the steps in order —
-    you can always go back; changing an early choice flags whatever it breaks below.
+    [[text here]]
   </p>
 
   <CreationFlow client:load />
@@ -78,6 +76,26 @@ const blurb = 'Build a character of Avilund: Class, Subclass, Advances, and the 
   .cf-attr-name { flex: 1; }
   .cf-attr-val { min-width: 2.2rem; text-align: right; color: var(--oxblood); font-weight: bold; font-variant-numeric: tabular-nums; }
   .cf-duo { display: inline-flex; align-items: center; gap: 0.3rem; font-size: 0.9rem; color: var(--ink-soft); }
+
+  /* Offences & Defences: one aligned grid, values always visible */
+  .cf-od {
+    display: grid;
+    grid-template-columns: minmax(7.5rem, max-content) 4rem max-content 5rem max-content;
+    gap: 0.3rem 0.9rem;
+    align-items: center;
+    max-width: 34rem;
+  }
+  .cf-od-h { font-variant: small-caps; letter-spacing: 0.06em; color: var(--gold); font-size: 0.78rem; }
+  .cf-od-h.num { text-align: right; }
+  .cf-od-name { white-space: nowrap; }
+  .cf-od-val {
+    text-align: right; color: var(--oxblood); font-weight: bold;
+    font-variant-numeric: tabular-nums; white-space: nowrap;
+  }
+  .cf-od-btns { display: inline-flex; gap: 0.3rem; white-space: nowrap; }
+  @media (max-width: 40rem) {
+    .cf-od { grid-template-columns: minmax(6rem, 1fr) auto auto auto auto; gap: 0.3rem 0.5rem; max-width: none; }
+  }
   .cf-line { display: flex; align-items: center; gap: 0.7rem; flex-wrap: wrap; margin: 0.4rem 0; }
   .cf-work { color: var(--ink-soft); font-size: 0.82rem; }
   .star { color: var(--gold); }
@@ -120,18 +138,31 @@ const blurb = 'Build a character of Avilund: Class, Subclass, Advances, and the 
     background: var(--panel); color: inherit;
   }
 
-  /* Flags */
+  /* Flags — sticky, so upstream changes can't break things off-screen quietly */
   .cf-flags {
+    position: sticky; top: 0.6rem; z-index: 20;
     border: 1px solid var(--oxblood); border-left: 4px solid var(--oxblood);
-    border-radius: 4px; background: color-mix(in srgb, var(--oxblood) 7%, transparent);
+    border-radius: 4px;
+    background: color-mix(in srgb, var(--oxblood) 8%, var(--panel));
+    box-shadow: 0 2px 8px var(--shadow);
     padding: 0.7rem 1rem; margin-bottom: 1.2rem; font-size: 0.92rem;
   }
+  .warnmark { color: var(--oxblood); margin-left: 0.3rem; cursor: help; }
+  .cf-attr.warn { background: color-mix(in srgb, var(--oxblood) 8%, transparent); border-radius: 3px; }
+  .cf-chip.warn { border-color: var(--oxblood); background: color-mix(in srgb, var(--oxblood) 8%, transparent); }
   .cf-flags ul { margin: 0.4rem 0 0; padding-left: 1.1rem; }
   .cf-flags li { margin: 0.2rem 0; }
   .cf-flags .undo { margin-left: 0.6rem; }
 
   /* Finale */
   .cf-finale { border-top-color: var(--oxblood); }
+  .cf-package { display: grid; grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr)); gap: 0.8rem; }
+  .cf-package .cf-quirk { margin: 0.5rem 0 0.3rem; }
+  .cf-quirk-eyebrow {
+    margin: 0 0 0.2rem; font-size: 0.72rem; letter-spacing: 0.08em;
+    text-transform: uppercase; color: var(--ink-soft);
+  }
+  .cf-sit { font-style: italic; }
   .cf-quirk { border: 1px dotted var(--gold); border-radius: 4px; padding: 0.7rem 0.9rem; margin: 0.5rem 0 0.8rem; }
   .cf-quirk h4 { margin: 0 0 0.3rem; font-family: var(--display); color: var(--oxblood); }
   .cf-quirk-mech { margin: 0 0 0.35rem; font-size: 0.92rem; }

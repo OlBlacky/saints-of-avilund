@@ -52,9 +52,18 @@ export interface SlotSpec {
   tag?: string; // e.g. 'centre', 'fundator', 'melee'
 }
 
+/**
+ * The seesaw classification shared by Quirks and Gear: Good / Neutral / Bad,
+ * judged by the MECHANICAL NET alone — the esoteric sting never counts.
+ * A Good quirk's give outweighs its take; a Bad quirk's take outweighs; a
+ * Neutral quirk balances. (Not to be confused with Ability Categories.)
+ */
+export type SeesawCategory = 'good' | 'neutral' | 'bad';
+
 export interface Quirk {
   id: string;
   name: string;       // may carry {slots}
+  category: SeesawCategory;
   mechanic: string;   // player-facing text of the give/take — may carry {slots}
   esoteric: string;   // the behavioural sting — may carry {slots}
   effects: Effect[];
@@ -137,6 +146,7 @@ export const QUIRKS: Quirk[] = [
   {
     id: 'veteran-of-the-ferals-war',
     name: 'Veteran of the Ferals War',
+    category: 'good',
     mechanic: '+1 to hit against Ferals with {weapon}.',
     esoteric:
       'You cannot sleep indoors on your first night in any new settlement; you will make some excuse and take the yard.',
@@ -145,11 +155,12 @@ export const QUIRKS: Quirk[] = [
     tags: ['martial', 'veteran'],
   },
   {
-    id: 'salt-blooded',
-    name: 'Salt-Blooded',
+    id: 'pulled-from-the-water',
+    name: 'Pulled from the Water',
+    category: 'bad',
     mechanic: '−1 to Athletics when swimming.',
     esoteric:
-      'You will not eat fish caught within sight of {place}, and you will say why at the table, at length.',
+      'You drowned off {place} — for a minute or two, anyway — and you have not gone deeper than your knees since. Somebody pulled you out. You never learned who.',
     slots: { place: { table: 'place', tag: 'coastal' } },
     effects: [{ kind: 'skillMod', value: -1, skill: 'Athletics', when: { note: 'swimming' } }],
     tags: ['nautical'],
@@ -157,6 +168,7 @@ export const QUIRKS: Quirk[] = [
   {
     id: 'gutter-auld',
     name: 'Gutter Auld',
+    category: 'neutral',
     mechanic: 'You speak Auld Imperial — but −1 to Diplomacy whenever you use it.',
     esoteric: 'Every cleric who hears you knows exactly which parish raised you.',
     effects: [
@@ -168,6 +180,7 @@ export const QUIRKS: Quirk[] = [
   {
     id: 'left-the-order-at-compline',
     name: 'Left the Order at Compline',
+    category: 'good',
     mechanic: '+1 to your Wisdom Defence.',
     esoteric:
       'No friar of {saint} will take a meal at your table, though none will ever say the reason aloud.',
@@ -178,6 +191,7 @@ export const QUIRKS: Quirk[] = [
   {
     id: 'bought-a-bow-in-waldheim',
     name: 'Bought a Bow in Waldheim',
+    category: 'good',
     mechanic: 'Proficiency with {weapon}, whatever your Class and Subclass allow. It sits at +0 forever.',
     esoteric: 'You paid a man named Hesk for it, and you still owe him.',
     slots: { weapon: { table: 'weapon', tag: 'ranged' } },
@@ -187,6 +201,7 @@ export const QUIRKS: Quirk[] = [
   {
     id: 'cousin-to-the-kellish',
     name: 'Cousin to the Kellish',
+    category: 'neutral',
     mechanic: 'You speak Kellish. −1 on social checks with Imperial officials.',
     esoteric: 'They hear the vowels and stop listening.',
     effects: [
@@ -198,6 +213,7 @@ export const QUIRKS: Quirk[] = [
   {
     id: 'the-third-milestone',
     name: 'The Third Milestone',
+    category: 'good',
     mechanic: '+1 to Dexterity Saves.',
     esoteric:
       'You must touch every roadside shrine you pass. Prevented, you are foul company until the next one.',
@@ -207,6 +223,7 @@ export const QUIRKS: Quirk[] = [
   {
     id: 'read-one-page-too-many',
     name: 'Read One Page Too Many',
+    category: 'neutral',
     mechanic:
       '+1 to History. −1 on your first Save against anything written in Elder Arcana.',
     esoteric: 'You always read it before you resist it.',
@@ -219,6 +236,7 @@ export const QUIRKS: Quirk[] = [
   {
     id: 'hands-like-a-cooper',
     name: 'Hands Like a Cooper',
+    category: 'good',
     mechanic: '+1 to Craft.',
     esoteric:
       'You cannot bring yourself to break a well-made thing, even when breaking it is the plan.',
@@ -228,6 +246,7 @@ export const QUIRKS: Quirk[] = [
   {
     id: 'owed-a-saints-debt',
     name: "Owed a Saint's Debt",
+    category: 'good',
     mechanic: '+1 to Constitution Saves.',
     esoteric:
       'You will not take payment for work done on the feast day of {saint} — and there are more feast days than you would think.',
@@ -235,13 +254,38 @@ export const QUIRKS: Quirk[] = [
     effects: [{ kind: 'saveMod', value: 1, attr: 'Constitution' }],
     tags: ['pious'],
   },
+  {
+    id: 'the-arrow-stayed-in',
+    name: 'The Arrow Stayed In',
+    category: 'bad',
+    mechanic: '−1 to Constitution Saves.',
+    esoteric:
+      'The surgeon in {place} got most of it out. What is left announces every change of weather, and you announce it to everyone else.',
+    slots: { place: { table: 'place' } },
+    effects: [{ kind: 'saveMod', value: -1, attr: 'Constitution' }],
+    tags: ['veteran'],
+  },
+  {
+    id: 'the-magistrates-mark',
+    name: "The Magistrate's Mark",
+    category: 'bad',
+    mechanic: '−1 on social checks in {place}.',
+    esoteric:
+      'The brand on your wrist is the answer to a question you hope nobody in {place} asks. You have a story ready for the glove. Nobody believes it.',
+    slots: { place: { table: 'place', tag: 'centre' } },
+    effects: [{ kind: 'socialPenalty', value: -1, when: { place: '{place}' } }],
+    tags: ['lowborn', 'outlaw'],
+  },
 ];
 
 // ── The engine ───────────────────────────────────────────────────
+// The slot machinery is shared: gear.ts rides the same fill/resolve helpers,
+// so the two corpora can never drift apart in how they roll.
 
 export interface RolledQuirk {
   id: string;
   name: string;
+  category: SeesawCategory;
   mechanic: string;
   esoteric: string;
   effects: Effect[];
@@ -249,13 +293,13 @@ export interface RolledQuirk {
 }
 
 /** Replace every {slot} token in a string with its drawn value. */
-function fill(text: string, fills: Record<string, string>): string {
+export function fill(text: string, fills: Record<string, string>): string {
   return text.replace(/\{(\w+)(?::\w+)?\}/g, (whole, key: string) =>
     key in fills ? fills[key] : whole,
   );
 }
 
-function fillEffect(effect: Effect, fills: Record<string, string>): Effect {
+export function fillEffect(effect: Effect, fills: Record<string, string>): Effect {
   const out: any = { ...effect };
   if (typeof out.group === 'string') out.group = fill(out.group, fills);
   if (typeof out.language === 'string') out.language = fill(out.language, fills);
@@ -272,44 +316,68 @@ function fillEffect(effect: Effect, fills: Record<string, string>): Effect {
 
 /**
  * The one enforced rule: an attackMod must carry a condition. A flat +1 to hit
- * is a Feat's job. Throws at build time rather than shipping a broken quirk.
+ * is a Feat's job. Throws at build time rather than shipping a broken card.
+ * Shared with gear.ts — anything that emits Effects passes through here.
  */
-function assertConditionalAttacks(quirks: Quirk[]): void {
-  for (const q of quirks) {
-    for (const e of q.effects) {
+export function assertConditionalAttacks(
+  cards: Array<{ id: string; effects: Effect[] }>,
+): void {
+  for (const c of cards) {
+    for (const e of c.effects) {
       if (e.kind !== 'attackMod') continue;
       const conditions = e.when ? Object.values(e.when).filter(Boolean) : [];
       if (conditions.length === 0) {
-        throw new Error(`Quirk "${q.id}": attackMod must carry a condition.`);
+        throw new Error(`Card "${c.id}": attackMod must carry a condition.`);
       }
     }
   }
 }
 assertConditionalAttacks(QUIRKS);
 
-function pick<T>(list: T[], rng: () => number): T {
+export function pick<T>(list: T[], rng: () => number): T {
   return list[Math.floor(rng() * list.length)];
 }
 
-/** Roll one quirk and resolve its slots. Pass an rng for a repeatable draw. */
-export function rollQuirk(rng: () => number = Math.random): RolledQuirk {
-  const quirk = pick(QUIRKS, rng);
+/** Draw a value for every {slot} a card declares. */
+export function resolveSlots(
+  slots: Record<string, SlotSpec> | undefined,
+  rng: () => number,
+): Record<string, string> {
   const fills: Record<string, string> = {};
-
-  for (const [key, spec] of Object.entries(quirk.slots ?? {})) {
+  for (const [key, spec] of Object.entries(slots ?? {})) {
     const rows = table(spec.table);
     const pool = spec.tag ? rows.filter((r) => r.tags.includes(spec.tag!)) : rows;
     // A tag that matches nothing falls back to the whole table rather than
     // throwing — a mistyped tag should not break the roll on a live page.
     fills[key] = pick(pool.length ? pool : rows, rng).value;
   }
+  return fills;
+}
 
+/** Resolve one specific quirk's slots. Exposed so tests can cover every card. */
+export function resolveQuirk(quirk: Quirk, rng: () => number): RolledQuirk {
+  const fills = resolveSlots(quirk.slots, rng);
   return {
     id: quirk.id,
     name: fill(quirk.name, fills),
+    category: quirk.category,
     mechanic: fill(quirk.mechanic, fills),
     esoteric: fill(quirk.esoteric, fills),
     effects: quirk.effects.map((e) => fillEffect(e, fills)),
     fills,
   };
+}
+
+/**
+ * Roll one quirk and resolve its slots. Pass an rng for a repeatable draw.
+ * With a category, the draw is confined to that pool — the seesaw's first
+ * half (see gear.ts for the package roll). Without one, the whole corpus is
+ * fair game, which is what the demo button on the rules page wants.
+ */
+export function rollQuirk(
+  rng: () => number = Math.random,
+  category?: SeesawCategory,
+): RolledQuirk {
+  const pool = category ? QUIRKS.filter((q) => q.category === category) : QUIRKS;
+  return resolveQuirk(pick(pool, rng), rng);
 }
