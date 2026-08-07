@@ -43,6 +43,9 @@ describe('feats data', () => {
       if (f.requires?.kind === 'skill-trained') {
         expect(skills, `${f.id}: ${f.requires.skill}`).toContain(f.requires.skill);
       }
+      if (f.requires?.kind === 'skill-rank') {
+        expect(skills, `${f.id}: ${f.requires.skill}`).toContain(f.requires.skill);
+      }
     }
   });
 
@@ -50,6 +53,9 @@ describe('feats data', () => {
     expect(FEATS.filter((f) => f.requires?.kind === 'proficiency').length).toBe(17 + 2);
     expect(FEATS.filter((f) => f.requires?.kind === 'damage-type')).toHaveLength(9);
     expect(FEATS.filter((f) => f.requires?.kind === 'malediction')).toHaveLength(6);
-    expect(FEATS.filter((f) => f.ladder)).toHaveLength(2);
+    expect(FEATS.filter((f) => f.requires?.kind === 'skill-rank')).toHaveLength(SKILLS.length);
+    expect(FEATS.filter((f) => f.requires?.kind === 'attribute')).toHaveLength(12);
+    expect(FEATS.filter((f) => f.requires?.kind === 'save-total')).toHaveLength(6);
+    expect(FEATS.filter((f) => f.ladder)).toHaveLength(19 + SKILLS.length);
   });
 });

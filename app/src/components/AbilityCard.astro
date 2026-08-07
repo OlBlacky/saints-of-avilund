@@ -1,12 +1,16 @@
 ---
 import type { Ability } from '../lib/abilities';
 import { VAR_ORDER, VAR_LABELS, resolveValue } from '../lib/abilities';
+import { keywordsFor } from '../lib/traditions';
 
 interface Props {
   ability: Ability;
   mode?: 'build' | 'play';
+  /** The Category hosting this card, when it differs from the card's own (reused cards). */
+  host?: string;
 }
-const { ability, mode = 'build' } = Astro.props;
+const { ability, mode = 'build', host } = Astro.props;
+const keywords = keywordsFor(host ?? ability.category);
 const ADV_COLS = [0, 1, 2];                 // option sub-tables (hooks/effects) stay at three
 const ADV_GLYPHS = ['①', '②', '③', '④', '⑤'];  // ① ② ③ ④ ⑤
 
@@ -39,6 +43,11 @@ const bottomOpts = opts.filter((o) => o.placement !== 'top');
     <span class="acard__cat">{ability.category}</span>
   </header>
   {sub && <p class="acard__sub">{sub}</p>}
+  {keywords && (
+    <p class="acard__keywords">
+      <strong>Keywords:</strong> {keywords.join(' · ')}
+    </p>
+  )}
 
   {ability.builder && (
     <p class="acard__builder">
@@ -260,6 +269,18 @@ const bottomOpts = opts.filter((o) => o.placement !== 'top');
     font-size: 0.78rem;
     font-style: italic;
     color: #6a532a;
+  }
+  .acard__keywords {
+    margin: 0;
+    padding: 0.2rem 0.9rem 0;
+    font-size: 0.76rem;
+    color: #6a532a;
+  }
+  .acard__keywords strong {
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    font-size: 0.7rem;
+    color: #8a6d35;
   }
 
   .acard__table {

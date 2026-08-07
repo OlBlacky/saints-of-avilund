@@ -14,7 +14,10 @@ import { classById, subclassById } from '../classes';
 import type { ClassDef, SubclassDef } from '../classes';
 import { featById } from '../feats';
 import type { FeatRequirement } from '../feats';
-import type { Attribute } from '../quirks';
+import { GEAR } from '../gear';
+import { fill, fillEffect, QUIRKS } from '../quirks';
+import type { Attribute, Effect } from '../quirks';
+import { SKILLS } from '../skills';
 import type { AbilityRef, RecordEvent } from './events';
 
 // ── State ───────────────────────────────────────────────────────────────────
@@ -202,6 +205,89 @@ export function canDealType(state: CharacterState, type: string): boolean {
   return false;
 }
 
+// ── The build's effects ─────────────────────────────────────────────────────
+// The event stores decisions (card id + slot fills); the effects re-derive
+// from the corpus here, so a card retune reaches every sheet on next replay.
+// Lives in replay (not derive) because requirements also read them.
+
+export interface SourcedEffect {
+  source: string;
+  effect: Effect;
+}
+
+export function packageEffects(state: CharacterState): SourcedEffect[] {
+  const out: SourcedEffect[] = [];
+  const quirk = state.quirk?.id ? QUIRKS.find((q) => q.id === state.quirk!.id) : undefined;
+  if (quirk && state.quirk) {
+    const fills = state.quirk.slots;
+    for (const e of quirk.effects) {
+      out.push({ source: `Quirk · ${fill(quirk.name, fills)}`, effect: fillEffect(e, fills) });
+    }
+  }
+  const gear = state.gear?.id ? GEAR.find((g) => g.id === state.gear!.id) : undefined;
+  if (gear && state.gear) {
+    const fills = state.gear.slots;
+    for (const e of gear.effects) {
+      out.push({ source: `Gear · ${fill(gear.name, fills)}`, effect: fillEffect(e, fills) });
+    }
+  }
+  // Owned abilities' always-on effects (Vows, passives) — the card's
+  // machine half, applied while it is owned.
+  for (const owned of state.abilities) {
+    const card = CATEGORIES.find((c) => c.name === owned.ref.category)
+      ?.abilities.find((a) => a.name === owned.ref.ability);
+    for (const e of card?.passiveEffects ?? []) {
+      out.push({ source: owned.name ?? owned.ref.ability, effect: e });
+    }
+  }
+  // Feats: a plain Feat's effects, or a Ladder's effects up to its Rank.
+  for (const ownedFeat of state.feats) {
+    const feat = featById(ownedFeat.featId);
+    if (!feat) continue;
+    const effects = feat.ladder
+      ? feat.ladder.slice(0, ownedFeat.rank).flatMap((r) => r.effects ?? [])
+      : feat.effects ?? [];
+    for (const e of effects) out.push({ source: feat.name, effect: e });
+  }
+  return out;
+}
+
+/** An effect with any condition at all is situational — shown, never summed. */
+export function isConditional(effect: Effect): boolean {
+  const when = 'when' in effect ? effect.when : undefined;
+  return when !== undefined && Object.values(when).some(Boolean);
+}
+
+/** The Save total the sheet shows: Attribute + Defence Ranks + steady
+ * modifiers (one track lifts Save and Defences both, ruled Aug 2026). */
+function saveTotal(state: CharacterState, attr: Attribute): number {
+  const attrValue =
+    (state.attributeRanks[attr] ?? 0) - (state.flaws.includes(attr) ? 1 : 0);
+  const mods = packageEffects(state)
+    .map((se) => se.effect)
+    .filter(
+      (e): e is Extract<Effect, { kind: 'saveMod' }> =>
+        !isConditional(e) && e.kind === 'saveMod' && (e.attr ?? attr) === attr,
+    )
+    .reduce((t, e) => t + e.value, 0);
+  return attrValue + (state.defenceRanks[attr] ?? 0) + mods;
+}
+
+/** A Skill Generalist Feat counts the build as Trained in every Skill rolled
+ * with its Attribute. */
+function generalistTrained(state: CharacterState, skill: string): boolean {
+  const attrs = state.feats.flatMap(
+    (f) =>
+      featById(f.featId)?.effects?.flatMap((ef) =>
+        ef.kind === 'grantTrainedByAttr' ? [ef.attr] : [],
+      ) ?? [],
+  );
+  if (attrs.length === 0) return false;
+  const def = SKILLS.find((s) => s.name === skillBase(skill));
+  const shorts = (def?.attrs.split(',') ?? []).map((a) => a.trim());
+  return attrs.some((attr) => shorts.includes(attr.slice(0, 3)));
+}
+
 /** The can-use rule: what a Feat requirement checks against the build. */
 function meetsRequirement(state: CharacterState, req: FeatRequirement): string | null {
   switch (req.kind) {
@@ -220,8 +306,34 @@ function meetsRequirement(state: CharacterState, req: FeatRequirement): string |
     case 'skill-trained': {
       const trained =
         state.trainedSkills.includes(req.skill) ||
-        classSkills(state).some((s) => skillBase(s) === req.skill);
+        classSkills(state).some((s) => skillBase(s) === req.skill) ||
+        generalistTrained(state, req.skill);
       return trained ? null : `requires being Trained in ${req.skill}`;
+    }
+    case 'skill-rank': {
+      const has = Object.entries(state.skillRanks).some(
+        ([name, rank]) => skillBase(name) === req.skill && rank >= req.rank,
+      );
+      return has ? null : `requires Rank +${req.rank} in ${req.skill}`;
+    }
+    case 'attribute': {
+      const value =
+        (state.attributeRanks[req.attr] ?? 0) - (state.flaws.includes(req.attr) ? 1 : 0);
+      return value >= req.value ? null : `requires ${req.attr} +${req.value}`;
+    }
+    case 'save-total':
+      return saveTotal(state, req.attr) >= req.value
+        ? null
+        : `requires a ${req.attr} Save of +${req.value}`;
+    case 'attribute-any': {
+      const ok = req.attrs.some(
+        (a) =>
+          (state.attributeRanks[a] ?? 0) - (state.flaws.includes(a) ? 1 : 0) >= req.value,
+      );
+      if (ok) return null;
+      const shorts = req.attrs.map((a) => a.slice(0, 3));
+      const list = `${shorts.slice(0, -1).join(', ')} or ${shorts[shorts.length - 1]}`;
+      return `requires +${req.value} in ${list}`;
     }
   }
 }
@@ -584,6 +696,16 @@ export function replay(events: RecordEvent[]): ReplayResult {
         if (!spend(e, cost === 'M' ? 'major' : 'minor', 1)) break;
         state.feats.push({ featId: e.featId, choices: e.choices, rank: 1 });
         if (feat.ladder) featLadderWindow.set(e.featId, windowFor(state.milestones));
+        if (
+          feat.grantsAbility &&
+          !state.abilities.some(
+            (a) =>
+              a.ref.category === feat.grantsAbility!.category &&
+              a.ref.ability === feat.grantsAbility!.ability,
+          )
+        ) {
+          state.abilities.push({ ref: feat.grantsAbility, ranks: {} });
+        }
         break;
       }
 

@@ -5,6 +5,9 @@
 // ability-briefs.test.ts fails the build if a card is missing its brief.
 
 export const ABILITY_BRIEFS: Record<string, string> = {
+  // ── General ───────────────────────────────────────────────────────────
+  'General/Second Wind': 'Catch your breath: a guard of Temp HP, or true healing.',
+
   // ── Arms ──────────────────────────────────────────────────────────────
   'Arms/Martial Strike': 'The standard weapon attack; every ladder on it can grow.',
   'Arms/Power Attack': 'A harder swing for more damage, bought less often.',

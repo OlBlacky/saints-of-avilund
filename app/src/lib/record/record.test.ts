@@ -462,6 +462,193 @@ describe('enforcement', () => {
     expect(rituals.value.parts).toContainEqual({ label: 'Specialization — Rituals', value: 1 });
   });
 
+  it('sums Toughness Ranks into HP and its capstone into DR', () => {
+    const base = [
+      ev('class-chosen', { classId: 'soldier' }),
+      ev('subclass-chosen', { subclassId: 'vanguard' }),
+      ev('feat-bought', { featId: 'toughness' }),
+    ];
+    const one = derive(replay(base).state);
+    expect(one.hitPoints.parts).toContainEqual({ label: 'Toughness', value: 1 });
+    expect(one.damageReduction.total).toBe(0);
+
+    const climbs = [2, 3, 4].flatMap((toRank) => [
+      ev('milestone-granted', {}),
+      ev('milestone-granted', {}),
+      ev('milestone-granted', {}),
+      ev('feat-advanced', { featId: 'toughness', toRank }),
+    ]);
+    const topped = replay([...base, ...climbs]);
+    expect(topped.flags).toEqual([]);
+    const sheet = derive(topped.state);
+    // Ranks 1–3 stack: +1, +2, +3 max HP.
+    expect(sheet.hitPoints.parts.filter((p) => p.label === 'Toughness')).toHaveLength(3);
+    expect(sheet.damageReduction.total).toBe(1);
+    expect(sheet.damageReduction.parts).toContainEqual({ label: 'Toughness', value: 1 });
+  });
+
+  it('Polyglot opens on any one of Int, Wis, or Cha at +2', () => {
+    const base = [
+      ev('class-chosen', { classId: 'soldier' }),
+      ev('subclass-chosen', { subclassId: 'vanguard' }),
+    ];
+    const none = replay([...base, ev('feat-bought', { featId: 'polyglot' })]);
+    expect(none.flags.some((f) => f.code === 'no-access')).toBe(true);
+
+    const cha = replay([
+      ...base,
+      ev('attribute-bought', { attr: 'Charisma' }),
+      ev('attribute-bought', { attr: 'Charisma' }),
+      ev('feat-bought', { featId: 'polyglot' }),
+    ]);
+    expect(cha.flags).toEqual([]);
+  });
+
+  it('gates Defensive Specialization on the whole Save total, not the Attribute alone', () => {
+    const base = [
+      ev('class-chosen', { classId: 'soldier' }),
+      ev('subclass-chosen', { subclassId: 'vanguard' }),
+      ev('attribute-bought', { attr: 'Strength' }),
+      ev('attribute-bought', { attr: 'Strength' }),
+    ];
+    // Str +2 alone is not a +3 Save.
+    const atTwo = replay([...base, ev('feat-bought', { featId: 'defensive-spec-str' })]);
+    expect(atTwo.flags.some((f) => f.code === 'no-access')).toBe(true);
+
+    // A Defence Rank lifts the Save to +3 and opens the Feat.
+    const atThree = replay([
+      ...base,
+      ev('defence-bought', { attr: 'Strength' }),
+      ev('feat-bought', { featId: 'defensive-spec-str' }),
+    ]);
+    expect(atThree.flags).toEqual([]);
+  });
+
+  it('a Skill Generalist counts as Trained across its Attribute', () => {
+    const base = [
+      ev('class-chosen', { classId: 'soldier' }),
+      ev('subclass-chosen', { subclassId: 'vanguard' }),
+      ev('attribute-bought', { attr: 'Intelligence' }),
+      ev('feat-bought', { featId: 'skill-generalist-int' }),
+    ];
+    const result = replay(base);
+    expect(result.flags).toEqual([]);
+
+    // Covered Skills are not listed one by one — the sheet carries one
+    // summary line: Int Skills Generalist +1 (the attribute, Trained +0).
+    const sheet = derive(result.state);
+    expect(sheet.skills.find((s) => s.skill === 'History')).toBeUndefined();
+    expect(sheet.skillGeneralists).toContainEqual({ attr: 'Intelligence', total: 1 });
+
+    // And "counts as Trained" satisfies other Feats' Trained requirements:
+    // Specialization — Rituals opens at Level 2 without separate training.
+    const spec = replay([
+      ...base,
+      ev('quirk-rolled', { quirkName: 'Q', slots: {}, rerollsUsed: 0, gearName: 'G', gearSlots: {} }),
+      ev('crystallized', {}),
+      ...Array.from({ length: 3 }, () => ev('milestone-granted', {})),
+      ev('feat-bought', { featId: 'spec-ritual' }),
+    ]);
+    expect(spec.flags).toEqual([]);
+  });
+
+  it('gates Attribute Skills Specialization on +2 in the Attribute', () => {
+    const base = [
+      ev('class-chosen', { classId: 'soldier' }),
+      ev('subclass-chosen', { subclassId: 'vanguard' }),
+    ];
+    const atOne = replay([
+      ...base,
+      ev('attribute-bought', { attr: 'Strength' }),
+      ev('feat-bought', { featId: 'attr-skills-spec-str' }),
+    ]);
+    expect(atOne.flags.some((f) => f.code === 'no-access')).toBe(true);
+
+    const atTwo = replay([
+      ...base,
+      ev('attribute-bought', { attr: 'Strength' }),
+      ev('attribute-bought', { attr: 'Strength' }),
+      ev('feat-bought', { featId: 'attr-skills-spec-str' }),
+    ]);
+    expect(atTwo.flags).toEqual([]);
+    expect(atTwo.state.feats).toContainEqual({ featId: 'attr-skills-spec-str', choices: undefined, rank: 1 });
+  });
+
+  it('gates Skill Specialization on Rank +1 in the Skill', () => {
+    const base = [
+      ev('class-chosen', { classId: 'soldier' }),
+      ev('subclass-chosen', { subclassId: 'vanguard' }),
+    ];
+    // Trained is not enough — the Skill must hold Rank +1. Endurance is a
+    // Soldier Class Skill: Trained free, no Ranks yet.
+    const untrained = replay([...base, ev('feat-bought', { featId: 'skill-spec-endurance' })]);
+    expect(untrained.flags.some((f) => f.code === 'no-access')).toBe(true);
+
+    const ranked = replay([
+      ...base,
+      ev('skill-advanced', { skill: 'Endurance' }),
+      ev('feat-bought', { featId: 'skill-spec-endurance' }),
+    ]);
+    expect(ranked.flags).toEqual([]);
+    expect(ranked.state.feats).toContainEqual({ featId: 'skill-spec-endurance', choices: undefined, rank: 1 });
+  });
+
+  it('computes Initiative as the better of Dex and Wis, plus Danger Sense Ranks', () => {
+    const events = [
+      ev('class-chosen', { classId: 'soldier' }),
+      ev('subclass-chosen', { subclassId: 'vanguard' }),
+      ev('attribute-bought', { attr: 'Wisdom' }),
+      ev('feat-bought', { featId: 'danger-sense' }),
+      ev('milestone-granted', {}),
+      ev('milestone-granted', {}),
+      ev('milestone-granted', {}),
+      ev('feat-advanced', { featId: 'danger-sense', toRank: 2 }),
+    ];
+    const result = replay(events);
+    expect(result.flags).toEqual([]);
+    const initiative = derive(result.state).initiative;
+    // Wis 1 beats Dex 0; Danger Sense Ranks 1–2 add 2 + 1.
+    expect(initiative.parts[0]).toEqual({ label: 'Wisdom', value: 1 });
+    expect(initiative.total).toBe(4);
+  });
+
+  it('grants Second Wind through its Feat, never by direct purchase', () => {
+    const base = [
+      ev('class-chosen', { classId: 'soldier' }),
+      ev('subclass-chosen', { subclassId: 'vanguard' }),
+    ];
+    const ref = { category: 'General', ability: 'Second Wind' };
+
+    // The General Category is not buyable — only the Feat opens the card.
+    const direct = replay([...base, ev('ability-bought', { ref })]);
+    expect(direct.flags.some((f) => f.code === 'no-access')).toBe(true);
+
+    const granted = replay([...base, ev('feat-bought', { featId: 'second-wind' })]);
+    expect(granted.flags).toEqual([]);
+    expect(granted.state.abilities).toContainEqual({ ref, ranks: {} });
+
+    // The card advances on the ordinary machinery: one Minor + one Major
+    // per Level, Ranks in order.
+    const advanced = replay([
+      ...base,
+      ev('feat-bought', { featId: 'second-wind' }),
+      ev('ability-advanced', { ref, variable: 'action', toRank: 1 }),
+      ev('ability-advanced', { ref, variable: 'frequency', toRank: 1 }),
+    ]);
+    expect(advanced.flags).toEqual([]);
+    const owned = advanced.state.abilities.find((a) => a.ref.ability === 'Second Wind')!;
+    expect(owned.ranks).toEqual({ action: 1, frequency: 1 });
+
+    // A second Minor advance in the same Level refuses.
+    const tooFast = replay([
+      ...base,
+      ev('feat-bought', { featId: 'second-wind' }),
+      ev('ability-advanced', { ref, variable: 'action', toRank: 1 }),
+      ev('ability-advanced', { ref, variable: 'effects', toRank: 1 }),
+    ]);
+    expect(tooFast.flags.some((f) => f.code === 'ladder-pace')).toBe(true);
+  });
+
   it('keeps Flaws creation-only and at most two', () => {
     const three = replay([
       ev('class-chosen', { classId: 'soldier' }),

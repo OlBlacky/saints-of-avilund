@@ -7,14 +7,19 @@
 // Offences, Saves, Defences, HP, Level, skills, languages, proficiencies.
 // Armour/gear contributions join when the gear pillar lands.
 
-import { CATEGORIES } from '../category-abilities';
 import { classById, DEFAULT_LANGUAGE } from '../classes';
-import { featById } from '../feats';
 import { GEAR, STARTING_COIN } from '../gear';
 import { ATTR_FULL, parseAttr } from '../notation';
-import { fill, fillEffect, QUIRKS } from '../quirks';
 import type { Attribute, Condition, Effect } from '../quirks';
-import { classSkills, grantedProficiencies, levelFor, skillBase, type CharacterState } from './replay';
+import {
+  classSkills,
+  grantedProficiencies,
+  isConditional,
+  levelFor,
+  packageEffects,
+  skillBase,
+  type CharacterState,
+} from './replay';
 import { SKILLS } from '../skills';
 
 /** Using a Skill Untrained takes −1 (some Skills bar Untrained use entirely
@@ -73,8 +78,15 @@ export interface DerivedSheet {
   attributes: DerivedAttribute[];
   hitPoints: Breakdown;
   speed: Breakdown;
+  /** Steady DR from any source; 0 parts until something grants it. */
+  damageReduction: Breakdown;
+  /** Initiative bonuses beyond the attribute; 0 parts until something grants one. */
+  initiative: Breakdown;
   /** Trained skills, plus any skill a modifier touches. */
   skills: DerivedSkill[];
+  /** One summary line per Skill Generalist Feat: its Attribute and the roll
+   * bonus every covered Skill uses. */
+  skillGeneralists: { attr: Attribute; total: number }[];
   languages: string[];
   /** Proficiency group → advancement bonus (granted and bought). */
   proficiencies: { group: string; rank: number; advanceable: boolean }[];
@@ -84,58 +96,6 @@ export interface DerivedSheet {
    * neutral 150, good 100. Absent until the package is rolled (or on a
    * pre-gear log). Becomes the Wealth ledger's opening balance later. */
   startingCoin?: Breakdown;
-}
-
-// ── The package's effects ───────────────────────────────────────────────────
-// The event stores decisions (card id + slot fills); the effects re-derive
-// from the corpus here, so a card retune reaches every sheet on next replay.
-
-interface SourcedEffect {
-  source: string;
-  effect: Effect;
-}
-
-function packageEffects(state: CharacterState): SourcedEffect[] {
-  const out: SourcedEffect[] = [];
-  const quirk = state.quirk?.id ? QUIRKS.find((q) => q.id === state.quirk!.id) : undefined;
-  if (quirk && state.quirk) {
-    const fills = state.quirk.slots;
-    for (const e of quirk.effects) {
-      out.push({ source: `Quirk · ${fill(quirk.name, fills)}`, effect: fillEffect(e, fills) });
-    }
-  }
-  const gear = state.gear?.id ? GEAR.find((g) => g.id === state.gear!.id) : undefined;
-  if (gear && state.gear) {
-    const fills = state.gear.slots;
-    for (const e of gear.effects) {
-      out.push({ source: `Gear · ${fill(gear.name, fills)}`, effect: fillEffect(e, fills) });
-    }
-  }
-  // Owned abilities' always-on effects (Vows, passives) — the card's
-  // machine half, applied while it is owned.
-  for (const owned of state.abilities) {
-    const card = CATEGORIES.find((c) => c.name === owned.ref.category)
-      ?.abilities.find((a) => a.name === owned.ref.ability);
-    for (const e of card?.passiveEffects ?? []) {
-      out.push({ source: owned.name ?? owned.ref.ability, effect: e });
-    }
-  }
-  // Feats: a plain Feat's effects, or a Ladder's effects up to its Rank.
-  for (const ownedFeat of state.feats) {
-    const feat = featById(ownedFeat.featId);
-    if (!feat) continue;
-    const effects = feat.ladder
-      ? feat.ladder.slice(0, ownedFeat.rank).flatMap((r) => r.effects ?? [])
-      : feat.effects ?? [];
-    for (const e of effects) out.push({ source: feat.name, effect: e });
-  }
-  return out;
-}
-
-/** An effect with any condition at all is situational — shown, never summed. */
-function isConditional(effect: Effect): boolean {
-  const when = 'when' in effect ? effect.when : undefined;
-  return when !== undefined && Object.values(when).some(Boolean);
 }
 
 function signed(n: number): string {
@@ -164,6 +124,10 @@ function describeEffect(effect: Effect): string {
     case 'socialPenalty': return `${signed(effect.value)} social checks${suffix}`;
     case 'grantProficiency': return `Proficiency: ${effect.group}`;
     case 'grantLanguage': return `Language: ${effect.language}`;
+    case 'maxHpMod': return `${signed(effect.value)} max HP`;
+    case 'drMod': return `DR ${effect.value}${suffix}`;
+    case 'initiativeMod': return `${signed(effect.value)} Initiative${suffix}`;
+    case 'grantTrainedByAttr': return `Trained in ${effect.attr} Skills`;
   }
 }
 
@@ -233,9 +197,20 @@ export function derive(state: CharacterState): DerivedSheet {
     ...(state.hpPurchases && cls
       ? [{ label: `HP Advances ×${state.hpPurchases} (Class HP ${cls.classHP})`, value: state.hpPurchases * cls.classHP }]
       : []),
+    ...steadyParts((e) => e.kind === 'maxHpMod'),
   ]);
 
   const speed = sum([{ label: 'Base', value: 30 }]);
+
+  const damageReduction = sum(steadyParts((e) => e.kind === 'drMod'));
+
+  // Initiative = Dex or Wis, whichever is bigger, + modifiers (ruled Aug 2026).
+  const dex = attributes.find((a) => a.attr === 'Dexterity')!.value.total;
+  const wis = attributes.find((a) => a.attr === 'Wisdom')!.value.total;
+  const initiative = sum([
+    wis > dex ? { label: 'Wisdom', value: wis } : { label: 'Dexterity', value: dex },
+    ...steadyParts((e) => e.kind === 'initiativeMod'),
+  ]);
 
   // Trained Skills: every Class Skill (Trained free, +0 until advanced) plus
   // any off-list Skill made Trained with a Minor. Untrained use is −1. A
@@ -245,6 +220,28 @@ export function derive(state: CharacterState): DerivedSheet {
   const moddedSkills = steady
     .filter((se) => se.effect.kind === 'skillMod')
     .map((se) => (se.effect as Extract<Effect, { kind: 'skillMod' }>).skill);
+  // A Skill Generalist counts as Trained in every Skill rolled with its
+  // Attribute — those Skills list at +0 without the Untrained penalty.
+  const generalistAttrs = new Set(
+    steady
+      .filter((se) => se.effect.kind === 'grantTrainedByAttr')
+      .map((se) => (se.effect as Extract<Effect, { kind: 'grantTrainedByAttr' }>).attr),
+  );
+  const usesGeneralistAttr = (name: string): boolean => {
+    const def = SKILLS.find((s) => s.name === skillBase(name));
+    return (def?.attrs.split(',') ?? []).some((a) => {
+      const short = parseAttr(a.trim());
+      return short !== undefined && generalistAttrs.has(ATTR_FULL[short]);
+    });
+  };
+  // Generalist-covered Skills are NOT listed one by one — the sheet carries
+  // one summary line per Generalist instead (Les, Aug 2026). A covered Skill
+  // still lists when something else puts it there (Ranks, a modifier), just
+  // without the Untrained penalty.
+  const skillGeneralists = [...generalistAttrs].map((attr) => ({
+    attr,
+    total: attrValue(attr).total,
+  }));
   const trainedNames = [
     ...new Set([
       ...ownClassSkills,
@@ -263,7 +260,8 @@ export function derive(state: CharacterState): DerivedSheet {
     const attr: Attribute = short ? ATTR_FULL[short] : 'Wisdom';
     const attrTotal = attrValue(attr).total;
     const isClassSkill = ownClassSkills.includes(skill);
-    const untrained = !isClassSkill && !state.trainedSkills.includes(skill);
+    const untrained =
+      !isClassSkill && !state.trainedSkills.includes(skill) && !usesGeneralistAttr(skill);
     return {
       skill,
       attr,
@@ -318,7 +316,10 @@ export function derive(state: CharacterState): DerivedSheet {
     attributes,
     hitPoints,
     speed,
+    damageReduction,
+    initiative,
     skills,
+    skillGeneralists,
     languages,
     proficiencies,
     situational,

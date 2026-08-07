@@ -249,6 +249,96 @@ export default function CreationFlow() {
     </button>
   );
 
+  // The advancement strip, shared by plain cards, builder instances (which
+  // pass their instanceId), and Feat-granted cards. Each Ladder renders as
+  // its whole track: steps already climbed, the value the Ability RESTS at
+  // (emphasized), the next step as the priced button, and the rest of the
+  // road greyed out ahead.
+  const AdvStrip = ({
+    catName,
+    card,
+    owned,
+  }: {
+    catName: string;
+    card: (typeof CATEGORIES)[number]['abilities'][number];
+    owned: ReturnType<typeof replay>['state']['abilities'][number];
+  }) => {
+    const ref = { category: catName, ability: card.name };
+    const clip = (s: string, n = 40) => (s.length > n ? `${s.slice(0, n - 1)}…` : s);
+    const show = (s: string) => clip(annotate(s));
+    const full = (s: string) => annotate(s);
+    return (
+      <>
+        {VAR_ORDER.filter((k) => card.vars[k]?.advances?.length).map((k) => {
+          const variable = card.vars[k]!;
+          const rank = owned.ranks[k] ?? 0;
+          const steps = [variable.base ?? '—', ...variable.advances!.map((a) => a.value)];
+          return (
+            <span key={k} class="cf-advline">
+              <span class="cf-advlabel">{VAR_LABELS[k]}</span>
+              {steps.map((val, i) => {
+                const cost = i > 0 ? variable.advances![i - 1].cost : undefined;
+                const sep = i > 0 && <span class="cf-stepsep">›</span>;
+                if (i < rank) {
+                  return (
+                    <>
+                      {sep}
+                      <span class="cf-stepchip passed" title={`${full(val)} — climbed past`}>{show(val)}</span>
+                    </>
+                  );
+                }
+                if (i === rank) {
+                  return (
+                    <>
+                      {sep}
+                      <span class="cf-stepchip rests" title={`${full(val)} — where it rests now`}>{show(val)}</span>
+                      {rank > 0 && (
+                        <Undo
+                          pred={(e) =>
+                            e.type === 'ability-advanced' &&
+                            e.ref.category === catName &&
+                            e.ref.ability === card.name &&
+                            e.variable === k &&
+                            (owned.instanceId ? e.instanceId === owned.instanceId : true)
+                          }
+                          title="refund this Rank"
+                        />
+                      )}
+                    </>
+                  );
+                }
+                if (i === rank + 1) {
+                  return (
+                    <>
+                      {sep}
+                      <Buy
+                        ev={mk('ability-advanced', {
+                          ref,
+                          instanceId: owned.instanceId,
+                          variable: k,
+                          toRank: rank + 1,
+                        })}
+                        label={`${show(val)} · ${cost}`}
+                      />
+                    </>
+                  );
+                }
+                return (
+                  <>
+                    {sep}
+                    <span class="cf-stepchip ahead" title={`${full(val)} — further along the Ladder (${cost})`}>
+                      {show(val)} · {cost}
+                    </span>
+                  </>
+                );
+              })}
+            </span>
+          );
+        })}
+      </>
+    );
+  };
+
   // ── The finale ──────────────────────────────────────────────────────────
 
   const doRoll = () => {
@@ -486,88 +576,6 @@ export default function CreationFlow() {
                           const ref = { category: catName, ability: ab.name };
                           const brief = briefFor(catName, ab.name);
 
-                          // The advancement strip, shared by plain cards and
-                          // builder instances (which pass their instanceId).
-                          // Each Ladder renders as its whole track: steps
-                          // already climbed, the value the Ability RESTS at
-                          // (emphasized), the next step as the priced button,
-                          // and the rest of the road greyed out ahead.
-                          const AdvStrip = ({ owned }: { owned: (typeof state.abilities)[number] }) => {
-                            const clip = (s: string, n = 40) => (s.length > n ? `${s.slice(0, n - 1)}…` : s);
-                            const show = (s: string) => clip(annotate(s));
-                            const full = (s: string) => annotate(s);
-                            return (
-                              <>
-                                {VAR_ORDER.filter((k) => ab.vars[k]?.advances?.length).map((k) => {
-                                  const variable = ab.vars[k]!;
-                                  const rank = owned.ranks[k] ?? 0;
-                                  const steps = [variable.base ?? '—', ...variable.advances!.map((a) => a.value)];
-                                  return (
-                                    <span key={k} class="cf-advline">
-                                      <span class="cf-advlabel">{VAR_LABELS[k]}</span>
-                                      {steps.map((val, i) => {
-                                        const cost = i > 0 ? variable.advances![i - 1].cost : undefined;
-                                        const sep = i > 0 && <span class="cf-stepsep">›</span>;
-                                        if (i < rank) {
-                                          return (
-                                            <>
-                                              {sep}
-                                              <span class="cf-stepchip passed" title={`${full(val)} — climbed past`}>{show(val)}</span>
-                                            </>
-                                          );
-                                        }
-                                        if (i === rank) {
-                                          return (
-                                            <>
-                                              {sep}
-                                              <span class="cf-stepchip rests" title={`${full(val)} — where it rests now`}>{show(val)}</span>
-                                              {rank > 0 && (
-                                                <Undo
-                                                  pred={(e) =>
-                                                    e.type === 'ability-advanced' &&
-                                                    e.ref.category === catName &&
-                                                    e.ref.ability === ab.name &&
-                                                    e.variable === k &&
-                                                    (owned.instanceId ? e.instanceId === owned.instanceId : true)
-                                                  }
-                                                  title="refund this Rank"
-                                                />
-                                              )}
-                                            </>
-                                          );
-                                        }
-                                        if (i === rank + 1) {
-                                          return (
-                                            <>
-                                              {sep}
-                                              <Buy
-                                                ev={mk('ability-advanced', {
-                                                  ref,
-                                                  instanceId: owned.instanceId,
-                                                  variable: k,
-                                                  toRank: rank + 1,
-                                                })}
-                                                label={`${show(val)} · ${cost}`}
-                                              />
-                                            </>
-                                          );
-                                        }
-                                        return (
-                                          <>
-                                            {sep}
-                                            <span class="cf-stepchip ahead" title={`${full(val)} — further along the Ladder (${cost})`}>
-                                              {show(val)} · {cost}
-                                            </span>
-                                          </>
-                                        );
-                                      })}
-                                    </span>
-                                  );
-                                })}
-                              </>
-                            );
-                          };
-
                           if (ab.builder) {
                             const instances = state.abilities.filter(
                               (o) => o.ref.category === catName && o.ref.ability === ab.name,
@@ -644,7 +652,7 @@ export default function CreationFlow() {
                                           </button>
                                         )}
                                       </span>
-                                      <AdvStrip owned={inst} />
+                                      <AdvStrip catName={catName} card={ab} owned={inst} />
                                     </td>
                                   </tr>
                                 ))}
@@ -690,7 +698,7 @@ export default function CreationFlow() {
                               {owned && (
                                 <tr class="cf-abadv">
                                   <td colspan={3}>
-                                    <AdvStrip owned={owned} />
+                                    <AdvStrip catName={catName} card={ab} owned={owned} />
                                   </td>
                                 </tr>
                               )}
@@ -745,6 +753,17 @@ export default function CreationFlow() {
                 <Undo pred={(e) => e.type === 'hp-bought'} title="refund" />
                 <Buy ev={mk('hp-bought', {})} label={`+${cls!.classHP} HP`} />
               </div>
+              {sheet.damageReduction.total > 0 && (
+                <div class="cf-line">
+                  <span>DR {sheet.damageReduction.total} <em class="cf-work">({sheet.damageReduction.parts.map((p) => `${p.label} ${p.value}`).join(' · ')})</em></span>
+                </div>
+              )}
+              <div class="cf-line">
+                <span>
+                  Initiative {sheet.initiative.total >= 0 ? `+${sheet.initiative.total}` : `−${Math.abs(sheet.initiative.total)}`}{' '}
+                  <em class="cf-work">({sheet.initiative.parts.map((p) => `${p.label} ${p.value}`).join(' · ')})</em>
+                </span>
+              </div>
 
               <h3>Skills</h3>
               <p class="cf-how">Class Skills arrive Trained (+0); Ranks climb +1 now, +2 at Level 3, +3 at Level 5. Off-list Skills can be Trained but never pass +1. Untrained is −1.</p>
@@ -760,6 +779,11 @@ export default function CreationFlow() {
                       title="refund"
                     />
                     <Buy ev={mk('skill-advanced', { skill: s.skill })} label="+1" />
+                  </span>
+                ))}
+                {sheet.skillGeneralists.map((g) => (
+                  <span key={g.attr} class="cf-chip trained">
+                    {g.attr.slice(0, 3)} Skills Generalist: {g.total >= 0 ? `+${g.total}` : `−${Math.abs(g.total)}`}
                   </span>
                 ))}
               </div>
@@ -853,8 +877,12 @@ export default function CreationFlow() {
                                     events: d.events.filter(
                                       (x) =>
                                         !(
-                                          (x.type === 'feat-bought' || x.type === 'feat-advanced') &&
-                                          x.featId === feat.id
+                                          ((x.type === 'feat-bought' || x.type === 'feat-advanced') &&
+                                            x.featId === feat.id) ||
+                                          (feat.grantsAbility &&
+                                            x.type === 'ability-advanced' &&
+                                            x.ref.category === feat.grantsAbility.category &&
+                                            x.ref.ability === feat.grantsAbility.ability)
                                         ),
                                     ),
                                   }))
@@ -878,6 +906,22 @@ export default function CreationFlow() {
                           )}
                         </td>
                       </tr>
+                      {owned && feat.grantsAbility && (() => {
+                        const g = feat.grantsAbility;
+                        const card = CATEGORIES.find((c) => c.name === g.category)
+                          ?.abilities.find((a) => a.name === g.ability);
+                        const ownedAb = state.abilities.find(
+                          (a) => a.ref.category === g.category && a.ref.ability === g.ability,
+                        );
+                        if (!card || !ownedAb) return null;
+                        return (
+                          <tr class="cf-abadv">
+                            <td colspan={3}>
+                              <AdvStrip catName={g.category} card={card} owned={ownedAb} />
+                            </td>
+                          </tr>
+                        );
+                      })()}
                       {owned && feat.ladder && (
                         <tr class="cf-abadv">
                           <td colspan={3}>
@@ -1050,7 +1094,11 @@ export default function CreationFlow() {
                 })}
               </tbody>
             </table>
-            <p class="cf-railline">HP {sheet.hitPoints.total} · Speed {sheet.speed.total}'</p>
+            <p class="cf-railline">
+              HP {sheet.hitPoints.total} · Speed {sheet.speed.total}'
+              {sheet.damageReduction.total > 0 && ` · DR ${sheet.damageReduction.total}`}
+              {` · Init ${sheet.initiative.total >= 0 ? `+${sheet.initiative.total}` : `−${Math.abs(sheet.initiative.total)}`}`}
+            </p>
             {sheet.languages.length > 0 && (
               <p class="cf-railline">{sheet.languages.join(' · ')}</p>
             )}

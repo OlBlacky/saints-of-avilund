@@ -5,6 +5,7 @@
 import { describe, expect, it } from 'vitest';
 
 import { CATEGORIES } from './category-abilities';
+import { FEATS } from './feats';
 import {
   ARMOUR_PROFICIENCIES,
   CLASSES,
@@ -77,10 +78,11 @@ describe('ability categories', () => {
     }
   });
 
-  it('every published Category is claimed by some class or subclass', () => {
+  it('every published Category is claimed by some class, subclass, or Feat grant', () => {
     const claimed = new Set([
       ...CLASSES.map((c) => c.abilityCategory),
       ...allSubclasses.map(({ sub }) => sub.abilityCategory),
+      ...FEATS.flatMap((f) => (f.grantsAbility ? [f.grantsAbility.category] : [])),
     ]);
     for (const name of CATEGORY_NAMES) {
       expect(claimed, `unclaimed Category: ${name}`).toContain(name);

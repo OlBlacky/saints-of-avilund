@@ -72,6 +72,18 @@ Every new Ability gets eyeballed against a reference card of the same shape befo
 - Canadian spelling: -ize/-ization with a z (Specialization), but keep -our/-re/-ce (armour, defence).
 - On renaming a term, sweep every occurrence — mechanics, rulebook, site data — in the same pass. A half-renamed term is worse than a bad name.
 
+## 10. Skills know, Languages read
+
+Every magic tradition has one knowledge Skill and one Language, and they never overlap:
+
+- **The Skill knows the tradition** — lore, identification, recognizing its work. A Skill never requires a Language.
+- **The Language reads the tradition** — its scrolls, spellbooks, rituals, and inscriptions. A Language is never granted by a Skill.
+- **Deep specialist Feats require both** — the Malediction Specializations set the pattern (Language (Black Tongue) + Religion (Black Faith), a Minor each).
+
+A casting Class or Subclass grants its own tradition's Language free; reaching into another tradition's texts costs the Minors. Literacy Abilities (Read Scrolls, Read Spellbooks, Conduct Ritual) gate per item: you must know the language the text is written in.
+
+**Keywords carry the tie.** Each casting Category declares its tradition once (`lib/traditions.ts`: Skill + Language), and every card in it inherits those two **Keywords** at render — Keywords are never authored on a card by hand. A reused card takes the Keywords of its hosting Category, so the same card wears different Keywords on different sheets. Found objects (spellbooks, scrolls) will carry Language Keywords of their own; the reading gate is the match between the object's Keyword and the languages you know.
+
 ---
 
 ## Before-you-author checklist

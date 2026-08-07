@@ -4,6 +4,7 @@ import { url } from '../../lib/url';
 import SystemNav from '../../components/SystemNav.astro';
 import AbilityCard from '../../components/AbilityCard.astro';
 import { CATEGORIES } from '../../lib/category-abilities';
+import { keywordsFor } from '../../lib/traditions';
 
 // Abilities reference — a hand-built route (stub: false in system.ts). Each
 // Category is a collapsible <details>; inside are its Ability cards in Build view.
@@ -33,7 +34,10 @@ const categories = [...CATEGORIES].sort((a, b) => a.name.localeCompare(b.name));
       </summary>
       <div class="cat__body">
         <p class="cat__blurb">{cat.blurb}</p>
-        {cat.abilities.map((a) => <AbilityCard ability={a} mode="build" />)}
+        {keywordsFor(cat.name) && (
+          <p class="cat__keywords"><strong>Keywords:</strong> {keywordsFor(cat.name)!.join(' · ')}</p>
+        )}
+        {cat.abilities.map((a) => <AbilityCard ability={a} mode="build" host={cat.name} />)}
       </div>
     </details>
   ))}
@@ -102,5 +106,15 @@ const categories = [...CATEGORIES].sort((a, b) => a.name.localeCompare(b.name));
     }
     .cat__body { padding: 0.4rem 1.1rem 1.1rem; }
     .cat__blurb { margin: 0.9rem 0 0.4rem; color: var(--ink-soft); font-style: italic; }
+    .cat__keywords {
+      margin: 0 0 0.4rem;
+      font-size: 0.8rem;
+      color: var(--ink-soft);
+    }
+    .cat__keywords strong {
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      font-size: 0.72rem;
+    }
   </style>
 </Base>

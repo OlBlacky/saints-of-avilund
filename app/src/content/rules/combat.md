@@ -28,13 +28,20 @@ Some Abilities — the Scoundrel's above all — pay out only against a foe who 
 **Off Guard** is a Condition: the target is not ready for *you*. Unlike the laddered Conditions, it is simply on or off. A creature is **Off Guard against you** when any of these is true:
 
 - it **cannot see you** — you are Hidden, or it is Blind;
-- it has **not yet acted** in the encounter (it was surprised);
+- it has **not yet acted** in the encounter (it was Surprised);
 - it is **Prone, Stunned, or Immobilized**;
 - an Ability says so — a Feint, for instance, leaves the target Off Guard against your next attack.
 
 Off Guard is always *against someone*: a man watching you and not the thief behind him is Off Guard against the thief and ready for you. On its own it grants no penalty — it is the **key that unlocks** the Abilities written to use it.
 
 **Flanking** is the other key. You **flank** an enemy when you and an ally are both adjacent to it and stand on **opposite sides** — directly across from one another. Flanking is not a Condition and needs no roll; either the geometry holds or it does not. Abilities that trigger on an Off Guard target trigger equally on a flanked one, unless they say otherwise.
+
+## Surprise
+
+A creature caught unawares when a fight begins is **Surprised**:
+
+- It can take **no actions** — Reactions and Interrupts included — until its first turn.
+- Attacks against it gain **+1 to hit**, and it is **Off Guard** against everyone.
 
 ## Falling, dying, and death
 

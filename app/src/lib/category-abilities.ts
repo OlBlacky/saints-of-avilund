@@ -1126,7 +1126,7 @@ const READ_SCROLLS: Ability = {
     action: { base: 'Full Round', advances: [{ value: 'Standard', cost: 'M' }] },
     attack: { base: 'Int (+ Scroll Specialization) vs the spell’s Defence' },
     effects: {
-      base: 'Read only — identify a scroll’s spell. You must know its language (e.g. Elder Arcana).',
+      base: 'Read only — identify a scroll’s spell. You must know its language (e.g. the Elder Arcana Tongue).',
       advances: [
         { value: 'cast Lesser spells from a scroll (consumed on use)', cost: 'm' },
         { value: 'cast Greater spells', cost: 'M', note: 'L5' },
@@ -1260,7 +1260,7 @@ const LETTERS: Ability[] = [
       frequency: { base: 'Uncapped' },
       action: { base: 'A few minutes of study' },
       effects: {
-        base: 'An Arcana check vs the object’s DC reveals it is magical, its tradition, and its level. (Only for magic whose language and tradition you know.)',
+        base: 'An Arcana check vs the object’s DC reveals it is magical, its tradition, and its level.',
         advances: [
           { value: 'also its function', cost: 'm' },
           { value: 'also how to use it — command words, components, charges', cost: 'm' },
@@ -3515,7 +3515,33 @@ const OLD_MAGIC: Ability[] = [
   },
 ];
 
+// ── General ─────────────────────────────────────────────────────
+// Cards open to every build — granted by Feats, not by a Class or Subclass.
+// They advance through the ordinary Ability machinery.
+
+const GENERAL: Ability[] = [
+  {
+    name: 'Second Wind',
+    category: 'General',
+    role: 'Defensive',
+    mode: 'Effect',
+    vars: {
+      frequency: FREQ_ENC,
+      action: { base: 'Move', advances: [{ value: 'Minor', cost: 'm' }] },
+      targets: { base: 'Self' },
+      effects: {
+        base: 'Gain 2 Temp HP, or heal 2 HP',
+        advances: [
+          { value: 'Gain 3 Temp HP, or heal 3 HP', cost: 'm' },
+          { value: 'Gain 3 Temp HP and heal 3 HP', cost: 'M' },
+        ],
+      },
+    },
+  },
+];
+
 export const CATEGORIES: CategoryGroup[] = [
+  { name: 'General', source: 'Any build — granted by Feats', blurb: '[[text here]]', abilities: GENERAL },
   { name: 'Arms', source: 'Soldier — Class', blurb: '[[text here]]', abilities: ARMS },
   { name: 'Protection', source: 'Soldier — Vanguard', blurb: '[[text here]]', abilities: PROTECTION },
   { name: 'Leadership', source: 'Soldier — Commander', blurb: '[[text here]]', abilities: LEADERSHIP },

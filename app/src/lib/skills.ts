@@ -46,7 +46,6 @@ export const SKILLS: Skill[] = [
   {
     name: 'Arcana',
     attrs: 'Int',
-    note: 'Prerequisite: Language (Elder Arcana).',
     how: 'The scholar’s reading of magic — its traditions, enchanted things, and arcane phenomena.',
     actions: [
       { name: 'Identify Magic', rule: 'Read an unknown magical thing’s tradition, level, and function: Arcana vs the object’s DC. (See the Identify Ability for the deeper read.)' },
@@ -141,6 +140,15 @@ export const SKILLS: Skill[] = [
     ],
   },
   {
+    name: 'Elder Arcana',
+    attrs: 'Int',
+    how: 'The magic of the Elders — their workings, glyphs, and relics.',
+    actions: [
+      { name: 'Recall Elder Lore', rule: 'A Knowledge check on the Elders, their works, and their magic vs a GM DC.' },
+      { name: 'Identify Elder Work', rule: 'Recognize a thing as Elder-made and read its purpose: Elder Arcana vs the object’s DC.' },
+    ],
+  },
+  {
     name: 'Endurance',
     attrs: 'Con',
     how: 'Resist fatigue, hunger, weather, and prolonged hardship.',
@@ -222,6 +230,24 @@ export const SKILLS: Skill[] = [
     actions: [
       { name: 'Coerce', rule: 'Force compliance or an answer: Intimidate vs the target’s Sense Motive (or a GM DC).' },
       { name: 'Demoralize', rule: 'In combat, as a Standard Action: Intimidate vs the foe’s resolve; on a success it is Shaken — −1 to attacks (Fear) — until it Saves.' },
+    ],
+  },
+  {
+    name: 'Knowledge: Occult',
+    attrs: 'Int',
+    how: 'The occult — the dead, hauntings, and the gateway arts.',
+    actions: [
+      { name: 'Recall Occult Lore', rule: 'A Knowledge check on the dead, hauntings, and occult practice vs a GM DC.' },
+      { name: 'Identify Occult Work', rule: 'Recognize an occult rite, haunting, or working: Knowledge: Occult vs a DC.' },
+    ],
+  },
+  {
+    name: 'Knowledge: Planes',
+    attrs: 'Int',
+    how: 'Planar cosmology and the entities beyond — the Abyss and the realms that touch the world.',
+    actions: [
+      { name: 'Recall Planar Lore', rule: 'A Knowledge check on the planes and the beings (demons, spirits) bound to them vs a GM DC.' },
+      { name: 'Identify the Extraplanar', rule: 'Recognize a being’s plane and nature: Knowledge: Planes vs a DC.' },
     ],
   },
   {
@@ -353,15 +379,6 @@ export const SKILLS: Skill[] = [
       { name: 'Track', rule: 'Follow a trail: Survival vs a DC by its age and the ground.' },
       { name: 'Forage', rule: 'Find food, water, and shelter: a Survival check per day.' },
       { name: 'Navigate the Wilds', rule: 'Hold a course across open country: Survival vs a GM DC.' },
-    ],
-  },
-  {
-    name: 'The Planes',
-    attrs: 'Int',
-    how: 'Planar cosmology and the entities beyond — the Abyss and the realms that touch the world.',
-    actions: [
-      { name: 'Recall Planar Lore', rule: 'A Knowledge check on the planes and the beings (demons, spirits) bound to them vs a GM DC.' },
-      { name: 'Identify the Extraplanar', rule: 'Recognize a being’s plane and nature: The Planes vs a DC.' },
     ],
   },
   {

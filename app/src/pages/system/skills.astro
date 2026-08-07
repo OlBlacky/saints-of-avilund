@@ -29,12 +29,16 @@ const skills = [...SKILLS].sort((a, b) => a.name.localeCompare(b.name));
   <div class="prose" style="margin:0 auto 1.6rem;">
     <p><strong>Training caps.</strong> The Skills your <strong>Class</strong> grants — its
     <strong>Class Skills</strong> — and the two your <strong>Subclass</strong> grants — its
-    <strong>Additional Class Skills</strong> — can be raised to <strong>+2</strong>. Any other Skill you
-    pick up caps at <strong>+1</strong>.</p>
+    <strong>Additional Class Skills</strong> — arrive Trained and climb by Ranks: <strong>+1</strong>,
+    <strong>+2 at Level 3</strong>, <strong>+3 at Level 5</strong>. Any other Skill can be Trained but
+    never passes <strong>+1</strong>.</p>
     <p><strong>Specialities.</strong> A few Skills are taken in a chosen field: <strong>Craft, Profession,
     Perform,</strong> and <strong>Trade</strong> <em>(e.g. Craft: Poison)</em>. <strong>Religion</strong>
     likewise names a faith — <strong>Religion (Saintly Faith)</strong>, <strong>Religion (Black Faith)</strong>,
     and others.</p>
+    <p><strong>Taking 10.</strong> Some effects let you <strong>Take 10</strong> on a roll: instead of
+    rolling the d20, count the die as a 10 and add your bonuses as usual. Any <strong>Take N</strong>
+    works the same way with that number.</p>
   </div>
 
   {skills.map((s) => (

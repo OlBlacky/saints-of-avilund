@@ -23,7 +23,7 @@ export type WeaponGroup =
   | 'Bows' | 'Crossbows' | 'Slings' | 'Thrown' | 'Pistols' | 'Rifles' | 'Grenades';
 
 export type Language =
-  | 'Imperial' | 'Auld Imperial' | 'Elder' | 'Elder Arcana'
+  | 'Imperial' | 'Auld Imperial' | 'Elder' | 'Elder Arcana Tongue' | 'Arcane Tongue'
   | 'Black Tongue' | 'Kellish' | 'Common Feral'
   | 'First Tongue' | 'Archipelago' | 'Eldritch Tongue';
 
@@ -45,7 +45,12 @@ export type Effect =
   | { kind: 'attackMod'; value: number; when: Condition } // condition REQUIRED
   | { kind: 'grantProficiency'; group: string }           // may be a {slot}
   | { kind: 'grantLanguage'; language: string }           // may be a {slot}
-  | { kind: 'socialPenalty'; value: number; when: Condition };
+  | { kind: 'socialPenalty'; value: number; when: Condition }
+  | { kind: 'maxHpMod'; value: number }
+  | { kind: 'drMod'; value: number; when?: Condition }
+  | { kind: 'initiativeMod'; value: number; when?: Condition }
+  /** Count as Trained in every Skill rolled with this Attribute. */
+  | { kind: 'grantTrainedByAttr'; attr: Attribute };
 
 /** Which table a {slot} draws from, and how the draw is narrowed. */
 export interface SlotSpec {
@@ -97,7 +102,7 @@ export const LANGUAGES: SlotEntry[] = [
   { value: 'Imperial', tags: ['common'] },
   { value: 'Auld Imperial', tags: ['church', 'learned'] },
   { value: 'Elder', tags: ['learned'] },
-  { value: 'Elder Arcana', tags: ['learned', 'arcane'] },
+  { value: 'Elder Arcana Tongue', tags: ['learned', 'arcane'] },
   { value: 'Kellish', tags: ['foreign'] },
   { value: 'Common Feral', tags: ['foreign'] },
 ];
@@ -226,11 +231,11 @@ export const QUIRKS: Quirk[] = [
     name: 'Read One Page Too Many',
     category: 'neutral',
     mechanic:
-      '+1 to History. −1 on your first Save against anything written in Elder Arcana.',
+      '+1 to History. −1 on your first Save against anything written in the Elder Arcana Tongue.',
     esoteric: 'You always read it before you resist it.',
     effects: [
       { kind: 'skillMod', value: 1, skill: 'History' },
-      { kind: 'saveMod', value: -1, attr: 'Intelligence', when: { language: 'Elder Arcana', note: 'first Save only' } },
+      { kind: 'saveMod', value: -1, attr: 'Intelligence', when: { language: 'Elder Arcana Tongue', note: 'first Save only' } },
     ],
     tags: ['learned', 'arcane'],
   },

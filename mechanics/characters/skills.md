@@ -39,8 +39,9 @@ Skills represent trained areas of expertise. They are tied to Attributes — whe
 | **Craft** *(speciality)* | Int, Wis, Dex | Making and repairing things |
 | **Decipher Script** | Int | Reading unknown languages and coded writing |
 | **Forgery** | Int | Creating convincing false documents |
-| **Arcana** | Int | Knowledge of arcane magic and phenomena; identifying magical items, spells and effects. **Prerequisite: Language (Elder Arcana).** |
+| **Arcana** | Int | Knowledge of arcane magic and phenomena; identifying magical items, spells and effects |
 | **Dungeoneering** | Int, Wis | Underground navigation, creatures, hazards |
+| **Elder Arcana** | Int | The magic of the Elders — their workings, glyphs, and relics |
 | **Geography** | Int, Wis | Maps, terrain, regional knowledge |
 | **History** | Int, Wis | Events, figures, and lore of the past |
 | **Local Knowledge** | Int, Wis | People, places, and happenings in a specific area |
@@ -48,7 +49,8 @@ Skills represent trained areas of expertise. They are tied to Attributes — whe
 | **Nobility & Etiquette** | Int, Cha | Court customs, heraldry, social protocol |
 | **Religion** | Int, Wis | Theology, rites, religious history and figures |
 | **Rituals** | Int | Performing rituals — the Ritual Leader's Casting-DC check — and the lore of ritual magic |
-| **The Planes** | Int | Knowledge of planar cosmology and extraplanar entities |
+| **Knowledge: Occult** | Int | The occult — the dead, hauntings, and the gateway arts |
+| **Knowledge: Planes** | Int | Knowledge of planar cosmology and extraplanar entities |
 | **Search** | Int, Wis | Finding hidden objects, traps, or clues |
 | **Heal** | Wis, Int | Treating wounds, illness and conditions |
 | **Perception** | Wis | Noticing details, sensing danger, general awareness |

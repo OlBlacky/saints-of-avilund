@@ -25,17 +25,20 @@ export const GLOSSARY: Record<string, string> = {
   'AC': 'Armour Class — your Armoured Constitution Defence, the number most physical attacks must beat.',
   'Armoured': 'A Defence that includes your armour’s bonus, as opposed to its Unarmoured version.',
   'Ability': 'An active power, bought for 1 Major Advance from one of your Ability Categories and improved dial by dial.',
+  'Keywords': 'The tags an Ability carries from its Category: the tradition’s knowledge Skill and the Language its texts are written in.',
   'Frequency': 'How often an Ability may be used — once per day, once per encounter, or at-will.',
   'Milestone': 'A step of advancement; three make a Level. Each Milestone grants +1 Major and +1 Minor Advance.',
   'Ladder': 'A short track of escalating effect. Rank 1 is the base; the middle Ranks cost a Minor Advance each, and the top Rank costs a Major. Abilities, Conditions, Frequency, and more are all built as Ladders.',
   'Rank': 'A single step on a Ladder. You climb from Rank 1 (the base) upward, paying Advances as you go.',
   'Off Guard': 'A target is Off Guard against you when it cannot see you, has not yet acted in the encounter, is Prone, Stunned or Immobilized, or an Ability (a Feint) has left it so. On its own it does nothing — it is the key that unlocks the Abilities written to use it.',
+  'Surprised': 'A creature caught unawares when a fight begins. Until its first turn it can take no actions — Reactions and Interrupts included. Attacks against it gain +1 to hit, and it is Off Guard against everyone.',
   'flanked': 'A creature is flanked when you and an ally are both adjacent to it, on opposite sides. Abilities that trigger on an Off Guard target trigger equally on a flanked one.',
   'flanking': 'You flank an enemy when you and an ally are both adjacent to it and stand on opposite sides. It needs no roll — either the geometry holds or it does not.',
   'Studied': 'A mark the Assassin has observed with Study the Mark. It stays Studied until the end of the encounter, adding Study the Mark’s bonus damage (+1, rising to +Int, then +2 × Int) to your Sneak Attack, Death Blow, and Anatomist’s Cut against it.',
   'Difficulty Class': 'A creature’s DC — the target number to beat when an Ability tests itself against the creature as a whole rather than one Defence. For a character it is 10 + Level; a monster states its own DC in its listing.',
   'DC': 'Difficulty Class — the target number to beat when an Ability tests itself against a creature as a whole rather than one Defence. A character’s DC is 10 + Level; a monster states its own.',
   'Reroll': 'Roll the die again and keep the better of the two results. Every Reroll in the game works this way — you never keep the worse roll.',
+  'Take 10': 'Instead of rolling the d20, count the die as a 10 and add your bonuses as usual. Any Take N works the same way with that number.',
 };
 
 // Inline abbreviations — decorated wherever they appear in body text (not only

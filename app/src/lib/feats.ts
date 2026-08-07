@@ -9,14 +9,21 @@
 // Malediction one of your curses carries. The record engine checks it from
 // state; there are no per-Class feat tables.
 
-import type { Effect } from './quirks';
+import type { Attribute, Effect } from './quirks';
+import { SKILLS } from './skills';
 
 /** What a Feat demands of the build before it may be taken. */
 export type FeatRequirement =
   | { kind: 'proficiency'; group: string }
   | { kind: 'damage-type'; type: string }
   | { kind: 'malediction'; name: string }
-  | { kind: 'skill-trained'; skill: string };
+  | { kind: 'skill-trained'; skill: string }
+  | { kind: 'skill-rank'; skill: string; rank: number }
+  | { kind: 'attribute'; attr: Attribute; value: number }
+  /** The Save total after all modification (Attribute + Defence Ranks + steady bonuses). */
+  | { kind: 'save-total'; attr: Attribute; value: number }
+  /** Any one of the listed Attributes at the value. */
+  | { kind: 'attribute-any'; attrs: Attribute[]; value: number };
 
 /** One Rank of a Feat Ladder. */
 export interface FeatRank {
@@ -44,6 +51,9 @@ export interface Feat {
   ladder?: FeatRank[];
   /** Machine effects while owned (plain Feats). */
   effects?: Effect[];
+  /** Taking the Feat grants this Ability card, which then advances through
+   * the ordinary Ability machinery (one Minor + one Major per Level). */
+  grantsAbility?: { category: string; ability: string };
 }
 
 const SPEC_LEVEL = 2;
@@ -146,9 +156,183 @@ const maledictionSpecs: Feat[] = MALEDICTION_SPECS.map(({ name, hook }) => ({
   effects: [{ kind: 'attackMod' as const, value: 1, when: { note: `cursing with ${name}` } }],
 }));
 
+// ── Skill Specializations ───────────────────────────────────────────────────
+// One per Skill, open once the Skill holds Rank +1 (Les, Aug 2026). The base
+// purchase is the Ladder's first Rank.
+
+const skillSpecs: Feat[] = SKILLS.map((s) => ({
+  id: `skill-spec-${slug(s.name)}`,
+  name: `Skill Specialization — ${s.name}`,
+  brief: `Take 10 on ${s.name}; at the height, a daily Reroll.`,
+  full: `Requires Rank +1 in ${s.name}. You may Take 10 on ${s.name} rolls. The later Ranks multiply numeric values derived from a ${s.name} roll — distance jumped, money earned — by 1.5, then 2. The final Rank grants one Reroll of a ${s.name} roll per day. One Rank per Level.`,
+  requires: { kind: 'skill-rank' as const, skill: s.name, rank: 1 },
+  ladder: [
+    { value: 'Take 10', cost: 'm' as const },
+    { value: 'Rolled values ×1.5', cost: 'm' as const },
+    { value: 'Rolled values ×2', cost: 'm' as const },
+    { value: 'Reroll 1/day', cost: 'M' as const },
+  ],
+}));
+
+// ── Attribute Skills Specializations ────────────────────────────────────────
+// One per Attribute, covering every Skill rolled with it. Opens at +2 in the
+// Attribute (Les, Aug 2026). The base purchase is the Ladder's first Rank.
+
+const ATTRIBUTE_LIST: Attribute[] = [
+  'Strength', 'Dexterity', 'Constitution', 'Intelligence', 'Wisdom', 'Charisma',
+];
+
+const attrSkillSpecs: Feat[] = ATTRIBUTE_LIST.map((attr) => {
+  const short = attr.slice(0, 3);
+  return {
+    id: `attr-skills-spec-${short.toLowerCase()}`,
+    name: `${short} Skills Specialization`,
+    brief: `Take 10 on ${attr} Skill rolls; at the height, a daily Reroll.`,
+    full: `Requires ${attr} +2. You may Take 10 on Skill rolls made with ${attr}. The later Ranks raise it to Take 12, then Take 15. A Take 15 check takes twice as long, or one Action-Step more: a Move becomes a Standard, a Standard becomes a Full Round. The final Rank grants one Reroll per day on a ${attr} Skill roll. One Rank per Level.`,
+    requires: { kind: 'attribute' as const, attr, value: 2 },
+    ladder: [
+      { value: 'Take 10', cost: 'm' as const },
+      { value: 'Take 12', cost: 'm' as const },
+      { value: 'Take 15 (takes longer)', cost: 'm' as const },
+      { value: 'Reroll 1/day', cost: 'M' as const },
+    ],
+  };
+});
+
+// ── Defensive Specializations ───────────────────────────────────────────────
+// One per Attribute: the Save Reroll economy, opening once the whole build —
+// Attribute, Defence Ranks, steady bonuses — carries that Save to +3
+// (Les, Aug 2026). The base purchase is the Ladder's first Rank.
+
+const defensiveSpecs: Feat[] = ATTRIBUTE_LIST.map((attr) => {
+  const short = attr.slice(0, 3);
+  return {
+    id: `defensive-spec-${short.toLowerCase()}`,
+    name: `${short} Defensive Specialization`,
+    brief: `Reroll ${short} Saves; at the height, DR 1 on that front.`,
+    full: `Requires a ${attr} Save total of +3, after all modification. You gain one Reroll per day on ${attr} Saves. The second Rank makes it one Reroll per encounter. The final Rank adds DR 1 against attacks that target your ${attr} Defences. One Rank per Level.`,
+    requires: { kind: 'save-total' as const, attr, value: 3 },
+    ladder: [
+      { value: `Reroll ${short} Saves 1/day`, cost: 'm' as const },
+      { value: 'Reroll 1/encounter', cost: 'M' as const },
+      {
+        value: `DR 1 vs ${short} Defences`,
+        cost: 'M' as const,
+        effects: [{
+          kind: 'drMod' as const,
+          value: 1,
+          when: { note: `vs attacks targeting your ${attr} Defences` },
+        }],
+      },
+    ],
+  };
+});
+
+// ── Attribute Skill Generalists ─────────────────────────────────────────────
+// One per Attribute: count as Trained in every Skill rolled with it. Opens at
+// +1 in the Attribute (Les, Aug 2026 — the Bardic Knowledge replacement).
+
+const skillGeneralists: Feat[] = ATTRIBUTE_LIST.map((attr) => {
+  const short = attr.slice(0, 3);
+  return {
+    id: `skill-generalist-${short.toLowerCase()}`,
+    name: `${short} Skill Generalist`,
+    brief: `Trained in every ${attr} Skill you are not Trained in.`,
+    full: `Requires ${attr} +1. You count as Trained in every ${attr} Skill you are not Trained in.`,
+    cost: 'm' as const,
+    requires: { kind: 'attribute' as const, attr, value: 1 },
+    effects: [{ kind: 'grantTrainedByAttr' as const, attr }],
+  };
+});
+
+const polyglot: Feat = {
+  id: 'polyglot',
+  name: 'Polyglot',
+  brief: 'Tongues come easily; at the height, none is wholly foreign.',
+  full: 'Requires +2 in Intelligence, Wisdom, or Charisma. You know additional languages equal to the best of your Intelligence, Wisdom, and Charisma. The later Ranks add 2 more languages, then another 2. The final Rank makes you a Linguist: you can understand the basic verbs and nouns of just about any language you do not know, at −1 to any related Skill check for that language. One Rank per Level.',
+  requires: {
+    kind: 'attribute-any',
+    attrs: ['Intelligence', 'Wisdom', 'Charisma'],
+    value: 2,
+  },
+  ladder: [
+    { value: 'Languages equal to Int, Wis or Cha', cost: 'm' },
+    { value: '+2 more languages', cost: 'm' },
+    { value: 'Another +2', cost: 'm' },
+    { value: 'Linguist', cost: 'M' },
+  ],
+};
+
+// A placeholder: the slot is reserved, the rules are not yet designed
+// (Les, Aug 2026). Replace the [[text here]] cues when they are.
+const craftingSpec: Feat = {
+  id: 'crafting-specialization',
+  name: 'Crafting Specialization',
+  brief: '[[text here]]',
+  full: '[[text here — rules not yet designed]]',
+  cost: 'm',
+};
+
 // ── Feat Ladders & Market access ────────────────────────────────────────────
 
 const ladders: Feat[] = [
+  {
+    id: 'second-wind',
+    name: 'Second Wind',
+    brief: 'Catch your breath: a guard of Temp HP, or true healing.',
+    full: 'Grants the Second Wind Ability: Daily, as a Move Action, gain 2 Temp HP or heal 2 HP. The card advances like any Ability.',
+    cost: 'm',
+    grantsAbility: { category: 'General', ability: 'Second Wind' },
+  },
+  {
+    id: 'toughness',
+    name: 'Toughness',
+    brief: 'Hardier by degrees; at its height, a layer of DR.',
+    full: 'Each Rank raises your maximum HP: +1, then +2, then +3. The final Rank grants DR 1. One Rank per Level.',
+    ladder: [
+      { value: '+1 max HP', cost: 'm', effects: [{ kind: 'maxHpMod', value: 1 }] },
+      { value: '+2 max HP', cost: 'm', effects: [{ kind: 'maxHpMod', value: 2 }] },
+      { value: '+3 max HP', cost: 'm', effects: [{ kind: 'maxHpMod', value: 3 }] },
+      { value: 'DR 1', cost: 'M', effects: [{ kind: 'drMod', value: 1 }] },
+    ],
+  },
+  {
+    id: 'evasion',
+    name: 'Evasion',
+    brief: 'When a physical Save halves damage, you take less still.',
+    full: 'When you succeed on a Strength, Dexterity, or Constitution Save that results in half damage, reduce the damage you take by a further 1, then 2, then 3. The final Rank reduces it to no damage. One Rank per Level.',
+    ladder: [
+      { value: 'Half damage −1', cost: 'm' },
+      { value: 'Half damage −2', cost: 'm' },
+      { value: 'Half damage −3', cost: 'm' },
+      { value: 'No damage', cost: 'M' },
+    ],
+  },
+  {
+    id: 'danger-sense',
+    name: 'Danger Sense',
+    brief: 'Quicker to the fray; at its height, never surprised.',
+    full: 'Add to your Initiative: +2, then +3, then +4. The final Rank means you cannot be Surprised. One Rank per Level.',
+    ladder: [
+      // Effects stack Rank by Rank, so each grants the increment.
+      { value: '+2 Initiative', cost: 'm', effects: [{ kind: 'initiativeMod', value: 2 }] },
+      { value: '+3 Initiative', cost: 'm', effects: [{ kind: 'initiativeMod', value: 1 }] },
+      { value: '+4 Initiative', cost: 'm', effects: [{ kind: 'initiativeMod', value: 1 }] },
+      { value: 'Cannot be Surprised', cost: 'M' },
+    ],
+  },
+  {
+    id: 'resolution',
+    name: 'Resolution',
+    brief: 'When a mental Save halves damage, you take less still.',
+    full: 'When you succeed on an Intelligence, Wisdom, or Charisma Save that results in half damage, reduce the damage you take by a further 1, then 2, then 3. The final Rank reduces it to no damage. One Rank per Level.',
+    ladder: [
+      { value: 'Half damage −1', cost: 'm' },
+      { value: 'Half damage −2', cost: 'm' },
+      { value: 'Half damage −3', cost: 'm' },
+      { value: 'No damage', cost: 'M' },
+    ],
+  },
   {
     // Working name from mechanics/encumbrance.md; Les renames at will —
     // the id never changes.
@@ -199,6 +383,12 @@ export const FEATS: Feat[] = [
   ...implementSpecs,
   ...damageSpecs,
   ...maledictionSpecs,
+  ...skillSpecs,
+  ...attrSkillSpecs,
+  ...skillGeneralists,
+  ...defensiveSpecs,
+  polyglot,
+  craftingSpec,
   ...ladders,
 ];
 

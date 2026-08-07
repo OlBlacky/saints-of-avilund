@@ -121,7 +121,7 @@ export const DEFAULT_LANGUAGE: Language = 'Imperial';
 
 /** Runtime list of the languages of Avilund (mirrors the Language type). */
 export const LANGUAGES: readonly Language[] = [
-  'Imperial', 'Auld Imperial', 'Elder', 'Elder Arcana', 'Black Tongue',
+  'Imperial', 'Auld Imperial', 'Elder', 'Elder Arcana Tongue', 'Arcane Tongue', 'Black Tongue',
   'Kellish', 'Common Feral', 'First Tongue', 'Archipelago', 'Eldritch Tongue',
 ];
 
@@ -177,6 +177,8 @@ export const CLASSES: ClassDef[] = [
     classSkills: ['Heal', 'Religion (Saintly Faith)'],
     weaponProficiencies: ['Hammers/Maces', 'Staves'],
     armourProficiencies: [],
+    languages: ['Auld Imperial'],
+    notes: { languages: 'plus Imperial' },
     subclasses: [
       {
         id: 'chaplain',
@@ -227,10 +229,11 @@ export const CLASSES: ClassDef[] = [
         name: 'Antiquarian',
         classAttribute: 'Charisma',
         abilityCategory: 'Elder Magic',
-        additionalClassSkills: ['Arcana', 'Dungeoneering'],
+        additionalClassSkills: ['Elder Arcana', 'Dungeoneering'],
         weaponProficiencies: [],
         implementProficiencies: ['Artefacts', 'Spellbooks', 'Scrolls'],
         armourProficiencies: [],
+        languages: ['Elder Arcana Tongue'],
       },
       {
         id: 'arcanist',
@@ -241,6 +244,7 @@ export const CLASSES: ClassDef[] = [
         weaponProficiencies: [],
         implementProficiencies: ['Wands', 'Magic Staves', 'Spellbooks', 'Scrolls'],
         armourProficiencies: [],
+        languages: ['Arcane Tongue'],
       },
       {
         id: 'physician',
@@ -287,10 +291,11 @@ export const CLASSES: ClassDef[] = [
         name: 'Blackcoat',
         classAttribute: 'Wisdom',
         abilityCategory: 'Occult',
-        additionalClassSkills: ['Religion (Black Faith)', 'The Planes'],
+        additionalClassSkills: ['Religion (Black Faith)', 'Knowledge: Occult'],
         weaponProficiencies: [],
         implementProficiencies: ['Artefacts'],
         armourProficiencies: [],
+        languages: ['Black Tongue'],
       },
     ],
   },
@@ -301,7 +306,7 @@ export const CLASSES: ClassDef[] = [
     classAttribute: 'Wisdom',
     abilityCategory: 'Occult',
     classHP: 1,
-    classSkills: ['The Planes', 'Religion (Black Faith)'],
+    classSkills: ['Knowledge: Occult', 'Religion (Black Faith)'],
     weaponProficiencies: ['Staves'],
     armourProficiencies: [],
     languages: ['Black Tongue'],
@@ -325,11 +330,11 @@ export const CLASSES: ClassDef[] = [
         name: 'Grave Robber',
         classAttribute: 'Intelligence',
         abilityCategory: 'Elder Magic',
-        additionalClassSkills: ['Dungeoneering', 'Thievery'],
+        additionalClassSkills: ['Elder Arcana', 'Thievery'],
         weaponProficiencies: [],
         implementProficiencies: ['Artefacts', 'Spellbooks', 'Scrolls'],
         armourProficiencies: [],
-        languages: ['Elder Arcana'],
+        languages: ['Elder Arcana Tongue'],
         notes: { category: 'reused from the Scholar’s Antiquarian' },
       },
       {
@@ -337,7 +342,7 @@ export const CLASSES: ClassDef[] = [
         name: 'Cosmologist',
         classAttribute: 'Constitution',
         abilityCategory: 'The Outside',
-        additionalClassSkills: ['Arcana', 'Concentration'],
+        additionalClassSkills: ['Knowledge: Planes', 'Concentration'],
         weaponProficiencies: [],
         implementProficiencies: ['Orbs'],
         armourProficiencies: [],
