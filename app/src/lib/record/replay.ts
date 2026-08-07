@@ -12,6 +12,8 @@
 import { CATEGORIES } from '../category-abilities';
 import { classById, subclassById } from '../classes';
 import type { ClassDef, SubclassDef } from '../classes';
+import { featById } from '../feats';
+import type { FeatRequirement } from '../feats';
 import type { Attribute } from '../quirks';
 import type { AbilityRef, RecordEvent } from './events';
 
@@ -50,6 +52,8 @@ export interface CharacterState {
   proficiencyRanks: Record<string, number>;
   languages: string[];
   abilities: OwnedAbility[];
+  /** Owned Feats: rank 1 for plain Feats, the climbed Rank for Ladders. */
+  feats: { featId: string; choices?: Record<string, string>; rank: number }[];
   quirk?: { id?: string; name: string; slots: Record<string, string>; rerollsUsed: number };
   /** The other half of the finale package (absent on pre-gear logs). */
   gear?: { id?: string; name: string; slots: Record<string, string> };
@@ -138,14 +142,22 @@ export function accessibleCategories(state: CharacterState): string[] {
   return cats;
 }
 
-/** All Class Skills (base names, parentheticals stripped) across pairs. */
+/** A Skill's base name — the parenthetical speciality stripped. Used only to
+ * look up the base Skill's definition; a speciality Skill keeps its full name
+ * everywhere else ("Religion (Saintly Faith)" and "Religion (Black Faith)"
+ * are different Skills). */
+export function skillBase(name: string): string {
+  return name.replace(/\s*\(.*\)$/, '');
+}
+
+/** All Class Skills across pairs, full names — specialities intact. */
 export function classSkills(state: CharacterState): string[] {
   const skills: string[] = [];
   for (const { cls, sub } of activePairs(state)) {
     skills.push(...cls.classSkills);
     if (sub) skills.push(...sub.additionalClassSkills);
   }
-  return skills.map((s) => s.replace(/\s*\(.*\)$/, ''));
+  return skills;
 }
 
 /** Proficiency groups granted by Class/Subclass (the advanceable ones). */
@@ -167,6 +179,51 @@ export function grantedProficiencies(state: CharacterState): string[] {
 function findCard(ref: AbilityRef) {
   const cat = CATEGORIES.find((c) => c.name === ref.category);
   return cat?.abilities.find((a) => a.name === ref.ability);
+}
+
+/** Every proficiency the build holds, granted or bought — the can-use rule
+ * counts both: a door you paid a Minor for is still a door. */
+export function allProficiencies(state: CharacterState): string[] {
+  return [...grantedProficiencies(state), ...state.boughtProficiencies];
+}
+
+/** Can an owned Ability deal this damage type? Builder copies answer by
+ * their element choice; plain cards by the type appearing on their damage
+ * Ladder. */
+export function canDealType(state: CharacterState, type: string): boolean {
+  for (const owned of state.abilities) {
+    if (Object.values(owned.choices ?? {}).includes(type)) return true;
+    const card = findCard(owned.ref);
+    const dmg = card?.vars.damage;
+    if (!dmg) continue;
+    const values = [dmg.base, ...(dmg.advances ?? []).map((a) => a.value)];
+    if (values.some((v) => v && new RegExp(`\\b${type}\\b`).test(v))) return true;
+  }
+  return false;
+}
+
+/** The can-use rule: what a Feat requirement checks against the build. */
+function meetsRequirement(state: CharacterState, req: FeatRequirement): string | null {
+  switch (req.kind) {
+    case 'proficiency':
+      return allProficiencies(state).includes(req.group)
+        ? null
+        : `requires proficiency with ${req.group}`;
+    case 'damage-type':
+      return canDealType(state, req.type)
+        ? null
+        : `requires an Ability that deals ${req.type} damage`;
+    case 'malediction':
+      return state.abilities.some((a) => Object.values(a.choices ?? {}).includes(req.name))
+        ? null
+        : `requires a curse built with ${req.name}`;
+    case 'skill-trained': {
+      const trained =
+        state.trainedSkills.includes(req.skill) ||
+        classSkills(state).some((s) => skillBase(s) === req.skill);
+      return trained ? null : `requires being Trained in ${req.skill}`;
+    }
+  }
 }
 
 /** Attribute cap for this character at its current level. */
@@ -206,6 +263,7 @@ export function replay(events: RecordEvent[]): ReplayResult {
     proficiencyRanks: {},
     languages: [],
     abilities: [],
+    feats: [],
     crystallized: false,
     milestones: 0,
     bank: { major: CREATION_MAJORS, minor: CREATION_MINORS },
@@ -217,6 +275,7 @@ export function replay(events: RecordEvent[]): ReplayResult {
   // counts as its own window — the 0-level allotment).
   let hpWindow = -1;
   const advanceSlots = new Set<string>(); // "cat/ability/m|M/window"
+  const featLadderWindow = new Map<string, number>(); // featId → window
 
   const flag = (e: RecordEvent, code: Flag['code'], message: string) =>
     flags.push({ eventId: e.id, code, message });
@@ -434,8 +493,9 @@ export function replay(events: RecordEvent[]): ReplayResult {
       }
 
       case 'skill-trained': {
-        const base = e.skill.replace(/\s*\(.*\)$/, '');
-        if (classSkills(state).includes(base)) {
+        // Full-name comparison: "Religion (Black Faith)" is trainable even
+        // when "Religion (Saintly Faith)" is a Class Skill.
+        if (classSkills(state).includes(e.skill)) {
           flag(e, 'duplicate', `${e.skill} is a Class Skill — Trained already, free`);
           break;
         }
@@ -446,8 +506,7 @@ export function replay(events: RecordEvent[]): ReplayResult {
       }
 
       case 'skill-advanced': {
-        const base = e.skill.replace(/\s*\(.*\)$/, '');
-        const isClass = classSkills(state).includes(base);
+        const isClass = classSkills(state).includes(e.skill);
         if (!isClass && !state.trainedSkills.includes(e.skill)) {
           flag(e, 'wrong-order', `not Trained in ${e.skill} — training comes first`);
           break;
@@ -494,6 +553,59 @@ export function replay(events: RecordEvent[]): ReplayResult {
         if (state.languages.includes(e.language)) { flag(e, 'duplicate', `already speaks ${e.language}`); break; }
         if (!spend(e, 'minor', 1)) break;
         state.languages.push(e.language);
+        break;
+      }
+
+      case 'feat-bought': {
+        const feat = featById(e.featId);
+        if (!feat) { flag(e, 'unknown-ref', `unknown Feat "${e.featId}"`); break; }
+        if (state.feats.some((f) => f.featId === e.featId)) {
+          flag(e, 'duplicate', `${feat.name} is already taken`);
+          break;
+        }
+        if (feat.levelGate && levelFor(state.milestones, state.crystallized) < feat.levelGate) {
+          flag(e, 'over-cap', `${feat.name} opens at Level ${feat.levelGate}`);
+          break;
+        }
+        if (feat.requires) {
+          const unmet = meetsRequirement(state, feat.requires);
+          if (unmet) { flag(e, 'no-access', `${feat.name} ${unmet}`); break; }
+        }
+        if (feat.choice) {
+          const picked = e.choices?.[feat.choice.key];
+          if (!picked) { flag(e, 'wrong-order', `choose a ${feat.choice.label} when taking ${feat.name}`); break; }
+          if (!feat.choice.options.includes(picked)) {
+            flag(e, 'unknown-ref', `"${picked}" is not a ${feat.choice.label} of ${feat.name}`);
+            break;
+          }
+        }
+        // A Ladder Feat's purchase is its first Rank; plain Feats have one cost.
+        const cost = feat.ladder ? feat.ladder[0].cost : feat.cost ?? 'm';
+        if (!spend(e, cost === 'M' ? 'major' : 'minor', 1)) break;
+        state.feats.push({ featId: e.featId, choices: e.choices, rank: 1 });
+        if (feat.ladder) featLadderWindow.set(e.featId, windowFor(state.milestones));
+        break;
+      }
+
+      case 'feat-advanced': {
+        const feat = featById(e.featId);
+        const owned = state.feats.find((f) => f.featId === e.featId);
+        if (!feat || !feat.ladder) { flag(e, 'unknown-ref', `no Feat Ladder "${e.featId}"`); break; }
+        if (!owned) { flag(e, 'wrong-order', `${feat.name} is not owned`); break; }
+        if (e.toRank !== owned.rank + 1) {
+          flag(e, 'wrong-order', `${feat.name} is at Rank ${owned.rank}; next is ${owned.rank + 1}`);
+          break;
+        }
+        const rank = feat.ladder[e.toRank - 1];
+        if (!rank) { flag(e, 'over-cap', `${feat.name} is capped at Rank ${feat.ladder.length}`); break; }
+        const window = windowFor(state.milestones);
+        if (featLadderWindow.get(e.featId) === window) {
+          flag(e, 'ladder-pace', `${feat.name} already climbed this Level`);
+          break;
+        }
+        if (!spend(e, rank.cost === 'M' ? 'major' : 'minor', 1)) break;
+        owned.rank = e.toRank;
+        featLadderWindow.set(e.featId, window);
         break;
       }
     }

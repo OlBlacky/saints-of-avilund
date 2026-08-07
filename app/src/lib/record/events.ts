@@ -93,6 +93,11 @@ export type RecordEvent =
   | (BaseEvent & { type: 'proficiency-advanced'; group: WeaponGroup | ArmourProficiency | ImplementGroup })
   /** A language, 1 Minor. */
   | (BaseEvent & { type: 'language-bought'; language: Language })
+  /** A Feat (cost from the roster). Choices carry a parameterized Feat's
+   * pick (the Spell Market's tradition). */
+  | (BaseEvent & { type: 'feat-bought'; featId: string; choices?: Record<string, string> })
+  /** Climb a Feat Ladder one Rank (cost from the Rank; one per Level). */
+  | (BaseEvent & { type: 'feat-advanced'; featId: string; toRank: number })
 
   // ── Ability advancement ──────────────────────────────────────────────
   /** Climb one variable's Ladder one Rank (cost m/M from the card). For a

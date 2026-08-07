@@ -22,6 +22,7 @@ import {
   classById,
 } from '../../lib/classes';
 import type { ClassDef, SubclassDef } from '../../lib/classes';
+import { FEATS } from '../../lib/feats';
 import { rollPackage } from '../../lib/gear';
 import { PLACES } from '../../lib/quirks';
 import type { Attribute, SeesawCategory } from '../../lib/quirks';
@@ -322,19 +323,19 @@ export default function CreationFlow() {
                 </select>
               </label>
               <label>Age
-                <input type="number" min="0" max="120" class="num" value={draft.identity.age} onInput={(e) => setIdentity('age', (e.target as HTMLInputElement).value)} />
+                <input type="number" min="14" max="99" class="num" value={draft.identity.age} onInput={(e) => setIdentity('age', (e.target as HTMLInputElement).value)} />
               </label>
               <label>Height
                 <span class="cf-units">
-                  <input type="number" min="0" max="8" class="num" value={draft.identity.heightFt} onInput={(e) => setIdentity('heightFt', (e.target as HTMLInputElement).value)} />
+                  <input type="number" min="4" max="7" class="num" value={draft.identity.heightFt} onInput={(e) => setIdentity('heightFt', (e.target as HTMLInputElement).value)} />
                   <span class="cf-unit">ft</span>
-                  <input type="number" min="0" max="11" class="num" value={draft.identity.heightIn} onInput={(e) => setIdentity('heightIn', (e.target as HTMLInputElement).value)} />
+                  <input type="number" min="0" max={draft.identity.heightFt === '7' ? 0 : 11} class="num" value={draft.identity.heightIn} onInput={(e) => setIdentity('heightIn', (e.target as HTMLInputElement).value)} />
                   <span class="cf-unit">in</span>
                 </span>
               </label>
               <label>Weight
                 <span class="cf-units">
-                  <input type="number" min="0" max="500" step="5" class="num" value={draft.identity.weight} onInput={(e) => setIdentity('weight', (e.target as HTMLInputElement).value)} />
+                  <input type="number" min="65" max="400" step="5" class="num" value={draft.identity.weight} onInput={(e) => setIdentity('weight', (e.target as HTMLInputElement).value)} />
                   <span class="cf-unit">lb</span>
                 </span>
               </label>
@@ -820,6 +821,130 @@ export default function CreationFlow() {
                   onPick={(language) => append(mk('language-bought', { language: language as never }))}
                 />
               </div>
+
+              <h3>Feats</h3>
+              <p class="cf-how">
+                A Feat costs 1 Minor unless marked. Specializations open at Level 2, for things
+                your build can use.
+              </p>
+              {(() => {
+                const featRow = (feat: (typeof FEATS)[number]) => {
+                  const owned = state.feats.find((f) => f.featId === feat.id);
+                  return (
+                    <>
+                      <tr key={feat.id} class={owned ? 'owned' : ''}>
+                        <td class="cf-abname" title={feat.full}>{feat.name}</td>
+                        <td class="cf-abbrief">
+                          {feat.brief}
+                          {owned?.choices && (
+                            <span class="cf-instchoice"> · {Object.values(owned.choices).join(', ')}</span>
+                          )}
+                        </td>
+                        <td class="cf-abctl">
+                          {owned ? (
+                            !crystallized && (
+                              <button
+                                type="button"
+                                class="undo"
+                                title="refund this Feat and its Ranks"
+                                onClick={() =>
+                                  setDraft((d) => ({
+                                    ...d,
+                                    events: d.events.filter(
+                                      (x) =>
+                                        !(
+                                          (x.type === 'feat-bought' || x.type === 'feat-advanced') &&
+                                          x.featId === feat.id
+                                        ),
+                                    ),
+                                  }))
+                                }
+                              >
+                                −
+                              </button>
+                            )
+                          ) : feat.choice ? (
+                            <BuildControl
+                              choice={feat.choice}
+                              noun="Feat"
+                              label={`Take · 1 ${feat.ladder ? feat.ladder[0].cost : feat.cost ?? 'm'}`}
+                              onBuild={(choices) => append(mk('feat-bought', { featId: feat.id, choices }))}
+                            />
+                          ) : (
+                            <Buy
+                              ev={mk('feat-bought', { featId: feat.id })}
+                              label={`Take · 1 ${feat.ladder ? feat.ladder[0].cost : feat.cost ?? 'm'}`}
+                            />
+                          )}
+                        </td>
+                      </tr>
+                      {owned && feat.ladder && (
+                        <tr class="cf-abadv">
+                          <td colspan={3}>
+                            <span class="cf-advline">
+                              <span class="cf-advlabel">Ladder</span>
+                              {feat.ladder.map((r, i) => {
+                                const rankNo = i + 1;
+                                const sep = i > 0 && <span class="cf-stepsep">›</span>;
+                                if (rankNo < owned.rank) {
+                                  return (<>{sep}<span class="cf-stepchip passed" title={`${r.value} — climbed past`}>{r.value}</span></>);
+                                }
+                                if (rankNo === owned.rank) {
+                                  return (
+                                    <>
+                                      {sep}
+                                      <span class="cf-stepchip rests" title={`${r.value} — where it rests now`}>{r.value}</span>
+                                      {owned.rank > 1 && (
+                                        <Undo
+                                          pred={(x) => x.type === 'feat-advanced' && x.featId === feat.id && x.toRank === owned.rank}
+                                          title="refund this Rank"
+                                        />
+                                      )}
+                                    </>
+                                  );
+                                }
+                                if (rankNo === owned.rank + 1) {
+                                  return (
+                                    <>
+                                      {sep}
+                                      <Buy
+                                        ev={mk('feat-advanced', { featId: feat.id, toRank: rankNo })}
+                                        label={`${r.value} · ${r.cost}`}
+                                      />
+                                    </>
+                                  );
+                                }
+                                return (<>{sep}<span class="cf-stepchip ahead" title={`${r.value} (${r.cost})`}>{r.value} · {r.cost}</span></>);
+                              })}
+                            </span>
+                          </td>
+                        </tr>
+                      )}
+                    </>
+                  );
+                };
+
+                const ownedIds = new Set(state.feats.map((f) => f.featId));
+                const open = FEATS.filter(
+                  (f) => ownedIds.has(f.id) || why(mk('feat-bought', { featId: f.id, choices: f.choice ? { [f.choice.key]: f.choice.options[0] } : undefined })) === null,
+                );
+                const closed = FEATS.filter((f) => !open.includes(f));
+                return (
+                  <>
+                    <table class="cf-abtable">
+                      <tbody>{open.map(featRow)}</tbody>
+                    </table>
+                    {closed.length > 0 && (
+                      <details class="cf-closedfeats">
+                        <summary>Not open to this build yet ({closed.length}) — each says why</summary>
+                        <table class="cf-abtable">
+                          <tbody>{closed.map(featRow)}</tbody>
+                        </table>
+                      </details>
+                    )}
+                  </>
+                );
+              })()}
             </section>
           )}
 
@@ -956,10 +1081,12 @@ export default function CreationFlow() {
 function BuildControl({
   choice,
   noun,
+  label = 'Build · 1 M',
   onBuild,
 }: {
   choice?: { key: string; label: string; options: string[] };
   noun: string;
+  label?: string;
   onBuild: (choices: Record<string, string> | undefined) => void;
 }) {
   const [sel, setSel] = useState(choice?.options[0] ?? '');
@@ -979,10 +1106,10 @@ function BuildControl({
       <button
         type="button"
         class="buy"
-        title={`build a new ${noun.toLowerCase()} — 1 Major`}
+        title={`take this ${noun.toLowerCase()}`}
         onClick={() => onBuild(choice ? { [choice.key]: sel } : undefined)}
       >
-        Build · 1 M
+        {label}
       </button>
     </span>
   );
@@ -1035,24 +1162,46 @@ function TrainPicker({
   whyFor: (skill: string) => string | null;
 }) {
   const [sel, setSel] = useState('');
+  const [spec, setSpec] = useState('');
   const options = SKILLS.map((s) => s.name).filter((n) => !taken.includes(n));
-  const reason = sel ? whyFor(sel) : null;
+  // A field skill (Religion, Craft, Profession…) is taken in a named
+  // speciality — the trained name carries it: "Religion (Black Faith)".
+  const field = sel ? SKILLS.find((s) => s.name === sel)?.field : undefined;
+  const full = field ? (spec.trim() ? `${sel} (${spec.trim()})` : '') : sel;
+  const reason = full ? whyFor(full) : null;
   return (
     <span class="cf-picker">
-      <select value={sel} disabled={crystallized} onChange={(e) => setSel((e.target as HTMLSelectElement).value)}>
+      <select
+        value={sel}
+        disabled={crystallized}
+        onChange={(e) => {
+          setSel((e.target as HTMLSelectElement).value);
+          setSpec('');
+        }}
+      >
         <option value="">Train an off-list Skill (1 m)…</option>
         {options.map((o) => (
           <option key={o} value={o}>{o}</option>
         ))}
       </select>
+      {field && (
+        <input
+          class="cf-spec"
+          value={spec}
+          placeholder={field === 'faith' ? 'which faith' : 'which trade'}
+          disabled={crystallized}
+          onInput={(e) => setSpec((e.target as HTMLInputElement).value)}
+        />
+      )}
       <button
         type="button"
         class="buy"
-        disabled={crystallized || !sel || reason !== null}
+        disabled={crystallized || !full || reason !== null}
         title={reason ?? undefined}
         onClick={() => {
-          onTrain(sel);
+          onTrain(full);
           setSel('');
+          setSpec('');
         }}
       >
         Train

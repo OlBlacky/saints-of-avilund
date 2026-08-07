@@ -159,6 +159,13 @@ const blurb = 'Build a character of Avilund: Class, Subclass, Advances, and the 
   }
   .cf-advline .buy { font-size: 0.78rem; max-width: 20rem; overflow: hidden; text-overflow: ellipsis; }
 
+  /* The closed-feats fold */
+  .cf-closedfeats { margin-top: 0.6rem; }
+  .cf-closedfeats summary {
+    cursor: pointer; color: var(--ink-soft); font-size: 0.85rem; font-style: italic;
+  }
+  .cf-closedfeats summary:hover { color: var(--oxblood); }
+
   /* Ladder tracks: climbed › resting value › next (button) › the road ahead */
   .cf-stepsep { color: var(--rule); margin: 0 0.05rem; }
   .cf-stepchip { font-size: 0.82rem; white-space: nowrap; }
@@ -179,6 +186,11 @@ const blurb = 'Build a character of Avilund: Class, Subclass, Advances, and the 
   .cf-abctl .cf-picker select { max-width: 8.5rem; font-size: 0.82rem; }
 
   .cf-picker { display: inline-flex; gap: 0.4rem; align-items: center; }
+  .cf-picker .cf-spec {
+    font: inherit; width: 9rem; padding: 0.25rem 0.5rem;
+    border: 1px solid var(--rule); border-radius: 3px;
+    background: transparent; color: inherit;
+  }
   .cf-picker select {
     padding: 0.25rem 1.5rem 0.25rem 0.5rem; max-width: 22rem;
     border: 1px solid var(--rule); border-radius: 3px;

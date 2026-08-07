@@ -368,6 +368,100 @@ describe('enforcement', () => {
     expect(handle.value.parts).toContainEqual({ label: 'Beast-Wise', value: 1 });
   });
 
+  it('gates Feats by the can-use rule and the Level 2 door', () => {
+    const base = [
+      ev('class-chosen', { classId: 'soldier' }),
+      ev('subclass-chosen', { subclassId: 'vanguard' }),
+      ev('quirk-rolled', { quirkName: 'Q', slots: {}, rerollsUsed: 0, gearName: 'G', gearSlots: {} }),
+      ev('crystallized', {}),
+    ];
+    const toL2 = Array.from({ length: 3 }, () => ev('milestone-granted', {}));
+
+    // Before Level 2 the Specialization refuses; at Level 2, a proficient
+    // group opens and an unproficient one still refuses.
+    const early = replay([...base, ev('feat-bought', { featId: 'spec-heavy-blades' })]);
+    expect(early.flags.some((f) => f.message.includes('Level 2'))).toBe(true);
+
+    const atL2 = replay([...base, ...toL2, ev('feat-bought', { featId: 'spec-heavy-blades' })]);
+    expect(atL2.flags).toEqual([]);
+    expect(atL2.state.feats).toContainEqual({ featId: 'spec-heavy-blades', choices: undefined, rank: 1 });
+
+    const noProf = replay([...base, ...toL2, ev('feat-bought', { featId: 'spec-bows' })]);
+    expect(noProf.flags.some((f) => f.code === 'no-access')).toBe(true);
+
+    // A bought proficiency is a real door: buy Bows, then the Feat opens.
+    const bought = replay([
+      ...base, ...toL2,
+      ev('proficiency-bought', { group: 'Bows' }),
+      ev('feat-bought', { featId: 'spec-bows' }),
+    ]);
+    expect(bought.flags).toEqual([]);
+  });
+
+  it('gates damage-type and Malediction Specializations on what the build can deal', () => {
+    const arcanist = [
+      ev('class-chosen', { classId: 'scholar' }),
+      ev('subclass-chosen', { subclassId: 'arcanist' }),
+      ev('quirk-rolled', { quirkName: 'Q', slots: {}, rerollsUsed: 0, gearName: 'G', gearSlots: {} }),
+      ev('crystallized', {}),
+      ...Array.from({ length: 3 }, () => ev('milestone-granted', {})),
+    ];
+    // No Fire ability yet: refused. Build a Fire spell: opens.
+    const cold = replay([...arcanist, ev('feat-bought', { featId: 'spec-fire' })]);
+    expect(cold.flags.some((f) => f.code === 'no-access')).toBe(true);
+
+    const fire = replay([
+      ...arcanist,
+      ev('ability-bought', {
+        ref: { category: 'New Magic', ability: 'Telum Eminus' },
+        instanceId: 'sp1', choices: { element: 'Fire' },
+      }),
+      ev('feat-bought', { featId: 'spec-fire' }),
+    ]);
+    expect(fire.flags).toEqual([]);
+  });
+
+  it('runs Feat Ladders on the standard pacing, and applies feat effects', () => {
+    const base = [
+      ev('class-chosen', { classId: 'soldier' }),
+      ev('subclass-chosen', { subclassId: 'vanguard' }),
+      ev('feat-bought', { featId: 'commerce-ladder' }),
+    ];
+    // Rank 2 in the same Level refuses; the next Milestone opens it.
+    const tooFast = replay([...base, ev('feat-advanced', { featId: 'commerce-ladder', toRank: 2 })]);
+    expect(tooFast.flags.some((f) => f.code === 'ladder-pace')).toBe(true);
+
+    const paced = replay([
+      ...base,
+      ev('milestone-granted', {}),
+      ev('feat-advanced', { featId: 'commerce-ladder', toRank: 2 }),
+    ]);
+    expect(paced.flags).toEqual([]);
+    expect(paced.state.feats[0].rank).toBe(2);
+
+    // The Spell Market requires its tradition choice, validated.
+    const noChoice = replay([...base, ev('feat-bought', { featId: 'market-spell' })]);
+    expect(noChoice.flags.some((f) => f.message.includes('Tradition'))).toBe(true);
+    const withChoice = replay([
+      ...base,
+      ev('feat-bought', { featId: 'market-spell', choices: { tradition: 'New Magic' } }),
+    ]);
+    expect(withChoice.flags).toEqual([]);
+
+    // A plain Feat's unconditional effect reaches the sheet, labeled.
+    const ritualist = replay([
+      ev('class-chosen', { classId: 'naturalist' }),
+      ev('subclass-chosen', { subclassId: 'drymann' }),
+      ev('quirk-rolled', { quirkName: 'Q', slots: {}, rerollsUsed: 0, gearName: 'G', gearSlots: {} }),
+      ev('crystallized', {}),
+      ...Array.from({ length: 3 }, () => ev('milestone-granted', {})),
+      ev('feat-bought', { featId: 'spec-ritual' }),
+    ]);
+    expect(ritualist.flags).toEqual([]);
+    const rituals = derive(ritualist.state).skills.find((s) => s.skill === 'Rituals')!;
+    expect(rituals.value.parts).toContainEqual({ label: 'Specialization — Rituals', value: 1 });
+  });
+
   it('keeps Flaws creation-only and at most two', () => {
     const three = replay([
       ev('class-chosen', { classId: 'soldier' }),
@@ -394,6 +488,25 @@ describe('enforcement', () => {
       ev('crystallized', {}),
     ]);
     expect(flags.map((f) => f.code)).toEqual(['wrong-order', 'wrong-order']);
+  });
+
+  it('keeps a speciality Skill’s full name: the faith shows, and faiths are distinct Skills', () => {
+    const base = [
+      ev('class-chosen', { classId: 'friar' }),
+      ev('subclass-chosen', { subclassId: 'mendicant' }),
+    ];
+    const { state } = replay(base);
+    const names = derive(state).skills.map((s) => s.skill);
+    expect(names).toContain('Religion (Saintly Faith)');
+    expect(names).not.toContain('Religion');
+
+    // A different faith is a different Skill — trainable, never a duplicate.
+    const other = replay([...base, ev('skill-trained', { skill: 'Religion (Black Faith)' })]);
+    expect(other.flags).toEqual([]);
+
+    // The granted faith itself is refused: Trained already, free.
+    const dup = replay([...base, ev('skill-trained', { skill: 'Religion (Saintly Faith)' })]);
+    expect(dup.flags.some((f) => f.code === 'duplicate')).toBe(true);
   });
 
   it('multiclassing prices 3 then 6 Major and widens Category access', () => {

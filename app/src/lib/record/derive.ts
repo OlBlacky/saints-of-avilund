@@ -9,11 +9,12 @@
 
 import { CATEGORIES } from '../category-abilities';
 import { classById, DEFAULT_LANGUAGE } from '../classes';
+import { featById } from '../feats';
 import { GEAR, STARTING_COIN } from '../gear';
 import { ATTR_FULL, parseAttr } from '../notation';
 import { fill, fillEffect, QUIRKS } from '../quirks';
 import type { Attribute, Condition, Effect } from '../quirks';
-import { classSkills, grantedProficiencies, levelFor, type CharacterState } from './replay';
+import { classSkills, grantedProficiencies, levelFor, skillBase, type CharacterState } from './replay';
 import { SKILLS } from '../skills';
 
 /** Using a Skill Untrained takes −1 (some Skills bar Untrained use entirely
@@ -118,6 +119,15 @@ function packageEffects(state: CharacterState): SourcedEffect[] {
     for (const e of card?.passiveEffects ?? []) {
       out.push({ source: owned.name ?? owned.ref.ability, effect: e });
     }
+  }
+  // Feats: a plain Feat's effects, or a Ladder's effects up to its Rank.
+  for (const ownedFeat of state.feats) {
+    const feat = featById(ownedFeat.featId);
+    if (!feat) continue;
+    const effects = feat.ladder
+      ? feat.ladder.slice(0, ownedFeat.rank).flatMap((r) => r.effects ?? [])
+      : feat.effects ?? [];
+    for (const e of effects) out.push({ source: feat.name, effect: e });
   }
   return out;
 }
@@ -244,14 +254,15 @@ export function derive(state: CharacterState): DerivedSheet {
     ]),
   ];
   const skills: DerivedSkill[] = trainedNames.map((skill) => {
-    const base = skill.replace(/\s*\(.*\)$/, '');
+    // The base name serves only to find the Skill's definition; the full
+    // name — speciality and all — is what the sheet shows and compares.
     const rank = state.skillRanks[skill] ?? 0;
-    const def = SKILLS.find((s) => s.name === base);
+    const def = SKILLS.find((s) => s.name === skillBase(skill));
     // A skill's governing attribute is the first listed ("Dex, Wis" → Dex).
     const short = parseAttr(def?.attrs.split(',')[0] ?? '');
     const attr: Attribute = short ? ATTR_FULL[short] : 'Wisdom';
     const attrTotal = attrValue(attr).total;
-    const isClassSkill = ownClassSkills.includes(base);
+    const isClassSkill = ownClassSkills.includes(skill);
     const untrained = !isClassSkill && !state.trainedSkills.includes(skill);
     return {
       skill,
