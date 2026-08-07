@@ -19,6 +19,10 @@ import type { AbilityRef, RecordEvent } from './events';
 
 export interface OwnedAbility {
   ref: AbilityRef;
+  /** Builder cards: which copy this is, its player name, its build choice. */
+  instanceId?: string;
+  name?: string;
+  choices?: Record<string, string>;
   /** Bought advancement rank per variable (absent = base). */
   ranks: Record<string, number>;
 }
@@ -299,6 +303,39 @@ export function replay(events: RecordEvent[]): ReplayResult {
           flag(e, 'no-access', `no access to the ${e.ref.category} Category`);
           break;
         }
+        if (card.builder) {
+          // A builder card mints a fresh copy per purchase — each needs a
+          // unique instanceId and the card's one build choice.
+          if (!e.instanceId) {
+            flag(e, 'wrong-order', `${e.ref.ability} is a builder — each copy needs an instance id`);
+            break;
+          }
+          if (state.abilities.some((a) => a.instanceId === e.instanceId)) {
+            flag(e, 'duplicate', `instance "${e.instanceId}" already exists`);
+            break;
+          }
+          const choice = card.builderChoice;
+          if (choice) {
+            const picked = e.choices?.[choice.key];
+            if (!picked) {
+              flag(e, 'wrong-order', `choose ${choice.label === 'Element' ? 'an' : 'a'} ${choice.label} when building ${e.ref.ability}`);
+              break;
+            }
+            if (!choice.options.includes(picked)) {
+              flag(e, 'unknown-ref', `"${picked}" is not a ${choice.label} of ${e.ref.ability}`);
+              break;
+            }
+          }
+          if (!spend(e, 'major', 1)) break;
+          state.abilities.push({
+            ref: e.ref,
+            instanceId: e.instanceId,
+            name: e.instanceName ?? e.ref.ability,
+            choices: e.choices,
+            ranks: {},
+          });
+          break;
+        }
         if (state.abilities.some((a) => a.ref.category === e.ref.category && a.ref.ability === e.ref.ability)) {
           flag(e, 'duplicate', `${e.ref.ability} is already owned`);
           break;
@@ -308,10 +345,19 @@ export function replay(events: RecordEvent[]): ReplayResult {
         break;
       }
 
+      case 'ability-renamed': {
+        const inst = state.abilities.find((a) => a.instanceId === e.instanceId);
+        if (!inst) { flag(e, 'unknown-ref', `no instance "${e.instanceId}" to rename`); break; }
+        inst.name = e.name;
+        break;
+      }
+
       case 'ability-advanced': {
-        const owned = state.abilities.find(
-          (a) => a.ref.category === e.ref.category && a.ref.ability === e.ref.ability,
-        );
+        const owned = e.instanceId
+          ? state.abilities.find((a) => a.instanceId === e.instanceId)
+          : state.abilities.find(
+              (a) => a.ref.category === e.ref.category && a.ref.ability === e.ref.ability,
+            );
         if (!owned) { flag(e, 'wrong-order', `${e.ref.ability} is not owned`); break; }
         const card = findCard(e.ref);
         const variable = card?.vars[e.variable as keyof typeof card.vars];
@@ -332,8 +378,9 @@ export function replay(events: RecordEvent[]): ReplayResult {
           break;
         }
         // Pacing: each Ability may take one Minor-cost and one Major-cost
-        // advance per Level (the 0-level allotment included).
-        const slot = `${e.ref.category}/${e.ref.ability}/${advance.cost}/${windowFor(state.milestones)}`;
+        // advance per Level (the 0-level allotment included). Each builder
+        // copy is its own Ability for pacing.
+        const slot = `${e.ref.category}/${e.ref.ability}/${owned.instanceId ?? ''}/${advance.cost}/${windowFor(state.milestones)}`;
         if (advanceSlots.has(slot)) {
           flag(
             e,

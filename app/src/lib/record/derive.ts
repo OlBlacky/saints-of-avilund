@@ -7,6 +7,7 @@
 // Offences, Saves, Defences, HP, Level, skills, languages, proficiencies.
 // Armour/gear contributions join when the gear pillar lands.
 
+import { CATEGORIES } from '../category-abilities';
 import { classById, DEFAULT_LANGUAGE } from '../classes';
 import { GEAR, STARTING_COIN } from '../gear';
 import { ATTR_FULL, parseAttr } from '../notation';
@@ -109,6 +110,15 @@ function packageEffects(state: CharacterState): SourcedEffect[] {
       out.push({ source: `Gear · ${fill(gear.name, fills)}`, effect: fillEffect(e, fills) });
     }
   }
+  // Owned abilities' always-on effects (Vows, passives) — the card's
+  // machine half, applied while it is owned.
+  for (const owned of state.abilities) {
+    const card = CATEGORIES.find((c) => c.name === owned.ref.category)
+      ?.abilities.find((a) => a.name === owned.ref.ability);
+    for (const e of card?.passiveEffects ?? []) {
+      out.push({ source: owned.name ?? owned.ref.ability, effect: e });
+    }
+  }
   return out;
 }
 
@@ -138,8 +148,8 @@ function describeEffect(effect: Effect): string {
   const suffix = cond ? ` (${cond})` : '';
   switch (effect.kind) {
     case 'skillMod': return `${signed(effect.value)} ${effect.skill}${suffix}`;
-    case 'saveMod': return `${signed(effect.value)} ${effect.attr} Saves${suffix}`;
-    case 'defenceMod': return `${signed(effect.value)} ${effect.attr} Defence${suffix}`;
+    case 'saveMod': return `${signed(effect.value)} ${effect.attr ?? 'all'} Saves${suffix}`;
+    case 'defenceMod': return `${signed(effect.value)} ${effect.attr ?? 'all'} Defence${suffix}`;
     case 'attackMod': return `${signed(effect.value)} to hit${suffix}`;
     case 'socialPenalty': return `${signed(effect.value)} social checks${suffix}`;
     case 'grantProficiency': return `Proficiency: ${effect.group}`;
@@ -174,8 +184,9 @@ export function derive(state: CharacterState): DerivedSheet {
     const off = state.offenceRanks[attr] ?? 0;
     const def = state.defenceRanks[attr] ?? 0;
     const base = (label: string): Part[] => [{ label, value: value.total }];
-    const saveMods = steadyParts((e) => e.kind === 'saveMod' && e.attr === attr);
-    const defenceMods = steadyParts((e) => e.kind === 'defenceMod' && e.attr === attr);
+    // An absent attr on the effect means all six (a Vow's blanket bonus).
+    const saveMods = steadyParts((e) => e.kind === 'saveMod' && (e.attr ?? attr) === attr);
+    const defenceMods = steadyParts((e) => e.kind === 'defenceMod' && (e.attr ?? attr) === attr);
 
     return {
       attr,
@@ -284,13 +295,11 @@ export function derive(state: CharacterState): DerivedSheet {
   ];
 
   // Coin re-derives from the gear card's category, like everything else —
-  // re-pool a card and every sheet's purse updates on the next replay.
+  // re-pool a card and every sheet's purse updates on the next replay. The
+  // label stays mute about the category: the seesaw is not shown to players.
   const gearCard = state.gear?.id ? GEAR.find((g) => g.id === state.gear!.id) : undefined;
   const startingCoin = gearCard
-    ? sum([{
-        label: `${gearCard.category[0].toUpperCase()}${gearCard.category.slice(1)} Gear`,
-        value: STARTING_COIN[gearCard.category],
-      }])
+    ? sum([{ label: 'Starting coin', value: STARTING_COIN[gearCard.category] }])
     : undefined;
 
   return {

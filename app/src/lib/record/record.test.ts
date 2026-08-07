@@ -288,6 +288,86 @@ describe('enforcement', () => {
     expect(redundant.flags.some((f) => f.code === 'duplicate')).toBe(true);
   });
 
+  it('builds spell-builder instances: many copies, named, each with its choice', () => {
+    const ref = { category: 'New Magic', ability: 'Telum Eminus' };
+    const base = [
+      ev('class-chosen', { classId: 'scholar' }),
+      ev('subclass-chosen', { subclassId: 'arcanist' }),
+    ];
+
+    // Two copies with different elements — both legal, separately laddered.
+    const two = replay([
+      ...base,
+      ev('ability-bought', { ref, instanceId: 'sp1', instanceName: 'Anselm’s Dart', choices: { element: 'Fire' } }),
+      ev('ability-bought', { ref, instanceId: 'sp2', choices: { element: 'Cold' } }),
+      ev('ability-advanced', { ref, instanceId: 'sp1', variable: 'damage', toRank: 1 }),
+      ev('ability-advanced', { ref, instanceId: 'sp2', variable: 'damage', toRank: 1 }),
+      ev('ability-renamed', { ref, instanceId: 'sp2', name: 'Winter’s Tooth' }),
+    ]);
+    expect(two.flags).toEqual([]);
+    expect(two.state.abilities).toHaveLength(2);
+    expect(two.state.abilities[0].name).toBe('Anselm’s Dart');
+    expect(two.state.abilities[1].name).toBe('Winter’s Tooth');
+    expect(two.state.abilities[1].choices).toEqual({ element: 'Cold' });
+
+    // Missing or invented choices are refused; so are reused instance ids.
+    const noChoice = replay([...base, ev('ability-bought', { ref, instanceId: 'x' })]);
+    expect(noChoice.flags[0].message).toContain('Element');
+    const badChoice = replay([
+      ...base,
+      ev('ability-bought', { ref, instanceId: 'x', choices: { element: 'Gravy' } }),
+    ]);
+    expect(badChoice.flags[0].message).toContain('Gravy');
+    const dupId = replay([
+      ...base,
+      ev('ability-bought', { ref, instanceId: 'x', choices: { element: 'Fire' } }),
+      ev('ability-bought', { ref, instanceId: 'x', choices: { element: 'Cold' } }),
+    ]);
+    expect(dupId.flags.some((f) => f.code === 'duplicate')).toBe(true);
+
+    // A builder purchase without an instance id is refused outright.
+    const bare = replay([...base, ev('ability-bought', { ref })]);
+    expect(bare.flags.some((f) => f.code === 'wrong-order')).toBe(true);
+
+    // Non-builder cards still refuse duplicates.
+    const martial = replay([
+      ev('class-chosen', { classId: 'soldier' }),
+      ev('subclass-chosen', { subclassId: 'vanguard' }),
+      ev('ability-bought', { ref: { category: 'Arms', ability: 'Martial Strike' } }),
+      ev('ability-bought', { ref: { category: 'Arms', ability: 'Martial Strike' } }),
+    ]);
+    expect(martial.flags.some((f) => f.code === 'duplicate')).toBe(true);
+  });
+
+  it('applies Vow passives to the sheet, labeled by source', () => {
+    const { state, flags } = replay([
+      ev('class-chosen', { classId: 'friar' }),
+      ev('subclass-chosen', { subclassId: 'mendicant' }),
+      ev('ability-bought', { ref: { category: 'Forbearance', ability: 'Vow of Poverty' } }),
+      ev('ability-bought', { ref: { category: 'Forbearance', ability: 'Vow of Abstinence' } }),
+    ]);
+    expect(flags).toEqual([]);
+    const sheet = derive(state);
+    for (const a of sheet.attributes) {
+      // Vow of Poverty: +1 to every Defence, named on the breakdown.
+      expect(a.unarmouredDefence.total).toBe(10 + a.value.total + 1);
+      expect(a.unarmouredDefence.parts).toContainEqual({ label: 'Vow of Poverty', value: 1 });
+      expect(a.armouredDefence.parts).toContainEqual({ label: 'Vow of Poverty', value: 1 });
+      // Vow of Abstinence: +1 to every Save.
+      expect(a.save.parts).toContainEqual({ label: 'Vow of Abstinence', value: 1 });
+    }
+  });
+
+  it('applies skill passives (Beast-Wise reaches Handle Animal)', () => {
+    const { state } = replay([
+      ev('class-chosen', { classId: 'naturalist' }),
+      ev('subclass-chosen', { subclassId: 'shepherd' }),
+      ev('ability-bought', { ref: { category: 'Harvest', ability: 'Beast-Wise' } }),
+    ]);
+    const handle = derive(state).skills.find((s) => s.skill === 'Handle Animal')!;
+    expect(handle.value.parts).toContainEqual({ label: 'Beast-Wise', value: 1 });
+  });
+
   it('keeps Flaws creation-only and at most two', () => {
     const three = replay([
       ev('class-chosen', { classId: 'soldier' }),
@@ -425,9 +505,10 @@ describe('the package deploys to the sheet', () => {
       const { state } = replay([...base(), pkg(quirkId, quirkName, {}, gearId, gearName, {})]);
       return derive(state).startingCoin;
     };
-    // Good quirk → bad gear → the fattest purse.
+    // Good quirk → bad gear → the fattest purse. The label never names the
+    // category: the seesaw is not shown to players.
     expect(coin('hands-like-a-cooper', 'Hands Like a Cooper', 'a-cursed-rabbits-foot', 'A Cursed Rabbit’s Foot'))
-      .toEqual({ total: 200, parts: [{ label: 'Bad Gear', value: 200 }] });
+      .toEqual({ total: 200, parts: [{ label: 'Starting coin', value: 200 }] });
     expect(coin('gutter-auld', 'Gutter Auld', 'a-physicians-chest', 'A Physician’s Chest')?.total).toBe(150);
     expect(coin('the-arrow-stayed-in', 'The Arrow Stayed In', 'a-masters-work', 'A Master’s Work')?.total).toBe(100);
 

@@ -54,6 +54,9 @@ const blurb = 'Build a character of Avilund: Class, Subclass, Advances, and the 
     background: transparent; color: inherit;
   }
   .cf-identity select option { background: var(--panel); color: var(--ink, inherit); }
+  .cf-identity input.num { width: 4.6rem; }
+  .cf-units { display: inline-flex; align-items: baseline; gap: 0.35rem; }
+  .cf-unit { color: var(--ink-soft); font-size: 0.8rem; }
 
   /* Choice cards */
   .cf-cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(12rem, 1fr)); gap: 0.6rem; }
@@ -155,6 +158,25 @@ const blurb = 'Build a character of Avilund: Class, Subclass, Advances, and the 
     text-overflow: ellipsis; white-space: nowrap;
   }
   .cf-advline .buy { font-size: 0.78rem; max-width: 20rem; overflow: hidden; text-overflow: ellipsis; }
+
+  /* Ladder tracks: climbed › resting value › next (button) › the road ahead */
+  .cf-stepsep { color: var(--rule); margin: 0 0.05rem; }
+  .cf-stepchip { font-size: 0.82rem; white-space: nowrap; }
+  .cf-stepchip.passed { color: var(--ink-soft); text-decoration: line-through; text-decoration-color: color-mix(in srgb, var(--ink-soft) 55%, transparent); }
+  .cf-stepchip.rests { color: var(--oxblood); font-weight: bold; }
+  .cf-stepchip.ahead { color: var(--ink-soft); opacity: 0.55; }
+  .cf-instline { display: flex; gap: 0.5rem; align-items: center; margin-bottom: 0.25rem; }
+  .cf-instname {
+    font: inherit; font-weight: bold; color: var(--oxblood);
+    border: none; border-bottom: 1px dotted var(--gold);
+    background: transparent; padding: 0.05rem 0.1rem; max-width: 13rem;
+  }
+  .cf-instname:focus { outline: none; border-bottom-style: solid; }
+  .cf-instchoice {
+    font-variant: small-caps; letter-spacing: 0.05em;
+    color: var(--gold); font-size: 0.82rem;
+  }
+  .cf-abctl .cf-picker select { max-width: 8.5rem; font-size: 0.82rem; }
 
   .cf-picker { display: inline-flex; gap: 0.4rem; align-items: center; }
   .cf-picker select {

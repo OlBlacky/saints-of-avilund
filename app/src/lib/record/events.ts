@@ -58,8 +58,19 @@ export type RecordEvent =
   // ── Major purchases ──────────────────────────────────────────────────
   /** One step up the triangular curve (+N costs N Major for the Nth step). */
   | (BaseEvent & { type: 'attribute-bought'; attr: Attribute })
-  /** One Ability from an accessible Category, 1 Major. */
-  | (BaseEvent & { type: 'ability-bought'; ref: AbilityRef })
+  /** One Ability from an accessible Category, 1 Major. Builder cards
+   * (spell/curse builders) may be bought repeatedly: each purchase carries a
+   * unique instanceId, a player name, and the card's one build choice
+   * (element, Malediction) — validated against the card. */
+  | (BaseEvent & {
+      type: 'ability-bought';
+      ref: AbilityRef;
+      instanceId?: string;
+      instanceName?: string;
+      choices?: Record<string, string>;
+    })
+  /** Rename a builder instance — free, non-mechanical. */
+  | (BaseEvent & { type: 'ability-renamed'; ref: AbilityRef; instanceId: string; name: string })
   /** A second/third Class + Subclass (3 Major, then 6). */
   | (BaseEvent & { type: 'class-added'; classId: string; subclassId: string })
 
@@ -84,10 +95,12 @@ export type RecordEvent =
   | (BaseEvent & { type: 'language-bought'; language: Language })
 
   // ── Ability advancement ──────────────────────────────────────────────
-  /** Climb one variable's Ladder one Rank (cost m/M from the card). */
+  /** Climb one variable's Ladder one Rank (cost m/M from the card). For a
+   * builder card, instanceId names which copy climbs. */
   | (BaseEvent & {
       type: 'ability-advanced';
       ref: AbilityRef;
+      instanceId?: string;
       variable: string;
       /** The Rank reached (1 = the first advance beyond base). */
       toRank: number;

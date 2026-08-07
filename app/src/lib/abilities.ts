@@ -64,6 +64,8 @@ export interface AbilityOption {
   placement?: 'top' | 'bottom';   // 'top' renders above the variable table; default 'bottom'
 }
 
+import type { Effect } from './quirks';
+
 export interface Ability {
   name: string;
   category: string;
@@ -74,6 +76,13 @@ export interface Ability {
   // name), which the player may rename, and may be bought more than once —
   // each a separate, separately-built spell. Shows a callout when true.
   builder?: boolean;
+  // The one choice a builder copy is built around (element, Malediction).
+  // The record engine requires and validates it per instance.
+  builderChoice?: { key: string; label: string; options: string[] };
+  // Always-on stat effects (Vows, passives) in the shared Effect vocabulary —
+  // what derive() applies to the sheet while the Ability is owned. The card
+  // prose stays the human text; this is its machine half.
+  passiveEffects?: Effect[];
   // The noun in the builder callout: 'Spell' (default) or 'Curse'. Renders as
   // "<noun> Builder … build many different <noun.toLowerCase()>s …".
   builderNoun?: string;

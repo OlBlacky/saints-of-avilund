@@ -39,8 +39,9 @@ export interface Condition {
 
 export type Effect =
   | { kind: 'skillMod'; value: number; skill: string; when?: Condition }
-  | { kind: 'saveMod'; value: number; attr: Attribute; when?: Condition }
-  | { kind: 'defenceMod'; value: number; attr: Attribute; when?: Condition }
+  /** attr absent = all six attributes (e.g. a Vow's blanket +1). */
+  | { kind: 'saveMod'; value: number; attr?: Attribute; when?: Condition }
+  | { kind: 'defenceMod'; value: number; attr?: Attribute; when?: Condition }
   | { kind: 'attackMod'; value: number; when: Condition } // condition REQUIRED
   | { kind: 'grantProficiency'; group: string }           // may be a {slot}
   | { kind: 'grantLanguage'; language: string }           // may be a {slot}

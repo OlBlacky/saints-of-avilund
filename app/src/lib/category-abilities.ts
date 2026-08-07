@@ -855,6 +855,7 @@ const FORBEARANCE: Ability[] = [
   },
   {
     name: 'Vow of Poverty', category: 'Forbearance', role: 'Vow', mode: 'Passive',
+    passiveEffects: [{ kind: 'defenceMod', value: 1 }],
     vars: {
       frequency: { base: 'Passive (always on)' },
       effects: {
@@ -865,6 +866,7 @@ const FORBEARANCE: Ability[] = [
   },
   {
     name: 'Vow of Abstinence', category: 'Forbearance', role: 'Vow', mode: 'Passive',
+    passiveEffects: [{ kind: 'saveMod', value: 1 }],
     vars: {
       frequency: { base: 'Passive (always on)' },
       effects: {
@@ -1584,6 +1586,7 @@ const NM_DEFENCE: Variable = { base: '+1 to one Defence (until your next turn)',
 const NM_AOE_TARGETS: Variable = { base: 'Each creature in the burst — one Dexterity vs AC roll resolved against each (friendly fire included)' };
 
 const NM_ELEMENT_DETAIL = 'Choose one elemental damage type when you build the spell — Fire, Acid, Cold, Lightning, Sonic, or Force. This is the damage type of the Ability, and you can unlock additional effects if you have the Specialization Feat for that element.';
+const NM_ELEMENTS = ['Fire', 'Acid', 'Cold', 'Lightning', 'Sonic', 'Force'];
 const NM_IMPL_LIST = [
   'Wand → +1 to hit',
   'Magic Staff → +1 to one Defence until your next round',
@@ -1700,6 +1703,7 @@ const NEW_MAGIC: Ability[] = [
       duration: { base: 'Instant' },
     },
     builder: true,
+    builderChoice: { key: 'element', label: 'Element', options: NM_ELEMENTS },
     options: [
       { label: 'Element', detail: NM_ELEMENT_DETAIL, placement: 'top' },
       { label: 'Elemental Specialization - Automatic Hooks', note: NM_HOOK_NOTE, hideCosts: true, ladders: [HKL_PIERCE, HKL_SPLASH, HKL_GLANCING] },
@@ -1720,6 +1724,7 @@ const NEW_MAGIC: Ability[] = [
       duration: { base: 'Instant (Defence: until your next turn)' },
     },
     builder: true,
+    builderChoice: { key: 'element', label: 'Element', options: NM_ELEMENTS },
     options: [
       { label: 'Defence (baseline)', detail: 'The Effect row’s Defence Ladder is always on — no element or feat needed.' },
       { label: 'Element', detail: NM_ELEMENT_DETAIL, placement: 'top' },
@@ -1740,6 +1745,7 @@ const NEW_MAGIC: Ability[] = [
       duration: { base: 'Instant' },
     },
     builder: true,
+    builderChoice: { key: 'element', label: 'Element', options: NM_ELEMENTS },
     options: [
       { label: 'Element', detail: NM_ELEMENT_DETAIL, placement: 'top' },
       { label: 'Elemental Specialization - Automatic Hooks', note: NM_HOOK_NOTE, hideCosts: true, ladders: [HKL_PIERCE, HKL_LINGER, HKL_GLANCING] },
@@ -1760,6 +1766,7 @@ const NEW_MAGIC: Ability[] = [
       duration: { base: 'Instant (Defence: until your next turn)' },
     },
     builder: true,
+    builderChoice: { key: 'element', label: 'Element', options: NM_ELEMENTS },
     options: [
       { label: 'Defence (baseline)', detail: 'The Effect row’s Defence Ladder is always on — you stand in your own burst, so it needs no element or feat.' },
       { label: 'Element', detail: NM_ELEMENT_DETAIL, placement: 'top' },
@@ -2536,6 +2543,7 @@ const WITCHCRAFT: Ability[] = [
       duration: ongoingDuration('Cha'),
     },
     builder: true,
+    builderChoice: { key: 'malediction', label: 'Malediction', options: CURSE_MALEDICTIONS.map((l) => l.name) },
     builderNoun: 'Curse',
     options: [
       { label: 'Malediction', detail: 'Choose one Malediction when you whisper this curse, as an Arcanist picks an element — it is the curse’s effect, and advances on its own Ladder. Buy this Ability again to whisper another curse with a different Malediction.', placement: 'top' },
@@ -2556,6 +2564,7 @@ const WITCHCRAFT: Ability[] = [
       duration: ongoingDuration('Cha'),
     },
     builder: true,
+    builderChoice: { key: 'malediction', label: 'Malediction', options: CURSE_MALEDICTIONS.map((l) => l.name) },
     builderNoun: 'Curse',
     options: [
       { label: 'Malediction', detail: 'As Dictiones Atras Susurrare, but proclaimed over an area — choose one Malediction and it strikes every enemy in the burst. Buy this Ability again for another curse with a different Malediction.', placement: 'top' },
@@ -2566,6 +2575,7 @@ const WITCHCRAFT: Ability[] = [
   },
   {
     name: 'Renunciation of Nicetus', category: 'Witchcraft', role: 'Vow', mode: 'Passive',
+    passiveEffects: [{ kind: 'defenceMod', value: 1 }],
     vars: {
       frequency: { base: 'Passive (always on)' },
       effects: {
@@ -2746,6 +2756,7 @@ const OUTSIDE: Ability[] = [
   },
   {
     name: 'Conversant with the Outside', category: 'The Outside', role: 'Vow', mode: 'Passive',
+    passiveEffects: [{ kind: 'defenceMod', value: 1, attr: 'Wisdom' }, { kind: 'saveMod', value: 1, attr: 'Wisdom' }],
     vars: {
       frequency: { base: 'Passive (always on)' },
       effects: {
@@ -2755,6 +2766,7 @@ const OUTSIDE: Ability[] = [
   },
   {
     name: 'Observer of the Outside', category: 'The Outside', role: 'Vow', mode: 'Passive',
+    passiveEffects: [{ kind: 'defenceMod', value: 1, attr: 'Intelligence' }, { kind: 'saveMod', value: 1, attr: 'Intelligence' }],
     vars: {
       frequency: { base: 'Passive (always on)' },
       effects: {
@@ -2764,6 +2776,7 @@ const OUTSIDE: Ability[] = [
   },
   {
     name: 'Traveller', category: 'The Outside', role: 'Vow', mode: 'Passive',
+    passiveEffects: [{ kind: 'defenceMod', value: 1, attr: 'Constitution' }, { kind: 'saveMod', value: 1, attr: 'Constitution' }],
     vars: {
       frequency: { base: 'Passive (always on)' },
       effects: {
@@ -2901,6 +2914,7 @@ const HARVEST: Ability[] = [
   },
   {
     name: 'Beast-Wise', category: 'Harvest', role: 'Utility · animals', mode: 'Passive',
+    passiveEffects: [{ kind: 'skillMod', value: 1, skill: 'Handle Animal' }],
     vars: {
       frequency: { base: 'Passive (always on)' },
       targets: { base: 'Self' },

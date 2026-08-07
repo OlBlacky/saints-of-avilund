@@ -21,6 +21,7 @@ import {
   WEAPON_GROUPS,
   classById,
 } from '../../lib/classes';
+import type { ClassDef, SubclassDef } from '../../lib/classes';
 import { rollPackage } from '../../lib/gear';
 import { PLACES } from '../../lib/quirks';
 import type { Attribute, SeesawCategory } from '../../lib/quirks';
@@ -45,7 +46,8 @@ interface Identity {
   name: string;
   origin: string;
   age: string;
-  height: string;
+  heightFt: string;
+  heightIn: string;
   weight: string;
   notes: string;
 }
@@ -60,7 +62,7 @@ interface Draft {
 }
 
 const EMPTY_DRAFT: Draft = {
-  identity: { name: '', origin: '', age: '', height: '', weight: '', notes: '' },
+  identity: { name: '', origin: '', age: '', heightFt: '', heightIn: '', weight: '', notes: '' },
   events: [],
   rerollsLeft: REROLLS,
 };
@@ -73,6 +75,34 @@ function loadDraft(): Draft {
     // A corrupt draft should never brick the builder; start fresh.
   }
   return EMPTY_DRAFT;
+}
+
+/** The hover tooltip on a Class card: its grants, one line each. */
+function classTip(c: ClassDef): string {
+  const lines = [
+    `Class Attribute: ${c.classAttribute}`,
+    `Ability Category: ${c.abilityCategory}`,
+    `Class HP: ${c.classHP}`,
+    `Class Skills: ${c.classSkills.join(', ')}`,
+  ];
+  if (c.weaponProficiencies.length) lines.push(`Weapons: ${c.weaponProficiencies.join(', ')}`);
+  if (c.armourProficiencies.length) lines.push(`Armour: ${c.armourProficiencies.join(', ')}`);
+  if (c.languages?.length) lines.push(`Languages: ${c.languages.join(', ')}`);
+  return lines.join('\n');
+}
+
+/** The hover tooltip on a Subclass card: what it adds, one line each. */
+function subclassTip(s: SubclassDef): string {
+  const lines = [
+    `Class Attribute: ${s.classAttribute}`,
+    `Ability Category: ${s.abilityCategory}`,
+    `Additional Class Skills: ${s.additionalClassSkills.join(', ')}`,
+  ];
+  if (s.weaponProficiencies.length) lines.push(`Weapons: ${s.weaponProficiencies.join(', ')}`);
+  if (s.armourProficiencies.length) lines.push(`Armour: ${s.armourProficiencies.join(', ')}`);
+  if (s.implementProficiencies?.length) lines.push(`Implements: ${s.implementProficiencies.join(', ')}`);
+  if (s.languages?.length) lines.push(`Languages: ${s.languages.join(', ')}`);
+  return lines.join('\n');
 }
 
 let counter = 0;
@@ -259,7 +289,7 @@ export default function CreationFlow() {
           {/* ── The Identity Box ── */}
           <section class="cf-step">
             <h2>The Character</h2>
-            <p class="cf-how">Editable at any time — none of this is mechanical.</p>
+            <p class="cf-how">Editable at any time. None of this is mechanical.</p>
             <div class="cf-identity">
               <label>Name <input value={draft.identity.name} onInput={(e) => setIdentity('name', (e.target as HTMLInputElement).value)} placeholder="Unnamed" /></label>
               <label>Place of origin
@@ -270,9 +300,23 @@ export default function CreationFlow() {
                   ))}
                 </select>
               </label>
-              <label>Age <input value={draft.identity.age} onInput={(e) => setIdentity('age', (e.target as HTMLInputElement).value)} /></label>
-              <label>Height <input value={draft.identity.height} onInput={(e) => setIdentity('height', (e.target as HTMLInputElement).value)} /></label>
-              <label>Weight <input value={draft.identity.weight} onInput={(e) => setIdentity('weight', (e.target as HTMLInputElement).value)} /></label>
+              <label>Age
+                <input type="number" min="0" max="120" class="num" value={draft.identity.age} onInput={(e) => setIdentity('age', (e.target as HTMLInputElement).value)} />
+              </label>
+              <label>Height
+                <span class="cf-units">
+                  <input type="number" min="0" max="8" class="num" value={draft.identity.heightFt} onInput={(e) => setIdentity('heightFt', (e.target as HTMLInputElement).value)} />
+                  <span class="cf-unit">ft</span>
+                  <input type="number" min="0" max="11" class="num" value={draft.identity.heightIn} onInput={(e) => setIdentity('heightIn', (e.target as HTMLInputElement).value)} />
+                  <span class="cf-unit">in</span>
+                </span>
+              </label>
+              <label>Weight
+                <span class="cf-units">
+                  <input type="number" min="0" max="500" step="5" class="num" value={draft.identity.weight} onInput={(e) => setIdentity('weight', (e.target as HTMLInputElement).value)} />
+                  <span class="cf-unit">lb</span>
+                </span>
+              </label>
               <label class="wide">Notes <input value={draft.identity.notes} onInput={(e) => setIdentity('notes', (e.target as HTMLInputElement).value)} /></label>
             </div>
           </section>
@@ -287,6 +331,7 @@ export default function CreationFlow() {
                   type="button"
                   class={`cf-card ${state.classId === c.id ? 'sel' : ''}`}
                   disabled={crystallized}
+                  title={classTip(c)}
                   onClick={() => replaceOne('class-chosen', mk('class-chosen', { classId: c.id }))}
                 >
                   <span class="cf-card-name">{c.name}</span>
@@ -308,6 +353,7 @@ export default function CreationFlow() {
                     type="button"
                     class={`cf-card ${state.subclassId === s.id ? 'sel' : ''}`}
                     disabled={crystallized}
+                    title={subclassTip(s)}
                     onClick={() => replaceOne('subclass-chosen', mk('subclass-chosen', { subclassId: s.id }))}
                   >
                     <span class="cf-card-name">{s.name}</span>
@@ -325,7 +371,7 @@ export default function CreationFlow() {
               <p class="cf-how">Attributes climb the triangular curve (+1 costs 1, +2 costs 2 more, +3 costs 3 more). Abilities cost 1 Major from your two Categories.</p>
 
               <h3>Attributes</h3>
-              <p class="cf-how">Step any Attribute down past +0 to take a Flaw — up to two Attributes may drop to −1, each granting +1 Major.</p>
+              <p class="cf-how">Step any Attribute down past +0 to take a Flaw. Up to two Attributes may drop to −1, each granting +1 Major.</p>
               <div class="cf-attrs">
                 {ATTRIBUTES.map((a) => {
                   const val = sheet.attributes.find((x) => x.attr === a)!.value.total;
@@ -337,7 +383,7 @@ export default function CreationFlow() {
                   const bought = state.attributeRanks[a] ?? 0;
                   const flawed = state.flaws.includes(a);
                   const FLAW_RULE =
-                    'Reduce up to 2 Attributes by 1 at creation — each grants +1 Major.';
+                    'Reduce up to 2 Attributes by 1 at creation. Each grants +1 Major.';
 
                   // The down-step: refund bought points first; below +0 it
                   // takes the Flaw. The up-step restores a Flaw before buying.
@@ -404,7 +450,7 @@ export default function CreationFlow() {
               })()}
               <p class="cf-how">
                 An Ability costs 1 Major. Each owned Ability may also take one Minor and one Major
-                advance per Level — the 0-level allotment included.
+                advance per Level.
               </p>
               {accessibleCategories(state).map((catName) => {
                 const cat = CATEGORIES.find((c) => c.name === catName);
@@ -415,11 +461,176 @@ export default function CreationFlow() {
                     <table class="cf-abtable">
                       <tbody>
                         {cat.abilities.map((ab) => {
+                          const ref = { category: catName, ability: ab.name };
+                          const brief = briefFor(catName, ab.name);
+
+                          // The advancement strip, shared by plain cards and
+                          // builder instances (which pass their instanceId).
+                          // Each Ladder renders as its whole track: steps
+                          // already climbed, the value the Ability RESTS at
+                          // (emphasized), the next step as the priced button,
+                          // and the rest of the road greyed out ahead.
+                          const AdvStrip = ({ owned }: { owned: (typeof state.abilities)[number] }) => {
+                            const clip = (s: string, n = 26) => (s.length > n ? `${s.slice(0, n - 1)}…` : s);
+                            return (
+                              <>
+                                {VAR_ORDER.filter((k) => ab.vars[k]?.advances?.length).map((k) => {
+                                  const variable = ab.vars[k]!;
+                                  const rank = owned.ranks[k] ?? 0;
+                                  const steps = [variable.base ?? '—', ...variable.advances!.map((a) => a.value)];
+                                  return (
+                                    <span key={k} class="cf-advline">
+                                      <span class="cf-advlabel">{VAR_LABELS[k]}</span>
+                                      {steps.map((val, i) => {
+                                        const cost = i > 0 ? variable.advances![i - 1].cost : undefined;
+                                        const sep = i > 0 && <span class="cf-stepsep">›</span>;
+                                        if (i < rank) {
+                                          return (
+                                            <>
+                                              {sep}
+                                              <span class="cf-stepchip passed" title={`${val} — climbed past`}>{clip(val)}</span>
+                                            </>
+                                          );
+                                        }
+                                        if (i === rank) {
+                                          return (
+                                            <>
+                                              {sep}
+                                              <span class="cf-stepchip rests" title={`${val} — where it rests now`}>{clip(val)}</span>
+                                              {rank > 0 && (
+                                                <Undo
+                                                  pred={(e) =>
+                                                    e.type === 'ability-advanced' &&
+                                                    e.ref.category === catName &&
+                                                    e.ref.ability === ab.name &&
+                                                    e.variable === k &&
+                                                    (owned.instanceId ? e.instanceId === owned.instanceId : true)
+                                                  }
+                                                  title="refund this Rank"
+                                                />
+                                              )}
+                                            </>
+                                          );
+                                        }
+                                        if (i === rank + 1) {
+                                          return (
+                                            <>
+                                              {sep}
+                                              <Buy
+                                                ev={mk('ability-advanced', {
+                                                  ref,
+                                                  instanceId: owned.instanceId,
+                                                  variable: k,
+                                                  toRank: rank + 1,
+                                                })}
+                                                label={`${clip(val)} · ${cost}`}
+                                              />
+                                            </>
+                                          );
+                                        }
+                                        return (
+                                          <>
+                                            {sep}
+                                            <span class="cf-stepchip ahead" title={`${val} — further along the Ladder (${cost})`}>
+                                              {clip(val)} · {cost}
+                                            </span>
+                                          </>
+                                        );
+                                      })}
+                                    </span>
+                                  );
+                                })}
+                              </>
+                            );
+                          };
+
+                          if (ab.builder) {
+                            const instances = state.abilities.filter(
+                              (o) => o.ref.category === catName && o.ref.ability === ab.name,
+                            );
+                            return (
+                              <>
+                                <tr key={ab.name} class={instances.length ? 'owned' : ''}>
+                                  <td class="cf-abname">{ab.name}</td>
+                                  <td class="cf-abbrief">{brief}</td>
+                                  <td class="cf-abctl">
+                                    {!crystallized && (
+                                      <BuildControl
+                                        choice={ab.builderChoice}
+                                        noun={ab.builderNoun ?? 'Spell'}
+                                        onBuild={(choices) =>
+                                          append(
+                                            mk('ability-bought', {
+                                              ref,
+                                              instanceId: `${Date.now().toString(36)}-${Math.floor(Math.random() * 1e6).toString(36)}`,
+                                              instanceName: ab.name,
+                                              choices,
+                                            }),
+                                          )
+                                        }
+                                      />
+                                    )}
+                                  </td>
+                                </tr>
+                                {instances.map((inst) => (
+                                  <tr key={inst.instanceId} class="cf-abadv">
+                                    <td colspan={3}>
+                                      <span class="cf-advline cf-instline">
+                                        <input
+                                          class="cf-instname"
+                                          value={inst.name}
+                                          disabled={crystallized}
+                                          title={`name this ${(ab.builderNoun ?? 'Spell').toLowerCase()}`}
+                                          onInput={(ev2) => {
+                                            const name = (ev2.target as HTMLInputElement).value;
+                                            setDraft((d) => ({
+                                              ...d,
+                                              events: d.events.map((x) =>
+                                                x.type === 'ability-bought' && x.instanceId === inst.instanceId
+                                                  ? { ...x, instanceName: name }
+                                                  : x,
+                                              ),
+                                            }));
+                                          }}
+                                        />
+                                        {inst.choices && (
+                                          <span class="cf-instchoice">{Object.values(inst.choices).join(' · ')}</span>
+                                        )}
+                                        {!crystallized && (
+                                          <button
+                                            type="button"
+                                            class="undo"
+                                            title={`refund this ${(ab.builderNoun ?? 'Spell').toLowerCase()} and its advances`}
+                                            onClick={() =>
+                                              setDraft((d) => ({
+                                                ...d,
+                                                events: d.events.filter(
+                                                  (x) =>
+                                                    !(
+                                                      (x.type === 'ability-bought' ||
+                                                        x.type === 'ability-advanced' ||
+                                                        x.type === 'ability-renamed') &&
+                                                      x.instanceId === inst.instanceId
+                                                    ),
+                                                ),
+                                              }))
+                                            }
+                                          >
+                                            −
+                                          </button>
+                                        )}
+                                      </span>
+                                      <AdvStrip owned={inst} />
+                                    </td>
+                                  </tr>
+                                ))}
+                              </>
+                            );
+                          }
+
                           const owned = state.abilities.find(
                             (o) => o.ref.category === catName && o.ref.ability === ab.name,
                           );
-                          const ref = { category: catName, ability: ab.name };
-                          const brief = briefFor(catName, ab.name);
                           return (
                             <>
                               <tr key={ab.name} class={owned ? 'owned' : ''}>
@@ -455,35 +666,7 @@ export default function CreationFlow() {
                               {owned && (
                                 <tr class="cf-abadv">
                                   <td colspan={3}>
-                                    {VAR_ORDER.filter((k) => ab.vars[k]?.advances?.length).map((k) => {
-                                      const variable = ab.vars[k]!;
-                                      const rank = owned.ranks[k] ?? 0;
-                                      const next = variable.advances![rank];
-                                      const current = resolveValue(variable, rank);
-                                      return (
-                                        <span key={k} class="cf-advline">
-                                          <span class="cf-advlabel">{VAR_LABELS[k]}</span>
-                                          <span class="cf-advval" title={current}>{current}</span>
-                                          {rank > 0 && (
-                                            <Undo
-                                              pred={(e) =>
-                                                e.type === 'ability-advanced' &&
-                                                e.ref.category === catName &&
-                                                e.ref.ability === ab.name &&
-                                                e.variable === k
-                                              }
-                                              title="refund the last Rank"
-                                            />
-                                          )}
-                                          {next && (
-                                            <Buy
-                                              ev={mk('ability-advanced', { ref, variable: k, toRank: rank + 1 })}
-                                              label={`→ ${next.value.length > 34 ? `${next.value.slice(0, 32)}…` : next.value} · ${next.cost}`}
-                                            />
-                                          )}
-                                        </span>
-                                      );
-                                    })}
+                                    <AdvStrip owned={owned} />
                                   </td>
                                 </tr>
                               )}
@@ -621,21 +804,20 @@ export default function CreationFlow() {
             <section class="cf-step cf-finale">
               <h2>Step 5 · Quirk &amp; Starting Gear</h2>
               <p class="cf-how">
-                Rolled together, never chosen — the seesaw pairs a Good Quirk with Bad Gear and
-                the reverse; Neutral pulls Neutral. Starting coin leans against the Gear: 200 sp
-                for Bad, 150 for Neutral, 100 for Good. Two rerolls, whole package, take-the-last.
+                Quirk and Starting Gear are rolled randomly, together. Two rerolls; you keep the
+                last roll.
               </p>
               {draft.quirkText && (
                 <div class="cf-package">
                   <div class="cf-quirk">
-                    <p class="cf-quirk-eyebrow">Quirk{draft.quirkText.category ? ` · ${draft.quirkText.category}` : ''}</p>
+                    <p class="cf-quirk-eyebrow">Quirk</p>
                     <h4>{draft.quirkText.name}</h4>
                     <p class="cf-quirk-mech">{draft.quirkText.mechanic}</p>
                     <p class="cf-quirk-eso">{draft.quirkText.esoteric}</p>
                   </div>
                   {draft.gearText && (
                     <div class="cf-quirk">
-                      <p class="cf-quirk-eyebrow">Starting Gear{draft.gearText.category ? ` · ${draft.gearText.category}` : ''}</p>
+                      <p class="cf-quirk-eyebrow">Starting Gear</p>
                       <h4>{draft.gearText.name}</h4>
                       <p class="cf-quirk-mech">{draft.gearText.mechanic}</p>
                       <p class="cf-quirk-eso">{draft.gearText.provenance}</p>
@@ -746,6 +928,41 @@ export default function CreationFlow() {
 }
 
 // ── Small pickers ─────────────────────────────────────────────────────────
+
+function BuildControl({
+  choice,
+  noun,
+  onBuild,
+}: {
+  choice?: { key: string; label: string; options: string[] };
+  noun: string;
+  onBuild: (choices: Record<string, string> | undefined) => void;
+}) {
+  const [sel, setSel] = useState(choice?.options[0] ?? '');
+  return (
+    <span class="cf-picker">
+      {choice && (
+        <select
+          value={sel}
+          title={choice.label}
+          onChange={(e) => setSel((e.target as HTMLSelectElement).value)}
+        >
+          {choice.options.map((o) => (
+            <option key={o} value={o}>{o}</option>
+          ))}
+        </select>
+      )}
+      <button
+        type="button"
+        class="buy"
+        title={`build a new ${noun.toLowerCase()} — 1 Major`}
+        onClick={() => onBuild(choice ? { [choice.key]: sel } : undefined)}
+      >
+        Build · 1 M
+      </button>
+    </span>
+  );
+}
 
 function GroupPicker({
   label,
