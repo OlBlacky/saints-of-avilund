@@ -1,0 +1,198 @@
+---
+import Base from '../../layouts/Base.astro';
+import CreationFlow from '../../components/builder/CreationFlow';
+
+// The Character Builder — the creation flow (builder spec §6), wired to the
+// record engine. The draft autosaves to this browser; accounts come later
+// (spec §2: local-first).
+const title = 'Character Builder';
+const blurb = 'Build a character of Avilund: Class, Subclass, Advances, and the Quirk you didn’t bargain for.';
+---
+
+<Base title={title} description={blurb}>
+  <header class="saint-head">
+    <p class="eyebrow">The System</p>
+    <h1>{title}</h1>
+  </header>
+
+  <p class="lede">
+    Everything here is the real rules engine: costs are computed, illegal purchases refuse
+    themselves, and your draft saves in this browser as you go. Walk the steps in order —
+    you can always go back; changing an early choice flags whatever it breaks below.
+  </p>
+
+  <CreationFlow client:load />
+</Base>
+
+<style is:global>
+  /* ── The creation flow, in the site's parchment vocabulary ── */
+  .cf { margin-top: 1.5rem; }
+  .cf-grid { display: grid; grid-template-columns: minmax(0, 1fr) 17rem; gap: 2rem; align-items: start; }
+  .cf-main { min-width: 0; }
+
+  .cf-step {
+    background: var(--panel);
+    border: 1px solid var(--rule);
+    border-top: 3px solid var(--gold);
+    border-radius: 4px;
+    box-shadow: 0 1px 2px var(--shadow);
+    padding: 1.1rem 1.3rem 1.3rem;
+    margin-bottom: 1.4rem;
+  }
+  .cf-step h2 { font-family: var(--display); color: var(--oxblood); font-size: 1.15rem; margin: 0 0 0.3rem; }
+  .cf-step h3 { font-variant: small-caps; letter-spacing: 0.07em; color: var(--gold); font-size: 0.9rem; margin: 1.1rem 0 0.4rem; }
+  .cf-step h4 { margin: 0.6rem 0 0.3rem; color: var(--oxblood); font-size: 0.95rem; }
+  .cf-how { color: var(--ink-soft); font-style: italic; font-size: 0.88rem; margin: 0 0 0.8rem; }
+  .cf-opt { color: var(--ink-soft); font-size: 0.85em; font-weight: normal; }
+
+  /* Identity box */
+  .cf-identity { display: grid; grid-template-columns: repeat(auto-fit, minmax(11rem, 1fr)); gap: 0.6rem 1rem; }
+  .cf-identity label { display: flex; flex-direction: column; font-size: 0.82rem; color: var(--ink-soft); gap: 0.15rem; }
+  .cf-identity label.wide { grid-column: 1 / -1; }
+  .cf-identity input {
+    font: inherit; padding: 0.3rem 0.5rem;
+    border: 1px solid var(--rule); border-radius: 3px;
+    background: transparent; color: inherit;
+  }
+
+  /* Choice cards */
+  .cf-cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(12rem, 1fr)); gap: 0.6rem; }
+  .cf-card {
+    font: inherit; text-align: left; cursor: pointer;
+    display: flex; flex-direction: column; gap: 0.15rem;
+    padding: 0.6rem 0.8rem;
+    background: transparent; color: inherit;
+    border: 1px solid var(--rule); border-radius: 4px;
+    transition: border-color 0.15s ease, background 0.15s ease;
+  }
+  .cf-card:hover:not(:disabled) { border-color: var(--gold); }
+  .cf-card.sel { border-color: var(--gold); background: color-mix(in srgb, var(--gold) 12%, transparent); }
+  .cf-card:disabled { cursor: default; opacity: 0.7; }
+  .cf-card-name { font-family: var(--display); color: var(--oxblood); font-size: 1.02rem; }
+  .cf-card-sub { font-variant: small-caps; letter-spacing: 0.06em; color: var(--gold); font-size: 0.78rem; }
+  .cf-card-line { color: var(--ink-soft); font-size: 0.82rem; }
+
+  /* Attribute rows and generic lines */
+  .cf-attrs { display: grid; grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr)); gap: 0.35rem 1.2rem; }
+  .cf-attr { display: flex; align-items: center; gap: 0.45rem; padding: 0.15rem 0; }
+  .cf-attr-name { flex: 1; }
+  .cf-attr-val { min-width: 2.2rem; text-align: right; color: var(--oxblood); font-weight: bold; font-variant-numeric: tabular-nums; }
+  .cf-duo { display: inline-flex; align-items: center; gap: 0.3rem; font-size: 0.9rem; color: var(--ink-soft); }
+  .cf-line { display: flex; align-items: center; gap: 0.7rem; flex-wrap: wrap; margin: 0.4rem 0; }
+  .cf-work { color: var(--ink-soft); font-size: 0.82rem; }
+  .star { color: var(--gold); }
+
+  /* Buttons */
+  .buy, .undo, .cf-roll, .cf-crystallize, .cf-reset button, .cf-picker select {
+    font: inherit;
+  }
+  .buy {
+    padding: 0.12rem 0.55rem; cursor: pointer;
+    color: var(--oxblood); background: transparent;
+    border: 1px solid var(--gold); border-radius: 3px;
+    font-size: 0.85rem;
+    transition: background 0.15s ease, color 0.15s ease;
+  }
+  .buy:hover:not(:disabled) { background: var(--gold); color: var(--panel); }
+  .buy:disabled { opacity: 0.35; cursor: not-allowed; border-color: var(--rule); color: var(--ink-soft); }
+  .undo {
+    padding: 0 0.45rem; cursor: pointer; font-size: 0.85rem;
+    color: var(--ink-soft); background: transparent;
+    border: 1px solid var(--rule); border-radius: 3px;
+  }
+  .undo:hover:not(:disabled) { color: var(--oxblood); border-color: var(--oxblood); }
+  .undo:disabled { opacity: 0.25; cursor: default; }
+
+  /* Chips */
+  .cf-chiprow { display: flex; flex-wrap: wrap; gap: 0.4rem; margin: 0.3rem 0; }
+  .cf-chip {
+    display: inline-flex; align-items: center; gap: 0.35rem;
+    border: 1px solid var(--rule); border-radius: 3px;
+    padding: 0.14rem 0.5rem; font-size: 0.87rem;
+  }
+  .cf-chip.owned { border-color: var(--gold); background: color-mix(in srgb, var(--gold) 10%, transparent); }
+  .cf-abilities { margin-bottom: 0.4rem; }
+
+  .cf-picker { display: inline-flex; gap: 0.4rem; align-items: center; }
+  .cf-picker select {
+    padding: 0.25rem 0.4rem; max-width: 18rem;
+    border: 1px solid var(--rule); border-radius: 3px;
+    background: var(--panel); color: inherit;
+  }
+
+  /* Flags */
+  .cf-flags {
+    border: 1px solid var(--oxblood); border-left: 4px solid var(--oxblood);
+    border-radius: 4px; background: color-mix(in srgb, var(--oxblood) 7%, transparent);
+    padding: 0.7rem 1rem; margin-bottom: 1.2rem; font-size: 0.92rem;
+  }
+  .cf-flags ul { margin: 0.4rem 0 0; padding-left: 1.1rem; }
+  .cf-flags li { margin: 0.2rem 0; }
+  .cf-flags .undo { margin-left: 0.6rem; }
+
+  /* Finale */
+  .cf-finale { border-top-color: var(--oxblood); }
+  .cf-quirk { border: 1px dotted var(--gold); border-radius: 4px; padding: 0.7rem 0.9rem; margin: 0.5rem 0 0.8rem; }
+  .cf-quirk h4 { margin: 0 0 0.3rem; font-family: var(--display); color: var(--oxblood); }
+  .cf-quirk-mech { margin: 0 0 0.35rem; font-size: 0.92rem; }
+  .cf-quirk-eso { margin: 0; color: var(--ink-soft); font-style: italic; font-size: 0.88rem; }
+  .cf-roll {
+    padding: 0.45rem 0.9rem; cursor: pointer;
+    font-family: var(--display); font-size: 0.98rem;
+    color: var(--oxblood); background: transparent;
+    border: 1px solid var(--gold); border-radius: 3px;
+  }
+  .cf-roll:hover:not(:disabled) { background: var(--gold); color: var(--panel); }
+  .cf-roll:disabled { opacity: 0.4; cursor: not-allowed; }
+  .cf-crystallize {
+    padding: 0.45rem 0.9rem; cursor: pointer;
+    font-family: var(--display); font-size: 0.98rem;
+    color: var(--panel); background: var(--oxblood);
+    border: 1px solid var(--oxblood); border-radius: 3px;
+  }
+  .cf-crystallize:disabled { opacity: 0.35; cursor: not-allowed; }
+  .cf-done { border-left: 3px solid var(--gold); padding-left: 0.8rem; }
+
+  .cf-reset { text-align: right; margin: 0.5rem 0 2rem; }
+  .cf-reset button {
+    font-size: 0.82rem; color: var(--ink-soft); cursor: pointer;
+    background: none; border: none; text-decoration: underline;
+  }
+  .cf-reset button:hover { color: var(--oxblood); }
+
+  /* The right rail */
+  .cf-rail { position: sticky; top: 1.2rem; display: flex; flex-direction: column; gap: 1rem; }
+  .cf-railbox {
+    background: var(--panel);
+    border: 1px solid var(--rule); border-top: 3px solid var(--gold);
+    border-radius: 4px; box-shadow: 0 1px 2px var(--shadow);
+    padding: 0.8rem 1rem 1rem; font-size: 0.9rem;
+  }
+  .cf-eyebrow { font-variant: small-caps; letter-spacing: 0.08em; color: var(--gold); font-size: 0.8rem; margin: 0 0 0.4rem; }
+  .cf-railsub { color: var(--ink-soft); margin: 0 0 0.5rem; }
+  .cf-bankline { display: flex; justify-content: space-between; align-items: center; gap: 0.5rem; padding: 0.15rem 0; }
+  .bank-pips { display: inline-flex; flex-wrap: wrap; gap: 2px; }
+  .bank-pips .none { color: var(--ink-soft); }
+  .pip {
+    display: inline-block; width: 0.7em; height: 0.7em;
+    border: 1px solid var(--oxblood); border-radius: 2px;
+  }
+  .pip.M { background: var(--oxblood); }
+  .cf-mini { border-collapse: collapse; width: 100%; font-variant-numeric: tabular-nums; font-size: 0.85rem; }
+  .cf-mini th {
+    font-variant: small-caps; font-weight: normal; letter-spacing: 0.06em;
+    color: var(--gold); text-align: right; padding: 0.1rem 0.3rem;
+    border-bottom: 1px solid var(--gold);
+  }
+  .cf-mini th:first-child { text-align: left; }
+  .cf-mini td { text-align: right; padding: 0.14rem 0.3rem; border-bottom: 1px dotted var(--rule); }
+  .cf-mini td:first-child { text-align: left; }
+  .cf-railline { color: var(--ink-soft); font-size: 0.84rem; margin: 0.5rem 0 0; }
+
+  .cf-loading { color: var(--ink-soft); padding: 2rem 0; }
+
+  @media (max-width: 56rem) {
+    .cf-grid { grid-template-columns: 1fr; }
+    .cf-rail { position: static; order: -1; }
+  }
+</style>

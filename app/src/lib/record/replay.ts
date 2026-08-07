@@ -36,7 +36,9 @@ export interface CharacterState {
   defenceRanks: Partial<Record<Attribute, number>>;
   /** Times HP was bought (each adds Class HP). */
   hpPurchases: number;
-  /** Skill name → bought rank (1, or 2 for a Class Skill). */
+  /** Off-list Skills made Trained with a Minor (Class Skills arrive Trained). */
+  trainedSkills: string[];
+  /** Skill name → bought Ranks (0 = Trained only). */
   skillRanks: Record<string, number>;
   /** Proficiencies bought with Minors (fixed at base). */
   boughtProficiencies: string[];
@@ -175,6 +177,15 @@ function attributeCap(state: CharacterState, attr: Attribute): number {
 const CREATION_MAJORS = 11;
 const CREATION_MINORS = 11;
 
+/**
+ * Trial a candidate event against an existing log: the flags (if any) that
+ * the candidate itself would raise. The UI's single source of "can I buy
+ * this, and if not, why?" — no rule lives outside replay().
+ */
+export function tryEvent(events: RecordEvent[], candidate: RecordEvent): Flag[] {
+  return replay([...events, candidate]).flags.filter((f) => f.eventId === candidate.id);
+}
+
 export function replay(events: RecordEvent[]): ReplayResult {
   const state: CharacterState = {
     addedClasses: [],
@@ -183,6 +194,7 @@ export function replay(events: RecordEvent[]): ReplayResult {
     offenceRanks: {},
     defenceRanks: {},
     hpPurchases: 0,
+    trainedSkills: [],
     skillRanks: {},
     boughtProficiencies: [],
     proficiencyRanks: {},
@@ -355,11 +367,34 @@ export function replay(events: RecordEvent[]): ReplayResult {
         break;
       }
 
-      case 'skill-bought': {
+      case 'skill-trained': {
         const base = e.skill.replace(/\s*\(.*\)$/, '');
-        if (state.skillRanks[e.skill] !== undefined) { flag(e, 'duplicate', `${e.skill} is already trained`); break; }
+        if (classSkills(state).includes(base)) {
+          flag(e, 'duplicate', `${e.skill} is a Class Skill — Trained already, free`);
+          break;
+        }
+        if (state.trainedSkills.includes(e.skill)) { flag(e, 'duplicate', `already Trained in ${e.skill}`); break; }
         if (!spend(e, 'minor', 1)) break;
-        state.skillRanks[e.skill] = classSkills(state).includes(base) ? 2 : 1;
+        state.trainedSkills.push(e.skill);
+        break;
+      }
+
+      case 'skill-advanced': {
+        const base = e.skill.replace(/\s*\(.*\)$/, '');
+        const isClass = classSkills(state).includes(base);
+        if (!isClass && !state.trainedSkills.includes(e.skill)) {
+          flag(e, 'wrong-order', `not Trained in ${e.skill} — training comes first`);
+          break;
+        }
+        const current = state.skillRanks[e.skill] ?? 0;
+        const next = current + 1;
+        if (!isClass && next > 1) { flag(e, 'over-cap', `${e.skill} is not a Class Skill — it never passes +1`); break; }
+        if (isClass && next > 3) { flag(e, 'over-cap', `${e.skill} is capped at +3`); break; }
+        const level = levelFor(state.milestones, state.crystallized);
+        if (isClass && next === 2 && level < 3) { flag(e, 'over-cap', `the +2 Skill Rank opens at Level 3`); break; }
+        if (isClass && next === 3 && level < 5) { flag(e, 'over-cap', `the +3 Skill Rank opens at Level 5`); break; }
+        if (!spend(e, 'minor', 1)) break;
+        state.skillRanks[e.skill] = next;
         break;
       }
 

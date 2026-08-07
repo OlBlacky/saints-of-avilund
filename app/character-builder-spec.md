@@ -180,7 +180,7 @@ Last comes the game's quirkiest moment. **Quirk and Starting Gear are rolled, to
 
 - **Starting Gear** — the rolled-gear mechanic, its three tables, and starting coin.
 - **Quirk category tags** — Bad/Neutral/Good classification across the Quirk roster.
-- **Doc cleanup** — `mechanics/characters/character-creation.md` is stale AP-era design; the live site page `system/character-creation` is the canon but needs the Level-derivation correction from §7 ("out of Level 0 and working on 1" is no longer right).
+- **Doc cleanup** — `mechanics/characters/character-creation.md` is stale AP-era design; the live site page `system/character-creation` is the canon but needs: the Level-derivation correction from §7 ("out of Level 0 and working on 1" is no longer right), and the **new Skill track** (ruled Aug 6 2026 — Untrained −1 / Trained +0, Class Skills Trained free, Ranks 1 Minor each climbing +1 → +2 @L3 → +3 @L5, off-list Trained buyable but capped +1; the page and its Gareth example still show the old "+1 any / +2 Class Skill" model). The `system/skills` page needs the same, plus a **Can't-Use-Untrained flag** inventoried across the Skill roster.
 
 ---
 

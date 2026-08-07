@@ -13,6 +13,10 @@ import type { Attribute } from '../quirks';
 import { classSkills, grantedProficiencies, levelFor, type CharacterState } from './replay';
 import { SKILLS } from '../skills';
 
+/** Using a Skill Untrained takes −1 (some Skills bar Untrained use entirely
+ * — that flag joins the skills data when Les inventories them). */
+export const UNTRAINED_PENALTY = -1;
+
 /** One labeled component of a derived number. */
 export interface Part {
   label: string;
@@ -113,9 +117,15 @@ export function derive(state: CharacterState): DerivedSheet {
 
   const speed = sum([{ label: 'Base', value: 30 }]);
 
+  // Trained Skills: every Class Skill (Trained free, +0 until advanced) plus
+  // any off-list Skill made Trained with a Minor. Untrained use is −1.
   const ownClassSkills = classSkills(state);
-  const skills: DerivedSkill[] = Object.entries(state.skillRanks).map(([skill, rank]) => {
+  const trainedNames = [
+    ...new Set([...ownClassSkills, ...state.trainedSkills, ...Object.keys(state.skillRanks)]),
+  ];
+  const skills: DerivedSkill[] = trainedNames.map((skill) => {
     const base = skill.replace(/\s*\(.*\)$/, '');
+    const rank = state.skillRanks[skill] ?? 0;
     const def = SKILLS.find((s) => s.name === base);
     // A skill's governing attribute is the first listed ("Dex, Wis" → Dex).
     const short = parseAttr(def?.attrs.split(',')[0] ?? '');
@@ -127,7 +137,7 @@ export function derive(state: CharacterState): DerivedSheet {
       isClassSkill: ownClassSkills.includes(base),
       value: sum([
         { label: attr, value: attrTotal },
-        { label: 'Ranks', value: rank },
+        ...(rank ? [{ label: 'Ranks', value: rank }] : []),
       ]),
     };
   });

@@ -119,6 +119,12 @@ export interface ClassDef {
 /** Everyone speaks Imperial; class/subclass language grants come on top. */
 export const DEFAULT_LANGUAGE: Language = 'Imperial';
 
+/** Runtime list of the languages of Avilund (mirrors the Language type). */
+export const LANGUAGES: readonly Language[] = [
+  'Imperial', 'Auld Imperial', 'Elder', 'Elder Arcana', 'Black Tongue',
+  'Kellish', 'Common Feral', 'First Tongue', 'Archipelago', 'Eldritch Tongue',
+];
+
 export const CLASSES: ClassDef[] = [
   {
     id: 'soldier',

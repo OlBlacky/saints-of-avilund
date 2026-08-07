@@ -39,8 +39,9 @@ export type RecordEvent =
   | (BaseEvent & { type: 'subclass-chosen'; subclassId: string })
   /** Creation-only: −1 to an Attribute for +1 Major (at most two). */
   | (BaseEvent & { type: 'flaw-taken'; attr: Attribute })
-  /** The finale: the rolled Quirk (and, later, Gear) package. */
-  | (BaseEvent & { type: 'quirk-rolled'; quirkName: string; slots: Record<string, string>; rerollsUsed: number })
+  /** The finale: the rolled Quirk (and, later, Gear) package. Stores the
+   * card id + drawn slot fills — the texts re-derive from the corpus. */
+  | (BaseEvent & { type: 'quirk-rolled'; quirkId?: string; quirkName: string; slots: Record<string, string>; rerollsUsed: number })
   /** The point of no return — the spine locks, play begins at Level 1. */
   | (BaseEvent & { type: 'crystallized' })
 
@@ -63,8 +64,12 @@ export type RecordEvent =
   | (BaseEvent & { type: 'defence-bought'; attr: Attribute })
   /** +Class HP. Once per Level window. */
   | (BaseEvent & { type: 'hp-bought' })
-  /** +1 in any Skill, or +2 in a Class Skill — one purchase per Skill. */
-  | (BaseEvent & { type: 'skill-bought'; skill: string })
+  /** Become Trained (+0) in a Skill not on your Class list. Class Skills
+   * arrive Trained free. Untrained use is −1 (or barred, where flagged). */
+  | (BaseEvent & { type: 'skill-trained'; skill: string })
+  /** +1 Skill Rank. Class Skills climb +1 → +2 (Level 3) → +3 (Level 5);
+   * bought-Trained Skills never pass +1. 1 Minor per step. */
+  | (BaseEvent & { type: 'skill-advanced'; skill: string })
   /** A Weapon/Armour/Implement proficiency (fixed at base, never advances). */
   | (BaseEvent & { type: 'proficiency-bought'; group: WeaponGroup | ArmourProficiency | ImplementGroup })
   /** +1 on a Class/Subclass proficiency (cap +2; second step at Level 5). */

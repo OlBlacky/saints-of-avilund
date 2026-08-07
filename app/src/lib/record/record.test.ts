@@ -47,10 +47,10 @@ function gareth(): RecordEvent[] {
     ev('hp-bought', {}),
     ev('defence-bought', { attr: 'Constitution' }),
     ev('defence-bought', { attr: 'Constitution' }),
-    ev('skill-bought', { skill: 'Endurance' }),
-    ev('skill-bought', { skill: 'Intimidate' }),
-    ev('skill-bought', { skill: 'Survival' }),
-    ev('skill-bought', { skill: 'Perception' }),
+    ev('skill-advanced', { skill: 'Endurance' }),
+    ev('skill-advanced', { skill: 'Intimidate' }),
+    ev('skill-advanced', { skill: 'Survival' }),
+    ev('skill-advanced', { skill: 'Perception' }),
     ev('proficiency-advanced', { group: 'Heavy Blades' }),
     ev('language-bought', { language: 'Kellish' }),
     // The finale
@@ -88,8 +88,14 @@ describe('the worked example replays clean', () => {
     expect(sheet.level).toBe(1);                         // crystallized, no milestones
 
     const endurance = sheet.skills.find((s) => s.skill === 'Endurance')!;
-    expect(endurance.value.total).toBe(4);               // Con 2 + Class Skill 2
+    expect(endurance.value.total).toBe(3);               // Con 2 + Rank 1
     expect(endurance.isClassSkill).toBe(true);
+
+    // Class Skills arrive Trained (+0) even unadvanced — all six present.
+    const trained = sheet.skills.map((s) => s.skill);
+    for (const s of ['Endurance', 'Intimidate', 'Survival', 'Perception']) {
+      expect(trained).toContain(s);
+    }
 
     expect(sheet.languages).toContain('Imperial');
     expect(sheet.languages).toContain('Kellish');
@@ -195,6 +201,56 @@ describe('enforcement', () => {
       ev('ability-advanced', { ref: { category: 'Arms', ability: 'Martial Strike' }, variable: 'damage', toRank: 2 }),
     ]);
     expect(paced.flags).toEqual([]);
+  });
+
+  it('runs the Skill track: Trained +0, +1 open, +2 at Level 3, +3 at Level 5', () => {
+    const base = [
+      ev('class-chosen', { classId: 'soldier' }),
+      ev('subclass-chosen', { subclassId: 'vanguard' }),
+      ev('quirk-rolled', { quirkName: 'Q', slots: {}, rerollsUsed: 0 }),
+      ev('crystallized', {}),
+      ev('skill-advanced', { skill: 'Endurance' }),
+    ];
+    // +2 before Level 3 is refused…
+    const early = replay([...base, ev('skill-advanced', { skill: 'Endurance' })]);
+    expect(early.flags.some((f) => f.code === 'over-cap')).toBe(true);
+
+    // …opens at Level 3 (6 Milestones), and +3 waits for Level 5.
+    const toL3 = Array.from({ length: 6 }, () => ev('milestone-granted', {}));
+    const atL3 = replay([...base, ...toL3, ev('skill-advanced', { skill: 'Endurance' })]);
+    expect(atL3.flags).toEqual([]);
+    expect(atL3.state.skillRanks.Endurance).toBe(2);
+
+    const plus3Early = replay([
+      ...base, ...toL3,
+      ev('skill-advanced', { skill: 'Endurance' }),
+      ev('skill-advanced', { skill: 'Endurance' }),
+    ]);
+    expect(plus3Early.flags.some((f) => f.message.includes('Level 5'))).toBe(true);
+  });
+
+  it('lets anyone train an off-list Skill, capped at +1 forever', () => {
+    const base = [
+      ev('class-chosen', { classId: 'soldier' }),
+      ev('subclass-chosen', { subclassId: 'vanguard' }),
+    ];
+    // Advancing untrained is refused; train first, then +1, then never +2.
+    const untrained = replay([...base, ev('skill-advanced', { skill: 'Stealth' })]);
+    expect(untrained.flags.some((f) => f.code === 'wrong-order')).toBe(true);
+
+    const track = replay([
+      ...base,
+      ev('skill-trained', { skill: 'Stealth' }),
+      ev('skill-advanced', { skill: 'Stealth' }),
+      ev('skill-advanced', { skill: 'Stealth' }),
+    ]);
+    expect(track.flags).toHaveLength(1);
+    expect(track.flags[0].message).toContain('never passes +1');
+    expect(track.state.skillRanks.Stealth).toBe(1);
+
+    // Training a Class Skill is refused — it's already Trained, free.
+    const redundant = replay([...base, ev('skill-trained', { skill: 'Endurance' })]);
+    expect(redundant.flags.some((f) => f.code === 'duplicate')).toBe(true);
   });
 
   it('keeps Flaws creation-only and at most two', () => {
