@@ -189,6 +189,27 @@ export default function CreationFlow() {
   const sub = cls?.subclasses.find((s) => s.id === state.subclassId);
   const quirkRolled = Boolean(state.quirk);
 
+  /** Annotate attribute expressions in a Ladder value with this character's
+   * math: "Heal Wis + 1 HP" → "Heal Wis + 1 HP (2+1=3 total)"; "Int rounds"
+   * → "Int rounds (2)". Short attribute tokens only — prose stays prose. */
+  const ATTR_SHORT_TOTALS: Record<string, number> = Object.fromEntries(
+    sheet.attributes.map((a) => [a.attr.slice(0, 3), a.value.total]),
+  );
+  const annotate = (text: string): string =>
+    text.replace(
+      /\b(Str|Dex|Con|Int|Wis|Cha)\b(\s*([+×x])\s*(\d+))?/g,
+      (whole, attr: string, _expr, op?: string, num?: string) => {
+        const a = ATTR_SHORT_TOTALS[attr];
+        if (a === undefined) return whole;
+        if (op && num) {
+          const b = Number(num);
+          const total = op === '+' ? a + b : a * b;
+          return `${whole} (${a}${op === '+' ? '+' : '×'}${b}=${total} total)`;
+        }
+        return `${whole} (${a})`;
+      },
+    );
+
   // ── Small render helpers ────────────────────────────────────────────────
 
   const Pips = ({ kind, n }: { kind: 'M' | 'm'; n: number }) => (
@@ -471,7 +492,9 @@ export default function CreationFlow() {
                           // (emphasized), the next step as the priced button,
                           // and the rest of the road greyed out ahead.
                           const AdvStrip = ({ owned }: { owned: (typeof state.abilities)[number] }) => {
-                            const clip = (s: string, n = 26) => (s.length > n ? `${s.slice(0, n - 1)}…` : s);
+                            const clip = (s: string, n = 40) => (s.length > n ? `${s.slice(0, n - 1)}…` : s);
+                            const show = (s: string) => clip(annotate(s));
+                            const full = (s: string) => annotate(s);
                             return (
                               <>
                                 {VAR_ORDER.filter((k) => ab.vars[k]?.advances?.length).map((k) => {
@@ -488,7 +511,7 @@ export default function CreationFlow() {
                                           return (
                                             <>
                                               {sep}
-                                              <span class="cf-stepchip passed" title={`${val} — climbed past`}>{clip(val)}</span>
+                                              <span class="cf-stepchip passed" title={`${full(val)} — climbed past`}>{show(val)}</span>
                                             </>
                                           );
                                         }
@@ -496,7 +519,7 @@ export default function CreationFlow() {
                                           return (
                                             <>
                                               {sep}
-                                              <span class="cf-stepchip rests" title={`${val} — where it rests now`}>{clip(val)}</span>
+                                              <span class="cf-stepchip rests" title={`${full(val)} — where it rests now`}>{show(val)}</span>
                                               {rank > 0 && (
                                                 <Undo
                                                   pred={(e) =>
@@ -523,7 +546,7 @@ export default function CreationFlow() {
                                                   variable: k,
                                                   toRank: rank + 1,
                                                 })}
-                                                label={`${clip(val)} · ${cost}`}
+                                                label={`${show(val)} · ${cost}`}
                                               />
                                             </>
                                           );
@@ -531,8 +554,8 @@ export default function CreationFlow() {
                                         return (
                                           <>
                                             {sep}
-                                            <span class="cf-stepchip ahead" title={`${val} — further along the Ladder (${cost})`}>
-                                              {clip(val)} · {cost}
+                                            <span class="cf-stepchip ahead" title={`${full(val)} — further along the Ladder (${cost})`}>
+                                              {show(val)} · {cost}
                                             </span>
                                           </>
                                         );
@@ -749,6 +772,7 @@ export default function CreationFlow() {
               </div>
 
               <h3>Proficiencies</h3>
+              <p class="cf-how">Class and Subclass proficiencies advance; bought proficiencies stay at +0.</p>
               <div class="cf-chiprow">
                 {sheet.proficiencies.map((p) => (
                   <span key={p.group} class="cf-chip owned">
@@ -767,7 +791,7 @@ export default function CreationFlow() {
               </div>
               <div class="cf-line">
                 <GroupPicker
-                  label="Buy a proficiency (1 m, fixed at +0)"
+                  label="Buy a proficiency (1 m)"
                   options={[...WEAPON_GROUPS, ...ARMOUR_PROFICIENCIES, ...IMPLEMENT_GROUPS].filter(
                     (g) => !grantedProficiencies(state).includes(g) && !state.boughtProficiencies.includes(g),
                   )}
@@ -1016,7 +1040,7 @@ function TrainPicker({
   return (
     <span class="cf-picker">
       <select value={sel} disabled={crystallized} onChange={(e) => setSel((e.target as HTMLSelectElement).value)}>
-        <option value="">Train an off-list Skill (1 m, capped +1)…</option>
+        <option value="">Train an off-list Skill (1 m)…</option>
         {options.map((o) => (
           <option key={o} value={o}>{o}</option>
         ))}
