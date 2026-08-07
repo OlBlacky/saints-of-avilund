@@ -237,7 +237,7 @@ unarmed by the seesaw alone.
 
 ### The gear corpus
 
-Sixteen so far.
+Eighteen so far (6 Good / 4 Neutral / 8 Bad).
 
 | Gear | Category | The one idea |
 |---|---|---|
@@ -260,9 +260,9 @@ Sixteen so far.
 | **Another Man's {weapon}** | Bad | A fine blade wearing somebody else's crest. |
 | **A Black Tongue Pamphlet** | Bad | You cannot read it, and you keep it anyway. |
 
-(Eighteen rows, sixteen — the hooks that began as "Neutral" moved to Bad in
-the price-anchored re-pool of Aug 2026: an all-hook curio is *useless* gear,
-which is exactly what the 200 sp purse compensates for.)
+(The all-hook curios — orb, diary, key, dog — began as "Neutral" and moved to
+Bad in the price-anchored re-pool of Aug 2026: an all-hook curio is *useless*
+gear, which is exactly what the 200 sp purse compensates for.)
 
 ### Context-aware draws (planned)
 
