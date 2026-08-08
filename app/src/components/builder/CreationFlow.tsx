@@ -32,6 +32,8 @@ import type { RecordEvent } from '../../lib/record/events';
 import {
   accessibleCategories,
   classSkills,
+  companionBank,
+  companionLevel,
   grantedProficiencies,
   languageAllowance,
   replay,
@@ -251,11 +253,74 @@ export default function CreationFlow() {
     </button>
   );
 
-  // The advancement strip, shared by plain cards, builder instances (which
-  // pass their instanceId), and Feat-granted cards. Each Ladder renders as
-  // its whole track: steps already climbed, the value the Ability RESTS at
-  // (emphasized), the next step as the priced button, and the rest of the
-  // road greyed out ahead.
+  // One Ladder rendered as its whole track: steps already climbed, the value
+  // it RESTS at (emphasized), the next step as the priced button, and the
+  // rest of the road greyed out ahead. Shared by Ability variables and
+  // Companion stat Ladders — the caller supplies the buy event and undo test.
+  const LadderStrip = ({
+    label,
+    base,
+    advances,
+    rank,
+    buyEv,
+    undoPred,
+  }: {
+    label: string;
+    base: string;
+    advances: { value: string; cost: 'm' | 'M' }[];
+    rank: number;
+    buyEv: (toRank: number) => RecordEvent;
+    undoPred: (e: RecordEvent) => boolean;
+  }) => {
+    const clip = (s: string, n = 40) => (s.length > n ? `${s.slice(0, n - 1)}…` : s);
+    const show = (s: string) => clip(annotate(s));
+    const full = (s: string) => annotate(s);
+    const steps = [base, ...advances.map((a) => a.value)];
+    return (
+      <span class="cf-advline">
+        <span class="cf-advlabel">{label}</span>
+        {steps.map((val, i) => {
+          const cost = i > 0 ? advances[i - 1].cost : undefined;
+          const sep = i > 0 && <span class="cf-stepsep">›</span>;
+          if (i < rank) {
+            return (
+              <>
+                {sep}
+                <span class="cf-stepchip passed" title={`${full(val)} — climbed past`}>{show(val)}</span>
+              </>
+            );
+          }
+          if (i === rank) {
+            return (
+              <>
+                {sep}
+                <span class="cf-stepchip rests" title={`${full(val)} — where it rests now`}>{show(val)}</span>
+                {rank > 0 && <Undo pred={undoPred} title="refund this Rank" />}
+              </>
+            );
+          }
+          if (i === rank + 1) {
+            return (
+              <>
+                {sep}
+                <Buy ev={buyEv(rank + 1)} label={`${show(val)} · ${cost}`} />
+              </>
+            );
+          }
+          return (
+            <>
+              {sep}
+              <span class="cf-stepchip ahead" title={`${full(val)} — further along the Ladder (${cost})`}>
+                {show(val)} · {cost}
+              </span>
+            </>
+          );
+        })}
+      </span>
+    );
+  };
+
+  // Every advancing variable of an owned Ability, as LadderStrips.
   const AdvStrip = ({
     catName,
     card,
@@ -266,78 +331,104 @@ export default function CreationFlow() {
     owned: ReturnType<typeof replay>['state']['abilities'][number];
   }) => {
     const ref = { category: catName, ability: card.name };
-    const clip = (s: string, n = 40) => (s.length > n ? `${s.slice(0, n - 1)}…` : s);
-    const show = (s: string) => clip(annotate(s));
-    const full = (s: string) => annotate(s);
     return (
       <>
-        {VAR_ORDER.filter((k) => card.vars[k]?.advances?.length).map((k) => {
-          const variable = card.vars[k]!;
-          const rank = owned.ranks[k] ?? 0;
-          const steps = [variable.base ?? '—', ...variable.advances!.map((a) => a.value)];
-          return (
-            <span key={k} class="cf-advline">
-              <span class="cf-advlabel">{VAR_LABELS[k]}</span>
-              {steps.map((val, i) => {
-                const cost = i > 0 ? variable.advances![i - 1].cost : undefined;
-                const sep = i > 0 && <span class="cf-stepsep">›</span>;
-                if (i < rank) {
-                  return (
-                    <>
-                      {sep}
-                      <span class="cf-stepchip passed" title={`${full(val)} — climbed past`}>{show(val)}</span>
-                    </>
-                  );
-                }
-                if (i === rank) {
-                  return (
-                    <>
-                      {sep}
-                      <span class="cf-stepchip rests" title={`${full(val)} — where it rests now`}>{show(val)}</span>
-                      {rank > 0 && (
-                        <Undo
-                          pred={(e) =>
-                            e.type === 'ability-advanced' &&
-                            e.ref.category === catName &&
-                            e.ref.ability === card.name &&
-                            e.variable === k &&
-                            (owned.instanceId ? e.instanceId === owned.instanceId : true)
-                          }
-                          title="refund this Rank"
-                        />
-                      )}
-                    </>
-                  );
-                }
-                if (i === rank + 1) {
-                  return (
-                    <>
-                      {sep}
-                      <Buy
-                        ev={mk('ability-advanced', {
-                          ref,
-                          instanceId: owned.instanceId,
-                          variable: k,
-                          toRank: rank + 1,
-                        })}
-                        label={`${show(val)} · ${cost}`}
-                      />
-                    </>
-                  );
-                }
-                return (
-                  <>
-                    {sep}
-                    <span class="cf-stepchip ahead" title={`${full(val)} — further along the Ladder (${cost})`}>
-                      {show(val)} · {cost}
-                    </span>
-                  </>
-                );
-              })}
-            </span>
-          );
-        })}
+        {VAR_ORDER.filter((k) => card.vars[k]?.advances?.length).map((k) => (
+          <LadderStrip
+            key={k}
+            label={VAR_LABELS[k]}
+            base={card.vars[k]!.base ?? '—'}
+            advances={card.vars[k]!.advances!}
+            rank={owned.ranks[k] ?? 0}
+            buyEv={(toRank) =>
+              mk('ability-advanced', { ref, instanceId: owned.instanceId, variable: k, toRank })
+            }
+            undoPred={(e) =>
+              e.type === 'ability-advanced' &&
+              e.ref.category === catName &&
+              e.ref.ability === card.name &&
+              e.variable === k &&
+              (owned.instanceId ? e.instanceId === owned.instanceId : true)
+            }
+          />
+        ))}
       </>
+    );
+  };
+
+  // The Companion box on a bonded card: identity, the derived Level/DC and
+  // its own bank, and the stat Ladders (its bank pays first, then the
+  // owner's — the engine decides and records which).
+  const CompanionBox = ({
+    catName,
+    card,
+    owned,
+  }: {
+    catName: string;
+    card: (typeof CATEGORIES)[number]['abilities'][number];
+    owned: ReturnType<typeof replay>['state']['abilities'][number];
+  }) => {
+    const ref = { category: catName, ability: card.name };
+    const comp = owned.companion!;
+    const level = companionLevel(state, owned);
+    const bank = companionBank(state, owned);
+    const rename = (name: string, description: string) =>
+      setDraft((d) => ({
+        ...d,
+        events: [
+          ...d.events.filter(
+            (x) =>
+              !(
+                x.type === 'companion-named' &&
+                x.ref.category === catName &&
+                x.ref.ability === card.name
+              ),
+          ),
+          mk('companion-named', { ref, name, description }),
+        ],
+      }));
+    return (
+      <div class="cf-companion">
+        <span class="cf-advline cf-instline">
+          <input
+            class="cf-instname"
+            value={comp.name ?? ''}
+            placeholder="Name it"
+            title="name this Companion"
+            onInput={(ev2) => rename((ev2.target as HTMLInputElement).value, comp.description ?? '')}
+          />
+          <span class="cf-instchoice">Level {level} · DC {10 + level}</span>
+          <span
+            class="cf-instchoice"
+            title="The Companion's own Advances: 1 Minor per Level, a Major every third. They pay for its Ladders before yours do."
+          >
+            its bank: {bank.minor}m · {bank.major}M
+          </span>
+        </span>
+        <input
+          class="cf-compdesc"
+          value={comp.description ?? ''}
+          placeholder="Describe it"
+          title="describe this Companion"
+          onInput={(ev2) => rename(comp.name ?? '', (ev2.target as HTMLInputElement).value)}
+        />
+        {(card.extraVars ?? []).map((ladder) => (
+          <LadderStrip
+            key={ladder.name}
+            label={ladder.name}
+            base={ladder.base ?? '—'}
+            advances={ladder.advances ?? []}
+            rank={comp.ranks[ladder.name] ?? 0}
+            buyEv={(toRank) => mk('companion-advanced', { ref, ladder: ladder.name, toRank })}
+            undoPred={(e) =>
+              e.type === 'companion-advanced' &&
+              e.ref.category === catName &&
+              e.ref.ability === card.name &&
+              e.ladder === ladder.name
+            }
+          />
+        ))}
+      </div>
     );
   };
 
@@ -701,6 +792,9 @@ export default function CreationFlow() {
                                 <tr class="cf-abadv">
                                   <td colspan={3}>
                                     <AdvStrip catName={catName} card={ab} owned={owned} />
+                                    {owned.companion && (
+                                      <CompanionBox catName={catName} card={ab} owned={owned} />
+                                    )}
                                   </td>
                                 </tr>
                               )}

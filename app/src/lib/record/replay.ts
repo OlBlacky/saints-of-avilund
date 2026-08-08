@@ -30,6 +30,19 @@ export interface OwnedAbility {
   choices?: Record<string, string>;
   /** Bought advancement rank per variable (absent = base). */
   ranks: Record<string, number>;
+  /** Present on Companion cards (role 'Companion') — bonded when bought. */
+  companion?: {
+    name?: string;
+    description?: string;
+    /** The owner's Level at bonding; the Companion's Level lags from here. */
+    bondedAtLevel: number;
+    /** Stat-Ladder Ranks, keyed by the card's extraVars names. */
+    ranks: Record<string, number>;
+    /** Spent from the Companion's own earned Advances. */
+    ownSpent: { minor: number; major: number };
+    /** The owner's invested Advances — these refund on death. */
+    ownerSpent: { minor: number; major: number };
+  };
 }
 
 export interface CharacterState {
@@ -273,6 +286,27 @@ function saveTotal(state: CharacterState, attr: Attribute): number {
     )
     .reduce((t, e) => t + e.value, 0);
   return attrValue + (state.defenceRanks[attr] ?? 0) + mods;
+}
+
+/** A Companion's own Level: 0 at bonding, rising with the owner's Levels
+ * thereafter — a late or replacement Companion lags naturally. */
+export function companionLevel(state: CharacterState, owned: OwnedAbility): number {
+  if (!owned.companion) return 0;
+  return Math.max(0, levelFor(state.milestones, state.crystallized) - owned.companion.bondedAtLevel);
+}
+
+/** The Companion's own remaining Advances: each of its Levels earns 1 Minor,
+ * and every third a Major (m-m-M — slimmer than a PC's curve). */
+export function companionBank(
+  state: CharacterState,
+  owned: OwnedAbility,
+): { minor: number; major: number } {
+  if (!owned.companion) return { minor: 0, major: 0 };
+  const level = companionLevel(state, owned);
+  return {
+    minor: level - owned.companion.ownSpent.minor,
+    major: Math.floor(level / 3) - owned.companion.ownSpent.major,
+  };
 }
 
 /** Polyglot's language allowance: Ranks 1–3 grant free languages — the best
@@ -529,7 +563,24 @@ export function replay(events: RecordEvent[]): ReplayResult {
           break;
         }
         if (!spend(e, 'major', 1)) break;
-        state.abilities.push({ ref: e.ref, ranks: {} });
+        state.abilities.push({
+          ref: e.ref,
+          ranks: {},
+          // A Companion card bonds on purchase; the log position fixes the
+          // Level it lags from.
+          ...(card.role === 'Companion'
+            ? {
+                companion: {
+                  // Creation bonding counts as Level 1 — the dog is 0 while
+                  // its owner is 1, and rises with each Level thereafter.
+                  bondedAtLevel: Math.max(1, levelFor(state.milestones, state.crystallized)),
+                  ranks: {},
+                  ownSpent: { minor: 0, major: 0 },
+                  ownerSpent: { minor: 0, major: 0 },
+                },
+              }
+            : {}),
+        });
         break;
       }
 
@@ -579,6 +630,57 @@ export function replay(events: RecordEvent[]): ReplayResult {
         }
         if (!spend(e, advance.cost === 'M' ? 'major' : 'minor', 1)) break;
         owned.ranks[e.variable] = e.toRank;
+        advanceSlots.add(slot);
+        break;
+      }
+
+      case 'companion-named': {
+        const owned = state.abilities.find(
+          (a) => a.ref.category === e.ref.category && a.ref.ability === e.ref.ability,
+        );
+        if (!owned?.companion) { flag(e, 'unknown-ref', `no Companion "${e.ref.ability}" to name`); break; }
+        owned.companion.name = e.name;
+        owned.companion.description = e.description;
+        break;
+      }
+
+      case 'companion-advanced': {
+        const owned = state.abilities.find(
+          (a) => a.ref.category === e.ref.category && a.ref.ability === e.ref.ability,
+        );
+        const card = findCard(e.ref);
+        if (!owned?.companion || !card) {
+          flag(e, 'unknown-ref', `no Companion "${e.ref.ability}" to advance`);
+          break;
+        }
+        const ladder = card.extraVars?.find((l) => l.name === e.ladder);
+        const advance = ladder?.advances?.[e.toRank - 1];
+        if (!advance) {
+          flag(e, 'unknown-ref', `${e.ref.ability} has no ${e.ladder} Rank ${e.toRank}`);
+          break;
+        }
+        const current = owned.companion.ranks[e.ladder] ?? 0;
+        if (e.toRank !== current + 1) {
+          flag(e, 'wrong-order', `${e.ladder} is at Rank ${current}; next is ${current + 1}, not ${e.toRank}`);
+          break;
+        }
+        // One Rank per Ladder per Level — regardless of who pays. The owner's
+        // investment widens how many Ladders move in a Level, never one
+        // Ladder's speed (Les, Aug 2026).
+        const slot = `companion/${e.ref.category}/${e.ref.ability}/${e.ladder}/${windowFor(state.milestones)}`;
+        if (advanceSlots.has(slot)) {
+          flag(e, 'ladder-pace', `${e.ladder} already advanced this Level`);
+          break;
+        }
+        // The Companion's own earned Advances pay first; the owner's bank after.
+        const kind = advance.cost === 'M' ? 'major' : 'minor';
+        if (companionBank(state, owned)[kind] >= 1) {
+          owned.companion.ownSpent[kind] += 1;
+        } else {
+          if (!spend(e, kind, 1)) break;
+          owned.companion.ownerSpent[kind] += 1;
+        }
+        owned.companion.ranks[e.ladder] = e.toRank;
         advanceSlots.add(slot);
         break;
       }

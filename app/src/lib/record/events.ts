@@ -109,6 +109,15 @@ export type RecordEvent =
       variable: string;
       /** The Rank reached (1 = the first advance beyond base). */
       toRank: number;
-    });
+    })
+
+  // ── Companions ───────────────────────────────────────────────────────
+  /** Name and describe a Companion — free, non-mechanical, editable. The
+   * builder keeps at most one per Companion card (replace, not append). */
+  | (BaseEvent & { type: 'companion-named'; ref: AbilityRef; name: string; description: string })
+  /** Climb one of a Companion's stat Ladders one Rank. The payer is decided
+   * at replay time — the Companion's own earned Advances first, the owner's
+   * bank after — and recorded in state for the death-refund rule. */
+  | (BaseEvent & { type: 'companion-advanced'; ref: AbilityRef; ladder: string; toRank: number });
 
 export type RecordEventType = RecordEvent['type'];

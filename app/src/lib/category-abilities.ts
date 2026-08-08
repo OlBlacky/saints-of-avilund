@@ -3040,6 +3040,11 @@ const HUSBANDRY: Ability[] = [
         note: 'Built in. Interrupt, when an opponent attempts to move adjacent to an ally: the dog may shift 10\' and snap at them — the opponent takes −1 on attacks until the end of its next turn.',
       },
       {
+        label: 'Tricks',
+        note: 'The dog knows as many tricks as its Tricks Ladder allows, chosen from the list. [[trick effects to come]]',
+        detail: ['Come', 'Stay', 'Attack', 'Guard', 'Fetch', 'Follow'],
+      },
+      {
         label: 'A Companion',
         note: 'The dog is a character: give it a name and a description of its own — every Companion card carries both. It has its own Level: 0 when bonded, rising whenever its owner levels thereafter — one taken late, or a replacement, lags behind. Each of its own levels earns it 1 Minor Advance, and every third level a Major (the rule for all Companions). Its owner may also spend his own Advances on these Ladders.',
       },

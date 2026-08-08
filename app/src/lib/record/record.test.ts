@@ -6,7 +6,7 @@ import { describe, expect, it } from 'vitest';
 
 import type { RecordEvent } from './events';
 import { derive } from './derive';
-import { accessibleCategories, levelFor, replay, windowFor } from './replay';
+import { accessibleCategories, companionLevel, levelFor, replay, windowFor } from './replay';
 
 let n = 0;
 /** Shorthand event factory — ids/timestamps are engine-opaque in tests. */
@@ -485,6 +485,56 @@ describe('enforcement', () => {
     expect(sheet.hitPoints.parts.filter((p) => p.label === 'Toughness')).toHaveLength(3);
     expect(sheet.damageReduction.total).toBe(1);
     expect(sheet.damageReduction.parts).toContainEqual({ label: 'Toughness', value: 1 });
+  });
+
+  it('bonds, names, and advances a Companion on the two-bank economy', () => {
+    const ref = { category: 'Husbandry', ability: 'Shepherd’s Dog' };
+    const base = [
+      ev('class-chosen', { classId: 'naturalist' }),
+      ev('subclass-chosen', { subclassId: 'shepherd' }),
+      ev('ability-bought', { ref }),
+      ev('companion-named', { ref, name: 'Bram', description: 'A wiry grey herder' }),
+    ];
+    const bonded = replay(base);
+    expect(bonded.flags).toEqual([]);
+    const dog = bonded.state.abilities[0];
+    expect(dog.companion?.name).toBe('Bram');
+    expect(companionLevel(bonded.state, dog)).toBe(0);
+
+    // At Level 0 the dog has no bank of its own — the owner's Minors pay.
+    const invested = replay([...base, ev('companion-advanced', { ref, ladder: 'HP', toRank: 1 })]);
+    expect(invested.flags).toEqual([]);
+    expect(invested.state.abilities[0].companion?.ownerSpent.minor).toBe(1);
+
+    // One Rank per Ladder per Level — but investment moves other Ladders.
+    const tooFast = replay([
+      ...base,
+      ev('companion-advanced', { ref, ladder: 'HP', toRank: 1 }),
+      ev('companion-advanced', { ref, ladder: 'HP', toRank: 2 }),
+    ]);
+    expect(tooFast.flags.some((f) => f.code === 'ladder-pace')).toBe(true);
+    const twoLadders = replay([
+      ...base,
+      ev('companion-advanced', { ref, ladder: 'HP', toRank: 1 }),
+      ev('companion-advanced', { ref, ladder: 'Attack', toRank: 1 }),
+    ]);
+    expect(twoLadders.flags).toEqual([]);
+
+    // A Level later the dog's own earned Minor pays before the owner's bank.
+    const grown = replay([
+      ...base,
+      ev('quirk-rolled', { quirkName: 'Q', slots: {}, rerollsUsed: 0, gearName: 'G', gearSlots: {} }),
+      ev('crystallized', {}),
+      ...Array.from({ length: 3 }, () => ev('milestone-granted', {})),
+      ev('companion-advanced', { ref, ladder: 'HP', toRank: 1 }),
+    ]);
+    expect(grown.flags).toEqual([]);
+    const grownDog = grown.state.abilities[0];
+    expect(companionLevel(grown.state, grownDog)).toBe(1);
+    expect(grownDog.companion?.ownSpent.minor).toBe(1);
+    expect(grownDog.companion?.ownerSpent.minor).toBe(0);
+    // The owner's Minors are untouched: 11 creation + 3 milestones.
+    expect(grown.state.bank.minor).toBe(14);
   });
 
   it('Polyglot opens on any one of Int, Wis, or Cha at +2', () => {
