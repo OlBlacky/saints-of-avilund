@@ -502,6 +502,23 @@ describe('enforcement', () => {
       ev('feat-bought', { featId: 'polyglot' }),
     ]);
     expect(cha.flags).toEqual([]);
+
+    // Rank 1 grants free languages equal to the best of Int/Wis/Cha (2 here):
+    // two cost nothing, the third costs the usual Minor.
+    const spoken = replay([
+      ...base,
+      ev('attribute-bought', { attr: 'Charisma' }),
+      ev('attribute-bought', { attr: 'Charisma' }),
+      ev('feat-bought', { featId: 'polyglot' }),
+      ev('language-bought', { language: 'Kellish' }),
+      ev('language-bought', { language: 'Elder' }),
+      ev('language-bought', { language: 'Archipelago' }),
+    ]);
+    expect(spoken.flags).toEqual([]);
+    expect(spoken.state.languages).toHaveLength(3);
+    expect(spoken.state.freeLanguagesUsed).toBe(2);
+    // 11 Minors − 1 (Polyglot) − 1 (the third language) = 9.
+    expect(spoken.state.bank.minor).toBe(9);
   });
 
   it('gates Defensive Specialization on the whole Save total, not the Attribute alone', () => {

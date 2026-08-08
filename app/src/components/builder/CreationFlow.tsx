@@ -33,6 +33,7 @@ import {
   accessibleCategories,
   classSkills,
   grantedProficiencies,
+  languageAllowance,
   replay,
   tryEvent,
 } from '../../lib/record/replay';
@@ -124,6 +125,7 @@ function mk<T extends RecordEvent['type']>(
 export default function CreationFlow() {
   const [draft, setDraft] = useState<Draft>(EMPTY_DRAFT);
   const [loaded, setLoaded] = useState(false);
+  const [featView, setFeatView] = useState<'owned' | 'eligible' | 'all'>('eligible');
 
   useEffect(() => {
     setDraft(loadDraft());
@@ -838,12 +840,17 @@ export default function CreationFlow() {
                 })}
               </div>
               <div class="cf-line">
-                <GroupPicker
-                  label="Buy a language (1 m)"
-                  options={LANGUAGES.filter((l) => !sheet.languages.includes(l))}
-                  disabled={crystallized}
-                  onPick={(language) => append(mk('language-bought', { language: language as never }))}
-                />
+                {(() => {
+                  const free = Math.max(0, languageAllowance(state) - state.freeLanguagesUsed);
+                  return (
+                    <GroupPicker
+                      label={free > 0 ? `Add a language (${free} free — Polyglot)` : 'Buy a language (1 m)'}
+                      options={LANGUAGES.filter((l) => !sheet.languages.includes(l))}
+                      disabled={crystallized}
+                      onPick={(language) => append(mk('language-bought', { language: language as never }))}
+                    />
+                  );
+                })()}
               </div>
 
               <h3>Feats</h3>
@@ -852,11 +859,11 @@ export default function CreationFlow() {
                 your build can use.
               </p>
               {(() => {
-                const featRow = (feat: (typeof FEATS)[number]) => {
+                const featRow = (feat: (typeof FEATS)[number], closed = false) => {
                   const owned = state.feats.find((f) => f.featId === feat.id);
                   return (
                     <>
-                      <tr key={feat.id} class={owned ? 'owned' : ''}>
+                      <tr key={feat.id} class={`${owned ? 'owned' : ''} ${closed ? 'closed' : ''}`}>
                         <td class="cf-abname" title={feat.full}>{feat.name}</td>
                         <td class="cf-abbrief">
                           {feat.brief}
@@ -969,22 +976,46 @@ export default function CreationFlow() {
                 };
 
                 const ownedIds = new Set(state.feats.map((f) => f.featId));
-                const open = FEATS.filter(
-                  (f) => ownedIds.has(f.id) || why(mk('feat-bought', { featId: f.id, choices: f.choice ? { [f.choice.key]: f.choice.options[0] } : undefined })) === null,
+                const openIds = new Set(
+                  FEATS.filter(
+                    (f) => ownedIds.has(f.id) || why(mk('feat-bought', { featId: f.id, choices: f.choice ? { [f.choice.key]: f.choice.options[0] } : undefined })) === null,
+                  ).map((f) => f.id),
                 );
-                const closed = FEATS.filter((f) => !open.includes(f));
+                const shown =
+                  featView === 'all'
+                    ? FEATS
+                    : featView === 'eligible'
+                      ? FEATS.filter((f) => openIds.has(f.id))
+                      : FEATS.filter((f) => ownedIds.has(f.id));
                 return (
                   <>
-                    <table class="cf-abtable">
-                      <tbody>{open.map(featRow)}</tbody>
-                    </table>
-                    {closed.length > 0 && (
-                      <details class="cf-closedfeats">
-                        <summary>Not open to this build yet ({closed.length}) — each says why</summary>
-                        <table class="cf-abtable">
-                          <tbody>{closed.map(featRow)}</tbody>
-                        </table>
-                      </details>
+                    <div class="cf-viewtoggle" role="group">
+                      <button
+                        type="button"
+                        class={featView === 'owned' ? 'on' : ''}
+                        onClick={() => setFeatView('owned')}
+                      >
+                        Owned ({ownedIds.size})
+                      </button>
+                      <button
+                        type="button"
+                        class={featView === 'eligible' ? 'on' : ''}
+                        onClick={() => setFeatView('eligible')}
+                      >
+                        Eligible ({openIds.size})
+                      </button>
+                      <button
+                        type="button"
+                        class={featView === 'all' ? 'on' : ''}
+                        onClick={() => setFeatView('all')}
+                      >
+                        All ({FEATS.length})
+                      </button>
+                    </div>
+                    {shown.length > 0 && (
+                      <table class="cf-abtable">
+                        <tbody>{shown.map((f) => featRow(f, !openIds.has(f.id)))}</tbody>
+                      </table>
                     )}
                   </>
                 );

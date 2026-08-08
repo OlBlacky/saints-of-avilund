@@ -54,6 +54,8 @@ export interface CharacterState {
   /** Class/Subclass proficiency group → advancement rank (1–2). */
   proficiencyRanks: Record<string, number>;
   languages: string[];
+  /** Languages taken free on Polyglot's allowance (subset of `languages`). */
+  freeLanguagesUsed: number;
   abilities: OwnedAbility[];
   /** Owned Feats: rank 1 for plain Feats, the climbed Rank for Ladders. */
   feats: { featId: string; choices?: Record<string, string>; rank: number }[];
@@ -273,6 +275,20 @@ function saveTotal(state: CharacterState, attr: Attribute): number {
   return attrValue + (state.defenceRanks[attr] ?? 0) + mods;
 }
 
+/** Polyglot's language allowance: Ranks 1–3 grant free languages — the best
+ * of Int/Wis/Cha, then +2, then +2. Read at spend time, so a later Attribute
+ * climb widens the allowance for languages not yet taken. */
+export function languageAllowance(state: CharacterState): number {
+  const owned = state.feats.find((f) => f.featId === 'polyglot');
+  if (!owned) return 0;
+  const best = Math.max(
+    ...(['Intelligence', 'Wisdom', 'Charisma'] as Attribute[]).map(
+      (a) => (state.attributeRanks[a] ?? 0) - (state.flaws.includes(a) ? 1 : 0),
+    ),
+  );
+  return Math.max(0, best) + (owned.rank >= 2 ? 2 : 0) + (owned.rank >= 3 ? 2 : 0);
+}
+
 /** A Skill Generalist Feat counts the build as Trained in every Skill rolled
  * with its Attribute. */
 function generalistTrained(state: CharacterState, skill: string): boolean {
@@ -374,6 +390,7 @@ export function replay(events: RecordEvent[]): ReplayResult {
     boughtProficiencies: [],
     proficiencyRanks: {},
     languages: [],
+    freeLanguagesUsed: 0,
     abilities: [],
     feats: [],
     crystallized: false,
@@ -663,7 +680,10 @@ export function replay(events: RecordEvent[]): ReplayResult {
 
       case 'language-bought': {
         if (state.languages.includes(e.language)) { flag(e, 'duplicate', `already speaks ${e.language}`); break; }
-        if (!spend(e, 'minor', 1)) break;
+        // Polyglot's allowance covers languages first; past it, 1 Minor each.
+        if (state.freeLanguagesUsed < languageAllowance(state)) {
+          state.freeLanguagesUsed += 1;
+        } else if (!spend(e, 'minor', 1)) break;
         state.languages.push(e.language);
         break;
       }
