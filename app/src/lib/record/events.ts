@@ -9,7 +9,8 @@
 // and Milestones. Gear, Chronicle, Market, and transfer events join as their
 // data pillars land.
 
-import type { Attribute, Language } from '../quirks';
+import type { Language } from '../languages';
+import type { Attribute } from '../quirks';
 import type { ArmourProficiency, ImplementGroup } from '../classes';
 import type { WeaponGroup } from '../quirks';
 

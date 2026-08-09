@@ -487,6 +487,41 @@ describe('enforcement', () => {
     expect(sheet.damageReduction.parts).toContainEqual({ label: 'Toughness', value: 1 });
   });
 
+  it('advances named Ladders: Generic Advances buyable, Scribe / Create gated, shared pace', () => {
+    const ref = { category: 'Letters', ability: 'Read Scrolls' };
+    const base = [
+      ev('class-chosen', { classId: 'scholar' }),
+      ev('subclass-chosen', { subclassId: 'arcanist' }),
+      ev('ability-bought', { ref }),
+    ];
+    const ga = replay([...base, ev('ability-advanced', { ref, variable: 'Generic Advances', toRank: 1 })]);
+    expect(ga.flags).toEqual([]);
+    expect(ga.state.abilities[0].ranks['Generic Advances']).toBe(1);
+
+    // Scribe / Create's first Rank opens at Level 3.
+    const early = replay([...base, ev('ability-advanced', { ref, variable: 'Scribe / Create', toRank: 1 })]);
+    expect(early.flags.some((f) => f.code === 'over-cap')).toBe(true);
+
+    // Named Ladders share the card's one-Minor-one-Major-per-Level pace.
+    const paced = replay([
+      ...base,
+      ev('ability-advanced', { ref, variable: 'effects', toRank: 1 }),
+      ev('ability-advanced', { ref, variable: 'Generic Advances', toRank: 1 }),
+    ]);
+    expect(paced.flags.some((f) => f.code === 'ladder-pace')).toBe(true);
+
+    // A Companion's stat Ladders are not reachable this way — they belong to
+    // the Companion economy.
+    const dogRef = { category: 'Husbandry', ability: 'Shepherd’s Dog' };
+    const dog = replay([
+      ev('class-chosen', { classId: 'naturalist' }),
+      ev('subclass-chosen', { subclassId: 'shepherd' }),
+      ev('ability-bought', { ref: dogRef }),
+      ev('ability-advanced', { ref: dogRef, variable: 'HP', toRank: 1 }),
+    ]);
+    expect(dog.flags.some((f) => f.code === 'unknown-ref')).toBe(true);
+  });
+
   it('bonds, names, and advances a Companion on the two-bank economy', () => {
     const ref = { category: 'Husbandry', ability: 'Shepherd’s Dog' };
     const base = [

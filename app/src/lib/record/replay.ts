@@ -599,7 +599,23 @@ export function replay(events: RecordEvent[]): ReplayResult {
             );
         if (!owned) { flag(e, 'wrong-order', `${e.ref.ability} is not owned`); break; }
         const card = findCard(e.ref);
-        const variable = card?.vars[e.variable as keyof typeof card.vars];
+        // A card's advanceable Ladders: its variables, plus its named Ladders
+        // (extraVars and option-block Ladders — Generic Advances, Scribe /
+        // Create). Excluded: automatic hook Ladders (hideCosts — they track
+        // another Ladder), base-priced hook sets (baseCost — not yet modeled),
+        // and a Companion's stat Ladders (companion-advanced owns those).
+        const namedLadders =
+          card && card.role !== 'Companion'
+            ? [
+                ...(card.extraVars ?? []),
+                ...(card.options ?? [])
+                  .filter((o) => !o.hideCosts && !o.baseCost)
+                  .flatMap((o) => o.ladders ?? []),
+              ]
+            : [];
+        const variable =
+          card?.vars[e.variable as keyof typeof card.vars] ??
+          namedLadders.find((l) => l.name === e.variable);
         const advance = variable?.advances?.[e.toRank - 1];
         if (!advance) {
           flag(e, 'unknown-ref', `${e.ref.ability} has no ${e.variable} Rank ${e.toRank}`);

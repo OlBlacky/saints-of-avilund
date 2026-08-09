@@ -12,7 +12,7 @@
 // Subclass grants its tradition's Skill and Language) is enforced by
 // traditions.test.ts.
 
-import type { Language } from './quirks';
+import type { Language } from './languages';
 
 export interface Tradition {
   /** The tradition's knowledge Skill — a name from lib/skills.ts. */

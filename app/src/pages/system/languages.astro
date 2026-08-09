@@ -1,0 +1,141 @@
+---
+import Base from '../../layouts/Base.astro';
+import { url } from '../../lib/url';
+import SystemNav from '../../components/SystemNav.astro';
+import {
+  DIALECT_SOCIAL_PENALTY,
+  LANGUAGES,
+  LANGUAGE_FAMILY,
+  LANGUAGE_NOTES,
+} from '../../lib/languages';
+import type { LanguageFamily } from '../../lib/languages';
+
+// Languages reference — a hand-built route (stub: false in system.ts).
+// Everything renders from lib/languages.ts: the three Families and their
+// Dialects, the standalone vernaculars, and the learned and dead tongues.
+const FAMILIES: LanguageFamily[] = ['Imperial', 'Republic', 'Regnal'];
+const familyMembers = (f: LanguageFamily) =>
+  LANGUAGES.filter((l) => LANGUAGE_FAMILY[l] === f);
+const standalone = LANGUAGES.filter((l) => LANGUAGE_NOTES[l].kind === 'vernacular');
+const learned = LANGUAGES.filter((l) => LANGUAGE_NOTES[l].kind === 'learned');
+const penalty = `−${Math.abs(DIALECT_SOCIAL_PENALTY)}`;
+---
+
+<Base title="Languages" description="The tongues of Avilund — the three Language Families and their Dialects, the standalone vernaculars, and the learned and dead tongues.">
+  <p class="back-link"><a href={url('system/')}>← The System</a></p>
+
+  <header class="saint-head">
+    <p class="eyebrow">I · Foundations</p>
+    <h1>Languages</h1>
+  </header>
+
+  <p class="lede" style="max-width:var(--measure);">
+    Everyone speaks <strong>Imperial</strong>, the common tongue. Every other language is its own
+    purchase: <strong>1 Minor Advance</strong>, or a grant from your Class or Subclass. A magic
+    tradition&rsquo;s texts are written in its own tongue &mdash; to read them, you must know it.
+  </p>
+
+  <div class="prose" style="margin:0 auto 1.6rem;">
+    <p><strong>Language Families.</strong> The living vernaculars group into three
+    <strong>Language Families</strong> &mdash; one for each part of the continent. Each region speaks
+    its own <strong>Dialect</strong>, named with its Family in front. A speaker of one Dialect can make
+    themselves understood in another Dialect of the same Family at <strong>{penalty} to social
+    checks</strong>. Across Families there is no such kinship.</p>
+  </div>
+
+  {FAMILIES.map((family) => (
+    <section class="lang-group">
+      <h2 class="lang-group__h">The {family} Family</h2>
+      <ul class="lang-list">
+        {familyMembers(family).map((l) => (
+          <li class="lang">
+            <span class="lang__name">
+              {l}
+              {LANGUAGE_NOTES[l].kind === 'koine' && <span class="lang__tag">the common tongue</span>}
+            </span>
+            <span class="lang__note">{LANGUAGE_NOTES[l].note}</span>
+          </li>
+        ))}
+      </ul>
+    </section>
+  ))}
+
+  <section class="lang-group">
+    <h2 class="lang-group__h">Tongues of Their Own</h2>
+    <p class="lang-group__intro">Living tongues outside every Family. They share kinship with nothing.</p>
+    <ul class="lang-list">
+      {standalone.map((l) => (
+        <li class="lang">
+          <span class="lang__name">{l}</span>
+          <span class="lang__note">{LANGUAGE_NOTES[l].note}</span>
+        </li>
+      ))}
+    </ul>
+  </section>
+
+  <section class="lang-group">
+    <h2 class="lang-group__h">Learned &amp; Dead Tongues</h2>
+    <ul class="lang-list">
+      {learned.map((l) => (
+        <li class="lang">
+          <span class="lang__name">{l}</span>
+          <span class="lang__note">{LANGUAGE_NOTES[l].note}</span>
+        </li>
+      ))}
+    </ul>
+  </section>
+
+  <SystemNav slug="languages" />
+
+  <style>
+    .lang-group { margin: 2rem auto; max-width: var(--measure); }
+    .lang-group__h {
+      font-family: var(--display);
+      color: var(--oxblood);
+      margin: 0 0 0.6rem;
+    }
+    .lang-group__intro {
+      margin: 0 0 0.8rem;
+      color: var(--ink-soft);
+      font-size: 0.95rem;
+    }
+    .lang-list {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      border: 1px solid var(--rule);
+      border-radius: 6px;
+      background: var(--panel);
+      overflow: hidden;
+    }
+    .lang {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: baseline;
+      gap: 0.2rem 1rem;
+      padding: 0.55rem 1rem;
+      border-top: 1px solid var(--rule);
+    }
+    .lang:first-child { border-top: none; }
+    .lang__name {
+      flex: 0 0 15rem;
+      font-family: var(--display);
+      font-size: 1.05rem;
+      color: var(--oxblood);
+    }
+    .lang__tag {
+      font-family: var(--serif);
+      font-size: 0.68rem;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--ink-soft);
+      border: 1px solid var(--rule);
+      border-radius: 999px;
+      padding: 0.02rem 0.5rem;
+      margin-left: 0.5rem;
+      vertical-align: middle;
+      white-space: nowrap;
+    }
+    .lang__note { flex: 1 1 16rem; color: var(--ink); }
+  </style>
+</Base>

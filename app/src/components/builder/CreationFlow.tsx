@@ -17,11 +17,11 @@ import {
   ARMOUR_PROFICIENCIES,
   CLASSES,
   IMPLEMENT_GROUPS,
-  LANGUAGES,
   WEAPON_GROUPS,
   classById,
 } from '../../lib/classes';
 import type { ClassDef, SubclassDef } from '../../lib/classes';
+import { LANGUAGES } from '../../lib/languages';
 import { FEATS } from '../../lib/feats';
 import { rollPackage } from '../../lib/gear';
 import { PLACES } from '../../lib/quirks';
@@ -257,7 +257,13 @@ export default function CreationFlow() {
   // it RESTS at (emphasized), the next step as the priced button, and the
   // rest of the road greyed out ahead. Shared by Ability variables and
   // Companion stat Ladders — the caller supplies the buy event and undo test.
+  //
+  // These three helpers are PLAIN FUNCTIONS called as {ladder(…)}, not JSX
+  // components: a component type defined inside the render would be a new
+  // identity every render, and Preact would rebuild its subtree — which
+  // drops focus from the Companion box's inputs on every keystroke.
   const LadderStrip = ({
+    stripKey,
     label,
     base,
     advances,
@@ -265,6 +271,7 @@ export default function CreationFlow() {
     buyEv,
     undoPred,
   }: {
+    stripKey: string;
     label: string;
     base: string;
     advances: { value: string; cost: 'm' | 'M' }[];
@@ -277,7 +284,7 @@ export default function CreationFlow() {
     const full = (s: string) => annotate(s);
     const steps = [base, ...advances.map((a) => a.value)];
     return (
-      <span class="cf-advline">
+      <span class="cf-advline" key={stripKey}>
         <span class="cf-advlabel">{label}</span>
         {steps.map((val, i) => {
           const cost = i > 0 ? advances[i - 1].cost : undefined;
@@ -331,27 +338,43 @@ export default function CreationFlow() {
     owned: ReturnType<typeof replay>['state']['abilities'][number];
   }) => {
     const ref = { category: catName, ability: card.name };
+    // Named Ladders advance like variables: extraVars and option-block
+    // Ladders (Generic Advances, Scribe / Create). Automatic hook Ladders
+    // (hideCosts), base-priced hook sets (baseCost), and a Companion's stat
+    // Ladders (the Companion box owns those) are not buyable here.
+    const namedLadders =
+      card.role === 'Companion'
+        ? []
+        : [
+            ...(card.extraVars ?? []),
+            ...(card.options ?? [])
+              .filter((o) => !o.hideCosts && !o.baseCost)
+              .flatMap((o) => o.ladders ?? []),
+          ].filter((l) => l.advances?.length);
+    const strip = (name: string, label: string, base: string, advances: { value: string; cost: 'm' | 'M' }[], rank: number) =>
+      LadderStrip({
+        stripKey: name,
+        label,
+        base,
+        advances,
+        rank,
+        buyEv: (toRank) =>
+          mk('ability-advanced', { ref, instanceId: owned.instanceId, variable: name, toRank }),
+        undoPred: (e) =>
+          e.type === 'ability-advanced' &&
+          e.ref.category === catName &&
+          e.ref.ability === card.name &&
+          e.variable === name &&
+          (owned.instanceId ? e.instanceId === owned.instanceId : true),
+      });
     return (
       <>
-        {VAR_ORDER.filter((k) => card.vars[k]?.advances?.length).map((k) => (
-          <LadderStrip
-            key={k}
-            label={VAR_LABELS[k]}
-            base={card.vars[k]!.base ?? '—'}
-            advances={card.vars[k]!.advances!}
-            rank={owned.ranks[k] ?? 0}
-            buyEv={(toRank) =>
-              mk('ability-advanced', { ref, instanceId: owned.instanceId, variable: k, toRank })
-            }
-            undoPred={(e) =>
-              e.type === 'ability-advanced' &&
-              e.ref.category === catName &&
-              e.ref.ability === card.name &&
-              e.variable === k &&
-              (owned.instanceId ? e.instanceId === owned.instanceId : true)
-            }
-          />
-        ))}
+        {VAR_ORDER.filter((k) => card.vars[k]?.advances?.length).map((k) =>
+          strip(k, VAR_LABELS[k], card.vars[k]!.base ?? '—', card.vars[k]!.advances!, owned.ranks[k] ?? 0),
+        )}
+        {namedLadders.map((l) =>
+          strip(l.name, l.name, l.base ?? '—', l.advances!, owned.ranks[l.name] ?? 0),
+        )}
       </>
     );
   };
@@ -412,22 +435,21 @@ export default function CreationFlow() {
           title="describe this Companion"
           onInput={(ev2) => rename(comp.name ?? '', (ev2.target as HTMLInputElement).value)}
         />
-        {(card.extraVars ?? []).map((ladder) => (
-          <LadderStrip
-            key={ladder.name}
-            label={ladder.name}
-            base={ladder.base ?? '—'}
-            advances={ladder.advances ?? []}
-            rank={comp.ranks[ladder.name] ?? 0}
-            buyEv={(toRank) => mk('companion-advanced', { ref, ladder: ladder.name, toRank })}
-            undoPred={(e) =>
+        {(card.extraVars ?? []).map((ladder) =>
+          LadderStrip({
+            stripKey: ladder.name,
+            label: ladder.name,
+            base: ladder.base ?? '—',
+            advances: ladder.advances ?? [],
+            rank: comp.ranks[ladder.name] ?? 0,
+            buyEv: (toRank) => mk('companion-advanced', { ref, ladder: ladder.name, toRank }),
+            undoPred: (e) =>
               e.type === 'companion-advanced' &&
               e.ref.category === catName &&
               e.ref.ability === card.name &&
-              e.ladder === ladder.name
-            }
-          />
-        ))}
+              e.ladder === ladder.name,
+          }),
+        )}
       </div>
     );
   };
@@ -745,7 +767,7 @@ export default function CreationFlow() {
                                           </button>
                                         )}
                                       </span>
-                                      <AdvStrip catName={catName} card={ab} owned={inst} />
+                                      {AdvStrip({ catName, card: ab, owned: inst })}
                                     </td>
                                   </tr>
                                 ))}
@@ -791,10 +813,8 @@ export default function CreationFlow() {
                               {owned && (
                                 <tr class="cf-abadv">
                                   <td colspan={3}>
-                                    <AdvStrip catName={catName} card={ab} owned={owned} />
-                                    {owned.companion && (
-                                      <CompanionBox catName={catName} card={ab} owned={owned} />
-                                    )}
+                                    {AdvStrip({ catName, card: ab, owned })}
+                                    {owned.companion && CompanionBox({ catName, card: ab, owned })}
                                   </td>
                                 </tr>
                               )}
@@ -1018,7 +1038,7 @@ export default function CreationFlow() {
                         return (
                           <tr class="cf-abadv">
                             <td colspan={3}>
-                              <AdvStrip catName={g.category} card={card} owned={ownedAb} />
+                              {AdvStrip({ catName: g.category, card, owned: ownedAb })}
                             </td>
                           </tr>
                         );

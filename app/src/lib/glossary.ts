@@ -26,6 +26,8 @@ export const GLOSSARY: Record<string, string> = {
   'Armoured': 'A Defence that includes your armour’s bonus, as opposed to its Unarmoured version.',
   'Ability': 'An active power, bought for 1 Major Advance from one of your Ability Categories and improved dial by dial.',
   'Keywords': 'The tags an Ability carries from its Category: the tradition’s knowledge Skill and the Language its texts are written in.',
+  'Language Family': 'A group of kindred Dialects — Imperial, Republic, or Regnal. A speaker of one Dialect can make themselves understood in another of the same Family at −1 to social checks.',
+  'Dialect': 'A regional tongue within a Language Family, named Family first — Imperial - Lysandrine, Republic - Waldisch, Regnal - Patric. Each Dialect is learned as its own language.',
   'Frequency': 'How often an Ability may be used — once per day, once per encounter, or at-will.',
   'Milestone': 'A step of advancement; three make a Level. Each Milestone grants +1 Major and +1 Minor Advance.',
   'Ladder': 'A short track of escalating effect. Rank 1 is the base; the middle Ranks cost a Minor Advance each, and the top Rank costs a Major. Abilities, Conditions, Frequency, and more are all built as Ladders.',

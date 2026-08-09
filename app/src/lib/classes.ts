@@ -7,7 +7,8 @@
 // Stable-ID rule (spec §9): `id` never changes once published — renames touch
 // `name` only. Save files, event logs, and Foundry export reference ids.
 
-import type { Attribute, Language, WeaponGroup } from './quirks';
+import type { Language } from './languages';
+import type { Attribute, WeaponGroup } from './quirks';
 
 /** The five armour proficiency tracks — see mechanics/armour.md. */
 export type ArmourProficiency =
@@ -115,15 +116,6 @@ export interface ClassDef {
   /** The three Subclasses. */
   subclasses: SubclassDef[];
 }
-
-/** Everyone speaks Imperial; class/subclass language grants come on top. */
-export const DEFAULT_LANGUAGE: Language = 'Imperial';
-
-/** Runtime list of the languages of Avilund (mirrors the Language type). */
-export const LANGUAGES: readonly Language[] = [
-  'Imperial', 'Auld Imperial', 'Elder', 'Elder Arcana Tongue', 'Arcane Tongue', 'Black Tongue',
-  'Kellish', 'Common Feral', 'First Tongue', 'Archipelago', 'Eldritch Tongue',
-];
 
 export const CLASSES: ClassDef[] = [
   {

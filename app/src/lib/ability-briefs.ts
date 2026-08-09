@@ -76,8 +76,8 @@ export const ABILITY_BRIEFS: Record<string, string> = {
   'Letters/Scholar’s Strike': 'A scholar’s poke with a stick; it does what it does.',
   'Letters/Evade': 'Slip out of reach without inviting a blow.',
   'Letters/Recall': 'Dredge up the relevant fact at the relevant moment.',
-  'Letters/Read Scrolls': 'Identify a scroll’s spell — reading, not casting.',
-  'Letters/Read Spellbooks': 'Identify a spellbook’s spell — reading, not casting.',
+  'Letters/Read Scrolls': 'Read a scroll’s spell; its Ranks let you cast it.',
+  'Letters/Read Spellbooks': 'Read a spellbook’s spell; its Ranks let you cast it.',
   'Letters/Conduct Ritual': 'Lead a ritual properly, and better than the book alone.',
   'Letters/Identify': 'Determine whether a thing is magic, and of what kind.',
 
@@ -115,8 +115,8 @@ export const ABILITY_BRIEFS: Record<string, string> = {
   'Occult/Dark Blessing': 'The favour of the dead on the living; Saves improve.',
   'Occult/Spirit Guide': 'A quiet counsellor; a Reroll outside combat.',
   'Occult/Wield Artefact': 'Understand Artefacts and turn their powers to use.',
-  'Occult/Read Scrolls': 'Identify a scroll’s spell — reading, not casting.',
-  'Occult/Read Spellbooks': 'Identify a spellbook’s spell — reading, not casting.',
+  'Occult/Read Scrolls': 'Read a scroll’s spell; its Ranks let you cast it.',
+  'Occult/Read Spellbooks': 'Read a spellbook’s spell; its Ranks let you cast it.',
   'Occult/Conduct Ritual': 'Lead a ritual properly, and better than the book alone.',
 
   // ── Witchcraft ────────────────────────────────────────────────────────

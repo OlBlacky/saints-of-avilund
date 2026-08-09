@@ -1,7 +1,8 @@
 import { describe, it, expect } from 'vitest';
 import { TRADITIONS, keywordsFor } from './traditions';
 import { CATEGORIES } from './category-abilities';
-import { CLASSES, LANGUAGES } from './classes';
+import { CLASSES } from './classes';
+import { LANGUAGES } from './languages';
 import { SKILLS } from './skills';
 
 // "Skills know, Languages read" (design-principles §10): every casting

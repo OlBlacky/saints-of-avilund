@@ -10,6 +10,7 @@
 // conditional modifier, a quirk is a rolled one with a sting attached. Both emit
 // Effects, so the character sheet can resolve them in one pass.
 
+import type { Language } from './languages';
 import { SAINTS } from './saints';
 
 export type Attribute =
@@ -21,11 +22,6 @@ export type WeaponGroup =
   | 'Axes' | 'Heavy Blades' | 'Light Blades' | 'Hammers/Maces' | 'Picks'
   | 'Flails/Chains' | 'Polearms' | 'Spears/Lances' | 'Unarmed/Natural' | 'Staves'
   | 'Bows' | 'Crossbows' | 'Slings' | 'Thrown' | 'Pistols' | 'Rifles' | 'Grenades';
-
-export type Language =
-  | 'Imperial' | 'Auld Imperial' | 'Elder' | 'Elder Arcana Tongue' | 'Arcane Tongue'
-  | 'Black Tongue' | 'Kellish' | 'Common Feral'
-  | 'First Tongue' | 'Archipelago' | 'Eldritch Tongue';
 
 /** The circumstances under which an effect fires. An empty condition = always. */
 export interface Condition {
@@ -98,8 +94,22 @@ export const PLACES: SlotEntry[] = [
   { value: 'Heirgallad', tags: ['north', 'feudal'] },
 ];
 
-export const LANGUAGES: SlotEntry[] = [
+// Language slot values are typed against the Language union so the table can
+// never drift from the canonical list in lib/languages.ts. Bloc tags mirror
+// PLACES; the secret and magic tongues are deliberately absent — no quirk
+// should hand them out by accident.
+export const LANGUAGES: (SlotEntry & { value: Language })[] = [
   { value: 'Imperial', tags: ['common'] },
+  { value: 'Imperial - Lysandrine', tags: ['vernacular', 'south'] },
+  { value: 'Imperial - Severic', tags: ['vernacular', 'south'] },
+  { value: 'Imperial - Vailish', tags: ['vernacular', 'south'] },
+  { value: 'Republic - Waldisch', tags: ['vernacular', 'centre'] },
+  { value: 'Republic - Moortongue', tags: ['vernacular', 'centre'] },
+  { value: 'Republic - Veldish', tags: ['vernacular', 'centre'] },
+  { value: 'Regnal - Patric', tags: ['vernacular', 'north'] },
+  { value: 'Regnal - Mantlish', tags: ['vernacular', 'north'] },
+  { value: 'Regnal - Heirgallic', tags: ['vernacular', 'north'] },
+  { value: 'Cyprian', tags: ['vernacular', 'centre'] },
   { value: 'Auld Imperial', tags: ['church', 'learned'] },
   { value: 'Elder', tags: ['learned'] },
   { value: 'Elder Arcana Tongue', tags: ['learned', 'arcane'] },

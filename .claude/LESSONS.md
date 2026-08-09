@@ -2,6 +2,12 @@
 
 A running log of corrections and patterns. Claude appends an entry whenever Les corrects it: the rule first, then **Why** and **How to apply**. Read this at the start of every task.
 
+## Never define a component inside another component's render
+
+**Why:** the Companion box (Aug 2026) was a component defined inside CreationFlow. Every keystroke in its Name field re-rendered CreationFlow, minted a new component identity, and Preact rebuilt the subtree — dropping input focus after every letter. Les: "Every time I type a letter, I have to reclick the cell."
+
+**How to apply:** helpers that render JSX inside a component either live outside the component (stable identity, context passed as props) or are plain functions invoked as `{helper(props)}` — never `<Helper />` — so no component boundary exists. Any nested render helper containing an `<input>` or `<textarea>` is the red flag; buttons tolerate identity churn, focus does not.
+
 ## Demos speak the project's language, and state their purpose first
 
 **Why:** the first engine demo page (Aug 2026) dressed its sections as "Act I–IV" and led with a raw event ledger, with no statement of what the page was for. Les couldn't tell whether he was looking at a product proposal, a character presentation, or a test — and the invented theatrical labels matched nothing in the project's vocabulary (which already bans decorative naming).

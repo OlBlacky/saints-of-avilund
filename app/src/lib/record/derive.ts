@@ -7,7 +7,8 @@
 // Offences, Saves, Defences, HP, Level, skills, languages, proficiencies.
 // Armour/gear contributions join when the gear pillar lands.
 
-import { classById, DEFAULT_LANGUAGE } from '../classes';
+import { classById } from '../classes';
+import { DEFAULT_LANGUAGE } from '../languages';
 import { GEAR, STARTING_COIN } from '../gear';
 import { ATTR_FULL, parseAttr } from '../notation';
 import type { Attribute, Condition, Effect } from '../quirks';
