@@ -225,7 +225,7 @@ export default function CreationFlow() {
   const Pips = ({ kind, n }: { kind: 'M' | 'm'; n: number }) => (
     <span class="bank-pips" title={`${n} ${kind === 'M' ? 'Major' : 'Minor'} Advances`}>
       {Array.from({ length: Math.max(0, n) }, (_, i) => (
-        <span key={i} class={`pip ${kind}`} />
+        <span key={i} class={`bank-pip ${kind}`} />
       ))}
       {n === 0 && <span class="none">0</span>}
     </span>

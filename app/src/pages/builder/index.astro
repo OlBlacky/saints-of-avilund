@@ -231,6 +231,7 @@ const blurb = 'Build a character of Avilund: Class, Subclass, Advances, and the 
     font-weight: bold; color: var(--oxblood); white-space: nowrap; width: 1%;
   }
   .cf-fullcard-table td { min-width: 7rem; }
+  .cf-fullcard-subtable td { min-width: 6rem; }
   .cf-fullcard-table tbody tr:nth-child(even) { background: color-mix(in srgb, var(--gold) 4%, transparent); }
   .cf-fullcard-table tr.locked th, .cf-fullcard-table tr.locked td { opacity: 0.45; }
   .cf-fullcard td.empty { color: var(--ink-soft); opacity: 0.5; }
@@ -365,11 +366,11 @@ const blurb = 'Build a character of Avilund: Class, Subclass, Advances, and the 
   .cf-bankline { display: flex; justify-content: space-between; align-items: center; gap: 0.5rem; padding: 0.15rem 0; }
   .bank-pips { display: inline-flex; flex-wrap: wrap; gap: 2px; }
   .bank-pips .none { color: var(--ink-soft); }
-  .pip {
+  .bank-pip {
     display: inline-block; width: 0.7em; height: 0.7em;
     border: 1px solid var(--oxblood); border-radius: 2px;
   }
-  .pip.M { background: var(--oxblood); }
+  .bank-pip.M { background: var(--oxblood); }
   .cf-mini { border-collapse: collapse; width: 100%; font-variant-numeric: tabular-nums; font-size: 0.85rem; }
   .cf-mini th {
     font-variant: small-caps; font-weight: normal; letter-spacing: 0.06em;
