@@ -174,6 +174,86 @@ const blurb = 'Build a character of Avilund: Class, Subclass, Advances, and the 
   }
   .cf-abtable tr.closed td { opacity: 0.55; }
 
+  /* The full card under a row: every future Rank and option block, for planning */
+  .cf-cardtoggle {
+    font: inherit; font-size: 0.78rem; padding: 0.12rem 0.5rem; cursor: pointer;
+    color: var(--ink-soft); background: transparent;
+    border: 1px solid var(--rule); border-radius: 3px;
+    margin-right: 0.35rem;
+    transition: color 0.15s ease, border-color 0.15s ease;
+  }
+  .cf-cardtoggle:hover { color: var(--oxblood); border-color: var(--gold); }
+  .cf-cardtoggle.open {
+    color: var(--oxblood); border-color: var(--gold);
+    background: color-mix(in srgb, var(--gold) 12%, transparent);
+  }
+  .cf-abcard td { padding: 0.5rem 0.5rem 0.9rem; }
+  .cf-fullcard {
+    border: 1px solid var(--rule); border-radius: 5px;
+    background: color-mix(in srgb, var(--gold) 3%, transparent);
+    box-shadow: 0 1px 2px var(--shadow);
+  }
+  .cf-fullcard-banner {
+    display: flex; justify-content: space-between; align-items: baseline; gap: 1rem;
+    padding: 0.45rem 0.8rem;
+    background: color-mix(in srgb, var(--gold) 14%, transparent);
+    border-bottom: 1px solid var(--rule);
+    border-radius: 5px 5px 0 0;
+  }
+  .cf-fullcard-name { font-family: var(--display); font-weight: bold; color: var(--oxblood); font-size: 1.05rem; }
+  .cf-fullcard-cat { font-variant: small-caps; letter-spacing: 0.08em; color: var(--gold); font-size: 0.8rem; white-space: nowrap; }
+  .cf-fullcard-sub { margin: 0; padding: 0.3rem 0.8rem 0; font-size: 0.8rem; font-style: italic; color: var(--ink-soft); }
+  .cf-fullcard-keywords { margin: 0; padding: 0.2rem 0.8rem 0; font-size: 0.78rem; color: var(--ink-soft); }
+  .cf-fullcard-keywords strong { font-variant: small-caps; letter-spacing: 0.05em; color: var(--gold); font-weight: normal; }
+  .cf-fullcard-builder {
+    margin: 0.5rem 0 0; padding: 0.5rem 0.8rem;
+    border-top: 1px solid var(--rule);
+    background: color-mix(in srgb, var(--gold) 6%, transparent);
+    font-size: 0.82rem; color: var(--ink-soft);
+  }
+  .cf-fullcard-builder strong { color: var(--oxblood); }
+  .cf-fullcard-table, .cf-fullcard-subtable {
+    width: 100%; border-collapse: collapse;
+    margin: 0.5rem 0 0; font-size: 0.84rem; line-height: 1.4;
+  }
+  .cf-fullcard-table th, .cf-fullcard-table td,
+  .cf-fullcard-subtable th, .cf-fullcard-subtable td {
+    text-align: left; vertical-align: top;
+    padding: 0.35rem 0.6rem;
+    border-top: 1px solid var(--rule);
+  }
+  .cf-fullcard-table thead th, .cf-fullcard-subtable thead th {
+    border-top: none; border-bottom: 1px solid var(--rule);
+    font-variant: small-caps; letter-spacing: 0.05em;
+    font-size: 0.78rem; color: var(--gold); font-weight: normal;
+  }
+  .cf-fullcard-table tbody th, .cf-fullcard-subtable tbody th {
+    font-weight: bold; color: var(--oxblood); white-space: nowrap; width: 1%;
+  }
+  .cf-fullcard-table td { min-width: 7rem; }
+  .cf-fullcard-table tbody tr:nth-child(even) { background: color-mix(in srgb, var(--gold) 4%, transparent); }
+  .cf-fullcard-table tr.locked th, .cf-fullcard-table tr.locked td { opacity: 0.45; }
+  .cf-fullcard td.empty { color: var(--ink-soft); opacity: 0.5; }
+  .cf-fullcard td.at {
+    box-shadow: inset 0 0 0 1px var(--gold);
+    background: color-mix(in srgb, var(--gold) 12%, transparent);
+  }
+  .cf-fullcard-opt { padding: 0.5rem 0.8rem; border-top: 1px solid var(--rule); }
+  .cf-fullcard-optlabel {
+    margin: 0 0 0.15rem; font-variant: small-caps; letter-spacing: 0.06em;
+    font-size: 0.82rem; color: var(--gold);
+  }
+  .cf-fullcard-optnote { margin: 0 0 0.3rem; font-size: 0.8rem; font-style: italic; color: var(--ink-soft); }
+  .cf-fullcard-optdetail { margin: 0; font-size: 0.82rem; }
+  .cf-fullcard-opt ul { margin: 0; padding-left: 1.1rem; font-size: 0.82rem; }
+  .cf-fullcard-opt li { margin: 0.15rem 0; }
+  .cf-fullcard-opt .cf-fullcard-subtable { border: 1px solid var(--rule); border-radius: 4px; margin: 0.2rem 0 0.3rem; }
+  .cf-fullcard-feats {
+    margin: 0; padding: 0.5rem 0.8rem 0.65rem;
+    border-top: 1px solid var(--rule); font-size: 0.8rem; color: var(--ink-soft);
+  }
+  .cf-fullcard-feats strong { font-variant: small-caps; letter-spacing: 0.05em; color: var(--gold); font-weight: normal; }
+
   /* The Companion box on a bonded card */
   .cf-companion {
     border: 1px dotted var(--gold); border-radius: 4px;

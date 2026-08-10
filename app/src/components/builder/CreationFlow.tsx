@@ -10,6 +10,7 @@
 
 import { useEffect, useMemo, useState } from 'preact/hooks';
 
+import AbilityFullCard from './AbilityFullCard';
 import { VAR_LABELS, VAR_ORDER, resolveValue } from '../../lib/abilities';
 import { briefFor } from '../../lib/ability-briefs';
 import { CATEGORIES } from '../../lib/category-abilities';
@@ -128,6 +129,10 @@ export default function CreationFlow() {
   const [draft, setDraft] = useState<Draft>(EMPTY_DRAFT);
   const [loaded, setLoaded] = useState(false);
   const [featView, setFeatView] = useState<'owned' | 'eligible' | 'all'>('eligible');
+  // Ability rows with their full card expanded ("Category/Ability" keys).
+  const [openCards, setOpenCards] = useState<string[]>([]);
+  const toggleCard = (key: string) =>
+    setOpenCards((o) => (o.includes(key) ? o.filter((k) => k !== key) : [...o, key]));
 
   useEffect(() => {
     setDraft(loadDraft());
@@ -690,6 +695,18 @@ export default function CreationFlow() {
                         {cat.abilities.map((ab) => {
                           const ref = { category: catName, ability: ab.name };
                           const brief = briefFor(catName, ab.name);
+                          const cardKey = `${catName}/${ab.name}`;
+                          const cardOpen = openCards.includes(cardKey);
+                          const cardToggle = (
+                            <button
+                              type="button"
+                              class={`cf-cardtoggle ${cardOpen ? 'open' : ''}`}
+                              title={cardOpen ? 'hide the full card' : 'show the full card: every future Rank and option'}
+                              onClick={() => toggleCard(cardKey)}
+                            >
+                              Card {cardOpen ? '▴' : '▾'}
+                            </button>
+                          );
 
                           if (ab.builder) {
                             const instances = state.abilities.filter(
@@ -701,6 +718,7 @@ export default function CreationFlow() {
                                   <td class="cf-abname">{ab.name}</td>
                                   <td class="cf-abbrief">{brief}</td>
                                   <td class="cf-abctl">
+                                    {cardToggle}
                                     {!crystallized && (
                                       <BuildControl
                                         choice={ab.builderChoice}
@@ -771,6 +789,13 @@ export default function CreationFlow() {
                                     </td>
                                   </tr>
                                 ))}
+                                {cardOpen && (
+                                  <tr class="cf-abcard">
+                                    <td colspan={3}>
+                                      <AbilityFullCard ability={ab} host={catName} annotate={annotate} />
+                                    </td>
+                                  </tr>
+                                )}
                               </>
                             );
                           }
@@ -784,6 +809,7 @@ export default function CreationFlow() {
                                 <td class="cf-abname">{ab.name}</td>
                                 <td class="cf-abbrief">{brief}</td>
                                 <td class="cf-abctl">
+                                  {cardToggle}
                                   {owned ? (
                                     !crystallized && (
                                       <button
@@ -815,6 +841,13 @@ export default function CreationFlow() {
                                   <td colspan={3}>
                                     {AdvStrip({ catName, card: ab, owned })}
                                     {owned.companion && CompanionBox({ catName, card: ab, owned })}
+                                  </td>
+                                </tr>
+                              )}
+                              {cardOpen && (
+                                <tr class="cf-abcard">
+                                  <td colspan={3}>
+                                    <AbilityFullCard ability={ab} host={catName} ranks={owned?.ranks} annotate={annotate} />
                                   </td>
                                 </tr>
                               )}
