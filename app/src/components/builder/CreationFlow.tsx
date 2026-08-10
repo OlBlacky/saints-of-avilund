@@ -1151,17 +1151,27 @@ export default function CreationFlow() {
                 };
 
                 const ownedIds = new Set(state.feats.map((f) => f.featId));
+                // A location-gated Feat (Regional Markets) exists only for a
+                // qualifying Place of Origin — invisible in every view
+                // otherwise. Discovery lives in this list; the shop never
+                // advertises the door.
+                const visibleFeats = FEATS.filter(
+                  (f) =>
+                    !f.originGate ||
+                    f.originGate.includes(draft.identity.origin) ||
+                    ownedIds.has(f.id),
+                );
                 const openIds = new Set(
-                  FEATS.filter(
+                  visibleFeats.filter(
                     (f) => ownedIds.has(f.id) || why(mk('feat-bought', { featId: f.id, choices: f.choice ? { [f.choice.key]: f.choice.options[0] } : undefined })) === null,
                   ).map((f) => f.id),
                 );
                 const shown =
                   featView === 'all'
-                    ? FEATS
+                    ? visibleFeats
                     : featView === 'eligible'
-                      ? FEATS.filter((f) => openIds.has(f.id))
-                      : FEATS.filter((f) => ownedIds.has(f.id));
+                      ? visibleFeats.filter((f) => openIds.has(f.id))
+                      : visibleFeats.filter((f) => ownedIds.has(f.id));
                 return (
                   <>
                     <div class="cf-viewtoggle" role="group">

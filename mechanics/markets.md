@@ -119,7 +119,18 @@ Most items carry criteria for **who will buy them**. An item's sell price exists
 
 ### Market Access Feats
 
-One Feat per locked market, named on its locked shopfront: Anselm's Buttery, the St. Ignatius College Archive, Theobald's Row, the Society of Astronomers, The Green Market, Black's Road Market. *(Feat names: [[add text]] each.)*
+One Feat per locked market, named on its locked shopfront. **The magic markets' Feats gate on the tradition's tongue** ("Skills know, Languages read" — settled Aug 10 2026): knowing the Language is a prerequisite of the Feat, so access is never just a Minor's toll.
+
+| Feat opens | Requires |
+|---|---|
+| Anselm's Buttery | Arcane Tongue |
+| St. Ignatius College Archive | Elder Arcana Tongue |
+| Theobald's Row | Black Tongue |
+| Society of Astronomers | Eldritch Tongue |
+| The Green Market | First Tongue |
+| Black's Road Market | — (a criminal market has no tongue; the Feat alone) |
+
+*(Feat names: [[add text]] each — working names are the market names.)*
 
 ## In Play — access vs. reach
 

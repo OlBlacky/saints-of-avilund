@@ -125,8 +125,10 @@ export interface ReplayResult {
 // ── Rules helpers ───────────────────────────────────────────────────────────
 
 /** Level, derived from milestones: play begins at Level 0; the first
- * Milestone is Level 1; each triad thereafter completes a level (Les,
- * Aug 10 2026 — spec §7). Cap: Level 11 at Milestone 31. */
+ * Milestone is Level 1; a new Level arrives at the first Milestone of
+ * each triad (Les, Aug 10 2026 — spec §7). Every Level is three
+ * Milestones, the last included: Level 11 arrives at Milestone 31 and
+ * its triad completes the 33-Milestone journey. */
 export function levelFor(milestones: number, crystallized: boolean): number {
   if (!crystallized || milestones === 0) return 0;
   return Math.min(11, Math.ceil(milestones / 3));
@@ -396,6 +398,10 @@ function meetsRequirement(state: CharacterState, req: FeatRequirement): string |
       return saveTotal(state, req.attr) >= req.value
         ? null
         : `requires a ${req.attr} Save of +${req.value}`;
+    case 'language':
+      return state.languages.includes(req.language)
+        ? null
+        : `requires the ${req.language}`;
     case 'attribute-any': {
       const ok = req.attrs.some(
         (a) =>

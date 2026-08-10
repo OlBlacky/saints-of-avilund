@@ -9,6 +9,7 @@
 // Malediction one of your curses carries. The record engine checks it from
 // state; there are no per-Class feat tables.
 
+import type { Language } from './languages';
 import type { Attribute, Effect } from './quirks';
 import { SKILLS } from './skills';
 
@@ -23,7 +24,10 @@ export type FeatRequirement =
   /** The Save total after all modification (Attribute + Defence Ranks + steady bonuses). */
   | { kind: 'save-total'; attr: Attribute; value: number }
   /** Any one of the listed Attributes at the value. */
-  | { kind: 'attribute-any'; attrs: Attribute[]; value: number };
+  | { kind: 'attribute-any'; attrs: Attribute[]; value: number }
+  /** Knowing a Language ("Skills know, Languages read" — the magic Market
+   * Feats gate on the tradition's tongue). */
+  | { kind: 'language'; language: Language };
 
 /** One Rank of a Feat Ladder. */
 export interface FeatRank {
@@ -49,8 +53,9 @@ export interface Feat {
   choice?: { key: string; label: string; options: string[] };
   /** A location-gated Feat appears only for characters whose Place of
    * Origin is listed (Regional Market Feats — mechanics/markets.md).
-   * Unenforced until Place of Origin joins the record; the shop respects
-   * it in the meantime. */
+   * Values match lib/quirks.ts PLACES exactly. The builder's Feat list
+   * enforces it from the Identity Box; record-level enforcement waits
+   * for Place of Origin to join the record. */
   originGate?: string[];
   /** Feat Ladder Ranks, climbed in order, one Rank per Level. */
   ladder?: FeatRank[];
@@ -370,36 +375,41 @@ const ladders: Feat[] = [
     id: 'market-anselms-buttery',
     name: "Anselm's Buttery",
     brief: 'The Buttery at Lord\'s University will serve you.',
-    full: "You gain access to Anselm's Buttery — Lord's University — New Magic Market.",
+    full: "You gain access to Anselm's Buttery — Lord's University — New Magic Market. Requires the Arcane Tongue.",
     cost: 'm',
+    requires: { kind: 'language', language: 'Arcane Tongue' },
   },
   {
     id: 'market-ignatius-archive',
     name: 'St. Ignatius College Archive',
     brief: 'The Archive on Elder Isle opens its stores to you.',
-    full: 'You gain access to the St. Ignatius College Archive — Elder Isle — Elder Magic Market.',
+    full: 'You gain access to the St. Ignatius College Archive — Elder Isle — Elder Magic Market. Requires the Elder Arcana Tongue.',
     cost: 'm',
+    requires: { kind: 'language', language: 'Elder Arcana Tongue' },
   },
   {
     id: 'market-theobalds-row',
     name: "Theobald's Row",
     brief: "The dealers of Theobald's Row know your face.",
-    full: "You gain access to Theobald's Row — Sebald's Isle — Occult Market.",
+    full: "You gain access to Theobald's Row — Sebald's Isle — Occult Market. Requires the Black Tongue.",
     cost: 'm',
+    requires: { kind: 'language', language: 'Black Tongue' },
   },
   {
     id: 'market-astronomers',
     name: 'Society of Astronomers',
     brief: 'The Society on Newton Hill admits you.',
-    full: 'You gain access to the Society of Astronomers — Newton Hill — Market of the Outside.',
+    full: 'You gain access to the Society of Astronomers — Newton Hill — Market of the Outside. Requires the Eldritch Tongue.',
     cost: 'm',
+    requires: { kind: 'language', language: 'Eldritch Tongue' },
   },
   {
     id: 'market-green',
     name: 'The Green Market',
     brief: 'The stalls at the edge of The Green will trade with you.',
-    full: 'You gain access to The Green Market — The Green — Old Magic Market.',
+    full: 'You gain access to The Green Market — The Green — Old Magic Market. Requires the First Tongue.',
     cost: 'm',
+    requires: { kind: 'language', language: 'First Tongue' },
   },
   {
     id: 'market-blacks-road',
@@ -414,7 +424,7 @@ const ladders: Feat[] = [
     brief: 'The Abbey of the Artillery sells to you from its own magazine.',
     full: "You gain access to St. Dunstan's Magazine — Abbey of the Artillery, Lysander — Firearms Market. Open to natives of Lysander and residents of the Bishopric of St. Dunstan.",
     cost: 'm',
-    originGate: ['Lysander', 'Bishopric of St. Dunstan'],
+    originGate: ['Lysander', 'the Bishopric of St. Dunstan'],
   },
   {
     id: 'market-ulrics-exchange',
@@ -422,7 +432,7 @@ const ladders: Feat[] = [
     brief: 'The merchant-houses of Havilah admit you to the Exchange.',
     full: "You gain access to St. Ulric's Exchange — Freehold of Havilah — Trade Market. Open to natives and residents of the Freehold of Havilah.",
     cost: 'm',
-    originGate: ['Freehold of Havilah'],
+    originGate: ['Havilah'],
   },
 ];
 

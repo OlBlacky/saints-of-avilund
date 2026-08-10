@@ -192,7 +192,7 @@ Last comes the game's quirkiest moment. **Quirk and Starting Gear are rolled, to
 The **Milestone count** is the fundamental quantity; everything else derives from it. Nobody ever "sets level."
 
 - **A finished character begins play at Level 0** (corrected Aug 10 2026 — supersedes "play begins at Level 1"), having spent the creation allotment (11 Major + 11 Minor). **Level 1 is the first Milestone.**
-- Milestones group in **triads** (1–3, 4–6, …), and a new Level arrives at the **first Milestone of each triad**: Level 1 at Milestone 1, Level 2 at 4, Level 3 at 7. **Level = ⌈Milestones ÷ 3⌉** (0 before the first Milestone), capped at Level 11 (Milestone 31). The once-per-Level windows already open on the same boundaries.
+- Milestones group in **triads** (1–3, 4–6, …), and a new Level arrives at the **first Milestone of each triad**: Level 1 at Milestone 1, Level 2 at 4, Level 3 at 7. **Level = ⌈Milestones ÷ 3⌉** (0 before the first Milestone), capped at Level 11. Every Level is three Milestones, the last included: Level 11 arrives at Milestone 31 and its triad completes the **33-Milestone** journey. The once-per-Level windows already open on the same boundaries.
 - **Once-per-Level allowances** (chiefly HP) refresh at the *first* Milestone of each triad (1, 4, 7, …). Attribute gates (+4 at 5th Level, +5 at 10th) and Ladder pacing (≤1 Rank per Level per Ladder) all key off the same derived level.
 
 ### Grants fill a bank; spending is separate

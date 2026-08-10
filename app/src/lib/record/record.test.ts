@@ -439,10 +439,16 @@ describe('enforcement', () => {
     expect(paced.flags).toEqual([]);
     expect(paced.state.feats[0].rank).toBe(2);
 
-    // A Market Access Feat is a plain Minor purchase.
-    const marketFeat = replay([...base, ev('feat-bought', { featId: 'market-theobalds-row' })]);
-    expect(marketFeat.flags).toEqual([]);
-    expect(marketFeat.state.feats.some((f) => f.featId === 'market-theobalds-row')).toBe(true);
+    // A magic Market Access Feat gates on its tradition's tongue.
+    const strangers = replay([...base, ev('feat-bought', { featId: 'market-theobalds-row' })]);
+    expect(strangers.flags.some((f) => f.code === 'no-access')).toBe(true);
+    const initiate = replay([
+      ...base,
+      ev('language-bought', { language: 'Black Tongue' }),
+      ev('feat-bought', { featId: 'market-theobalds-row' }),
+    ]);
+    expect(initiate.flags).toEqual([]);
+    expect(initiate.state.feats.some((f) => f.featId === 'market-theobalds-row')).toBe(true);
 
     // A plain Feat's unconditional effect reaches the sheet, labeled.
     const ritualist = replay([
