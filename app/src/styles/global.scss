@@ -327,21 +327,31 @@ figcaption { color: var(--ink-soft); font-size: 0.95rem; font-style: italic; mar
 
 // ── Wide tables ──────────────────────────────────────────────
 // The weapon lists run to nine columns — far past the prose measure.
-// A <div class="scroll"> breaks out of the prose column to use the
-// page's real width first, and scrolls itself only when even that
-// isn't enough — never crushing its cells or pushing the page sideways.
+// Wrapping one in <div class="scroll"> lets it scroll itself rather
+// than crushing its cells or pushing the page sideways.
 .prose .scroll {
-  width: min(68rem, calc(100vw - 2.4rem));
-  margin: 0 0 1.6rem 50%;
-  transform: translateX(-50%);
   overflow-x: auto;
+  margin: 0 0 1.6rem;
   -webkit-overflow-scrolling: touch;
 }
 .prose .scroll > table {
-  margin: 0 auto;
+  margin: 0;
   min-width: 44rem;
   font-size: 0.92rem;
 }
+
+// ── Wide prose ───────────────────────────────────────────────
+// Reference pages whose tables outgrow the reading measure (Equipment).
+// The container spans the page shell instead of the measure; running
+// text and small tables keep the measure; the fold panels and the wide
+// .scroll tables use the room, so a wide monitor sees whole tables
+// with no slider.
+.prose--wide { max-width: none; }
+.prose--wide > p,
+.prose--wide > ul,
+.prose--wide details > p,
+.prose--wide details > ul { max-width: var(--measure); }
+.prose--wide details > table { max-width: var(--measure); }
 .prose .scroll > table th,
 .prose .scroll > table td { white-space: nowrap; }
 
