@@ -52,15 +52,7 @@ Armour has five Proficiencies — **Light, Medium,** and **Heavy** armour, plus 
 
 ### Advancing an armour Proficiency
 
-Each armour Proficiency advances on its own track. Every step costs **one Minor Advance** and steps are taken **in order**; the final **+1 AC** step of every track unlocks at **5th Level**. The early steps buy back the armour's drawbacks; the later steps sharpen its protection — **+1 DR** stacks on the armour's own Damage Reduction, and shield steps apply while the shield is **raised**.
-
-| Proficiency | 1st Minor | 2nd Minor | 3rd Minor | 4th Minor |
-|---|---|---|---|---|
-| **Light Armour** | +1 DR | +1 AC *(5th Level)* | — | — |
-| **Medium Armour** | No Speed penalty | +1 DR | +1 AC *(5th Level)* | — |
-| **Heavy Armour** | Speed penalty eased by 5' | No Speed penalty | +1 DR | +1 AC *(5th Level)* |
-| **Light Shield** | +1 Shield DR | +1 AC *(5th Level)* | — | — |
-| **Heavy Shield** | No Speed penalty | +1 Shield DR | +1 AC *(5th Level)* | — |
+Armour Proficiencies advance exactly as weapon Proficiencies do: a Minor Advance buys **+1**, a second **+1** unlocks at **5th Level**, capped at **+2**. The bonus applies to your **AC** while wearing armour — or bearing a shield — of that Proficiency.
 
 Some Classes and Subclasses also reach **Armour Specialization Feats**, which **modify your defensive Abilities** while wearing the relevant armour — the armour counterpart to the Weapon Specialization Feats above. They may be taken from **Level 2**.
 

@@ -65,34 +65,7 @@ Being proficient is +0.
 
 ### Advancing a Proficiency
 
-Like Weapon Proficiencies, each Armour Proficiency has a scale improved through **Minor Advances**, taken in order; the final **+1 AC** step in every track unlocks at **Level 5**.
-
-- **DR** = Damage Reduction, subtracted from incoming physical damage. Armour grants no DR by default — DR is gained only through these advances.
-- **AC** = the Defence Target the armour contributes to.
-
-**Light Armour**
-1. DR 1
-2. *(Level 5)* +1 AC
-
-**Medium Armour**
-1. No Speed penalty (removes the −5')
-2. +1 DR
-3. *(Level 5)* +1 AC
-
-**Heavy Armour**
-1. Speed penalty reduced to −5' (from −10')
-2. No Speed penalty
-3. +1 DR
-4. *(Level 5)* +1 AC
-
-**Light Shield**
-1. +1 Shield DR
-2. *(Level 5)* +1 AC
-
-**Heavy Shield**
-1. No Speed penalty (removes the −5')
-2. +1 Shield DR
-3. *(Level 5)* +1 AC
+Armour Proficiencies advance exactly as Weapon Proficiencies do. Only your Class/Subclass armour proficiencies can be advanced: a **Minor Advance** buys **+1**, a second **+1** unlocks at **5th Level**, capped at **+2**. The bonus applies to your **AC** while wearing armour (or bearing a shield) of that proficiency.
 
 ### Armour Specialization Feats
 
