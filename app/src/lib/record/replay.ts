@@ -14,11 +14,12 @@ import { classById, subclassById } from '../classes';
 import type { ClassDef, SubclassDef } from '../classes';
 import { featById } from '../feats';
 import type { FeatRequirement } from '../feats';
-import { GEAR } from '../gear';
+import { GEAR, STARTING_COIN } from '../gear';
+import { buyPriceCp, itemName, marketById, sellPriceCp } from '../markets';
 import { fill, fillEffect, QUIRKS } from '../quirks';
 import type { Attribute, Effect } from '../quirks';
 import { SKILLS } from '../skills';
-import type { AbilityRef, RecordEvent } from './events';
+import type { AbilityRef, ItemLocation, RecordEvent } from './events';
 
 // ── State ───────────────────────────────────────────────────────────────────
 
@@ -43,6 +44,18 @@ export interface OwnedAbility {
     /** The owner's invested Advances — these refund on death. */
     ownerSpent: { minor: number; major: number };
   };
+}
+
+/** An item on the sheet. Catalogue-backed items carry an itemId; unique
+ * gear (the Starting Gear roll, free-named grants) has none. Identical
+ * purchases stack into one instance; grants stay distinct (provenance). */
+export interface OwnedItem {
+  instanceId: string;
+  itemId?: string;
+  name: string;
+  qty: number;
+  location: ItemLocation;
+  origin: 'starting-gear' | 'purchase' | 'grant';
 }
 
 export interface CharacterState {
@@ -79,6 +92,12 @@ export interface CharacterState {
   milestones: number;
   /** Advances granted minus spent. */
   bank: { major: number; minor: number };
+  /** Coin on hand, in cp. Opens at the Starting Gear roll's coin; every
+   * transaction adjusts it. Display reduces to fewest coins (fmtCoins). */
+  wealthCp: number;
+  inventory: OwnedItem[];
+  /** Played Sessions logged (gates the Starting Gear sell lock). */
+  sessions: number;
 }
 
 /** A validation flag attached to the event that caused it. */
@@ -90,6 +109,7 @@ export interface Flag {
     | 'no-access'
     | 'over-cap'
     | 'insufficient-advances'
+    | 'insufficient-funds'
     | 'once-per-level'
     | 'ladder-pace'
     | 'creation-only'
@@ -430,8 +450,17 @@ export function replay(events: RecordEvent[]): ReplayResult {
     crystallized: false,
     milestones: 0,
     bank: { major: CREATION_MAJORS, minor: CREATION_MINORS },
+    wealthCp: 0,
+    inventory: [],
+    sessions: 0,
   };
   const flags: Flag[] = [];
+
+  // Wealth = opening coin (from the Starting Gear category) + running net of
+  // transactions. Tracked separately so a Gear reroll resets the opening
+  // without erasing trips already made (keep-and-flag).
+  let openingCp = 0;
+  let netCp = 0;
 
   // Per-window bookkeeping for pacing rules. Ability advancement paces per
   // ABILITY: one Minor-cost and one Major-cost advance per Level (creation
@@ -485,10 +514,24 @@ export function replay(events: RecordEvent[]): ReplayResult {
       case 'quirk-rolled': {
         if (state.quirk && state.crystallized) { flag(e, 'duplicate', 'the Quirk is already rolled and locked'); break; }
         state.quirk = { id: e.quirkId, name: e.quirkName, slots: e.slots, rerollsUsed: e.rerollsUsed };
-        // Quirk and Gear travel as one package: a reroll replaces both.
+        // Quirk and Gear travel as one package: a reroll replaces both —
+        // the rolled item, and the opening coin its category fixes.
         state.gear = e.gearName
           ? { id: e.gearId, name: e.gearName, slots: e.gearSlots ?? {} }
           : undefined;
+        const card = e.gearId ? GEAR.find((g) => g.id === e.gearId) : undefined;
+        openingCp = card ? STARTING_COIN[card.category] * 10 : 0;
+        state.wealthCp = openingCp + netCp;
+        state.inventory = state.inventory.filter((i) => i.origin !== 'starting-gear');
+        if (e.gearName) {
+          state.inventory.push({
+            instanceId: 'starting-gear',
+            name: fill(e.gearName, e.gearSlots ?? {}),
+            qty: 1,
+            location: 'carried',
+            origin: 'starting-gear',
+          });
+        }
         break;
       }
 
@@ -503,6 +546,104 @@ export function replay(events: RecordEvent[]): ReplayResult {
         state.milestones += 1;
         state.bank.major += 1;
         state.bank.minor += 1;
+        break;
+      }
+
+      case 'session-logged': {
+        state.sessions += 1;
+        break;
+      }
+
+      case 'transaction': {
+        // The Basket is atomic: price every line first, and any flag
+        // refuses the whole trip — no partial commits.
+        if (!state.gear) { flag(e, 'wrong-order', 'no coin before the Starting Gear roll'); break; }
+        const commerce = state.feats.find((f) => f.featId === 'commerce-ladder')?.rank ?? 0;
+        const before = flags.length;
+        let net = 0;
+        const buys: { itemId: string; qty: number }[] = [];
+        const sells: { instanceId: string; qty: number }[] = [];
+        for (const line of e.lines) {
+          const market = marketById(line.marketId);
+          if (!market) { flag(e, 'unknown-ref', `unknown Market "${line.marketId}"`); continue; }
+          if (market.access.kind === 'feat' && !state.feats.some((f) => f.featId === (market.access as { featId: string }).featId)) {
+            flag(e, 'no-access', `no access to ${market.name}`);
+            continue;
+          }
+          if (!Number.isInteger(line.qty) || line.qty < 1) {
+            flag(e, 'unknown-ref', 'line quantity must be a positive whole number');
+            continue;
+          }
+          if (line.direction === 'buy') {
+            const price = buyPriceCp(market, line.itemId, commerce);
+            if (price === undefined) { flag(e, 'no-access', `${market.name} does not stock "${line.itemId}"`); continue; }
+            net -= price * line.qty;
+            buys.push({ itemId: line.itemId, qty: line.qty });
+          } else {
+            if (!state.crystallized) { flag(e, 'creation-only', 'no selling during creation'); continue; }
+            const sold = sells.reduce((t, s) => (s.instanceId === line.instanceId ? t + s.qty : t), 0);
+            const inst = state.inventory.find((i) => i.instanceId === line.instanceId);
+            if (!inst) { flag(e, 'unknown-ref', `no owned item "${line.instanceId}"`); continue; }
+            if (line.qty + sold > inst.qty) { flag(e, 'over-cap', `only ${inst.qty} × ${inst.name} owned`); continue; }
+            if (inst.origin === 'starting-gear' && state.sessions < 1) {
+              flag(e, 'no-access', `${inst.name} is not sellable yet`);
+              continue;
+            }
+            const price = inst.itemId ? sellPriceCp(market, inst.itemId, commerce) : undefined;
+            if (price === undefined) { flag(e, 'no-access', `${market.name} will not buy ${inst.name}`); continue; }
+            net += price * line.qty;
+            sells.push({ instanceId: line.instanceId, qty: line.qty });
+          }
+        }
+        if (flags.length > before) break;
+        if (state.wealthCp + net < 0) {
+          flag(e, 'insufficient-funds', `the trip nets ${net} cp against ${state.wealthCp} cp on hand`);
+          break;
+        }
+        for (const b of buys) {
+          const existing = state.inventory.find(
+            (i) => i.itemId === b.itemId && i.origin === 'purchase' && i.location === 'carried',
+          );
+          if (existing) existing.qty += b.qty;
+          else {
+            state.inventory.push({
+              instanceId: `item:${b.itemId}`,
+              itemId: b.itemId,
+              name: itemName(b.itemId) ?? b.itemId,
+              qty: b.qty,
+              location: 'carried',
+              origin: 'purchase',
+            });
+          }
+        }
+        for (const s of sells) {
+          const inst = state.inventory.find((i) => i.instanceId === s.instanceId)!;
+          inst.qty -= s.qty;
+          if (inst.qty === 0) state.inventory = state.inventory.filter((i) => i !== inst);
+        }
+        netCp += net;
+        state.wealthCp = openingCp + netCp;
+        break;
+      }
+
+      case 'item-granted': {
+        const name = e.itemId ? itemName(e.itemId) ?? e.name : e.name;
+        if (!name) { flag(e, 'unknown-ref', 'a granted item needs a name or a catalogue id'); break; }
+        state.inventory.push({
+          instanceId: e.id,
+          itemId: e.itemId,
+          name,
+          qty: e.qty ?? 1,
+          location: 'carried',
+          origin: 'grant',
+        });
+        break;
+      }
+
+      case 'item-moved': {
+        const inst = state.inventory.find((i) => i.instanceId === e.instanceId);
+        if (!inst) { flag(e, 'unknown-ref', `no owned item "${e.instanceId}" to move`); break; }
+        inst.location = e.location;
         break;
       }
 

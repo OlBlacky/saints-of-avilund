@@ -45,8 +45,13 @@ export interface Feat {
   /** Minimum Level (all Specializations open at Level 2). */
   levelGate?: number;
   requires?: FeatRequirement;
-  /** A purchase-time choice (the Spell Market's tradition). */
+  /** A purchase-time choice (an element, a tradition). */
   choice?: { key: string; label: string; options: string[] };
+  /** A location-gated Feat appears only for characters whose Place of
+   * Origin is listed (Regional Market Feats — mechanics/markets.md).
+   * Unenforced until Place of Origin joins the record; the shop respects
+   * it in the meantime. */
+  originGate?: string[];
   /** Feat Ladder Ranks, climbed in order, one Rank per Level. */
   ladder?: FeatRank[];
   /** Machine effects while owned (plain Feats). */
@@ -357,24 +362,67 @@ const ladders: Feat[] = [
       { value: 'And sell items for 10% more', cost: 'M' },
     ],
   },
+  // ── Market Access Feats ─────────────────────────────────────────────────
+  // One per locked Market (mechanics/markets.md). Names are working names —
+  // each locked shopfront shows the Feat that opens it. The last two are
+  // Regional Market Feats: location-gated by Place of Origin.
   {
-    id: 'market-spell',
-    name: 'Default Spell Market',
-    brief: 'The local guild or university will deal with you.',
-    full: 'You gain access to the local guild or university of your chosen tradition. Opens the Default Spell Market for that tradition.',
+    id: 'market-anselms-buttery',
+    name: "Anselm's Buttery",
+    brief: 'The Buttery at Lord\'s University will serve you.',
+    full: "You gain access to Anselm's Buttery — Lord's University — New Magic Market.",
     cost: 'm',
-    choice: {
-      key: 'tradition',
-      label: 'Tradition',
-      options: ['New Magic', 'Elder Magic', 'Old Magic', 'Witchcraft', 'The Outside'],
-    },
   },
   {
-    id: 'market-black',
-    name: 'Default Black Market',
-    brief: 'The surface of the local Black Market knows your face.',
-    full: 'You gain access to the surface level of the local Black Market. Opens the Default Black Market.',
+    id: 'market-ignatius-archive',
+    name: 'St. Ignatius College Archive',
+    brief: 'The Archive on Elder Isle opens its stores to you.',
+    full: 'You gain access to the St. Ignatius College Archive — Elder Isle — Elder Magic Market.',
     cost: 'm',
+  },
+  {
+    id: 'market-theobalds-row',
+    name: "Theobald's Row",
+    brief: "The dealers of Theobald's Row know your face.",
+    full: "You gain access to Theobald's Row — Sebald's Isle — Occult Market.",
+    cost: 'm',
+  },
+  {
+    id: 'market-astronomers',
+    name: 'Society of Astronomers',
+    brief: 'The Society on Newton Hill admits you.',
+    full: 'You gain access to the Society of Astronomers — Newton Hill — Market of the Outside.',
+    cost: 'm',
+  },
+  {
+    id: 'market-green',
+    name: 'The Green Market',
+    brief: 'The stalls at the edge of The Green will trade with you.',
+    full: 'You gain access to The Green Market — The Green — Old Magic Market.',
+    cost: 'm',
+  },
+  {
+    id: 'market-blacks-road',
+    name: "Black's Road Market",
+    brief: "Black's Road does business with you.",
+    full: "You gain access to the Black's Road Market — Black's Road — Black Market.",
+    cost: 'm',
+  },
+  {
+    id: 'market-dunstans-magazine',
+    name: "St. Dunstan's Magazine",
+    brief: 'The Abbey of the Artillery sells to you from its own magazine.',
+    full: "You gain access to St. Dunstan's Magazine — Abbey of the Artillery, Lysander — Firearms Market. Open to natives of Lysander and residents of the Bishopric of St. Dunstan.",
+    cost: 'm',
+    originGate: ['Lysander', 'Bishopric of St. Dunstan'],
+  },
+  {
+    id: 'market-ulrics-exchange',
+    name: "St. Ulric's Exchange",
+    brief: 'The merchant-houses of Havilah admit you to the Exchange.',
+    full: "You gain access to St. Ulric's Exchange — Freehold of Havilah — Trade Market. Open to natives and residents of the Freehold of Havilah.",
+    cost: 'm',
+    originGate: ['Freehold of Havilah'],
   },
 ];
 

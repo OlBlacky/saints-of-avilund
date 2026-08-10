@@ -34,6 +34,17 @@ export interface AbilityRef {
   ability: string;
 }
 
+/** Where an owned item sits. Containers and the Party Inventory join when
+ * the Gear page lands. Home is weightless. */
+export type ItemLocation = 'equipped' | 'carried' | 'home';
+
+/** One Basket line. Buys reference a Market's stock; sells reference an
+ * owned instance. Prices are computed at replay time from the Market data
+ * and the character's Commerce rank — the event stores only decisions. */
+export type TransactionLine =
+  | { direction: 'buy'; marketId: string; itemId: string; qty: number }
+  | { direction: 'sell'; marketId: string; instanceId: string; qty: number };
+
 export type RecordEvent =
   // ── The creation spine ────────────────────────────────────────────────
   | (BaseEvent & { type: 'class-chosen'; classId: string })
@@ -55,6 +66,19 @@ export type RecordEvent =
   // ── Grants ────────────────────────────────────────────────────────────
   /** +1 Major and +1 Minor to the bank. GM-granted; self-marked in v1. */
   | (BaseEvent & { type: 'milestone-granted'; note?: string })
+  /** A played Session (the meta-Chronicle, spec §5). Self-marked in v1.
+   * Gates the one-Session lock on rolled Starting Gear. */
+  | (BaseEvent & { type: 'session-logged'; note?: string })
+
+  // ── Wealth & gear ─────────────────────────────────────────────────────
+  /** One committed Basket — a whole shopping trip as one logged event.
+   * The Basket is atomic: any flagged line refuses the whole transaction. */
+  | (BaseEvent & { type: 'transaction'; lines: TransactionLine[]; note?: string })
+  /** An item arriving outside commerce: DM grant, found gear, a gift. With
+   * an itemId it is catalogue-backed; free-named otherwise (unique items). */
+  | (BaseEvent & { type: 'item-granted'; name?: string; itemId?: string; qty?: number; note?: string })
+  /** Move an owned item between locations (sheet organization, durable). */
+  | (BaseEvent & { type: 'item-moved'; instanceId: string; location: ItemLocation })
 
   // ── Major purchases ──────────────────────────────────────────────────
   /** One step up the triangular curve (+N costs N Major for the Nth step). */
@@ -95,7 +119,7 @@ export type RecordEvent =
   /** A language, 1 Minor. */
   | (BaseEvent & { type: 'language-bought'; language: Language })
   /** A Feat (cost from the roster). Choices carry a parameterized Feat's
-   * pick (the Spell Market's tradition). */
+   * pick, where one exists. */
   | (BaseEvent & { type: 'feat-bought'; featId: string; choices?: Record<string, string> })
   /** Climb a Feat Ladder one Rank (cost from the Rank; one per Level). */
   | (BaseEvent & { type: 'feat-advanced'; featId: string; toRank: number })

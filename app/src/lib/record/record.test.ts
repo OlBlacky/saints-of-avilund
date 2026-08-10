@@ -439,14 +439,10 @@ describe('enforcement', () => {
     expect(paced.flags).toEqual([]);
     expect(paced.state.feats[0].rank).toBe(2);
 
-    // The Spell Market requires its tradition choice, validated.
-    const noChoice = replay([...base, ev('feat-bought', { featId: 'market-spell' })]);
-    expect(noChoice.flags.some((f) => f.message.includes('Tradition'))).toBe(true);
-    const withChoice = replay([
-      ...base,
-      ev('feat-bought', { featId: 'market-spell', choices: { tradition: 'New Magic' } }),
-    ]);
-    expect(withChoice.flags).toEqual([]);
+    // A Market Access Feat is a plain Minor purchase.
+    const marketFeat = replay([...base, ev('feat-bought', { featId: 'market-theobalds-row' })]);
+    expect(marketFeat.flags).toEqual([]);
+    expect(marketFeat.state.feats.some((f) => f.featId === 'market-theobalds-row')).toBe(true);
 
     // A plain Feat's unconditional effect reaches the sheet, labeled.
     const ritualist = replay([
