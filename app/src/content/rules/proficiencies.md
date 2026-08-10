@@ -47,7 +47,21 @@ Unlike a sword or bow, an implement's attack uses a **mental or nimble Attribute
 
 Armour has five Proficiencies — **Light, Medium,** and **Heavy** armour, plus **Light Shield** and **Heavy Shield**. *(Unarmoured is a fighting style you take Feats in, not a thing to train.)*
 
-- Wearing armour you are **not** proficient with imposes a penalty *(−1 to −2 by weight)*.
-- Class and Subclass grant your armour Proficiencies, and each is **advanced on its own track** — a Minor Advance buys back the armour's drawbacks or sharpens its protection *(DR, Speed, AC)* as you grow into it.
+- Wearing armour or carrying a shield you are **not** proficient with imposes a penalty to your **attack rolls and physical Skill checks**: **−1** for Light Armour, Medium Armour, and Light Shield; **−2** for Heavy Armour and Heavy Shield. Proficient is **+0**.
+- Your **Class and Subclass** grant your armour Proficiencies. Any character may **buy any one** for a **Minor Advance** — but one bought this way sits at base forever and can never advance.
+
+### Advancing an armour Proficiency
+
+Each armour Proficiency advances on its own track. Every step costs **one Minor Advance** and steps are taken **in order**; the final **+1 AC** step of every track unlocks at **5th Level**. The early steps buy back the armour's drawbacks; the later steps sharpen its protection — **+1 DR** stacks on the armour's own Damage Reduction, and shield steps apply while the shield is **raised**.
+
+| Proficiency | 1st Minor | 2nd Minor | 3rd Minor | 4th Minor |
+|---|---|---|---|---|
+| **Light Armour** | +1 DR | +1 AC *(5th Level)* | — | — |
+| **Medium Armour** | No Speed penalty | +1 DR | +1 AC *(5th Level)* | — |
+| **Heavy Armour** | Speed penalty eased by 5' | No Speed penalty | +1 DR | +1 AC *(5th Level)* |
+| **Light Shield** | +1 Shield DR | +1 AC *(5th Level)* | — | — |
+| **Heavy Shield** | No Speed penalty | +1 Shield DR | +1 AC *(5th Level)* | — |
+
+Some Classes and Subclasses also reach **Armour Specialization Feats**, which **modify your defensive Abilities** while wearing the relevant armour — the armour counterpart to the Weapon Specialization Feats above. They may be taken from **Level 2**.
 
 The armour and shields themselves — their AC, DR, weight and cost — are on the [Equipment](../equipment/) page.
