@@ -11,7 +11,10 @@
 import { useEffect, useMemo, useState } from 'preact/hooks';
 
 import AbilityFullCard from './AbilityFullCard';
+import MarketShop, { basketTotalCp, commerceRankOf } from './MarketShop';
+import type { BasketLine } from './MarketShop';
 import { VAR_LABELS, VAR_ORDER, resolveValue } from '../../lib/abilities';
+import { fmtCoins } from '../../lib/equipment';
 import { briefFor } from '../../lib/ability-briefs';
 import { CATEGORIES } from '../../lib/category-abilities';
 import {
@@ -64,12 +67,16 @@ interface Draft {
   /** Display texts of the current package roll (the event stores ids + fills). */
   quirkText?: { name: string; mechanic: string; esoteric: string; category?: SeesawCategory };
   gearText?: { name: string; mechanic: string; provenance: string; category?: SeesawCategory };
+  /** The open Basket (creation shopping). Committed as one transaction by
+   * Finish; freely edited until then. */
+  basket: BasketLine[];
 }
 
 const EMPTY_DRAFT: Draft = {
   identity: { name: '', origin: '', age: '', heightFt: '', heightIn: '', weight: '', notes: '' },
   events: [],
   rerollsLeft: REROLLS,
+  basket: [],
 };
 
 function loadDraft(): Draft {
@@ -483,8 +490,29 @@ export default function CreationFlow() {
     }));
   };
 
+  // ── The Market & Finish ─────────────────────────────────────────────────
+
+  const basket = draft.basket ?? [];
+  const basketCp = basketTotalCp(basket, commerceRankOf(state));
+  const remainingCp = state.wealthCp - basketCp;
+
   const canCrystallize =
     !crystallized && cls && sub && quirkRolled && Boolean(state.gear) && flags.length === 0;
+  const canFinish = canCrystallize && remainingCp >= 0;
+
+  /** One act: commit the Basket (if anything is in it) and crystallize. */
+  const doFinish = () => {
+    if (!canFinish) return;
+    const lines = basket
+      .filter((l) => l.qty > 0)
+      .map((l) => ({ direction: 'buy' as const, marketId: l.marketId, itemId: l.itemId, qty: l.qty }));
+    setDraft((d) => {
+      const evs = [...d.events];
+      if (lines.length) evs.push(mk('transaction', { lines, note: 'creation shopping' }));
+      evs.push(mk('crystallized', {}));
+      return { ...d, events: evs, basket: [] };
+    });
+  };
 
   // ── Render ──────────────────────────────────────────────────────────────
 
@@ -1204,24 +1232,51 @@ export default function CreationFlow() {
                   <button type="button" class="cf-roll" onClick={doRoll} disabled={quirkRolled && Boolean(state.gear) && draft.rerollsLeft <= 0}>
                     {quirkRolled && state.gear ? `Reroll the package (${draft.rerollsLeft} left — take the last)` : 'Roll your Quirk & Gear'}
                   </button>
-                  <button
-                    type="button"
-                    class="cf-crystallize"
-                    disabled={!canCrystallize}
-                    title={canCrystallize ? undefined : 'Needs a Class, a Subclass, the rolled Quirk & Gear package, and no unresolved flags'}
-                    onClick={() => append(mk('crystallized', {}))}
-                  >
-                    Crystallize — begin play at Level 1
-                  </button>
                 </div>
               )}
-              {crystallized && (
-                <p class="cf-done">
-                  <strong>{draft.identity.name || 'This character'} is crystallized.</strong> The
-                  spine is locked; the record begins. (The full Character Sheet view is the next
-                  thing being built.)
-                </p>
-              )}
+            </section>
+          )}
+
+          {/* ── Step 6 · The Market ── */}
+          {sub && quirkRolled && state.gear && !crystallized && (
+            <section class="cf-step cf-finale">
+              <h2>Step 6 · The Market</h2>
+              <p class="cf-how">
+                Spend your starting coin at the Markets you can reach. The Basket stays open —
+                swap freely — until you Finish.
+              </p>
+              <MarketShop
+                state={state}
+                basket={basket}
+                setBasket={(b) => setDraft((d) => ({ ...d, basket: b }))}
+              />
+              <div class="cf-line">
+                <button
+                  type="button"
+                  class="cf-crystallize"
+                  disabled={!canFinish}
+                  title={
+                    canFinish
+                      ? undefined
+                      : remainingCp < 0
+                        ? 'The Basket costs more than your coin'
+                        : 'Needs a Class, a Subclass, the rolled Quirk & Gear package, and no unresolved flags'
+                  }
+                  onClick={doFinish}
+                >
+                  Finish — begin play at Level 0
+                </button>
+              </div>
+            </section>
+          )}
+
+          {crystallized && (
+            <section class="cf-step cf-finale">
+              <p class="cf-done">
+                <strong>{draft.identity.name || 'This character'} is crystallized.</strong> The
+                spine is locked; the record begins. (The full Character Sheet view is the next
+                thing being built.)
+              </p>
             </section>
           )}
 
@@ -1246,6 +1301,22 @@ export default function CreationFlow() {
             <div class="cf-bankline"><span>Major</span> <Pips kind="M" n={state.bank.major} /></div>
             <div class="cf-bankline"><span>Minor</span> <Pips kind="m" n={state.bank.minor} /></div>
           </div>
+          {state.gear && (
+            <div class="cf-railbox">
+              <p class="cf-eyebrow">Coin &amp; Gear</p>
+              <p class="cf-railline">Coin: {fmtCoins(state.wealthCp)}</p>
+              {state.inventory.length > 0 && (
+                <ul class="cf-railgear">
+                  {state.inventory.map((i) => (
+                    <li key={i.instanceId}>
+                      {i.name}
+                      {i.qty > 1 ? ` ×${i.qty}` : ''}
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </div>
+          )}
           <div class="cf-railbox">
             <p class="cf-eyebrow">{draft.identity.name || 'Unnamed'}</p>
             <p class="cf-railsub">

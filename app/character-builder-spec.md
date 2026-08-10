@@ -181,7 +181,7 @@ Last comes the game's quirkiest moment. **Quirk and Starting Gear are rolled, to
 
 - **Starting Gear** — ✅ the rolled-gear mechanic, its three price-anchored tables (`lib/gear.ts`, 18 cards: 6 Good / 4 Neutral / 8 Bad), and starting coin (200/150/100 sp by Gear category) all exist; still to author: more cards (Good and Neutral pools are thinner than Bad).
 - **Quirk category tags** — ✅ done (Aug 7 2026): every Quirk carries a category; roster now 12 (6 Good / 3 Neutral / 3 Bad — Bad and Neutral need growth).
-- **Doc cleanup** — `mechanics/characters/character-creation.md` is stale AP-era design; the live site page `system/character-creation` is the canon but needs: the Level-derivation correction from §7 ("out of Level 0 and working on 1" is no longer right), and the **new Skill track** (ruled Aug 6 2026 — Untrained −1 / Trained +0, Class Skills Trained free, Ranks 1 Minor each climbing +1 → +2 @L3 → +3 @L5, off-list Trained buyable but capped +1; the page and its Gareth example still show the old "+1 any / +2 Class Skill" model). The `system/skills` page needs the same, plus a **Can't-Use-Untrained flag** inventoried across the Skill roster.
+- **Doc cleanup** — `mechanics/characters/character-creation.md` is stale AP-era design; the live site page `system/character-creation` is the canon but needs: a check against §7's Level derivation (corrected Aug 10 2026: play begins at Level 0, Level 1 is the first Milestone — the page's "out of Level 0 and working on 1" framing is right again), and the **new Skill track** (ruled Aug 6 2026 — Untrained −1 / Trained +0, Class Skills Trained free, Ranks 1 Minor each climbing +1 → +2 @L3 → +3 @L5, off-list Trained buyable but capped +1; the page and its Gareth example still show the old "+1 any / +2 Class Skill" model). The `system/skills` page needs the same, plus a **Can't-Use-Untrained flag** inventoried across the Skill roster.
 
 ---
 
@@ -191,8 +191,8 @@ Last comes the game's quirkiest moment. **Quirk and Starting Gear are rolled, to
 
 The **Milestone count** is the fundamental quantity; everything else derives from it. Nobody ever "sets level."
 
-- **Level 0 is creation only.** A finished character begins play at **Level 1**, having spent the creation allotment (11 Major + 11 Minor).
-- Each Level's climb is **3 Milestones**, and those Milestones belong to the level they build toward: Milestones 1–3 are Level 2's, Milestones 4–6 are Level 3's, and so on. Completing a triad completes the level. **Level = 1 + ⌊Milestones ÷ 3⌋**, capped at Level 11 (Milestone 30).
+- **A finished character begins play at Level 0** (corrected Aug 10 2026 — supersedes "play begins at Level 1"), having spent the creation allotment (11 Major + 11 Minor). **Level 1 is the first Milestone.**
+- Milestones group in **triads** (1–3, 4–6, …), and a new Level arrives at the **first Milestone of each triad**: Level 1 at Milestone 1, Level 2 at 4, Level 3 at 7. **Level = ⌈Milestones ÷ 3⌉** (0 before the first Milestone), capped at Level 11 (Milestone 31). The once-per-Level windows already open on the same boundaries.
 - **Once-per-Level allowances** (chiefly HP) refresh at the *first* Milestone of each triad (1, 4, 7, …). Attribute gates (+4 at 5th Level, +5 at 10th) and Ladder pacing (≤1 Rank per Level per Ladder) all key off the same derived level.
 
 ### Grants fill a bank; spending is separate

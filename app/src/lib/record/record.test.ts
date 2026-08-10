@@ -85,7 +85,7 @@ describe('the worked example replays clean', () => {
     expect(by('Charisma').value.total).toBe(-1);
 
     expect(sheet.hitPoints.total).toBe(8);               // 5 + Class HP 3
-    expect(sheet.level).toBe(1);                         // crystallized, no milestones
+    expect(sheet.level).toBe(0);                         // play begins at Level 0
 
     const endurance = sheet.skills.find((s) => s.skill === 'Endurance')!;
     expect(endurance.value.total).toBe(3);               // Con 2 + Rank 1
@@ -152,8 +152,8 @@ describe('enforcement', () => {
     const blocked = replay([...base, ev('attribute-bought', { attr: 'Strength' })]);
     expect(blocked.flags.some((f) => f.code === 'over-cap')).toBe(true);
 
-    // 12 milestones → Level 5; the bank has 12 more Majors, +4 costs 4.
-    const milestones = Array.from({ length: 12 }, () => ev('milestone-granted', {}));
+    // 13 milestones → Level 5; the bank has 13 more Majors, +4 costs 4.
+    const milestones = Array.from({ length: 13 }, () => ev('milestone-granted', {}));
     const open = replay([...base, ...milestones, ev('attribute-bought', { attr: 'Strength' })]);
     expect(open.flags).toEqual([]);
     expect(open.state.attributeRanks.Strength).toBe(4);
@@ -231,9 +231,9 @@ describe('enforcement', () => {
         f.message.includes('Level 5'),
       ),
     ).toBe(true);
-    // 12 milestones in → Level 5: it opens.
+    // 13 milestones in → Level 5: it opens.
     const open = toRank3(
-      Array.from({ length: 11 }, () => ev('milestone-granted', {})),
+      Array.from({ length: 12 }, () => ev('milestone-granted', {})),
     );
     expect(open.flags).toEqual([]);
   });
@@ -250,8 +250,8 @@ describe('enforcement', () => {
     const early = replay([...base, ev('skill-advanced', { skill: 'Endurance' })]);
     expect(early.flags.some((f) => f.code === 'over-cap')).toBe(true);
 
-    // …opens at Level 3 (6 Milestones), and +3 waits for Level 5.
-    const toL3 = Array.from({ length: 6 }, () => ev('milestone-granted', {}));
+    // …opens at Level 3 (7 Milestones), and +3 waits for Level 5.
+    const toL3 = Array.from({ length: 7 }, () => ev('milestone-granted', {}));
     const atL3 = replay([...base, ...toL3, ev('skill-advanced', { skill: 'Endurance' })]);
     expect(atL3.flags).toEqual([]);
     expect(atL3.state.skillRanks.Endurance).toBe(2);
@@ -375,7 +375,7 @@ describe('enforcement', () => {
       ev('quirk-rolled', { quirkName: 'Q', slots: {}, rerollsUsed: 0, gearName: 'G', gearSlots: {} }),
       ev('crystallized', {}),
     ];
-    const toL2 = Array.from({ length: 3 }, () => ev('milestone-granted', {}));
+    const toL2 = Array.from({ length: 4 }, () => ev('milestone-granted', {}));
 
     // Before Level 2 the Specialization refuses; at Level 2, a proficient
     // group opens and an unproficient one still refuses.
@@ -404,7 +404,7 @@ describe('enforcement', () => {
       ev('subclass-chosen', { subclassId: 'arcanist' }),
       ev('quirk-rolled', { quirkName: 'Q', slots: {}, rerollsUsed: 0, gearName: 'G', gearSlots: {} }),
       ev('crystallized', {}),
-      ...Array.from({ length: 3 }, () => ev('milestone-granted', {})),
+      ...Array.from({ length: 4 }, () => ev('milestone-granted', {})),
     ];
     // No Fire ability yet: refused. Build a Fire spell: opens.
     const cold = replay([...arcanist, ev('feat-bought', { featId: 'spec-fire' })]);
@@ -450,7 +450,7 @@ describe('enforcement', () => {
       ev('subclass-chosen', { subclassId: 'drymann' }),
       ev('quirk-rolled', { quirkName: 'Q', slots: {}, rerollsUsed: 0, gearName: 'G', gearSlots: {} }),
       ev('crystallized', {}),
-      ...Array.from({ length: 3 }, () => ev('milestone-granted', {})),
+      ...Array.from({ length: 4 }, () => ev('milestone-granted', {})),
       ev('feat-bought', { featId: 'spec-ritual' }),
     ]);
     expect(ritualist.flags).toEqual([]);
@@ -556,7 +556,7 @@ describe('enforcement', () => {
       ...base,
       ev('quirk-rolled', { quirkName: 'Q', slots: {}, rerollsUsed: 0, gearName: 'G', gearSlots: {} }),
       ev('crystallized', {}),
-      ...Array.from({ length: 3 }, () => ev('milestone-granted', {})),
+      ...Array.from({ length: 4 }, () => ev('milestone-granted', {})),
       ev('companion-advanced', { ref, ladder: 'HP', toRank: 1 }),
     ]);
     expect(grown.flags).toEqual([]);
@@ -564,8 +564,8 @@ describe('enforcement', () => {
     expect(companionLevel(grown.state, grownDog)).toBe(1);
     expect(grownDog.companion?.ownSpent.minor).toBe(1);
     expect(grownDog.companion?.ownerSpent.minor).toBe(0);
-    // The owner's Minors are untouched: 11 creation + 3 milestones.
-    expect(grown.state.bank.minor).toBe(14);
+    // The owner's Minors are untouched: 11 creation + 4 milestones.
+    expect(grown.state.bank.minor).toBe(15);
   });
 
   it('Polyglot opens on any one of Int, Wis, or Cha at +2', () => {
@@ -644,7 +644,7 @@ describe('enforcement', () => {
       ...base,
       ev('quirk-rolled', { quirkName: 'Q', slots: {}, rerollsUsed: 0, gearName: 'G', gearSlots: {} }),
       ev('crystallized', {}),
-      ...Array.from({ length: 3 }, () => ev('milestone-granted', {})),
+      ...Array.from({ length: 4 }, () => ev('milestone-granted', {})),
       ev('feat-bought', { featId: 'spec-ritual' }),
     ]);
     expect(spec.flags).toEqual([]);
@@ -919,10 +919,11 @@ describe('the package deploys to the sheet', () => {
 describe('the derivation clock', () => {
   it('derives Level from Milestones per §7', () => {
     expect(levelFor(0, false)).toBe(0);   // creation
-    expect(levelFor(0, true)).toBe(1);    // play begins
-    expect(levelFor(2, true)).toBe(1);    // mid-triad
-    expect(levelFor(3, true)).toBe(2);    // triad complete
-    expect(levelFor(30, true)).toBe(11);  // the cap
+    expect(levelFor(0, true)).toBe(0);    // play begins at Level 0
+    expect(levelFor(1, true)).toBe(1);    // Level 1 is the first Milestone
+    expect(levelFor(3, true)).toBe(1);    // through its triad
+    expect(levelFor(4, true)).toBe(2);    // a new Level at each triad's first Milestone
+    expect(levelFor(31, true)).toBe(11);  // the cap
     expect(levelFor(33, true)).toBe(11);  // never past it
   });
 

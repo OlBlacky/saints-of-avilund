@@ -124,11 +124,12 @@ export interface ReplayResult {
 
 // ── Rules helpers ───────────────────────────────────────────────────────────
 
-/** Level, derived from milestones: creation is Level 0; play begins at 1;
- * each triad completes the level it builds toward (spec §7). */
+/** Level, derived from milestones: play begins at Level 0; the first
+ * Milestone is Level 1; each triad thereafter completes a level (Les,
+ * Aug 10 2026 — spec §7). Cap: Level 11 at Milestone 31. */
 export function levelFor(milestones: number, crystallized: boolean): number {
-  if (!crystallized) return 0;
-  return Math.min(11, 1 + Math.floor(milestones / 3));
+  if (!crystallized || milestones === 0) return 0;
+  return Math.min(11, Math.ceil(milestones / 3));
 }
 
 /** Once-per-Level windows: creation is window 0; a new window opens at the

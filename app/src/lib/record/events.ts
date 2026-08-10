@@ -60,7 +60,7 @@ export type RecordEvent =
       rerollsUsed: number;
       gearId?: string; gearName?: string; gearSlots?: Record<string, string>;
     })
-  /** The point of no return — the spine locks, play begins at Level 1. */
+  /** The point of no return — the spine locks, play begins at Level 0. */
   | (BaseEvent & { type: 'crystallized' })
 
   // ── Grants ────────────────────────────────────────────────────────────

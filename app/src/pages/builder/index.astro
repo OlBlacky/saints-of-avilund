@@ -346,6 +346,45 @@ const blurb = 'Build a character of Avilund: Class, Subclass, Advances, and the 
   .cf-crystallize:disabled { opacity: 0.35; cursor: not-allowed; }
   .cf-done { border-left: 3px solid var(--gold); padding-left: 0.8rem; }
 
+  /* The Shop (Step 6 · The Market) */
+  .cf-shop-tabs { display: flex; flex-wrap: wrap; gap: 0.4rem; margin: 0 0 0.8rem; }
+  .cf-shop-tab {
+    padding: 0.3rem 0.7rem; cursor: pointer;
+    font-family: var(--display); font-size: 0.88rem;
+    color: var(--oxblood); background: transparent;
+    border: 1px solid var(--rule); border-radius: 3px;
+  }
+  .cf-shop-tab.active { border-color: var(--gold); background: var(--gold); color: var(--panel); }
+  .cf-shop-tab.locked { opacity: 0.45; cursor: not-allowed; }
+  .cf-shop-head { margin: 0 0 0.6rem; color: var(--ink-soft); font-size: 0.92rem; }
+  .cf-shop-search {
+    width: 100%; max-width: 22rem; margin: 0 0 0.7rem;
+    padding: 0.35rem 0.6rem; font: inherit; font-size: 0.9rem;
+    border: 1px solid var(--rule); border-radius: 3px; background: var(--panel);
+  }
+  .cf-shop-fold { border: 1px solid var(--rule); border-radius: 4px; margin: 0 0 0.5rem; background: var(--panel); }
+  .cf-shop-fold > summary {
+    cursor: pointer; list-style: none; padding: 0.4rem 0.7rem;
+    font-family: var(--display); font-size: 0.92rem; color: var(--oxblood);
+  }
+  .cf-shop-fold > summary::before { content: '▸ '; color: var(--gold); font-size: 0.85em; }
+  .cf-shop-fold[open] > summary::before { content: '▾ '; }
+  .cf-shop-table { border-collapse: collapse; width: 100%; font-size: 0.88rem; font-variant-numeric: tabular-nums; }
+  .cf-shop-table td { padding: 0.22rem 0.7rem; border-top: 1px dotted var(--rule); }
+  .cf-shop-table td.num { text-align: right; white-space: nowrap; }
+  .cf-shop-table td.act { text-align: right; white-space: nowrap; width: 1%; }
+  .cf-shop-qty { display: inline-block; min-width: 1.4em; text-align: center; }
+  .cf-shop-src { color: var(--ink-soft); font-size: 0.84em; }
+  .cf-basket {
+    margin-top: 1rem; padding: 0.7rem 0.9rem;
+    border: 1px solid var(--rule); border-top: 3px solid var(--gold);
+    border-radius: 4px; background: var(--panel);
+  }
+  .cf-basket-total { margin: 0.6rem 0 0; font-size: 0.92rem; }
+  .cf-basket-total.over { color: var(--oxblood); font-weight: bold; }
+  .cf-railgear { margin: 0.4rem 0 0; padding-left: 1.1rem; font-size: 0.84rem; color: var(--ink-soft); }
+  .cf-railgear li { margin: 0.1rem 0; }
+
   .cf-reset { text-align: right; margin: 0.5rem 0 2rem; }
   .cf-reset button {
     font-size: 0.82rem; color: var(--ink-soft); cursor: pointer;
