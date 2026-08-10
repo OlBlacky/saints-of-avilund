@@ -177,8 +177,8 @@ export const ABILITY_BRIEFS: Record<string, string> = {
   'Husbandry/Shepherd’s Dog': 'The dog: a working companion with its own card.',
   'Husbandry/Worry': 'The dog grips and hangs on; the target is slowed.',
   'Husbandry/The Dog Watches': 'The camp sleeps whole; the dog does not.',
-  'Husbandry/Turn the Wolf': 'The dog breaks a charge where it stands.',
-  'Husbandry/Ward the Fold': 'The dog drives an attacker off an ally.',
+  'Husbandry/Turn the Wolf': 'A sling stone breaks the charge where it stands.',
+  'Husbandry/Ward the Fold': 'Your spear drives an attacker off an ally.',
   'Husbandry/Drive Them': 'The dog moves an enemy where you want it.',
   'Husbandry/Ninety and Nine': 'You always know the count, and what is missing.',
 
