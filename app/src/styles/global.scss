@@ -327,15 +327,18 @@ figcaption { color: var(--ink-soft); font-size: 0.95rem; font-style: italic; mar
 
 // ── Wide tables ──────────────────────────────────────────────
 // The weapon lists run to nine columns — far past the prose measure.
-// Wrapping one in <div class="scroll"> lets it scroll itself rather
-// than crushing its cells or pushing the page sideways.
+// A <div class="scroll"> breaks out of the prose column to use the
+// page's real width first, and scrolls itself only when even that
+// isn't enough — never crushing its cells or pushing the page sideways.
 .prose .scroll {
+  width: min(68rem, calc(100vw - 2.4rem));
+  margin: 0 0 1.6rem 50%;
+  transform: translateX(-50%);
   overflow-x: auto;
-  margin: 0 0 1.6rem;
   -webkit-overflow-scrolling: touch;
 }
 .prose .scroll > table {
-  margin: 0;
+  margin: 0 auto;
   min-width: 44rem;
   font-size: 0.92rem;
 }

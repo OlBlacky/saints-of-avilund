@@ -175,7 +175,7 @@ Last comes the game's quirkiest moment. **Quirk and Starting Gear are rolled, to
 - **Sandbox builds reroll freely** — it's the play-around space, and the GM-approval gate (§3) protects campaigns from Quirk-fishing.
 - **Starting coin** (decided Aug 7 2026, built): fixed by the **Gear** category — Bad Gear 200 sp / Neutral 150 sp / Good 100 sp. The Quirk plays no part. Not rolled: the package already carries all the dice this step needs. Derived from the gear card at replay (`STARTING_COIN` in `lib/gear.ts`); becomes the Wealth ledger's opening balance when Markets land. **Deliberate asymmetry:** Bad and Neutral starts net ≈ 200 sp; a Good gear start **nets a little more** (100 sp + a 150–350 sp thing) — an unasked-for windfall is allowed to overshoot.
 - **Context-aware draws (planned, decided Aug 7 2026 — not yet built):** the gear picker will read the **character**, not just the dice. Two inputs: (1) **Proficiencies** — a character proficient with, say, Heavy Blades has a real chance that the fine weapon (or the masterwork one) is one he can actually use; likewise masterwork artisan tools and kits should lean toward his trade skills. (2) **Place of Origin** — the Identity Box's dropdown-to-be biases `{place}` fills toward home. Engine implication: `rollPackage` grows an optional character-state argument and slot draws gain weighting; pure-random stays the fallback (sandbox, demo button, no-context rolls).
-- **Shopping happens last.** After the roll, creation closes with a shopping step: spend your starting coin at the Markets you can access (the Default Market, plus anything a Quirk or Feat just opened). See `mechanics/markets.md`.
+- **Shopping happens last.** After the roll, creation closes with a shopping step: spend your starting coin at the Markets you can access (the open Waldheim Markets, plus anything a Quirk or Feat just opened). The Basket stays open until the flow's Finish — one act commits the Basket and completes the character. See §11 and `mechanics/markets.md`.
 
 ### Mechanics Prerequisites (authoring work this flow is waiting on)
 
@@ -344,6 +344,49 @@ During the playtest era this will fire often — that's by design; it's the mech
 ### Devices
 
 v1 has no sync: one device holds the truth, and export/import is how a character travels. Accounts (someday) turn the same file into an upload.
+
+---
+
+## 11. Markets & Shopping (settled Aug 10 2026)
+
+The game rules live in `mechanics/markets.md` (the Waldheim family, access, coin, the one-Session lock). This section is the builder's behaviour.
+
+### One Shop view
+
+The same shopping view serves creation, downtime, and In Play — only the reachable Markets and the spending purse differ. Sections mirror the equipment page's folds (Weapons, Armour, Adventuring Gear…), with search across it. Each Market shows its own prices.
+
+### Market visibility in the shop
+
+The **Waldheim family is always listed**: open markets show their catalogs; locked ones show **only the title, that you lack access, and the Feat that opens them** — build advertising. GM-granted custom Markets and the Black Faith Market are invisible until granted, like CEs.
+
+**Display format everywhere: Market Name — Location — Market Type** (e.g. *Theobald's Row — Sebald's Isle — Occult*). The named roster (Anselm's Buttery, the St. Ignatius College Archive, and the rest) lives in `mechanics/markets.md`, each hosted by a ward of the Waldheim gazetteer.
+
+**Regional Markets** (`mechanics/markets.md`) chain their gates through the Feat system: the Market Feat is **location-gated** (visible in the Feat list only if Place of Origin qualifies), the Market is **Feat-gated** — and Regional Markets are **never listed locked** in the shop (no grey rows; discovery happens in the Feat list; dozens are anticipated). First example: *St. Dunstan's Magazine — Abbey of the Artillery, Lysander — Firearms Market* (origin gate: Lysander natives and Bishopric of St. Dunstan residents; all firearms-related items at 50% of list). Place of Origin is now mechanically load-bearing (second consumer after the `{place}` gear draws) — it graduates into the spine.
+
+### The Basket
+
+- Buys and sells share one Basket; the total is the **net**. Committing is **Finish** — one logged transaction per trip (items, net sum, Markets involved).
+- Identical items stack (quantity on the line). Purchases arrive *carried*; organizing into containers is Page 3's job.
+- Kits sell empty; Supplies are their own line.
+
+### Creation shopping
+
+The last step of the flow (§6). The Basket stays open until the flow's Finish — commit and character completion are **one act**. Free swaps at full value until then; **no selling during creation** (no Market's buy-side is open yet). Starting coin (from the Gear category) is the purse; a Quirk-opened door is shoppable immediately and permanently.
+
+### The one-Session lock
+
+Rolled Starting Gear cannot be sold until the character has ≥1 Session logged. Player-facing: the item shows no sell price, no explanation (the no-machinery rule). Enforcement is on the item instance's provenance (it came from the Starting Gear roll) plus the Session count.
+
+### Coin
+
+Wealth is a single value (stored in cp), always **displayed reduced to fewest coins** ("1 sp 1 cp", never "11 cp"). Weightless. Fractions stay in the math; the final price rounds to the nearest cp. A currency field rides along for the future Currencies Campaign Option (§ Parking Lot).
+
+### Data model notes
+
+- **Catalogue** (Layer A): `lib/equipment.ts` — the equipment tables as structured data; the `system/equipment` page's tables generate from it (prose stays hand-written). Prices internally in cp.
+- **Owned items** (Layer B): instances referencing a catalogue entry (or free-named for found/unique gear), with quantity, location, masterwork flag, Supply count where relevant, and provenance via the event log.
+- **Markets** (Layer A + campaign data): what it sells (catalogue refs ± modifiers ± stock), what it buys (rates + purse), access rules. The Waldheim Market is "everything at list, buys back at 25%, bottomless".
+- **Per-market prices on items**: an item can carry bespoke buy-list entries at named Markets (the Havilah trade goods and stock certificates — `mechanics/markets.md`), overriding the default 25% rule; stock certificates are weightless items.
 
 ---
 

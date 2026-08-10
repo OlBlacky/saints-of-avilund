@@ -1,31 +1,105 @@
 # Markets
 
-Where characters buy and sell. A **Market** is a defined catalog — invisible until access is granted, exactly like Chronicle Entries. Access arrives four ways: everyone has the Default Market; the GM opens a Market (to one character or a whole party); a Feat buys access; a Quirk rolls it.
+Where characters buy and sell. A **Market** is a defined catalog with access rules. Access arrives four ways: everyone has the open Waldheim Markets; the GM opens a Market (to one character or a whole party); a Feat buys access; a Quirk rolls it. A door opened by Quirk or Feat is open **permanently**.
 
 Every transaction is a logged event touching Wealth and Gear — the record always knows where the poison came from.
 
+## The Waldheim Markets
+
+The standard price list is grounded in a place: **Waldheim**. The plain city market is the game's reference market, and each magic tradition has its own market in the city, each hosted by a ward or institution from the gazetteer (`app/src/pages/geography/waldheim.astro`). Named Aug 10 2026; **display format everywhere: Market Name — Location — Market Type.**
+
+| Market Name | Location | Market Type | Access |
+|---|---|---|---|
+| **Waldheim Market** | Sever's Cross | *(the Default Market)* | Open to everyone |
+| **Imperial Square Market** | Saints' Island | Saintly | Open to everyone |
+| **Anselm's Buttery** | Lord's University | New Magic | Feat |
+| **St. Ignatius College Archive** | Elder Isle | Elder Magic | Feat |
+| **Theobald's Row** | Sebald's Isle | Occult | Feat |
+| **Society of Astronomers** | Newton Hill | The Outside | Feat |
+| **The Green Market** | The Green | Old Magic | Feat |
+| **Black's Road Market** | Black's Road | Black Market | Feat |
+
+Why these hosts: Sever's Cross "holds most of the city's markets" (the reference list *is* Sever's Cross); the Saintly stalls stand in the Cathedral of Saint Avitus's shadow; a buttery is a college's provisions room, and **Saint Anselm** (Coaevi, Letters) "broke the Elder magic and remade it" — the New Magic patron; **St. Ignatius College**'s society still excavates the Elder ruins Waldheim is built on, and its **Archive** sits among the gutted palaces of Elder Isle; **Saint Theobald** is the Minores "whose Canon was granted only a loose Writ" — a market of loose writ; **Newton Hill** hosts the astronomers among the villas; The Green's market hides the Drymanns' stalls in plain sight among the greengrocers; and **Black's Road** is already named for a highwayman — "the Black Market" is a literal place name.
+
+The **Black Faith Market** exists but is **fully hidden** — never listed, never named in the shop. Lore-wise it brushes up against Black's Road in Kingston's lawless sprawl.
+
+## Regional Markets
+
+A **Regional Market** is double-gated, and the gates chain through the Feat system: **the Market Feat is location-gated** (it appears in a character's Feat list only if their Place of Origin qualifies), and **the Market is Feat-gated** (it opens only when the Feat is taken).
+
+- **Visibility: never listed locked.** Unlike the Waldheim family, Regional Markets do not appear greyed out in the shop — they are invisible until open. Discovery happens in the **Feat list**, where only a qualifying character ever sees the Feat. This keeps the shop short as the roster grows — dozens of Regional Markets are anticipated.
+- This makes **Place of Origin mechanically load-bearing** (with the Starting Gear `{place}` draws, its second consumer) — reinforcing its graduation from the Identity Box into the spine (builder spec §6).
+
+### St. Dunstan's Magazine — Abbey of the Artillery, Lysander — Firearms Market
+
+The first Regional Market (settled Aug 10 2026). Saint Dunstan — patron of the artillery, whose sect is credited with the invention of gunpowder — keeps his Cathedral at Lysander; the Abbey of the Artillery sells from its own magazine.
+
+- **Feat's origin gate:** Lysander natives **and** residents of the Bishopric of St. Dunstan. *(Feat name: [[add text]].)*
+- **Catalogue:** everything firearms-related on the standard list at **50% of list price** — the Pistols and Rifles weapon groups, grenades, powder and shot, powder horns.
+- Later flesh: models the general market doesn't stock, and western exotica off the crusade road.
+
+### St. Ulric's Exchange — Freehold of Havilah — Trade Market *(name proposed — Les to confirm)*
+
+The second Regional Market (Aug 10 2026). Havilah — guild-run, inventor of paper money (1388) and of shares (by 1530); St. Ulric's one thriving church there now patronizes the merchant-houses. The funnel for every northern good off the Kellish and Feral marches.
+
+- **Feat's origin gate:** Havilah natives and residents of the Freehold. *(Feat name: [[add text]].)*
+- **Catalogue** (first stock — more to flesh: furs, northern goods, paper instruments):
+
+| Item | Wt | Buy (Havilah) | Sell (Havilah) | Sell (Waldheim) |
+|---|---|---|---|---|
+| Animal Pelts, Cured | 10 lb | 20 sp | 5 sp | 30 sp |
+| Free City of Havilah Ownership Stock Certificate | — | 50 sp | 49 sp | 55 sp |
+| Bank of St. Ulric, Havilah, Ownership Stock Certificate | — | 100 sp | 99 sp | 110 sp |
+| Imperial Rampart Mining Company Stock Certificate | — | 10 sp | 5 sp | 11 sp |
+
+What the table demonstrates, mechanically:
+
+- **Per-market sell prices on the item** — the general "sellability lives on the item" rule made concrete: an item can state its own buy-list entries at named Markets, overriding the default 25%. The Waldheim Market's stated prices here are bespoke buy-list entries for goods outside its own catalog.
+- **Trade goods** — the pelts are the haul-it-home arbitrage: buy at 20 in Havilah, sell at 30 in Waldheim, profit to whoever carries 10 lb across the map.
+- **Paper wealth** — stock certificates are weightless, near-liquid in Havilah (sell-back at 98–99%), and worth *more* in Waldheim: portable money that appreciates southward, invented by the city that invented shares. (Also, certificates are ownership — plot hooks ride along free.)
+
+### Every region gets one (standing intent)
+
+Every state/region of Avilund should eventually carry its own Regional Market — which means deciding what each place **specializes in** (production or trade access) and locking that into the lore. Tracked in the Scriptorium to-do (`design-notes-and-to-do-2026.md`).
+
+**Every special market carries treats** — beyond the practical stock (implements, supplies, tradition goods), each offers some fun and enticing gear, so opening a door always feels like a reward. Catalogues to be fleshed out.
+
+### Visibility
+
+Two tiers:
+
+- **The Waldheim family is always listed** in the shop. An open market shows its catalog. A locked market shows **only its title and that you lack access**, with a note naming the Feat that opens it — a shopping list for your build, not your purse.
+- **Everything else** — GM-granted custom Markets, the Black Faith Market — is invisible until access is granted, like Chronicle Entries.
+
 ## Every Market is two lists
 
-1. **What it sells** — the catalog, with prices. Custom Markets carry **stock limits** the DM can adjust; the Default Market's stock is unlimited.
-2. **What it buys** — a buy-list with rates, and a **purse**. The Default Market's purse is bottomless; every Custom Market has a stated amount of money to spend (DM-set).
+1. **What it sells** — the catalog, with prices. Custom Markets carry **stock limits** the DM can adjust; the Waldheim Markets' stock is unlimited.
+2. **What it buys** — a buy-list with rates, and a **purse**. The Waldheim Market's purse is bottomless; every Custom Market has a stated amount of money to spend (DM-set).
 
-## The Default Market
+The Waldheim Market **buys anything it sells, at 25% of list value**, and will not touch anything outside its own catalog — no price for poison, stolen goods, scrolls, or the strange.
 
-The standard price list every new character can shop.
+## Shopping — the Basket
 
-- Sells everything on the standard equipment tables at list price. Unlimited stock.
-- **Buys anything it sells, at 25% of list value.** Bottomless purse.
-- Will not touch anything outside its own catalog — no sell price for poison, stolen goods, scrolls, or the strange.
+One shopping view serves every moment (creation, downtime, In Play); only the reachable Markets and the purse differ.
 
-## Custom Markets
+- You fill a **Basket** — buys and sells together in one trip. Selling puts your item *in* the Basket; the running total shows the **net**.
+- Committing the Basket is called **Finish**. One trip = **one logged transaction** (the items, the net sum, the Markets involved).
+- **Identical items stack** — ten torches is one line with a quantity. Purchases arrive simply *carried*; organizing into containers is the gear page's job.
+- **Kits are sold empty**; Supplies are their own purchase line.
 
-Named catalogs granted in play (or by Feat/Quirk): *the minor black market*, *a scroll market with a defined set of spells*. Each states:
+## Coin
 
-- its catalog with prices and stock limits;
-- what it buys, at what rates, and its purse;
-- who has access (character-scoped or campaign-scoped — both exist).
+- Wealth is a **single value**, always displayed reduced to the fewest coins (*1 sp 1 cp*, never *11 cp*).
+- **Coin is weightless** — no Encumbrance on wealth.
+- Keep fractions in the math (Commerce and Market rates); round the final price to the nearest cp.
 
-GMs can author homebrew Markets, marked as such, like homebrew CEs.
+## Creation shopping
+
+Shopping is the **last step of character creation**, after the Quirk & Starting Gear roll: spend your starting coin at the Markets you can access — the open Waldheim Markets, plus any door a Quirk or Feat just opened.
+
+- The Basket stays open until the creation flow's own **Finish** — one act commits the Basket and completes the character. Until then, swap freely at full value.
+- **No selling during creation.** The buy-side of every Market opens only once the character is finished.
+- **Rolled Starting Gear is locked from selling until the character has at least one Session logged.** After that, normal rules apply — the Waldheim Market pays its 25%, so shedding Bad Gear costs dearly. (Player-facing: the item simply shows no sell price; no explanation.)
 
 ## Sellability lives on the item
 
@@ -41,30 +115,24 @@ Most items carry criteria for **who will buy them**. An item's sell price exists
 | 2 | …20% less | m |
 | 3 | And sell items for 10% more | M *(assumed — Les to confirm)* |
 
-*(Feat name: [[add text]].)* Standard Ladder pacing (≤1 Rank per Level). Percentages stack with Market rates; keep fractions in the math and round the final price to the nearest cp.
+*(Feat name: [[add text]].)* Standard Ladder pacing (≤1 Rank per Level). Percentages stack with Market rates.
 
 ### Market Access Feats
 
-- **Default Spell Market** *[choose magic tradition]* — you gain access to the local guild or university. Opens the Default Spell Market for the chosen tradition. *(Catalog to be fleshed out.)*
-- **Default Black Market** — you gain access to the surface-level of the local Black Market. Opens the Default Black Market. *(Catalog to be fleshed out.)*
+One Feat per locked market, named on its locked shopfront: Anselm's Buttery, the St. Ignatius College Archive, Theobald's Row, the Society of Astronomers, The Green Market, Black's Road Market. *(Feat names: [[add text]] each.)*
 
 ## In Play — access vs. reach
 
 Standing **access** (what you've been granted) and current **reach** (what's in front of you) are different things.
 
-- **In Play** is a character state, toggled when the character is on an adventure. While In Play, the shopping view shows *only* the Markets the DM has authorized for that adventure — the Default Market included **only if the DM says so** (being far from home is the point).
-- Out of play — downtime — the character reaches their full standing set: the Default Market plus every standing access they've earned.
+- **In Play** is a character state, toggled when the character is on an adventure. While In Play, the shopping view shows *only* the Markets the DM has authorized for that adventure — the Waldheim Markets included **only if the DM says so** (being far from home is the point).
+- Out of play — downtime — the character reaches their full standing set: the open Waldheim Markets plus every standing access they've earned.
 - The DM toggles which Markets are In Play per adventure; in v1 (and printed modules) an adventure carries a **Market code** the player enters, same as Chronicle Entry codes.
 - A local Market's catalog can simply reference the standard price list with modifiers — *×2 list*, *×0.5 list*, *unavailable* — plus stock; no need to author full lists for every bywater.
-- **Arbitrage nuggets** (the local bargain worth hauling home): since the Default Market buys at 25% of list, the bargain must be priced *below a quarter of its Default list price* to profit. Markets being structured data, the builder validates this automatically for adventure authors.
-
-## Creation shopping
-
-Shopping is the **last step of character creation**, after the Quirk & Starting Gear roll: spend your starting coin at whatever Markets you can access — which, by then, may include one a Quirk just opened.
+- **Arbitrage nuggets** (the local bargain worth hauling home): since the Waldheim Market buys at 25% of list, the bargain must be priced *below a quarter of its list price* to profit. Markets being structured data, the builder validates this automatically for adventure authors.
 
 ## Still to author
 
-- **Default Spell Market** catalog(s), per magic tradition.
-- **Default Black Market** catalog (poisons in; what else?).
+- **Specialty catalogues** — what each locked market sells (implements, scrolls, components, the treats). The Imperial Square Market's open catalogue too.
 - Purse replenishment for Custom Markets (does the fence's money come back? DM's call vs. a rule).
 - Item sell-criteria tags across the equipment tables (what class of Market buys what).

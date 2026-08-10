@@ -59,7 +59,7 @@ export const SYSTEM: SystemPart[] = [
   {
     part: 'IV · Gear',
     items: [
-      { slug: 'equipment', title: 'Equipment', blurb: 'Weapons, armour & shields, sundries, and coin.', status: 'live' },
+      { slug: 'equipment', title: 'Equipment', blurb: 'Weapons, armour & shields, sundries, and coin.', status: 'live', stub: false },
     ],
   },
   {

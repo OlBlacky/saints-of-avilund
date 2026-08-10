@@ -59,4 +59,4 @@ Quirks may count Str as ±1 for Load, or shift a Band in either direction (an un
 
 ## Still to author
 
-- **Item weights** — no gear in the game has a weight yet; every weapons/armour/equipment table needs a weight column (keep the numbers round).
+- ~~**Item weights**~~ — ✅ done: the equipment page (`app/src/content/rules/equipment.md`) carries a weight column across all its tables.

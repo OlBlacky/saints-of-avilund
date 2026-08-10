@@ -1,0 +1,598 @@
+---
+import Base from '../../layouts/Base.astro';
+import { url } from '../../lib/url';
+import SystemNav from '../../components/SystemNav.astro';
+import {
+  AMMUNITION,
+  ARMOURS,
+  ARMOUR_TIER_AC,
+  CAMP_AND_TRAIL,
+  CLOTHING,
+  CONTAINERS,
+  FAITH_AND_SUPERSTITION,
+  FOOD_AND_DRINK,
+  HIRE,
+  KITS,
+  LIGHT_AND_FIRE,
+  LODGING,
+  MASTERWORK,
+  MELEE_WEAPONS,
+  MOUNTS_AND_VEHICLES,
+  PASSAGE,
+  RANGED_WEAPONS,
+  ROPE_IRON_CLIMBING,
+  SHIELDS,
+  TOOLS_AND_IMPLEMENTS,
+  WEAPON_GROUPS,
+  WEAPON_PROPERTIES,
+  fmtPrice,
+  fmtWeight,
+} from '../../lib/equipment';
+import type { SimpleItem } from '../../lib/equipment';
+
+// Equipment reference — a hand-built route (stub: false in system.ts).
+// The tables render from lib/equipment.ts (the single source of truth the
+// Markets/shop machinery also reads); the prose between them is authored here.
+
+const armCount = MELEE_WEAPONS.length + RANGED_WEAPONS.length;
+
+const speed = (ft: number) => (ft ? `−${ft}'` : '—');
+const penalty = (n: number) => (n ? `−${n}` : '—');
+const mod = (n: number | null) => (n === null ? '—' : `+${n}`);
+const price = (i: SimpleItem) => i.priceText ?? fmtPrice(i.priceCp);
+const priceWithUnit = (i: SimpleItem) => (i.unit ? `${price(i)} ${i.unit}` : price(i));
+---
+
+<Base title="Equipment" description="The gear of Avilund — weapons, armour and shields, sundries, and coin.">
+  <p class="back-link"><a href={url('system/')}>← The System</a></p>
+
+  <header class="saint-head">
+    <p class="eyebrow">IV · Gear</p>
+    <h1>Equipment</h1>
+  </header>
+
+  <article class="prose" style="margin:0 auto;">
+    <p>The gear of Avilund. Prices are in <strong>Silver Pieces (sp)</strong>.</p>
+
+    <details id="weapons">
+      <summary>Weapons <span class="fold__meta">{armCount} arms · {WEAPON_GROUPS.length} groups</span></summary>
+
+      <p>
+        Every weapon belongs to one of <strong>seventeen groups</strong>. You are trained by the group,
+        not by the weapon: Proficiency in Heavy Blades means every heavy blade sits right in your hand.
+        Wielding a weapon from a group you lack costs you <strong>−1 to attack</strong>. How
+        Proficiencies are granted, advanced, and specialized is covered under
+        <a href={url('system/proficiencies/')}>Proficiencies</a>.
+      </p>
+      <p>
+        A weapon's <strong>Type</strong> — Piercing, Slashing, or Blunt — matters where a foe's hide, or
+        a saint's ward, cares which.
+      </p>
+
+      <h3>Special Properties</h3>
+      <table>
+        <thead><tr><th>Property</th><th>Effect</th></tr></thead>
+        <tbody>
+          {WEAPON_PROPERTIES.map((p) => (
+            <tr><td><strong>{p.name}</strong></td><td>{p.effect}</td></tr>
+          ))}
+        </tbody>
+      </table>
+
+      <h3>Range</h3>
+      <p>Ranged and thrown weapons list three increments. Shooting further costs accuracy:</p>
+      <table>
+        <thead><tr><th>Increment</th><th>Penalty</th></tr></thead>
+        <tbody>
+          <tr><td>1st</td><td>—</td></tr>
+          <tr><td>2nd</td><td>−2 to attack</td></tr>
+          <tr><td>3rd</td><td>−4 to attack</td></tr>
+          <tr><td>Beyond the 3rd</td><td>out of range</td></tr>
+        </tbody>
+      </table>
+
+      {[
+        { title: 'Melee Weapons', rows: MELEE_WEAPONS },
+        { title: 'Ranged Weapons', rows: RANGED_WEAPONS },
+      ].map(({ title, rows }) => (
+        <>
+          <h3>{title}</h3>
+          <div class="scroll">
+            <table>
+              <thead>
+                <tr>
+                  <th>Weapon</th><th>Group</th><th>Type</th><th>Damage</th><th>Hands</th>
+                  <th>Weight</th><th>Cost</th><th>Range</th><th>Properties</th>
+                </tr>
+              </thead>
+              <tbody>
+                {rows.map((w) => (
+                  <tr>
+                    <td>{w.name}</td>
+                    <td>{w.group}</td>
+                    <td>{w.type}</td>
+                    <td>{w.damage}</td>
+                    <td>{w.hands}</td>
+                    <td>{fmtWeight(w.weightLb)}</td>
+                    <td>{fmtPrice(w.priceCp)}</td>
+                    <td>{w.range ?? '—'}</td>
+                    <td>{w.properties.length ? w.properties.join(', ') : '—'}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </>
+      ))}
+
+      <p><em>Grenades are area weapons; their blast radius and the area-attack rules are still being written.</em></p>
+
+      <h3>Ammunition</h3>
+      <table>
+        <thead><tr><th>Item</th><th>Cost</th><th>Weight</th></tr></thead>
+        <tbody>
+          {AMMUNITION.map((i) => (
+            <tr><td>{i.name}</td><td>{fmtPrice(i.priceCp)}</td><td>{fmtWeight(i.weightLb)}</td></tr>
+          ))}
+        </tbody>
+      </table>
+    </details>
+
+    <details id="armour">
+      <summary>Armour &amp; Shields <span class="fold__meta">{ARMOURS.length} armours · {SHIELDS.length} shields</span></summary>
+
+      <p>
+        Armour raises your <strong>Armoured Defences</strong> and grants <strong>Damage Reduction
+        (DR)</strong>. There are five armour Proficiencies — <strong>Light, Medium,</strong> and
+        <strong>Heavy</strong> armour, plus <strong>Light Shield</strong> and <strong>Heavy
+        Shield</strong>. (Unarmoured is a fighting <em>style</em> you take Feats in; there is nothing
+        to buy.)
+      </p>
+      <p>
+        Your <strong>AC</strong> is your Armoured Constitution Defence — the number most physical
+        attacks must beat. Armour's bonus is flat <strong>by tier</strong>: Light <strong>+1</strong>,
+        Medium <strong>+2</strong>, Heavy <strong>+3</strong> to your Armoured Defences.
+        <em>Within</em> a tier, the heavier pieces buy more <strong>DR</strong> (and a small Trait on
+        the third) at the price of weight, coin, and drawback.
+      </p>
+
+      <h3>Armour</h3>
+      <div class="scroll">
+        <table>
+          <thead>
+            <tr>
+              <th>Armour</th><th>Tier</th><th>AC</th><th>DR</th><th>Trait</th>
+              <th>Speed</th><th>Stealth</th><th>Str</th><th>Cost</th><th>Weight</th>
+            </tr>
+          </thead>
+          <tbody>
+            {ARMOURS.map((a) => (
+              <tr>
+                <td>{a.name}</td>
+                <td>{a.tier}</td>
+                <td>+{ARMOUR_TIER_AC[a.tier]}</td>
+                <td>{a.drNote ? `${a.dr} (${a.drNote})` : a.dr}</td>
+                <td>{a.trait ?? '—'}</td>
+                <td>{speed(a.speedPenaltyFt)}</td>
+                <td>{penalty(a.stealthPenalty)}</td>
+                <td>{mod(a.strReq)}</td>
+                <td>{fmtPrice(a.priceCp)}</td>
+                <td>{fmtWeight(a.weightLb)}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+
+      <ul>
+        <li><strong>Light</strong> armour carries <strong>no penalties</strong> at all.</li>
+        <li><strong>Medium</strong> armour takes <strong>−1 Stealth</strong> — the <strong>Breastplate</strong> keeps the Stealth penalty but loses the Speed penalty (its <strong>Mobility</strong>).</li>
+        <li><strong>Heavy</strong> armour takes <strong>−10' Speed and −2 Stealth</strong>, and needs the listed <strong>Strength</strong>. Your Proficiency Advances and Armour Specialization Feats buy these drawbacks back down.</li>
+      </ul>
+
+      <h3>Shields</h3>
+      <p>
+        A shield gives <strong>both its AC and its DR only while it is raised</strong> — nothing is
+        passive but its weight and Speed. Each occupies a hand, so you cannot wield a two-handed weapon
+        while shielded.
+      </p>
+      <table>
+        <thead>
+          <tr><th>Shield</th><th>Proficiency</th><th>AC</th><th>DR</th><th>Speed</th><th>Cost</th><th>Weight</th></tr>
+        </thead>
+        <tbody>
+          {SHIELDS.map((s) => (
+            <tr>
+              <td>{s.name}</td>
+              <td>{s.proficiency}</td>
+              <td>+{s.ac}</td>
+              <td>{s.dr || '—'}</td>
+              <td>{speed(s.speedPenaltyFt)}</td>
+              <td>{fmtPrice(s.priceCp)}</td>
+              <td>{fmtWeight(s.weightLb)}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+
+      <p>A shield's AC stacks on your armour's. <strong>Raising a shield</strong> can be done two ways:</p>
+      <ul>
+        <li><strong>Anyone proficient</strong> may raise their shield as a <strong>Standard Action</strong>, gaining its AC and DR until the start of their next turn — re-paid every turn.</li>
+        <li>The <strong>Raise Shield</strong> Ability (Arms) does it far better: from a Move Action down to <strong>Free</strong> — eventually every turn for nothing — and its Feats extend your Shield DR to the allies you protect.</li>
+      </ul>
+    </details>
+
+    <details id="masterwork">
+      <summary>Masterwork <span class="fold__meta">commissioned · one grade better</span></summary>
+
+      <p>
+        Masterwork is a master's own hands rather than his shop's. It is <strong>commissioned, never
+        stocked</strong>: you pay the surcharge, name the piece, and wait while he makes it. An item is
+        masterwork or it is not — the grade never stacks with itself.
+      </p>
+
+      <table>
+        <thead><tr><th>Item</th><th>Benefit</th><th>Surcharge</th><th>The master's time</th></tr></thead>
+        <tbody>
+          {MASTERWORK.map((m) => (
+            <tr>
+              <td>{m.item}</td>
+              <td>{m.benefit}</td>
+              <td>+{fmtPrice(m.surchargeCp)}</td>
+              <td>{m.days} days</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+
+      <ul>
+        <li>The surcharge is <strong>added to the base price</strong>. A masterwork Longsword is 15 + 200 = <strong>215 sp</strong>.</li>
+        <li>A weapon's <strong>+1 stacks with your Proficiency</strong> — a master at +2 wielding a masterwork blade attacks at <strong>+3</strong>.</li>
+        <li>Tools likewise <strong>stack past a Skill's training cap</strong>. Fine instruments let a man punch above his training.</li>
+        <li><strong>Light armour</strong> has no drawbacks to ease, so it gains only the weight. No armour drops below <strong>5 lb</strong>.</li>
+        <li>The surcharge is the master's time at his own wage <em>(8–10 sp a day — see the <a href="#wealth">Wealth</a> fold)</em>. In a village there is no one to ask.</li>
+      </ul>
+    </details>
+
+    <details id="gear">
+      <summary>Adventuring Gear <span class="fold__meta">packs · light · camp · tools</span></summary>
+
+      <h3>Packs &amp; Containers</h3>
+      <table>
+        <thead><tr><th>Item</th><th>Cost</th><th>Weight</th></tr></thead>
+        <tbody>
+          {CONTAINERS.map((i) => (
+            <tr><td>{i.name}</td><td>{fmtPrice(i.priceCp)}</td><td>{fmtWeight(i.weightLb)}</td></tr>
+          ))}
+        </tbody>
+      </table>
+
+      <h3>Light &amp; Fire</h3>
+      <table>
+        <thead><tr><th>Item</th><th>Cost</th><th>Weight</th><th>Light</th><th>Burns</th></tr></thead>
+        <tbody>
+          {LIGHT_AND_FIRE.map((i) => (
+            <tr>
+              <td>{i.name}</td>
+              <td>{fmtPrice(i.priceCp)}</td>
+              <td>{fmtWeight(i.weightLb)}</td>
+              <td>{i.light ?? '—'}</td>
+              <td>{i.burns ?? '—'}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+      <p>
+        <em>A source is <strong>Bright</strong> within the radius given and <strong>Dim</strong> for the
+        same distance again beyond — see <a href={url('system/light/')}>Light &amp; Darkness</a>.</em>
+      </p>
+
+      {[
+        { title: 'Camp & Trail', rows: CAMP_AND_TRAIL },
+        { title: 'Rope, Iron & Climbing', rows: ROPE_IRON_CLIMBING },
+        { title: 'Tools & Implements', rows: TOOLS_AND_IMPLEMENTS },
+        { title: 'Clothing', rows: CLOTHING },
+      ].map(({ title, rows }) => (
+        <>
+          <h3>{title}</h3>
+          <table>
+            <thead><tr><th>Item</th><th>Cost</th><th>Weight</th></tr></thead>
+            <tbody>
+              {rows.map((i) => (
+                <tr><td>{i.name}</td><td>{fmtPrice(i.priceCp)}</td><td>{fmtWeight(i.weightLb)}</td></tr>
+              ))}
+            </tbody>
+          </table>
+        </>
+      ))}
+
+      <h3>Faith &amp; Superstition</h3>
+      <p><em>Carried by nearly everyone; mechanically inert.</em></p>
+      <table>
+        <thead><tr><th>Item</th><th>Cost</th><th>Weight</th></tr></thead>
+        <tbody>
+          {FAITH_AND_SUPERSTITION.map((i) => (
+            <tr><td>{i.name}</td><td>{fmtPrice(i.priceCp)}</td><td>{fmtWeight(i.weightLb)}</td></tr>
+          ))}
+        </tbody>
+      </table>
+    </details>
+
+    <details id="services">
+      <summary>Lodging, Travel &amp; Hire <span class="fold__meta">board · mounts · hirelings</span></summary>
+
+      <h3>Food &amp; Drink</h3>
+      <table>
+        <thead><tr><th>Item</th><th>Cost</th></tr></thead>
+        <tbody>
+          {FOOD_AND_DRINK.map((i) => (
+            <tr><td>{i.unit === 'per head' ? `${i.name} (per head)` : i.name}</td><td>{price(i)}</td></tr>
+          ))}
+        </tbody>
+      </table>
+
+      <h3>Lodging</h3>
+      <table>
+        <thead><tr><th>Item</th><th>Cost per night</th></tr></thead>
+        <tbody>
+          {LODGING.map((i) => (
+            <tr><td>{i.name}</td><td>{price(i)}</td></tr>
+          ))}
+        </tbody>
+      </table>
+
+      <h3>Mounts &amp; Vehicles</h3>
+      <table>
+        <thead><tr><th>Item</th><th>Cost</th><th>Weight</th></tr></thead>
+        <tbody>
+          {MOUNTS_AND_VEHICLES.map((i) => (
+            <tr><td>{i.name}</td><td>{price(i)}</td><td>{fmtWeight(i.weightLb)}</td></tr>
+          ))}
+        </tbody>
+      </table>
+
+      <h3>Passage</h3>
+      <table>
+        <thead><tr><th>Passage</th><th>Cost</th></tr></thead>
+        <tbody>
+          {PASSAGE.map((i) => (
+            <tr><td>{i.name}</td><td>{priceWithUnit(i)}</td></tr>
+          ))}
+        </tbody>
+      </table>
+
+      <h3>Hire</h3>
+      <p><em>A hireling's fee is his wage, with a premium for danger — see the <a href="#wealth">Wealth</a> fold.</em></p>
+      <table>
+        <thead><tr><th>Hireling</th><th>Fee</th></tr></thead>
+        <tbody>
+          {HIRE.map((i) => (
+            <tr><td>{i.name}</td><td>{priceWithUnit(i)}</td></tr>
+          ))}
+        </tbody>
+      </table>
+    </details>
+
+    <details id="kits">
+      <summary>Medical &amp; Ministration Kits <span class="fold__meta">kits · supplies</span></summary>
+
+      <p>
+        A kit holds a <strong>Supply</strong> value of <strong>0–20</strong> — the consumables it
+        spends in use. Hands-on healing and several Abilities draw down Supplies; an empty kit is just
+        the tools and the bag.
+      </p>
+
+      <table>
+        <thead><tr><th>Item</th><th>Supply</th><th>Cost</th><th>Weight</th></tr></thead>
+        <tbody>
+          {KITS.map((k) => (
+            <tr>
+              <td><strong>{k.name}</strong></td>
+              <td>{k.supply === null ? '—' : `+${k.supply}`}</td>
+              <td>{fmtPrice(k.priceCp)}</td>
+              <td>{fmtWeight(k.weightLb)}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+
+      <ul>
+        <li>The <strong>Healer's Kit</strong> holds bandages, salves, and thread — the physician's consumables. Its Supplies fuel hands-on medicine: a trained healer's <strong>Tend Wounded</strong>, and the Physician's healing Abilities.</li>
+        <li>The <strong>Friar's Kit</strong> is the spiritual counterpart — holy oils and incense — identical in weight, cost, and Supply mechanics, but <strong>some ministrations require it instead of the Healer's Kit</strong> (for instance, treating damage to the mind and soul).</li>
+        <li>The <strong>Herbalist's Bag</strong> is the land-wise counterpart — gathering knives, a mortar, and herb-pouches — identical in weight, cost, and Supply mechanics. Its Supplies fuel the Naturalist's craft: <strong>Simples</strong> spends 1 Supply per draught brewed.</li>
+        <li>The <strong>Offerings Bag</strong> is the Drymann's — fetishes and humble gifts: bread and salt, feathers and bone, river-glass, old iron, a stoppered splash of ale. Identical mechanics, but rarely bought: its Supplies are mostly <strong>gathered with effort, not coin</strong> — see <strong>The Old Custom</strong> (Old Magic). Its Supplies are scattered, poured out, and burned to power the Drymann's workings.</li>
+        <li>A kit filled to 20 Supplies weighs about <strong>5 lb</strong> and costs about <strong>12 sp</strong>.</li>
+      </ul>
+    </details>
+
+    <details id="poisons">
+      <summary>Poisons <span class="fold__meta">crafting · a sample</span></summary>
+
+      <p>
+        A poison is defined by its <strong>Application</strong> <em>(ingestion, inhaled, wound, or
+        contact)</em>, a <strong>Save DC</strong>, an <strong>Onset</strong>, and then — once it takes
+        hold — a <strong>Duration</strong> <em>(how long one Interval lasts)</em> and an
+        <strong>Interval count</strong> <em>(how many ticks it runs)</em>. At each Interval the victim
+        saves again, and the poison worsens or eases. Coating a weapon by the <strong>Wound</strong>
+        method takes a Minor Action and a Wisdom check <em>(DC 10)</em>; one dose serves a single
+        weapon or missile and lasts 24 hours.
+      </p>
+      <p>Poisons are <strong>crafted</strong> with the <strong>Craft (Poison)</strong> Skill — here is a sample.</p>
+
+      <h3>Gaul's Thistle Oil</h3>
+      <p><em>A creeping paralytic venom named for Gaul, the fratricide brother of Saint Avitus.</em></p>
+
+      <table>
+        <tbody>
+          <tr><td><strong>Application</strong></td><td>Wound</td></tr>
+          <tr><td><strong>Save DC</strong></td><td>15</td></tr>
+          <tr><td><strong>Onset</strong></td><td>1 round</td></tr>
+          <tr><td><strong>Duration / Intervals</strong></td><td>1 round, for 5 Intervals</td></tr>
+        </tbody>
+      </table>
+
+      <p>Each Interval the victim climbs this track on a failed Save, and descends on a success:</p>
+      <table>
+        <thead><tr><th>Rank</th><th>Effect</th></tr></thead>
+        <tbody>
+          <tr><td>1</td><td>Slowed −5' · 1 necrotic / round</td></tr>
+          <tr><td>2</td><td>Slowed −10' · 1 necrotic / round</td></tr>
+          <tr><td>3</td><td>Slowed −15' · 1 necrotic / round</td></tr>
+          <tr><td>4</td><td>Immobilized · 1 necrotic / round</td></tr>
+        </tbody>
+      </table>
+
+      <table>
+        <tbody>
+          <tr><td><strong>Craft DC</strong></td><td>15 <em>(Craft: Poison)</em></td></tr>
+          <tr><td><strong>Ingredients</strong></td><td>Gaul's Thistles <em>(1 bundle, 2 sp)</em> · pure alcohol <em>(1 bottle, 2 sp)</em> — 4 sp / dose</td></tr>
+          <tr><td><strong>Time</strong></td><td>8 hours per batch <em>(up to 10 doses at 10× ingredients)</em></td></tr>
+          <tr><td><strong>Price</strong></td><td>8 sp / dose</td></tr>
+        </tbody>
+      </table>
+    </details>
+
+    <details id="wealth">
+      <summary>Wealth <span class="fold__meta">coin · wages · prices</span></summary>
+
+      <p>
+        The base coin of the realm is the <strong>Silver Piece (sp)</strong> — every price in this book
+        is written in silver. But the coin in an ordinary hand is the <strong>Copper Piece
+        (cp)</strong>. Copper buys a meal; silver buys a day; gold, most people never hold at all.
+      </p>
+
+      <table>
+        <thead><tr><th>Coin</th><th>Value</th><th>In practice</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Copper Piece (cp)</strong></td><td>—</td><td>The working coin. Meals, drink, a night's bed.</td></tr>
+          <tr><td><strong>Silver Piece (sp)</strong></td><td>10 cp</td><td>A guilded labourer's daily wage.</td></tr>
+          <tr><td><strong>Gold Piece (gp)</strong></td><td>10 sp <em>(100 cp)</em></td><td>Rarely seen. A working man may go years without touching one.</td></tr>
+        </tbody>
+      </table>
+
+      <p>
+        Coins are struck by whoever rules — a city, a republic, a bishopric, a crown — so the faces
+        differ from polity to polity and old money still circulates alongside new. At the table it
+        makes no difference. Copper is copper.
+      </p>
+
+      <h3>A Day's Living</h3>
+      <p>A young tradesman in a town or city spends his day roughly like this:</p>
+      <table>
+        <thead><tr><th>Expense</th><th>Cost</th></tr></thead>
+        <tbody>
+          <tr><td>Breakfast</td><td>1 cp</td></tr>
+          <tr><td>Lunch</td><td>1 cp</td></tr>
+          <tr><td>Dinner</td><td>2 cp</td></tr>
+          <tr><td>Drink</td><td>1 cp</td></tr>
+          <tr><td>Rented room</td><td>5 cp</td></tr>
+          <tr><td>Guild dues</td><td>1 cp</td></tr>
+          <tr><td><strong>Daily total</strong></td><td><strong>11 cp</strong></td></tr>
+        </tbody>
+      </table>
+
+      <p>
+        That comes to <strong>33 sp a month</strong>. Add perhaps <strong>10 sp</strong> for clothes,
+        tools, and entertainment, and he lives on about <strong>43 sp a month</strong> — a little over
+        <strong>500 sp a year</strong>, which is 50 gold he will never see in one place.
+      </p>
+      <p>
+        Note which line is the largest: the <strong>room</strong>, at 15 sp a month, is better than a
+        third of everything he spends. It is the single expense that decides how a person lives. Those
+        who cannot carry it share a bed four to a room, take live-in work, eat two meals instead of
+        three, or go home to family. Rent is the difference between the poor and the desperate.
+      </p>
+
+      <h3>Wages</h3>
+      <table>
+        <thead><tr><th>Work</th><th>Per day</th><th>Per month <em>(25 days)</em></th></tr></thead>
+        <tbody>
+          <tr><td>Child or unskilled labour</td><td>5 cp – 1 sp</td><td>12–25 sp</td></tr>
+          <tr><td>Household servant <em>(plus board)</em></td><td>1 sp</td><td>25 sp + keep</td></tr>
+          <tr><td>Guilded labourer</td><td>2 sp</td><td>50 sp</td></tr>
+          <tr><td>Scribe, or an entry professional</td><td>3 sp</td><td>75 sp</td></tr>
+          <tr><td>Journeyman of a guild</td><td>4–5 sp</td><td>100–125 sp</td></tr>
+          <tr><td>Young barrister</td><td>5 sp</td><td>125 sp</td></tr>
+          <tr><td>Guild master</td><td>8–10 sp</td><td>200–250 sp</td></tr>
+          <tr><td>Established professional</td><td>10–20 sp</td><td>250–500 sp</td></tr>
+          <tr><td>Clergy</td><td>nothing – 100 sp</td><td>wildly variable</td></tr>
+        </tbody>
+      </table>
+
+      <p>
+        Set that against the 43 sp a month it costs to live and the shape of things is plain.
+        <strong>The guilded labourer clears about 7 sp a month</strong> — a year of discipline buys him
+        a suit of Studded Leather and little else. <strong>The unskilled man does not clear
+        anything</strong>; at 25 sp a month against a 43 sp cost, he cannot live alone at all, and
+        doesn't. The servant's wage is the same 1 sp, but her board — food and a room, some 9 cp a day
+        in kind — is worth nearly as much again as her pay. It is a comfortable enough arrangement, and
+        almost none of it is coin she can save, or leave with.
+      </p>
+      <p>
+        A <strong>cleric's</strong> income depends entirely on the saint served and the office held. A
+        Mendicant may own nothing by vow and eat by alms. A well-placed servant of the Throne or of
+        Trade may draw 100 sp in a day. The Church is not one economy but eleven.
+      </p>
+
+      <h3>Property</h3>
+      <p>
+        None of it compares to owning land. A burgher of Waldheim with a rowhome — his shop on the
+        ground floor, his family on the second, and four renters on each of the two floors above —
+        collects <strong>40 cp a day</strong> in rents, some <strong>1,460 sp a year</strong>, before
+        his shop earns a penny. He lives above his own trade and pays no rent to anyone.
+      </p>
+      <p>
+        A property is worth roughly <strong>two to five times its annual rents</strong> — call that
+        rowhome <strong>3,000 to 7,300 sp</strong>. Against a <strong>property tax of 10% of its
+        value</strong>, half that rent roll goes straight back out again. What remains is a decent
+        living and a real risk: the tax is owed on the building's worth whether or not a single room is
+        let, and the towns of Avilund are still refilling after a long decline. There are more rooms
+        than renters in most places. Roofs fail. Buildings burn.
+      </p>
+      <p>
+        This is why property in Avilund is cheap to buy and hard to hold, and why a moderately
+        successful man is so often a nervous one.
+      </p>
+
+      <h3>What Things Cost</h3>
+      <p>For orientation, in a working man's terms — he earns 2 sp a day and clears 7 sp a month:</p>
+      <table>
+        <thead><tr><th>Thing</th><th>Cost</th><th>In his terms</th></tr></thead>
+        <tbody>
+          <tr><td>A night's bed</td><td>5 cp</td><td>a quarter of a day</td></tr>
+          <tr><td>A day's food and drink</td><td>5 cp</td><td>a quarter of a day</td></tr>
+          <tr><td>Leather armour</td><td>10 sp</td><td>five days' wages</td></tr>
+          <tr><td>A Healer's Kit</td><td>10 sp</td><td>five days' wages</td></tr>
+          <tr><td>Studded Leather</td><td>25 sp</td><td>two weeks</td></tr>
+          <tr><td>Chain Mail</td><td>150 sp</td><td>three months' wages — two years of saving</td></tr>
+          <tr><td>Full Plate</td><td>1,500 sp</td><td>two and a half years' wages — a third of a rowhome</td></tr>
+        </tbody>
+      </table>
+
+      <p>
+        <strong>Full Plate is not equipment. It is property.</strong> A harness of plate costs what a
+        building costs, and it is owned by the sort of people who own buildings. Adventurers do not
+        save up for it; they are granted it, left it, or take it off someone.
+      </p>
+    </details>
+  </article>
+
+  <SystemNav slug="equipment" />
+
+  <script is:inline>
+    // The page breaks itself into collapsed <details> folds. A link to one —
+    // from another page, or a search result — must open it, not land on a
+    // shut drawer.
+    function openHashFold() {
+      const id = decodeURIComponent(location.hash.slice(1));
+      if (!id) return;
+      const el = document.getElementById(id);
+      if (el && el.tagName === 'DETAILS') {
+        el.open = true;
+        el.scrollIntoView();
+      }
+    }
+    openHashFold();
+    window.addEventListener('hashchange', openHashFold);
+  </script>
+</Base>

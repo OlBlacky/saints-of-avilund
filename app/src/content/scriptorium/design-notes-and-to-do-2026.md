@@ -60,6 +60,7 @@ moves — _Not started_, _In progress_, or _Done_.
 | **Figureheads of St. Ignatius College** — flesh out 2–3 named fellows/masters of St. Ignatius College at Lord's University (the college founded by the canon of St. Ignatius). One is the professor who sends the PCs to St. Carpathi in the introductory adventure; his correspondent is a fellow of the sister-college in the Bishopric of St. Ignatius. | _unassigned_ | Not started |
 | **Cover illustration for _On the Side of Heaven_** — a frontispiece for the Library's central text. | _unassigned_ | Not started |
 | **Map of the southern provinces** — the Primi heartlands referenced in the geography pages. | _unassigned_ | Not started |
+| **A Regional Market for every region** — decide what each state/region of Avilund specializes in (production or trade access), lock it into the lore, and give each its own Regional Market (see `mechanics/markets.md`; first two: St. Dunstan's Magazine at Lysander — firearms; the Havilah exchange — pelts and paper). | _unassigned_ | Not started |
 
 _The two rows above are examples — replace them with real tasks. To add an item,
 copy a row and fill in the task title, a short description, who should do it, and
