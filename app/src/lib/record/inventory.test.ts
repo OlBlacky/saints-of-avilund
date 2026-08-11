@@ -412,6 +412,33 @@ describe('containers and Load', () => {
   });
 });
 
+describe('worn gear feeds the sheet', () => {
+  it('equipped armour raises Armoured Defences, DR, Speed, and Stealth; a shield stays situational', () => {
+    const { state, flags } = replay([
+      ...crystallized(),
+      ev('transaction', { lines: [
+        { direction: 'buy', marketId: 'waldheim', itemId: 'chain-mail', qty: 1 },
+        { direction: 'buy', marketId: 'waldheim', itemId: 'heater-kite-round', qty: 1 },
+      ] }),
+      ev('item-moved', { instanceId: 'item:chain-mail', location: 'equipped' }),
+      ev('item-moved', { instanceId: 'item:heater-kite-round', location: 'equipped' }),
+    ]);
+    expect(flags).toEqual([]);
+    const sheet = derive(state);
+    const con = sheet.attributes.find((a) => a.attr === 'Constitution')!;
+    expect(con.armouredDefence.parts).toContainEqual({ label: 'Chain Mail', value: 3 });
+    expect(con.unarmouredDefence.parts.some((p) => p.label === 'Chain Mail')).toBe(false);
+    expect(sheet.damageReduction.parts).toContainEqual({ label: 'Chain Mail', value: 2 });
+    // Speed: −10' armour, −5' heavy shield (its weight-and-Speed is passive).
+    expect(sheet.speed.total).toBe(15);
+    const stealth = sheet.skills.find((s) => s.skill === 'Stealth')!;
+    expect(stealth.value.parts).toContainEqual({ label: 'Chain Mail', value: -2 });
+    // The shield's AC and DR bind only while raised — situational, never summed.
+    expect(sheet.situational.some((s) => s.source === 'Heater / Kite / Round' && s.text.includes('while raised'))).toBe(true);
+    expect(con.armouredDefence.parts.some((p) => p.label === 'Heater / Kite / Round')).toBe(false);
+  });
+});
+
 describe('grants, moves, and Sessions', () => {
   it('a granted item lands carried, catalogue-named where backed', () => {
     const { state } = replay([

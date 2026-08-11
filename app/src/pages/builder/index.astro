@@ -2,22 +2,18 @@
 import Base from '../../layouts/Base.astro';
 import CreationFlow from '../../components/builder/CreationFlow';
 
-// The Character Builder — the creation flow (builder spec §6), wired to the
-// record engine. The draft autosaves to this browser; accounts come later
-// (spec §2: local-first).
-const title = 'Character Builder';
-const blurb = 'Build a character of Avilund: Class, Subclass, Advances, and the Quirk you didn’t bargain for.';
+// The character workspace: the creation flow for characters in the making,
+// the Character Sheet once they are Complete (builder spec §6, §8, §12).
+// Reached from the Characters roster (?c=<id>), or as the visitors' sandbox.
+const title = 'The Character';
+const blurb = 'Build a character of Avilund — and once they are Complete, this is their sheet.';
 ---
 
 <Base title={title} description={blurb}>
   <header class="saint-head">
-    <p class="eyebrow">The System</p>
+    <p class="eyebrow">Characters</p>
     <h1>{title}</h1>
   </header>
-
-  <p class="lede">
-    [[text here]]
-  </p>
 
   <CreationFlow client:load />
 </Base>
@@ -422,6 +418,9 @@ const blurb = 'Build a character of Avilund: Class, Subclass, Advances, and the 
     font: inherit; font-size: 0.8rem; padding: 0.05rem 0.25rem; max-width: 10rem;
     border: 1px solid var(--rule); border-radius: 3px; background: var(--panel);
   }
+  /* Sheet tables scroll inside their panel — never under the rail. */
+  .sheet .scroll { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+  .sheet .scroll > table { min-width: 40rem; }
   .cf-shop-table td.sell { color: #2f5d3a; white-space: nowrap; }
 
   .cf-reset { text-align: right; margin: 0.5rem 0 2rem; }

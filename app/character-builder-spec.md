@@ -367,6 +367,10 @@ The **Waldheim family is always listed**: open markets show their catalogs; lock
 
 **Regional Markets** (`mechanics/markets.md`) chain their gates through the Feat system: the Market Feat is **location-gated** (visible in the Feat list only if Place of Origin qualifies), the Market is **Feat-gated** — and Regional Markets are **never listed locked** in the shop (no grey rows; discovery happens in the Feat list; dozens are anticipated). First example: *St. Dunstan's Magazine — Abbey of the Artillery, Lysander — Firearms Market* (origin gate: Lysander natives and Bishopric of St. Dunstan residents; all firearms-related items at 50% of list). Place of Origin is now mechanically load-bearing (second consumer after the `{place}` gear draws) — it graduates into the spine.
 
+### Open Commerce (ruled Aug 11 2026)
+
+On the sheet, the Markets are hidden behind a deliberate act: **Open Commerce** reveals them; **Leave the market** closes them (an emptied Basket leaves nothing behind); **Finish the trip** commits and closes. The trip is a *mode*, not a record entry — nothing logs until the trip commits, and the committed transaction IS the Commerce session in the log. An unfinished Basket persists and re-opens Commerce on return (you are still at market); a Sell button on any gear row opens Commerce itself.
+
 ### The Basket
 
 - Buys and sells share one Basket; the total is the **net**. Committing is **Finish** — one logged transaction per trip (items, net sum, Markets involved).

@@ -8,7 +8,7 @@
 // Armour/gear contributions join when the gear pillar lands.
 
 import { classById } from '../classes';
-import { ARMOURS, containerCoefficient } from '../equipment';
+import { ARMOURS, ARMOUR_TIER_AC, SHIELDS, containerCoefficient } from '../equipment';
 import { DEFAULT_LANGUAGE } from '../languages';
 import { GEAR, STARTING_COIN } from '../gear';
 import { itemWeightLb } from '../markets';
@@ -209,6 +209,13 @@ export function derive(state: CharacterState): DerivedSheet {
     return sum(parts);
   };
 
+  // Worn gear: the first equipped armour and shield feed the sheet. Armour
+  // is passive (AC, DR, Speed, Stealth); a shield gives its AC and DR only
+  // while raised, so it lands in the situational list, not the sums.
+  const equipped = state.inventory.filter((i) => i.location === 'equipped');
+  const wornArmour = equipped.map((i) => ARMOURS.find((a) => a.id === i.itemId)).find(Boolean);
+  const borneShield = equipped.map((i) => SHIELDS.find((s) => s.id === i.itemId)).find(Boolean);
+
   const attributes: DerivedAttribute[] = ATTRIBUTES.map((attr) => {
     const value = attrValue(attr);
     const off = state.offenceRanks[attr] ?? 0;
@@ -237,12 +244,14 @@ export function derive(state: CharacterState): DerivedSheet {
         ...(def ? [{ label: 'Defence Ranks', value: def }] : []),
         ...defenceMods,
       ]),
-      // Armour's Equipment Bonus joins when the gear pillar lands.
       armouredDefence: sum([
         { label: 'Base', value: 10 },
         ...base(attr),
         ...(def ? [{ label: 'Defence Ranks', value: def }] : []),
         ...defenceMods,
+        ...(wornArmour
+          ? [{ label: wornArmour.name, value: ARMOUR_TIER_AC[wornArmour.tier] }]
+          : []),
       ]),
     };
   });
@@ -256,9 +265,26 @@ export function derive(state: CharacterState): DerivedSheet {
     ...steadyParts((e) => e.kind === 'maxHpMod'),
   ]);
 
-  const speed = sum([{ label: 'Base', value: 30 }]);
+  const speed = sum([
+    { label: 'Base', value: 30 },
+    ...(wornArmour?.speedPenaltyFt
+      ? [{ label: wornArmour.name, value: -wornArmour.speedPenaltyFt }]
+      : []),
+    ...(borneShield?.speedPenaltyFt
+      ? [{ label: borneShield.name, value: -borneShield.speedPenaltyFt }]
+      : []),
+  ]);
 
-  const damageReduction = sum(steadyParts((e) => e.kind === 'drMod'));
+  const damageReduction = sum([
+    ...steadyParts((e) => e.kind === 'drMod'),
+    ...(wornArmour?.dr ? [{ label: wornArmour.name, value: wornArmour.dr }] : []),
+  ]);
+  if (borneShield) {
+    situational.push({
+      source: borneShield.name,
+      text: `+${borneShield.ac} AC${borneShield.dr ? ` · DR ${borneShield.dr}` : ''} while raised`,
+    });
+  }
 
   // Initiative = Dex or Wis, whichever is bigger, + modifiers (ruled Aug 2026).
   const dex = attributes.find((a) => a.attr === 'Dexterity')!.value.total;
@@ -304,6 +330,8 @@ export function derive(state: CharacterState): DerivedSheet {
       ...state.trainedSkills,
       ...Object.keys(state.skillRanks),
       ...moddedSkills,
+      // Armour's Stealth penalty lands on the sheet even Untrained.
+      ...(wornArmour?.stealthPenalty ? ['Stealth'] : []),
     ]),
   ];
   const skills: DerivedSkill[] = trainedNames.map((skill) => {
@@ -328,6 +356,9 @@ export function derive(state: CharacterState): DerivedSheet {
         ...(untrained ? [{ label: 'Untrained', value: UNTRAINED_PENALTY }] : []),
         ...(rank ? [{ label: 'Ranks', value: rank }] : []),
         ...steadyParts((e) => e.kind === 'skillMod' && e.skill === skill),
+        ...(skill === 'Stealth' && wornArmour?.stealthPenalty
+          ? [{ label: wornArmour.name, value: -wornArmour.stealthPenalty }]
+          : []),
       ]),
     };
   });

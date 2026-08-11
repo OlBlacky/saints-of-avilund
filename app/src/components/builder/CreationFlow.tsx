@@ -603,6 +603,7 @@ export default function CreationFlow() {
               name={draft.identity.name}
               state={state}
               sheet={sheet}
+              events={events}
               basket={basket}
               setBasket={(b) => setDraft((d) => ({ ...d, basket: b }))}
               append={append}
