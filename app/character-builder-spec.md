@@ -351,9 +351,9 @@ v1 has no sync: one device holds the truth, and export/import is how a character
 
 The game rules live in `mechanics/markets.md` (the Waldheim family, access, coin, the one-Session lock). This section is the builder's behaviour.
 
-### One Shop view
+### One Shop view — "The Markets"
 
-The same shopping view serves creation, downtime, and In Play — only the reachable Markets and the spending purse differ. Sections mirror the equipment page's folds (Weapons, Armour, Adventuring Gear…), with search across it. Each Market shows its own prices.
+The shopping view's player-facing name is **The Markets** (ruled Aug 11 2026) — Step 6 of creation wears it, and the Character Management screens reuse the same term when they land. The same view serves creation, downtime, and In Play — only the reachable Markets and the spending purse differ. Sections mirror the equipment page's folds (Weapons, Armour, Adventuring Gear…), with search across it. Each Market shows its own prices.
 
 ### Market visibility in the shop
 

@@ -1255,10 +1255,10 @@ export default function CreationFlow() {
             </section>
           )}
 
-          {/* ── Step 6 · The Market ── */}
+          {/* ── Step 6 · The Markets ── */}
           {sub && quirkRolled && state.gear && !crystallized && (
             <section class="cf-step cf-finale">
-              <h2>Step 6 · The Market</h2>
+              <h2>Step 6 · The Markets</h2>
               <p class="cf-how">
                 Spend your starting coin at the Markets you can reach. The Basket stays open —
                 swap freely — until you Finish.
