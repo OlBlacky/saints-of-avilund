@@ -430,7 +430,7 @@ export const KITS: KitItem[] = [
   { id: 'friars-kit', name: "Friar's Kit (empty — oils, incense & implements)", priceCp: 100, weightLb: 3, supply: null },
   { id: 'herbalists-bag', name: "Herbalist's Bag (empty — knives, mortar & pouches)", priceCp: 100, weightLb: 3, supply: null },
   { id: 'offerings-bag', name: 'Offerings Bag (empty — pouches, knots & charms)', priceCp: 100, weightLb: 3, supply: null },
-  { id: 'supplies', name: 'Supplies (per 10)', priceCp: 10, weightLb: 1, supply: 10 },
+  { id: 'supplies', name: 'Supplies (per 10)', priceCp: 10, weightLb: 1, supply: 10, choice: { key: 'kit', label: 'Kit', options: ["Healer's Kit", "Friar's Kit", "Herbalist's Bag", 'Offerings Bag'] } },
 ];
 
 // ── The whole catalogue, flat ────────────────────────────────────

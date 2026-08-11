@@ -374,7 +374,8 @@ The **Waldheim family is always listed**: open markets show their catalogs; lock
 - **Price hints — inform, never auto-decide**: when another *reachable* Market sells an item cheaper, the row (and any stale Basket line) carries a clickable note — "100 sp at St. Dunstan's Magazine" — that buys from (or reroutes to) the cheaper door. Reachability respects the In Play filter when it lands.
 - **Proficiency chips**: weapons, armour, and shields the build isn't trained for wear an *untrained* chip stating the exact penalty (weapons −1 to attack; Light/Medium armour and Light Shield −1, Heavy armour and Heavy Shield −2 to attack rolls and physical skill checks); Str-short heavy armour adds *needs Str +N*. Buying stays unrestricted.
 - **All Gear / Gear I can Use** toggle (default All): the second view hides chipped rows; sundries always show.
-- **Purchase-time item choices** (`mechanics/markets.md`): Artisan's tools pick their Craft, Saint's medals their saint — dropdown plus free-text Other; a Market can extend an item's options (`choiceExtras`: Black's Road adds Poison). The pick rides the transaction line, names the instance, and separates stacks.
+- **Purchase-time item choices** (`mechanics/markets.md`): Artisan's tools pick their Craft, Saint's medals their saint, Supplies their kit — dropdown (plus free-text Other where the space is open); a Market can extend an item's options (`choiceExtras`: Black's Road adds Poison). The pick rides the transaction line, names the instance, and separates stacks.
+- **Kit fill (Page 3, later)**: kit instances carry a Supply gauge 0–20; a named spare stack ("Supplies (Healer's Kit) ×100", in a backpack or at Home) refills it as a Gear-page action. Loose stacks are ordinary located items — the gauge is kit state, not inventory.
 
 ### Creation shopping
 

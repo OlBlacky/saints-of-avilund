@@ -92,6 +92,7 @@ Some items carry a **purchase-time choice**, picked in the shop and named on the
 
 - **Artisan's tools** name their **Craft** — the common roster (Apothecary, Armourer, Baker, Blacksmith, Bookbinder, Bowyer, Brewer, Butcher, Carpenter, Chandler, Cobbler, Cook, Cooper, Dyer, Fletcher, Furrier, Glassblower, Goldsmith, Gunsmith, Jeweller, Leatherworker, Locksmith, Mason, Potter, Printer, Ropemaker, Saddler, Shipwright, Tailor, Tanner, Vintner, Weaponsmith, Weaver, Wheelwright) plus a free-text **Other**. Craft is an open speciality Skill; the roster is the dropdown, not a cap.
 - **Saint's medals** (tin and silver) name their **saint** — the catalogue is the dropdown; Other covers folk saints.
+- **Supplies** name their **kit** (Healer's Kit, Friar's Kit, Herbalist's Bag, Offerings Bag) — bandages are not holy oils. Named supply stacks are ordinary inventory: spares live in a backpack or at Home beyond the kit's own 0–20 fill. (The kit's fill gauge, and refilling it from a spare stack, arrive with the sheet's Gear page.)
 - The pick makes masterwork tools' +1 unambiguous, and reads on the sheet.
 
 ## Shopping — the Basket
