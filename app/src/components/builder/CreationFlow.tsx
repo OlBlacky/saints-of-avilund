@@ -1161,10 +1161,18 @@ export default function CreationFlow() {
                     f.originGate.includes(draft.identity.origin) ||
                     ownedIds.has(f.id),
                 );
+                // Eligible = the build qualifies (gates, requirements, caps).
+                // An empty bank never hides a Feat — affordability lives on
+                // the Take button, which still disables.
                 const openIds = new Set(
-                  visibleFeats.filter(
-                    (f) => ownedIds.has(f.id) || why(mk('feat-bought', { featId: f.id, choices: f.choice ? { [f.choice.key]: f.choice.options[0] } : undefined })) === null,
-                  ).map((f) => f.id),
+                  visibleFeats.filter((f) => {
+                    if (ownedIds.has(f.id)) return true;
+                    const fs = tryEvent(
+                      events,
+                      mk('feat-bought', { featId: f.id, choices: f.choice ? { [f.choice.key]: f.choice.options[0] } : undefined }),
+                    );
+                    return fs.every((x) => x.code === 'insufficient-advances');
+                  }).map((f) => f.id),
                 );
                 const shown =
                   featView === 'all'

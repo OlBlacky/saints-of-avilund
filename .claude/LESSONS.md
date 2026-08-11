@@ -20,6 +20,12 @@ A running log of corrections and patterns. Claude appends an entry whenever Les 
 
 **How to apply:** in tooltips, help text, and card text, write the rule as plain declarative sentences and end there. No trailing "— …" afterthought, no parenthetical reassurance, no edge-case footnote unless the edge case changes what the player does. If a clarification genuinely earns its place, give it its own plain sentence — and first ask whether it is needed at all.
 
+## Eligibility filters never test affordability
+
+**Why:** the builder's Feats "Eligible" view used the full validation verdict (`why()`), so an empty Advance bank flagged every candidate and the list collapsed to "Eligible (0)". Les (Aug 2026): "I think we have a bug in the Feats." Eligibility is about the build (gates, requirements, caps); affordability is transient and belongs on the buy control, which disables with its reason.
+
+**How to apply:** when filtering a list of purchasable things down to "what this character qualifies for", ignore `insufficient-advances` (and any other purse-of-the-moment flag) — filter on the remaining flags only. The Take/Buy button keeps the full verdict.
+
 ## Player-facing text never explains the machinery
 
 **Why:** the builder's finale blurb spelled out the seesaw ("pairs a Good Quirk with Bad Gear… 200 sp for Bad, 150 for Neutral, 100 for Good"). Les (Aug 2026): this breaks the Setting/System theme of **Mystery and Discovery** — "we don't owe players an explanation." He would say only: they are rolled randomly together, two rerolls, keep the last. The same principle already existed as "players are never shown the table" (quirks) and "no teasers, no stubs" (Chronicle) — this extended it to *all* player-facing UI text.
