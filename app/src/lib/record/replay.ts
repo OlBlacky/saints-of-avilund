@@ -362,8 +362,14 @@ function generalistTrained(state: CharacterState, skill: string): boolean {
   return attrs.some((attr) => shorts.includes(attr.slice(0, 3)));
 }
 
-/** The can-use rule: what a Feat requirement checks against the build. */
-function meetsRequirement(state: CharacterState, req: FeatRequirement): string | null {
+/** The can-use rule: what a Feat requirement checks against the build.
+ * A speciality pick (the Craft Specialization's trade) narrows a
+ * skill-rank requirement to that exact named Skill. */
+function meetsRequirement(
+  state: CharacterState,
+  req: FeatRequirement,
+  speciality?: string,
+): string | null {
   switch (req.kind) {
     case 'proficiency':
       return allProficiencies(state).includes(req.group)
@@ -385,6 +391,12 @@ function meetsRequirement(state: CharacterState, req: FeatRequirement): string |
       return trained ? null : `requires being Trained in ${req.skill}`;
     }
     case 'skill-rank': {
+      if (speciality) {
+        const full = `${req.skill} (${speciality})`;
+        return (state.skillRanks[full] ?? 0) >= req.rank
+          ? null
+          : `requires Rank +${req.rank} in ${full}`;
+      }
       const has = Object.entries(state.skillRanks).some(
         ([name, rank]) => skillBase(name) === req.skill && rank >= req.rank,
       );
@@ -994,17 +1006,21 @@ export function replay(events: RecordEvent[]): ReplayResult {
           flag(e, 'over-cap', `${feat.name} opens at Level ${feat.levelGate}`);
           break;
         }
-        if (feat.requires) {
-          const unmet = meetsRequirement(state, feat.requires);
-          if (unmet) { flag(e, 'no-access', `${feat.name} ${unmet}`); break; }
-        }
+        // The choice resolves before the requirement: a speciality pick
+        // (the Craft Specialization's trade) narrows what is checked.
+        let picked: string | undefined;
         if (feat.choice) {
-          const picked = e.choices?.[feat.choice.key];
+          picked = e.choices?.[feat.choice.key];
           if (!picked) { flag(e, 'wrong-order', `choose a ${feat.choice.label} when taking ${feat.name}`); break; }
           if (!feat.choice.options.includes(picked)) {
             flag(e, 'unknown-ref', `"${picked}" is not a ${feat.choice.label} of ${feat.name}`);
             break;
           }
+        }
+        if (feat.requires) {
+          const speciality = feat.choice?.key === 'speciality' ? picked : undefined;
+          const unmet = meetsRequirement(state, feat.requires, speciality);
+          if (unmet) { flag(e, 'no-access', `${feat.name} ${unmet}`); break; }
         }
         // A Ladder Feat's purchase is its first Rank; plain Feats have one cost.
         const cost = feat.ladder ? feat.ladder[0].cost : feat.cost ?? 'm';

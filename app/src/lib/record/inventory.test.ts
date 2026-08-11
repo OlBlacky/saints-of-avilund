@@ -303,6 +303,31 @@ describe('the Basket transaction', () => {
   });
 });
 
+describe('the Craft Specialization anchors to a trade', () => {
+  it('requires Rank +1 in the exact chosen Craft', () => {
+    const fletcher = [
+      ev('class-chosen', { classId: 'soldier' }),
+      ev('subclass-chosen', { subclassId: 'vanguard' }),
+      ev('skill-trained', { skill: 'Craft (Fletcher)' }),
+      ev('skill-advanced', { skill: 'Craft (Fletcher)' }),
+    ];
+    const wrongTrade = replay([
+      ...fletcher,
+      ev('feat-bought', { featId: 'skill-spec-craft', choices: { speciality: 'Cooper' } }),
+    ]);
+    expect(wrongTrade.flags.some((f) => f.message.includes('Craft (Cooper)'))).toBe(true);
+
+    const rightTrade = replay([
+      ...fletcher,
+      ev('feat-bought', { featId: 'skill-spec-craft', choices: { speciality: 'Fletcher' } }),
+    ]);
+    expect(rightTrade.flags).toEqual([]);
+    expect(rightTrade.state.feats).toContainEqual({
+      featId: 'skill-spec-craft', choices: { speciality: 'Fletcher' }, rank: 1,
+    });
+  });
+});
+
 describe('containers and Load', () => {
   const buy = (lines: { itemId: string; qty: number }[]) =>
     ev('transaction', {

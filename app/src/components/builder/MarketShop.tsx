@@ -25,7 +25,6 @@ import {
   RANGED_WEAPONS,
   SHIELDS,
   fmtCoins,
-  fmtPrice,
   fmtWeight,
 } from '../../lib/equipment';
 import type { ItemChoice } from '../../lib/equipment';
@@ -336,11 +335,11 @@ export default function MarketShop({ state, basket, setBasket }: Props) {
                                     )
                                   }
                                 >
-                                  {fmtPrice(cheaper.priceCp)} at {cheaper.market.name}
+                                  {fmtCoins(cheaper.priceCp)} at {cheaper.market.name}
                                 </button>
                               )}
                             </td>
-                            <td class="num">{fmtPrice(r.priceCp)}</td>
+                            <td class="num">{fmtCoins(r.priceCp)}</td>
                             <td class="num">{fmtWeight(r.weightLb)}</td>
                             <td class="act">
                               {inBasket > 0 && (
@@ -425,7 +424,7 @@ export default function MarketShop({ state, basket, setBasket }: Props) {
                           title={`${cheaper.market.name} — ${cheaper.market.location} — ${cheaper.market.marketType}`}
                           onClick={() => rerouteLine(l, cheaper.market.id)}
                         >
-                          {fmtPrice(cheaper.priceCp)} at {cheaper.market.name}
+                          {fmtCoins(cheaper.priceCp)} at {cheaper.market.name}
                         </button>
                       )}
                     </td>

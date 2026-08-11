@@ -1,0 +1,41 @@
+---
+import Base from '../../layouts/Base.astro';
+
+// Campaigns (builder spec §12) — the second account-shaped area. The
+// design is settled (a DM, Players, Characters, an Adventure Module with
+// its CEs, Maps, Encounters, and Rewards); the machinery is the next
+// increment after the Characters roster.
+---
+
+<Base title="Campaigns" description="Campaigns — a table of players, their characters, and an Adventure Module.">
+  <p class="eyebrow">The Record</p>
+  <h1>Campaigns</h1>
+  <p class="lede">
+    A Campaign gathers a DM, players, and their characters around an Adventure Module — its lore,
+    its maps, its encounters, and its rewards.
+  </p>
+
+  <article class="prose" style="margin-top:1.4rem;">
+    <p>
+      <span class="sys-status">In progress</span>
+    </p>
+    <p style="margin-top:1.2rem;">
+      This section is actively being built. Characters come first —
+      <a href={`${import.meta.env.BASE_URL}characters/`}>your roster is open</a>.
+    </p>
+  </article>
+
+  <style>
+    .sys-status {
+      display: inline-block;
+      padding: 0.1rem 0.6rem;
+      border: 1px solid rgba(120, 90, 40, 0.45);
+      border-radius: 999px;
+      font-size: 0.72rem;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      color: #6a532a;
+      background: rgba(120, 90, 40, 0.06);
+    }
+  </style>
+</Base>

@@ -15,7 +15,7 @@ import MarketShop, { basketTotalsCp, commerceRankOf } from './MarketShop';
 import type { BasketLine } from './MarketShop';
 import CharacterSheet from './CharacterSheet';
 import { VAR_LABELS, VAR_ORDER, resolveValue } from '../../lib/abilities';
-import { fmtCoins } from '../../lib/equipment';
+import { CRAFTS, fmtCoins } from '../../lib/equipment';
 import { briefFor } from '../../lib/ability-briefs';
 import { CATEGORIES } from '../../lib/category-abilities';
 import {
@@ -34,6 +34,8 @@ import type { Attribute, SeesawCategory } from '../../lib/quirks';
 import { SKILLS } from '../../lib/skills';
 import { derive } from '../../lib/record/derive';
 import type { RecordEvent } from '../../lib/record/events';
+import { getCharacter, putCharacter } from '../../lib/store';
+import type { CharacterRecord } from '../../lib/store';
 import {
   accessibleCategories,
   classSkills,
@@ -141,6 +143,10 @@ function mk<T extends RecordEvent['type']>(
 export default function CreationFlow() {
   const [draft, setDraft] = useState<Draft>(EMPTY_DRAFT);
   const [loaded, setLoaded] = useState(false);
+  // A ?c=<id> URL opens a roster Character (IndexedDB); no id is the
+  // visitors' sandbox (localStorage, joins nothing).
+  const [charRecord, setCharRecord] = useState<CharacterRecord | null>(null);
+  const [missing, setMissing] = useState(false);
   const [featView, setFeatView] = useState<'owned' | 'eligible' | 'all'>('eligible');
   // Ability rows with their full card expanded ("Category/Ability" keys).
   const [openCards, setOpenCards] = useState<string[]>([]);
@@ -148,12 +154,37 @@ export default function CreationFlow() {
     setOpenCards((o) => (o.includes(key) ? o.filter((k) => k !== key) : [...o, key]));
 
   useEffect(() => {
-    setDraft(loadDraft());
-    setLoaded(true);
+    const cid = new URLSearchParams(location.search).get('c');
+    if (!cid) {
+      setDraft(loadDraft());
+      setLoaded(true);
+      return;
+    }
+    getCharacter(cid).then((rec) => {
+      if (!rec) {
+        setMissing(true);
+        setLoaded(true);
+        return;
+      }
+      setCharRecord(rec);
+      const d = { ...EMPTY_DRAFT, ...(rec.versions[0].draft as unknown as Draft) };
+      d.basket = (d.basket ?? []).map((l) => ({ direction: 'buy', ...l }));
+      setDraft(d);
+      setLoaded(true);
+    });
   }, []);
 
   useEffect(() => {
-    if (loaded) localStorage.setItem(DRAFT_KEY, JSON.stringify(draft));
+    if (!loaded || missing) return;
+    if (charRecord) {
+      // Every change autosaves to the roster record (§10).
+      putCharacter({
+        ...charRecord,
+        versions: [{ ...charRecord.versions[0], draft: draft as unknown as CharacterRecord['versions'][0]['draft'] }],
+      });
+    } else {
+      localStorage.setItem(DRAFT_KEY, JSON.stringify(draft));
+    }
   }, [draft, loaded]);
 
   const { events } = draft;
@@ -522,8 +553,25 @@ export default function CreationFlow() {
 
   if (!loaded) return <div class="cf-loading">…</div>;
 
+  if (missing) {
+    return (
+      <div class="cf">
+        <p class="cf-done">
+          There is no character at this address.{' '}
+          <a href={`${import.meta.env.BASE_URL}characters/`}>Back to Characters</a>.
+        </p>
+      </div>
+    );
+  }
+
   return (
     <div class="cf">
+      {!charRecord && (
+        <p class="cf-how">
+          This is the sandbox — nothing here joins your roster. To build a saved character, start
+          from <a href={`${import.meta.env.BASE_URL}characters/`}>Characters</a>.
+        </p>
+      )}
       {/* The keep-and-flag panel: errors block finishing, never browsing.
           Sticky, so an upstream change can never break something off-screen
           without notice. */}
@@ -1182,11 +1230,17 @@ export default function CreationFlow() {
                 const openIds = new Set(
                   visibleFeats.filter((f) => {
                     if (ownedIds.has(f.id)) return true;
-                    const fs = tryEvent(
-                      events,
-                      mk('feat-bought', { featId: f.id, choices: f.choice ? { [f.choice.key]: f.choice.options[0] } : undefined }),
-                    );
-                    return fs.every((x) => x.code === 'insufficient-advances');
+                    // A choice Feat is eligible if ANY of its options passes
+                    // (the Craft Specialization opens for whichever trade
+                    // the build actually ranks).
+                    const probes: (string | undefined)[] = f.choice ? f.choice.options : [undefined];
+                    return probes.some((opt) => {
+                      const fs = tryEvent(
+                        events,
+                        mk('feat-bought', { featId: f.id, choices: f.choice && opt !== undefined ? { [f.choice.key]: opt } : undefined }),
+                      );
+                      return fs.every((x) => x.code === 'insufficient-advances');
+                    });
                   }).map((f) => f.id),
                 );
                 const shown =
@@ -1305,18 +1359,20 @@ export default function CreationFlow() {
 
           </>)}
 
-          <div class="cf-reset">
-            <button
-              type="button"
-              onClick={() => {
-                if (confirm('Discard this draft entirely? This cannot be undone.')) {
-                  setDraft({ ...EMPTY_DRAFT, identity: { ...EMPTY_DRAFT.identity } });
-                }
-              }}
-            >
-              Discard draft &amp; start over
-            </button>
-          </div>
+          {!crystallized && (
+            <div class="cf-reset">
+              <button
+                type="button"
+                onClick={() => {
+                  if (confirm('Discard this draft entirely? This cannot be undone.')) {
+                    setDraft({ ...EMPTY_DRAFT, identity: { ...EMPTY_DRAFT.identity } });
+                  }
+                }}
+              >
+                Discard draft &amp; start over
+              </button>
+            </div>
+          )}
         </div>
 
         {/* ── The right rail: the live summary ── */}
@@ -1472,6 +1528,12 @@ function GroupPicker({
   );
 }
 
+/** Speciality rosters where the space has a common list — the dropdown
+ * leads, Other stays open. Craft's roster lives with the equipment data. */
+const SPECIALITY_OPTIONS: Record<string, string[]> = {
+  Craft: [...CRAFTS, 'Poison'],
+};
+
 function TrainPicker({
   crystallized,
   taken,
@@ -1485,11 +1547,14 @@ function TrainPicker({
 }) {
   const [sel, setSel] = useState('');
   const [spec, setSpec] = useState('');
+  const [other, setOther] = useState('');
   const options = SKILLS.map((s) => s.name).filter((n) => !taken.includes(n));
   // A field skill (Religion, Craft, Profession…) is taken in a named
   // speciality — the trained name carries it: "Religion (Black Faith)".
   const field = sel ? SKILLS.find((s) => s.name === sel)?.field : undefined;
-  const full = field ? (spec.trim() ? `${sel} (${spec.trim()})` : '') : sel;
+  const roster = field ? SPECIALITY_OPTIONS[sel] : undefined;
+  const specName = roster ? (spec === '§other' ? other.trim() : spec) : spec.trim();
+  const full = field ? (specName ? `${sel} (${specName})` : '') : sel;
   const reason = full ? whyFor(full) : null;
   return (
     <span class="cf-picker">
@@ -1499,6 +1564,7 @@ function TrainPicker({
         onChange={(e) => {
           setSel((e.target as HTMLSelectElement).value);
           setSpec('');
+          setOther('');
         }}
       >
         <option value="">Train an off-list Skill (1 m)…</option>
@@ -1506,7 +1572,30 @@ function TrainPicker({
           <option key={o} value={o}>{o}</option>
         ))}
       </select>
-      {field && (
+      {field && roster && (
+        <select
+          class="cf-spec"
+          value={spec}
+          disabled={crystallized}
+          onChange={(e) => setSpec((e.target as HTMLSelectElement).value)}
+        >
+          <option value="">which trade…</option>
+          {roster.map((o) => (
+            <option key={o} value={o}>{o}</option>
+          ))}
+          <option value="§other">Other…</option>
+        </select>
+      )}
+      {field && roster && spec === '§other' && (
+        <input
+          class="cf-spec"
+          value={other}
+          placeholder="which trade"
+          disabled={crystallized}
+          onInput={(e) => setOther((e.target as HTMLInputElement).value)}
+        />
+      )}
+      {field && !roster && (
         <input
           class="cf-spec"
           value={spec}
@@ -1524,6 +1613,7 @@ function TrainPicker({
           onTrain(full);
           setSel('');
           setSpec('');
+          setOther('');
         }}
       >
         Train

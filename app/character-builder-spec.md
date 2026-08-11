@@ -75,6 +75,8 @@ The GM sets the campaign's entry level. The player builds (or forks) a version t
 
 With no accounts there's no GM connected, so the granting machinery can't be *enforced* — but the local builder still **simulates the shape**: you mark "milestone granted" yourself, gear is added as granted events, and the log accrues exactly as it will under real accounts. One data model from day one; honest tables get the audit trail now.
 
+**v1 shows one version per Character** (ruled Aug 11 2026): the roster presents each Character as a single playable sheet. The file format still models identity + versions from day one — the machinery stays under the hood until Campaigns make forks real.
+
 ### End states
 
 **Dead** and **Retired** versions are kept forever — memorials, not garbage. Deleting a character (or any official version) should be genuinely hard: deliberate confirmation, never a casual swipe, never a side effect.
@@ -84,6 +86,8 @@ With no accounts there's no GM connected, so the granting machinery can't be *en
 ## 4. The Chronicle
 
 The Chronicle is the lore of the game, as a corpus of **Chronicle Entries** ("CE" — settled term). A CE is a discrete text, roughly the size and shape of a Library document. Every character offers a **Chronicle view** — a sibling view to the Character Sheet (opening a Character, you choose one or the other): the world's lore as *that character* knows it, one reader merging the public corpus, the Party Chronicle, and everything they've been granted.
+
+**The Map Book** (added Aug 11 2026): a section of the Chronicle whose entries are maps — and they behave exactly like CEs. Everyone starts with some (the public corpus — the continent, the city); others are **discovered, earned, or activated in a campaign** through the same granting machinery, with the same visibility rule (locked maps are invisible, no teasers), provenance, and sharing. A Campaign's maps come from its Adventure Module (§12): some reveal **on enrollment**, others the **DM activates later**.
 
 ### Visibility
 
@@ -395,6 +399,37 @@ Wealth is a single value (stored in cp), always **displayed reduced to fewest co
 - **Owned items** (Layer B): instances referencing a catalogue entry (or free-named for found/unique gear), with quantity, location, masterwork flag, Supply count where relevant, and provenance via the event log.
 - **Markets** (Layer A + campaign data): what it sells (catalogue refs ± modifiers ± stock), what it buys (rates + purse), access rules. The Waldheim Market is "everything at list, buys back at 25%, bottomless".
 - **Per-market prices on items**: an item can carry bespoke buy-list entries at named Markets (the Havilah trade goods and stock certificates — `mechanics/markets.md`), overriding the default 25% rule; stock certificates are weightless items.
+
+---
+
+## 12. Characters & Campaigns on the site (draft, Aug 11 2026)
+
+### Placement
+
+**Two new top-level nav items: "Characters" and "Campaigns"** (no umbrella section — ruled). They are the account-shaped areas: in v1 the browser is the account (§2); when real accounts land, these pages gain sign-in and upload and nothing else moves.
+
+- **Characters** — the roster: every Character with a state badge, *New Character* (opens the creation flow), import/export of `.avilund.json`. A Character opens to **Sheet or Chronicle**.
+- **Campaigns** — the campaign list; each Campaign opens to its home (below).
+- `/builder/` remains the creation flow's address and the visitors' sandbox; players reach it through *New Character*.
+- Storage moves from the single localStorage draft to the §10 IndexedDB roster (per-event autosave); the existing draft migrates in as the first roster entry.
+
+### Character lifecycle (v1 surface)
+
+**In Creation** → **Complete** (advancing by self-marked grants) → optionally **in a Campaign** → **Retired** or **Dead** (memorials; deleting is hard, §3). Sandbox builds sit beside the lifecycle; **In Play** is a game-time toggle, not a state.
+
+### What a Campaign is
+
+A Campaign is: **a DM · Players · Characters · an Adventure Module.** (v1: one browser wears every hat; the shape is real, the enforcement waits for accounts.)
+
+The **Adventure Module** is the authored content package (the §1 paid layer, eventually):
+
+- **Information for the DM** — the module's GM text.
+- **CEs** — some load immediately on attach; others are held back as Rewards.
+- **Maps** — entries for the Chronicle's **Map Book** (§4): some reveal to players on enrollment, others the DM activates later; the module's private maps stay DM-only in its Information.
+- **Encounters** — the DM's prepared set pieces (monster profiles with DCs when the bestiary lands).
+- **Rewards** — what completing things grants: CEs · treasure/gear/physical rewards · Milestone Advancement · and **Marks** (term ruled Aug 11 2026) — the lasting non-physical awards: access to new Markets, reputation bonuses, even small debilitations or hindrances. The world marks you, for good or ill. All Rewards land as **granted events** on character records.
+
+Campaign data besides the Module: name, entry level, roster, the **Session log** (the meta-Chronicle — "Log a Session" belongs to the Campaign once it exists), and DM-togglable Campaign Options (Party Inventory, someday Currencies). The v1 "Market code / CE code" entry mechanism (§11, mechanics/markets.md) is the print-era shape of what a Module does natively.
 
 ---
 

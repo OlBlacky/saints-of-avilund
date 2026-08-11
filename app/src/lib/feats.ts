@@ -9,6 +9,7 @@
 // Malediction one of your curses carries. The record engine checks it from
 // state; there are no per-Class feat tables.
 
+import { CRAFTS } from './equipment';
 import type { Language } from './languages';
 import type { Attribute, Effect } from './quirks';
 import { SKILLS } from './skills';
@@ -176,6 +177,11 @@ const skillSpecs: Feat[] = SKILLS.map((s) => ({
   brief: `Take 10 on ${s.name}; at the height, a daily Reroll.`,
   full: `Requires Rank +1 in ${s.name}. You may Take 10 on ${s.name} rolls. The later Ranks multiply numeric values derived from a ${s.name} roll — distance jumped, money earned — by 1.5, then 2. The final Rank grants one Reroll of a ${s.name} roll per day. One Rank per Level.`,
   requires: { kind: 'skill-rank' as const, skill: s.name, rank: 1 },
+  // Craft is an open speciality Skill: the Specialization anchors to one
+  // trade from the common roster (the requirement checks that exact trade).
+  ...(s.name === 'Craft'
+    ? { choice: { key: 'speciality', label: 'Craft', options: [...CRAFTS, 'Poison'] } }
+    : {}),
   ladder: [
     { value: 'Take 10', cost: 'm' as const },
     { value: 'Rolled values ×1.5', cost: 'm' as const },

@@ -1,0 +1,61 @@
+---
+import Base from '../../layouts/Base.astro';
+import Roster from '../../components/builder/Roster.tsx';
+
+// The Characters roster (builder spec §12) — the account-shaped area.
+// Everything here lives in this browser: characters autosave locally and
+// travel as .avilund.json files. Styles ride with the builder's sheet
+// classes, declared globally on the builder page; the roster carries its
+// own small additions below.
+---
+
+<Base title="Characters" description="Your characters — every one in this browser, autosaved as you build.">
+  <p class="eyebrow">The Record</p>
+  <h1>Characters</h1>
+  <p class="lede">
+    Your characters live in this browser and save themselves as you work. Export a file to keep a
+    backup or carry one to another device.
+  </p>
+
+  <Roster client:only="preact" />
+
+  <style is:global>
+    .roster { margin-top: 1.6rem; }
+    .roster-note {
+      border-left: 3px solid var(--gold); padding-left: 0.8rem;
+      color: var(--ink-soft); margin: 0 0 1rem;
+    }
+    .roster-table { border-collapse: collapse; width: 100%; }
+    .roster-table th {
+      font-variant: small-caps; font-weight: normal; letter-spacing: 0.05em;
+      color: var(--gold); text-align: left; padding: 0.2rem 0.7rem;
+      border-bottom: 1px solid var(--gold); font-size: 0.85rem;
+    }
+    .roster-table td { padding: 0.45rem 0.7rem; border-bottom: 1px solid var(--rule); }
+    .roster-table td.act { text-align: right; white-space: nowrap; }
+    .roster-table td.act .buy, .roster-table td.act .undo { margin-left: 0.4rem; }
+    .roster-table a { text-decoration: none; }
+    .roster .buy, .roster .undo {
+      font: inherit; font-size: 0.85rem; padding: 0.15rem 0.55rem; cursor: pointer;
+      border: 1px solid var(--gold); border-radius: 3px;
+      background: transparent; color: var(--oxblood); text-decoration: none;
+    }
+    .roster .undo { border-color: var(--rule); color: var(--ink-soft); }
+    .roster .buy:hover { background: var(--gold); color: var(--panel); }
+    .roster-actions { display: flex; gap: 0.8rem; align-items: center; margin-top: 1.4rem; }
+    .roster .cf-crystallize {
+      padding: 0.45rem 0.9rem; cursor: pointer;
+      font-family: var(--display); font-size: 0.98rem;
+      color: var(--panel); background: var(--oxblood);
+      border: 1px solid var(--oxblood); border-radius: 3px;
+    }
+    .roster .cf-roll {
+      padding: 0.45rem 0.9rem; cursor: pointer;
+      font-family: var(--display); font-size: 0.98rem;
+      color: var(--oxblood); background: transparent;
+      border: 1px solid var(--gold); border-radius: 3px;
+    }
+    .roster .cf-roll:hover { background: var(--gold); color: var(--panel); }
+    .roster .cf-loading, .roster .cf-how { color: var(--ink-soft); }
+  </style>
+</Base>
