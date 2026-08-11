@@ -42,7 +42,15 @@ export type ItemLocation = 'equipped' | 'carried' | 'home';
  * owned instance. Prices are computed at replay time from the Market data
  * and the character's Commerce rank — the event stores only decisions. */
 export type TransactionLine =
-  | { direction: 'buy'; marketId: string; itemId: string; qty: number }
+  | {
+      direction: 'buy';
+      marketId: string;
+      itemId: string;
+      qty: number;
+      /** The item's purchase-time pick (a Craft, a saint), where the item
+       * defines one. Renders into the instance name; picks never stack. */
+      choice?: string;
+    }
   | { direction: 'sell'; marketId: string; instanceId: string; qty: number };
 
 export type RecordEvent =

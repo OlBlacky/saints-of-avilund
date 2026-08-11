@@ -505,7 +505,7 @@ export default function CreationFlow() {
     if (!canFinish) return;
     const lines = basket
       .filter((l) => l.qty > 0)
-      .map((l) => ({ direction: 'buy' as const, marketId: l.marketId, itemId: l.itemId, qty: l.qty }));
+      .map((l) => ({ direction: 'buy' as const, marketId: l.marketId, itemId: l.itemId, qty: l.qty, choice: l.choice }));
     setDraft((d) => {
       const evs = [...d.events];
       if (lines.length) evs.push(mk('transaction', { lines, note: 'creation shopping' }));

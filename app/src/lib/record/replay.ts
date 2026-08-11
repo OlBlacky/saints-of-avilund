@@ -568,7 +568,7 @@ export function replay(events: RecordEvent[]): ReplayResult {
         const commerce = state.feats.find((f) => f.featId === 'commerce-ladder')?.rank ?? 0;
         const before = flags.length;
         let net = 0;
-        const buys: { itemId: string; qty: number }[] = [];
+        const buys: { itemId: string; qty: number; choice?: string }[] = [];
         const sells: { instanceId: string; qty: number }[] = [];
         for (const line of e.lines) {
           const market = marketById(line.marketId);
@@ -585,7 +585,7 @@ export function replay(events: RecordEvent[]): ReplayResult {
             const price = buyPriceCp(market, line.itemId, commerce);
             if (price === undefined) { flag(e, 'no-access', `${market.name} does not stock "${line.itemId}"`); continue; }
             net -= price * line.qty;
-            buys.push({ itemId: line.itemId, qty: line.qty });
+            buys.push({ itemId: line.itemId, qty: line.qty, choice: line.choice });
           } else {
             if (!state.crystallized) { flag(e, 'creation-only', 'no selling during creation'); continue; }
             const sold = sells.reduce((t, s) => (s.instanceId === line.instanceId ? t + s.qty : t), 0);
@@ -608,15 +608,22 @@ export function replay(events: RecordEvent[]): ReplayResult {
           break;
         }
         for (const b of buys) {
+          // A purchase-time pick makes its own stack: tools for different
+          // Crafts, medals of different saints.
+          const name = (itemName(b.itemId) ?? b.itemId) + (b.choice ? ` (${b.choice})` : '');
           const existing = state.inventory.find(
-            (i) => i.itemId === b.itemId && i.origin === 'purchase' && i.location === 'carried',
+            (i) =>
+              i.itemId === b.itemId &&
+              i.name === name &&
+              i.origin === 'purchase' &&
+              i.location === 'carried',
           );
           if (existing) existing.qty += b.qty;
           else {
             state.inventory.push({
-              instanceId: `item:${b.itemId}`,
+              instanceId: `item:${b.itemId}${b.choice ? `:${b.choice}` : ''}`,
               itemId: b.itemId,
-              name: itemName(b.itemId) ?? b.itemId,
+              name,
               qty: b.qty,
               location: 'carried',
               origin: 'purchase',

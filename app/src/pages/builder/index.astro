@@ -357,10 +357,32 @@ const blurb = 'Build a character of Avilund: Class, Subclass, Advances, and the 
   .cf-shop-tab.active { border-color: var(--gold); background: var(--gold); color: var(--panel); }
   .cf-shop-tab.locked { opacity: 0.45; cursor: not-allowed; }
   .cf-shop-head { margin: 0 0 0.6rem; color: var(--ink-soft); font-size: 0.92rem; }
+  .cf-shop-bar { display: flex; flex-wrap: wrap; align-items: center; gap: 0.6rem; margin: 0 0 0.7rem; }
   .cf-shop-search {
-    width: 100%; max-width: 22rem; margin: 0 0 0.7rem;
+    width: 100%; max-width: 22rem;
     padding: 0.35rem 0.6rem; font: inherit; font-size: 0.9rem;
     border: 1px solid var(--rule); border-radius: 3px; background: var(--panel);
+  }
+  .cf-chip {
+    display: inline-block; margin-left: 0.45rem; padding: 0.05rem 0.45rem;
+    font-size: 0.72rem; letter-spacing: 0.03em; white-space: nowrap;
+    color: var(--oxblood); border: 1px solid rgba(120, 40, 40, 0.4);
+    border-radius: 999px; background: rgba(120, 40, 40, 0.06);
+    cursor: help;
+  }
+  .cf-shop-hint {
+    display: inline-block; margin-left: 0.45rem; padding: 0.05rem 0.45rem;
+    font-size: 0.76rem; white-space: nowrap; cursor: pointer;
+    color: #2f5d3a; border: 1px solid rgba(47, 93, 58, 0.45);
+    border-radius: 999px; background: rgba(47, 93, 58, 0.06);
+  }
+  .cf-shop-hint:hover:not(:disabled) { background: rgba(47, 93, 58, 0.16); }
+  .cf-shop-hint:disabled { opacity: 0.45; cursor: not-allowed; }
+  .cf-shop-choice { display: inline-flex; gap: 0.35rem; margin-left: 0.5rem; }
+  .cf-shop-choice select, .cf-shop-choice input {
+    font: inherit; font-size: 0.82rem; padding: 0.1rem 0.3rem;
+    border: 1px solid var(--rule); border-radius: 3px; background: var(--panel);
+    max-width: 11rem;
   }
   .cf-shop-fold { border: 1px solid var(--rule); border-radius: 4px; margin: 0 0 0.5rem; background: var(--panel); }
   .cf-shop-fold > summary {

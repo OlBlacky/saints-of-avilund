@@ -36,6 +36,9 @@ export interface Market {
   buys: MarketLine[];
   /** null = bottomless. */
   purseCp: Cp | null;
+  /** Extra options this Market adds to an item's purchase-time choice
+   * (Black's Road offers Poison on Artisan's tools). */
+  choiceExtras?: Record<string, string[]>;
 }
 
 // ── Trade goods ──────────────────────────────────────────────────
@@ -75,8 +78,24 @@ export function itemWeightLb(itemId: string): number | null {
  * of the shop. They stay on the equipment page; the shop does not sell them. */
 const UNSTOCKED_SECTIONS = ['Lodging', 'Passage', 'Hire'];
 
+/** The religious stock lives at Imperial Square, not Sever's Cross (moved
+ * Aug 11 2026): all of Faith & Superstition, the Cleric's vestments, and
+ * the Friar's Kit. Supplies refill every kit, so both markets stock them. */
+const IMPERIAL_SQUARE_IDS = new Set([
+  ...CATALOGUE.filter((e) => e.section === 'Faith & Superstition').map((e) => e.id),
+  'clerics-vestments',
+  'friars-kit',
+]);
+
 const stocked = CATALOGUE.filter(
-  (e) => e.priceCp !== null && !UNSTOCKED_SECTIONS.includes(e.section),
+  (e) =>
+    e.priceCp !== null &&
+    !UNSTOCKED_SECTIONS.includes(e.section) &&
+    !IMPERIAL_SQUARE_IDS.has(e.id),
+);
+
+const imperialStock = CATALOGUE.filter(
+  (e) => IMPERIAL_SQUARE_IDS.has(e.id) || e.id === 'supplies',
 );
 
 /** The Waldheim Market buys anything it sells at 25% of list — and,
@@ -122,8 +141,10 @@ export const MARKETS: Market[] = [
     location: "Saints' Island",
     marketType: 'Saintly Market',
     access: { kind: 'open' },
-    sells: [], // catalogue to be authored (implements and goods of the faithful)
-    buys: [],
+    // The religious shelf (moved from the Waldheim Market), bought back at
+    // the same 25%. Implements and treats of the faithful still to author.
+    sells: imperialStock.map((e) => ({ itemId: e.id, priceCp: e.priceCp! })),
+    buys: imperialStock.map((e) => ({ itemId: e.id, priceCp: e.priceCp! * 0.25 })),
     purseCp: null,
   },
   specialty('anselms-buttery', "Anselm's Buttery", "Lord's University", 'New Magic Market', 'market-anselms-buttery'),
@@ -131,7 +152,13 @@ export const MARKETS: Market[] = [
   specialty('theobalds-row', "Theobald's Row", "Sebald's Isle", 'Occult Market', 'market-theobalds-row'),
   specialty('astronomers', 'Society of Astronomers', 'Newton Hill', 'Market of the Outside', 'market-astronomers'),
   specialty('green-market', 'The Green Market', 'The Green', 'Old Magic Market', 'market-green'),
-  specialty('blacks-road', "Black's Road Market", "Black's Road", 'Black Market', 'market-blacks-road'),
+  {
+    ...specialty('blacks-road', "Black's Road Market", "Black's Road", 'Black Market', 'market-blacks-road'),
+    // First stock: the poisoner's tools. The full illicit catalogue (poisons
+    // and the rest) is still to author.
+    sells: [{ itemId: 'artisans-tools', priceCp: 50 }],
+    choiceExtras: { 'artisans-tools': ['Poison'] },
+  },
   {
     id: 'dunstans-magazine',
     name: "St. Dunstan's Magazine",
@@ -208,4 +235,20 @@ export function sellPriceCp(market: Market, itemId: string, commerceRank = 0): C
   if (!line) return undefined;
   const bonus = commerceRank >= 3 ? 1.1 : 1;
   return Math.round(line.priceCp * bonus);
+}
+
+/** The cheapest reachable source of an item — the shop's price hint. A
+ * character's own connections do the walking: the hint appears only for
+ * Markets they can actually shop. */
+export function bestBuy(
+  itemId: string,
+  ownedFeatIds: string[],
+  commerceRank = 0,
+): { market: Market; priceCp: Cp } | undefined {
+  let best: { market: Market; priceCp: Cp } | undefined;
+  for (const market of accessibleMarkets(ownedFeatIds)) {
+    const price = buyPriceCp(market, itemId, commerceRank);
+    if (price !== undefined && (!best || price < best.priceCp)) best = { market, priceCp: price };
+  }
+  return best;
 }

@@ -369,6 +369,13 @@ The **Waldheim family is always listed**: open markets show their catalogs; lock
 - Identical items stack (quantity on the line). Purchases arrive *carried*; organizing into containers is Page 3's job.
 - Kits sell empty; Supplies are their own line.
 
+### Shop quality of life (Aug 11 2026)
+
+- **Price hints — inform, never auto-decide**: when another *reachable* Market sells an item cheaper, the row (and any stale Basket line) carries a clickable note — "100 sp at St. Dunstan's Magazine" — that buys from (or reroutes to) the cheaper door. Reachability respects the In Play filter when it lands.
+- **Proficiency chips**: weapons, armour, and shields the build isn't trained for wear an *untrained* chip stating the exact penalty (weapons −1 to attack; Light/Medium armour and Light Shield −1, Heavy armour and Heavy Shield −2 to attack rolls and physical skill checks); Str-short heavy armour adds *needs Str +N*. Buying stays unrestricted.
+- **All Gear / Gear I can Use** toggle (default All): the second view hides chipped rows; sundries always show.
+- **Purchase-time item choices** (`mechanics/markets.md`): Artisan's tools pick their Craft, Saint's medals their saint — dropdown plus free-text Other; a Market can extend an item's options (`choiceExtras`: Black's Road adds Poison). The pick rides the transaction line, names the instance, and separates stacks.
+
 ### Creation shopping
 
 The last step of the flow (§6). The Basket stays open until the flow's Finish — commit and character completion are **one act**. Free swaps at full value until then; **no selling during creation** (no Market's buy-side is open yet). Starting coin (from the Gear category) is the purse; a Quirk-opened door is shoppable immediately and permanently.
@@ -396,6 +403,7 @@ Wealth is a single value (stored in cp), always **displayed reduced to fewest co
 - **GM NPC-building** — do GMs use the builder for NPCs? (From §2 discussion.)
 - **Campaign internals** — roster, session log mechanics, Distribute flow, homebrew CEs (deferred; v1 is local-first).
 - **Currencies** (spec another day) — multiple currencies whose worth varies by region of Avilund; travellers convert (at a cost) or pay more. Notably, this is a **Campaign Option** — a rule module the DM activates per campaign, a concept that will likely grow more members (the data model should expect DM-togglable option flags on a Campaign). Wealth/Markets machinery should keep a currency field in mind rather than assuming one coinage.
+- **Per-market standing discounts** (flagged Aug 11 2026) — a character may earn a lasting discount at a named Market as an adventure reward (a Friar completing an adventure gains 10% at a specific religious market). Grantable in play like Market access; stacks with Commerce percentages; keeping stock sorted by Market (the Imperial Square shelf) is what makes such rewards land on the right goods.
 - **Session Adjustment** *(working name)* — the paper-reconciliation mode: after a session played on paper, the player edits inventory/wealth freely in a draft changeset (coin spent, herbs picked); nothing commits until the **DM approves**, then the batch writes to the record as one logged event tied to the Session. DM can reject with a note. v1 local: self-approved, still logged as a labeled adjustment batch.
 - **Party Inventory** (canonical name — "Party Stash" retired): a **Campaign Option** (DM decides whether it exists — for one-offs, maybe not): a campaign-owned inventory (a keep, a wagon) visible to characters the GM chooses. Items move between sheets and Party Inventory as logged transfers; the DM can send items to it directly, as to any character's In-box. Access: any member deposits; only **Quartermasters** (players choose, DM assigns — see §2) withdraw, sell, or distribute. Its **Sell** button optimizes across the whole party — every member's reachable Markets (In Play-filtered) × their Commerce modifiers — and shows the math: *Bottle of Poison — 9 sp — sold by Piotr (Commerce Feat, +10%) — via Black Market access*. **Divide Spoils**: a Quartermaster pays out currency from the Party Inventory — stating an amount or a % of the purse — split equally across the chosen recipients (default: the whole party), delivered automatically to each PC's In-box as a logged transfer; indivisible remainders stay in the Party Inventory.
 

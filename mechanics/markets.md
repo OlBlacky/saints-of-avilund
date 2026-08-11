@@ -78,6 +78,22 @@ Two tiers:
 
 The Waldheim Market **buys anything it sells, at 25% of list value**, and will not touch anything outside its own catalog — no price for poison, stolen goods, scrolls, or the strange.
 
+## Stock placement
+
+Goods live where they belong (settled Aug 11 2026):
+
+- **The religious stock sells at Imperial Square, not Sever's Cross**: all of Faith & Superstition, the Cleric's vestments, and the Friar's Kit. Supplies refill every kit, so both markets stock them. Imperial Square buys back its stock at the same 25%.
+- **Black's Road sells the poisoner's tools** — Artisan's tools with *Poison* on its list, an option no lawful shopfront offers. The rest of the illicit catalogue is still to author.
+- Keeping stock where it belongs sets up **per-market standing discounts** later: an adventure's reward may grant a character 10% off at a named Market (a Friar earning the favour of a religious house). Parked in the builder spec.
+
+## Item choices at purchase
+
+Some items carry a **purchase-time choice**, picked in the shop and named on the instance — different picks never stack:
+
+- **Artisan's tools** name their **Craft** — the common roster (Apothecary, Armourer, Baker, Blacksmith, Bookbinder, Bowyer, Brewer, Butcher, Carpenter, Chandler, Cobbler, Cook, Cooper, Dyer, Fletcher, Furrier, Glassblower, Goldsmith, Gunsmith, Jeweller, Leatherworker, Locksmith, Mason, Potter, Printer, Ropemaker, Saddler, Shipwright, Tailor, Tanner, Vintner, Weaponsmith, Weaver, Wheelwright) plus a free-text **Other**. Craft is an open speciality Skill; the roster is the dropdown, not a cap.
+- **Saint's medals** (tin and silver) name their **saint** — the catalogue is the dropdown; Other covers folk saints.
+- The pick makes masterwork tools' +1 unambiguous, and reads on the sheet.
+
 ## Shopping — the Basket
 
 One shopping view serves every moment (creation, downtime, In Play); only the reachable Markets and the purse differ.

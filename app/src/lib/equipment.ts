@@ -12,7 +12,13 @@
 // tables (wages, property, a day's living) and the sample poison card —
 // poisons are a crafting system, not catalogue stock.
 
+import { SAINTS } from './saints';
+
 export type Cp = number;
+
+/** The saint catalogue as a dropdown (Saint's medals). Obscure and folk
+ * saints beyond the catalogue arrive via the free-text Other. */
+const SAINT_NAMES = SAINTS.map((s) => `St. ${s.name}`);
 
 // ── Money formatting ─────────────────────────────────────────────
 
@@ -128,6 +134,29 @@ export const WEAPON_PROPERTIES: WeaponProperty[] = [
 
 // ── Simple catalogue items ───────────────────────────────────────
 
+/** A purchase-time choice on an item (the mechanism Feats and builder
+ * cards already use): Artisan's tools name their Craft, a Saint's medal
+ * its saint. The pick renders in the instance's name and different picks
+ * never stack. `other` allows a free-text entry beyond the options. */
+export interface ItemChoice {
+  key: string;
+  label: string;
+  options: string[];
+  other?: boolean;
+}
+
+/** The common Crafts (Craft is an open speciality Skill — this is the
+ * shop's dropdown, not a cap). Poison is deliberately absent from every
+ * lawful shopfront; Black's Road offers it (markets.ts choiceExtras). */
+export const CRAFTS = [
+  'Apothecary', 'Armourer', 'Baker', 'Blacksmith', 'Bookbinder', 'Bowyer',
+  'Brewer', 'Butcher', 'Carpenter', 'Chandler', 'Cobbler', 'Cook', 'Cooper',
+  'Dyer', 'Fletcher', 'Furrier', 'Glassblower', 'Goldsmith', 'Gunsmith',
+  'Jeweller', 'Leatherworker', 'Locksmith', 'Mason', 'Potter', 'Printer',
+  'Ropemaker', 'Saddler', 'Shipwright', 'Tailor', 'Tanner', 'Vintner',
+  'Weaponsmith', 'Weaver', 'Wheelwright',
+];
+
 export interface SimpleItem {
   id: string;
   name: string;
@@ -139,6 +168,7 @@ export interface SimpleItem {
   priceText?: string;
   /** Container coefficient for Load (mechanics/encumbrance.md). */
   coefficient?: number;
+  choice?: ItemChoice;
 }
 
 export const AMMUNITION: SimpleItem[] = [
@@ -223,7 +253,7 @@ export const TOOLS_AND_IMPLEMENTS: SimpleItem[] = [
   { id: 'lock-simple', name: 'Lock, simple', priceCp: 20, weightLb: 1 },
   { id: 'merchants-scale', name: "Merchant's scale", priceCp: 20, weightLb: 1 },
   { id: 'lock-good', name: 'Lock, good', priceCp: 40, weightLb: 1 },
-  { id: 'artisans-tools', name: "Artisan's tools", priceCp: 50, weightLb: 5 },
+  { id: 'artisans-tools', name: "Artisan's tools", priceCp: 50, weightLb: 5, choice: { key: 'speciality', label: 'Craft', options: CRAFTS, other: true } },
   { id: 'signet-ring', name: 'Signet ring', priceCp: 50, weightLb: null },
   { id: 'ink', name: 'Ink (1 oz)', priceCp: 80, weightLb: null },
   { id: 'lock-superior', name: 'Lock, superior', priceCp: 80, weightLb: 1 },
@@ -251,10 +281,10 @@ export const CLOTHING: SimpleItem[] = [
 export const FAITH_AND_SUPERSTITION: SimpleItem[] = [
   { id: 'votive-candle', name: 'Votive candle', priceCp: 1, weightLb: null },
   { id: 'incense-stick', name: 'Incense (stick)', priceCp: 2, weightLb: null },
-  { id: 'saints-medal-tin', name: "Saint's medal, tin", priceCp: 2, weightLb: null },
+  { id: 'saints-medal-tin', name: "Saint's medal, tin", priceCp: 2, weightLb: null, choice: { key: 'saint', label: 'Saint', options: SAINT_NAMES, other: true } },
   { id: 'pilgrims-badge', name: "Pilgrim's badge", priceCp: 3, weightLb: null },
   { id: 'prayer-beads', name: 'Prayer beads', priceCp: 5, weightLb: null },
-  { id: 'saints-medal-silver', name: "Saint's medal, silver", priceCp: 50, weightLb: null },
+  { id: 'saints-medal-silver', name: "Saint's medal, silver", priceCp: 50, weightLb: null, choice: { key: 'saint', label: 'Saint', options: SAINT_NAMES, other: true } },
   { id: 'reliquary-empty', name: 'Reliquary, empty', priceCp: 200, weightLb: 2 },
 ];
 
@@ -411,10 +441,11 @@ export interface CatalogueEntry {
   priceCp: Cp | null;
   weightLb: number | null;
   section: string;
+  choice?: ItemChoice;
 }
 
-const flat = (section: string, items: { id: string; name: string; priceCp: Cp | null; weightLb: number | null }[]): CatalogueEntry[] =>
-  items.map((i) => ({ id: i.id, name: i.name, priceCp: i.priceCp, weightLb: i.weightLb, section }));
+const flat = (section: string, items: { id: string; name: string; priceCp: Cp | null; weightLb: number | null; choice?: ItemChoice }[]): CatalogueEntry[] =>
+  items.map((i) => ({ id: i.id, name: i.name, priceCp: i.priceCp, weightLb: i.weightLb, section, choice: i.choice }));
 
 export const CATALOGUE: CatalogueEntry[] = [
   ...flat('Melee Weapons', MELEE_WEAPONS),

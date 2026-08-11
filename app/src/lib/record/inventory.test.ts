@@ -10,6 +10,7 @@ import {
   MARKETS,
   WALDHEIM_MARKET,
   accessibleMarkets,
+  bestBuy,
   buyPriceCp,
   listedMarkets,
   marketById,
@@ -67,6 +68,33 @@ describe('the Markets roster', () => {
     expect(WALDHEIM_MARKET.sells.some((l) => l.itemId === 'fine-lodging')).toBe(false);
     expect(WALDHEIM_MARKET.sells.some((l) => l.itemId === 'porter')).toBe(false);
     expect(WALDHEIM_MARKET.sells.some((l) => l.itemId === 'rations-trail')).toBe(true);
+  });
+
+  it('the religious shelf lives at Imperial Square, not Sever\'s Cross', () => {
+    const imperial = marketById('imperial-square')!;
+    for (const id of ['votive-candle', 'saints-medal-tin', 'reliquary-empty', 'clerics-vestments', 'friars-kit']) {
+      expect(WALDHEIM_MARKET.sells.some((l) => l.itemId === id), id).toBe(false);
+      expect(imperial.sells.some((l) => l.itemId === id), id).toBe(true);
+      expect(imperial.buys.find((l) => l.itemId === id)!.priceCp).toBe(
+        imperial.sells.find((l) => l.itemId === id)!.priceCp * 0.25,
+      );
+    }
+    // Supplies refill every kit — both markets stock them.
+    expect(WALDHEIM_MARKET.sells.some((l) => l.itemId === 'supplies')).toBe(true);
+    expect(imperial.sells.some((l) => l.itemId === 'supplies')).toBe(true);
+  });
+
+  it("Black's Road sells the poisoner's tools", () => {
+    const road = marketById('blacks-road')!;
+    expect(buyPriceCp(road, 'artisans-tools')).toBe(50);
+    expect(road.choiceExtras?.['artisans-tools']).toEqual(['Poison']);
+  });
+
+  it('bestBuy finds the cheapest reachable source only', () => {
+    expect(bestBuy('musket', [])!.market.id).toBe('waldheim');
+    const withFeat = bestBuy('musket', ['market-dunstans-magazine'])!;
+    expect(withFeat.market.id).toBe('dunstans-magazine');
+    expect(withFeat.priceCp).toBe(1000);
   });
 
   it('access: open markets for everyone, Feat markets for Feat owners', () => {
@@ -138,6 +166,22 @@ describe('the Basket transaction', () => {
     const torches = state.inventory.find((i) => i.itemId === 'torch')!;
     expect(torches.qty).toBe(10);
     expect(state.wealthCp).toBe(2000 - 10 - 150);
+  });
+
+  it('purchase-time picks name the instance and never cross-stack', () => {
+    const { state, flags } = replay([
+      ...creation(),
+      ev('transaction', { lines: [
+        { direction: 'buy', marketId: 'waldheim', itemId: 'artisans-tools', qty: 1, choice: 'Fletcher' },
+        { direction: 'buy', marketId: 'waldheim', itemId: 'artisans-tools', qty: 1, choice: 'Cooper' },
+        { direction: 'buy', marketId: 'waldheim', itemId: 'artisans-tools', qty: 1, choice: 'Fletcher' },
+      ] }),
+    ]);
+    expect(flags).toEqual([]);
+    const tools = state.inventory.filter((i) => i.itemId === 'artisans-tools');
+    expect(tools).toHaveLength(2);
+    expect(tools.find((i) => i.name === "Artisan's tools (Fletcher)")!.qty).toBe(2);
+    expect(tools.find((i) => i.name === "Artisan's tools (Cooper)")!.qty).toBe(1);
   });
 
   it('no coin exists before the Starting Gear roll', () => {

@@ -4,17 +4,35 @@
 // title, with the Feat that opens them); Regional Markets appear only once
 // their Feat is owned.
 //
+// Quality of life (Aug 11 2026): price hints (a cheaper reachable Market
+// notes itself on the row and in the Basket — clickable, informing but
+// never auto-deciding), proficiency chips on weapons/armour/shields with
+// the exact penalty, the All Gear / Gear I can Use toggle, and
+// purchase-time choices (Artisan's tools name their Craft, a Saint's
+// medal its saint; Black's Road adds Poison to the tools' list).
+//
 // Thin like the rest of the builder: prices come from lib/markets.ts, and
 // the Basket becomes one transaction event at Finish — the engine is the
 // gate. A top-level component (never defined inside another's render): it
-// holds a search input, and focus dies with identity churn.
+// holds inputs, and focus dies with identity churn.
 
 import { useState } from 'preact/hooks';
 
-import { CATALOGUE, fmtCoins, fmtPrice, fmtWeight } from '../../lib/equipment';
+import {
+  ARMOURS,
+  CATALOGUE,
+  MELEE_WEAPONS,
+  RANGED_WEAPONS,
+  SHIELDS,
+  fmtCoins,
+  fmtPrice,
+  fmtWeight,
+} from '../../lib/equipment';
+import type { ItemChoice } from '../../lib/equipment';
 import { FEATS } from '../../lib/feats';
 import {
   accessibleMarkets,
+  bestBuy,
   buyPriceCp,
   itemName,
   itemWeightLb,
@@ -22,12 +40,14 @@ import {
   marketById,
 } from '../../lib/markets';
 import type { Market } from '../../lib/markets';
+import { allProficiencies } from '../../lib/record/replay';
 import type { CharacterState } from '../../lib/record/replay';
 
 export interface BasketLine {
   marketId: string;
   itemId: string;
   qty: number;
+  choice?: string;
 }
 
 export function commerceRankOf(state: CharacterState): number {
@@ -52,6 +72,61 @@ function openingFeatName(market: Market): string | undefined {
 const sectionOf = (itemId: string): string =>
   CATALOGUE.find((e) => e.id === itemId)?.section ?? 'Trade Goods';
 
+const itemChoice = (itemId: string): ItemChoice | undefined =>
+  CATALOGUE.find((e) => e.id === itemId)?.choice;
+
+/** Proficiency chips: what wearing or wielding this untrained costs. */
+interface UseChip {
+  label: string;
+  tip: string;
+}
+
+const ARMOUR_PROF: Record<string, string> = {
+  Light: 'Light Armour',
+  Medium: 'Medium Armour',
+  Heavy: 'Heavy Armour',
+};
+
+function useChips(state: CharacterState, itemId: string): UseChip[] {
+  const profs = allProficiencies(state);
+  const chips: UseChip[] = [];
+
+  const weapon = [...MELEE_WEAPONS, ...RANGED_WEAPONS].find((w) => w.id === itemId);
+  if (weapon && !profs.includes(weapon.group)) {
+    chips.push({ label: 'untrained', tip: `Not proficient with ${weapon.group} — −1 to attack.` });
+  }
+
+  const armour = ARMOURS.find((a) => a.id === itemId);
+  if (armour) {
+    const prof = ARMOUR_PROF[armour.tier];
+    const penalty = armour.tier === 'Heavy' ? 2 : 1;
+    if (!profs.includes(prof)) {
+      chips.push({
+        label: 'untrained',
+        tip: `Not proficient with ${prof} — −${penalty} to attack rolls and physical skill checks.`,
+      });
+    }
+    if (armour.strReq !== null) {
+      const str =
+        (state.attributeRanks.Strength ?? 0) - (state.flaws.includes('Strength') ? 1 : 0);
+      if (str < armour.strReq) {
+        chips.push({ label: `needs Str +${armour.strReq}`, tip: `Requires Strength +${armour.strReq}.` });
+      }
+    }
+  }
+
+  const shield = SHIELDS.find((s) => s.id === itemId);
+  if (shield && !profs.includes(shield.proficiency)) {
+    const penalty = shield.proficiency === 'Heavy Shield' ? 2 : 1;
+    chips.push({
+      label: 'untrained',
+      tip: `Not proficient with ${shield.proficiency} — −${penalty} to attack rolls and physical skill checks.`,
+    });
+  }
+
+  return chips;
+}
+
 interface Props {
   state: CharacterState;
   basket: BasketLine[];
@@ -66,6 +141,11 @@ export default function MarketShop({ state, basket, setBasket }: Props) {
 
   const [pickedId, setPickedId] = useState('waldheim');
   const [query, setQuery] = useState('');
+  const [gearView, setGearView] = useState<'all' | 'usable'>('all');
+  // Pending purchase-time picks, keyed "market/item": the dropdown value
+  // ('§other' = the free-text entry) and the free text itself.
+  const [picks, setPicks] = useState<Record<string, string>>({});
+  const [others, setOthers] = useState<Record<string, string>>({});
   const active = marketById(openIds.has(pickedId) ? pickedId : 'waldheim')!;
 
   const q = query.trim().toLowerCase();
@@ -76,16 +156,43 @@ export default function MarketShop({ state, basket, setBasket }: Props) {
       weightLb: itemWeightLb(line.itemId),
       priceCp: buyPriceCp(active, line.itemId, commerce)!,
       section: sectionOf(line.itemId),
+      chips: useChips(state, line.itemId),
+      choice: itemChoice(line.itemId),
+      best: bestBuy(line.itemId, ownedFeatIds, commerce),
     }))
-    .filter((r) => !q || r.name.toLowerCase().includes(q));
+    .filter((r) => !q || r.name.toLowerCase().includes(q))
+    .filter((r) => gearView === 'all' || r.chips.length === 0);
   const sections = [...new Set(rows.map((r) => r.section))];
 
-  const qtyOf = (itemId: string) =>
-    basket.find((l) => l.marketId === active.id && l.itemId === itemId)?.qty ?? 0;
+  /** The row's chosen pick, resolved to the string the Basket will carry —
+   * undefined for choiceless items, null for "not picked yet". */
+  const pickedChoice = (itemId: string, choice?: ItemChoice): string | null | undefined => {
+    if (!choice) return undefined;
+    const key = `${active.id}/${itemId}`;
+    const sel = picks[key] ?? '';
+    if (sel === '§other') {
+      const text = (others[key] ?? '').trim();
+      return text || null;
+    }
+    return sel || null;
+  };
 
-  const setQty = (itemId: string, qty: number) => {
-    const rest = basket.filter((l) => !(l.marketId === active.id && l.itemId === itemId));
-    setBasket(qty > 0 ? [...rest, { marketId: active.id, itemId, qty }] : rest);
+  const lineKey = (l: BasketLine) => `${l.marketId}/${l.itemId}/${l.choice ?? ''}`;
+
+  const qtyOf = (marketId: string, itemId: string, choice?: string) =>
+    basket.find((l) => lineKey(l) === `${marketId}/${itemId}/${choice ?? ''}`)?.qty ?? 0;
+
+  const setQty = (marketId: string, itemId: string, choice: string | undefined, qty: number) => {
+    const key = `${marketId}/${itemId}/${choice ?? ''}`;
+    const rest = basket.filter((l) => lineKey(l) !== key);
+    setBasket(qty > 0 ? [...rest, { marketId, itemId, qty, choice }] : rest);
+  };
+
+  /** Move a Basket line to a cheaper Market, merging with any existing line. */
+  const rerouteLine = (line: BasketLine, toMarketId: string) => {
+    const existing = qtyOf(toMarketId, line.itemId, line.choice);
+    const rest = basket.filter((l) => l !== line && lineKey(l) !== `${toMarketId}/${line.itemId}/${line.choice ?? ''}`);
+    setBasket([...rest, { marketId: toMarketId, itemId: line.itemId, qty: line.qty + existing, choice: line.choice }]);
   };
 
   const totalCp = basketTotalCp(basket, commerce);
@@ -124,12 +231,22 @@ export default function MarketShop({ state, basket, setBasket }: Props) {
         <p class="cf-how">Nothing on offer.</p>
       ) : (
         <>
-          <input
-            class="cf-shop-search"
-            placeholder="Search the stalls…"
-            value={query}
-            onInput={(e) => setQuery((e.target as HTMLInputElement).value)}
-          />
+          <div class="cf-shop-bar">
+            <input
+              class="cf-shop-search"
+              placeholder="Search the stalls…"
+              value={query}
+              onInput={(e) => setQuery((e.target as HTMLInputElement).value)}
+            />
+            <div class="cf-viewtoggle" role="group">
+              <button type="button" class={gearView === 'all' ? 'on' : ''} onClick={() => setGearView('all')}>
+                All Gear
+              </button>
+              <button type="button" class={gearView === 'usable' ? 'on' : ''} onClick={() => setGearView('usable')}>
+                Gear I can Use
+              </button>
+            </div>
+          </div>
           <div class="cf-shop-list">
             {sections.map((section) => (
               <details key={`${active.id}/${section}`} class="cf-shop-fold" open={Boolean(q) || sections.length === 1}>
@@ -139,20 +256,88 @@ export default function MarketShop({ state, basket, setBasket }: Props) {
                     {rows
                       .filter((r) => r.section === section)
                       .map((r) => {
-                        const inBasket = qtyOf(r.itemId);
+                        const pickKey = `${active.id}/${r.itemId}`;
+                        const picked = pickedChoice(r.itemId, r.choice);
+                        const options = [
+                          ...(r.choice?.options ?? []),
+                          ...(active.choiceExtras?.[r.itemId] ?? []),
+                        ];
+                        const inBasket =
+                          picked === null ? 0 : qtyOf(active.id, r.itemId, picked);
+                        const needsPick = r.choice !== undefined && picked === null;
+                        const cheaper =
+                          r.best && r.best.market.id !== active.id && r.best.priceCp < r.priceCp
+                            ? r.best
+                            : undefined;
                         return (
                           <tr key={r.itemId}>
-                            <td>{r.name}</td>
+                            <td>
+                              {r.name}
+                              {r.chips.map((c) => (
+                                <span class="cf-chip" title={c.tip}>{c.label}</span>
+                              ))}
+                              {r.choice && (
+                                <span class="cf-shop-choice">
+                                  <select
+                                    value={picks[pickKey] ?? ''}
+                                    onChange={(e) =>
+                                      setPicks((p) => ({ ...p, [pickKey]: (e.target as HTMLSelectElement).value }))
+                                    }
+                                  >
+                                    <option value="">{r.choice.label}…</option>
+                                    {options.map((o) => (
+                                      <option key={o} value={o}>{o}</option>
+                                    ))}
+                                    {r.choice.other && <option value="§other">Other…</option>}
+                                  </select>
+                                  {picks[pickKey] === '§other' && (
+                                    <input
+                                      placeholder={r.choice.label}
+                                      value={others[pickKey] ?? ''}
+                                      onInput={(e) =>
+                                        setOthers((o) => ({ ...o, [pickKey]: (e.target as HTMLInputElement).value }))
+                                      }
+                                    />
+                                  )}
+                                </span>
+                              )}
+                              {cheaper && (
+                                <button
+                                  type="button"
+                                  class="cf-shop-hint"
+                                  title={`${cheaper.market.name} — ${cheaper.market.location} — ${cheaper.market.marketType}`}
+                                  disabled={needsPick}
+                                  onClick={() =>
+                                    setQty(
+                                      cheaper.market.id,
+                                      r.itemId,
+                                      picked ?? undefined,
+                                      qtyOf(cheaper.market.id, r.itemId, picked ?? undefined) + 1,
+                                    )
+                                  }
+                                >
+                                  {fmtPrice(cheaper.priceCp)} at {cheaper.market.name}
+                                </button>
+                              )}
+                            </td>
                             <td class="num">{fmtPrice(r.priceCp)}</td>
                             <td class="num">{fmtWeight(r.weightLb)}</td>
                             <td class="act">
                               {inBasket > 0 && (
                                 <>
-                                  <button type="button" class="undo" onClick={() => setQty(r.itemId, inBasket - 1)}>−</button>
+                                  <button type="button" class="undo" onClick={() => setQty(active.id, r.itemId, picked ?? undefined, inBasket - 1)}>−</button>
                                   <span class="cf-shop-qty">{inBasket}</span>
                                 </>
                               )}
-                              <button type="button" class="buy" onClick={() => setQty(r.itemId, inBasket + 1)}>+</button>
+                              <button
+                                type="button"
+                                class="buy"
+                                disabled={needsPick}
+                                title={needsPick ? `Choose a ${r.choice!.label} first` : undefined}
+                                onClick={() => setQty(active.id, r.itemId, picked ?? undefined, inBasket + 1)}
+                              >
+                                +
+                              </button>
                             </td>
                           </tr>
                         );
@@ -175,12 +360,28 @@ export default function MarketShop({ state, basket, setBasket }: Props) {
               {basket.map((l) => {
                 const market = marketById(l.marketId);
                 const price = market ? buyPriceCp(market, l.itemId, commerce) : undefined;
+                const best = bestBuy(l.itemId, ownedFeatIds, commerce);
+                const cheaper =
+                  best && price !== undefined && best.market.id !== l.marketId && best.priceCp < price
+                    ? best
+                    : undefined;
                 return (
-                  <tr key={`${l.marketId}/${l.itemId}`}>
+                  <tr key={lineKey(l)}>
                     <td>
                       {itemName(l.itemId) ?? l.itemId}
+                      {l.choice ? ` (${l.choice})` : ''}
                       {l.marketId !== 'waldheim' && market && (
                         <span class="cf-shop-src"> — {market.name}</span>
+                      )}
+                      {cheaper && (
+                        <button
+                          type="button"
+                          class="cf-shop-hint"
+                          title={`${cheaper.market.name} — ${cheaper.market.location} — ${cheaper.market.marketType}`}
+                          onClick={() => rerouteLine(l, cheaper.market.id)}
+                        >
+                          {fmtPrice(cheaper.priceCp)} at {cheaper.market.name}
+                        </button>
                       )}
                     </td>
                     <td class="num">×{l.qty}</td>
