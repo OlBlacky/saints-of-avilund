@@ -433,6 +433,11 @@ export const KITS: KitItem[] = [
   { id: 'supplies', name: 'Supplies (per 10)', priceCp: 10, weightLb: 1, supply: 10, choice: { key: 'kit', label: 'Kit', options: ["Healer's Kit", "Friar's Kit", "Herbalist's Bag", 'Offerings Bag'] } },
 ];
 
+/** A Container's Load coefficient — undefined for non-containers. */
+export function containerCoefficient(itemId: string): number | undefined {
+  return CONTAINERS.find((c) => c.id === itemId)?.coefficient;
+}
+
 // ── The whole catalogue, flat ────────────────────────────────────
 
 export interface CatalogueEntry {

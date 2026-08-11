@@ -407,6 +407,23 @@ const blurb = 'Build a character of Avilund: Class, Subclass, Advances, and the 
   .cf-railgear { margin: 0.4rem 0 0; padding-left: 1.1rem; font-size: 0.84rem; color: var(--ink-soft); }
   .cf-railgear li { margin: 0.1rem 0; }
 
+  /* The Character Sheet (Page 3 · Gear) */
+  .sheet-head { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 0.6rem; margin: 0 0 0.6rem; }
+  .sheet-head h2 { margin: 0; }
+  .sheet-pages button { font-size: 0.78rem; }
+  .sheet-strip { display: flex; flex-wrap: wrap; gap: 1.4rem; align-items: center; font-size: 0.95rem; }
+  .sheet-record { display: inline-flex; align-items: center; gap: 0.5rem; color: var(--ink-soft); font-size: 0.86rem; }
+  .sheet-table th {
+    font-variant: small-caps; font-weight: normal; letter-spacing: 0.05em;
+    color: var(--gold); text-align: left; padding: 0.2rem 0.7rem;
+    border-bottom: 1px solid var(--gold); font-size: 0.8rem;
+  }
+  .sheet-move {
+    font: inherit; font-size: 0.8rem; padding: 0.05rem 0.25rem; max-width: 10rem;
+    border: 1px solid var(--rule); border-radius: 3px; background: var(--panel);
+  }
+  .cf-shop-table td.sell { color: #2f5d3a; white-space: nowrap; }
+
   .cf-reset { text-align: right; margin: 0.5rem 0 2rem; }
   .cf-reset button {
     font-size: 0.82rem; color: var(--ink-soft); cursor: pointer;

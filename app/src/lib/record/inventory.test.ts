@@ -17,6 +17,7 @@ import {
   sellPriceCp,
 } from '../markets';
 import type { RecordEvent } from './events';
+import { derive } from './derive';
 import { replay } from './replay';
 
 let seq = 0;
@@ -299,6 +300,90 @@ describe('the Basket transaction', () => {
     expect(buyPriceCp(exchange, 'stock-bank-ulric')).toBe(1000);
     expect(sellPriceCp(exchange, 'stock-bank-ulric')).toBe(990);
     expect(sellPriceCp(WALDHEIM_MARKET, 'stock-bank-ulric')).toBe(1100);
+  });
+});
+
+describe('containers and Load', () => {
+  const buy = (lines: { itemId: string; qty: number }[]) =>
+    ev('transaction', {
+      lines: lines.map((l) => ({ direction: 'buy' as const, marketId: 'waldheim', ...l })),
+    });
+
+  it('items nest in containers; non-containers and loops refuse', () => {
+    const base = [
+      ...crystallized(),
+      ev('transaction', { lines: [
+        { direction: 'buy', marketId: 'waldheim', itemId: 'backpack', qty: 1 },
+        { direction: 'buy', marketId: 'waldheim', itemId: 'torch', qty: 4 },
+      ] }),
+    ];
+    const nested = replay([
+      ...base,
+      ev('item-moved', { instanceId: 'item:torch', location: 'in:item:backpack' }),
+    ]);
+    expect(nested.flags).toEqual([]);
+    expect(nested.state.inventory.find((i) => i.itemId === 'torch')!.location).toBe('in:item:backpack');
+
+    const notAContainer = replay([
+      ...base,
+      ev('item-moved', { instanceId: 'item:backpack', location: 'in:item:torch' }),
+    ]);
+    expect(notAContainer.flags.some((f) => f.code === 'no-access')).toBe(true);
+
+    const loop = replay([
+      ...base,
+      buy([{ itemId: 'sack-large', qty: 1 }]),
+      ev('item-moved', { instanceId: 'item:sack-large', location: 'in:item:backpack' }),
+      ev('item-moved', { instanceId: 'item:backpack', location: 'in:item:sack-large' }),
+    ]);
+    expect(loop.flags.some((f) => f.message.includes('cannot contain itself'))).toBe(true);
+  });
+
+  it('Load: coefficients, worn armour weightless, Home off the body', () => {
+    // Str +0 Soldier variant is fiddly; use the raw state via derive.
+    const { state, flags } = replay([
+      ...crystallized(),
+      buy([
+        { itemId: 'backpack', qty: 1 },        // 2 lb, ×0.75
+        { itemId: 'chain-10ft', qty: 2 },       // 20 lb → in pack, ×0.75 = 15
+        { itemId: 'chain-mail', qty: 1 },       // 40 lb, worn → weightless
+        { itemId: 'maul', qty: 1 },             // 10 lb carried
+        { itemId: 'tent-one-man', qty: 1 },     // 20 lb → Home, excluded
+      ]),
+      ev('item-moved', { instanceId: 'item:chain-10ft', location: 'in:item:backpack' }),
+      ev('item-moved', { instanceId: 'item:chain-mail', location: 'equipped' }),
+      ev('item-moved', { instanceId: 'item:tent-one-man', location: 'home' }),
+    ]);
+    expect(flags).toEqual([]);
+    const { load } = derive(state);
+    // 2 (pack) + 15 (chains ×0.75) + 10 (maul) = 27; starting gear weighs
+    // nothing (unique, no catalogue weight).
+    expect(load.totalLb).toBe(27);
+    expect(load.baseLb).toBe(25); // Str +0
+    expect(load.band).toBe('Light');
+    expect(load.effect).toContain("−5'");
+  });
+
+  it('the Encumbrance Feat Ladder widens the base and tames Heavy', () => {
+    const heavyHaul = [
+      ...crystallized(),
+      buy([{ itemId: 'chain-10ft', qty: 6 }]), // 60 lb > 2 × 25
+    ];
+    expect(derive(replay(heavyHaul).state).load.band).toBe('Heavy');
+
+    const laddered = replay([
+      ...crystallized(),
+      ev('feat-bought', { featId: 'encumbrance-ladder' }),
+      ...[2, 3].flatMap((toRank) => [
+        ev('milestone-granted', {}), ev('milestone-granted', {}), ev('milestone-granted', {}),
+        ev('feat-advanced', { featId: 'encumbrance-ladder', toRank }),
+      ]),
+      buy([{ itemId: 'chain-10ft', qty: 8 }]), // 80 lb
+    ]);
+    expect(laddered.flags).toEqual([]);
+    const { load } = derive(laddered.state);
+    expect(load.baseLb).toBe(35);   // Str +0 counted as +2
+    expect(load.band).toBe('Light'); // 80 > 70 would be Heavy; Rank 3 tames it
   });
 });
 

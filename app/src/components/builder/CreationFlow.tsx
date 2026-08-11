@@ -11,8 +11,9 @@
 import { useEffect, useMemo, useState } from 'preact/hooks';
 
 import AbilityFullCard from './AbilityFullCard';
-import MarketShop, { basketTotalCp, commerceRankOf } from './MarketShop';
+import MarketShop, { basketTotalsCp, commerceRankOf } from './MarketShop';
 import type { BasketLine } from './MarketShop';
+import CharacterSheet from './CharacterSheet';
 import { VAR_LABELS, VAR_ORDER, resolveValue } from '../../lib/abilities';
 import { fmtCoins } from '../../lib/equipment';
 import { briefFor } from '../../lib/ability-briefs';
@@ -82,7 +83,12 @@ const EMPTY_DRAFT: Draft = {
 function loadDraft(): Draft {
   try {
     const raw = localStorage.getItem(DRAFT_KEY);
-    if (raw) return { ...EMPTY_DRAFT, ...JSON.parse(raw) };
+    if (raw) {
+      const parsed = { ...EMPTY_DRAFT, ...JSON.parse(raw) } as Draft;
+      // Older drafts' Basket lines predate the buy/sell split.
+      parsed.basket = (parsed.basket ?? []).map((l) => ({ direction: 'buy', ...l }));
+      return parsed;
+    }
   } catch {
     // A corrupt draft should never brick the builder; start fresh.
   }
@@ -493,8 +499,8 @@ export default function CreationFlow() {
   // ── The Market & Finish ─────────────────────────────────────────────────
 
   const basket = draft.basket ?? [];
-  const basketCp = basketTotalCp(basket, commerceRankOf(state));
-  const remainingCp = state.wealthCp - basketCp;
+  const totals = basketTotalsCp(basket, commerceRankOf(state), state);
+  const remainingCp = state.wealthCp + totals.net;
 
   const canCrystallize =
     !crystallized && cls && sub && quirkRolled && Boolean(state.gear) && flags.length === 0;
@@ -503,9 +509,7 @@ export default function CreationFlow() {
   /** One act: commit the Basket (if anything is in it) and crystallize. */
   const doFinish = () => {
     if (!canFinish) return;
-    const lines = basket
-      .filter((l) => l.qty > 0)
-      .map((l) => ({ direction: 'buy' as const, marketId: l.marketId, itemId: l.itemId, qty: l.qty, choice: l.choice }));
+    const lines = basket.filter((l) => l.qty > 0);
     setDraft((d) => {
       const evs = [...d.events];
       if (lines.length) evs.push(mk('transaction', { lines, note: 'creation shopping' }));
@@ -546,6 +550,17 @@ export default function CreationFlow() {
 
       <div class="cf-grid">
         <div class="cf-main">
+          {crystallized ? (
+            <CharacterSheet
+              name={draft.identity.name}
+              state={state}
+              sheet={sheet}
+              basket={basket}
+              setBasket={(b) => setDraft((d) => ({ ...d, basket: b }))}
+              append={append}
+              why={why}
+            />
+          ) : (<>
           {/* ── The Identity Box ── */}
           <section class="cf-step">
             <h2>The Character</h2>
@@ -1288,15 +1303,7 @@ export default function CreationFlow() {
             </section>
           )}
 
-          {crystallized && (
-            <section class="cf-step cf-finale">
-              <p class="cf-done">
-                <strong>{draft.identity.name || 'This character'} is crystallized.</strong> The
-                spine is locked; the record begins. (The full Character Sheet view is the next
-                thing being built.)
-              </p>
-            </section>
-          )}
+          </>)}
 
           <div class="cf-reset">
             <button

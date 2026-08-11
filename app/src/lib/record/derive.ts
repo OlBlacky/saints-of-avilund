@@ -8,8 +8,10 @@
 // Armour/gear contributions join when the gear pillar lands.
 
 import { classById } from '../classes';
+import { ARMOURS, containerCoefficient } from '../equipment';
 import { DEFAULT_LANGUAGE } from '../languages';
 import { GEAR, STARTING_COIN } from '../gear';
+import { itemWeightLb } from '../markets';
 import { ATTR_FULL, parseAttr } from '../notation';
 import type { Attribute, Condition, Effect } from '../quirks';
 import {
@@ -97,6 +99,59 @@ export interface DerivedSheet {
    * neutral 150, good 100. Absent until the package is rolled (or on a
    * pre-gear log). Becomes the Wealth ledger's opening balance later. */
   startingCoin?: Breakdown;
+  load: DerivedLoad;
+}
+
+// ── Load (mechanics/encumbrance.md) ─────────────────────────────────────────
+
+export type LoadBand = 'None' | 'Light' | 'Heavy';
+
+export interface DerivedLoad {
+  /** Carried weight, rounded to the nearest pound. */
+  totalLb: number;
+  /** The top of the no-effect Band: 25 + 5 × Str (min 5), Feat-shifted. */
+  baseLb: number;
+  band: LoadBand;
+  /** The Band's penalty, null when unburdened. */
+  effect: string | null;
+}
+
+const BAND_EFFECT: Record<LoadBand, string | null> = {
+  None: null,
+  Light: "−5' Speed · −1 physical skill checks",
+  Heavy: "−10' Speed · −2 physical skill checks",
+};
+
+function loadFor(state: CharacterState): DerivedLoad {
+  const ladderRank = state.feats.find((f) => f.featId === 'encumbrance-ladder')?.rank ?? 0;
+  const str =
+    (state.attributeRanks.Strength ?? 0) - (state.flaws.includes('Strength') ? 1 : 0);
+  const baseLb = Math.max(5, 25 + 5 * (str + Math.min(2, ladderRank)));
+
+  let total = 0;
+  for (const item of state.inventory) {
+    // Worn armour is weightless for Load — its burden is already priced
+    // into its own penalties. A spare suit in a bag counts in full.
+    if (item.location === 'equipped' && item.itemId && ARMOURS.some((a) => a.id === item.itemId)) continue;
+    // Walk the container chain: contents multiply by each encloser's
+    // coefficient; anything resting at Home (at any depth) is off the body.
+    let factor = 1;
+    let loc: string = item.location;
+    let excluded = false;
+    while (loc.startsWith('in:')) {
+      const holder = state.inventory.find((i) => i.instanceId === loc.slice(3));
+      if (!holder) { excluded = true; break; }
+      factor *= (holder.itemId && containerCoefficient(holder.itemId)) || 1;
+      loc = holder.location;
+    }
+    if (excluded || loc === 'home') continue;
+    total += (item.itemId ? itemWeightLb(item.itemId) ?? 0 : 0) * item.qty * factor;
+  }
+
+  const totalLb = Math.round(total);
+  let band: LoadBand = totalLb <= baseLb ? 'None' : totalLb <= 2 * baseLb ? 'Light' : 'Heavy';
+  if (band === 'Heavy' && ladderRank >= 3) band = 'Light';
+  return { totalLb, baseLb, band, effect: BAND_EFFECT[band] };
 }
 
 function signed(n: number): string {
@@ -325,6 +380,7 @@ export function derive(state: CharacterState): DerivedSheet {
     proficiencies,
     situational,
     ...(startingCoin ? { startingCoin } : {}),
+    load: loadFor(state),
   };
 }
 

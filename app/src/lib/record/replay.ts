@@ -14,6 +14,7 @@ import { classById, subclassById } from '../classes';
 import type { ClassDef, SubclassDef } from '../classes';
 import { featById } from '../feats';
 import type { FeatRequirement } from '../feats';
+import { containerCoefficient } from '../equipment';
 import { GEAR, STARTING_COIN } from '../gear';
 import { buyPriceCp, itemName, marketById, sellPriceCp } from '../markets';
 import { fill, fillEffect, QUIRKS } from '../quirks';
@@ -657,6 +658,27 @@ export function replay(events: RecordEvent[]): ReplayResult {
       case 'item-moved': {
         const inst = state.inventory.find((i) => i.instanceId === e.instanceId);
         if (!inst) { flag(e, 'unknown-ref', `no owned item "${e.instanceId}" to move`); break; }
+        if (e.location.startsWith('in:')) {
+          const targetId = e.location.slice(3);
+          const target = state.inventory.find((i) => i.instanceId === targetId);
+          if (!target) { flag(e, 'unknown-ref', `no container "${targetId}"`); break; }
+          if (!target.itemId || containerCoefficient(target.itemId) === undefined) {
+            flag(e, 'no-access', `${target.name} is not a Container`);
+            break;
+          }
+          // No loops: walking up from the target must never reach the item
+          // being moved (an item cannot contain itself, at any depth).
+          let cursor: OwnedItem | undefined = target;
+          let looped = false;
+          while (cursor) {
+            if (cursor.instanceId === e.instanceId) { looped = true; break; }
+            const loc: string = cursor.location;
+            cursor = loc.startsWith('in:')
+              ? state.inventory.find((i) => i.instanceId === loc.slice(3))
+              : undefined;
+          }
+          if (looped) { flag(e, 'wrong-order', `${inst.name} cannot contain itself`); break; }
+        }
         inst.location = e.location;
         break;
       }

@@ -237,6 +237,22 @@ export function sellPriceCp(market: Market, itemId: string, commerceRank = 0): C
   return Math.round(line.priceCp * bonus);
 }
 
+/** The best reachable buyer of an item — the gear page's sell line. No
+ * accessible Market buying it means no price line at all ("sellability
+ * lives on the item"). */
+export function bestSell(
+  itemId: string,
+  ownedFeatIds: string[],
+  commerceRank = 0,
+): { market: Market; priceCp: Cp } | undefined {
+  let best: { market: Market; priceCp: Cp } | undefined;
+  for (const market of accessibleMarkets(ownedFeatIds)) {
+    const price = sellPriceCp(market, itemId, commerceRank);
+    if (price !== undefined && (!best || price > best.priceCp)) best = { market, priceCp: price };
+  }
+  return best;
+}
+
 /** The cheapest reachable source of an item — the shop's price hint. A
  * character's own connections do the walking: the hint appears only for
  * Markets they can actually shop. */

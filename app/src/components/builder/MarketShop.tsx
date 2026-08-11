@@ -38,28 +38,40 @@ import {
   itemWeightLb,
   listedMarkets,
   marketById,
+  sellPriceCp,
 } from '../../lib/markets';
 import type { Market } from '../../lib/markets';
 import { allProficiencies } from '../../lib/record/replay';
 import type { CharacterState } from '../../lib/record/replay';
 
-export interface BasketLine {
-  marketId: string;
-  itemId: string;
-  qty: number;
-  choice?: string;
-}
+export type BasketLine =
+  | { direction: 'buy'; marketId: string; itemId: string; qty: number; choice?: string }
+  | { direction: 'sell'; marketId: string; instanceId: string; qty: number };
 
 export function commerceRankOf(state: CharacterState): number {
   return state.feats.find((f) => f.featId === 'commerce-ladder')?.rank ?? 0;
 }
 
-export function basketTotalCp(basket: BasketLine[], commerceRank: number): number {
-  return basket.reduce((total, line) => {
+/** The Basket's money: buys spend, sells earn, net = sells − buys. Sell
+ * prices resolve through the owned instance's catalogue id. */
+export function basketTotalsCp(
+  basket: BasketLine[],
+  commerceRank: number,
+  state: CharacterState,
+): { buys: number; sells: number; net: number } {
+  let buys = 0;
+  let sells = 0;
+  for (const line of basket) {
     const market = marketById(line.marketId);
-    const price = market ? buyPriceCp(market, line.itemId, commerceRank) : undefined;
-    return total + (price ?? 0) * line.qty;
-  }, 0);
+    if (!market) continue;
+    if (line.direction === 'buy') {
+      buys += (buyPriceCp(market, line.itemId, commerceRank) ?? 0) * line.qty;
+    } else {
+      const inst = state.inventory.find((i) => i.instanceId === line.instanceId);
+      if (inst?.itemId) sells += (sellPriceCp(market, inst.itemId, commerceRank) ?? 0) * line.qty;
+    }
+  }
+  return { buys, sells, net: sells - buys };
 }
 
 /** The Feat that opens a locked Market, for the shopfront note. */
@@ -177,26 +189,34 @@ export default function MarketShop({ state, basket, setBasket }: Props) {
     return sel || null;
   };
 
-  const lineKey = (l: BasketLine) => `${l.marketId}/${l.itemId}/${l.choice ?? ''}`;
+  const lineKey = (l: BasketLine) =>
+    l.direction === 'buy'
+      ? `b/${l.marketId}/${l.itemId}/${l.choice ?? ''}`
+      : `s/${l.marketId}/${l.instanceId}`;
 
   const qtyOf = (marketId: string, itemId: string, choice?: string) =>
-    basket.find((l) => lineKey(l) === `${marketId}/${itemId}/${choice ?? ''}`)?.qty ?? 0;
+    basket.find((l) => lineKey(l) === `b/${marketId}/${itemId}/${choice ?? ''}`)?.qty ?? 0;
 
   const setQty = (marketId: string, itemId: string, choice: string | undefined, qty: number) => {
-    const key = `${marketId}/${itemId}/${choice ?? ''}`;
+    const key = `b/${marketId}/${itemId}/${choice ?? ''}`;
     const rest = basket.filter((l) => lineKey(l) !== key);
-    setBasket(qty > 0 ? [...rest, { marketId, itemId, qty, choice }] : rest);
+    setBasket(qty > 0 ? [...rest, { direction: 'buy', marketId, itemId, qty, choice }] : rest);
   };
 
-  /** Move a Basket line to a cheaper Market, merging with any existing line. */
-  const rerouteLine = (line: BasketLine, toMarketId: string) => {
+  /** Move a buy line to a cheaper Market, merging with any existing line. */
+  const rerouteLine = (line: Extract<BasketLine, { direction: 'buy' }>, toMarketId: string) => {
     const existing = qtyOf(toMarketId, line.itemId, line.choice);
-    const rest = basket.filter((l) => l !== line && lineKey(l) !== `${toMarketId}/${line.itemId}/${line.choice ?? ''}`);
-    setBasket([...rest, { marketId: toMarketId, itemId: line.itemId, qty: line.qty + existing, choice: line.choice }]);
+    const rest = basket.filter(
+      (l) => l !== line && lineKey(l) !== `b/${toMarketId}/${line.itemId}/${line.choice ?? ''}`,
+    );
+    setBasket([
+      ...rest,
+      { direction: 'buy', marketId: toMarketId, itemId: line.itemId, qty: line.qty + existing, choice: line.choice },
+    ]);
   };
 
-  const totalCp = basketTotalCp(basket, commerce);
-  const remainingCp = state.wealthCp - totalCp;
+  const totals = basketTotalsCp(basket, commerce, state);
+  const remainingCp = state.wealthCp + totals.net;
 
   return (
     <div class="cf-shop">
@@ -359,6 +379,31 @@ export default function MarketShop({ state, basket, setBasket }: Props) {
             <tbody>
               {basket.map((l) => {
                 const market = marketById(l.marketId);
+                if (l.direction === 'sell') {
+                  const inst = state.inventory.find((i) => i.instanceId === l.instanceId);
+                  const price =
+                    market && inst?.itemId ? sellPriceCp(market, inst.itemId, commerce) : undefined;
+                  return (
+                    <tr key={lineKey(l)}>
+                      <td>
+                        Sell: {inst?.name ?? l.instanceId}
+                        {market && <span class="cf-shop-src"> — {market.name}</span>}
+                      </td>
+                      <td class="num">×{l.qty}</td>
+                      <td class="num sell">{price !== undefined ? `+${fmtCoins(price * l.qty)}` : '—'}</td>
+                      <td class="act">
+                        <button
+                          type="button"
+                          class="undo"
+                          title="keep it"
+                          onClick={() => setBasket(basket.filter((x) => x !== l))}
+                        >
+                          −
+                        </button>
+                      </td>
+                    </tr>
+                  );
+                }
                 const price = market ? buyPriceCp(market, l.itemId, commerce) : undefined;
                 const best = bestBuy(l.itemId, ownedFeatIds, commerce);
                 const cheaper =
@@ -403,7 +448,9 @@ export default function MarketShop({ state, basket, setBasket }: Props) {
           </table>
         )}
         <p class={`cf-basket-total${remainingCp < 0 ? ' over' : ''}`}>
-          Total {fmtCoins(totalCp)} · Coin {fmtCoins(state.wealthCp)} · After{' '}
+          {totals.sells > 0 && `Buys ${fmtCoins(totals.buys)} · Sells ${fmtCoins(totals.sells)} · `}
+          {totals.sells === 0 && `Total ${fmtCoins(totals.buys)} · `}
+          Coin {fmtCoins(state.wealthCp)} · After{' '}
           {remainingCp < 0 ? `short ${fmtCoins(-remainingCp)}` : fmtCoins(remainingCp)}
         </p>
       </div>

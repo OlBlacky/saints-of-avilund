@@ -34,9 +34,10 @@ export interface AbilityRef {
   ability: string;
 }
 
-/** Where an owned item sits. Containers and the Party Inventory join when
- * the Gear page lands. Home is weightless. */
-export type ItemLocation = 'equipped' | 'carried' | 'home';
+/** Where an owned item sits. Home is weightless; `in:<instanceId>` nests
+ * the item inside an owned Container (coefficient math per
+ * mechanics/encumbrance.md). The Party Inventory joins with campaigns. */
+export type ItemLocation = 'equipped' | 'carried' | 'home' | `in:${string}`;
 
 /** One Basket line. Buys reference a Market's stock; sells reference an
  * owned instance. Prices are computed at replay time from the Market data
