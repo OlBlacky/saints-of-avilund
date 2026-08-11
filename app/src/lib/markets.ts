@@ -36,9 +36,10 @@ export interface Market {
   buys: MarketLine[];
   /** null = bottomless. */
   purseCp: Cp | null;
-  /** Extra options this Market adds to an item's purchase-time choice
-   * (Black's Road offers Poison on Artisan's tools). */
-  choiceExtras?: Record<string, string[]>;
+  /** Per-market replacement of an item's purchase-time choice options —
+   * the whole list, free-text Other included, gives way (Black's Road
+   * offers Poison alone on Artisan's tools). */
+  choiceOverrides?: Record<string, string[]>;
 }
 
 // ── Trade goods ──────────────────────────────────────────────────
@@ -154,10 +155,10 @@ export const MARKETS: Market[] = [
   specialty('green-market', 'The Green Market', 'The Green', 'Old Magic Market', 'market-green'),
   {
     ...specialty('blacks-road', "Black's Road Market", "Black's Road", 'Black Market', 'market-blacks-road'),
-    // First stock: the poisoner's tools. The full illicit catalogue (poisons
-    // and the rest) is still to author.
+    // First stock: the poisoner's tools — and only those. The full illicit
+    // catalogue (poisons and the rest) is still to author.
     sells: [{ itemId: 'artisans-tools', priceCp: 50 }],
-    choiceExtras: { 'artisans-tools': ['Poison'] },
+    choiceOverrides: { 'artisans-tools': ['Poison'] },
   },
   {
     id: 'dunstans-magazine',

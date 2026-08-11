@@ -241,7 +241,7 @@ Identity, portrait, Class · Subclass · Level with Milestone pips. **Attributes
 
 ### Page 3 · Gear
 
-Sections: Weapons · Armour · Equipment · Wealth. Weapons and armour reproduce their **full stat blocks** (from rules data — these blocks are what pages 1–2 compute from), including weight. **Every item has a location**: equipped / carried / in *[container]* / at **Home** (weightless, every character has one) / Party Inventory (campaign). **Containers** hold anything, apply their coefficient to contents, show subtotals; the sheet totals carried **Load**. **Sell prices appear only where an accessible Market buys the item**, source noted ("3 sp — Black Market"), In Play filter respected. **In-box / Out-box** for transfers (player-to-player, DM grants) with quick actions: **Accept** (and place) · **Decline** · **Sell** (auto-filled best price with its math). Wealth carries a currency field (single coinage today; Currencies is a future Campaign Option).
+Sections: Weapons · Armour · Equipment · Wealth. Weapons and armour reproduce their **full stat blocks** (from rules data — these blocks are what pages 1–2 compute from), including weight. **Every item has a location**: equipped / carried / in *[container]* / at **Home** (weightless, every character has one) / Party Inventory (campaign). **Containers** hold anything, apply their coefficient to contents, show subtotals; the sheet totals carried **Load**. **The kits are Containers** (×1 — their Supplies live inside the bag), and **stacks split** (Aug 11 2026): an `item-split` event carves a quantity into a new stack with inherited provenance, which then moves, sells, or trades on its own. **Sell prices appear only where an accessible Market buys the item**, source noted ("3 sp — Black Market"), In Play filter respected. **In-box / Out-box** for transfers (player-to-player, DM grants) with quick actions: **Accept** (and place) · **Decline** · **Sell** (auto-filled best price with its math). Wealth carries a currency field (single coinage today; Currencies is a future Campaign Option).
 
 ### Page 4 · Advancement Log
 
@@ -369,7 +369,7 @@ The **Waldheim family is always listed**: open markets show their catalogs; lock
 
 ### Open Commerce (ruled Aug 11 2026)
 
-On the sheet, the Markets are hidden behind a deliberate act: **Open Commerce** reveals them; **Leave the market** closes them (an emptied Basket leaves nothing behind); **Finish the trip** commits and closes. The trip is a *mode*, not a record entry — nothing logs until the trip commits, and the committed transaction IS the Commerce session in the log. An unfinished Basket persists and re-opens Commerce on return (you are still at market); a Sell button on any gear row opens Commerce itself.
+On the sheet, the Markets are hidden behind a deliberate act: **Open Commerce** reveals them; **Leave the market** closes them (an emptied Basket leaves nothing behind); **Finish the trip** commits and closes. The trip is a *mode*, not a record entry — nothing logs until the trip commits, and the committed transaction IS the Commerce session in the log. An unfinished Basket persists and re-opens Commerce on return (you are still at market). **The neutral sheet never offers selling**: gear rows grow their Sell buttons only while Commerce is open (ruled Aug 11 2026) — and a buyer paying zero after rounding is no buyer at all.
 
 ### The Basket
 
@@ -382,7 +382,7 @@ On the sheet, the Markets are hidden behind a deliberate act: **Open Commerce** 
 - **Price hints — inform, never auto-decide**: when another *reachable* Market sells an item cheaper, the row (and any stale Basket line) carries a clickable note — "100 sp at St. Dunstan's Magazine" — that buys from (or reroutes to) the cheaper door. Reachability respects the In Play filter when it lands.
 - **Proficiency chips**: weapons, armour, and shields the build isn't trained for wear an *untrained* chip stating the exact penalty (weapons −1 to attack; Light/Medium armour and Light Shield −1, Heavy armour and Heavy Shield −2 to attack rolls and physical skill checks); Str-short heavy armour adds *needs Str +N*. Buying stays unrestricted.
 - **All Gear / Gear I can Use** toggle (default All): the second view hides chipped rows; sundries always show.
-- **Purchase-time item choices** (`mechanics/markets.md`): Artisan's tools pick their Craft, Saint's medals their saint, Supplies their kit — dropdown (plus free-text Other where the space is open); a Market can extend an item's options (`choiceExtras`: Black's Road adds Poison). The pick rides the transaction line, names the instance, and separates stacks.
+- **Purchase-time item choices** (`mechanics/markets.md`): Artisan's tools pick their Craft, Saint's medals their saint, Supplies their kit — dropdown (plus free-text Other where the space is open); a Market can **replace** an item's option list wholesale (`choiceOverrides`: Black's Road offers Poison alone, no Other). The pick rides the transaction line, names the instance, and separates stacks.
 - **Kit fill (Page 3, later)**: kit instances carry a Supply gauge 0–20; a named spare stack ("Supplies (Healer's Kit) ×100", in a backpack or at Home) refills it as a Gear-page action. Loose stacks are ordinary located items — the gauge is kit state, not inventory.
 
 ### Creation shopping

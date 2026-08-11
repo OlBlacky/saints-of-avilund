@@ -83,7 +83,7 @@ The Waldheim Market **buys anything it sells, at 25% of list value**, and will n
 Goods live where they belong (settled Aug 11 2026):
 
 - **The religious stock sells at Imperial Square, not Sever's Cross**: all of Faith & Superstition, the Cleric's vestments, and the Friar's Kit. Supplies refill every kit, so both markets stock them. Imperial Square buys back its stock at the same 25%.
-- **Black's Road sells the poisoner's tools** — Artisan's tools with *Poison* on its list, an option no lawful shopfront offers. The rest of the illicit catalogue is still to author.
+- **Black's Road sells the poisoner's tools** — Artisan's tools whose list there is *Poison alone* (a market may replace an item's choice list wholesale). No lawful shopfront offers it. The rest of the illicit catalogue is still to author.
 - Keeping stock where it belongs sets up **per-market standing discounts** later: an adventure's reward may grant a character 10% off at a named Market (a Friar earning the favour of a religious house). Parked in the builder spec.
 
 ## Item choices at purchase

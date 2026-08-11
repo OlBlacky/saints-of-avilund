@@ -10,6 +10,9 @@
 
 import { useState } from 'preact/hooks';
 
+import { VAR_ORDER, resolveValue } from '../../lib/abilities';
+import type { Ability } from '../../lib/abilities';
+import { CATEGORIES } from '../../lib/category-abilities';
 import { classById } from '../../lib/classes';
 import {
   ARMOURS,
@@ -22,11 +25,14 @@ import {
   fmtWeight,
 } from '../../lib/equipment';
 import { featById } from '../../lib/feats';
+import { LANGUAGES } from '../../lib/languages';
+import type { Language } from '../../lib/languages';
 import { bestSell, itemWeightLb, marketById } from '../../lib/markets';
 import { fill, QUIRKS } from '../../lib/quirks';
 import type { RecordEvent } from '../../lib/record/events';
 import type { ItemLocation } from '../../lib/record/events';
 import type { Breakdown, DerivedSheet } from '../../lib/record/derive';
+import { languageAllowance } from '../../lib/record/replay';
 import type { CharacterState, OwnedItem } from '../../lib/record/replay';
 import MarketShop, { basketTotalsCp, commerceRankOf } from './MarketShop';
 import type { BasketLine } from './MarketShop';
@@ -48,7 +54,7 @@ function mk<T extends RecordEvent['type']>(
 
 const PAGES: { n: number; label: string; built: boolean }[] = [
   { n: 1, label: 'Page 1 · The Character', built: true },
-  { n: 2, label: 'Page 2 · Attacks & Abilities', built: false },
+  { n: 2, label: 'Page 2 · Attacks & Abilities', built: true },
   { n: 3, label: 'Page 3 · Gear', built: true },
   { n: 4, label: 'Page 4 · Advancement Log', built: true },
   { n: 5, label: 'Page 5 · Full Detail', built: false },
@@ -116,6 +122,13 @@ export default function CharacterSheet({ name, state, sheet, events, basket, set
   // unfinished trip (a Basket with lines) re-opens itself — you are still
   // at market. Nothing is logged until the trip commits.
   const [commerceOpen, setCommerceOpen] = useState(basket.length > 0);
+  // Page 2 state: curated attack lines (hidden, never deleted) and the
+  // table-scratch Conditions (never logged, reset freely).
+  const [hiddenAttacks, setHiddenAttacks] = useState<string[]>([]);
+  const [showHiddenAttacks, setShowHiddenAttacks] = useState(false);
+  const [conditions, setConditions] = useState<string[]>([]);
+  const [conditionEntry, setConditionEntry] = useState('');
+  const [langPick, setLangPick] = useState('');
   const ownedFeatIds = state.feats.map((f) => f.featId);
   const commerce = commerceRankOf(state);
 
@@ -171,12 +184,15 @@ export default function CharacterSheet({ name, state, sheet, events, basket, set
   );
 
   /** The sell control: best reachable buyer, source named — or nothing.
-   * Rolled Starting Gear stays silent until its Session lock lifts. */
+   * Selling is commerce: the buttons exist only during an open session.
+   * Rolled Starting Gear stays silent until its Session lock lifts, and a
+   * buyer paying zero is no buyer at all. */
   const sellControl = (item: OwnedItem) => {
+    if (!commerceOpen) return null;
     if (!item.itemId) return null;
     if (item.origin === 'starting-gear' && state.sessions < 1) return null;
     const best = bestSell(item.itemId, ownedFeatIds, commerce);
-    if (!best) return null;
+    if (!best || best.priceCp < 1) return null;
     const inBasket = basket
       .filter((l): l is Extract<BasketLine, { direction: 'sell' }> => l.direction === 'sell')
       .filter((l) => l.instanceId === item.instanceId)
@@ -197,11 +213,29 @@ export default function CharacterSheet({ name, state, sheet, events, basket, set
             ...rest,
             { direction: 'sell', marketId: best.market.id, instanceId: item.instanceId, qty: inBasket + 1 },
           ]);
-          // Selling is commerce: putting an item up walks you to market.
-          setCommerceOpen(true);
         }}
       >
         Sell {fmtCoins(best.priceCp)} — {best.market.name}
+      </button>
+    );
+  };
+
+  /** Split a stack: carve some off into a new stack in the same place —
+   * it then moves (or sells) with its own controls. */
+  const splitControl = (item: OwnedItem) => {
+    if (item.qty < 2) return null;
+    return (
+      <button
+        type="button"
+        class="undo"
+        title="split this stack"
+        onClick={() => {
+          const n = Number(prompt(`Split how many of the ${item.qty} × ${item.name} into their own stack?`));
+          if (!Number.isInteger(n) || n < 1 || n >= item.qty) return;
+          append(mk('item-split', { instanceId: item.instanceId, qty: n, location: item.location }));
+        }}
+      >
+        split
       </button>
     );
   };
@@ -279,23 +313,29 @@ export default function CharacterSheet({ name, state, sheet, events, basket, set
             <section class="cf-step">
               <h3>Attributes</h3>
               <p class="cf-how">Hover any number for its parts.</p>
-              <table class="cf-shop-table sheet-table">
-                <thead>
-                  <tr><th>Attr</th><th>Val</th><th>Off</th><th>Save</th><th>Un</th><th>Arm</th></tr>
-                </thead>
-                <tbody>
-                  {sheet.attributes.map((a) => (
-                    <tr key={a.attr}>
-                      <td>{a.attr}</td>
-                      <td class="num"><Bd b={a.value} /></td>
-                      <td class="num"><Bd b={a.offence} /></td>
-                      <td class="num"><Bd b={a.save} /></td>
-                      <td class="num"><Bd b={a.unarmouredDefence} plain /></td>
-                      <td class="num"><Bd b={a.armouredDefence} plain /></td>
+              <div class="scroll">
+                <table class="cf-shop-table sheet-table">
+                  <thead>
+                    <tr>
+                      <th>Attribute</th><th class="num">Value</th><th class="num">Offence</th>
+                      <th class="num">Save</th><th class="num">Unarmoured Defence</th>
+                      <th class="num">Armoured Defence</th>
                     </tr>
-                  ))}
-                </tbody>
-              </table>
+                  </thead>
+                  <tbody>
+                    {sheet.attributes.map((a) => (
+                      <tr key={a.attr}>
+                        <td>{a.attr}</td>
+                        <td class="num"><Bd b={a.value} /></td>
+                        <td class="num"><Bd b={a.offence} /></td>
+                        <td class="num"><Bd b={a.save} /></td>
+                        <td class="num"><Bd b={a.unarmouredDefence} plain /></td>
+                        <td class="num"><Bd b={a.armouredDefence} plain /></td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
               <p class="cf-railline">
                 HP <Bd b={sheet.hitPoints} plain /> · Speed <Bd b={sheet.speed} plain />' ·
                 DR <Bd b={sheet.damageReduction} plain /> · Initiative <Bd b={sheet.initiative} /> ·
@@ -310,14 +350,14 @@ export default function CharacterSheet({ name, state, sheet, events, basket, set
                   {sheet.skills.map((s) => (
                     <tr key={s.skill}>
                       <td>{s.skill}{s.isClassSkill ? ' ·' : ''}{s.untrained ? <span class="cf-shop-src"> untrained</span> : ''}</td>
-                      <td>{s.attr.slice(0, 3)}</td>
+                      <td>{s.attr}</td>
                       <td class="num"><Bd b={s.value} /></td>
                     </tr>
                   ))}
                 </tbody>
               </table>
               {sheet.skillGeneralists.map((g) => (
-                <p key={g.attr} class="cf-railline">Trained in every {g.attr.slice(0, 3)} Skill at {signed(g.total)}</p>
+                <p key={g.attr} class="cf-railline">Trained in every {g.attr} Skill at {signed(g.total)}</p>
               ))}
             </section>
 
@@ -332,6 +372,31 @@ export default function CharacterSheet({ name, state, sheet, events, basket, set
                 ))}
               </p>
               <p class="cf-railline">{sheet.languages.join(' · ')}</p>
+              {languageAllowance(state) > state.freeLanguagesUsed && (
+                <p class="cf-line">
+                  <span class="cf-shop-hint" style="cursor:default">
+                    {languageAllowance(state) - state.freeLanguagesUsed} free language
+                    {languageAllowance(state) - state.freeLanguagesUsed === 1 ? '' : 's'} still untaken
+                  </span>{' '}
+                  <select class="sheet-move" value={langPick} onChange={(e) => setLangPick((e.target as HTMLSelectElement).value)}>
+                    <option value="">Take a language…</option>
+                    {LANGUAGES.filter((l) => !sheet.languages.includes(l)).map((l) => (
+                      <option key={l} value={l}>{l}</option>
+                    ))}
+                  </select>
+                  <button
+                    type="button"
+                    class="buy"
+                    disabled={!langPick}
+                    onClick={() => {
+                      append(mk('language-bought', { language: langPick as Language }));
+                      setLangPick('');
+                    }}
+                  >
+                    Take
+                  </button>
+                </p>
+              )}
             </section>
 
             {state.feats.length > 0 && (
@@ -367,6 +432,212 @@ export default function CharacterSheet({ name, state, sheet, events, basket, set
                 </ul>
               </section>
             )}
+          </>
+        );
+      })()}
+
+      {page === 2 && (() => {
+        const shortTotals: Record<string, number> = Object.fromEntries(
+          sheet.attributes.map((a) => [a.attr.slice(0, 3), a.value.total]),
+        );
+        const offenceOf = (attrFull: string) =>
+          sheet.attributes.find((a) => a.attr === attrFull)?.offence.total ?? 0;
+        const profOf = (group: string) =>
+          sheet.proficiencies.find((p) => p.group === group)?.rank;
+        const findCard = (category: string, ability: string): Ability | undefined =>
+          CATEGORIES.find((c) => c.name === category)?.abilities.find((a) => a.name === ability);
+
+        // Play-mode text: attribute tokens annotated with this build's math.
+        const noteAttrs = (text: string): string =>
+          text.replace(/\b(Str|Dex|Con|Int|Wis|Cha)\b(\s*([+×x])\s*(\d+))?/g, (whole, attr: string, _e, op?: string, num?: string) => {
+            const a = shortTotals[attr];
+            if (a === undefined) return whole;
+            if (op && num) {
+              const b = Number(num);
+              return `${whole} (${op === '+' ? a + b : a * b})`;
+            }
+            return `${whole} (${a})`;
+          });
+
+        // Full math for the Attacks table: [W] becomes the weapon's die,
+        // attribute tokens become their totals.
+        const dmgFor = (text: string, die: string): string =>
+          text
+            .replace(/(\d+)\[W\]/g, (_, n: string) => (n === '1' ? die : `${n}×${die}`))
+            .replace(/\[W\]/g, die)
+            .replace(/\b(Str|Dex|Con|Int|Wis|Cha)\b/g, (m) => String(shortTotals[m] ?? m));
+
+        const tableWeapons = weapons.filter((i) => i.location === 'equipped' || i.location === 'carried');
+
+        interface AttackRow { key: string; name: string; toHit: number; untrained: boolean; vs: string; damage: string }
+        const rows: AttackRow[] = [];
+
+        const meleeAttr = (w: (typeof MELEE_WEAPONS)[number]) => {
+          const finesse = w.properties.some((p) => p.startsWith('Finesse'));
+          const str = shortTotals.Str;
+          const dex = shortTotals.Dex;
+          return finesse && dex > str ? 'Dexterity' : 'Strength';
+        };
+
+        for (const item of tableWeapons) {
+          const w = weaponFor(item)!;
+          const ranged = RANGED_WEAPONS.some((r) => r.id === w.id);
+          const attrFull = ranged ? 'Dexterity' : meleeAttr(w);
+          const p = profOf(w.group);
+          rows.push({
+            key: `basic/${item.instanceId}`,
+            name: `Basic Attack — ${item.name}`,
+            toHit: offenceOf(attrFull) + (p ?? -1),
+            untrained: p === undefined,
+            vs: 'vs AC',
+            damage: dmgFor(`${w.damage} + ${attrFull.slice(0, 3)}`, w.damage).replace(/^.*?\+/, `${w.damage} +`),
+          });
+        }
+        rows.push({
+          key: 'basic/unarmed',
+          name: 'Basic Unarmed',
+          toHit: offenceOf('Strength') + (profOf('Unarmed/Natural') ?? -1),
+          untrained: profOf('Unarmed/Natural') === undefined,
+          vs: 'vs AC',
+          damage: `1d3 + ${shortTotals.Str}`,
+        });
+
+        for (const owned of state.abilities) {
+          const card = findCard(owned.ref.category, owned.ref.ability);
+          if (!card || card.mode !== 'Attack') continue;
+          const atkText = resolveValue(card.vars.attack, owned.ranks.attack) ?? '';
+          const [attrFull, vsDef] = atkText.split(' vs ');
+          const dmgText = resolveValue(card.vars.damage, owned.ranks.damage) ?? '—';
+          const label = owned.name ?? owned.ref.ability;
+          if (dmgText.includes('[W]')) {
+            for (const item of tableWeapons) {
+              const w = weaponFor(item)!;
+              const p = profOf(w.group);
+              rows.push({
+                key: `${label}/${item.instanceId}`,
+                name: `${label} — ${item.name}`,
+                toHit: offenceOf(attrFull) + (p ?? -1),
+                untrained: p === undefined,
+                vs: vsDef ? `vs ${vsDef}` : '',
+                damage: dmgFor(dmgText, w.damage),
+              });
+            }
+          } else {
+            rows.push({
+              key: label,
+              name: label,
+              toHit: offenceOf(attrFull),
+              untrained: false,
+              vs: vsDef ? `vs ${vsDef}` : '',
+              damage: dmgFor(dmgText, ''),
+            });
+          }
+        }
+
+        const shown = rows.filter((r) => !hiddenAttacks.includes(r.key));
+        const toggleHide = (key: string) =>
+          setHiddenAttacks((h) => (h.includes(key) ? h.filter((k) => k !== key) : [...h, key]));
+
+        return (
+          <>
+            <section class="cf-step">
+              <h3>Attacks</h3>
+              <p class="cf-how">
+                Generated from your attack Abilities and carried weapons. Hide the lines you never
+                use.
+              </p>
+              <div class="scroll">
+                <table class="cf-shop-table sheet-table">
+                  <thead>
+                    <tr><th>Attack</th><th>To Hit</th><th></th><th>Damage</th><th></th></tr>
+                  </thead>
+                  <tbody>
+                    {(showHiddenAttacks ? rows : shown).map((r) => (
+                      <tr key={r.key} class={hiddenAttacks.includes(r.key) ? 'sheet-hiddenrow' : undefined}>
+                        <td>{r.name}{r.untrained && <span class="cf-chip" title="Not proficient — the −1 is counted in.">untrained</span>}</td>
+                        <td class="num">{signed(r.toHit)}</td>
+                        <td>{r.vs}</td>
+                        <td>{r.damage}</td>
+                        <td class="act">
+                          <button type="button" class="undo" title={hiddenAttacks.includes(r.key) ? 'show this line' : 'hide this line'} onClick={() => toggleHide(r.key)}>
+                            {hiddenAttacks.includes(r.key) ? 'show' : 'hide'}
+                          </button>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+              {hiddenAttacks.length > 0 && (
+                <p class="cf-railline">
+                  <button type="button" class="undo" onClick={() => setShowHiddenAttacks(!showHiddenAttacks)}>
+                    {showHiddenAttacks ? 'Tuck the hidden lines away' : `Show ${hiddenAttacks.length} hidden line${hiddenAttacks.length === 1 ? '' : 's'}`}
+                  </button>
+                </p>
+              )}
+            </section>
+
+            <section class="cf-step">
+              <h3>Conditions</h3>
+              <p class="cf-how">Table scratch — nothing here enters the record.</p>
+              <p class="sheet-conditions">
+                {conditions.map((c) => (
+                  <button key={c} type="button" class="cf-chip" title="clear" onClick={() => setConditions(conditions.filter((x) => x !== c))}>
+                    {c} ×
+                  </button>
+                ))}
+                <input
+                  placeholder="Add a condition…"
+                  value={conditionEntry}
+                  onInput={(e) => setConditionEntry((e.target as HTMLInputElement).value)}
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter' && conditionEntry.trim()) {
+                      setConditions([...conditions, conditionEntry.trim()]);
+                      setConditionEntry('');
+                    }
+                  }}
+                />
+              </p>
+            </section>
+
+            <section class="cf-step">
+              <h3>Abilities</h3>
+              <div class="sheet-cards">
+                {state.abilities.map((owned) => {
+                  const card = findCard(owned.ref.category, owned.ref.ability);
+                  if (!card) return null;
+                  const val = (k: (typeof VAR_ORDER)[number]) => resolveValue(card.vars[k], owned.ranks[k]);
+                  const freq = val('frequency');
+                  const strip = [
+                    val('action') && `Action: ${val('action')}`,
+                    val('range') && val('range') !== '—' && `Range: ${val('range')}`,
+                    val('targets') && `Targets: ${val('targets')}`,
+                    val('attack') && `${val('attack')}`,
+                  ].filter(Boolean);
+                  const body = [
+                    ['Damage', val('damage')],
+                    ['Effect', val('effects')],
+                    ['Duration', val('duration')],
+                  ].filter(([, v]) => v && v !== '—' && v !== 'Instant') as [string, string][];
+                  return (
+                    <div key={owned.instanceId ?? `${owned.ref.category}/${owned.ref.ability}`} class="sheet-card">
+                      <p class="cf-quirk-eyebrow">
+                        {owned.ref.category}
+                        {freq && freq !== '—' && <span class="sheet-card-freq"> · {freq}</span>}
+                      </p>
+                      <h4>
+                        {owned.name ?? owned.ref.ability}
+                        {owned.choices && <span class="cf-shop-src"> · {Object.values(owned.choices).join(', ')}</span>}
+                      </h4>
+                      {strip.length > 0 && <p class="sheet-card-strip">{strip.join(' · ')}</p>}
+                      {body.map(([label, v]) => (
+                        <p key={label} class="cf-quirk-mech"><strong>{label}.</strong> {noteAttrs(v)}</p>
+                      ))}
+                    </div>
+                  );
+                })}
+              </div>
+            </section>
           </>
         );
       })()}
@@ -409,7 +680,7 @@ export default function CharacterSheet({ name, state, sheet, events, basket, set
                       <td>{w.properties.length ? w.properties.join(', ') : '—'}</td>
                       <td class="num">{rowWeight(i)}</td>
                       <td>{moveControl(i)}</td>
-                      <td class="act">{sellControl(i)}</td>
+                      <td class="act">{splitControl(i)}{sellControl(i)}</td>
                     </tr>
                   );
                 })}
@@ -446,7 +717,7 @@ export default function CharacterSheet({ name, state, sheet, events, basket, set
                       <td>{drawbacks}</td>
                       <td class="num">{rowWeight(i)}</td>
                       <td>{moveControl(i)}</td>
-                      <td class="act">{sellControl(i)}</td>
+                      <td class="act">{splitControl(i)}{sellControl(i)}</td>
                     </tr>
                   );
                 })}
@@ -476,7 +747,7 @@ export default function CharacterSheet({ name, state, sheet, events, basket, set
                   <td class="num">{rowWeight(i)}</td>
                   <td>{locationLabel(i.location)}</td>
                   <td>{moveControl(i)}</td>
-                  <td class="act">{sellControl(i)}</td>
+                  <td class="act">{splitControl(i)}{sellControl(i)}</td>
                 </tr>
               ))}
             </tbody>

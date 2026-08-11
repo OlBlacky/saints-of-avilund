@@ -85,10 +85,10 @@ describe('the Markets roster', () => {
     expect(imperial.sells.some((l) => l.itemId === 'supplies')).toBe(true);
   });
 
-  it("Black's Road sells the poisoner's tools", () => {
+  it("Black's Road sells the poisoner's tools — and only those", () => {
     const road = marketById('blacks-road')!;
     expect(buyPriceCp(road, 'artisans-tools')).toBe(50);
-    expect(road.choiceExtras?.['artisans-tools']).toEqual(['Poison']);
+    expect(road.choiceOverrides?.['artisans-tools']).toEqual(['Poison']);
   });
 
   it('bestBuy finds the cheapest reachable source only', () => {
@@ -409,6 +409,47 @@ describe('containers and Load', () => {
     const { load } = derive(laddered.state);
     expect(load.baseLb).toBe(35);   // Str +0 counted as +2
     expect(load.band).toBe('Light'); // 80 > 70 would be Heavy; Rank 3 tames it
+  });
+});
+
+describe('splitting stacks', () => {
+  const supplied = () => [
+    ...crystallized(),
+    ev('transaction', { lines: [
+      { direction: 'buy', marketId: 'waldheim', itemId: 'healers-kit', qty: 1 },
+      { direction: 'buy', marketId: 'waldheim', itemId: 'supplies', qty: 4, choice: "Healer's Kit" },
+    ] }),
+  ];
+  const stackId = "item:supplies:Healer's Kit";
+
+  it('a split carves a new stack with inherited provenance', () => {
+    const splitEv = ev('item-split', { instanceId: stackId, qty: 3, location: 'home' });
+    const { state, flags } = replay([...supplied(), splitEv]);
+    expect(flags).toEqual([]);
+    const stacks = state.inventory.filter((i) => i.itemId === 'supplies');
+    expect(stacks).toHaveLength(2);
+    expect(stacks.find((s) => s.instanceId === stackId)!.qty).toBe(1);
+    const carved = stacks.find((s) => s.instanceId === splitEv.id)!;
+    expect(carved.qty).toBe(3);
+    expect(carved.location).toBe('home');
+    expect(carved.origin).toBe('purchase');
+  });
+
+  it('a split must leave both halves real', () => {
+    const { flags } = replay([
+      ...supplied(),
+      ev('item-split', { instanceId: stackId, qty: 4, location: 'home' }),
+    ]);
+    expect(flags.some((f) => f.code === 'over-cap')).toBe(true);
+  });
+
+  it('kits are containers: Supplies live inside the bag', () => {
+    const { state, flags } = replay([
+      ...supplied(),
+      ev('item-moved', { instanceId: stackId, location: 'in:item:healers-kit' }),
+    ]);
+    expect(flags).toEqual([]);
+    expect(state.inventory.find((i) => i.instanceId === stackId)!.location).toBe('in:item:healers-kit');
   });
 });
 

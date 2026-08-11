@@ -653,6 +653,33 @@ export function replay(events: RecordEvent[]): ReplayResult {
         break;
       }
 
+      case 'item-split': {
+        const inst = state.inventory.find((i) => i.instanceId === e.instanceId);
+        if (!inst) { flag(e, 'unknown-ref', `no owned item "${e.instanceId}" to split`); break; }
+        if (!Number.isInteger(e.qty) || e.qty < 1 || e.qty >= inst.qty) {
+          flag(e, 'over-cap', `a split takes between 1 and ${inst.qty - 1} of ${inst.name}`);
+          break;
+        }
+        if (e.location.startsWith('in:')) {
+          const target = state.inventory.find((i) => i.instanceId === e.location.slice(3));
+          if (!target) { flag(e, 'unknown-ref', `no container "${e.location.slice(3)}"`); break; }
+          if (!target.itemId || containerCoefficient(target.itemId) === undefined) {
+            flag(e, 'no-access', `${target.name} is not a Container`);
+            break;
+          }
+        }
+        inst.qty -= e.qty;
+        state.inventory.push({
+          instanceId: e.id,
+          itemId: inst.itemId,
+          name: inst.name,
+          qty: e.qty,
+          location: e.location,
+          origin: inst.origin,
+        });
+        break;
+      }
+
       case 'item-granted': {
         const name = e.itemId ? itemName(e.itemId) ?? e.name : e.name;
         if (!name) { flag(e, 'unknown-ref', 'a granted item needs a name or a catalogue id'); break; }

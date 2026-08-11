@@ -277,10 +277,11 @@ export default function MarketShop({ state, basket, setBasket }: Props) {
                       .map((r) => {
                         const pickKey = `${active.id}/${r.itemId}`;
                         const picked = pickedChoice(r.itemId, r.choice);
-                        const options = [
-                          ...(r.choice?.options ?? []),
-                          ...(active.choiceExtras?.[r.itemId] ?? []),
-                        ];
+                        // A market may replace an item's whole option list
+                        // (Black's Road: Poison alone, no Other).
+                        const override = active.choiceOverrides?.[r.itemId];
+                        const options = override ?? r.choice?.options ?? [];
+                        const allowOther = !override && (r.choice?.other ?? false);
                         const inBasket =
                           picked === null ? 0 : qtyOf(active.id, r.itemId, picked);
                         const needsPick = r.choice !== undefined && picked === null;
@@ -307,7 +308,7 @@ export default function MarketShop({ state, basket, setBasket }: Props) {
                                     {options.map((o) => (
                                       <option key={o} value={o}>{o}</option>
                                     ))}
-                                    {r.choice.other && <option value="§other">Other…</option>}
+                                    {allowOther && <option value="§other">Other…</option>}
                                   </select>
                                   {picks[pickKey] === '§other' && (
                                     <input

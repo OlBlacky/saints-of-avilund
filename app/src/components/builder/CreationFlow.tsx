@@ -596,7 +596,7 @@ export default function CreationFlow() {
         </div>
       )}
 
-      <div class="cf-grid">
+      <div class={`cf-grid${crystallized ? ' cf-grid--solo' : ''}`}>
         <div class="cf-main">
           {crystallized ? (
             <CharacterSheet
@@ -1338,6 +1338,17 @@ export default function CreationFlow() {
                 basket={basket}
                 setBasket={(b) => setDraft((d) => ({ ...d, basket: b }))}
               />
+              {languageAllowance(state) > state.freeLanguagesUsed && (
+                <p class="cf-how">
+                  <strong>
+                    {languageAllowance(state) - state.freeLanguagesUsed} free language
+                    {languageAllowance(state) - state.freeLanguagesUsed === 1 ? '' : 's'} still
+                    untaken
+                  </strong>{' '}
+                  — Polyglot's allowance. Take them under Languages in Step 4, or later from the
+                  sheet.
+                </p>
+              )}
               <div class="cf-line">
                 <button
                   type="button"
@@ -1376,7 +1387,9 @@ export default function CreationFlow() {
           )}
         </div>
 
-        {/* ── The right rail: the live summary ── */}
+        {/* ── The right rail: the live summary (creation only — the sheet
+            carries its own pages) ── */}
+        {!crystallized && (
         <aside class="cf-rail">
           <div class="cf-railbox">
             <p class="cf-eyebrow">The Bank</p>
@@ -1450,6 +1463,7 @@ export default function CreationFlow() {
             </div>
           )}
         </aside>
+        )}
       </div>
     </div>
   );

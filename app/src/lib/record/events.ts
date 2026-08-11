@@ -88,6 +88,10 @@ export type RecordEvent =
   | (BaseEvent & { type: 'item-granted'; name?: string; itemId?: string; qty?: number; note?: string })
   /** Move an owned item between locations (sheet organization, durable). */
   | (BaseEvent & { type: 'item-moved'; instanceId: string; location: ItemLocation })
+  /** Split a stack: carve `qty` off into a new stack (id = this event's id)
+   * at `location`, provenance inherited — spare Supplies in the backpack,
+   * the rest in the kit's pouch. */
+  | (BaseEvent & { type: 'item-split'; instanceId: string; qty: number; location: ItemLocation })
 
   // ── Major purchases ──────────────────────────────────────────────────
   /** One step up the triangular curve (+N costs N Major for the Nth step). */

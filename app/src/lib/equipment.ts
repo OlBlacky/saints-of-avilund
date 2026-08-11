@@ -425,17 +425,23 @@ export interface KitItem extends SimpleItem {
   supply: number | null;
 }
 
+// The kits are bags: each is a Container (×1 — a working bag, not a
+// packed load) so its Supplies can live inside it.
 export const KITS: KitItem[] = [
-  { id: 'healers-kit', name: "Healer's Kit (empty — tools & bag)", priceCp: 100, weightLb: 3, supply: null },
-  { id: 'friars-kit', name: "Friar's Kit (empty — oils, incense & implements)", priceCp: 100, weightLb: 3, supply: null },
-  { id: 'herbalists-bag', name: "Herbalist's Bag (empty — knives, mortar & pouches)", priceCp: 100, weightLb: 3, supply: null },
-  { id: 'offerings-bag', name: 'Offerings Bag (empty — pouches, knots & charms)', priceCp: 100, weightLb: 3, supply: null },
+  { id: 'healers-kit', name: "Healer's Kit (empty — tools & bag)", priceCp: 100, weightLb: 3, supply: null, coefficient: 1 },
+  { id: 'friars-kit', name: "Friar's Kit (empty — oils, incense & implements)", priceCp: 100, weightLb: 3, supply: null, coefficient: 1 },
+  { id: 'herbalists-bag', name: "Herbalist's Bag (empty — knives, mortar & pouches)", priceCp: 100, weightLb: 3, supply: null, coefficient: 1 },
+  { id: 'offerings-bag', name: 'Offerings Bag (empty — pouches, knots & charms)', priceCp: 100, weightLb: 3, supply: null, coefficient: 1 },
   { id: 'supplies', name: 'Supplies (per 10)', priceCp: 10, weightLb: 1, supply: 10, choice: { key: 'kit', label: 'Kit', options: ["Healer's Kit", "Friar's Kit", "Herbalist's Bag", 'Offerings Bag'] } },
 ];
 
-/** A Container's Load coefficient — undefined for non-containers. */
+/** A Container's Load coefficient — undefined for non-containers. The
+ * kits count: each is a bag that holds its Supplies. */
 export function containerCoefficient(itemId: string): number | undefined {
-  return CONTAINERS.find((c) => c.id === itemId)?.coefficient;
+  return (
+    CONTAINERS.find((c) => c.id === itemId)?.coefficient ??
+    KITS.find((k) => k.id === itemId)?.coefficient
+  );
 }
 
 // ── The whole catalogue, flat ────────────────────────────────────
