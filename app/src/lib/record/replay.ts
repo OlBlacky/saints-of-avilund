@@ -14,9 +14,11 @@ import { classById, subclassById } from '../classes';
 import type { ClassDef, SubclassDef } from '../classes';
 import { featById } from '../feats';
 import type { FeatRequirement } from '../feats';
-import { containerCoefficient } from '../equipment';
-import { GEAR, STARTING_COIN } from '../gear';
+import { ARMOURS, SHIELDS, containerCoefficient, startingClothesFor } from '../equipment';
+import { STARTING_COIN, VOW_OF_POVERTY_GEAR, gearById } from '../gear';
 import { buyPriceCp, itemName, marketById, sellPriceCp } from '../markets';
+import { HOME_LANGUAGES } from '../languages';
+import type { Language } from '../languages';
 import { fill, fillEffect, QUIRKS } from '../quirks';
 import type { Attribute, Effect } from '../quirks';
 import { SKILLS } from '../skills';
@@ -59,6 +61,21 @@ export interface OwnedItem {
   origin: 'starting-gear' | 'purchase' | 'grant';
 }
 
+/** Every location entering state passes through here. Two jobs: read old
+ * records written before the Gear States (the retired 'carried' means
+ * 'equipped'), and hold the rule that armour and shields are never
+ * Equipped — either arriving at 'equipped' is Worn
+ * (mechanics/encumbrance.md). */
+function normalizeLocation(location: ItemLocation | 'carried', itemId?: string): ItemLocation {
+  const loc: ItemLocation = location === 'carried' ? 'equipped' : location;
+  if (
+    loc === 'equipped' &&
+    itemId &&
+    (ARMOURS.some((a) => a.id === itemId) || SHIELDS.some((s) => s.id === itemId))
+  ) return 'worn';
+  return loc;
+}
+
 export interface CharacterState {
   classId?: string;
   subclassId?: string;
@@ -80,6 +97,10 @@ export interface CharacterState {
   boughtProficiencies: string[];
   /** Class/Subclass proficiency group → advancement rank (1–2). */
   proficiencyRanks: Record<string, number>;
+  /** The free creation tongue — spoken alongside Imperial from Level 0. */
+  homeLanguage?: Language;
+  /** The free starting outfit's catalogue id (worn from creation). */
+  startingClothes?: string;
   languages: string[];
   /** Languages taken free on Polyglot's allowance (subset of `languages`). */
   freeLanguagesUsed: number;
@@ -249,6 +270,14 @@ export function canDealType(state: CharacterState, type: string): boolean {
 // from the corpus here, so a card retune reaches every sheet on next replay.
 // Lives in replay (not derive) because requirements also read them.
 
+/** Whether the build owns the Vow of Poverty (Forbearance). The Vow fixes
+ * the Starting Gear and closes the coin purse at creation. */
+export function vowedToPoverty(state: CharacterState): boolean {
+  return state.abilities.some(
+    (a) => a.ref.category === 'Forbearance' && a.ref.ability === 'Vow of Poverty',
+  );
+}
+
 export interface SourcedEffect {
   source: string;
   effect: Effect;
@@ -263,7 +292,7 @@ export function packageEffects(state: CharacterState): SourcedEffect[] {
       out.push({ source: `Quirk · ${fill(quirk.name, fills)}`, effect: fillEffect(e, fills) });
     }
   }
-  const gear = state.gear?.id ? GEAR.find((g) => g.id === state.gear!.id) : undefined;
+  const gear = state.gear?.id ? gearById(state.gear.id) : undefined;
   if (gear && state.gear) {
     const fills = state.gear.slots;
     for (const e of gear.effects) {
@@ -412,7 +441,7 @@ function meetsRequirement(
         ? null
         : `requires a ${req.attr} Save of +${req.value}`;
     case 'language':
-      return state.languages.includes(req.language)
+      return state.languages.includes(req.language) || state.homeLanguage === req.language
         ? null
         : `requires the ${req.language}`;
     case 'attribute-any': {
@@ -522,6 +551,34 @@ export function replay(events: RecordEvent[]): ReplayResult {
         break;
       }
 
+      case 'home-language-chosen': {
+        if (state.crystallized) { flag(e, 'creation-only', 'the home language is chosen at creation'); break; }
+        if (!HOME_LANGUAGES.includes(e.language)) { flag(e, 'no-access', `${e.language} is not a home tongue`); break; }
+        state.homeLanguage = e.language;
+        break;
+      }
+
+      case 'clothes-chosen': {
+        if (state.crystallized) { flag(e, 'creation-only', 'starting clothes are chosen at creation'); break; }
+        const name = itemName(e.itemId);
+        if (!name) { flag(e, 'unknown-ref', `unknown item "${e.itemId}"`); break; }
+        if (!startingClothesFor(state.classId, state.subclassId).includes(e.itemId)) {
+          flag(e, 'no-access', `${name} is not among this build's starting clothes`);
+          break;
+        }
+        state.startingClothes = e.itemId;
+        state.inventory = state.inventory.filter((i) => i.instanceId !== 'starting-clothes');
+        state.inventory.push({
+          instanceId: 'starting-clothes',
+          itemId: e.itemId,
+          name,
+          qty: 1,
+          location: 'worn',
+          origin: 'starting-gear',
+        });
+        break;
+      }
+
       case 'flaw-taken': {
         if (state.crystallized) { flag(e, 'creation-only', 'Flaws are taken at creation'); break; }
         if (state.flaws.length >= 2) { flag(e, 'over-cap', 'at most two Flaws'); break; }
@@ -533,22 +590,54 @@ export function replay(events: RecordEvent[]): ReplayResult {
 
       case 'quirk-rolled': {
         if (state.quirk && state.crystallized) { flag(e, 'duplicate', 'the Quirk is already rolled and locked'); break; }
+        // The Vow of Poverty escapes the seesaw: fixed gear, no coin, and a
+        // Quirk drawn from the Good pool alone. The fixed card is closed to
+        // everyone else.
+        const vowed = vowedToPoverty(state);
+        if (vowed && e.gearId !== VOW_OF_POVERTY_GEAR.id) {
+          flag(e, 'no-access', 'the Vow of Poverty fixes the Starting Gear — the package must be rolled again');
+          break;
+        }
+        if (!vowed && e.gearId === VOW_OF_POVERTY_GEAR.id) {
+          flag(e, 'no-access', `${VOW_OF_POVERTY_GEAR.name} belongs to the Vow of Poverty`);
+          break;
+        }
+        if (vowed && e.quirkId && QUIRKS.find((q) => q.id === e.quirkId)?.category !== 'good') {
+          flag(e, 'no-access', 'the Quirk must be rolled again under the Vow of Poverty');
+          break;
+        }
         state.quirk = { id: e.quirkId, name: e.quirkName, slots: e.slots, rerollsUsed: e.rerollsUsed };
         // Quirk and Gear travel as one package: a reroll replaces both —
         // the rolled item, and the opening coin its category fixes.
         state.gear = e.gearName
           ? { id: e.gearId, name: e.gearName, slots: e.gearSlots ?? {} }
           : undefined;
-        const card = e.gearId ? GEAR.find((g) => g.id === e.gearId) : undefined;
-        openingCp = card ? STARTING_COIN[card.category] * 10 : 0;
+        const card = e.gearId ? gearById(e.gearId) : undefined;
+        openingCp = card ? (card.coinSp ?? STARTING_COIN[card.category]) * 10 : 0;
         state.wealthCp = openingCp + netCp;
-        state.inventory = state.inventory.filter((i) => i.origin !== 'starting-gear');
-        if (e.gearName) {
+        state.inventory = state.inventory.filter((i) => !i.instanceId.startsWith('starting-gear'));
+        if (e.gearName && card?.grants) {
+          // A grants card hands over catalogue items instead of one
+          // free-named thing. The first grant anchors; `within` nests
+          // inside it; `choice` fills from the roll's slots.
+          const fills = e.gearSlots ?? {};
+          card.grants.forEach((g, i) => {
+            const choice = g.choice ? fill(g.choice, fills) : undefined;
+            state.inventory.push({
+              instanceId: i === 0 ? 'starting-gear' : `starting-gear-${i}`,
+              itemId: g.itemId,
+              name: (itemName(g.itemId) ?? g.itemId) + (choice ? ` (${choice})` : ''),
+              qty: g.qty ?? 1,
+              location: g.within ? 'in:starting-gear' : (g.location ?? 'equipped'),
+              origin: 'starting-gear',
+            });
+          });
+        } else if (e.gearName) {
           state.inventory.push({
             instanceId: 'starting-gear',
             name: fill(e.gearName, e.gearSlots ?? {}),
             qty: 1,
-            location: 'carried',
+            location: 'equipped',
             origin: 'starting-gear',
           });
         }
@@ -558,6 +647,15 @@ export function replay(events: RecordEvent[]): ReplayResult {
       case 'crystallized': {
         if (!state.classId || !state.subclassId) { flag(e, 'wrong-order', 'cannot crystallize without a Class and Subclass'); break; }
         if (!state.quirk || !state.gear) { flag(e, 'wrong-order', 'the Quirk & Starting Gear package is rolled before crystallization'); break; }
+        // Catches the Vow of Poverty arriving (or leaving) after the roll.
+        if (vowedToPoverty(state) && state.gear.id !== VOW_OF_POVERTY_GEAR.id) {
+          flag(e, 'wrong-order', 'the Vow of Poverty fixes the Starting Gear — the package must be rolled again');
+          break;
+        }
+        if (!vowedToPoverty(state) && state.gear.id === VOW_OF_POVERTY_GEAR.id) {
+          flag(e, 'wrong-order', `${VOW_OF_POVERTY_GEAR.name} belongs to the Vow of Poverty — the package must be rolled again`);
+          break;
+        }
         state.crystallized = true;
         break;
       }
@@ -624,12 +722,13 @@ export function replay(events: RecordEvent[]): ReplayResult {
           // A purchase-time pick makes its own stack: tools for different
           // Crafts, medals of different saints.
           const name = (itemName(b.itemId) ?? b.itemId) + (b.choice ? ` (${b.choice})` : '');
+          const arrival = normalizeLocation('equipped', b.itemId);
           const existing = state.inventory.find(
             (i) =>
               i.itemId === b.itemId &&
               i.name === name &&
               i.origin === 'purchase' &&
-              i.location === 'carried',
+              i.location === arrival,
           );
           if (existing) existing.qty += b.qty;
           else {
@@ -638,7 +737,7 @@ export function replay(events: RecordEvent[]): ReplayResult {
               itemId: b.itemId,
               name,
               qty: b.qty,
-              location: 'carried',
+              location: arrival,
               origin: 'purchase',
             });
           }
@@ -674,7 +773,7 @@ export function replay(events: RecordEvent[]): ReplayResult {
           itemId: inst.itemId,
           name: inst.name,
           qty: e.qty,
-          location: e.location,
+          location: normalizeLocation(e.location, inst.itemId),
           origin: inst.origin,
         });
         break;
@@ -688,7 +787,7 @@ export function replay(events: RecordEvent[]): ReplayResult {
           itemId: e.itemId,
           name,
           qty: e.qty ?? 1,
-          location: 'carried',
+          location: normalizeLocation('equipped', e.itemId),
           origin: 'grant',
         });
         break;
@@ -718,7 +817,7 @@ export function replay(events: RecordEvent[]): ReplayResult {
           }
           if (looped) { flag(e, 'wrong-order', `${inst.name} cannot contain itself`); break; }
         }
-        inst.location = e.location;
+        inst.location = normalizeLocation(e.location, inst.itemId);
         break;
       }
 
@@ -1013,7 +1112,7 @@ export function replay(events: RecordEvent[]): ReplayResult {
       }
 
       case 'language-bought': {
-        if (state.languages.includes(e.language)) { flag(e, 'duplicate', `already speaks ${e.language}`); break; }
+        if (state.languages.includes(e.language) || state.homeLanguage === e.language) { flag(e, 'duplicate', `already speaks ${e.language}`); break; }
         // Polyglot's allowance covers languages first; past it, 1 Minor each.
         if (state.freeLanguagesUsed < languageAllowance(state)) {
           state.freeLanguagesUsed += 1;

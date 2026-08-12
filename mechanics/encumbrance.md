@@ -1,10 +1,26 @@
-# Encumbrance
+# Encumbrance & Carrying Gear
 
-How much a character is carrying, and what it costs them. Deliberately light: one number, three bands, no bookkeeping beyond a weight column.
+How a character carries their gear, how much it weighs on them, and what it takes to get a thing into hand. Deliberately light: four states, one number, three bands, no bookkeeping beyond a weight column.
+
+## Gear States
+
+Everything on your body is in one of four states. Where a thing rides is the player's choice, and the choice is a trade: the readier it is, the more it weighs on you.
+
+| State | Where it is | To get it in hand | Load |
+|---|---|---|---|
+| **Held** | in your hands | — | full weight |
+| **Worn** | on the body: clothing, armour | — | full weight; worn armour none |
+| **Equipped** | at the ready on your person: a dagger in the belt, a quiver | **Move action** | full weight |
+| **Stored** | inside a Container | **Standard action** | Container coefficient |
+
+- **You have two hands.** Weapons state the hands they fill; a shield fills one. Held gear beyond two hands is the table's problem — the sheet warns, the GM adjudicates.
+- **Armour and shields are never Equipped.** On your person they are Worn or Stored — there is no drawing a cuirass, and strapping on a shield takes longer than a Move.
+- Putting a thing away costs the same action as getting it out. Dropping a Held item is free.
+- Feats and gear can improve these actions. *(Cues: a bandolier, a quick-draw scabbard, a Quick Draw Feat — for the Feats and equipment sessions.)*
 
 ## Load
 
-Your **Load** is the total weight carried on your body: wielded weapons, everything worn or strapped on, and every held or carried Container with its contents.
+Your **Load** is the total weight of everything Held, Worn, Equipped, or Stored on your body, Containers included.
 
 **Worn armour does not count toward Load.** Its burden is already priced into its own Speed and Stealth penalties — counting its weight too would charge twice. A *spare* suit of armour packed in a bag counts in full.
 

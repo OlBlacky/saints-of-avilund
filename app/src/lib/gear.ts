@@ -32,6 +32,19 @@ export interface GearItem {
   effects: Effect[];
   slots?: Record<string, SlotSpec>;
   tags?: string[];
+  /** Fixed cards: starting coin in sp, overriding the category's rate. */
+  coinSp?: number;
+  /** Catalogue items the card hands over in place of one free-named thing.
+   * The first grant is the anchor; `within: true` nests a grant inside it
+   * (a kit's Supplies). `choice` renders into the instance name and may
+   * carry a {slot}. */
+  grants?: {
+    itemId: string;
+    qty?: number;
+    within?: boolean;
+    location?: 'worn' | 'equipped';
+    choice?: string;
+  }[];
 }
 
 /**
@@ -274,6 +287,37 @@ export const GEAR: GearItem[] = [
 
 assertConditionalAttacks(GEAR);
 
+// ── Fixed gear ───────────────────────────────────────────────────
+// Outside the seesaw pools entirely. The Vow of Poverty fixes the Starting
+// Gear: no roll, no coin — and the Quirk draws from the Good pool alone
+// (mechanics/characters/quirks.md). The saint of the medal is the player's
+// pick, written into the roll's gearSlots.
+
+export const VOW_OF_POVERTY_GEAR: GearItem = {
+  id: 'the-mendicants-portion',
+  name: 'The Mendicant’s Portion',
+  category: 'neutral',
+  mechanic:
+    'A Friar’s Kit, half-filled (10 Supplies), and a wooden medal of {saint}. You begin with no coin.',
+  provenance:
+    'The order’s issue, pressed into your hands the day you took the Vow. [[add text]]',
+  slots: { saint: { table: 'saint' } },
+  effects: [],
+  coinSp: 0,
+  grants: [
+    { itemId: 'friars-kit' },
+    { itemId: 'supplies', qty: 1, within: true, choice: "Friar's Kit" },
+    { itemId: 'saints-medal-wood', location: 'worn', choice: '{saint}' },
+  ],
+  tags: ['fixed', 'vow'],
+};
+
+/** Find a gear card by id — the rolled pools plus the fixed cards. */
+export function gearById(id: string): GearItem | undefined {
+  if (id === VOW_OF_POVERTY_GEAR.id) return VOW_OF_POVERTY_GEAR;
+  return GEAR.find((g) => g.id === id);
+}
+
 // ── The package roll ─────────────────────────────────────────────
 
 export const CATEGORIES: SeesawCategory[] = ['good', 'neutral', 'bad'];
@@ -311,7 +355,7 @@ export function resolveGear(item: GearItem, rng: () => number): RolledGear {
     category: item.category,
     mechanic: fill(item.mechanic, fills),
     provenance: fill(item.provenance, fills),
-    coin: STARTING_COIN[item.category],
+    coin: item.coinSp ?? STARTING_COIN[item.category],
     effects: item.effects.map((e) => fillEffect(e, fills)),
     fills,
   };
@@ -332,7 +376,15 @@ export function rollGear(
  * extremes stay common), then a uniform draw within each pool. Starting coin
  * rolls separately and is not seesawed.
  */
-export function rollPackage(rng: () => number = Math.random): CreationPackage {
+export function rollPackage(
+  rng: () => number = Math.random,
+  opts: { vowOfPoverty?: boolean } = {},
+): CreationPackage {
+  // The Vow of Poverty escapes the seesaw: the gear is fixed, the Quirk
+  // draws from the Good pool alone.
+  if (opts.vowOfPoverty) {
+    return { quirk: rollQuirk(rng, 'good'), gear: resolveGear(VOW_OF_POVERTY_GEAR, rng) };
+  }
   const category = pick(CATEGORIES, rng);
   const quirk = rollQuirk(rng, category);
   const gear = rollGear(OPPOSITE[category], rng);

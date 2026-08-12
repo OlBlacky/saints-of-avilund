@@ -5,6 +5,7 @@
 import { describe, expect, it } from 'vitest';
 
 import type { RecordEvent } from './events';
+import { QUIRKS } from '../quirks';
 import { derive } from './derive';
 import { accessibleCategories, companionLevel, levelFor, replay, windowFor } from './replay';
 
@@ -28,6 +29,8 @@ function gareth(): RecordEvent[] {
   return [
     ev('class-chosen', { classId: 'soldier' }),
     ev('subclass-chosen', { subclassId: 'vanguard' }),
+    ev('home-language-chosen', { language: 'Regnal - Patric' }),
+    ev('clothes-chosen', { itemId: 'common-outfit' }),
     // 11 Major: Str +3 (6), Con +2 (3), Martial Strike (1), Shield Bash (1)
     ev('attribute-bought', { attr: 'Strength' }),
     ev('attribute-bought', { attr: 'Strength' }),
@@ -98,6 +101,7 @@ describe('the worked example replays clean', () => {
     }
 
     expect(sheet.languages).toContain('Imperial');
+    expect(sheet.languages).toContain('Regnal - Patric');
     expect(sheet.languages).toContain('Kellish');
 
     const heavyBlades = sheet.proficiencies.find((p) => p.group === 'Heavy Blades')!;
@@ -606,6 +610,184 @@ describe('enforcement', () => {
     expect(spoken.state.freeLanguagesUsed).toBe(2);
     // 11 Minors − 1 (Polyglot) − 1 (the third language) = 9.
     expect(spoken.state.bank.minor).toBe(9);
+  });
+
+  it('grants the home language free at creation, alongside Imperial', () => {
+    const { state, flags } = replay([ev('home-language-chosen', { language: 'Kellish' })]);
+    expect(flags).toEqual([]);
+    expect(state.homeLanguage).toBe('Kellish');
+    // Free: the banks are untouched.
+    expect(state.bank).toEqual({ major: 11, minor: 11 });
+    const languages = derive(state).languages;
+    expect(languages).toEqual(expect.arrayContaining(['Imperial', 'Kellish']));
+  });
+
+  it('re-picking the home language replaces, never stacks', () => {
+    const { state, flags } = replay([
+      ev('home-language-chosen', { language: 'Kellish' }),
+      ev('home-language-chosen', { language: 'Regnal - Patric' }),
+    ]);
+    expect(flags).toEqual([]);
+    expect(state.homeLanguage).toBe('Regnal - Patric');
+    expect(derive(state).languages).not.toContain('Kellish');
+  });
+
+  it('refuses a home language outside the mundane vernaculars', () => {
+    const { state, flags } = replay([ev('home-language-chosen', { language: 'Black Tongue' })]);
+    expect(flags.some((f) => f.code === 'no-access')).toBe(true);
+    expect(state.homeLanguage).toBeUndefined();
+  });
+
+  it('the home language is chosen at creation only', () => {
+    const late = replay([
+      ev('class-chosen', { classId: 'soldier' }),
+      ev('subclass-chosen', { subclassId: 'vanguard' }),
+      ev('quirk-rolled', { quirkName: 'Q', slots: {}, rerollsUsed: 0, gearName: 'G', gearSlots: {} }),
+      ev('crystallized', {}),
+      ev('home-language-chosen', { language: 'Kellish' }),
+    ]);
+    expect(late.flags.some((f) => f.code === 'creation-only')).toBe(true);
+    expect(late.state.homeLanguage).toBeUndefined();
+  });
+
+  it('refuses buying a language the home tongue already covers', () => {
+    const { state, flags } = replay([
+      ev('home-language-chosen', { language: 'Kellish' }),
+      ev('language-bought', { language: 'Kellish' }),
+    ]);
+    expect(flags.some((f) => f.code === 'duplicate')).toBe(true);
+    // The refused buy spends nothing.
+    expect(state.bank.minor).toBe(11);
+  });
+
+  it('grants the starting clothes free, worn from creation', () => {
+    const { state, flags } = replay([
+      ev('class-chosen', { classId: 'scholar' }),
+      ev('subclass-chosen', { subclassId: 'antiquarian' }),
+      ev('clothes-chosen', { itemId: 'scholars-robes' }),
+    ]);
+    expect(flags).toEqual([]);
+    expect(state.bank).toEqual({ major: 11, minor: 11 });
+    const clothes = state.inventory.find((i) => i.instanceId === 'starting-clothes')!;
+    expect(clothes).toMatchObject({
+      itemId: 'scholars-robes',
+      qty: 1,
+      location: 'worn',
+      origin: 'starting-gear',
+    });
+  });
+
+  it('re-picking the clothes replaces, never stacks', () => {
+    const { state, flags } = replay([
+      ev('clothes-chosen', { itemId: 'common-outfit' }),
+      ev('clothes-chosen', { itemId: 'travellers-outfit' }),
+    ]);
+    expect(flags).toEqual([]);
+    expect(state.startingClothes).toBe('travellers-outfit');
+    expect(state.inventory.filter((i) => i.instanceId === 'starting-clothes')).toHaveLength(1);
+  });
+
+  it('refuses clothes outside the build’s options', () => {
+    const soldier = replay([
+      ev('class-chosen', { classId: 'soldier' }),
+      ev('subclass-chosen', { subclassId: 'vanguard' }),
+      ev('clothes-chosen', { itemId: 'scholars-robes' }),
+    ]);
+    expect(soldier.flags.some((f) => f.code === 'no-access')).toBe(true);
+    expect(soldier.state.startingClothes).toBeUndefined();
+
+    const nonsense = replay([ev('clothes-chosen', { itemId: 'not-an-item' })]);
+    expect(nonsense.flags.some((f) => f.code === 'unknown-ref')).toBe(true);
+  });
+
+  it('the clothes are chosen at creation only', () => {
+    const late = replay([
+      ev('class-chosen', { classId: 'soldier' }),
+      ev('subclass-chosen', { subclassId: 'vanguard' }),
+      ev('quirk-rolled', { quirkName: 'Q', slots: {}, rerollsUsed: 0, gearName: 'G', gearSlots: {} }),
+      ev('crystallized', {}),
+      ev('clothes-chosen', { itemId: 'common-outfit' }),
+    ]);
+    expect(late.flags.some((f) => f.code === 'creation-only')).toBe(true);
+  });
+
+  it('a Quirk & Gear reroll leaves the clothes untouched', () => {
+    const { state, flags } = replay([
+      ev('clothes-chosen', { itemId: 'common-outfit' }),
+      ev('quirk-rolled', { quirkName: 'Q', slots: {}, rerollsUsed: 0, gearName: 'G', gearSlots: {} }),
+      ev('quirk-rolled', { quirkName: 'Q2', slots: {}, rerollsUsed: 1, gearName: 'G2', gearSlots: {} }),
+    ]);
+    expect(flags).toEqual([]);
+    expect(state.inventory.some((i) => i.instanceId === 'starting-clothes')).toBe(true);
+    // The reroll replaced the rolled gear itself.
+    expect(state.inventory.filter((i) => i.instanceId === 'starting-gear')).toHaveLength(1);
+    expect(state.inventory.find((i) => i.instanceId === 'starting-gear')!.name).toBe('G2');
+  });
+
+  it('the Vow of Poverty fixes the Starting Gear: kit, medal, no coin', () => {
+    const goodQuirk = QUIRKS.find((q) => q.category === 'good')!;
+    const { state, flags } = replay([
+      ev('class-chosen', { classId: 'friar' }),
+      ev('subclass-chosen', { subclassId: 'mendicant' }),
+      ev('ability-bought', { ref: { category: 'Forbearance', ability: 'Vow of Poverty' } }),
+      ev('quirk-rolled', {
+        quirkId: goodQuirk.id, quirkName: goodQuirk.name, slots: {}, rerollsUsed: 0,
+        gearId: 'the-mendicants-portion', gearName: 'The Mendicant’s Portion',
+        gearSlots: { saint: 'St. Ulric' },
+      }),
+    ]);
+    expect(flags).toEqual([]);
+    expect(state.wealthCp).toBe(0);
+    const kit = state.inventory.find((i) => i.itemId === 'friars-kit')!;
+    expect(kit).toMatchObject({ instanceId: 'starting-gear', origin: 'starting-gear' });
+    // Half-full: one stack of 10 Supplies, inside the kit.
+    const supplies = state.inventory.find((i) => i.itemId === 'supplies')!;
+    expect(supplies).toMatchObject({ qty: 1, location: 'in:starting-gear', origin: 'starting-gear' });
+    expect(supplies.name).toContain("Friar's Kit");
+    const medal = state.inventory.find((i) => i.itemId === 'saints-medal-wood')!;
+    expect(medal.name).toContain('St. Ulric');
+    expect(medal.location).toBe('worn');
+  });
+
+  it('refuses a rolled package under the Vow, and the fixed card without it', () => {
+    const spine = [
+      ev('class-chosen', { classId: 'friar' }),
+      ev('subclass-chosen', { subclassId: 'mendicant' }),
+    ];
+    const vow = () => ev('ability-bought', { ref: { category: 'Forbearance', ability: 'Vow of Poverty' } });
+    const goodQuirk = QUIRKS.find((q) => q.category === 'good')!;
+
+    const rolled = replay([
+      ...spine, vow(),
+      ev('quirk-rolled', { quirkId: goodQuirk.id, quirkName: goodQuirk.name, slots: {}, rerollsUsed: 0, gearId: 'a-masters-work', gearName: 'A Master’s Work', gearSlots: {} }),
+    ]);
+    expect(rolled.flags.some((f) => f.code === 'no-access')).toBe(true);
+    expect(rolled.state.gear).toBeUndefined();
+
+    const unvowed = replay([
+      ...spine,
+      ev('quirk-rolled', { quirkId: goodQuirk.id, quirkName: goodQuirk.name, slots: {}, rerollsUsed: 0, gearId: 'the-mendicants-portion', gearName: 'The Mendicant’s Portion', gearSlots: { saint: 'St. Ulric' } }),
+    ]);
+    expect(unvowed.flags.some((f) => f.code === 'no-access')).toBe(true);
+
+    const offPool = QUIRKS.find((q) => q.category !== 'good')!;
+    const wrongQuirk = replay([
+      ...spine, vow(),
+      ev('quirk-rolled', { quirkId: offPool.id, quirkName: offPool.name, slots: {}, rerollsUsed: 0, gearId: 'the-mendicants-portion', gearName: 'The Mendicant’s Portion', gearSlots: { saint: 'St. Ulric' } }),
+    ]);
+    expect(wrongQuirk.flags.some((f) => f.code === 'no-access')).toBe(true);
+  });
+
+  it('taking the Vow after a normal roll blocks crystallization until re-rolled', () => {
+    const late = replay([
+      ev('class-chosen', { classId: 'friar' }),
+      ev('subclass-chosen', { subclassId: 'mendicant' }),
+      ev('quirk-rolled', { quirkName: 'Q', slots: {}, rerollsUsed: 0, gearName: 'G', gearSlots: {} }),
+      ev('ability-bought', { ref: { category: 'Forbearance', ability: 'Vow of Poverty' } }),
+      ev('crystallized', {}),
+    ]);
+    expect(late.flags.some((f) => f.code === 'wrong-order')).toBe(true);
+    expect(late.state.crystallized).toBe(false);
   });
 
   it('gates Defensive Specialization on the whole Save total, not the Attribute alone', () => {

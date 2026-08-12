@@ -10,11 +10,6 @@ const blurb = 'Build a character of Avilund — and once they are Complete, this
 ---
 
 <Base title={title} description={blurb}>
-  <header class="saint-head">
-    <p class="eyebrow">Characters</p>
-    <h1>{title}</h1>
-  </header>
-
   <CreationFlow client:load />
 </Base>
 
@@ -404,12 +399,63 @@ const blurb = 'Build a character of Avilund — and once they are Complete, this
   .cf-railgear { margin: 0.4rem 0 0; padding-left: 1.1rem; font-size: 0.84rem; color: var(--ink-soft); }
   .cf-railgear li { margin: 0.1rem 0; }
 
-  /* The Character Sheet (Page 3 · Gear) */
+  /* The Character Sheet */
   .sheet-head { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 0.6rem; margin: 0 0 0.6rem; }
-  .sheet-head h2 { margin: 0; }
+  .sheet-head h1 { margin: 0; color: var(--oxblood); font-size: 2.1rem; }
   .sheet-pages button { font-size: 0.78rem; }
   .sheet-strip { display: flex; flex-wrap: wrap; gap: 1.4rem; align-items: center; font-size: 0.95rem; }
   .sheet-record { display: inline-flex; align-items: center; gap: 0.5rem; color: var(--ink-soft); font-size: 0.86rem; }
+
+  /* The banner's Manage Character panel */
+  .sheet-manage { display: inline-block; position: relative; }
+  .sheet-manage > summary {
+    cursor: pointer; list-style: none;
+    padding: 0.12rem 0.55rem; font-size: 0.85rem;
+    color: var(--oxblood); border: 1px solid var(--gold); border-radius: 3px;
+    transition: background 0.15s ease;
+  }
+  .sheet-manage > summary::-webkit-details-marker { display: none; }
+  .sheet-manage > summary:hover,
+  .sheet-manage[open] > summary { background: color-mix(in srgb, var(--gold) 12%, transparent); }
+  .sheet-manage-panel {
+    position: absolute; z-index: 30; top: calc(100% + 0.35rem); left: 0;
+    display: flex; align-items: center; gap: 0.6rem; white-space: nowrap;
+    padding: 0.5rem 0.7rem;
+    background: var(--panel); border: 1px solid var(--rule); border-radius: 4px;
+    box-shadow: 0 2px 8px var(--shadow);
+  }
+
+  /* The Vitals box */
+  .sheet-vitals { display: flex; flex-wrap: wrap; gap: 0.7rem; margin: 0.2rem 0 0.9rem; }
+  .sheet-vital {
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    min-width: 5.4rem; padding: 0.45rem 0.8rem 0.4rem;
+    border: 1px solid var(--rule); border-radius: 4px;
+    background: color-mix(in srgb, var(--gold) 4%, transparent);
+  }
+  .sheet-vital-num {
+    font-family: var(--display); font-size: 1.7rem; font-weight: bold;
+    color: var(--oxblood); font-variant-numeric: tabular-nums; line-height: 1.15;
+  }
+  .sheet-vital-label { font-variant: small-caps; letter-spacing: 0.07em; color: var(--gold); font-size: 0.78rem; }
+  .sheet-vital-entry {
+    font-family: var(--display); font-size: 1.4rem; font-weight: bold; text-align: center;
+    width: 3.4rem; color: var(--oxblood); line-height: 1.3;
+    border: none; border-bottom: 1px dotted var(--gold); background: transparent;
+  }
+  .sheet-vital-entry:focus { outline: none; border-bottom-style: solid; }
+  .sheet-vitline { display: flex; align-items: baseline; gap: 0.6rem; flex-wrap: wrap; margin: 0.35rem 0; }
+  .sheet-vitline > strong {
+    font-variant: small-caps; letter-spacing: 0.05em;
+    color: var(--gold); font-weight: normal; font-size: 0.85rem;
+  }
+
+  /* Write-in space, for the printed sheet only */
+  .sheet-writein { display: none; }
+  @media print {
+    .sheet-writein { display: block; margin: 0.4rem 0; }
+    .sheet-writein-line { height: 1.5rem; border-bottom: 1px dotted var(--rule); }
+  }
   .sheet-table th {
     font-variant: small-caps; font-weight: normal; letter-spacing: 0.05em;
     color: var(--gold); text-align: left; padding: 0.2rem 0.7rem;

@@ -98,6 +98,17 @@ export const LANGUAGE_NOTES: Record<Language, LanguageNote> = {
 };
 
 /**
+ * The tongues a character can call home: the nine Family Dialects and the
+ * standalone vernaculars. Every character speaks two languages free from
+ * creation — Imperial, and one of these. Derived from LANGUAGE_NOTES so the
+ * list can never drift from the reference.
+ */
+export const HOME_LANGUAGES: readonly Language[] = LANGUAGES.filter((l) => {
+  const kind = LANGUAGE_NOTES[l].kind;
+  return kind === 'dialect' || kind === 'vernacular';
+});
+
+/**
  * The Family two different tongues share, if any. A speaker of one can make
  * themselves understood in the other at DIALECT_SOCIAL_PENALTY to social
  * checks. Returns null for the same tongue twice (no penalty applies) and for

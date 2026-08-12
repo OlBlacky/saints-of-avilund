@@ -10,6 +10,11 @@
 
 import type { RecordEvent } from './record/events';
 
+/** The character's table state. New has never seen a Play Session (and
+ * cannot sell); In Play sits at the table; Downtime is between Sessions,
+ * where Markets open. */
+export type PlayState = 'new' | 'in-play' | 'downtime';
+
 const DB_NAME = 'sova';
 const DB_VERSION = 1;
 const STORE = 'characters';
@@ -31,6 +36,7 @@ export interface VersionPayload {
   quirkText?: unknown;
   gearText?: unknown;
   basket?: unknown[];
+  status?: PlayState;
 }
 
 export interface CharacterRecord {

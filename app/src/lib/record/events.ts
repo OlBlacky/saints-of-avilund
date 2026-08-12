@@ -34,10 +34,14 @@ export interface AbilityRef {
   ability: string;
 }
 
-/** Where an owned item sits. Home is weightless; `in:<instanceId>` nests
- * the item inside an owned Container (coefficient math per
- * mechanics/encumbrance.md). The Party Inventory joins with campaigns. */
-export type ItemLocation = 'equipped' | 'carried' | 'home' | `in:${string}`;
+/** Where an owned item sits — the Gear States of mechanics/encumbrance.md.
+ * Held is in hand; Worn is on the body; Equipped is at the ready (a Move
+ * action to draw); `in:<instanceId>` is Stored inside an owned Container
+ * (a Standard action to retrieve, coefficient math applies). Home is off
+ * the body and weightless. Old records may carry the retired value
+ * 'carried' — replay reads it as 'equipped'. The Party Inventory joins
+ * with campaigns. */
+export type ItemLocation = 'held' | 'worn' | 'equipped' | 'home' | `in:${string}`;
 
 /** One Basket line. Buys reference a Market's stock; sells reference an
  * owned instance. Prices are computed at replay time from the Market data
@@ -58,6 +62,13 @@ export type RecordEvent =
   // ── The creation spine ────────────────────────────────────────────────
   | (BaseEvent & { type: 'class-chosen'; classId: string })
   | (BaseEvent & { type: 'subclass-chosen'; subclassId: string })
+  /** Creation-only: the free second tongue (every character speaks Imperial
+   * and their home language). Must be a HOME_LANGUAGES entry; a re-pick
+   * replaces the earlier choice. */
+  | (BaseEvent & { type: 'home-language-chosen'; language: Language })
+  /** Creation-only: the free starting outfit, from the Class-aware table
+   * (equipment.ts STARTING_CLOTHES). A re-pick replaces the earlier choice. */
+  | (BaseEvent & { type: 'clothes-chosen'; itemId: string })
   /** Creation-only: −1 to an Attribute for +1 Major (at most two). */
   | (BaseEvent & { type: 'flaw-taken'; attr: Attribute })
   /** The finale: the seesawed Quirk + Starting Gear package, one roll. Stores

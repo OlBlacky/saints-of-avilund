@@ -278,9 +278,47 @@ export const CLOTHING: SimpleItem[] = [
   { id: 'nobles-outfit', name: "Noble's outfit", priceCp: 750, weightLb: 10 },
 ];
 
+// ── Starting clothes ─────────────────────────────────────────────
+// Every character dresses free at creation: one outfit from the drop-down,
+// the base pair open to all, the Class (and a few Subclasses) opening its
+// own. Ids reference CLOTHING; a wrong id fails the test suite, not the
+// player.
+
+export const STARTING_CLOTHES: {
+  /** Open to every character. */
+  base: string[];
+  /** Extra options a Class opens (classes.ts ids). */
+  byClass: Record<string, string[]>;
+  /** Extra options a Subclass opens (classes.ts ids). */
+  bySubclass: Record<string, string[]>;
+} = {
+  base: ['common-outfit', 'travellers-outfit'],
+  byClass: {
+    soldier: ['cold-weather-outfit'],
+    friar: ['clerics-vestments'],
+    scholar: ['scholars-robes'],
+    occultist: ['scholars-robes'],
+    naturalist: ['cold-weather-outfit'],
+  },
+  bySubclass: {
+    commander: ['courtiers-outfit'],
+    charlatan: ['courtiers-outfit'],
+  },
+};
+
+/** The outfits a build may start in: base + Class + Subclass options. */
+export function startingClothesFor(classId?: string, subclassId?: string): string[] {
+  return [
+    ...STARTING_CLOTHES.base,
+    ...(classId ? (STARTING_CLOTHES.byClass[classId] ?? []) : []),
+    ...(subclassId ? (STARTING_CLOTHES.bySubclass[subclassId] ?? []) : []),
+  ].filter((id, i, xs) => xs.indexOf(id) === i);
+}
+
 export const FAITH_AND_SUPERSTITION: SimpleItem[] = [
   { id: 'votive-candle', name: 'Votive candle', priceCp: 1, weightLb: null },
   { id: 'incense-stick', name: 'Incense (stick)', priceCp: 2, weightLb: null },
+  { id: 'saints-medal-wood', name: "Saint's medal, wooden", priceCp: 1, weightLb: null, choice: { key: 'saint', label: 'Saint', options: SAINT_NAMES, other: true } },
   { id: 'saints-medal-tin', name: "Saint's medal, tin", priceCp: 2, weightLb: null, choice: { key: 'saint', label: 'Saint', options: SAINT_NAMES, other: true } },
   { id: 'pilgrims-badge', name: "Pilgrim's badge", priceCp: 3, weightLb: null },
   { id: 'prayer-beads', name: 'Prayer beads', priceCp: 5, weightLb: null },

@@ -27,13 +27,14 @@ import {
 import { featById } from '../../lib/feats';
 import { LANGUAGES } from '../../lib/languages';
 import type { Language } from '../../lib/languages';
-import { bestSell, itemWeightLb, marketById } from '../../lib/markets';
-import { fill, QUIRKS } from '../../lib/quirks';
+import { bestSell, itemName, itemWeightLb, marketById } from '../../lib/markets';
+import { fill, PLACES, QUIRKS } from '../../lib/quirks';
 import type { RecordEvent } from '../../lib/record/events';
 import type { ItemLocation } from '../../lib/record/events';
 import type { Breakdown, DerivedSheet } from '../../lib/record/derive';
 import { languageAllowance } from '../../lib/record/replay';
 import type { CharacterState, OwnedItem } from '../../lib/record/replay';
+import type { PlayState, VersionPayload } from '../../lib/store';
 import MarketShop, { basketTotalsCp, commerceRankOf } from './MarketShop';
 import type { BasketLine } from './MarketShop';
 
@@ -55,7 +56,7 @@ function mk<T extends RecordEvent['type']>(
 const PAGES: { n: number; label: string; built: boolean }[] = [
   { n: 1, label: 'Page 1 · The Character', built: true },
   { n: 2, label: 'Page 2 · Attacks & Abilities', built: true },
-  { n: 3, label: 'Page 3 · Gear', built: true },
+  { n: 3, label: 'Page 3 · Inventory', built: true },
   { n: 4, label: 'Page 4 · Advancement Log', built: true },
   { n: 5, label: 'Page 5 · Full Detail', built: false },
 ];
@@ -73,6 +74,8 @@ function describeEvent(e: RecordEvent): string {
   switch (e.type) {
     case 'class-chosen': return `Chose the ${classById(e.classId)?.name ?? e.classId}`;
     case 'subclass-chosen': return `Chose the ${e.subclassId} Subclass`;
+    case 'home-language-chosen': return `Home language: ${e.language}`;
+    case 'clothes-chosen': return `Starting clothes: ${itemName(e.itemId) ?? e.itemId}`;
     case 'flaw-taken': return `Took a Flaw: −1 ${e.attr}`;
     case 'quirk-rolled': return `Rolled the Quirk & Starting Gear package: ${e.quirkName}${e.gearName ? ` · ${e.gearName}` : ''}${e.rerollsUsed ? ` (reroll ${e.rerollsUsed})` : ''}`;
     case 'crystallized': return 'Finished — creation complete, play begins at Level 0';
@@ -105,8 +108,13 @@ function describeEvent(e: RecordEvent): string {
   }
 }
 
+type Identity = VersionPayload['identity'];
+
 interface Props {
-  name: string;
+  identity: Identity;
+  setIdentity: (k: keyof Identity, v: string) => void;
+  status: PlayState;
+  setStatus: (s: PlayState) => void;
   state: CharacterState;
   sheet: DerivedSheet;
   events: RecordEvent[];
@@ -116,7 +124,7 @@ interface Props {
   why: (e: RecordEvent) => string | null;
 }
 
-export default function CharacterSheet({ name, state, sheet, events, basket, setBasket, append, why }: Props) {
+export default function CharacterSheet({ identity, setIdentity, status, setStatus, state, sheet, events, basket, setBasket, append, why }: Props) {
   const [page, setPage] = useState(1);
   // Commerce is a deliberate act: the Markets show only once opened. An
   // unfinished trip (a Basket with lines) re-opens itself — you are still
@@ -128,9 +136,18 @@ export default function CharacterSheet({ name, state, sheet, events, basket, set
   const [showHiddenAttacks, setShowHiddenAttacks] = useState(false);
   const [conditions, setConditions] = useState<string[]>([]);
   const [conditionEntry, setConditionEntry] = useState('');
+  // Temp HP is table scratch, like Conditions — never logged.
+  const [tempHp, setTempHp] = useState('');
   const [langPick, setLangPick] = useState('');
   const ownedFeatIds = state.feats.map((f) => f.featId);
   const commerce = commerceRankOf(state);
+
+  const cls = state.classId ? classById(state.classId) : undefined;
+  const sub = cls?.subclasses.find((s) => s.id === state.subclassId);
+  // The banner counts Milestones within the Level: total 4 reads Level 2 ·
+  // Milestone 1, never Milestone 4.
+  const withinMilestone =
+    state.milestones === 0 ? 0 : state.milestones - 3 * (Math.ceil(state.milestones / 3) - 1);
 
   const weaponFor = (i: OwnedItem) =>
     [...MELEE_WEAPONS, ...RANGED_WEAPONS].find((w) => w.id === i.itemId);
@@ -154,15 +171,28 @@ export default function CharacterSheet({ name, state, sheet, events, basket, set
       0,
     );
 
-  const locationLabel = (loc: string): string => {
-    if (loc === 'equipped') return 'Equipped';
-    if (loc === 'carried') return 'Carried';
-    if (loc === 'home') return 'At Home';
-    const holder = state.inventory.find((i) => i.instanceId === loc.slice(3));
-    return `In ${holder?.name ?? 'a container'}`;
+  /** Walk the container chain to the ground an item finally rests on —
+   * a pouch in a chest at home is at home. */
+  const rootLocation = (item: OwnedItem): 'held' | 'worn' | 'equipped' | 'home' => {
+    let loc: string = item.location;
+    const seen = new Set<string>();
+    while (loc.startsWith('in:')) {
+      const id = loc.slice(3);
+      if (seen.has(id)) return 'equipped';
+      seen.add(id);
+      const holder = state.inventory.find((i) => i.instanceId === id);
+      if (!holder) return 'equipped';
+      loc = holder.location;
+    }
+    return loc as 'held' | 'worn' | 'equipped' | 'home';
   };
 
-  /** The location dropdown + the logged move behind it. */
+  const equipmentCarried = equipment.filter((i) => rootLocation(i) !== 'home');
+  const equipmentHome = equipment.filter((i) => rootLocation(i) === 'home');
+
+  /** The location dropdown + the logged move behind it. Armour and shields
+   * are never Equipped (mechanics/encumbrance.md), so the option stays off
+   * their lists. */
   const moveControl = (item: OwnedItem) => (
     <select
       class="sheet-move"
@@ -172,14 +202,19 @@ export default function CharacterSheet({ name, state, sheet, events, basket, set
         if (location !== item.location) append(mk('item-moved', { instanceId: item.instanceId, location }));
       }}
     >
-      <option value="equipped">Equipped</option>
-      <option value="carried">Carried</option>
+      <option value="held">Held</option>
+      <option value="worn">Worn</option>
+      {!armourFor(item) && !shieldFor(item) && <option value="equipped">Equipped</option>}
       <option value="home">At Home</option>
-      {containers
-        .filter((c) => c.instanceId !== item.instanceId)
-        .map((c) => (
-          <option key={c.instanceId} value={`in:${c.instanceId}`}>In {c.name}</option>
-        ))}
+      {containers.filter((c) => c.instanceId !== item.instanceId).length > 0 && (
+        <optgroup label="Stored">
+          {containers
+            .filter((c) => c.instanceId !== item.instanceId)
+            .map((c) => (
+              <option key={c.instanceId} value={`in:${c.instanceId}`}>In {c.name}</option>
+            ))}
+        </optgroup>
+      )}
     </select>
   );
 
@@ -257,7 +292,7 @@ export default function CharacterSheet({ name, state, sheet, events, basket, set
   return (
     <div class="sheet">
       <header class="sheet-head">
-        <h2>{name || 'Unnamed'}</h2>
+        <h1>{identity.name || 'Unnamed'}</h1>
         <div class="cf-viewtoggle sheet-pages" role="group">
           {PAGES.map((p) => (
             <button
@@ -276,38 +311,120 @@ export default function CharacterSheet({ name, state, sheet, events, basket, set
 
       <section class="cf-step">
         <div class="sheet-strip">
-          <span><strong>Coin</strong> {fmtCoins(state.wealthCp)}</span>
+          <span><strong>{cls?.name ?? '—'}</strong>{sub ? ` · ${sub.name}` : ''}</span>
+          <span>Level {sheet.level} · Milestone {withinMilestone}</span>
           <span>
-            <strong>Load</strong> {sheet.load.totalLb} lb of {sheet.load.baseLb} lb · {sheet.load.band}
-            {sheet.load.effect && <span class="cf-shop-src"> · {sheet.load.effect}</span>}
+            <a href={`${import.meta.env.BASE_URL}campaigns/`}>Campaign</a>{' '}
+            <span class="cf-shop-src">none yet</span>
           </span>
-          <span class="sheet-record">
-            Sessions {state.sessions} · Milestones {state.milestones}
-            <button type="button" class="buy" onClick={() => append(mk('session-logged', {}))}>Log a Session</button>
-            <button type="button" class="buy" onClick={() => append(mk('milestone-granted', {}))}>Grant a Milestone</button>
-          </span>
+          <details class="sheet-manage">
+            <summary>Manage Character · {state.bank.major} Major / {state.bank.minor} Minor</summary>
+            <div class="sheet-manage-panel">
+              <span class="sheet-record">Sessions {state.sessions} · Milestones {state.milestones}</span>
+              <button type="button" class="buy" onClick={() => append(mk('session-logged', {}))}>Log a Session</button>
+              <button type="button" class="buy" onClick={() => append(mk('milestone-granted', {}))}>Grant a Milestone</button>
+            </div>
+          </details>
+          <select
+            class="sheet-move"
+            title="Character State"
+            value={status}
+            onChange={(e) => setStatus((e.target as HTMLSelectElement).value as PlayState)}
+          >
+            <option value="new">New</option>
+            <option value="in-play">In Play</option>
+            <option value="downtime">Downtime</option>
+          </select>
         </div>
       </section>
 
       {page === 1 && (() => {
-        const cls = state.classId ? classById(state.classId) : undefined;
-        const sub = cls?.subclasses.find((s) => s.id === state.subclassId);
         const quirk = state.quirk?.id ? QUIRKS.find((q) => q.id === state.quirk!.id) : undefined;
+        const ac = sheet.attributes.find((a) => a.attr === 'Constitution')!.armouredDefence.total;
         return (
           <>
             <section class="cf-step">
-              <p class="cf-railsub">
-                {cls?.name ?? '—'}{sub ? ` · ${sub.name}` : ''} · Level {sheet.level} ·
-                Milestones {state.milestones} · Bank {state.bank.major} Major / {state.bank.minor} Minor
-              </p>
-              {state.quirk && (
-                <div class="cf-quirk">
-                  <p class="cf-quirk-eyebrow">Quirk</p>
-                  <h4>{fill(state.quirk.name, state.quirk.slots)}</h4>
-                  {quirk && <p class="cf-quirk-mech">{fill(quirk.mechanic, state.quirk.slots)}</p>}
-                  {quirk && <p class="cf-quirk-eso">{fill(quirk.esoteric, state.quirk.slots)}</p>}
+              <h3>Vitals</h3>
+              <div class="sheet-vitals">
+                <div class="sheet-vital"><span class="sheet-vital-num">{ac}</span><span class="sheet-vital-label">AC</span></div>
+                <div class="sheet-vital"><span class="sheet-vital-num">{sheet.hitPoints.total}</span><span class="sheet-vital-label">HP</span></div>
+                <div class="sheet-vital">
+                  <input
+                    class="sheet-vital-entry"
+                    value={tempHp}
+                    onInput={(e) => setTempHp((e.target as HTMLInputElement).value)}
+                  />
+                  <span class="sheet-vital-label">Temp HP</span>
                 </div>
-              )}
+                <div class="sheet-vital"><span class="sheet-vital-num">{sheet.speed.total}'</span><span class="sheet-vital-label">Speed</span></div>
+                <div class="sheet-vital"><span class="sheet-vital-num">{signed(sheet.initiative.total)}</span><span class="sheet-vital-label">Initiative</span></div>
+                <div class="sheet-vital"><span class="sheet-vital-num">{sheet.damageReduction.total}</span><span class="sheet-vital-label">DR</span></div>
+              </div>
+              <div class="sheet-vitline">
+                <strong>Conditions</strong>
+                <span class="sheet-conditions">
+                  {conditions.map((c) => (
+                    <button key={c} type="button" class="cf-chip" title="clear" onClick={() => setConditions(conditions.filter((x) => x !== c))}>
+                      {c} ×
+                    </button>
+                  ))}
+                  <input
+                    placeholder="Add a condition…"
+                    value={conditionEntry}
+                    onInput={(e) => setConditionEntry((e.target as HTMLInputElement).value)}
+                    onKeyDown={(e) => {
+                      if (e.key === 'Enter' && conditionEntry.trim()) {
+                        setConditions([...conditions, conditionEntry.trim()]);
+                        setConditionEntry('');
+                      }
+                    }}
+                  />
+                </span>
+              </div>
+              <div class="sheet-writein">
+                <div class="sheet-writein-line" />
+                <div class="sheet-writein-line" />
+              </div>
+              <p class="sheet-vitline">
+                <strong>Load</strong>
+                <span>
+                  {sheet.load.totalLb} lb of {sheet.load.baseLb} lb · {sheet.load.band}
+                  {sheet.load.effect && ` — ${sheet.load.effect}`}
+                </span>
+              </p>
+            </section>
+
+            <section class="cf-step">
+              <h3>Details</h3>
+              <div class="cf-identity">
+                <label>Name <input value={identity.name} onInput={(e) => setIdentity('name', (e.target as HTMLInputElement).value)} placeholder="Unnamed" /></label>
+                <label>Place of origin
+                  <select value={identity.origin} onChange={(e) => setIdentity('origin', (e.target as HTMLSelectElement).value)}>
+                    <option value=""></option>
+                    {PLACES.map((p) => (
+                      <option key={p.value} value={p.value}>{p.value}</option>
+                    ))}
+                  </select>
+                </label>
+                <label>Age
+                  <input type="number" min="14" max="99" class="num" value={identity.age} onInput={(e) => setIdentity('age', (e.target as HTMLInputElement).value)} />
+                </label>
+                <label>Height
+                  <span class="cf-units">
+                    <input type="number" min="4" max="7" class="num" value={identity.heightFt} onInput={(e) => setIdentity('heightFt', (e.target as HTMLInputElement).value)} />
+                    <span class="cf-unit">ft</span>
+                    <input type="number" min="0" max={identity.heightFt === '7' ? 0 : 11} class="num" value={identity.heightIn} onInput={(e) => setIdentity('heightIn', (e.target as HTMLInputElement).value)} />
+                    <span class="cf-unit">in</span>
+                  </span>
+                </label>
+                <label>Weight
+                  <span class="cf-units">
+                    <input type="number" min="65" max="400" step="5" class="num" value={identity.weight} onInput={(e) => setIdentity('weight', (e.target as HTMLInputElement).value)} />
+                    <span class="cf-unit">lb</span>
+                  </span>
+                </label>
+                <label class="wide">Notes <input value={identity.notes} onInput={(e) => setIdentity('notes', (e.target as HTMLInputElement).value)} /></label>
+              </div>
             </section>
 
             <section class="cf-step">
@@ -336,11 +453,6 @@ export default function CharacterSheet({ name, state, sheet, events, basket, set
                   </tbody>
                 </table>
               </div>
-              <p class="cf-railline">
-                HP <Bd b={sheet.hitPoints} plain /> · Speed <Bd b={sheet.speed} plain />' ·
-                DR <Bd b={sheet.damageReduction} plain /> · Initiative <Bd b={sheet.initiative} /> ·
-                AC {sheet.attributes.find((a) => a.attr === 'Constitution')!.armouredDefence.total}
-              </p>
             </section>
 
             <section class="cf-step">
@@ -432,6 +544,18 @@ export default function CharacterSheet({ name, state, sheet, events, basket, set
                 </ul>
               </section>
             )}
+
+            {state.quirk && (
+              <section class="cf-step">
+                <h3>Quirks &amp; Marks</h3>
+                <div class="cf-quirk">
+                  <p class="cf-quirk-eyebrow">Quirk</p>
+                  <h4>{fill(state.quirk.name, state.quirk.slots)}</h4>
+                  {quirk && <p class="cf-quirk-mech">{fill(quirk.mechanic, state.quirk.slots)}</p>}
+                  {quirk && <p class="cf-quirk-eso">{fill(quirk.esoteric, state.quirk.slots)}</p>}
+                </div>
+              </section>
+            )}
           </>
         );
       })()}
@@ -467,7 +591,9 @@ export default function CharacterSheet({ name, state, sheet, events, basket, set
             .replace(/\[W\]/g, die)
             .replace(/\b(Str|Dex|Con|Int|Wis|Cha)\b/g, (m) => String(shortTotals[m] ?? m));
 
-        const tableWeapons = weapons.filter((i) => i.location === 'equipped' || i.location === 'carried');
+        // Attacks list what you can bring to bear this round: weapons in
+        // hand or drawable at the ready. Stored weapons stay off the table.
+        const tableWeapons = weapons.filter((i) => i.location === 'held' || i.location === 'equipped');
 
         interface AttackRow { key: string; name: string; toHit: number; untrained: boolean; vs: string; damage: string }
         const rows: AttackRow[] = [];
@@ -543,8 +669,8 @@ export default function CharacterSheet({ name, state, sheet, events, basket, set
             <section class="cf-step">
               <h3>Attacks</h3>
               <p class="cf-how">
-                Generated from your attack Abilities and carried weapons. Hide the lines you never
-                use.
+                Generated from your attack Abilities and your Held and Equipped weapons. Hide the
+                lines you never use.
               </p>
               <div class="scroll">
                 <table class="cf-shop-table sheet-table">
@@ -575,29 +701,6 @@ export default function CharacterSheet({ name, state, sheet, events, basket, set
                   </button>
                 </p>
               )}
-            </section>
-
-            <section class="cf-step">
-              <h3>Conditions</h3>
-              <p class="cf-how">Table scratch — nothing here enters the record.</p>
-              <p class="sheet-conditions">
-                {conditions.map((c) => (
-                  <button key={c} type="button" class="cf-chip" title="clear" onClick={() => setConditions(conditions.filter((x) => x !== c))}>
-                    {c} ×
-                  </button>
-                ))}
-                <input
-                  placeholder="Add a condition…"
-                  value={conditionEntry}
-                  onInput={(e) => setConditionEntry((e.target as HTMLInputElement).value)}
-                  onKeyDown={(e) => {
-                    if (e.key === 'Enter' && conditionEntry.trim()) {
-                      setConditions([...conditions, conditionEntry.trim()]);
-                      setConditionEntry('');
-                    }
-                  }}
-                />
-              </p>
             </section>
 
             <section class="cf-step">
@@ -727,16 +830,22 @@ export default function CharacterSheet({ name, state, sheet, events, basket, set
         </section>
       )}
 
+      {page === 3 && sheet.handsHeld > 2 && (
+        <div class="cf-flags">
+          Held gear fills {sheet.handsHeld} hands — you have two.
+        </div>
+      )}
+
       {page === 3 && (
       <section class="cf-step">
         <h3>Equipment</h3>
-        {equipment.length === 0 ? (
+        {equipmentCarried.length === 0 ? (
           <p class="cf-how">Nothing but the clothes on your back.</p>
         ) : (
           <div class="scroll">
           <table class="cf-shop-table sheet-table">
             <tbody>
-              {equipment.map((i) => (
+              {equipmentCarried.map((i) => (
                 <tr key={i.instanceId}>
                   <td>
                     {i.name}{i.qty > 1 ? ` ×${i.qty}` : ''}
@@ -745,7 +854,6 @@ export default function CharacterSheet({ name, state, sheet, events, basket, set
                     )}
                   </td>
                   <td class="num">{rowWeight(i)}</td>
-                  <td>{locationLabel(i.location)}</td>
                   <td>{moveControl(i)}</td>
                   <td class="act">{splitControl(i)}{sellControl(i)}</td>
                 </tr>
@@ -754,8 +862,41 @@ export default function CharacterSheet({ name, state, sheet, events, basket, set
           </table>
           </div>
         )}
+        <p class="cf-how">Drawing an Equipped item takes a Move action. Retrieving a Stored item takes a Standard action.</p>
       </section>
 
+      )}
+
+      {page === 3 && equipmentHome.length > 0 && (
+        <section class="cf-step">
+          <h3>At Home</h3>
+          <div class="scroll">
+            <table class="cf-shop-table sheet-table">
+              <tbody>
+                {equipmentHome.map((i) => (
+                  <tr key={i.instanceId}>
+                    <td>
+                      {i.name}{i.qty > 1 ? ` ×${i.qty}` : ''}
+                      {i.itemId && containerCoefficient(i.itemId) !== undefined && contentsOf(i.instanceId).length > 0 && (
+                        <span class="cf-shop-src"> — holds {fmtWeight(subtotalLb(i.instanceId) || null)}</span>
+                      )}
+                    </td>
+                    <td class="num">{rowWeight(i)}</td>
+                    <td>{moveControl(i)}</td>
+                    <td class="act">{splitControl(i)}{sellControl(i)}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </section>
+      )}
+
+      {page === 3 && (
+        <section class="cf-step">
+          <h3>Wealth</h3>
+          <p class="sheet-vitline"><strong>Coin</strong> <span>{fmtCoins(state.wealthCp)}</span></p>
+        </section>
       )}
 
       {page === 3 && !commerceOpen && (

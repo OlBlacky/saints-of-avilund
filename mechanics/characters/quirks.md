@@ -193,6 +193,46 @@ its two halves are:
 The corpus lives in `app/src/lib/gear.ts`. Full weapon and armour stat blocks
 are the Gear pillar's job later; until then each card is self-contained.
 
+### Starting clothes
+
+Every character dresses free at creation: one outfit from the Clothing
+catalogue, chosen from a drop-down whose options follow the Class and
+Subclass. The outfit arrives worn (equipped), costs nothing, and carries the
+same one-Session sell lock as the rolled Starting Gear. The table lives in
+`app/src/lib/equipment.ts` (`STARTING_CLOTHES`):
+
+| Who | Options |
+|---|---|
+| Everyone | Common outfit · Traveller's outfit |
+| Soldier | + Cold-weather outfit |
+| Friar | + Cleric's vestments |
+| Scholar | + Scholar's robes |
+| Occultist | + Scholar's robes |
+| Naturalist | + Cold-weather outfit |
+| Scoundrel | (base only) |
+| Commander (Subclass) | + Courtier's outfit |
+| Charlatan (Subclass) | + Courtier's outfit |
+
+The Courtier's outfit is the ceiling; the Noble's outfit stays a purchase.
+Classes still to be built (Noble, Scout, Warden, Artificer, Orator) join the
+table with their rosters.
+
+### The Vow of Poverty — fixed gear, no roll
+
+A character who owns the **Vow of Poverty** (Forbearance) escapes the seesaw:
+
+- **Starting Gear is fixed, not rolled**: a **Friar's Kit, half-filled
+  (10 Supplies)**, and a **wooden Saint's medal** — the player chooses the
+  Saint.
+- **No starting coin.**
+- **The Quirk is drawn from the Good pool alone.** Rerolls work as normal;
+  only the Quirk re-rolls.
+
+The fixed card is `the-mendicants-portion` in `gear.ts`, held outside the
+rolled pools. The engine enforces the pairing both ways: the Vow refuses a
+rolled package, and the fixed card refuses everyone without the Vow — taking
+or refunding the Vow after the roll flags the package for a re-roll.
+
 ### Starting coin — the money leg of the seesaw
 
 The Gear roll also sets your **starting coin**. It leans against the gear:
@@ -210,6 +250,26 @@ piece of gear you never asked for, but might well use, is allowed to
 overshoot. The amounts are fixed, not rolled: the package already carries all
 the dice this step needs. (This supersedes the earlier "coin rolls
 separately" note in the builder spec.)
+
+### Planned repricing — package value targets (Les, Aug 12 2026)
+
+A direction to work out when the next gear batch is authored; the table
+above stands until then. The **whole package (item + coin) targets
+300/200/100 sp by gear category** — the coin travels *with* the gear's
+quality rather than against it:
+
+- **Good ≈ 300 sp total** — e.g. 200 sp coin + 100 sp worth of armour or a
+  good weapon.
+- **Neutral ≈ 200 sp total.**
+- **Bad ≈ 100 sp total** — e.g. a cursed rabbit's foot and 100 sp.
+
+Each card carries its own coin split (the `coinSp` override in `gear.ts`;
+`STARTING_COIN` stays the fallback), so item + coin lands on the category
+target exactly. Note this reverses today's compensation: with the seesaw
+(Good Quirk ↔ Bad Gear), the package total comes to price the Quirk — a
+Good Quirk costs you a poor start (~100 sp), a Bad Quirk buys a rich one
+(~300 sp). To check at authoring time: a Good-Quirk martial character must
+still be able to arm and armour themselves on ~100 sp.
 
 ### What each pool means (price-anchored)
 

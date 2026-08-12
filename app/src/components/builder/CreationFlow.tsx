@@ -15,7 +15,8 @@ import MarketShop, { basketTotalsCp, commerceRankOf } from './MarketShop';
 import type { BasketLine } from './MarketShop';
 import CharacterSheet from './CharacterSheet';
 import { VAR_LABELS, VAR_ORDER, resolveValue } from '../../lib/abilities';
-import { CRAFTS, fmtCoins } from '../../lib/equipment';
+import { CATALOGUE, CRAFTS, fmtCoins, startingClothesFor } from '../../lib/equipment';
+import { itemName } from '../../lib/markets';
 import { briefFor } from '../../lib/ability-briefs';
 import { CATEGORIES } from '../../lib/category-abilities';
 import {
@@ -26,16 +27,16 @@ import {
   classById,
 } from '../../lib/classes';
 import type { ClassDef, SubclassDef } from '../../lib/classes';
-import { LANGUAGES } from '../../lib/languages';
+import { HOME_LANGUAGES, LANGUAGES } from '../../lib/languages';
 import { FEATS } from '../../lib/feats';
-import { rollPackage } from '../../lib/gear';
-import { PLACES } from '../../lib/quirks';
+import { VOW_OF_POVERTY_GEAR, rollPackage } from '../../lib/gear';
+import { PLACES, fill } from '../../lib/quirks';
 import type { Attribute, SeesawCategory } from '../../lib/quirks';
 import { SKILLS } from '../../lib/skills';
 import { derive } from '../../lib/record/derive';
 import type { RecordEvent } from '../../lib/record/events';
 import { getCharacter, putCharacter } from '../../lib/store';
-import type { CharacterRecord } from '../../lib/store';
+import type { CharacterRecord, PlayState } from '../../lib/store';
 import {
   accessibleCategories,
   classSkills,
@@ -45,6 +46,7 @@ import {
   languageAllowance,
   replay,
   tryEvent,
+  vowedToPoverty,
 } from '../../lib/record/replay';
 
 const DRAFT_KEY = 'sova-builder-draft-v1';
@@ -52,6 +54,9 @@ const ATTRIBUTES: Attribute[] = [
   'Strength', 'Dexterity', 'Constitution', 'Intelligence', 'Wisdom', 'Charisma',
 ];
 const REROLLS = 2;
+// The wooden medal's Saint list — the pick the fixed Vow-of-Poverty gear
+// asks of the player.
+const MEDAL_SAINTS = CATALOGUE.find((c) => c.id === 'saints-medal-wood')!.choice!.options;
 
 interface Identity {
   name: string;
@@ -73,6 +78,9 @@ interface Draft {
   /** The open Basket (creation shopping). Committed as one transaction by
    * Finish; freely edited until then. */
   basket: BasketLine[];
+  /** The Character State (New / In Play / Downtime). Absent on older saves;
+   * the default derives from Sessions. */
+  status?: PlayState;
 }
 
 const EMPTY_DRAFT: Draft = {
@@ -510,7 +518,7 @@ export default function CreationFlow() {
     // fresh roll, not a reroll.
     const isReroll = Boolean(state.quirk && state.gear);
     if (isReroll && draft.rerollsLeft <= 0) return;
-    const { quirk: q, gear: g } = rollPackage();
+    const { quirk: q, gear: g } = rollPackage(Math.random, { vowOfPoverty: vowedToPoverty(state) });
     const used = isReroll ? REROLLS - draft.rerollsLeft + 1 : 0;
     setDraft((d) => ({
       ...d,
@@ -527,6 +535,28 @@ export default function CreationFlow() {
     }));
   };
 
+  /** The wooden medal's Saint: rewrite the roll's gearSlots with the pick
+   * and re-render the card text — the event stores the decision. */
+  const setMedalSaint = (saint: string) => {
+    if (!saint) return;
+    setDraft((d) => {
+      const rolled = d.events.find((x) => x.type === 'quirk-rolled');
+      if (!rolled || rolled.type !== 'quirk-rolled') return d;
+      const gearSlots = { ...(rolled.gearSlots ?? {}), saint };
+      const card = VOW_OF_POVERTY_GEAR;
+      return {
+        ...d,
+        gearText: {
+          name: fill(card.name, gearSlots),
+          mechanic: fill(card.mechanic, gearSlots),
+          provenance: fill(card.provenance, gearSlots),
+          category: card.category,
+        },
+        events: d.events.map((x) => (x === rolled ? { ...rolled, gearSlots } : x)),
+      };
+    });
+  };
+
   // ── The Market & Finish ─────────────────────────────────────────────────
 
   const basket = draft.basket ?? [];
@@ -534,7 +564,8 @@ export default function CreationFlow() {
   const remainingCp = state.wealthCp + totals.net;
 
   const canCrystallize =
-    !crystallized && cls && sub && quirkRolled && Boolean(state.gear) && flags.length === 0;
+    !crystallized && cls && sub && Boolean(state.homeLanguage) && Boolean(state.startingClothes) &&
+    quirkRolled && Boolean(state.gear) && flags.length === 0;
   const canFinish = canCrystallize && remainingCp >= 0;
 
   /** One act: commit the Basket (if anything is in it) and crystallize. */
@@ -600,7 +631,10 @@ export default function CreationFlow() {
         <div class="cf-main">
           {crystallized ? (
             <CharacterSheet
-              name={draft.identity.name}
+              identity={draft.identity}
+              setIdentity={setIdentity}
+              status={draft.status ?? (state.sessions === 0 ? 'new' : 'downtime')}
+              setStatus={(s) => setDraft((d) => ({ ...d, status: s }))}
               state={state}
               sheet={sheet}
               events={events}
@@ -1067,6 +1101,24 @@ export default function CreationFlow() {
               </div>
 
               <h3>Languages</h3>
+              <p class="cf-how">Every character speaks Imperial and their home language, free. Further languages cost 1 Minor each.</p>
+              <div class="cf-line">
+                <span class="cf-picker">
+                  <select
+                    value={state.homeLanguage ?? ''}
+                    disabled={crystallized}
+                    onChange={(e) => {
+                      const language = (e.target as HTMLSelectElement).value;
+                      if (language) replaceOne('home-language-chosen', mk('home-language-chosen', { language: language as never }));
+                    }}
+                  >
+                    <option value="">Home language…</option>
+                    {HOME_LANGUAGES.map((l) => (
+                      <option key={l} value={l}>{l}</option>
+                    ))}
+                  </select>
+                </span>
+              </div>
               <div class="cf-chiprow">
                 {sheet.languages.map((l) => {
                   const bought = state.languages.includes(l);
@@ -1290,6 +1342,24 @@ export default function CreationFlow() {
           {sub && (
             <section class="cf-step cf-finale">
               <h2>Step 5 · Quirk &amp; Starting Gear</h2>
+              <p class="cf-how">Every character starts with a set of clothes, free.</p>
+              <div class="cf-line">
+                <span class="cf-picker">
+                  <select
+                    value={state.startingClothes ?? ''}
+                    disabled={crystallized}
+                    onChange={(e) => {
+                      const itemId = (e.target as HTMLSelectElement).value;
+                      if (itemId) replaceOne('clothes-chosen', mk('clothes-chosen', { itemId }));
+                    }}
+                  >
+                    <option value="">Starting clothes…</option>
+                    {startingClothesFor(state.classId, state.subclassId).map((id) => (
+                      <option key={id} value={id}>{itemName(id)}</option>
+                    ))}
+                  </select>
+                </span>
+              </div>
               <p class="cf-how">
                 Quirk and Starting Gear are rolled randomly, together. Two rerolls; you keep the
                 last roll.
@@ -1310,6 +1380,21 @@ export default function CreationFlow() {
                       <p class="cf-quirk-eso">{draft.gearText.provenance}</p>
                       {sheet.startingCoin && (
                         <p class="cf-quirk-mech"><strong>Starting coin: {sheet.startingCoin.total} sp</strong></p>
+                      )}
+                      {state.gear?.id === VOW_OF_POVERTY_GEAR.id && !crystallized && (
+                        <div class="cf-line">
+                          <span class="cf-picker">
+                            <select
+                              value={state.gear.slots.saint ?? ''}
+                              onChange={(ev) => setMedalSaint((ev.target as HTMLSelectElement).value)}
+                            >
+                              <option value="">Saint of the medal…</option>
+                              {MEDAL_SAINTS.map((s) => (
+                                <option key={s} value={s}>{s}</option>
+                              ))}
+                            </select>
+                          </span>
+                        </div>
                       )}
                     </div>
                   )}
@@ -1359,7 +1444,7 @@ export default function CreationFlow() {
                       ? undefined
                       : remainingCp < 0
                         ? 'The Basket costs more than your coin'
-                        : 'Needs a Class, a Subclass, the rolled Quirk & Gear package, and no unresolved flags'
+                        : 'Needs a Class, a Subclass, a home language, starting clothes, the rolled Quirk & Gear package, and no unresolved flags'
                   }
                   onClick={doFinish}
                 >

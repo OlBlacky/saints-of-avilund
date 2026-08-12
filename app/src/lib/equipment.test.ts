@@ -23,10 +23,40 @@ import {
   TOOLS_AND_IMPLEMENTS,
   WEAPON_GROUPS,
   WEAPON_PROPERTIES,
+  STARTING_CLOTHES,
   fmtCoins,
   fmtPrice,
   fmtWeight,
+  startingClothesFor,
 } from './equipment';
+import { CLASSES } from './classes';
+
+describe('the starting-clothes table', () => {
+  it('references only real Clothing items', () => {
+    const ids = CLOTHING.map((c) => c.id);
+    const all = [
+      ...STARTING_CLOTHES.base,
+      ...Object.values(STARTING_CLOTHES.byClass).flat(),
+      ...Object.values(STARTING_CLOTHES.bySubclass).flat(),
+    ];
+    for (const id of all) expect(ids).toContain(id);
+  });
+
+  it('keys only real Class and Subclass ids', () => {
+    const classIds = CLASSES.map((c) => c.id);
+    const subclassIds = CLASSES.flatMap((c) => c.subclasses.map((s) => s.id));
+    for (const id of Object.keys(STARTING_CLOTHES.byClass)) expect(classIds).toContain(id);
+    for (const id of Object.keys(STARTING_CLOTHES.bySubclass)) expect(subclassIds).toContain(id);
+  });
+
+  it('composes base + Class + Subclass options, without duplicates', () => {
+    expect(startingClothesFor()).toEqual(['common-outfit', 'travellers-outfit']);
+    expect(startingClothesFor('scholar', 'antiquarian')).toContain('scholars-robes');
+    expect(startingClothesFor('scoundrel', 'charlatan')).toContain('courtiers-outfit');
+    const soldier = startingClothesFor('soldier', 'commander');
+    expect(soldier).toEqual([...new Set(soldier)]);
+  });
+});
 
 describe('the catalogue lift preserves the page counts', () => {
   it('45 arms across 17 groups', () => {
@@ -47,7 +77,7 @@ describe('the catalogue lift preserves the page counts', () => {
     expect(ROPE_IRON_CLIMBING).toHaveLength(13);
     expect(TOOLS_AND_IMPLEMENTS).toHaveLength(22);
     expect(CLOTHING).toHaveLength(11);
-    expect(FAITH_AND_SUPERSTITION).toHaveLength(7);
+    expect(FAITH_AND_SUPERSTITION).toHaveLength(8);
     expect(FOOD_AND_DRINK).toHaveLength(11);
     expect(LODGING).toHaveLength(8);
     expect(MOUNTS_AND_VEHICLES).toHaveLength(15);

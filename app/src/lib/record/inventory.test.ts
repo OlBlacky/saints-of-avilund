@@ -137,7 +137,7 @@ describe('opening coin and Starting Gear', () => {
     const { state } = replay(creation());
     const inst = state.inventory.find((i) => i.origin === 'starting-gear')!;
     expect(inst.qty).toBe(1);
-    expect(inst.location).toBe('carried');
+    expect(inst.location).toBe('equipped');
   });
 
   it('a reroll replaces the instance and re-fixes the coin', () => {
@@ -481,7 +481,7 @@ describe('worn gear feeds the sheet', () => {
 });
 
 describe('grants, moves, and Sessions', () => {
-  it('a granted item lands carried, catalogue-named where backed', () => {
+  it('a granted item lands Equipped, catalogue-named where backed', () => {
     const { state } = replay([
       ...crystallized(),
       ev('item-granted', { itemId: 'longsword', qty: 1 }),
@@ -506,5 +506,67 @@ describe('grants, moves, and Sessions', () => {
   it('Sessions count', () => {
     const { state } = replay([...crystallized(), ev('session-logged', {}), ev('session-logged', {})]);
     expect(state.sessions).toBe(2);
+  });
+});
+
+describe('Gear States (mechanics/encumbrance.md)', () => {
+  const buy = (lines: { itemId: string; qty: number }[]) =>
+    ev('transaction', {
+      lines: lines.map((l) => ({ direction: 'buy' as const, marketId: 'waldheim', ...l })),
+    });
+
+  it("reads old records' retired 'carried' as Equipped", () => {
+    const grant = ev('item-granted', { itemId: 'longsword' });
+    const legacyMove = {
+      ...ev('item-moved', { instanceId: grant.id, location: 'home' }),
+      location: 'carried',
+    } as RecordEvent;
+    const { state, flags } = replay([...crystallized(), grant, legacyMove]);
+    expect(flags).toEqual([]);
+    expect(state.inventory.find((i) => i.itemId === 'longsword')!.location).toBe('equipped');
+  });
+
+  it('armour and shields are never Equipped — they arrive Worn and stay Worn', () => {
+    const { state, flags } = replay([
+      ...crystallized(),
+      buy([
+        { itemId: 'chain-mail', qty: 1 },
+        { itemId: 'heater-kite-round', qty: 1 },
+      ]),
+      ev('item-moved', { instanceId: 'item:chain-mail', location: 'equipped' }),
+    ]);
+    expect(flags).toEqual([]);
+    expect(state.inventory.find((i) => i.itemId === 'chain-mail')!.location).toBe('worn');
+    expect(state.inventory.find((i) => i.itemId === 'heater-kite-round')!.location).toBe('worn');
+  });
+
+  it('Held gear fills hands: weapons declare theirs, everything else one per item', () => {
+    const { state, flags } = replay([
+      ...crystallized(),
+      buy([
+        { itemId: 'maul', qty: 1 },  // 2H
+        { itemId: 'torch', qty: 2 }, // one hand each
+      ]),
+      ev('item-moved', { instanceId: 'item:maul', location: 'held' }),
+      ev('item-moved', { instanceId: 'item:torch', location: 'held' }),
+    ]);
+    expect(flags).toEqual([]);
+    expect(derive(state).handsHeld).toBe(4);
+  });
+
+  it('Held, Worn, and Equipped all weigh in full', () => {
+    const { state, flags } = replay([
+      ...crystallized(),
+      buy([
+        { itemId: 'maul', qty: 1 },      // 10 lb
+        { itemId: 'chain-10ft', qty: 1 }, // 10 lb
+        { itemId: 'torch', qty: 1 },     // 1 lb
+      ]),
+      ev('item-moved', { instanceId: 'item:maul', location: 'held' }),
+      ev('item-moved', { instanceId: 'item:chain-10ft', location: 'worn' }),
+      // the torch stays where purchases arrive: Equipped
+    ]);
+    expect(flags).toEqual([]);
+    expect(derive(state).load.totalLb).toBe(21);
   });
 });

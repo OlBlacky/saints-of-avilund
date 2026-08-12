@@ -373,7 +373,7 @@ export default function MarketShop({ state, basket, setBasket }: Props) {
       <div class="cf-basket">
         <p class="cf-eyebrow">The Basket</p>
         {basket.length === 0 ? (
-          <p class="cf-how">Empty. What you buy arrives carried.</p>
+          <p class="cf-how">Empty. What you buy arrives Equipped.</p>
         ) : (
           <table class="cf-shop-table">
             <tbody>

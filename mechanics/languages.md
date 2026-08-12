@@ -7,9 +7,10 @@ Languages read").
 
 ## The rules
 
-- **Everyone speaks Imperial**, the common tongue. It costs nothing and is on
-  every sheet from Level 0.
-- **Every other language is its own buy: 1 Minor Advance.** Classes and
+- **Every character speaks two tongues free from creation: Imperial**, the
+  common tongue, **and their home language** — the Dialect or standalone
+  vernacular of where they grew up, chosen at creation.
+- **Every further language is its own buy: 1 Minor Advance.** Classes and
   Subclasses grant some outright (the Scholar and Friar grant Auld Imperial;
   casting Subclasses grant their tradition's tongue).
 - **Language Families.** The mundane vernaculars group into three Families —

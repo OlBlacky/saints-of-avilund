@@ -8,9 +8,16 @@
 // Armour/gear contributions join when the gear pillar lands.
 
 import { classById } from '../classes';
-import { ARMOURS, ARMOUR_TIER_AC, SHIELDS, containerCoefficient } from '../equipment';
+import {
+  ARMOURS,
+  ARMOUR_TIER_AC,
+  MELEE_WEAPONS,
+  RANGED_WEAPONS,
+  SHIELDS,
+  containerCoefficient,
+} from '../equipment';
 import { DEFAULT_LANGUAGE } from '../languages';
-import { GEAR, STARTING_COIN } from '../gear';
+import { STARTING_COIN, gearById } from '../gear';
 import { itemWeightLb } from '../markets';
 import { ATTR_FULL, parseAttr } from '../notation';
 import type { Attribute, Condition, Effect } from '../quirks';
@@ -100,6 +107,9 @@ export interface DerivedSheet {
    * pre-gear log). Becomes the Wealth ledger's opening balance later. */
   startingCoin?: Breakdown;
   load: DerivedLoad;
+  /** Hands filled by Held gear. The sheet warns past two; the table
+   * adjudicates (mechanics/encumbrance.md). */
+  handsHeld: number;
 }
 
 // ── Load (mechanics/encumbrance.md) ─────────────────────────────────────────
@@ -132,7 +142,7 @@ function loadFor(state: CharacterState): DerivedLoad {
   for (const item of state.inventory) {
     // Worn armour is weightless for Load — its burden is already priced
     // into its own penalties. A spare suit in a bag counts in full.
-    if (item.location === 'equipped' && item.itemId && ARMOURS.some((a) => a.id === item.itemId)) continue;
+    if (item.location === 'worn' && item.itemId && ARMOURS.some((a) => a.id === item.itemId)) continue;
     // Walk the container chain: contents multiply by each encloser's
     // coefficient; anything resting at Home (at any depth) is off the body.
     let factor = 1;
@@ -152,6 +162,20 @@ function loadFor(state: CharacterState): DerivedLoad {
   let band: LoadBand = totalLb <= baseLb ? 'None' : totalLb <= 2 * baseLb ? 'Light' : 'Heavy';
   if (band === 'Heavy' && ladderRank >= 3) band = 'Light';
   return { totalLb, baseLb, band, effect: BAND_EFFECT[band] };
+}
+
+/** Weapons declare the hands they fill; everything else Held (a shield,
+ * a torch, a lantern) fills one per item. */
+function handsHeldFor(state: CharacterState): number {
+  let hands = 0;
+  for (const item of state.inventory) {
+    if (item.location !== 'held') continue;
+    const weapon = item.itemId
+      ? [...MELEE_WEAPONS, ...RANGED_WEAPONS].find((w) => w.id === item.itemId)
+      : undefined;
+    hands += (weapon?.hands === '2H' ? 2 : 1) * item.qty;
+  }
+  return hands;
 }
 
 function signed(n: number): string {
@@ -209,12 +233,16 @@ export function derive(state: CharacterState): DerivedSheet {
     return sum(parts);
   };
 
-  // Worn gear: the first equipped armour and shield feed the sheet. Armour
-  // is passive (AC, DR, Speed, Stealth); a shield gives its AC and DR only
-  // while raised, so it lands in the situational list, not the sums.
-  const equipped = state.inventory.filter((i) => i.location === 'equipped');
-  const wornArmour = equipped.map((i) => ARMOURS.find((a) => a.id === i.itemId)).find(Boolean);
-  const borneShield = equipped.map((i) => SHIELDS.find((s) => s.id === i.itemId)).find(Boolean);
+  // Worn gear: the first Worn armour and the first shield Held or Worn feed
+  // the sheet. Armour is passive (AC, DR, Speed, Stealth); a shield gives
+  // its AC and DR only while raised, so it lands in the situational list,
+  // not the sums.
+  const onBody = state.inventory.filter((i) => i.location === 'held' || i.location === 'worn');
+  const wornArmour = state.inventory
+    .filter((i) => i.location === 'worn')
+    .map((i) => ARMOURS.find((a) => a.id === i.itemId))
+    .find(Boolean);
+  const borneShield = onBody.map((i) => SHIELDS.find((s) => s.id === i.itemId)).find(Boolean);
 
   const attributes: DerivedAttribute[] = ATTRIBUTES.map((attr) => {
     const value = attrValue(attr);
@@ -368,6 +396,7 @@ export function derive(state: CharacterState): DerivedSheet {
     .map((se) => (se.effect as Extract<Effect, { kind: 'grantLanguage' }>).language);
   const languages = [
     DEFAULT_LANGUAGE,
+    ...(state.homeLanguage ? [state.homeLanguage] : []),
     ...collectGrantedLanguages(state),
     ...grantedLanguages,
     ...state.languages,
@@ -393,9 +422,9 @@ export function derive(state: CharacterState): DerivedSheet {
   // Coin re-derives from the gear card's category, like everything else —
   // re-pool a card and every sheet's purse updates on the next replay. The
   // label stays mute about the category: the seesaw is not shown to players.
-  const gearCard = state.gear?.id ? GEAR.find((g) => g.id === state.gear!.id) : undefined;
+  const gearCard = state.gear?.id ? gearById(state.gear.id) : undefined;
   const startingCoin = gearCard
-    ? sum([{ label: 'Starting coin', value: STARTING_COIN[gearCard.category] }])
+    ? sum([{ label: 'Starting coin', value: gearCard.coinSp ?? STARTING_COIN[gearCard.category] }])
     : undefined;
 
   return {
@@ -412,6 +441,7 @@ export function derive(state: CharacterState): DerivedSheet {
     situational,
     ...(startingCoin ? { startingCoin } : {}),
     load: loadFor(state),
+    handsHeld: handsHeldFor(state),
   };
 }
 

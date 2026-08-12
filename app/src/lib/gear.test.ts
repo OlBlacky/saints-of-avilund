@@ -3,7 +3,7 @@
 // skill that does not exist fails here, not at the table.
 
 import { describe, expect, it } from 'vitest';
-import { GEAR, OPPOSITE, resolveGear, rollPackage, STARTING_COIN } from './gear';
+import { GEAR, OPPOSITE, resolveGear, rollPackage, STARTING_COIN, VOW_OF_POVERTY_GEAR, gearById } from './gear';
 import { QUIRKS, resolveQuirk, rollQuirk, type SeesawCategory } from './quirks';
 import { SKILLS } from './skills';
 
@@ -32,6 +32,24 @@ describe('the pools', () => {
     for (const c of CATEGORIES) {
       expect(QUIRKS.filter((q) => q.category === c).length).toBeGreaterThan(0);
       expect(GEAR.filter((g) => g.category === c).length).toBeGreaterThan(0);
+    }
+  });
+});
+
+describe('the Vow of Poverty package', () => {
+  it('stays out of the rolled pools but resolves by id', () => {
+    expect(GEAR.some((g) => g.id === VOW_OF_POVERTY_GEAR.id)).toBe(false);
+    expect(gearById(VOW_OF_POVERTY_GEAR.id)).toBe(VOW_OF_POVERTY_GEAR);
+  });
+
+  it('rolls a Good Quirk with the fixed gear and no coin', () => {
+    const rng = seeded(7);
+    for (let i = 0; i < 20; i++) {
+      const { quirk, gear } = rollPackage(rng, { vowOfPoverty: true });
+      expect(quirk.category).toBe('good');
+      expect(gear.id).toBe(VOW_OF_POVERTY_GEAR.id);
+      expect(gear.coin).toBe(0);
+      expect(gear.fills.saint).toBeTruthy();
     }
   });
 });
