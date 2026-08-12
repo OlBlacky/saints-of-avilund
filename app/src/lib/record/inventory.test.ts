@@ -1,8 +1,8 @@
 // Wealth, inventory, and Markets in the record engine (builder spec §11,
 // mechanics/markets.md): opening coin from the Starting Gear category, the
-// atomic Basket transaction, the creation no-sell rule, the one-Session
-// lock on rolled Starting Gear, Market access via Feats, and the Commerce
-// Feat Ladder's percentages.
+// atomic Basket transaction, the creation no-sell rule, the first-Session
+// sell lock (a New character sells nothing), Market access via Feats, and
+// the Commerce Feat Ladder's percentages.
 
 import { describe, expect, it } from 'vitest';
 import { GEAR, STARTING_COIN } from '../gear';
@@ -244,9 +244,10 @@ describe('the Basket transaction', () => {
     expect(flags.some((f) => f.code === 'creation-only')).toBe(true);
   });
 
-  it('after creation the Waldheim Market pays its 25%', () => {
+  it('after the first Session the Waldheim Market pays its 25%', () => {
     const { state, flags } = replay([
       ...crystallized(),
+      ev('session-logged', {}),
       ev('transaction', { lines: [{ direction: 'buy', marketId: 'waldheim', itemId: 'longsword', qty: 1 }] }),
       ev('transaction', { lines: [{ direction: 'sell', marketId: 'waldheim', instanceId: 'item:longsword', qty: 1 }] }),
     ]);
@@ -258,6 +259,7 @@ describe('the Basket transaction', () => {
   it('selling more than owned is refused, counting within the trip', () => {
     const { flags } = replay([
       ...crystallized(),
+      ev('session-logged', {}),
       ev('transaction', { lines: [{ direction: 'buy', marketId: 'waldheim', itemId: 'torch', qty: 2 }] }),
       ev('transaction', { lines: [
         { direction: 'sell', marketId: 'waldheim', instanceId: 'item:torch', qty: 2 },
@@ -267,12 +269,12 @@ describe('the Basket transaction', () => {
     expect(flags.some((f) => f.code === 'over-cap')).toBe(true);
   });
 
-  it('rolled Starting Gear will not sell before a Session — nor after, with no buyer', () => {
+  it('nothing sells before the first Session — not even Starting Gear; nor after, with no buyer', () => {
     const locked = replay([
       ...crystallized(),
       ev('transaction', { lines: [{ direction: 'sell', marketId: 'waldheim', instanceId: 'starting-gear', qty: 1 }] }),
     ]);
-    expect(locked.flags.some((f) => f.message.includes('not sellable yet'))).toBe(true);
+    expect(locked.flags.some((f) => f.message.includes('before the first Session'))).toBe(true);
 
     // After a Session the lock lifts — but unique gear has no catalogue id,
     // so no Market buys it (sellability lives on the item).
@@ -287,12 +289,23 @@ describe('the Basket transaction', () => {
   it("the Havilah arbitrage: pelts bought at the Exchange sell in Waldheim", () => {
     const { state, flags } = replay([
       ...crystallized(),
+      ev('session-logged', {}),
       ev('feat-bought', { featId: 'market-ulrics-exchange' }),
       ev('transaction', { lines: [{ direction: 'buy', marketId: 'ulrics-exchange', itemId: 'animal-pelts-cured', qty: 1 }] }),
       ev('transaction', { lines: [{ direction: 'sell', marketId: 'waldheim', instanceId: 'item:animal-pelts-cured', qty: 1 }] }),
     ]);
     expect(flags).toEqual([]);
     expect(state.wealthCp).toBe(2000 - 200 + 300);
+  });
+
+  it('a New character cannot run the arbitrage — bought goods hold until the first Session', () => {
+    const { flags } = replay([
+      ...crystallized(),
+      ev('feat-bought', { featId: 'market-ulrics-exchange' }),
+      ev('transaction', { lines: [{ direction: 'buy', marketId: 'ulrics-exchange', itemId: 'animal-pelts-cured', qty: 1 }] }),
+      ev('transaction', { lines: [{ direction: 'sell', marketId: 'waldheim', instanceId: 'item:animal-pelts-cured', qty: 1 }] }),
+    ]);
+    expect(flags.some((f) => f.code === 'no-access' && f.message.includes('before the first Session'))).toBe(true);
   });
 
   it('stock certificates are near-liquid at home and appreciate southward', () => {

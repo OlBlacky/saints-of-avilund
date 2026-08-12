@@ -5,8 +5,8 @@
 // and The Markets for downtime trips — where selling finally lives.
 //
 // Sell prices appear only where an accessible Market buys the item, source
-// named; rolled Starting Gear shows no price until its Session lock lifts,
-// silently. Moves and trips are logged events through the engine gate.
+// named; nothing shows a price before the first Session is logged (the New
+// state), silently. Moves and trips are logged events through the engine gate.
 
 import { useState } from 'preact/hooks';
 
@@ -31,7 +31,7 @@ import type { Language } from '../../lib/languages';
 import { bestSell, itemName, itemWeightLb, marketById } from '../../lib/markets';
 import { parseAttr } from '../../lib/notation';
 import { fill, PLACES, QUIRKS } from '../../lib/quirks';
-import type { RecordEvent } from '../../lib/record/events';
+import type { EventSource, RecordEvent } from '../../lib/record/events';
 import type { ItemLocation } from '../../lib/record/events';
 import type { Breakdown, DerivedSheet, Part } from '../../lib/record/derive';
 import { languageAllowance } from '../../lib/record/replay';
@@ -44,23 +44,24 @@ let counter = 0;
 function mk<T extends RecordEvent['type']>(
   type: T,
   data: Omit<Extract<RecordEvent, { type: T }>, 'id' | 'at' | 'source' | 'type'>,
+  source: EventSource = 'player',
 ): RecordEvent {
   counter += 1;
   return {
     id: `${Date.now().toString(36)}-s${counter}`,
     at: new Date().toISOString(),
-    source: 'player',
+    source,
     type,
     ...data,
   } as RecordEvent;
 }
 
 const PAGES: { n: number; label: string; built: boolean }[] = [
-  { n: 1, label: 'Page 1 · The Character', built: true },
-  { n: 2, label: 'Page 2 · Attacks & Abilities', built: true },
-  { n: 3, label: 'Page 3 · Inventory', built: true },
-  { n: 4, label: 'Page 4 · Advancement Log', built: true },
-  { n: 5, label: 'Page 5 · Full Detail', built: false },
+  { n: 1, label: 'Basics', built: true },
+  { n: 2, label: 'Attacks & Abilities', built: true },
+  { n: 3, label: 'Inventory', built: true },
+  { n: 4, label: 'Advancement Log', built: true },
+  { n: 5, label: 'Full Detail', built: false },
 ];
 
 const signed = (n: number) => (n >= 0 ? `+${n}` : `−${Math.abs(n)}`);
@@ -194,6 +195,11 @@ interface Props {
   setBoxOrder: (pageKey: string, ids: string[]) => void;
   /** Open the Advancement door — spending banked Advances between Sessions. */
   onAdvance: () => void;
+  /** True in the visitors' sandbox — the scratch space, where Milestones
+   * grant freely. */
+  sandbox: boolean;
+  /** Copy this character into the sandbox (roster characters only). */
+  onSandboxCopy?: () => void;
 }
 
 /** The boxes each page owns, in their default order. */
@@ -203,12 +209,15 @@ const PAGE_BOXES: Record<string, string[]> = {
   p3: ['weapons', 'wearables', 'equipment', 'home', 'wealth', 'markets'],
 };
 
-export default function CharacterSheet({ identity, setIdentity, status, setStatus, state, sheet, events, basket, setBasket, append, why, boxOrder, setBoxOrder, onAdvance }: Props) {
+export default function CharacterSheet({ identity, setIdentity, status, setStatus, state, sheet, events, basket, setBasket, append, why, boxOrder, setBoxOrder, onAdvance, sandbox, onSandboxCopy }: Props) {
   const [page, setPage] = useState(1);
   // Commerce is a deliberate act: the Markets show only once opened. An
   // unfinished trip (a Basket with lines) re-opens itself — you are still
   // at market. Nothing is logged until the trip commits.
   const [commerceOpen, setCommerceOpen] = useState(basket.length > 0);
+  // The Character State gates access: a New character (no Sessions yet)
+  // trades nothing, and the Markets open only in Downtime.
+  const atMarket = status === 'downtime';
   // Page 2 state: curated attack lines (hidden, never deleted) and the
   // table-scratch Conditions (never logged, reset freely).
   const [hiddenAttacks, setHiddenAttacks] = useState<string[]>([]);
@@ -357,13 +366,13 @@ export default function CharacterSheet({ identity, setIdentity, status, setStatu
   );
 
   /** The sell control: best reachable buyer, source named — or nothing.
-   * Selling is commerce: the buttons exist only during an open session.
-   * Rolled Starting Gear stays silent until its Session lock lifts, and a
-   * buyer paying zero is no buyer at all. */
+   * Selling is Downtime commerce, and nothing sells before the first
+   * Session (the engine holds the same line). A buyer paying zero is no
+   * buyer at all. */
   const sellControl = (item: OwnedItem) => {
-    if (!commerceOpen) return null;
+    if (!commerceOpen || !atMarket) return null;
     if (!item.itemId) return null;
-    if (item.origin === 'starting-gear' && state.sessions < 1) return null;
+    if (state.sessions < 1) return null;
     const best = bestSell(item.itemId, ownedFeatIds, commerce, ownedAbilities);
     if (!best || best.priceCp < 1) return null;
     const inBasket = basket
@@ -496,11 +505,18 @@ export default function CharacterSheet({ identity, setIdentity, status, setStatu
             <select
               class="sheet-move"
               value={status}
+              disabled={state.sessions === 0}
+              title={state.sessions === 0 ? 'A character is New until their first Session is logged.' : undefined}
               onChange={(e) => setStatus((e.target as HTMLSelectElement).value as PlayState)}
             >
-              <option value="new">New</option>
-              <option value="in-play">In Play</option>
-              <option value="downtime">Downtime</option>
+              {state.sessions === 0 ? (
+                <option value="new">New</option>
+              ) : (
+                <>
+                  <option value="in-play">In Play</option>
+                  <option value="downtime">Downtime</option>
+                </>
+              )}
             </select>
           </label>
         </div>
@@ -508,7 +524,23 @@ export default function CharacterSheet({ identity, setIdentity, status, setStatu
           <div class="sheet-manage-panel">
             <span class="sheet-record">Sessions {state.sessions} · Milestones {state.milestones}</span>
             <button type="button" class="buy" onClick={() => append(mk('session-logged', {}))}>Log a Session</button>
-            <button type="button" class="buy" onClick={() => append(mk('milestone-granted', {}))}>Grant a Milestone</button>
+            {/* Milestones are the DM's to grant. The sandbox grants freely —
+                it is the play-around space; a roster character records the
+                DM's word, sourced 'gm'. */}
+            {sandbox ? (
+              <button type="button" class="buy" onClick={() => append(mk('milestone-granted', {}))}>Grant a Milestone</button>
+            ) : (
+              <button
+                type="button"
+                class="buy"
+                title="Milestones are the DM's to grant."
+                onClick={() => {
+                  if (confirm('Record a Milestone granted by the DM?')) append(mk('milestone-granted', {}, 'gm'));
+                }}
+              >
+                Grant a Milestone
+              </button>
+            )}
             <button
               type="button"
               class="cf-roll"
@@ -522,6 +554,16 @@ export default function CharacterSheet({ identity, setIdentity, status, setStatu
             >
               Spend Advances
             </button>
+            {onSandboxCopy && (
+              <button
+                type="button"
+                class="undo"
+                title="Open a scratch copy in the sandbox. Nothing there touches this character."
+                onClick={onSandboxCopy}
+              >
+                Copy to the Sandbox
+              </button>
+            )}
           </div>
         )}
       </section>
@@ -1243,7 +1285,19 @@ export default function CharacterSheet({ identity, setIdentity, status, setStatu
         <p class="sheet-vitline"><strong>Coin</strong> <span>{fmtCoins(state.wealthCp)}</span></p>
       </section>
 
-      {!commerceOpen && (
+      {!atMarket && (
+        <section class="cf-step sheet-box" style={boxStyle('p3', 'markets')} onDragOver={boxDragOver} onDrop={() => dropBox('p3', 'markets')}>
+          {grip('p3', 'markets')}
+          <h3>Commerce</h3>
+          <p class="cf-how">
+            {status === 'new'
+              ? 'The Markets open after your first Session.'
+              : 'The Markets open in Downtime.'}
+          </p>
+        </section>
+      )}
+
+      {atMarket && !commerceOpen && (
         <section class="cf-step sheet-box" style={boxStyle('p3', 'markets')} onDragOver={boxDragOver} onDrop={() => dropBox('p3', 'markets')}>
           {grip('p3', 'markets')}
           <h3>Commerce</h3>
@@ -1255,7 +1309,7 @@ export default function CharacterSheet({ identity, setIdentity, status, setStatu
         </section>
       )}
 
-      {commerceOpen && (
+      {atMarket && commerceOpen && (
       <section class="cf-step sheet-box" style={boxStyle('p3', 'markets')} onDragOver={boxDragOver} onDrop={() => dropBox('p3', 'markets')}>
         {grip('p3', 'markets')}
         <h3>The Markets</h3>

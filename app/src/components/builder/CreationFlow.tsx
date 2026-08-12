@@ -49,7 +49,11 @@ import {
   vowedToPoverty,
 } from '../../lib/record/replay';
 
-const DRAFT_KEY = 'sova-builder-draft-v1';
+// The sandbox draft's own key. The pre-roster era saved under
+// 'sova-builder-draft-v1'; that key is now purely legacy — store.ts
+// migrates it into the roster once — so the sandbox can never be
+// migrated in as a duplicate character.
+const DRAFT_KEY = 'sova-sandbox-draft-v1';
 const ATTRIBUTES: Attribute[] = [
   'Strength', 'Dexterity', 'Constitution', 'Intelligence', 'Wisdom', 'Charisma',
 ];
@@ -210,6 +214,23 @@ export default function CreationFlow() {
 
   const setIdentity = (k: keyof Identity, v: string) =>
     setDraft((d) => ({ ...d, identity: { ...d.identity, [k]: v } }));
+
+  /** The classic sandbox use (spec §3): copy this character into the
+   * sandbox and dream — nothing there touches the roster record. The
+   * sandbox holds one build; a build already in it asks before it goes. */
+  const copyToSandbox = () => {
+    try {
+      const raw = localStorage.getItem(DRAFT_KEY);
+      if (raw) {
+        const existing = JSON.parse(raw) as Draft;
+        if ((existing.events ?? []).length > 0 && !confirm('The sandbox already holds a build. Replace it?')) return;
+      }
+    } catch {
+      // A corrupt sandbox draft is disposable by definition.
+    }
+    localStorage.setItem(DRAFT_KEY, JSON.stringify(draft));
+    location.href = `${import.meta.env.BASE_URL}builder/`;
+  };
 
   /** Append a candidate if the engine allows it (the UI disables illegal
    * buttons, but this is the actual gate). */
@@ -654,8 +675,18 @@ export default function CreationFlow() {
               onAdvance={() => { setAdvanceFrom(events.length); setAdvancing(true); }}
               identity={draft.identity}
               setIdentity={setIdentity}
-              status={draft.status ?? (state.sessions === 0 ? 'new' : 'downtime')}
+              // The state derives its floor from the record: no Sessions
+              // logged means New, whatever an older save stored.
+              status={
+                state.sessions === 0
+                  ? 'new'
+                  : draft.status === 'in-play'
+                    ? 'in-play'
+                    : 'downtime'
+              }
               setStatus={(s) => setDraft((d) => ({ ...d, status: s }))}
+              sandbox={!charRecord}
+              onSandboxCopy={charRecord ? copyToSandbox : undefined}
               boxOrder={draft.boxOrder}
               setBoxOrder={(pageKey, ids) =>
                 setDraft((d) => ({ ...d, boxOrder: { ...d.boxOrder, [pageKey]: ids } }))}

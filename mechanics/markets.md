@@ -118,7 +118,7 @@ Shopping is the **last step of character creation**, after the Quirk & Starting 
 
 - The Basket stays open until the creation flow's own **Finish** — one act commits the Basket and completes the character. Until then, swap freely at full value.
 - **No selling during creation.** The buy-side of every Market opens only once the character is finished.
-- **Rolled Starting Gear is locked from selling until the character has at least one Session logged.** After that, normal rules apply — the Waldheim Market pays its 25%, so shedding Bad Gear costs dearly. (Player-facing: the item simply shows no sell price; no explanation.)
+- **Nothing sells until the character has at least one Session logged.** A New character cannot sell at all — this closes the buy-at-creation, sell-at-once arbitrage (e.g. Havilah Share Certificates), and it covers rolled Starting Gear along the way. After the first Session, normal rules apply — the Waldheim Market pays its 25%, so shedding Bad Gear costs dearly. (Player-facing: items simply show no sell price; no explanation.)
 
 ## Sellability lives on the item
 

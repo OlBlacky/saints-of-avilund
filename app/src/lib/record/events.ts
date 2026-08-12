@@ -84,10 +84,11 @@ export type RecordEvent =
   | (BaseEvent & { type: 'crystallized' })
 
   // ── Grants ────────────────────────────────────────────────────────────
-  /** +1 Major and +1 Minor to the bank. GM-granted; self-marked in v1. */
+  /** +1 Major and +1 Minor to the bank. The DM's to grant: a roster sheet
+   * records it at the DM's word (source 'gm'); the sandbox grants freely. */
   | (BaseEvent & { type: 'milestone-granted'; note?: string })
   /** A played Session (the meta-Chronicle, spec §5). Self-marked in v1.
-   * Gates the one-Session lock on rolled Starting Gear. */
+   * Gates the first-Session sell lock — a New character sells nothing. */
   | (BaseEvent & { type: 'session-logged'; note?: string })
 
   // ── Wealth & gear ─────────────────────────────────────────────────────

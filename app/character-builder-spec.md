@@ -201,7 +201,7 @@ The **Milestone count** is the fundamental quantity; everything else derives fro
 
 ### Grants fill a bank; spending is separate
 
-A granted Milestone (§3 machinery; GM-granted in campaigns, self-marked in v1) adds **+1 Major and +1 Minor to the character's banked pool**, logged. Spending from the bank happens whenever the player likes — banking toward a big purchase is explicitly canon. Every individual purchase is its own logged event.
+A granted Milestone (§3 machinery; the DM's to grant — v1 records it on the sheet at the DM's word, sourced `gm`; sandbox builds grant freely) adds **+1 Major and +1 Minor to the character's banked pool**, logged. Spending from the bank happens whenever the player likes — banking toward a big purchase is explicitly canon. Every individual purchase is its own logged event.
 
 ### Spending happens on the sheet, not in a wizard
 
@@ -389,9 +389,9 @@ On the sheet, the Markets are hidden behind a deliberate act: **Open Commerce** 
 
 The last step of the flow (§6). The Basket stays open until the flow's Finish — commit and character completion are **one act**. Free swaps at full value until then; **no selling during creation** (no Market's buy-side is open yet). Starting coin (from the Gear category) is the purse; a Quirk-opened door is shoppable immediately and permanently.
 
-### The one-Session lock
+### The first-Session sell lock
 
-Rolled Starting Gear cannot be sold until the character has ≥1 Session logged. Player-facing: the item shows no sell price, no explanation (the no-machinery rule). Enforcement is on the item instance's provenance (it came from the Starting Gear roll) plus the Session count.
+Nothing can be sold until the character has ≥1 Session logged — a **New** character sells nothing (ruled Aug 12 2026; this generalizes the old Starting-Gear-only lock and closes the buy-at-creation, sell-at-once arbitrage). Player-facing: items show no sell price, no explanation (the no-machinery rule). Enforcement is on the Session count in the engine. The Character State wires the rest of access: the Markets open in **Downtime** only.
 
 ### Coin
 
@@ -419,7 +419,7 @@ Wealth is a single value (stored in cp), always **displayed reduced to fewest co
 
 ### Character lifecycle (v1 surface)
 
-**In Creation** → **Complete** (advancing by self-marked grants) → optionally **in a Campaign** → **Retired** or **Dead** (memorials; deleting is hard, §3). Sandbox builds sit beside the lifecycle; **In Play** is a game-time toggle, not a state.
+**In Creation** → **Complete** (advancing by DM-granted Milestones, recorded on the sheet) → optionally **in a Campaign** → **Retired** or **Dead** (memorials; deleting is hard, §3). Sandbox builds sit beside the lifecycle; **In Play** is a game-time toggle, not a state.
 
 ### What a Campaign is
 
