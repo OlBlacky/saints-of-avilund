@@ -63,10 +63,20 @@ const PAGES: { n: number; label: string; built: boolean }[] = [
 
 const signed = (n: number) => (n >= 0 ? `+${n}` : `−${Math.abs(n)}`);
 
-/** A derived number that shows its work on hover. */
+const partText = (p: { label: string; value: number }) =>
+  p.label === 'Base' ? `${p.label} ${p.value}` : `${p.label} ${signed(p.value)}`;
+
+/** A derived number that shows its work in plain sight — the sheet prints,
+ * so the parts sit under the total, never behind a hover. */
 function Bd({ b, plain }: { b: Breakdown; plain?: boolean }) {
-  const work = b.parts.map((p) => `${p.label} ${signed(p.value)}`).join('\n');
-  return <span title={work || undefined}>{plain ? b.total : signed(b.total)}</span>;
+  return (
+    <span class="sheet-bd">
+      <span class="sheet-bd-total">{plain ? b.total : signed(b.total)}</span>
+      {b.parts.length > 0 && (
+        <span class="sheet-bd-parts">{b.parts.map(partText).join(' · ')}</span>
+      )}
+    </span>
+  );
 }
 
 /** One log line per event — the record read back as prose. */
@@ -138,6 +148,9 @@ export default function CharacterSheet({ identity, setIdentity, status, setStatu
   const [conditionEntry, setConditionEntry] = useState('');
   // Temp HP is table scratch, like Conditions — never logged.
   const [tempHp, setTempHp] = useState('');
+  // Manage Mode: the sheet is read-only at the table; the Manage Character
+  // button opens the editing surfaces (Details, Sessions, Milestones).
+  const [manage, setManage] = useState(false);
   const [langPick, setLangPick] = useState('');
   const ownedFeatIds = state.feats.map((f) => f.featId);
   const commerce = commerceRankOf(state);
@@ -317,25 +330,33 @@ export default function CharacterSheet({ identity, setIdentity, status, setStatu
             <a href={`${import.meta.env.BASE_URL}campaigns/`}>Campaign</a>{' '}
             <span class="cf-shop-src">none yet</span>
           </span>
-          <details class="sheet-manage">
-            <summary>Manage Character · {state.bank.major} Major / {state.bank.minor} Minor</summary>
-            <div class="sheet-manage-panel">
-              <span class="sheet-record">Sessions {state.sessions} · Milestones {state.milestones}</span>
-              <button type="button" class="buy" onClick={() => append(mk('session-logged', {}))}>Log a Session</button>
-              <button type="button" class="buy" onClick={() => append(mk('milestone-granted', {}))}>Grant a Milestone</button>
-            </div>
-          </details>
-          <select
-            class="sheet-move"
-            title="Character State"
-            value={status}
-            onChange={(e) => setStatus((e.target as HTMLSelectElement).value as PlayState)}
+          <button
+            type="button"
+            class={`sheet-managebtn${manage ? ' on' : ''}`}
+            onClick={() => setManage(!manage)}
           >
-            <option value="new">New</option>
-            <option value="in-play">In Play</option>
-            <option value="downtime">Downtime</option>
-          </select>
+            Manage Character · {state.bank.major} Major / {state.bank.minor} Minor
+          </button>
+          <label class="sheet-statelabel">
+            Character State
+            <select
+              class="sheet-move"
+              value={status}
+              onChange={(e) => setStatus((e.target as HTMLSelectElement).value as PlayState)}
+            >
+              <option value="new">New</option>
+              <option value="in-play">In Play</option>
+              <option value="downtime">Downtime</option>
+            </select>
+          </label>
         </div>
+        {manage && (
+          <div class="sheet-manage-panel">
+            <span class="sheet-record">Sessions {state.sessions} · Milestones {state.milestones}</span>
+            <button type="button" class="buy" onClick={() => append(mk('session-logged', {}))}>Log a Session</button>
+            <button type="button" class="buy" onClick={() => append(mk('milestone-granted', {}))}>Grant a Milestone</button>
+          </div>
+        )}
       </section>
 
       {page === 1 && (() => {
@@ -396,58 +417,70 @@ export default function CharacterSheet({ identity, setIdentity, status, setStatu
 
             <section class="cf-step">
               <h3>Details</h3>
-              <div class="cf-identity">
-                <label>Name <input value={identity.name} onInput={(e) => setIdentity('name', (e.target as HTMLInputElement).value)} placeholder="Unnamed" /></label>
-                <label>Place of origin
-                  <select value={identity.origin} onChange={(e) => setIdentity('origin', (e.target as HTMLSelectElement).value)}>
-                    <option value=""></option>
-                    {PLACES.map((p) => (
-                      <option key={p.value} value={p.value}>{p.value}</option>
-                    ))}
-                  </select>
-                </label>
-                <label>Age
-                  <input type="number" min="14" max="99" class="num" value={identity.age} onInput={(e) => setIdentity('age', (e.target as HTMLInputElement).value)} />
-                </label>
-                <label>Height
-                  <span class="cf-units">
-                    <input type="number" min="4" max="7" class="num" value={identity.heightFt} onInput={(e) => setIdentity('heightFt', (e.target as HTMLInputElement).value)} />
-                    <span class="cf-unit">ft</span>
-                    <input type="number" min="0" max={identity.heightFt === '7' ? 0 : 11} class="num" value={identity.heightIn} onInput={(e) => setIdentity('heightIn', (e.target as HTMLInputElement).value)} />
-                    <span class="cf-unit">in</span>
+              {manage ? (
+                <div class="cf-identity">
+                  <label>Name <input value={identity.name} onInput={(e) => setIdentity('name', (e.target as HTMLInputElement).value)} placeholder="Unnamed" /></label>
+                  <label>Place of origin
+                    <select value={identity.origin} onChange={(e) => setIdentity('origin', (e.target as HTMLSelectElement).value)}>
+                      <option value=""></option>
+                      {PLACES.map((p) => (
+                        <option key={p.value} value={p.value}>{p.value}</option>
+                      ))}
+                    </select>
+                  </label>
+                  <label>Age
+                    <input type="number" min="14" max="99" class="num" value={identity.age} onInput={(e) => setIdentity('age', (e.target as HTMLInputElement).value)} />
+                  </label>
+                  <label>Height
+                    <span class="cf-units">
+                      <input type="number" min="4" max="7" class="num" value={identity.heightFt} onInput={(e) => setIdentity('heightFt', (e.target as HTMLInputElement).value)} />
+                      <span class="cf-unit">ft</span>
+                      <input type="number" min="0" max={identity.heightFt === '7' ? 0 : 11} class="num" value={identity.heightIn} onInput={(e) => setIdentity('heightIn', (e.target as HTMLInputElement).value)} />
+                      <span class="cf-unit">in</span>
+                    </span>
+                  </label>
+                  <label>Weight
+                    <span class="cf-units">
+                      <input type="number" min="65" max="400" step="5" class="num" value={identity.weight} onInput={(e) => setIdentity('weight', (e.target as HTMLInputElement).value)} />
+                      <span class="cf-unit">lb</span>
+                    </span>
+                  </label>
+                  <label class="wide">Notes <input value={identity.notes} onInput={(e) => setIdentity('notes', (e.target as HTMLInputElement).value)} /></label>
+                </div>
+              ) : (
+                <div class="sheet-details">
+                  <span><strong>Place of origin</strong> {identity.origin || '—'}</span>
+                  <span><strong>Age</strong> {identity.age || '—'}</span>
+                  <span>
+                    <strong>Height</strong>{' '}
+                    {identity.heightFt ? `${identity.heightFt}' ${identity.heightIn || 0}"` : '—'}
                   </span>
-                </label>
-                <label>Weight
-                  <span class="cf-units">
-                    <input type="number" min="65" max="400" step="5" class="num" value={identity.weight} onInput={(e) => setIdentity('weight', (e.target as HTMLInputElement).value)} />
-                    <span class="cf-unit">lb</span>
-                  </span>
-                </label>
-                <label class="wide">Notes <input value={identity.notes} onInput={(e) => setIdentity('notes', (e.target as HTMLInputElement).value)} /></label>
-              </div>
+                  <span><strong>Weight</strong> {identity.weight ? `${identity.weight} lb` : '—'}</span>
+                  {identity.notes && <span class="sheet-details-wide"><strong>Notes</strong> {identity.notes}</span>}
+                </div>
+              )}
             </section>
 
             <section class="cf-step">
               <h3>Attributes</h3>
-              <p class="cf-how">Hover any number for its parts.</p>
               <div class="scroll">
-                <table class="cf-shop-table sheet-table">
+                <table class="cf-shop-table sheet-table sheet-table--packed">
                   <thead>
                     <tr>
-                      <th>Attribute</th><th class="num">Value</th><th class="num">Offence</th>
-                      <th class="num">Save</th><th class="num">Unarmoured Defence</th>
-                      <th class="num">Armoured Defence</th>
+                      <th>Attribute</th><th>Value</th><th>Offence</th>
+                      <th>Save</th><th>Unarmoured Defence</th>
+                      <th>Armoured Defence</th>
                     </tr>
                   </thead>
                   <tbody>
                     {sheet.attributes.map((a) => (
                       <tr key={a.attr}>
                         <td>{a.attr}</td>
-                        <td class="num"><Bd b={a.value} /></td>
-                        <td class="num"><Bd b={a.offence} /></td>
-                        <td class="num"><Bd b={a.save} /></td>
-                        <td class="num"><Bd b={a.unarmouredDefence} plain /></td>
-                        <td class="num"><Bd b={a.armouredDefence} plain /></td>
+                        <td><Bd b={a.value} /></td>
+                        <td><Bd b={a.offence} /></td>
+                        <td><Bd b={a.save} /></td>
+                        <td><Bd b={a.unarmouredDefence} plain /></td>
+                        <td><Bd b={a.armouredDefence} plain /></td>
                       </tr>
                     ))}
                   </tbody>
@@ -457,13 +490,12 @@ export default function CharacterSheet({ identity, setIdentity, status, setStatu
 
             <section class="cf-step">
               <h3>Skills</h3>
-              <table class="cf-shop-table sheet-table">
+              <table class="cf-shop-table sheet-table sheet-table--packed">
                 <tbody>
                   {sheet.skills.map((s) => (
                     <tr key={s.skill}>
                       <td>{s.skill}{s.isClassSkill ? ' ·' : ''}{s.untrained ? <span class="cf-shop-src"> untrained</span> : ''}</td>
-                      <td>{s.attr}</td>
-                      <td class="num"><Bd b={s.value} /></td>
+                      <td><Bd b={s.value} /></td>
                     </tr>
                   ))}
                 </tbody>
@@ -514,23 +546,24 @@ export default function CharacterSheet({ identity, setIdentity, status, setStatu
             {state.feats.length > 0 && (
               <section class="cf-step">
                 <h3>Feats</h3>
-                <table class="cf-shop-table sheet-table">
-                  <tbody>
-                    {state.feats.map((f) => {
-                      const feat = featById(f.featId);
-                      return (
-                        <tr key={f.featId}>
-                          <td>
-                            {feat?.name ?? f.featId}
-                            {f.choices && <span class="cf-shop-src"> · {Object.values(f.choices).join(', ')}</span>}
-                            {feat?.ladder && <span class="cf-shop-src"> · Rank {f.rank}</span>}
-                          </td>
-                          <td class="cf-shop-src">{feat?.brief}</td>
-                        </tr>
-                      );
-                    })}
-                  </tbody>
-                </table>
+                {state.feats.map((f) => {
+                  const feat = featById(f.featId);
+                  return (
+                    <div key={f.featId} class="sheet-feat">
+                      <p class="sheet-feat-name">
+                        {feat?.name ?? f.featId}
+                        {f.choices && <span class="cf-shop-src"> · {Object.values(f.choices).join(', ')}</span>}
+                        {feat?.ladder && <span class="cf-shop-src"> · Rank {f.rank}</span>}
+                      </p>
+                      {feat?.ladder && f.rank > 0 && (
+                        <p class="sheet-feat-now">
+                          {feat.ladder.slice(0, f.rank).map((r) => r.value).join(' · ')}
+                        </p>
+                      )}
+                      {feat?.full && <p class="sheet-feat-rules">{feat.full}</p>}
+                    </div>
+                  );
+                })}
               </section>
             )}
 
@@ -595,8 +628,26 @@ export default function CharacterSheet({ identity, setIdentity, status, setStatu
         // hand or drawable at the ready. Stored weapons stay off the table.
         const tableWeapons = weapons.filter((i) => i.location === 'held' || i.location === 'equipped');
 
-        interface AttackRow { key: string; name: string; toHit: number; untrained: boolean; vs: string; damage: string }
+        interface AttackRow { key: string; name: string; toHit: number; toHitParts: string[]; vs: string; damage: string; dmgParts: string[] }
         const rows: AttackRow[] = [];
+
+        // The To Hit parts: the Offence breakdown, then the proficiency
+        // (or the Untrained −1) — the total's whole arithmetic, printed.
+        const toHitPartsFor = (attrFull: string, group?: string): string[] => {
+          const bd = sheet.attributes.find((a) => a.attr === attrFull)?.offence;
+          const parts = bd ? bd.parts.map(partText) : [];
+          if (group !== undefined) {
+            const p = profOf(group);
+            if (p === undefined) parts.push('Untrained −1');
+            else if (p) parts.push(`${group} +${p}`);
+          }
+          return parts;
+        };
+        // Damage parts: each attribute token in the damage text, valued.
+        const dmgPartsFor = (text: string): string[] =>
+          (text.match(/\b(Str|Dex|Con|Int|Wis|Cha)\b/g) ?? []).map(
+            (t) => `${t} ${signed(shortTotals[t] ?? 0)}`,
+          );
 
         const meleeAttr = (w: (typeof MELEE_WEAPONS)[number]) => {
           const finesse = w.properties.some((p) => p.startsWith('Finesse'));
@@ -614,18 +665,20 @@ export default function CharacterSheet({ identity, setIdentity, status, setStatu
             key: `basic/${item.instanceId}`,
             name: `Basic Attack — ${item.name}`,
             toHit: offenceOf(attrFull) + (p ?? -1),
-            untrained: p === undefined,
+            toHitParts: toHitPartsFor(attrFull, w.group),
             vs: 'vs AC',
             damage: dmgFor(`${w.damage} + ${attrFull.slice(0, 3)}`, w.damage).replace(/^.*?\+/, `${w.damage} +`),
+            dmgParts: dmgPartsFor(`${w.damage} + ${attrFull.slice(0, 3)}`),
           });
         }
         rows.push({
           key: 'basic/unarmed',
           name: 'Basic Unarmed',
           toHit: offenceOf('Strength') + (profOf('Unarmed/Natural') ?? -1),
-          untrained: profOf('Unarmed/Natural') === undefined,
+          toHitParts: toHitPartsFor('Strength', 'Unarmed/Natural'),
           vs: 'vs AC',
           damage: `1d3 + ${shortTotals.Str}`,
+          dmgParts: dmgPartsFor('1d3 + Str'),
         });
 
         for (const owned of state.abilities) {
@@ -643,9 +696,10 @@ export default function CharacterSheet({ identity, setIdentity, status, setStatu
                 key: `${label}/${item.instanceId}`,
                 name: `${label} — ${item.name}`,
                 toHit: offenceOf(attrFull) + (p ?? -1),
-                untrained: p === undefined,
+                toHitParts: toHitPartsFor(attrFull, w.group),
                 vs: vsDef ? `vs ${vsDef}` : '',
                 damage: dmgFor(dmgText, w.damage),
+                dmgParts: dmgPartsFor(dmgText),
               });
             }
           } else {
@@ -653,9 +707,10 @@ export default function CharacterSheet({ identity, setIdentity, status, setStatu
               key: label,
               name: label,
               toHit: offenceOf(attrFull),
-              untrained: false,
+              toHitParts: toHitPartsFor(attrFull),
               vs: vsDef ? `vs ${vsDef}` : '',
               damage: dmgFor(dmgText, ''),
+              dmgParts: dmgPartsFor(dmgText),
             });
           }
         }
@@ -680,10 +735,24 @@ export default function CharacterSheet({ identity, setIdentity, status, setStatu
                   <tbody>
                     {(showHiddenAttacks ? rows : shown).map((r) => (
                       <tr key={r.key} class={hiddenAttacks.includes(r.key) ? 'sheet-hiddenrow' : undefined}>
-                        <td>{r.name}{r.untrained && <span class="cf-chip" title="Not proficient — the −1 is counted in.">untrained</span>}</td>
-                        <td class="num">{signed(r.toHit)}</td>
+                        <td>{r.name}</td>
+                        <td>
+                          <span class="sheet-bd">
+                            <span class="sheet-bd-total">{signed(r.toHit)}</span>
+                            {r.toHitParts.length > 0 && (
+                              <span class="sheet-bd-parts">{r.toHitParts.join(' · ')}</span>
+                            )}
+                          </span>
+                        </td>
                         <td>{r.vs}</td>
-                        <td>{r.damage}</td>
+                        <td>
+                          <span class="sheet-bd">
+                            <span class="sheet-bd-total">{r.damage}</span>
+                            {r.dmgParts.length > 0 && (
+                              <span class="sheet-bd-parts">{r.dmgParts.join(' · ')}</span>
+                            )}
+                          </span>
+                        </td>
                         <td class="act">
                           <button type="button" class="undo" title={hiddenAttacks.includes(r.key) ? 'show this line' : 'hide this line'} onClick={() => toggleHide(r.key)}>
                             {hiddenAttacks.includes(r.key) ? 'show' : 'hide'}

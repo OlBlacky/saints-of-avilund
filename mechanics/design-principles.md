@@ -84,6 +84,13 @@ A casting Class or Subclass grants its own tradition's Language free; reaching i
 
 **Keywords carry the tie.** Each casting Category declares its tradition once (`lib/traditions.ts`: Skill + Language), and every card in it inherits those two **Keywords** at render — Keywords are never authored on a card by hand. A reused card takes the Keywords of its hosting Category, so the same card wears different Keywords on different sheets. Found objects (spellbooks, scrolls) will carry Language Keywords of their own; the reading gate is the match between the object's Keyword and the languages you know.
 
+## 11. Every Rank stands alone
+
+- Every value on a Ladder — the base and every Rank — is a **complete, self-contained statement** of what the character has at that step. The test: read it on a character sheet as "Label: value", with no other row in sight, and it must make sense.
+- No deltas and no references to other rows: no "as above", no leading "+ …" additions, no bare "+2" without the thing it modifies, no "10' radius" without who it catches.
+- The build table repeats itself as a result. That is the point — terse rows that lean on the row above are how character sheets end up showing fragments.
+- Enforced by lint: `app/src/lib/card-text.test.ts` flags offender patterns and holds a baseline of known offenders that only shrinks. New cards must pass clean.
+
 ---
 
 ## Before-you-author checklist
@@ -94,3 +101,4 @@ A casting Class or Subclass grants its own tradition's Language free; reaching i
 4. Does it beat its benchmark at the same price? Then cut it down.
 5. Does any bonus break the +5 ceiling unconditionally? Make it conditional or remove it.
 6. Can the data model express it? If not, stop and rethink.
+7. Does every Rank value read as a complete statement on its own? (Rail 11)

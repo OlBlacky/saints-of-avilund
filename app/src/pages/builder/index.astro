@@ -406,24 +406,52 @@ const blurb = 'Build a character of Avilund — and once they are Complete, this
   .sheet-strip { display: flex; flex-wrap: wrap; gap: 1.4rem; align-items: center; font-size: 0.95rem; }
   .sheet-record { display: inline-flex; align-items: center; gap: 0.5rem; color: var(--ink-soft); font-size: 0.86rem; }
 
-  /* The banner's Manage Character panel */
-  .sheet-manage { display: inline-block; position: relative; }
-  .sheet-manage > summary {
-    cursor: pointer; list-style: none;
-    padding: 0.12rem 0.55rem; font-size: 0.85rem;
-    color: var(--oxblood); border: 1px solid var(--gold); border-radius: 3px;
+  /* The banner's Manage Character mode: a toggle, and the panel it opens */
+  .sheet-managebtn {
+    font: inherit; font-size: 0.85rem; cursor: pointer;
+    padding: 0.12rem 0.55rem;
+    color: var(--oxblood); background: transparent;
+    border: 1px solid var(--gold); border-radius: 3px;
     transition: background 0.15s ease;
   }
-  .sheet-manage > summary::-webkit-details-marker { display: none; }
-  .sheet-manage > summary:hover,
-  .sheet-manage[open] > summary { background: color-mix(in srgb, var(--gold) 12%, transparent); }
+  .sheet-managebtn:hover,
+  .sheet-managebtn.on { background: color-mix(in srgb, var(--gold) 12%, transparent); }
   .sheet-manage-panel {
-    position: absolute; z-index: 30; top: calc(100% + 0.35rem); left: 0;
-    display: flex; align-items: center; gap: 0.6rem; white-space: nowrap;
-    padding: 0.5rem 0.7rem;
-    background: var(--panel); border: 1px solid var(--rule); border-radius: 4px;
-    box-shadow: 0 2px 8px var(--shadow);
+    display: flex; align-items: center; gap: 0.6rem; flex-wrap: wrap;
+    margin-top: 0.7rem; padding-top: 0.7rem;
+    border-top: 1px dotted var(--rule);
   }
+  .sheet-statelabel {
+    display: inline-flex; align-items: center; gap: 0.4rem;
+    font-variant: small-caps; letter-spacing: 0.05em;
+    color: var(--gold); font-size: 0.85rem;
+  }
+
+  /* Details, read-only (Manage Mode opens the inputs) */
+  .sheet-details { display: flex; flex-wrap: wrap; gap: 0.4rem 1.6rem; }
+  .sheet-details strong {
+    font-variant: small-caps; letter-spacing: 0.05em;
+    color: var(--gold); font-weight: normal; font-size: 0.85rem;
+    margin-right: 0.25rem;
+  }
+  .sheet-details-wide { flex-basis: 100%; }
+
+  /* A derived number with its arithmetic printed beneath it */
+  .sheet-bd { display: inline-flex; flex-direction: column; vertical-align: top; }
+  .sheet-bd-total { font-weight: bold; color: var(--oxblood); font-variant-numeric: tabular-nums; }
+  .sheet-bd-parts { font-size: 0.74rem; color: var(--ink-soft); white-space: nowrap; }
+
+  /* Packed tables: columns cluster by content instead of spreading */
+  .sheet-table--packed { width: auto; }
+  .sheet-table--packed th, .sheet-table--packed td { padding-right: 2.2rem; }
+  .sheet .scroll > .sheet-table--packed { min-width: 0; }
+
+  /* The Feats list: name, current rungs, the exact rules */
+  .sheet-feat { padding: 0.45rem 0; border-top: 1px dotted var(--rule); }
+  .sheet-feat:first-of-type { border-top: none; }
+  .sheet-feat-name { margin: 0; font-weight: bold; color: var(--oxblood); }
+  .sheet-feat-now { margin: 0.1rem 0 0; font-size: 0.88rem; }
+  .sheet-feat-rules { margin: 0.15rem 0 0; font-size: 0.88rem; color: var(--ink-soft); }
 
   /* The Vitals box */
   .sheet-vitals { display: flex; flex-wrap: wrap; gap: 0.7rem; margin: 0.2rem 0 0.9rem; }

@@ -21,8 +21,8 @@ const FREQ_ENC: Variable = { base: 'Daily', advances: [{ value: 'Encounter', cos
 const powerDamage = (attr: string): Variable => ({
   base: `1[W] + ${attr}`,
   advances: [
-    { value: `weapon one size larger, + ${attr}`, cost: 'm' },
-    { value: `weapon two sizes larger, + ${attr}`, cost: 'm' },
+    { value: `1[W] one size larger + ${attr}`, cost: 'm' },
+    { value: `1[W] two sizes larger + ${attr}`, cost: 'm' },
     { value: `2[W] + ${attr}`, cost: 'M' },
   ],
 });
@@ -34,6 +34,17 @@ const STRIKE_DAMAGE: Variable = {
     { value: '1[W] + 1', cost: 'm' },
     { value: '1[W] + Str', cost: 'm' },
     { value: '2[W]', cost: 'M', note: 'L5' },
+  ],
+};
+
+// The Daze Ladder — action denial, Dazed to Stunned. Shared by the Confessor's
+// Rebuke and New Magic's Lightning & Sonic effect ladder.
+const DAZE_EFFECTS: Variable = {
+  base: 'Dazed — no Reactions or Interrupts.',
+  advances: [
+    { value: 'Dazed — no Reactions, Interrupts, or Minor Actions', cost: 'm' },
+    { value: 'Dazed — no Reactions, Interrupts, Minor, or Move Actions', cost: 'm' },
+    { value: 'Stunned — no actions', cost: 'M' },
   ],
 };
 
@@ -95,9 +106,9 @@ const campTargets = (attr: string): Variable => ({
 const STD_AREA: Variable = {
   base: "All enemies in a 5' radius",
   advances: [
-    { value: "10' radius", cost: 'M' },
-    { value: "15' radius", cost: 'M' },
-    { value: "20' radius", cost: 'M' },
+    { value: "All enemies in a 10' radius", cost: 'M' },
+    { value: "All enemies in a 15' radius", cost: 'M' },
+    { value: "All enemies in a 20' radius", cost: 'M' },
   ],
 };
 
@@ -153,9 +164,9 @@ const GA_SPECIALIZATION = (item: string, feat: string): string =>
 const WIELD_EFFECTS = (impl: string): Variable => ({
   base: `You understand the nature of ${impl}s and can identify what power(s) they contain, and you can use those powers.`,
   advances: [
-    { value: 'You can improve one of a power’s Ladders (Range, Damage, Effect, …) by 1 Rank', cost: 'm' },
-    { value: 'Improve one Ladder by 2 Ranks', cost: 'm' },
-    { value: 'Improve one Ladder by 3 Ranks', cost: 'M' },
+    { value: `You can identify and use ${impl} powers, and improve one of a power’s Ladders (Range, Damage, Effect, …) by 1 Rank`, cost: 'm' },
+    { value: `You can identify and use ${impl} powers, and improve one of a power’s Ladders by 2 Ranks`, cost: 'm' },
+    { value: `You can identify and use ${impl} powers, and improve one of a power’s Ladders by 3 Ranks`, cost: 'M' },
   ],
 });
 
@@ -992,9 +1003,9 @@ const SPIRITUAL: Ability[] = [
       effects: {
         base: '−1 to all the target’s Defences.',
         advances: [
-          { value: '−2 to all Defences', cost: 'm' },
-          { value: '−2, and Vulnerable 1', cost: 'm' },
-          { value: '−2 and Vulnerable 3', cost: 'M' },
+          { value: '−2 to all the target’s Defences', cost: 'm' },
+          { value: '−2 to all the target’s Defences, and Vulnerable 1', cost: 'm' },
+          { value: '−2 to all the target’s Defences, and Vulnerable 3', cost: 'M' },
         ],
       },
       duration: { base: 'Save ends' },
@@ -1008,14 +1019,7 @@ const SPIRITUAL: Ability[] = [
       range: { base: '30\'' },
       targets: { base: 'One' },
       attack: { base: 'Charisma vs Unarmoured Wisdom' },
-      effects: {
-        base: 'Dazed — no Reactions or Interrupts.',
-        advances: [
-          { value: '+ no Minor Action', cost: 'm' },
-          { value: '+ no Move Action', cost: 'm' },
-          { value: 'Stunned — no actions', cost: 'M' },
-        ],
-      },
+      effects: DAZE_EFFECTS,
       duration: { base: 'Save ends' },
     },
   },
@@ -1029,9 +1033,9 @@ const SPIRITUAL: Ability[] = [
       effects: {
         base: 'All opponents lose all Temp HP.',
         advances: [
-          { value: '+ lose 1 beneficial effect (your choice)', cost: 'm' },
-          { value: '+ lose all beneficial effects', cost: 'm' },
-          { value: '+ a debuff preventing new buffs or Temp HP, Save ends', cost: 'M' },
+          { value: 'All opponents lose all Temp HP, and 1 beneficial effect (your choice)', cost: 'm' },
+          { value: 'All opponents lose all Temp HP and all beneficial effects', cost: 'm' },
+          { value: 'All opponents lose all Temp HP and all beneficial effects, and can gain no new buffs or Temp HP (Save ends)', cost: 'M' },
         ],
       },
       duration: { base: 'Instant' },
@@ -1048,9 +1052,9 @@ const SPIRITUAL: Ability[] = [
       effects: {
         base: '−1 to attack rolls (Fear).',
         advances: [
-          { value: '−1, and can’t move closer to you', cost: 'm' },
-          { value: '+ can’t attack you', cost: 'm' },
-          { value: 'flees you until it Saves', cost: 'M' },
+          { value: '−1 to attack rolls, and it can’t move closer to you (Fear)', cost: 'm' },
+          { value: '−1 to attack rolls, and it can’t move closer to you or attack you (Fear)', cost: 'm' },
+          { value: 'The target flees you until it Saves (Fear)', cost: 'M' },
         ],
       },
       duration: { base: 'Save ends' },
@@ -1062,7 +1066,7 @@ const SPIRITUAL: Ability[] = [
       frequency: { base: 'Passive (always on)' },
       effects: {
         base: '+1 to attack rolls and Skill checks against the Black Faith, Demons, Devils, and Undead. The Vow: never knowingly suffer a creature of the Black Faith to pass unopposed — neither aid, shelter, nor parley with them.',
-        advances: [{ value: '+2', cost: 'M', note: 'L5' }],
+        advances: [{ value: '+2 to attack rolls and Skill checks against the Black Faith, Demons, Devils, and Undead. The Vow: never knowingly suffer a creature of the Black Faith to pass unopposed — neither aid, shelter, nor parley with them.', cost: 'M', note: 'L5' }],
       },
     },
   },
@@ -1627,12 +1631,7 @@ const EFL_MOVEMENT: NamedLadder = {
 };
 const EFL_ACTION: NamedLadder = {
   name: 'Action Denial — Lightning & Sonic',
-  base: 'Dazed — no Reactions or Interrupts',
-  advances: [
-    { value: '+ no Minor Action', cost: 'm' },
-    { value: '+ no Move Action', cost: 'm' },
-    { value: 'Stunned — no actions', cost: 'M' },
-  ],
+  ...DAZE_EFFECTS,
 };
 const EFL_PUSH: NamedLadder = {
   name: 'Push — Force',
