@@ -114,7 +114,7 @@ describe('the worked example replays clean', () => {
     expect(intimidate.variants.map((v) => v.attr)).toEqual(['Strength', 'Charisma']);
     expect(intimidate.variants[0].value.total).toBe(4); // Str 3 + Rank 1
     expect(intimidate.variants[1].value.total).toBe(0); // Cha −1 (the Flaw) + Rank 1
-    // attr/value mirror the first variant for single-number consumers.
+    // attr/value mirror the best variant — the one the sheet prints.
     expect(intimidate.attr).toBe('Strength');
     expect(intimidate.value.total).toBe(4);
   });

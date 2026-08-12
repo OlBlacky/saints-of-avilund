@@ -75,8 +75,8 @@ export interface DerivedSkill {
   untrained?: boolean;
   value: Breakdown;
   /** One bonus per attribute the Skill may be rolled with ("Str, Cha") —
-   * the pick is made per use at the table, so the sheet shows them all.
-   * `attr`/`value` mirror the first variant. */
+   * the pick is made per use at the table. `attr`/`value` mirror the best
+   * variant (highest total), which is what the sheet prints. */
   variants: { attr: Attribute; value: Breakdown }[];
 }
 
@@ -393,12 +393,13 @@ export function derive(state: CharacterState): DerivedSheet {
       attr,
       value: sum([{ label: attr, value: attrValue(attr).total }, ...sharedParts]),
     }));
+    const best = variants.reduce((a, b) => (b.value.total > a.value.total ? b : a));
     return {
       skill,
-      attr: variants[0].attr,
+      attr: best.attr,
       isClassSkill,
       ...(untrained ? { untrained } : {}),
-      value: variants[0].value,
+      value: best.value,
       variants,
     };
   });

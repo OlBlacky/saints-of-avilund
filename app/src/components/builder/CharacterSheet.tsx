@@ -696,16 +696,7 @@ export default function CharacterSheet({ identity, setIdentity, status, setStatu
                   {sheet.skills.map((s) => (
                     <tr key={s.skill}>
                       <td>{s.skill}{s.isClassSkill ? ' ·' : ''}{s.untrained ? <span class="cf-shop-src"> untrained</span> : ''}</td>
-                      <td>
-                        <span class="sheet-skillvars">
-                          {s.variants.map((v) => (
-                            <span key={v.attr} class="sheet-skillvar">
-                              <span class="sheet-skillvar-attr">{v.attr.slice(0, 3)}</span>
-                              <Bd b={v.value} />
-                            </span>
-                          ))}
-                        </span>
-                      </td>
+                      <td><Bd b={s.value} /></td>
                     </tr>
                   ))}
                 </tbody>

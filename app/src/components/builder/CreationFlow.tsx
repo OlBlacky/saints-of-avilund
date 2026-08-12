@@ -932,29 +932,43 @@ export default function CreationFlow() {
                                         {inst.choices && (
                                           <span class="cf-instchoice">{Object.values(inst.choices).join(' · ')}</span>
                                         )}
-                                        {!crystallized && (
-                                          <button
-                                            type="button"
-                                            class="undo"
-                                            title={`refund this ${(ab.builderNoun ?? 'Spell').toLowerCase()} and its advances`}
-                                            onClick={() =>
-                                              setDraft((d) => ({
-                                                ...d,
-                                                events: d.events.filter(
-                                                  (x) =>
-                                                    !(
-                                                      (x.type === 'ability-bought' ||
-                                                        x.type === 'ability-advanced' ||
-                                                        x.type === 'ability-renamed') &&
-                                                      x.instanceId === inst.instanceId
-                                                    ),
-                                                ),
-                                              }))
-                                            }
-                                          >
-                                            −
-                                          </button>
-                                        )}
+                                        {!locked && (() => {
+                                          // Same floor as every other refund:
+                                          // this Session's work, not the record.
+                                          const mine = (x: RecordEvent) =>
+                                            (x.type === 'ability-bought' ||
+                                              x.type === 'ability-advanced' ||
+                                              x.type === 'ability-renamed') &&
+                                            x.instanceId === inst.instanceId;
+                                          const floor = crystallized ? advanceFrom : 0;
+                                          const undoable = events.some((x, i) => mine(x) && i >= floor);
+                                          const noun = (ab.builderNoun ?? 'Spell').toLowerCase();
+                                          return (
+                                            <button
+                                              type="button"
+                                              class="undo"
+                                              disabled={!undoable}
+                                              title={
+                                                undoable
+                                                  ? `refund this ${noun} and its advances`
+                                                  : 'Built in an earlier Session — the record stands'
+                                              }
+                                              onClick={() =>
+                                                setDraft((d) => {
+                                                  const from = d.events.some((e) => e.type === 'crystallized')
+                                                    ? advanceFrom
+                                                    : 0;
+                                                  return {
+                                                    ...d,
+                                                    events: d.events.filter((x, i) => !(mine(x) && i >= from)),
+                                                  };
+                                                })
+                                              }
+                                            >
+                                              −
+                                            </button>
+                                          );
+                                        })()}
                                       </span>
                                       {AdvStrip({ catName, card: ab, owned: inst })}
                                     </td>
@@ -1202,8 +1216,25 @@ export default function CreationFlow() {
                 your build can use.
               </p>
               {(() => {
+                // Every event that belongs to a Feat: the purchase, its Rank
+                // climbs, and the advances on any Ability it granted.
+                const featEvents = (feat: (typeof FEATS)[number]) => (x: RecordEvent) =>
+                  ((x.type === 'feat-bought' || x.type === 'feat-advanced') && x.featId === feat.id) ||
+                  Boolean(
+                    feat.grantsAbility &&
+                      x.type === 'ability-advanced' &&
+                      x.ref.category === feat.grantsAbility.category &&
+                      x.ref.ability === feat.grantsAbility.ability,
+                  );
+
                 const featRow = (feat: (typeof FEATS)[number], closed = false) => {
                   const owned = state.feats.find((f) => f.featId === feat.id);
+                  // Refunds reach back only to where the Advancement door
+                  // opened: this Session's purchases, never the record behind.
+                  const mine = featEvents(feat);
+                  const floor = crystallized ? advanceFrom : 0;
+                  const undoable = events.filter((x, i) => mine(x) && i >= floor);
+                  const boughtHere = undoable.some((x) => x.type === 'feat-bought');
                   return (
                     <>
                       <tr key={feat.id} class={`${owned ? 'owned' : ''} ${closed ? 'closed' : ''}`}>
@@ -1216,26 +1247,28 @@ export default function CreationFlow() {
                         </td>
                         <td class="cf-abctl">
                           {owned ? (
-                            !crystallized && (
+                            !locked && (
                               <button
                                 type="button"
                                 class="undo"
-                                title="refund this Feat and its Ranks"
+                                disabled={undoable.length === 0}
+                                title={
+                                  undoable.length === 0
+                                    ? 'Taken in an earlier Session — the record stands'
+                                    : boughtHere
+                                      ? 'refund this Feat and its Ranks'
+                                      : 'refund the Ranks taken this Session'
+                                }
                                 onClick={() =>
-                                  setDraft((d) => ({
-                                    ...d,
-                                    events: d.events.filter(
-                                      (x) =>
-                                        !(
-                                          ((x.type === 'feat-bought' || x.type === 'feat-advanced') &&
-                                            x.featId === feat.id) ||
-                                          (feat.grantsAbility &&
-                                            x.type === 'ability-advanced' &&
-                                            x.ref.category === feat.grantsAbility.category &&
-                                            x.ref.ability === feat.grantsAbility.ability)
-                                        ),
-                                    ),
-                                  }))
+                                  setDraft((d) => {
+                                    const from = d.events.some((e) => e.type === 'crystallized')
+                                      ? advanceFrom
+                                      : 0;
+                                    return {
+                                      ...d,
+                                      events: d.events.filter((x, i) => !(mine(x) && i >= from)),
+                                    };
+                                  })
                                 }
                               >
                                 −
