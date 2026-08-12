@@ -534,6 +534,7 @@ export function replay(events: RecordEvent[]): ReplayResult {
   for (const e of events) {
     switch (e.type) {
       case 'class-chosen': {
+        if (state.crystallized) { flag(e, 'creation-only', 'the Class is chosen at creation'); break; }
         const cls = classById(e.classId);
         if (!cls) { flag(e, 'unknown-ref', `unknown class "${e.classId}"`); break; }
         state.classId = e.classId;
@@ -541,6 +542,7 @@ export function replay(events: RecordEvent[]): ReplayResult {
       }
 
       case 'subclass-chosen': {
+        if (state.crystallized) { flag(e, 'creation-only', 'the Subclass is chosen at creation'); break; }
         const found = subclassById(e.subclassId);
         if (!found) { flag(e, 'unknown-ref', `unknown subclass "${e.subclassId}"`); break; }
         if (!state.classId) { flag(e, 'wrong-order', 'subclass chosen before class'); break; }

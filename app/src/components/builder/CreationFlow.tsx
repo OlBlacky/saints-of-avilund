@@ -159,6 +159,12 @@ export default function CreationFlow() {
   const [charRecord, setCharRecord] = useState<CharacterRecord | null>(null);
   const [missing, setMissing] = useState(false);
   const [featView, setFeatView] = useState<'owned' | 'eligible' | 'all'>('eligible');
+  // The Advancement door: a finished character reopens Steps 3 & 4 to spend
+  // banked Advances. The creation spine stays shut — the engine refuses it.
+  const [advancing, setAdvancing] = useState(false);
+  // Where the record stood when the door opened. Refunds reach back only
+  // this far: you may take back what you just bought, never rewrite history.
+  const [advanceFrom, setAdvanceFrom] = useState(0);
   // Ability rows with their full card expanded ("Category/Ability" keys).
   const [openCards, setOpenCards] = useState<string[]>([]);
   const toggleCard = (key: string) =>
@@ -212,10 +218,13 @@ export default function CreationFlow() {
     setDraft((d) => ({ ...d, events: [...d.events, e] }));
   };
 
-  /** Draft privilege: remove the LAST event matching a predicate. */
+  /** Draft privilege: remove the LAST event matching a predicate. On a
+   * finished character this reaches back only to where the Advancement door
+   * opened — the record before that is history, not a draft. */
   const removeLast = (pred: (e: RecordEvent) => boolean) =>
     setDraft((d) => {
-      for (let i = d.events.length - 1; i >= 0; i -= 1) {
+      const floor = d.events.some((e) => e.type === 'crystallized') ? advanceFrom : 0;
+      for (let i = d.events.length - 1; i >= floor; i -= 1) {
         if (pred(d.events[i])) {
           return { ...d, events: [...d.events.slice(0, i), ...d.events.slice(i + 1)] };
         }
@@ -250,6 +259,10 @@ export default function CreationFlow() {
     ) : null;
 
   const crystallized = state.crystallized;
+  /** Purchase controls are dead on a finished character — unless the
+   * Advancement door is open. The engine is still the gate: creation-only
+   * events (Flaws, the home language) refuse themselves either way. */
+  const locked = crystallized && !advancing;
   const cls = state.classId ? classById(state.classId) : undefined;
   const sub = cls?.subclasses.find((s) => s.id === state.subclassId);
   const quirkRolled = Boolean(state.quirk);
@@ -292,7 +305,7 @@ export default function CreationFlow() {
       <button
         type="button"
         class="buy"
-        disabled={crystallized || reason !== null}
+        disabled={locked || reason !== null}
         title={reason ?? undefined}
         onClick={() => append(ev)}
       >
@@ -305,7 +318,7 @@ export default function CreationFlow() {
     <button
       type="button"
       class="undo"
-      disabled={crystallized || !events.some(pred)}
+      disabled={locked || !events.slice(crystallized ? advanceFrom : 0).some(pred)}
       title={title}
       onClick={() => removeLast(pred)}
     >
@@ -636,8 +649,9 @@ export default function CreationFlow() {
 
       <div class={`cf-grid${crystallized ? ' cf-grid--solo' : ''}`}>
         <div class="cf-main">
-          {crystallized ? (
+          {crystallized && !advancing ? (
             <CharacterSheet
+              onAdvance={() => { setAdvanceFrom(events.length); setAdvancing(true); }}
               identity={draft.identity}
               setIdentity={setIdentity}
               status={draft.status ?? (state.sessions === 0 ? 'new' : 'downtime')}
@@ -654,7 +668,25 @@ export default function CreationFlow() {
               why={why}
             />
           ) : (<>
+          {/* ── The Advancement door: Steps 3 & 4 reopened between Sessions,
+                 the creation spine left closed behind them. ── */}
+          {advancing && (
+            <section class="cf-step cf-advancing">
+              <h2>Spend your Advances</h2>
+              <p class="cf-how">
+                Purchases are logged as they are made. Close this when you are done.
+              </p>
+              <div class="cf-line">
+                <span>Bank <Pips kind="M" n={state.bank.major} /> <Pips kind="m" n={state.bank.minor} /></span>
+                <button type="button" class="cf-crystallize" onClick={() => setAdvancing(false)}>
+                  Back to the Sheet
+                </button>
+              </div>
+            </section>
+          )}
+
           {/* ── The Identity Box ── */}
+          {!advancing && (
           <section class="cf-step">
             <h2>The Character</h2>
             <p class="cf-how">Editable at any time. None of this is mechanical.</p>
@@ -688,8 +720,10 @@ export default function CreationFlow() {
               <label class="wide">Notes <input value={draft.identity.notes} onInput={(e) => setIdentity('notes', (e.target as HTMLInputElement).value)} /></label>
             </div>
           </section>
+          )}
 
           {/* ── Step 1 · Class ── */}
+          {!advancing && (
           <section class="cf-step">
             <h2>Step 1 · Choose a Class</h2>
             <div class="cf-cards">
@@ -709,9 +743,10 @@ export default function CreationFlow() {
               ))}
             </div>
           </section>
+          )}
 
           {/* ── Step 2 · Subclass ── */}
-          {cls && (
+          {!advancing && cls && (
             <section class="cf-step">
               <h2>Step 2 · Choose a Subclass</h2>
               <div class="cf-cards">
@@ -757,7 +792,7 @@ export default function CreationFlow() {
                   // takes the Flaw. The up-step restores a Flaw before buying.
                   const flawWhy = why(mk('flaw-taken', { attr: a }));
                   const downTitle = bought > 0 ? 'refund the last point' : (flawWhy ?? FLAW_RULE);
-                  const downDisabled = crystallized || (bought === 0 && flawWhy !== null);
+                  const downDisabled = locked || (bought === 0 && flawWhy !== null);
                   const onDown = () => {
                     if (bought > 0) removeLast((e) => e.type === 'attribute-bought' && e.attr === a);
                     else append(mk('flaw-taken', { attr: a }));
@@ -778,7 +813,7 @@ export default function CreationFlow() {
                       <span class="cf-attr-val" title={val < 0 ? FLAW_RULE : undefined}>
                         {val >= 0 ? `+${val}` : `−${Math.abs(val)}`}
                       </span>
-                      <button type="button" class="buy" disabled={crystallized || upWhy !== null} title={upTitle} onClick={onUp}>+1</button>
+                      <button type="button" class="buy" disabled={locked || upWhy !== null} title={upTitle} onClick={onUp}>+1</button>
                     </div>
                   );
                 })}
@@ -855,7 +890,7 @@ export default function CreationFlow() {
                                   <td class="cf-abbrief">{brief}</td>
                                   <td class="cf-abctl">
                                     {cardToggle}
-                                    {!crystallized && (
+                                    {!locked && (
                                       <BuildControl
                                         choice={ab.builderChoice}
                                         noun={ab.builderNoun ?? 'Spell'}
@@ -947,7 +982,7 @@ export default function CreationFlow() {
                                 <td class="cf-abctl">
                                   {cardToggle}
                                   {owned ? (
-                                    !crystallized && (
+                                    !locked && (
                                       <button
                                         type="button"
                                         class="undo"
@@ -1081,7 +1116,7 @@ export default function CreationFlow() {
               </div>
               <div class="cf-line">
                 <TrainPicker
-                  crystallized={crystallized}
+                  locked={locked}
                   taken={sheet.skills.map((s) => s.skill)}
                   onTrain={(skill) => append(mk('skill-trained', { skill }))}
                   whyFor={(skill) => why(mk('skill-trained', { skill }))}
@@ -1356,7 +1391,7 @@ export default function CreationFlow() {
           )}
 
           {/* ── Step 5 · The Finale ── */}
-          {sub && (
+          {!advancing && sub && (
             <section class="cf-step cf-finale">
               <h2>Step 5 · Quirk &amp; Starting Gear</h2>
               <p class="cf-how">Every character starts with a set of clothes, free.</p>
@@ -1652,12 +1687,12 @@ const SPECIALITY_OPTIONS: Record<string, string[]> = {
 };
 
 function TrainPicker({
-  crystallized,
+  locked,
   taken,
   onTrain,
   whyFor,
 }: {
-  crystallized: boolean;
+  locked: boolean;
   taken: string[];
   onTrain: (skill: string) => void;
   whyFor: (skill: string) => string | null;
@@ -1677,7 +1712,7 @@ function TrainPicker({
     <span class="cf-picker">
       <select
         value={sel}
-        disabled={crystallized}
+        disabled={locked}
         onChange={(e) => {
           setSel((e.target as HTMLSelectElement).value);
           setSpec('');
@@ -1693,7 +1728,7 @@ function TrainPicker({
         <select
           class="cf-spec"
           value={spec}
-          disabled={crystallized}
+          disabled={locked}
           onChange={(e) => setSpec((e.target as HTMLSelectElement).value)}
         >
           <option value="">which trade…</option>
@@ -1708,7 +1743,7 @@ function TrainPicker({
           class="cf-spec"
           value={other}
           placeholder="which trade"
-          disabled={crystallized}
+          disabled={locked}
           onInput={(e) => setOther((e.target as HTMLInputElement).value)}
         />
       )}
@@ -1717,14 +1752,14 @@ function TrainPicker({
           class="cf-spec"
           value={spec}
           placeholder={field === 'faith' ? 'which faith' : 'which trade'}
-          disabled={crystallized}
+          disabled={locked}
           onInput={(e) => setSpec((e.target as HTMLInputElement).value)}
         />
       )}
       <button
         type="button"
         class="buy"
-        disabled={crystallized || !full || reason !== null}
+        disabled={locked || !full || reason !== null}
         title={reason ?? undefined}
         onClick={() => {
           onTrain(full);

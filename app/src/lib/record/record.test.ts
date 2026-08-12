@@ -991,6 +991,36 @@ describe('enforcement', () => {
     expect(late.flags.some((f) => f.code === 'creation-only')).toBe(true);
   });
 
+  it('shuts the Class and Subclass behind crystallization, but not advancement', () => {
+    const finished = [
+      ev('class-chosen', { classId: 'soldier' }),
+      ev('subclass-chosen', { subclassId: 'vanguard' }),
+      ev('quirk-rolled', { quirkName: 'Q', slots: {}, rerollsUsed: 0, gearName: 'G', gearSlots: {} }),
+      ev('crystallized', {}),
+    ];
+    // The spine is closed: no re-Classing a finished character.
+    for (const spine of [
+      ev('class-chosen', { classId: 'friar' }),
+      ev('subclass-chosen', { subclassId: 'sentinel' }),
+    ]) {
+      const { state, flags } = replay([...finished, spine]);
+      expect(flags.some((f) => f.code === 'creation-only')).toBe(true);
+      expect(state.classId).toBe('soldier');
+      expect(state.subclassId).toBe('vanguard');
+    }
+
+    // Advancement purchases stay open — that is what the door spends.
+    const spent = replay([
+      ...finished,
+      ev('milestone-granted', {}),
+      ev('attribute-bought', { attr: 'Strength' }),
+      ev('language-bought', { language: 'Kellish' }),
+    ]);
+    expect(spent.flags).toEqual([]);
+    expect(spent.state.attributeRanks.Strength).toBe(1);
+    expect(spent.state.languages).toContain('Kellish');
+  });
+
   it('requires the spine order: class, then subclass; Quirk before crystallizing', () => {
     const { flags } = replay([
       ev('subclass-chosen', { subclassId: 'vanguard' }),

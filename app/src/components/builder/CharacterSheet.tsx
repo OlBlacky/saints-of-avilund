@@ -29,6 +29,7 @@ import { featById } from '../../lib/feats';
 import { LANGUAGES } from '../../lib/languages';
 import type { Language } from '../../lib/languages';
 import { bestSell, itemName, itemWeightLb, marketById } from '../../lib/markets';
+import { parseAttr } from '../../lib/notation';
 import { fill, PLACES, QUIRKS } from '../../lib/quirks';
 import type { RecordEvent } from '../../lib/record/events';
 import type { ItemLocation } from '../../lib/record/events';
@@ -64,6 +65,14 @@ const PAGES: { n: number; label: string; built: boolean }[] = [
 
 const signed = (n: number) => (n >= 0 ? `+${n}` : `−${Math.abs(n)}`);
 
+/** An event's date, for the log. */
+const fmtDate = (iso: string) => {
+  const d = new Date(iso);
+  return Number.isNaN(d.getTime())
+    ? ''
+    : d.toLocaleDateString(undefined, { year: 'numeric', month: 'short', day: 'numeric' });
+};
+
 /** Shrink an uploaded portrait to a small JPEG data URL — browser storage
  * is modest, and the sheet never shows it larger than a card. */
 function resizePortrait(file: File): Promise<string> {
@@ -88,8 +97,14 @@ function resizePortrait(file: File): Promise<string> {
   });
 }
 
-const partText = (p: { label: string; value: number }) =>
-  p.label === 'Base' ? `${p.label} ${p.value}` : `${p.label} ${signed(p.value)}`;
+/** Math-line labels use the 3-letter attribute short (Str, Dex, …) — the
+ * same abbreviation the notation grammar and play-mode annotations use
+ * elsewhere on the sheet. Non-attribute labels (Vow names, "Base",
+ * "Defence Ranks") pass through untouched. */
+const partText = (p: { label: string; value: number }) => {
+  const label = parseAttr(p.label) ?? p.label;
+  return p.label === 'Base' ? `${label} ${p.value}` : `${label} ${signed(p.value)}`;
+};
 
 /** Parts that appear, same label and value, in every breakdown of a set —
  * e.g. a flat Vow bonus that lands on all six Attribute rows alike. Pulling
@@ -177,6 +192,8 @@ interface Props {
    * their own arrangement, and it persists with the character. */
   boxOrder?: Record<string, string[]>;
   setBoxOrder: (pageKey: string, ids: string[]) => void;
+  /** Open the Advancement door — spending banked Advances between Sessions. */
+  onAdvance: () => void;
 }
 
 /** The boxes each page owns, in their default order. */
@@ -186,7 +203,7 @@ const PAGE_BOXES: Record<string, string[]> = {
   p3: ['weapons', 'wearables', 'equipment', 'home', 'wealth', 'markets'],
 };
 
-export default function CharacterSheet({ identity, setIdentity, status, setStatus, state, sheet, events, basket, setBasket, append, why, boxOrder, setBoxOrder }: Props) {
+export default function CharacterSheet({ identity, setIdentity, status, setStatus, state, sheet, events, basket, setBasket, append, why, boxOrder, setBoxOrder, onAdvance }: Props) {
   const [page, setPage] = useState(1);
   // Commerce is a deliberate act: the Markets show only once opened. An
   // unfinished trip (a Basket with lines) re-opens itself — you are still
@@ -492,6 +509,19 @@ export default function CharacterSheet({ identity, setIdentity, status, setStatu
             <span class="sheet-record">Sessions {state.sessions} · Milestones {state.milestones}</span>
             <button type="button" class="buy" onClick={() => append(mk('session-logged', {}))}>Log a Session</button>
             <button type="button" class="buy" onClick={() => append(mk('milestone-granted', {}))}>Grant a Milestone</button>
+            <button
+              type="button"
+              class="cf-roll"
+              disabled={state.bank.major + state.bank.minor === 0}
+              title={
+                state.bank.major + state.bank.minor === 0
+                  ? 'Nothing banked to spend'
+                  : undefined
+              }
+              onClick={onAdvance}
+            >
+              Spend Advances
+            </button>
           </div>
         )}
       </section>
@@ -1019,13 +1049,35 @@ export default function CharacterSheet({ identity, setIdentity, status, setStatu
           <p class="cf-how">Every event on the record, in order — the build back-trackable to legal.</p>
           <table class="cf-shop-table sheet-table">
             <tbody>
-              {events.map((e, i) => (
-                <tr key={e.id}>
-                  <td class="num">{i + 1}</td>
-                  <td>{describeEvent(e)}</td>
-                  <td class="cf-shop-src">{e.source !== 'player' ? e.source : ''}</td>
-                </tr>
-              ))}
+              {(() => {
+                // The log reads as a history: each Session logged becomes a
+                // heading, and what follows is what was done after it.
+                let session = 0;
+                return events.map((e, i) => {
+                  if (e.type === 'session-logged') {
+                    session += 1;
+                    return (
+                      <tr key={e.id} class="sheet-logsession">
+                        <td class="num">{i + 1}</td>
+                        <td colspan={2}>
+                          <strong>Session {session}</strong>
+                          {e.note ? ` — ${e.note}` : ''}
+                          <span class="cf-shop-src"> · {fmtDate(e.at)}</span>
+                        </td>
+                      </tr>
+                    );
+                  }
+                  return (
+                    <tr key={e.id}>
+                      <td class="num">{i + 1}</td>
+                      <td>{describeEvent(e)}</td>
+                      <td class="cf-shop-src">
+                        {e.source !== 'player' ? `${e.source} · ` : ''}{fmtDate(e.at)}
+                      </td>
+                    </tr>
+                  );
+                });
+              })()}
             </tbody>
           </table>
         </section>

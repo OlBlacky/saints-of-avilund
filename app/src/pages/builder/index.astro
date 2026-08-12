@@ -488,6 +488,15 @@ const blurb = 'Build a character of Avilund — and once they are Complete, this
   .sheet-table--packed th, .sheet-table--packed td { padding-right: 2.2rem; }
   .sheet .scroll > .sheet-table--packed { min-width: 0; }
 
+  /* The Advancement door, and the Session headings in the log */
+  .cf-advancing { border-top-color: var(--oxblood); }
+  .cf-advancing h2 { margin-top: 0; }
+  .sheet-logsession td {
+    background: color-mix(in srgb, var(--gold) 10%, transparent);
+    border-top: 1px solid var(--gold);
+  }
+  .sheet-logsession strong { color: var(--oxblood); }
+
   /* The Feats list: name, current rungs, the exact rules */
   .sheet-feat { padding: 0.45rem 0; border-top: 1px dotted var(--rule); }
   .sheet-feat:first-of-type { border-top: none; }
