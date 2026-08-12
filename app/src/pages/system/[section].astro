@@ -31,19 +31,17 @@ const NOTE: Record<string, string> = {
 ---
 
 <Base title={entry.title} description={entry.blurb}>
-  <p class="back-link"><a href={url('system/')}>← The System</a></p>
-
   <header class="saint-head">
     <p class="eyebrow">{entry.part}</p>
     <h1>{entry.title}</h1>
   </header>
 
   {Content ? (
-    <article class="prose" style="margin:0 auto;">
+    <article class="prose">
       <Content />
     </article>
   ) : (
-    <article class="prose" style="margin:0 auto;">
+    <article class="prose">
       <p class="lede">{entry.blurb}</p>
       <p style="margin-top:1.4rem;">
         <span class={`sys-status sys-status--${entry.status}`}>{STATUS_LABEL[entry.status]}</span>

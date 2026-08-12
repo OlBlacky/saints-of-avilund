@@ -427,17 +427,35 @@ const blurb = 'Build a character of Avilund — and once they are Complete, this
     color: var(--gold); font-size: 0.85rem;
   }
 
-  /* Details, read-only (Manage Mode opens the inputs) */
-  .sheet-detailrow { display: flex; gap: 1.3rem; align-items: flex-start; flex-wrap: wrap; }
-  .sheet-detailfields { flex: 1; min-width: 14rem; }
-  .sheet-portraitbox { display: flex; flex-direction: column; gap: 0.45rem; }
-  .sheet-portrait {
-    display: block; width: 8.5rem; aspect-ratio: 3 / 4; object-fit: cover;
-    border: 1px solid var(--rule); border-radius: 4px;
-    box-shadow: 0 1px 2px var(--shadow);
+  /* The portrait in the header: sized to the block beside it, so it costs
+     no vertical space. Click for the full picture. */
+  .sheet-top { display: flex; gap: 1.1rem; align-items: stretch; }
+  .sheet-topmain { flex: 1; min-width: 0; }
+  .sheet-topportrait {
+    flex: none; padding: 0; cursor: zoom-in;
+    width: 5.4rem; align-self: start;
+    background: none; border: 1px solid var(--rule); border-radius: 4px;
+    box-shadow: 0 1px 2px var(--shadow); overflow: hidden;
   }
-  .sheet-portrait--empty { background: color-mix(in srgb, var(--gold) 6%, transparent); }
-  .sheet-portraitbtns { display: flex; gap: 0.45rem; align-items: center; }
+  .sheet-topportrait img { display: block; width: 100%; aspect-ratio: 3 / 4; object-fit: cover; }
+  .sheet-lightbox {
+    position: fixed; inset: 0; z-index: 100; cursor: zoom-out;
+    display: flex; align-items: center; justify-content: center;
+    padding: 2rem; background: rgba(20, 14, 8, 0.82);
+  }
+  .sheet-lightbox img {
+    max-width: min(90vw, 40rem); max-height: 90vh;
+    border: 1px solid var(--gold); border-radius: 4px;
+  }
+  @media (max-width: 40rem) { .sheet-topportrait { width: 4rem; } }
+  @media print { .sheet-lightbox { display: none; } }
+
+  /* Details, read-only (Manage Mode opens the inputs) */
+  .sheet-portraitbtns { display: flex; gap: 0.5rem; align-items: center; margin-bottom: 0.7rem; }
+  .sheet-portraitlabel {
+    font-variant: small-caps; letter-spacing: 0.05em;
+    color: var(--gold); font-size: 0.85rem;
+  }
   .sheet-uploadbtn { cursor: pointer; text-align: center; }
   .sheet-uploadbtn input[type='file'] { display: none; }
   @media print { .sheet-portraitbtns { display: none; } }

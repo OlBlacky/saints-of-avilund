@@ -37,8 +37,6 @@ const partUrl = (e: typeof entry) => url(`library/${workSlug}/${e.id.split('/').
 ---
 
 <Base title={`${entry.data.title} — ${work?.title ?? 'The Library'}`} description={work?.summary}>
-  <p class="back-link"><a href={url(`library/${workSlug}/`)}>← Contents</a></p>
-
   <header class="saint-head">
     <p class="eyebrow">{work?.title} · {index} of {total}</p>
     <h1>{entry.data.title}</h1>

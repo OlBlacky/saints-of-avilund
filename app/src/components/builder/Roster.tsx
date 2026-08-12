@@ -26,6 +26,7 @@ interface Row {
   name: string;
   line: string;
   state: 'In Creation' | 'Complete';
+  portrait?: string;
 }
 
 function toRow(record: CharacterRecord): Row {
@@ -42,6 +43,7 @@ function toRow(record: CharacterRecord): Row {
     name: draft.identity?.name || 'Unnamed',
     line,
     state: state.crystallized ? 'Complete' : 'In Creation',
+    portrait: draft.identity?.portrait,
   };
 }
 
@@ -119,11 +121,18 @@ export default function Roster() {
       ) : (
         <table class="cf-shop-table sheet-table roster-table">
           <thead>
-            <tr><th>Character</th><th>Build</th><th>State</th><th></th></tr>
+            <tr><th></th><th>Character</th><th>Build</th><th>State</th><th></th></tr>
           </thead>
           <tbody>
             {rows.map((r) => (
               <tr key={r.record.id}>
+                <td class="roster-face">
+                  <a href={openHref(r.record.id)}>
+                    {r.portrait
+                      ? <img src={r.portrait} alt="" />
+                      : <span class="roster-face--empty" />}
+                  </a>
+                </td>
                 <td><a href={openHref(r.record.id)}><strong>{r.name}</strong></a></td>
                 <td>{r.line}</td>
                 <td>{r.state}</td>

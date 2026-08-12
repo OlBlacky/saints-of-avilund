@@ -32,6 +32,13 @@ import Roster from '../../components/builder/Roster.tsx';
       border-bottom: 1px solid var(--gold); font-size: 0.85rem;
     }
     .roster-table td { padding: 0.45rem 0.7rem; border-bottom: 1px solid var(--rule); }
+    /* The face beside the name — how you find your character in a list */
+    .roster-table td.roster-face { width: 1%; padding-right: 0; }
+    .roster-face img, .roster-face--empty {
+      display: block; width: 2.6rem; aspect-ratio: 3 / 4; object-fit: cover;
+      border: 1px solid var(--rule); border-radius: 3px;
+    }
+    .roster-face--empty { background: color-mix(in srgb, var(--gold) 7%, transparent); }
     .roster-table td.act { text-align: right; white-space: nowrap; }
     .roster-table td.act .buy, .roster-table td.act .undo { margin-left: 0.4rem; }
     .roster-table a { text-decoration: none; }

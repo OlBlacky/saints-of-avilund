@@ -190,6 +190,7 @@ export default function CharacterSheet({ identity, setIdentity, status, setStatu
   // Drag state: a box being reordered, or an item headed for a container.
   const [dragBox, setDragBox] = useState<string | null>(null);
   const [dragItem, setDragItem] = useState<string | null>(null);
+  const [portraitOpen, setPortraitOpen] = useState(false);
 
   /** The page's effective box order: the saved order first, then any boxes
    * it doesn't know about (new boxes join at their default place). */
@@ -410,6 +411,20 @@ export default function CharacterSheet({ identity, setIdentity, status, setStatu
 
   return (
     <div class="sheet">
+      {/* The portrait rides beside the name and banner: always present,
+          never in the way. Click it for the full picture. */}
+      <div class="sheet-top">
+        {identity.portrait && (
+          <button
+            type="button"
+            class="sheet-topportrait"
+            title="see the portrait"
+            onClick={() => setPortraitOpen(true)}
+          >
+            <img src={identity.portrait} alt={`${identity.name || 'Character'} portrait`} />
+          </button>
+        )}
+        <div class="sheet-topmain">
       <header class="sheet-head">
         <h1>{identity.name || 'Unnamed'}</h1>
         <div class="cf-viewtoggle sheet-pages" role="group">
@@ -464,6 +479,14 @@ export default function CharacterSheet({ identity, setIdentity, status, setStatu
           </div>
         )}
       </section>
+        </div>
+      </div>
+
+      {portraitOpen && identity.portrait && (
+        <div class="sheet-lightbox" onClick={() => setPortraitOpen(false)}>
+          <img src={identity.portrait} alt={`${identity.name || 'Character'} portrait`} />
+        </div>
+      )}
 
       {page === 1 && (() => {
         const quirk = state.quirk?.id ? QUIRKS.find((q) => q.id === state.quirk!.id) : undefined;
@@ -525,30 +548,20 @@ export default function CharacterSheet({ identity, setIdentity, status, setStatu
             <section class="cf-step sheet-box" style={boxStyle('p1', 'details')} onDragOver={boxDragOver} onDrop={() => dropBox('p1', 'details')}>
               {grip('p1', 'details')}
               <h3>Details</h3>
-              <div class="sheet-detailrow">
-              {(identity.portrait || manage) && (
-                <div class="sheet-portraitbox">
-                  {identity.portrait ? (
-                    <img class="sheet-portrait" src={identity.portrait} alt="Portrait" draggable={false} />
-                  ) : (
-                    <div class="sheet-portrait sheet-portrait--empty" />
-                  )}
-                  {manage && (
-                    <div class="sheet-portraitbtns">
-                      <label class="buy sheet-uploadbtn">
-                        {identity.portrait ? 'Replace' : 'Add a portrait'}
-                        <input type="file" accept="image/*" onChange={onPortrait} />
-                      </label>
-                      {identity.portrait && (
-                        <button type="button" class="undo" onClick={() => setIdentity('portrait', '')}>
-                          remove
-                        </button>
-                      )}
-                    </div>
+              {manage && (
+                <div class="sheet-portraitbtns">
+                  <span class="sheet-portraitlabel">Portrait</span>
+                  <label class="buy sheet-uploadbtn">
+                    {identity.portrait ? 'Replace' : 'Add a portrait'}
+                    <input type="file" accept="image/*" onChange={onPortrait} />
+                  </label>
+                  {identity.portrait && (
+                    <button type="button" class="undo" onClick={() => setIdentity('portrait', '')}>
+                      remove
+                    </button>
                   )}
                 </div>
               )}
-              <div class="sheet-detailfields">
               {manage ? (
                 <div class="cf-identity">
                   <label>Name <input value={identity.name} onInput={(e) => setIdentity('name', (e.target as HTMLInputElement).value)} placeholder="Unnamed" /></label>
@@ -591,8 +604,6 @@ export default function CharacterSheet({ identity, setIdentity, status, setStatu
                   {identity.notes && <span class="sheet-details-wide"><strong>Notes</strong> {identity.notes}</span>}
                 </div>
               )}
-              </div>
-              </div>
             </section>
 
             <section class="cf-step sheet-box" style={boxStyle('p1', 'attributes')} onDragOver={boxDragOver} onDrop={() => dropBox('p1', 'attributes')}>

@@ -19,8 +19,6 @@ const tierLabel: Record<string, string> = {
 ---
 
 <Base title={saint.name} description={saint.blurb.slice(0, 150)}>
-  <p class="back-link"><a href={url('saints/')}>← The Saints</a></p>
-
   <header class="saint-head">
     <p class="eyebrow">{saint.office}{saint.tier !== 'Minores' ? ` · Sancti ${saint.tier}` : ''}</p>
     <h1>{saint.name}</h1>

@@ -11,8 +11,6 @@ const skills = [...SKILLS].sort((a, b) => a.name.localeCompare(b.name));
 ---
 
 <Base title="Skills" description="The Skills of Avilund, alphabetised — each tied to an Attribute, with how it works and the Actions it enables.">
-  <p class="back-link"><a href={url('system/')}>← The System</a></p>
-
   <header class="saint-head">
     <p class="eyebrow">I · Foundations</p>
     <h1>Skills</h1>
@@ -26,7 +24,7 @@ const skills = [...SKILLS].sort((a, b) => a.name.localeCompare(b.name));
     enables.
   </p>
 
-  <div class="prose" style="margin:0 auto 1.6rem;">
+  <div class="prose" style="margin-bottom:1.6rem;">
     <p><strong>Training caps.</strong> The Skills your <strong>Class</strong> grants — its
     <strong>Class Skills</strong> — and the two your <strong>Subclass</strong> grants — its
     <strong>Additional Class Skills</strong> — arrive Trained and climb by Ranks: <strong>+1</strong>,
