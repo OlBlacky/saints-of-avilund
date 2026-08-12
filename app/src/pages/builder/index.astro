@@ -484,6 +484,20 @@ const blurb = 'Build a character of Avilund — and once they are Complete, this
     .sheet-writein { display: block; margin: 0.4rem 0; }
     .sheet-writein-line { height: 1.5rem; border-bottom: 1px dotted var(--rule); }
   }
+
+  /* Draggable boxes: a flex column ordered by the saved arrangement */
+  .sheet-boxcol { display: flex; flex-direction: column; }
+  .sheet-box { position: relative; }
+  .sheet-box-grip {
+    position: absolute; top: 0.8rem; right: 0.9rem;
+    cursor: grab; user-select: none;
+    color: var(--ink-soft); opacity: 0.4; font-size: 0.95rem; line-height: 1;
+  }
+  .sheet-box-grip:hover { opacity: 1; color: var(--oxblood); }
+  .sheet-box-grip:active { cursor: grabbing; }
+  @media print { .sheet-box-grip { display: none; } }
+  /* Item rows drag from their name cell */
+  .sheet-table td[draggable="true"] { cursor: grab; }
   .sheet-table th {
     font-variant: small-caps; font-weight: normal; letter-spacing: 0.05em;
     color: var(--gold); text-align: left; padding: 0.2rem 0.7rem;

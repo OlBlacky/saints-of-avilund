@@ -343,6 +343,31 @@ describe('enforcement', () => {
     expect(martial.flags.some((f) => f.code === 'duplicate')).toBe(true);
   });
 
+  it('a curse copy advances only the Malediction it was built with', () => {
+    const ref = { category: 'Witchcraft', ability: 'Dictiones Atras Susurrare' };
+    const base = [
+      ev('class-chosen', { classId: 'occultist' }),
+      ev('subclass-chosen', { subclassId: 'witch-warlock' }),
+      ev('ability-bought', { ref, instanceId: 'c1', choices: { malediction: 'Ill Luck' } }),
+    ];
+
+    // The chosen Malediction's Ladder climbs like any variable.
+    const chosen = replay([
+      ...base,
+      ev('ability-advanced', { ref, instanceId: 'c1', variable: 'Ill Luck', toRank: 1 }),
+    ]);
+    expect(chosen.flags).toEqual([]);
+    expect(chosen.state.abilities[0].ranks['Ill Luck']).toBe(1);
+
+    // A sister Malediction refuses — it belongs to a differently-built copy.
+    const sister = replay([
+      ...base,
+      ev('ability-advanced', { ref, instanceId: 'c1', variable: 'Wasting (Necrotic)', toRank: 1 }),
+    ]);
+    expect(sister.flags.some((f) => f.code === 'no-access')).toBe(true);
+    expect(sister.flags[0].message).toContain('built with Ill Luck');
+  });
+
   it('applies Vow passives to the sheet, labeled by source', () => {
     const { state, flags } = replay([
       ev('class-chosen', { classId: 'friar' }),

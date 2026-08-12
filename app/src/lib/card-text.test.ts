@@ -64,62 +64,9 @@ function collectOffences(): Offence[] {
   return offences;
 }
 
-// Known offenders from before Rail 11. This list is the worklist for the
-// standardization sweep: fix a card, delete its lines here. Never add to it.
-const BASELINE = new Set<string>([
-  'Arms · Disarming Strike · effects · rank 2',
-  'Protection · Intercept · effects · rank 3',
-  'Marksmanship · Covering Fire · effects · rank 3',
-  'Marksmanship · Debilitating Shot · effects · rank 1',
-  'Marksmanship · Debilitating Shot · effects · rank 2',
-  'Marksmanship · Debilitating Shot · effects · rank 3',
-  'Marksmanship · Marksman’s Eye · effects · rank 3',
-  'Mercy · Blessing · effects · rank 2',
-  'Mercy · Blessing · effects · rank 3',
-  'Forbearance · Vow of Mercy · effects · rank 1',
-  'Forbearance · Vow of Poverty · effects · rank 1',
-  'Forbearance · Vow of Abstinence · effects · rank 1',
-  'Letters · Research · effects · rank 2',
-  'Letters · Research · effects · rank 3',
-  'Letters · Recall · effects · rank 3',
-  'The Lost · Dirty Trick · effects · rank 2',
-  'The Lost · Tumble · effects · rank 1',
-  'The Lost · Tumble · effects · rank 2',
-  'The Lost · Tumble · effects · rank 3',
-  'The Lost · Lay Low · effects · rank 2',
-  'The Lost · Lay Low · effects · rank 3',
-  'Witchcraft · Dictiones Atras Susurrare · Stupor · rank 1',
-  'Witchcraft · Dictiones Atras Susurrare · Stupor · rank 2',
-  'Witchcraft · Dictiones Atras Susurrare · Dread (Fear) · rank 1',
-  'Witchcraft · Dictiones Atras Susurrare · Dread (Fear) · rank 2',
-  'Witchcraft · Dictiones Atras Clamare · Stupor · rank 1',
-  'Witchcraft · Dictiones Atras Clamare · Stupor · rank 2',
-  'Witchcraft · Dictiones Atras Clamare · Dread (Fear) · rank 1',
-  'Witchcraft · Dictiones Atras Clamare · Dread (Fear) · rank 2',
-  'Guile · Bluster · effects · rank 2',
-  'Guile · Bluster · effects · rank 3',
-  'Assassination · Anatomist’s Cut · effects · rank 2',
-  'Assassination · Anatomist’s Cut · effects · rank 3',
-  'Elder Magic · Memory of Celestia · effects · rank 2',
-  'Elder Magic · Pall of Doubt · effects · rank 1',
-  'Elder Magic · Pall of Doubt · effects · rank 2',
-  'Elder Magic · Pall of Doubt · effects · rank 3',
-  'Elder Magic · Lessons from Dark Places · effects · rank 3',
-  'Husbandry · Shepherd’s Dog · Attack · rank 1',
-  'Husbandry · Shepherd’s Dog · Attack · rank 2',
-  'Husbandry · Shepherd’s Dog · Attack · rank 3',
-  'Husbandry · Shepherd’s Dog · Tricks · rank 1',
-  'Husbandry · Shepherd’s Dog · Tricks · rank 2',
-  'Husbandry · Shepherd’s Dog · Tricks · rank 3',
-  'Botany · Stupefying Fumes · targets · rank 1',
-  'Botany · Stupefying Fumes · targets · rank 2',
-  'Botany · Stupefying Fumes · effects · rank 1',
-  'Botany · Stupefying Fumes · effects · rank 2',
-  'Old Magic · The Warning · effects · rank 1',
-  'Old Magic · The Warning · effects · rank 2',
-  'Old Magic · Threshold Ward · targets · rank 2',
-  'Old Magic · Threshold Ward · targets · rank 3',
-]);
+// Known offenders from before Rail 11. The original 82-entry worklist was
+// swept to zero (Aug 2026); the set stays so any future offence fails loudly.
+const BASELINE = new Set<string>([]);
 
 describe('Rail 11 — every Rank stands alone', () => {
   const offences = collectOffences();

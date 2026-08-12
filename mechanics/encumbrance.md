@@ -40,18 +40,29 @@ There is no hard maximum. Heavy has no upper edge; when someone shoulders someth
 
 ## Containers
 
-A **Container** is any item that holds other items (backpack, sack, saddlebag). Any Container can hold any amount — capacity is not tracked.
+A **Container** is any item that holds other items (backpack, sack, saddlebag). Each carries two numbers *(re-ruled Aug 12 2026 — capacities are now tracked, and the discount standardized at 10%/20%)*:
 
-- A Container's contents are multiplied by its **coefficient**; its own weight always counts in full. A well-packed load carries easier:
+- **Capacity** — the weight it holds, in lb. The sheet lists it beside the Container. What exceeds it is the table's problem — the sheet warns, the GM adjudicates.
+- **Coefficient** — a purpose-built carrier multiplies its contents' weight by **×0.9** (a 10% discount); a **Masterwork** carrier by **×0.8** (20%). Bulk vessels carry at full weight (×1). The Container's own weight always counts in full.
 
-| Container | Coefficient |
-|---|---|
-| Sack, pouch, or improvised carry | ×1 |
-| Standard backpack | ×0.75 |
-| Masterwork backpack | ×0.5 |
+| Container | Capacity | Coefficient |
+|---|---|---|
+| Belt pouch | 2 lb | ×0.9 |
+| Satchel | 15 lb | ×0.9 |
+| Backpack | 50 lb | ×0.9 |
+| Saddlebags | 60 lb | ×0.9 |
+| Kit bags (Healer's Kit and kin) | 3 lb | ×0.9 |
+| Sack, large | 40 lb | ×1 |
+| Basket | 25 lb | ×1 |
+| Chest, wooden | 150 lb | ×1 |
+| Strongbox | 50 lb | ×1 |
+| Barrel | 250 lb | ×1 |
 
+- Masterwork versions of the ×0.9 carriers pack at ×0.8; they join the catalogue with the Masterwork gear batch.
 - Nested Containers compound their coefficients.
 - Keep the fractions in the math; round the final Load to the nearest pound.
+
+The data lives in `app/src/lib/equipment.ts` (`CONTAINERS`, `KITS`: `capacityLb` + `coefficient`).
 
 ## Feats & Quirks
 

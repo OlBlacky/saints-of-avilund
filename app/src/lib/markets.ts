@@ -40,6 +40,23 @@ export interface Market {
    * the whole list, free-text Other included, gives way (Black's Road
    * offers Poison alone on Artisan's tools). */
   choiceOverrides?: Record<string, string[]>;
+  /** Abilities that close this Market to their owner — a Renunciation shuts
+   * the door no Feat can reopen (the Saintly Market to the renunciant). */
+  closedBy?: { category: string; ability: string }[];
+}
+
+/** The shape access checks need of an owned Ability. */
+export interface OwnedAbilityRef {
+  category: string;
+  ability: string;
+}
+
+function marketClosed(market: Market, ownedAbilities: OwnedAbilityRef[]): boolean {
+  return (
+    market.closedBy?.some((c) =>
+      ownedAbilities.some((a) => a.category === c.category && a.ability === c.ability),
+    ) ?? false
+  );
 }
 
 // ── Trade goods ──────────────────────────────────────────────────
@@ -142,6 +159,7 @@ export const MARKETS: Market[] = [
     location: "Saints' Island",
     marketType: 'Saintly Market',
     access: { kind: 'open' },
+    closedBy: [{ category: 'Witchcraft', ability: 'Renunciation of Nicetus' }],
     // The religious shelf (moved from the Waldheim Market), bought back at
     // the same 25%. Implements and treats of the faithful still to author.
     sells: imperialStock.map((e) => ({ itemId: e.id, priceCp: e.priceCp! })),
@@ -201,22 +219,33 @@ export function marketById(id: string): Market | undefined {
   return MARKETS.find((m) => m.id === id);
 }
 
-/** The Markets a character can shop, given the Feats they own. */
-export function accessibleMarkets(ownedFeatIds: string[]): Market[] {
+/** The Markets a character can shop, given the Feats and Abilities they
+ * own. Feats open doors; a Renunciation closes one for good. */
+export function accessibleMarkets(
+  ownedFeatIds: string[],
+  ownedAbilities: OwnedAbilityRef[] = [],
+): Market[] {
   return MARKETS.filter(
-    (m) => m.access.kind === 'open' || ownedFeatIds.includes(m.access.featId),
+    (m) =>
+      (m.access.kind === 'open' || ownedFeatIds.includes(m.access.featId)) &&
+      !marketClosed(m, ownedAbilities),
   );
 }
 
 /** The Markets the shop lists. The Waldheim family is always shown (locked
  * ones by title, with the Feat named); Regional Markets appear only once
- * their Feat is owned — no grey rows, discovery lives in the Feat list. */
-export function listedMarkets(ownedFeatIds: string[]): Market[] {
+ * their Feat is owned — no grey rows, discovery lives in the Feat list. A
+ * Market closed by a Renunciation is not listed at all. */
+export function listedMarkets(
+  ownedFeatIds: string[],
+  ownedAbilities: OwnedAbilityRef[] = [],
+): Market[] {
   const regional = ['dunstans-magazine', 'ulrics-exchange'];
   return MARKETS.filter(
     (m) =>
-      !regional.includes(m.id) ||
-      (m.access.kind === 'feat' && ownedFeatIds.includes(m.access.featId)),
+      (!regional.includes(m.id) ||
+        (m.access.kind === 'feat' && ownedFeatIds.includes(m.access.featId))) &&
+      !marketClosed(m, ownedAbilities),
   );
 }
 
@@ -245,9 +274,10 @@ export function bestSell(
   itemId: string,
   ownedFeatIds: string[],
   commerceRank = 0,
+  ownedAbilities: OwnedAbilityRef[] = [],
 ): { market: Market; priceCp: Cp } | undefined {
   let best: { market: Market; priceCp: Cp } | undefined;
-  for (const market of accessibleMarkets(ownedFeatIds)) {
+  for (const market of accessibleMarkets(ownedFeatIds, ownedAbilities)) {
     const price = sellPriceCp(market, itemId, commerceRank);
     if (price !== undefined && (!best || price > best.priceCp)) best = { market, priceCp: price };
   }
@@ -261,9 +291,10 @@ export function bestBuy(
   itemId: string,
   ownedFeatIds: string[],
   commerceRank = 0,
+  ownedAbilities: OwnedAbilityRef[] = [],
 ): { market: Market; priceCp: Cp } | undefined {
   let best: { market: Market; priceCp: Cp } | undefined;
-  for (const market of accessibleMarkets(ownedFeatIds)) {
+  for (const market of accessibleMarkets(ownedFeatIds, ownedAbilities)) {
     const price = buyPriceCp(market, itemId, commerceRank);
     if (price !== undefined && (!best || price < best.priceCp)) best = { market, priceCp: price };
   }

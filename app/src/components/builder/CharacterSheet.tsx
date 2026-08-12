@@ -20,6 +20,7 @@ import {
   MELEE_WEAPONS,
   RANGED_WEAPONS,
   SHIELDS,
+  containerCapacityLb,
   containerCoefficient,
   fmtCoins,
   fmtWeight,
@@ -132,9 +133,20 @@ interface Props {
   setBasket: (basket: BasketLine[]) => void;
   append: (e: RecordEvent) => void;
   why: (e: RecordEvent) => string | null;
+  /** Saved box order per page — the player drags the sheet's boxes into
+   * their own arrangement, and it persists with the character. */
+  boxOrder?: Record<string, string[]>;
+  setBoxOrder: (pageKey: string, ids: string[]) => void;
 }
 
-export default function CharacterSheet({ identity, setIdentity, status, setStatus, state, sheet, events, basket, setBasket, append, why }: Props) {
+/** The boxes each page owns, in their default order. */
+const PAGE_BOXES: Record<string, string[]> = {
+  p1: ['vitals', 'details', 'attributes', 'skills', 'profs', 'feats', 'situational', 'quirks'],
+  p2: ['attacks', 'abilities'],
+  p3: ['weapons', 'wearables', 'equipment', 'home', 'wealth', 'markets'],
+};
+
+export default function CharacterSheet({ identity, setIdentity, status, setStatus, state, sheet, events, basket, setBasket, append, why, boxOrder, setBoxOrder }: Props) {
   const [page, setPage] = useState(1);
   // Commerce is a deliberate act: the Markets show only once opened. An
   // unfinished trip (a Basket with lines) re-opens itself — you are still
@@ -151,8 +163,53 @@ export default function CharacterSheet({ identity, setIdentity, status, setStatu
   // Manage Mode: the sheet is read-only at the table; the Manage Character
   // button opens the editing surfaces (Details, Sessions, Milestones).
   const [manage, setManage] = useState(false);
+  // Drag state: a box being reordered, or an item headed for a container.
+  const [dragBox, setDragBox] = useState<string | null>(null);
+  const [dragItem, setDragItem] = useState<string | null>(null);
+
+  /** The page's effective box order: the saved order first, then any boxes
+   * it doesn't know about (new boxes join at their default place). */
+  const orderOf = (pageKey: string): string[] => {
+    const def = PAGE_BOXES[pageKey];
+    const saved = (boxOrder?.[pageKey] ?? []).filter((id) => def.includes(id));
+    return [...saved, ...def.filter((id) => !saved.includes(id))];
+  };
+  const boxStyle = (pageKey: string, id: string) => `order:${orderOf(pageKey).indexOf(id)};`;
+  const dropBox = (pageKey: string, targetId: string) => {
+    if (!dragBox || dragBox === targetId) return;
+    const ids = orderOf(pageKey);
+    const from = ids.indexOf(dragBox);
+    const to = ids.indexOf(targetId);
+    if (from === -1 || to === -1) return;
+    ids.splice(from, 1);
+    ids.splice(to, 0, dragBox);
+    setBoxOrder(pageKey, ids);
+    setDragBox(null);
+  };
+  const grip = (pageKey: string, id: string) => (
+    <span
+      class="sheet-box-grip"
+      draggable
+      title="drag to reorder"
+      onDragStart={() => setDragBox(id)}
+      onDragEnd={() => setDragBox(null)}
+    >
+      ⠿
+    </span>
+  );
+  const boxDragOver = (e: DragEvent) => {
+    if (dragBox || dragItem) e.preventDefault();
+  };
+  /** Drop an in-flight item at a location (a section, a container). */
+  const dropItemTo = (location: ItemLocation) => {
+    if (!dragItem) return;
+    if (location === `in:${dragItem}`) { setDragItem(null); return; }
+    append(mk('item-moved', { instanceId: dragItem, location }));
+    setDragItem(null);
+  };
   const [langPick, setLangPick] = useState('');
   const ownedFeatIds = state.feats.map((f) => f.featId);
+  const ownedAbilities = state.abilities.map((a) => a.ref);
   const commerce = commerceRankOf(state);
 
   const cls = state.classId ? classById(state.classId) : undefined;
@@ -239,7 +296,7 @@ export default function CharacterSheet({ identity, setIdentity, status, setStatu
     if (!commerceOpen) return null;
     if (!item.itemId) return null;
     if (item.origin === 'starting-gear' && state.sessions < 1) return null;
-    const best = bestSell(item.itemId, ownedFeatIds, commerce);
+    const best = bestSell(item.itemId, ownedFeatIds, commerce, ownedAbilities);
     if (!best || best.priceCp < 1) return null;
     const inBasket = basket
       .filter((l): l is Extract<BasketLine, { direction: 'sell' }> => l.direction === 'sell')
@@ -290,6 +347,21 @@ export default function CharacterSheet({ identity, setIdentity, status, setStatu
 
   const rowWeight = (item: OwnedItem) =>
     item.itemId ? fmtWeight((itemWeightLb(item.itemId) ?? 0) * item.qty || null) : '—';
+
+  /** A container's note: contents weight against capacity, and the discount. */
+  const containerNote = (i: OwnedItem) => {
+    if (!i.itemId) return null;
+    const coeff = containerCoefficient(i.itemId);
+    if (coeff === undefined) return null;
+    const cap = containerCapacityLb(i.itemId);
+    const sub = subtotalLb(i.instanceId);
+    const bits = [
+      cap ? `holds ${sub ? fmtWeight(sub) : '0 lb'} of ${cap} lb` : sub ? `holds ${fmtWeight(sub)}` : null,
+      coeff < 1 ? `contents −${Math.round((1 - coeff) * 100)}%` : null,
+    ].filter(Boolean);
+    if (bits.length === 0) return null;
+    return <span class="cf-shop-src"> — {bits.join(' · ')}</span>;
+  };
 
   const totals = basketTotalsCp(basket, commerce, state);
   const tripLines = basket.filter((l) => l.qty > 0);
@@ -363,8 +435,9 @@ export default function CharacterSheet({ identity, setIdentity, status, setStatu
         const quirk = state.quirk?.id ? QUIRKS.find((q) => q.id === state.quirk!.id) : undefined;
         const ac = sheet.attributes.find((a) => a.attr === 'Constitution')!.armouredDefence.total;
         return (
-          <>
-            <section class="cf-step">
+          <div class="sheet-boxcol">
+            <section class="cf-step sheet-box" style={boxStyle('p1', 'vitals')} onDragOver={boxDragOver} onDrop={() => dropBox('p1', 'vitals')}>
+              {grip('p1', 'vitals')}
               <h3>Vitals</h3>
               <div class="sheet-vitals">
                 <div class="sheet-vital"><span class="sheet-vital-num">{ac}</span><span class="sheet-vital-label">AC</span></div>
@@ -415,7 +488,8 @@ export default function CharacterSheet({ identity, setIdentity, status, setStatu
               </p>
             </section>
 
-            <section class="cf-step">
+            <section class="cf-step sheet-box" style={boxStyle('p1', 'details')} onDragOver={boxDragOver} onDrop={() => dropBox('p1', 'details')}>
+              {grip('p1', 'details')}
               <h3>Details</h3>
               {manage ? (
                 <div class="cf-identity">
@@ -461,7 +535,8 @@ export default function CharacterSheet({ identity, setIdentity, status, setStatu
               )}
             </section>
 
-            <section class="cf-step">
+            <section class="cf-step sheet-box" style={boxStyle('p1', 'attributes')} onDragOver={boxDragOver} onDrop={() => dropBox('p1', 'attributes')}>
+              {grip('p1', 'attributes')}
               <h3>Attributes</h3>
               <div class="scroll">
                 <table class="cf-shop-table sheet-table sheet-table--packed">
@@ -488,7 +563,8 @@ export default function CharacterSheet({ identity, setIdentity, status, setStatu
               </div>
             </section>
 
-            <section class="cf-step">
+            <section class="cf-step sheet-box" style={boxStyle('p1', 'skills')} onDragOver={boxDragOver} onDrop={() => dropBox('p1', 'skills')}>
+              {grip('p1', 'skills')}
               <h3>Skills</h3>
               <table class="cf-shop-table sheet-table sheet-table--packed">
                 <tbody>
@@ -505,7 +581,8 @@ export default function CharacterSheet({ identity, setIdentity, status, setStatu
               ))}
             </section>
 
-            <section class="cf-step">
+            <section class="cf-step sheet-box" style={boxStyle('p1', 'profs')} onDragOver={boxDragOver} onDrop={() => dropBox('p1', 'profs')}>
+              {grip('p1', 'profs')}
               <h3>Proficiencies &amp; Languages</h3>
               <p>
                 {sheet.proficiencies.map((p, i) => (
@@ -544,7 +621,8 @@ export default function CharacterSheet({ identity, setIdentity, status, setStatu
             </section>
 
             {state.feats.length > 0 && (
-              <section class="cf-step">
+              <section class="cf-step sheet-box" style={boxStyle('p1', 'feats')} onDragOver={boxDragOver} onDrop={() => dropBox('p1', 'feats')}>
+                {grip('p1', 'feats')}
                 <h3>Feats</h3>
                 {state.feats.map((f) => {
                   const feat = featById(f.featId);
@@ -568,7 +646,8 @@ export default function CharacterSheet({ identity, setIdentity, status, setStatu
             )}
 
             {sheet.situational.length > 0 && (
-              <section class="cf-step">
+              <section class="cf-step sheet-box" style={boxStyle('p1', 'situational')} onDragOver={boxDragOver} onDrop={() => dropBox('p1', 'situational')}>
+                {grip('p1', 'situational')}
                 <h3>Situational</h3>
                 <ul>
                   {sheet.situational.map((s) => (
@@ -579,7 +658,8 @@ export default function CharacterSheet({ identity, setIdentity, status, setStatu
             )}
 
             {state.quirk && (
-              <section class="cf-step">
+              <section class="cf-step sheet-box" style={boxStyle('p1', 'quirks')} onDragOver={boxDragOver} onDrop={() => dropBox('p1', 'quirks')}>
+                {grip('p1', 'quirks')}
                 <h3>Quirks &amp; Marks</h3>
                 <div class="cf-quirk">
                   <p class="cf-quirk-eyebrow">Quirk</p>
@@ -589,7 +669,7 @@ export default function CharacterSheet({ identity, setIdentity, status, setStatu
                 </div>
               </section>
             )}
-          </>
+          </div>
         );
       })()}
 
@@ -720,8 +800,9 @@ export default function CharacterSheet({ identity, setIdentity, status, setStatu
           setHiddenAttacks((h) => (h.includes(key) ? h.filter((k) => k !== key) : [...h, key]));
 
         return (
-          <>
-            <section class="cf-step">
+          <div class="sheet-boxcol">
+            <section class="cf-step sheet-box" style={boxStyle('p2', 'attacks')} onDragOver={boxDragOver} onDrop={() => dropBox('p2', 'attacks')}>
+              {grip('p2', 'attacks')}
               <h3>Attacks</h3>
               <p class="cf-how">
                 Generated from your attack Abilities and your Held and Equipped weapons. Hide the
@@ -772,7 +853,8 @@ export default function CharacterSheet({ identity, setIdentity, status, setStatu
               )}
             </section>
 
-            <section class="cf-step">
+            <section class="cf-step sheet-box" style={boxStyle('p2', 'abilities')} onDragOver={boxDragOver} onDrop={() => dropBox('p2', 'abilities')}>
+              {grip('p2', 'abilities')}
               <h3>Abilities</h3>
               <div class="sheet-cards">
                 {state.abilities.map((owned) => {
@@ -780,21 +862,34 @@ export default function CharacterSheet({ identity, setIdentity, status, setStatu
                   if (!card) return null;
                   const val = (k: (typeof VAR_ORDER)[number]) => resolveValue(card.vars[k], owned.ranks[k]);
                   const freq = val('frequency');
+                  // The attack line carries this build's math: the attacking
+                  // attribute is annotated with its Offence total.
+                  const atk = val('attack');
+                  const atkNoted = atk?.replace(
+                    /\b(Strength|Dexterity|Constitution|Intelligence|Wisdom|Charisma)\b/g,
+                    (m) => `${m} (${signed(offenceOf(m))})`,
+                  );
                   const strip = [
                     val('action') && `Action: ${val('action')}`,
                     val('range') && val('range') !== '—' && `Range: ${val('range')}`,
-                    val('targets') && `Targets: ${val('targets')}`,
-                    val('attack') && `${val('attack')}`,
+                    val('targets') && val('targets') !== '—' && `Targets: ${val('targets')}`,
+                    atkNoted && atkNoted !== '—' && `Attack: ${atkNoted}`,
                   ].filter(Boolean);
+                  // Every rules-bearing field the card resolves at its current
+                  // Ranks, the named ladders included — complete on the sheet.
                   const body = [
                     ['Damage', val('damage')],
                     ['Effect', val('effects')],
                     ['Duration', val('duration')],
-                  ].filter(([, v]) => v && v !== '—' && v !== 'Instant') as [string, string][];
+                    ...(card.extraVars ?? []).map(
+                      (l) => [l.name, resolveValue(l, owned.ranks[l.name])] as const,
+                    ),
+                  ].filter(([, v]) => v && v !== '—') as [string, string][];
                   return (
                     <div key={owned.instanceId ?? `${owned.ref.category}/${owned.ref.ability}`} class="sheet-card">
                       <p class="cf-quirk-eyebrow">
                         {owned.ref.category}
+                        {card.role && <span class="sheet-card-freq"> · {card.role}</span>}
                         {freq && freq !== '—' && <span class="sheet-card-freq"> · {freq}</span>}
                       </p>
                       <h4>
@@ -810,7 +905,7 @@ export default function CharacterSheet({ identity, setIdentity, status, setStatu
                 })}
               </div>
             </section>
-          </>
+          </div>
         );
       })()}
 
@@ -832,8 +927,16 @@ export default function CharacterSheet({ identity, setIdentity, status, setStatu
         </section>
       )}
 
-      {page === 3 && weapons.length > 0 && (
-        <section class="cf-step">
+      {page === 3 && (
+      <div class="sheet-boxcol">
+      {weapons.length > 0 && (
+        <section
+          class="cf-step sheet-box"
+          style={boxStyle('p3', 'weapons')}
+          onDragOver={boxDragOver}
+          onDrop={() => (dragBox ? dropBox('p3', 'weapons') : dropItemTo('equipped'))}
+        >
+          {grip('p3', 'weapons')}
           <h3>Weapons</h3>
           <div class="scroll">
             <table class="cf-shop-table sheet-table">
@@ -845,7 +948,7 @@ export default function CharacterSheet({ identity, setIdentity, status, setStatu
                   const w = weaponFor(i)!;
                   return (
                     <tr key={i.instanceId}>
-                      <td>{i.name}{i.qty > 1 ? ` ×${i.qty}` : ''}</td>
+                      <td draggable onDragStart={() => setDragItem(i.instanceId)} onDragEnd={() => setDragItem(null)}>{i.name}{i.qty > 1 ? ` ×${i.qty}` : ''}</td>
                       <td>{w.group}</td>
                       <td>{w.damage} {w.type}{w.hands === '2H' ? ' · 2H' : ''}</td>
                       <td>{w.range ?? '—'}</td>
@@ -862,8 +965,14 @@ export default function CharacterSheet({ identity, setIdentity, status, setStatu
         </section>
       )}
 
-      {page === 3 && wearables.length > 0 && (
-        <section class="cf-step">
+      {wearables.length > 0 && (
+        <section
+          class="cf-step sheet-box"
+          style={boxStyle('p3', 'wearables')}
+          onDragOver={boxDragOver}
+          onDrop={() => (dragBox ? dropBox('p3', 'wearables') : dropItemTo('worn'))}
+        >
+          {grip('p3', 'wearables')}
           <h3>Armour &amp; Shields</h3>
           <div class="scroll">
             <table class="cf-shop-table sheet-table">
@@ -883,7 +992,7 @@ export default function CharacterSheet({ identity, setIdentity, status, setStatu
                     : s!.speedPenaltyFt ? `−${s!.speedPenaltyFt}' Speed` : '—';
                   return (
                     <tr key={i.instanceId}>
-                      <td>{i.name}{i.qty > 1 ? ` ×${i.qty}` : ''}</td>
+                      <td draggable onDragStart={() => setDragItem(i.instanceId)} onDragEnd={() => setDragItem(null)}>{i.name}{i.qty > 1 ? ` ×${i.qty}` : ''}</td>
                       <td>+{a ? ARMOUR_TIER_AC[a.tier] : s!.ac}</td>
                       <td>{a ? (a.drNote ? `${a.dr} (${a.drNote})` : a.dr) : s!.dr || '—'}</td>
                       <td>{drawbacks}</td>
@@ -899,14 +1008,19 @@ export default function CharacterSheet({ identity, setIdentity, status, setStatu
         </section>
       )}
 
-      {page === 3 && sheet.handsHeld > 2 && (
-        <div class="cf-flags">
+      {sheet.handsHeld > 2 && (
+        <div class="cf-flags" style="order:-1">
           Held gear fills {sheet.handsHeld} hands — you have two.
         </div>
       )}
 
-      {page === 3 && (
-      <section class="cf-step">
+      <section
+        class="cf-step sheet-box"
+        style={boxStyle('p3', 'equipment')}
+        onDragOver={boxDragOver}
+        onDrop={() => (dragBox ? dropBox('p3', 'equipment') : dropItemTo('equipped'))}
+      >
+        {grip('p3', 'equipment')}
         <h3>Equipment</h3>
         {equipmentCarried.length === 0 ? (
           <p class="cf-how">Nothing but the clothes on your back.</p>
@@ -915,12 +1029,17 @@ export default function CharacterSheet({ identity, setIdentity, status, setStatu
           <table class="cf-shop-table sheet-table">
             <tbody>
               {equipmentCarried.map((i) => (
-                <tr key={i.instanceId}>
-                  <td>
+                <tr
+                  key={i.instanceId}
+                  onDrop={
+                    i.itemId && containerCoefficient(i.itemId) !== undefined
+                      ? (e) => { e.stopPropagation(); dropItemTo(`in:${i.instanceId}`); }
+                      : undefined
+                  }
+                >
+                  <td draggable onDragStart={() => setDragItem(i.instanceId)} onDragEnd={() => setDragItem(null)}>
                     {i.name}{i.qty > 1 ? ` ×${i.qty}` : ''}
-                    {i.itemId && containerCoefficient(i.itemId) !== undefined && contentsOf(i.instanceId).length > 0 && (
-                      <span class="cf-shop-src"> — holds {fmtWeight(subtotalLb(i.instanceId) || null)}</span>
-                    )}
+                    {containerNote(i)}
                   </td>
                   <td class="num">{rowWeight(i)}</td>
                   <td>{moveControl(i)}</td>
@@ -934,21 +1053,30 @@ export default function CharacterSheet({ identity, setIdentity, status, setStatu
         <p class="cf-how">Drawing an Equipped item takes a Move action. Retrieving a Stored item takes a Standard action.</p>
       </section>
 
-      )}
-
-      {page === 3 && equipmentHome.length > 0 && (
-        <section class="cf-step">
+      {equipmentHome.length > 0 && (
+        <section
+          class="cf-step sheet-box"
+          style={boxStyle('p3', 'home')}
+          onDragOver={boxDragOver}
+          onDrop={() => (dragBox ? dropBox('p3', 'home') : dropItemTo('home'))}
+        >
+          {grip('p3', 'home')}
           <h3>At Home</h3>
           <div class="scroll">
             <table class="cf-shop-table sheet-table">
               <tbody>
                 {equipmentHome.map((i) => (
-                  <tr key={i.instanceId}>
-                    <td>
+                  <tr
+                    key={i.instanceId}
+                    onDrop={
+                      i.itemId && containerCoefficient(i.itemId) !== undefined
+                        ? (e) => { e.stopPropagation(); dropItemTo(`in:${i.instanceId}`); }
+                        : undefined
+                    }
+                  >
+                    <td draggable onDragStart={() => setDragItem(i.instanceId)} onDragEnd={() => setDragItem(null)}>
                       {i.name}{i.qty > 1 ? ` ×${i.qty}` : ''}
-                      {i.itemId && containerCoefficient(i.itemId) !== undefined && contentsOf(i.instanceId).length > 0 && (
-                        <span class="cf-shop-src"> — holds {fmtWeight(subtotalLb(i.instanceId) || null)}</span>
-                      )}
+                      {containerNote(i)}
                     </td>
                     <td class="num">{rowWeight(i)}</td>
                     <td>{moveControl(i)}</td>
@@ -961,15 +1089,15 @@ export default function CharacterSheet({ identity, setIdentity, status, setStatu
         </section>
       )}
 
-      {page === 3 && (
-        <section class="cf-step">
-          <h3>Wealth</h3>
-          <p class="sheet-vitline"><strong>Coin</strong> <span>{fmtCoins(state.wealthCp)}</span></p>
-        </section>
-      )}
+      <section class="cf-step sheet-box" style={boxStyle('p3', 'wealth')} onDragOver={boxDragOver} onDrop={() => dropBox('p3', 'wealth')}>
+        {grip('p3', 'wealth')}
+        <h3>Wealth</h3>
+        <p class="sheet-vitline"><strong>Coin</strong> <span>{fmtCoins(state.wealthCp)}</span></p>
+      </section>
 
-      {page === 3 && !commerceOpen && (
-        <section class="cf-step">
+      {!commerceOpen && (
+        <section class="cf-step sheet-box" style={boxStyle('p3', 'markets')} onDragOver={boxDragOver} onDrop={() => dropBox('p3', 'markets')}>
+          {grip('p3', 'markets')}
           <h3>Commerce</h3>
           <div class="cf-line">
             <button type="button" class="cf-roll" onClick={() => setCommerceOpen(true)}>
@@ -979,8 +1107,9 @@ export default function CharacterSheet({ identity, setIdentity, status, setStatu
         </section>
       )}
 
-      {page === 3 && commerceOpen && (
-      <section class="cf-step">
+      {commerceOpen && (
+      <section class="cf-step sheet-box" style={boxStyle('p3', 'markets')} onDragOver={boxDragOver} onDrop={() => dropBox('p3', 'markets')}>
+        {grip('p3', 'markets')}
         <h3>The Markets</h3>
         <p class="cf-how">
           A trip to market: buy and sell in one Basket; the trip commits as one event.
@@ -1006,6 +1135,8 @@ export default function CharacterSheet({ identity, setIdentity, status, setStatu
           </button>
         </div>
       </section>
+      )}
+      </div>
       )}
     </div>
   );

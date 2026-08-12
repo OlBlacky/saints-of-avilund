@@ -21,8 +21,8 @@ const FREQ_ENC: Variable = { base: 'Daily', advances: [{ value: 'Encounter', cos
 const powerDamage = (attr: string): Variable => ({
   base: `1[W] + ${attr}`,
   advances: [
-    { value: `1[W] one size larger + ${attr}`, cost: 'm' },
-    { value: `1[W] two sizes larger + ${attr}`, cost: 'm' },
+    { value: `weapon one size larger, + ${attr}`, cost: 'm' },
+    { value: `weapon two sizes larger, + ${attr}`, cost: 'm' },
     { value: `2[W] + ${attr}`, cost: 'M' },
   ],
 });
@@ -38,13 +38,25 @@ const STRIKE_DAMAGE: Variable = {
 };
 
 // The Daze Ladder — action denial, Dazed to Stunned. Shared by the Confessor's
-// Rebuke and New Magic's Lightning & Sonic effect ladder.
+// Rebuke, New Magic's Lightning & Sonic effect ladder, the Stupor Malediction,
+// and the Botanist's Stupefying Fumes.
 const DAZE_EFFECTS: Variable = {
-  base: 'Dazed — no Reactions or Interrupts.',
+  base: 'Dazed — no Reactions or Interrupts',
   advances: [
     { value: 'Dazed — no Reactions, Interrupts, or Minor Actions', cost: 'm' },
     { value: 'Dazed — no Reactions, Interrupts, Minor, or Move Actions', cost: 'm' },
     { value: 'Stunned — no actions', cost: 'M' },
+  ],
+};
+
+// The Fear Ladder — a Fear debuff from hesitation to rout. Shared by the
+// Confessor's Fly the Wicked, the Dread Malediction, and the Drymann's Warning.
+const FEAR_EFFECTS: Variable = {
+  base: '−1 to its attack rolls (Fear)',
+  advances: [
+    { value: '−1 to its attack rolls, and it cannot move closer to you (Fear)', cost: 'm' },
+    { value: '−1 to its attack rolls, and it cannot move closer to you or attack you (Fear)', cost: 'm' },
+    { value: 'It flees you until it Saves (Fear)', cost: 'M' },
   ],
 };
 
@@ -220,7 +232,7 @@ const ARMS: Ability[] = [
       targets: { base: 'One' },
       attack: { base: 'Strength vs AC' },
       damage: { base: '1[W]' },
-      effects: { base: 'On a hit, +1 to one of your Defences until your next turn.', advances: [{ value: '+2 to one of your Defences', cost: 'm' }] },
+      effects: { base: 'On a hit, +1 to one of your Defences until your next turn.', advances: [{ value: 'On a hit, +2 to one of your Defences until your next turn', cost: 'm' }] },
       duration: { base: 'Until your next turn' },
     },
     options: [
@@ -237,9 +249,9 @@ const ARMS: Ability[] = [
       effects: {
         base: 'Reduce the next incoming damage by 2.',
         advances: [
-          { value: 'by 3', cost: 'm' },
-          { value: 'by 4', cost: 'm' },
-          { value: 'by 4, and make a Melee Basic Attack (riposte)', cost: 'M' },
+          { value: 'Reduce the next incoming damage by 3', cost: 'm' },
+          { value: 'Reduce the next incoming damage by 4', cost: 'm' },
+          { value: 'Reduce the next incoming damage by 4, and make a Melee Basic Attack (riposte)', cost: 'M' },
         ],
       },
     },
@@ -257,8 +269,8 @@ const ARMS: Ability[] = [
       effects: {
         base: 'Target takes −1 to hit.',
         advances: [
-          { value: '−2 to hit', cost: 'm' },
-          { value: '−2, and the target must spend a Minor Action to re-grip its weapon', cost: 'm' },
+          { value: 'Target takes −2 to hit', cost: 'm' },
+          { value: 'Target takes −2 to hit, and must spend a Minor Action to re-grip its weapon', cost: 'm' },
           { value: 'Disarmed — the weapon flies to an adjacent square', cost: 'M' },
         ],
       },
@@ -302,7 +314,7 @@ const ARMS: Ability[] = [
       targets: { base: 'One', advances: [{ value: 'Two', cost: 'm' }] },
       effects: {
         base: 'Learn the creature’s HP tier and its highest Offence or softest Defence.',
-        advances: [{ value: 'Also learn all of its Defences', cost: 'm' }],
+        advances: [{ value: 'Learn the creature’s HP tier, its highest Offence, and all of its Defences', cost: 'm' }],
       },
     },
   },
@@ -319,14 +331,7 @@ const PROTECTION: Ability[] = [
       targets: { base: 'One' },
       attack: { base: 'Strength vs AC' },
       damage: { base: 'Light / shield damage' },
-      effects: {
-        base: 'Daze: the target can take no Reactions or Interrupts.',
-        advances: [
-          { value: 'Daze also removes a Minor Action', cost: 'm' },
-          { value: 'Daze also removes a Move Action', cost: 'm' },
-          { value: 'Daze removes all actions (fully Stunned)', cost: 'M' },
-        ],
-      },
+      effects: DAZE_EFFECTS,
       duration: { base: 'Save ends' },
     },
     options: [{ label: 'Armour Specialization Hooks', note: ARMOUR_HOOK_NOTE, detail: ["Light Shields → Push 5'", "Heavy Shields → Push 5' or Prone"] }],
@@ -340,7 +345,7 @@ const PROTECTION: Ability[] = [
       targets: { base: 'One' },
       attack: { base: 'Strength vs AC' },
       damage: STRIKE_DAMAGE,
-      effects: { base: 'Target is Marked (−1 to attack anyone but you).', advances: [{ value: 'Marked −2', cost: 'm' }] },
+      effects: { base: 'Target is Marked (−1 to attack anyone but you).', advances: [{ value: 'Target is Marked (−2 to attack anyone but you)', cost: 'm' }] },
       duration: { base: 'Save ends' },
     },
   },
@@ -356,9 +361,9 @@ const PROTECTION: Ability[] = [
       effects: {
         base: 'On a hit, one ally gains +1 AC.',
         advances: [
-          { value: 'you and one ally gain +1 AC', cost: 'm' },
-          { value: 'you and one ally gain +2 AC', cost: 'm' },
-          { value: 'you and all adjacent allies gain +2 AC', cost: 'M' },
+          { value: 'On a hit, you and one ally gain +1 AC', cost: 'm' },
+          { value: 'On a hit, you and one ally gain +2 AC', cost: 'm' },
+          { value: 'On a hit, you and all adjacent allies gain +2 AC', cost: 'M' },
         ],
       },
       duration: { base: 'Until your next turn' },
@@ -393,9 +398,9 @@ const PROTECTION: Ability[] = [
       effects: {
         base: 'Trade places with the endangered ally, then take the damage in their stead.',
         advances: [
-          { value: 'You take the damage, reduced by your Armour DR.', cost: 'm' },
-          { value: 'Instead, the opponent must make the attack against you, resolved normally — they may miss your Defences entirely.', cost: 'm' },
-          { value: 'As above, and you may intercept for an ally up to 10\' (2 squares) away.', cost: 'M' },
+          { value: 'Trade places with the endangered ally, then take the damage in their stead, reduced by your Armour DR', cost: 'm' },
+          { value: 'Trade places with the endangered ally; the attack is made against you instead, resolved normally — it may miss your Defences entirely', cost: 'm' },
+          { value: 'Trade places with an endangered ally up to 10\' (2 squares) away; the attack is made against you instead, resolved normally — it may miss your Defences entirely', cost: 'M' },
         ],
       },
       duration: { base: 'Instant' },
@@ -426,9 +431,9 @@ const PROTECTION: Ability[] = [
       effects: {
         base: 'You cannot be surprised on your watch (2 hours); +1 Perception.',
         advances: [
-          { value: '4 hours; +1 Perception', cost: 'm' },
-          { value: '6 hours; +1 Perception', cost: 'm' },
-          { value: '8 hours; +2 Perception', cost: 'M' },
+          { value: 'You cannot be surprised on your watch (4 hours); +1 Perception', cost: 'm' },
+          { value: 'You cannot be surprised on your watch (6 hours); +1 Perception', cost: 'm' },
+          { value: 'You cannot be surprised on your watch (8 hours); +2 Perception', cost: 'M' },
         ],
       },
     },
@@ -447,9 +452,9 @@ const LEADERSHIP: Ability[] = [
       effects: {
         base: 'An ally makes a basic attack for free.',
         advances: [
-          { value: 'a free basic attack, +1 to hit', cost: 'm' },
-          { value: 'a free basic attack, +2 to hit', cost: 'm' },
-          { value: 'an ally may take any Standard Action; if it is an attack, +2 to hit', cost: 'M', note: 'L3' },
+          { value: 'An ally makes a basic attack for free, at +1 to hit', cost: 'm' },
+          { value: 'An ally makes a basic attack for free, at +2 to hit', cost: 'm' },
+          { value: 'An ally may take any Standard Action for free; if it is an attack, +2 to hit', cost: 'M', note: 'L3' },
         ],
       },
       duration: { base: 'Instant' },
@@ -467,9 +472,9 @@ const LEADERSHIP: Ability[] = [
       effects: {
         base: 'Until next round, all allies gain +1 to hit the struck target.',
         advances: [
-          { value: 'all allies +1 to hit and damage', cost: 'm' },
-          { value: 'all allies +2 to hit and damage', cost: 'm' },
-          { value: 'all allies +2 to hit and damage, and one adjacent ally may make a Melee Basic Attack against the opponent', cost: 'M' },
+          { value: 'Until next round, all allies gain +1 to hit and damage against the struck target', cost: 'm' },
+          { value: 'Until next round, all allies gain +2 to hit and damage against the struck target', cost: 'm' },
+          { value: 'Until next round, all allies gain +2 to hit and damage against the struck target, and one adjacent ally may make a Melee Basic Attack against it', cost: 'M' },
         ],
       },
       duration: { base: 'Until next round' },
@@ -485,9 +490,9 @@ const LEADERSHIP: Ability[] = [
       effects: {
         base: 'Until next round, all allies gain +1 to hit the designated target.',
         advances: [
-          { value: 'all allies +1 to hit and damage', cost: 'm' },
-          { value: 'all allies +2 to hit and damage', cost: 'm' },
-          { value: 'all allies +2 to hit and damage, and one ally may make a Ranged Basic Attack against the opponent', cost: 'M' },
+          { value: 'Until next round, all allies gain +1 to hit and damage against the designated target', cost: 'm' },
+          { value: 'Until next round, all allies gain +2 to hit and damage against the designated target', cost: 'm' },
+          { value: 'Until next round, all allies gain +2 to hit and damage against the designated target, and one ally may make a Ranged Basic Attack against it', cost: 'M' },
         ],
       },
       duration: { base: 'Until next round' },
@@ -505,9 +510,9 @@ const LEADERSHIP: Ability[] = [
       effects: {
         base: 'On a hit, allies within 10\' gain +1 AC vs that opponent’s attacks of the type you used (melee or ranged).',
         advances: [
-          { value: '+1 to all Defences vs that opponent', cost: 'm' },
-          { value: '+1 to all Defences vs all opponents', cost: 'm' },
-          { value: '+2 to all Defences vs all opponents', cost: 'M' },
+          { value: 'On a hit, allies within 10\' gain +1 to all Defences vs that opponent', cost: 'm' },
+          { value: 'On a hit, allies within 10\' gain +1 to all Defences vs all opponents', cost: 'm' },
+          { value: 'On a hit, allies within 10\' gain +2 to all Defences vs all opponents', cost: 'M' },
         ],
       },
       duration: { base: '1 round' },
@@ -523,9 +528,9 @@ const LEADERSHIP: Ability[] = [
       effects: {
         base: 'Allies within 10\' gain +1 to all Defences until your next turn.',
         advances: [
-          { value: 'within 20\'', cost: 'm' },
-          { value: 'within 30\'', cost: 'm' },
-          { value: 'within 30\', and gain 2 Temp HP', cost: 'M', note: 'L5' },
+          { value: 'Allies within 20\' gain +1 to all Defences until your next turn', cost: 'm' },
+          { value: 'Allies within 30\' gain +1 to all Defences until your next turn', cost: 'm' },
+          { value: 'Allies within 30\' gain +1 to all Defences until your next turn, and 2 Temp HP', cost: 'M', note: 'L5' },
         ],
       },
       duration: { base: 'Until your next turn' },
@@ -540,9 +545,9 @@ const LEADERSHIP: Ability[] = [
       effects: {
         base: 'Allies within 10\' gain +1 to hit on all attacks until your next turn.',
         advances: [
-          { value: 'within 20\'', cost: 'm' },
-          { value: 'within 30\'', cost: 'm' },
-          { value: 'within 30\', and +2 damage', cost: 'M', note: 'L3' },
+          { value: 'Allies within 20\' gain +1 to hit on all attacks until your next turn', cost: 'm' },
+          { value: 'Allies within 30\' gain +1 to hit on all attacks until your next turn', cost: 'm' },
+          { value: 'Allies within 30\' gain +1 to hit and +2 damage on all attacks until your next turn', cost: 'M', note: 'L3' },
         ],
       },
       duration: { base: 'Until your next turn' },
@@ -559,15 +564,15 @@ const LEADERSHIP: Ability[] = [
         advances: [
           { value: '2 allies (≤30\')', cost: 'm' },
           { value: '3 allies (≤30\')', cost: 'm' },
-          { value: 'all allies within hearing range', cost: 'M' },
+          { value: 'All allies within hearing range', cost: 'M' },
         ],
       },
       effects: {
         base: 'The ally may immediately attempt to shake a Condition.',
         advances: [
-          { value: 'shake a Condition, with +1', cost: 'm' },
-          { value: 'shake a Condition, with +2', cost: 'm' },
-          { value: 'shake a Condition with +2, and gain 2 Temp HP', cost: 'M' },
+          { value: 'The ally may immediately attempt to shake a Condition, with +1', cost: 'm' },
+          { value: 'The ally may immediately attempt to shake a Condition, with +2', cost: 'm' },
+          { value: 'The ally may immediately attempt to shake a Condition, with +2, and gains 2 Temp HP', cost: 'M' },
         ],
       },
       duration: { base: 'Instant' },
@@ -604,8 +609,8 @@ const MARKSMANSHIP: Ability[] = [
       effects: {
         base: 'Movement: −5\' Speed.',
         advances: [
-          { value: '−10\' Speed', cost: 'm' },
-          { value: '−15\' Speed', cost: 'm' },
+          { value: 'Movement: −10\' Speed', cost: 'm' },
+          { value: 'Movement: −15\' Speed', cost: 'm' },
           { value: 'Immobilized', cost: 'M' },
         ],
       },
@@ -624,8 +629,8 @@ const MARKSMANSHIP: Ability[] = [
       effects: {
         base: 'On a hit, shift 5\' and gain +1 to a Defence until your next turn.',
         advances: [
-          { value: 'shift 10\'; +1 to a Defence', cost: 'm' },
-          { value: 'shift 10\'; +2 to a Defence', cost: 'm' },
+          { value: 'On a hit, shift 10\' and gain +1 to a Defence until your next turn', cost: 'm' },
+          { value: 'On a hit, shift 10\' and gain +2 to a Defence until your next turn', cost: 'm' },
         ],
       },
       duration: { base: 'Until your next turn' },
@@ -642,7 +647,7 @@ const MARKSMANSHIP: Ability[] = [
         advances: [
           { value: '−2 to that attack', cost: 'm' },
           { value: '−2 to that attack and any other attacks from that target until the end of next round', cost: 'm' },
-          { value: 'as above, and also make a Ranged Basic Attack against the target', cost: 'M' },
+          { value: '−2 to that attack and any other attacks from that target until the end of next round, and you make a Ranged Basic Attack against the target', cost: 'M' },
         ],
       },
     },
@@ -682,9 +687,9 @@ const MARKSMANSHIP: Ability[] = [
       effects: {
         base: '−1 to a chosen Defence.',
         advances: [
-          { value: '−2', cost: 'm' },
-          { value: '−2 and Vulnerable 1', cost: 'm' },
-          { value: '−2 and Vulnerable 3', cost: 'M' },
+          { value: '−2 to a chosen Defence', cost: 'm' },
+          { value: '−2 to a chosen Defence, and Vulnerable 1', cost: 'm' },
+          { value: '−2 to a chosen Defence, and Vulnerable 3', cost: 'M' },
         ],
       },
       duration: { base: 'Save ends (Con Save vs the attacker’s Dex Offence)' },
@@ -697,9 +702,9 @@ const MARKSMANSHIP: Ability[] = [
       effects: {
         base: '+1 on Perception rolls to spot things up to 50\' away.',
         advances: [
-          { value: 'up to 100\' away', cost: 'm' },
-          { value: 'up to 200\' away', cost: 'm' },
-          { value: '+2, and up to 1000\' away', cost: 'M' },
+          { value: '+1 on Perception rolls to spot things up to 100\' away', cost: 'm' },
+          { value: '+1 on Perception rolls to spot things up to 200\' away', cost: 'm' },
+          { value: '+2 on Perception rolls to spot things up to 1000\' away', cost: 'M' },
         ],
       },
     },
@@ -723,9 +728,9 @@ const MERCY: Ability[] = [
       effects: {
         base: 'Heal Wis HP.',
         advances: [
-          { value: 'Heal Wis + 1', cost: 'm' },
-          { value: 'Heal Wis + 2', cost: 'm' },
-          { value: 'Heal Wis + 1d6, and the target may make one Save of their choice against any Condition affecting them', cost: 'M' },
+          { value: 'Heal Wis + 1 HP', cost: 'm' },
+          { value: 'Heal Wis + 2 HP', cost: 'm' },
+          { value: 'Heal Wis + 1d6 HP, and the target may make one Save of their choice against any Condition affecting them', cost: 'M' },
         ],
       },
       duration: { base: 'Instant' },
@@ -741,9 +746,9 @@ const MERCY: Ability[] = [
       effects: {
         base: 'Reduce the damage from one ongoing-damage Condition (Bleed, Poison, etc.) by 1. A touch also stabilises a dying creature — it stops dying. (Bodily Conditions only.)',
         advances: [
-          { value: 'Reduce by 2', cost: 'm' },
-          { value: 'Reduce by 3', cost: 'm' },
-          { value: 'End the Condition completely', cost: 'M' },
+          { value: 'Reduce the damage from one ongoing-damage Condition by 2. A touch also stabilises a dying creature. (Bodily Conditions only.)', cost: 'm' },
+          { value: 'Reduce the damage from one ongoing-damage Condition by 3. A touch also stabilises a dying creature. (Bodily Conditions only.)', cost: 'm' },
+          { value: 'End one ongoing-damage Condition completely. A touch also stabilises a dying creature. (Bodily Conditions only.)', cost: 'M' },
         ],
       },
       duration: { base: 'Instant' },
@@ -767,8 +772,8 @@ const MERCY: Ability[] = [
         base: '+1 to all Saves.',
         advances: [
           { value: '+2 to all Saves', cost: 'm' },
-          { value: '+2, and may attempt a Save now', cost: 'm' },
-          { value: '+2, may attempt a Save now, and if it succeeds, immunity to that effect for the encounter', cost: 'M' },
+          { value: '+2 to all Saves, and the target may attempt a Save now', cost: 'm' },
+          { value: '+2 to all Saves, and the target may attempt a Save now — if it succeeds, immunity to that effect for the encounter', cost: 'M' },
         ],
       },
       duration: {
@@ -798,8 +803,8 @@ const MERCY: Ability[] = [
       effects: {
         base: 'Grant 1 Reroll, shared by the blessed, on any d20 roll.',
         advances: [
-          { value: '2 Rerolls, shared', cost: 'm' },
-          { value: '3 Rerolls, shared', cost: 'm' },
+          { value: 'Grant 2 Rerolls, shared by the blessed, on any d20 roll', cost: 'm' },
+          { value: 'Grant 3 Rerolls, shared by the blessed, on any d20 roll', cost: 'm' },
           { value: 'Each blessed ally gets their own Reroll', cost: 'M' },
         ],
       },
@@ -823,7 +828,7 @@ const MERCY: Ability[] = [
       effects: {
         base: 'Make a Religion (Saintly Faith) check, DC 10 (a friendly Saintly gathering) up to 20 (strangers in a strange land). On a success, NPC Attitude improves one step and/or hireling Morale improves one step. Never works on Hostile NPCs.',
         advances: [
-          { value: 'Improve by two steps instead', cost: 'M' },
+          { value: 'Make a Religion (Saintly Faith) check, DC 10 (a friendly Saintly gathering) up to 20 (strangers in a strange land). On a success, NPC Attitude improves two steps and/or hireling Morale improves two steps. Never works on Hostile NPCs.', cost: 'M' },
         ],
       },
       duration: { base: 'The scene' },
@@ -839,9 +844,9 @@ const MERCY: Ability[] = [
       effects: {
         base: 'Tended allies recover an extra Wis HP on the rest, and may make one Save against a bodily affliction (+0). Bodily afflictions only.',
         advances: [
-          { value: 'Wis + 1 HP; the Save is at +1', cost: 'm' },
-          { value: 'Wis + 2 HP; the Save is at +2', cost: 'm' },
-          { value: 'Wis + 1d6 HP; a Save against each bodily affliction, at +2; and heal 1 point of Int, Wis or Cha Attribute Damage', cost: 'M' },
+          { value: 'Tended allies recover an extra Wis + 1 HP on the rest, and may make one Save against a bodily affliction (+1)', cost: 'm' },
+          { value: 'Tended allies recover an extra Wis + 2 HP on the rest, and may make one Save against a bodily affliction (+2)', cost: 'm' },
+          { value: 'Tended allies recover an extra Wis + 1d6 HP on the rest, may make a Save against each bodily affliction (+2), and heal 1 point of Int, Wis or Cha Attribute Damage', cost: 'M' },
         ],
       },
       duration: { base: 'The rest' },
@@ -853,6 +858,16 @@ const MERCY: Ability[] = [
 // The pacifist martyr: binding Vows, Temp HP wrung from his own pain,
 // and the endurance to keep standing. No attacks. Vows are passive and
 // break only under compulsion — lost until the Mendicant Atones.
+// The Martyr Temp HP Ladder — shared by Flesh of the Martyr and Nimbus of the Martyr.
+const MARTYR_TEMP_HP: Variable = {
+  base: 'Grant Con Temp HP.',
+  advances: [
+    { value: 'Grant Con + 1 Temp HP', cost: 'm' },
+    { value: 'Grant Con + 2 Temp HP', cost: 'm' },
+    { value: 'Grant Con + 2 Temp HP, and heal 1 HP', cost: 'M' },
+  ],
+};
+
 const FORBEARANCE: Ability[] = [
   {
     name: 'Vow of Mercy', category: 'Forbearance', role: 'Vow', mode: 'Passive',
@@ -860,7 +875,7 @@ const FORBEARANCE: Ability[] = [
       frequency: { base: 'Passive (always on)' },
       effects: {
         base: 'Any Ability you use that heals or grants Temp HP to allies is +1. The Vow: you may never willingly bear arms, make an attack roll, harm an ally, or allow an ally to come to harm if you can prevent it.',
-        advances: [{ value: '+2', cost: 'M', note: 'L5' }],
+        advances: [{ value: 'Any Ability you use that heals or grants Temp HP to allies is +2. The Vow: you may never willingly bear arms, make an attack roll, harm an ally, or allow an ally to come to harm if you can prevent it.', cost: 'M', note: 'L5' }],
       },
     },
   },
@@ -871,7 +886,7 @@ const FORBEARANCE: Ability[] = [
       frequency: { base: 'Passive (always on)' },
       effects: {
         base: '+1 to all Armoured and Unarmoured Defences. The Vow: you may not accumulate personal wealth — nothing beyond the clothes on your back and the instruments of healing and your Saintly office.',
-        advances: [{ value: '+2', cost: 'M', note: 'L5' }],
+        advances: [{ value: '+2 to all Armoured and Unarmoured Defences. The Vow: you may not accumulate personal wealth — nothing beyond the clothes on your back and the instruments of healing and your Saintly office.', cost: 'M', note: 'L5' }],
       },
     },
   },
@@ -882,7 +897,7 @@ const FORBEARANCE: Ability[] = [
       frequency: { base: 'Passive (always on)' },
       effects: {
         base: '+1 to all Saves. The Vow: you may never imbibe alcohol, tobacco, or similar substances, nor drink potions or willingly receive any healing or magical benefit that is not from a Saintly source.',
-        advances: [{ value: '+2', cost: 'M', note: 'L5' }],
+        advances: [{ value: '+2 to all Saves. The Vow: you may never imbibe alcohol, tobacco, or similar substances, nor drink potions or willingly receive any healing or magical benefit that is not from a Saintly source.', cost: 'M', note: 'L5' }],
       },
     },
   },
@@ -899,14 +914,7 @@ const FORBEARANCE: Ability[] = [
           { value: 'All allies visible', cost: 'M' },
         ],
       },
-      effects: {
-        base: 'Grant Con Temp HP.',
-        advances: [
-          { value: 'Con + 1', cost: 'm' },
-          { value: 'Con + 2', cost: 'm' },
-          { value: 'Con + 2, and heal 1 HP', cost: 'M' },
-        ],
-      },
+      effects: MARTYR_TEMP_HP,
     },
   },
   {
@@ -923,14 +931,7 @@ const FORBEARANCE: Ability[] = [
         ],
       },
       targets: { base: 'Self + all allies within range' },
-      effects: {
-        base: 'Grant Con Temp HP.',
-        advances: [
-          { value: 'Con + 1', cost: 'm' },
-          { value: 'Con + 2', cost: 'm' },
-          { value: 'Con + 2, and heal 1 HP', cost: 'M' },
-        ],
-      },
+      effects: MARTYR_TEMP_HP,
       duration: {
         base: 'Temp HP vanish at the end of the encounter',
         advances: [{ value: 'Temp HP last until a long rest', cost: 'M', note: 'L3' }],
@@ -946,9 +947,9 @@ const FORBEARANCE: Ability[] = [
       effects: {
         base: 'While active, you cannot be reduced below 1 HP.',
         advances: [
-          { value: 'Also reduce all ongoing-damage you take by 1', cost: 'm' },
-          { value: 'Reduce ongoing-damage by 2', cost: 'm' },
-          { value: 'Also shrug off (end) one Condition on you each round', cost: 'M' },
+          { value: 'While active, you cannot be reduced below 1 HP, and ongoing damage you take is reduced by 1', cost: 'm' },
+          { value: 'While active, you cannot be reduced below 1 HP, and ongoing damage you take is reduced by 2', cost: 'm' },
+          { value: 'While active, you cannot be reduced below 1 HP, ongoing damage you take is reduced by 2, and you shrug off (end) one Condition on you each round', cost: 'M' },
         ],
       },
       duration: {
@@ -976,9 +977,9 @@ const FORBEARANCE: Ability[] = [
       effects: {
         base: 'Ignore the ill effects of hunger, thirst, and exposure to weather.',
         advances: [
-          { value: 'Also ignore fatigue from forced marches', cost: 'm' },
-          { value: 'Need only half the normal provisions and rest', cost: 'm' },
-          { value: 'The company may push a longer day\'s travel with no penalty, and shrugs one environmental hazard', cost: 'M' },
+          { value: 'Ignore the ill effects of hunger, thirst, exposure to weather, and fatigue from forced marches', cost: 'm' },
+          { value: 'Ignore the ill effects of hunger, thirst, exposure to weather, and forced marches, and need only half the normal provisions and rest', cost: 'm' },
+          { value: 'Ignore the ill effects of hunger, thirst, exposure to weather, and forced marches, and need only half the normal provisions and rest; the company may push a longer day\'s travel with no penalty, and shrugs one environmental hazard', cost: 'M' },
         ],
       },
     },
@@ -1049,14 +1050,7 @@ const SPIRITUAL: Ability[] = [
       range: { base: 'Close burst, centred on you' },
       targets: STD_AREA,
       attack: { base: 'Charisma vs Unarmoured Wisdom (one roll vs all)' },
-      effects: {
-        base: '−1 to attack rolls (Fear).',
-        advances: [
-          { value: '−1 to attack rolls, and it can’t move closer to you (Fear)', cost: 'm' },
-          { value: '−1 to attack rolls, and it can’t move closer to you or attack you (Fear)', cost: 'm' },
-          { value: 'The target flees you until it Saves (Fear)', cost: 'M' },
-        ],
-      },
+      effects: FEAR_EFFECTS,
       duration: { base: 'Save ends' },
     },
   },
@@ -1132,8 +1126,8 @@ const READ_SCROLLS: Ability = {
     effects: {
       base: 'Read only — identify a scroll’s spell. You must know its language (e.g. the Elder Arcana Tongue).',
       advances: [
-        { value: 'cast Lesser spells from a scroll (consumed on use)', cost: 'm' },
-        { value: 'cast Greater spells', cost: 'M', note: 'L5' },
+        { value: 'Identify and cast Lesser spells from a scroll (consumed on use). You must know its language.', cost: 'm' },
+        { value: 'Identify and cast Lesser and Greater spells from a scroll (consumed on use). You must know its language.', cost: 'M', note: 'L5' },
       ],
     },
   },
@@ -1153,8 +1147,8 @@ const READ_SPELLBOOKS: Ability = {
     effects: {
       base: 'Read only — identify a spellbook’s spell. You must know its language. (Reusable; supply the components each casting.)',
       advances: [
-        { value: 'cast Lesser spells', cost: 'm' },
-        { value: 'cast Greater spells', cost: 'M', note: 'L5' },
+        { value: 'Identify and cast Lesser spells from a spellbook. You must know its language. (Reusable; supply the components each casting.)', cost: 'm' },
+        { value: 'Identify and cast Lesser and Greater spells from a spellbook. You must know its language. (Reusable; supply the components each casting.)', cost: 'M', note: 'L5' },
       ],
     },
   },
@@ -1194,9 +1188,9 @@ const RESEARCH: Ability = {
     effects: {
       base: 'With relevant written sources, make a Knowledge Skill check vs a GM-set DC, with a +1 research bonus.',
       advances: [
-        { value: 'the bonus is +2', cost: 'm' },
-        { value: '+3', cost: 'm' },
-        { value: '+3, and a Reroll', cost: 'M' },
+        { value: 'With relevant written sources, make a Knowledge Skill check vs a GM-set DC, with a +2 research bonus', cost: 'm' },
+        { value: 'With relevant written sources, make a Knowledge Skill check vs a GM-set DC, with a +3 research bonus', cost: 'm' },
+        { value: 'With relevant written sources, make a Knowledge Skill check vs a GM-set DC, with a +3 research bonus and a Reroll', cost: 'M' },
       ],
     },
   },
@@ -1212,9 +1206,9 @@ const RECALL: Ability = {
     effects: {
       base: 'Make a Knowledge Skill check to recall a detail relevant to the situation or foe.',
       advances: [
-        { value: 'the check is at +1', cost: 'm' },
-        { value: 'at +2', cost: 'm' },
-        { value: '+2, and a Reroll', cost: 'M' },
+        { value: 'Make a Knowledge Skill check at +1 to recall a detail relevant to the situation or foe', cost: 'm' },
+        { value: 'Make a Knowledge Skill check at +2 to recall a detail relevant to the situation or foe', cost: 'm' },
+        { value: 'Make a Knowledge Skill check at +2, with a Reroll, to recall a detail relevant to the situation or foe', cost: 'M' },
       ],
     },
   },
@@ -1245,9 +1239,9 @@ const LETTERS: Ability[] = [
       attack: {
         base: 'Intelligence vs Unarmoured Wisdom',
         advances: [
-          { value: '+1 to the roll', cost: 'm' },
-          { value: '+2 to the roll', cost: 'm' },
-          { value: '+2; the Shift becomes 2 (10\')', cost: 'M' },
+          { value: 'Intelligence vs Unarmoured Wisdom, at +1', cost: 'm' },
+          { value: 'Intelligence vs Unarmoured Wisdom, at +2', cost: 'm' },
+          { value: 'Intelligence vs Unarmoured Wisdom, at +2; the Shift becomes 2 (10\')', cost: 'M' },
         ],
       },
       effects: { base: 'On a hit, Shift 1 (5\'); the opponent may not use a Reaction to this movement.' },
@@ -1266,9 +1260,9 @@ const LETTERS: Ability[] = [
       effects: {
         base: 'An Arcana check vs the object’s DC reveals it is magical, its tradition, and its level.',
         advances: [
-          { value: 'also its function', cost: 'm' },
-          { value: 'also how to use it — command words, components, charges', cost: 'm' },
-          { value: 'also its flaws and secrets — curses, hidden properties, maker', cost: 'M' },
+          { value: 'An Arcana check vs the object’s DC reveals it is magical, its tradition, its level, and its function', cost: 'm' },
+          { value: 'An Arcana check vs the object’s DC reveals it is magical, its tradition, its level, its function, and how to use it — command words, components, charges', cost: 'm' },
+          { value: 'An Arcana check vs the object’s DC reveals it is magical, its tradition, its level, its function, how to use it, and its flaws and secrets — curses, hidden properties, maker', cost: 'M' },
         ],
       },
     },
@@ -1293,9 +1287,9 @@ const ENVENOM: Ability = {
     effects: {
       base: 'Delivers the crafted poison of your choice (you must have a full dose).',
       advances: [
-        { value: '+1 to the poison’s DC', cost: 'm' },
-        { value: '+1 Interval', cost: 'm' },
-        { value: '+2 to the DC, and +2 Intervals', cost: 'M' },
+        { value: 'Delivers the crafted poison of your choice, at +1 to the poison’s DC', cost: 'm' },
+        { value: 'Delivers the crafted poison of your choice, at +1 to the poison’s DC and +1 Interval', cost: 'm' },
+        { value: 'Delivers the crafted poison of your choice, at +2 to the poison’s DC and +2 Intervals', cost: 'M' },
       ],
     },
   },
@@ -1344,9 +1338,9 @@ const MEDICINE: Ability[] = [
       effects: {
         base: 'Heal Int HP. (Requires a Healer’s Kit; spends 1 Supply.)',
         advances: [
-          { value: 'Heal Int + 1', cost: 'm' },
-          { value: 'Heal Int + 2', cost: 'm' },
-          { value: 'Heal Int + 1d6', cost: 'M' },
+          { value: 'Heal Int + 1 HP. (Healer’s Kit; 1 Supply.)', cost: 'm' },
+          { value: 'Heal Int + 2 HP. (Healer’s Kit; 1 Supply.)', cost: 'm' },
+          { value: 'Heal Int + 1d6 HP. (Healer’s Kit; 1 Supply.)', cost: 'M' },
         ],
       },
       duration: { base: 'Instant' },
@@ -1362,9 +1356,9 @@ const MEDICINE: Ability[] = [
       effects: {
         base: 'Reduce one bodily Condition, ongoing damage, or poison by 1 Rank. A touch also stabilises a dying creature. (Healer’s Kit; 1 Supply.)',
         advances: [
-          { value: 'reduce by 2 Ranks', cost: 'm' },
-          { value: 'end it entirely', cost: 'm' },
-          { value: 'end one, and the target may Save against another', cost: 'M' },
+          { value: 'Reduce one bodily Condition, ongoing damage, or poison by 2 Ranks. A touch also stabilises a dying creature. (Healer’s Kit; 1 Supply.)', cost: 'm' },
+          { value: 'End one bodily Condition, ongoing damage, or poison entirely. A touch also stabilises a dying creature. (Healer’s Kit; 1 Supply.)', cost: 'm' },
+          { value: 'End one bodily Condition, ongoing damage, or poison entirely, and the target may Save against another. A touch also stabilises a dying creature. (Healer’s Kit; 1 Supply.)', cost: 'M' },
         ],
       },
       duration: { base: 'Instant' },
@@ -1380,9 +1374,9 @@ const MEDICINE: Ability[] = [
       effects: {
         base: 'Each recovers +Int HP on the rest, and may Save (+0) against a bodily affliction.',
         advances: [
-          { value: '+Int + 1 HP; the Save is at +1', cost: 'm' },
-          { value: '+Int + 2 HP; the Save is at +2', cost: 'm' },
-          { value: '+Int + 1d6 HP; a Save vs each affliction at +2; and heal 1 point of Str, Dex or Con Attribute Damage', cost: 'M' },
+          { value: 'Each recovers +Int + 1 HP on the rest, and may Save (+1) against a bodily affliction', cost: 'm' },
+          { value: 'Each recovers +Int + 2 HP on the rest, and may Save (+2) against a bodily affliction', cost: 'm' },
+          { value: 'Each recovers +Int + 1d6 HP on the rest, may Save (+2) against each bodily affliction, and heals 1 point of Str, Dex or Con Attribute Damage', cost: 'M' },
         ],
       },
       duration: { base: 'The rest' },
@@ -1397,9 +1391,9 @@ const MEDICINE: Ability[] = [
       effects: {
         base: 'Tend 1 Wound OR 1 Attribute Damage point as though 7 days had passed (your Heal roll replaces the Save; 2 Supplies each). +3 HP bundled. At most 1 point per Attribute per day.',
         advances: [
-          { value: '2 Wounds or Attribute Damage points', cost: 'm' },
-          { value: 'Int Wounds or points', cost: 'm' },
-          { value: 'all Wounds and Attribute Damage points', cost: 'M' },
+          { value: 'Tend 2 Wounds or Attribute Damage points as though 7 days had passed (your Heal roll replaces the Save; 2 Supplies each). +3 HP bundled. At most 1 point per Attribute per day.', cost: 'm' },
+          { value: 'Tend Int Wounds or Attribute Damage points as though 7 days had passed (your Heal roll replaces the Save; 2 Supplies each). +3 HP bundled. At most 1 point per Attribute per day.', cost: 'm' },
+          { value: 'Tend all Wounds and Attribute Damage points as though 7 days had passed (your Heal roll replaces the Save; 2 Supplies each). +3 HP bundled. At most 1 point per Attribute per day.', cost: 'M' },
         ],
       },
     },
@@ -1438,7 +1432,7 @@ const ELDER_MAGIC: Ability[] = [
       frequency: FREQ_2ENC,
       action: { base: 'Standard', advances: [{ value: 'Move', cost: 'M' }] },
       range: STD_RANGE,
-      targets: { base: 'One', advances: [{ value: 'Two', cost: 'm' }, { value: 'Three', cost: 'm' }, { value: "all in a 10' radius", cost: 'M' }] },
+      targets: { base: 'One', advances: [{ value: 'Two', cost: 'm' }, { value: 'Three', cost: 'm' }, { value: "All in a 10' radius", cost: 'M' }] },
       attack: { base: 'Charisma vs Unarmoured Wisdom' },
       damage: { base: 'Cha (Psychic)', advances: [{ value: 'Cha + 1', cost: 'm' }, { value: 'Cha + 1d6', cost: 'm' }, { value: 'Cha + 2d6', cost: 'M', note: 'L5' }] },
       duration: { base: 'Instant' },
@@ -1451,13 +1445,13 @@ const ELDER_MAGIC: Ability[] = [
       frequency: FREQ_2ENC,
       action: { base: 'Standard', advances: [{ value: 'Move', cost: 'M' }, { value: 'Minor', cost: 'M' }, { value: 'Interrupt', cost: 'M' }] },
       range: STD_RANGE,
-      targets: { base: 'One', advances: [{ value: 'Two', cost: 'm' }, { value: 'Three', cost: 'm' }, { value: "all in a 10' radius", cost: 'M' }] },
+      targets: { base: 'One', advances: [{ value: 'Two', cost: 'm' }, { value: 'Three', cost: 'm' }, { value: "All in a 10' radius", cost: 'M' }] },
       attack: { base: 'Charisma vs Unarmoured Wisdom' },
       effects: {
-        base: '−1 to attack & Perception rolls (Sensory)',
+        base: '−1 to the target’s attack & Perception rolls (Sensory)',
         advances: [
-          { value: '−2 to attack & Perception', cost: 'm' },
-          { value: '−2, and no Interrupts or Reactions', cost: 'm' },
+          { value: '−2 to the target’s attack & Perception rolls (Sensory)', cost: 'm' },
+          { value: '−2 to the target’s attack & Perception rolls, and it takes no Interrupts or Reactions (Sensory)', cost: 'm' },
           { value: 'Blinded', cost: 'M' },
         ],
       },
@@ -1474,14 +1468,14 @@ const ELDER_MAGIC: Ability[] = [
       frequency: FREQ_ENC,
       action: { base: 'Full Round', advances: [{ value: 'Standard', cost: 'M' }] },
       range: { base: "30' (5' burst)", advances: [{ value: "45' (10' burst)", cost: 'M' }, { value: "60' (15' burst)", cost: 'M' }, { value: "120' (20' burst)", cost: 'M' }] },
-      targets: { base: 'One enemy in the burst', advances: [{ value: 'Cha enemies', cost: 'm' }, { value: 'Cha + 1 enemies', cost: 'm' }, { value: 'all enemies in the burst', cost: 'M' }] },
+      targets: { base: 'One enemy in the burst', advances: [{ value: 'Cha enemies in the burst', cost: 'm' }, { value: 'Cha + 1 enemies in the burst', cost: 'm' }, { value: 'All enemies in the burst', cost: 'M' }] },
       attack: { base: 'Charisma vs Unarmoured Wisdom' },
       effects: {
         base: "Shift the target 1 (5')",
         advances: [
-          { value: "Shift 2 (10')", cost: 'm' },
-          { value: 'Shift 2, and Slowed 5 (1 round)', cost: 'm' },
-          { value: 'Shift 3, and Slowed 5 (Save ends)', cost: 'M' },
+          { value: "Shift the target 2 (10')", cost: 'm' },
+          { value: "Shift the target 2 (10'), and Slowed 5 (1 round)", cost: 'm' },
+          { value: "Shift the target 3 (15'), and Slowed 5 (Save ends)", cost: 'M' },
         ],
       },
       duration: { base: 'Instant (Slowed: Save ends)' },
@@ -1525,9 +1519,9 @@ const ELDER_MAGIC: Ability[] = [
       effects: {
         base: '−1 to a chosen Defence (Flat Debuff)',
         advances: [
-          { value: '−2', cost: 'm' },
-          { value: '−2 and Vulnerable 1', cost: 'm' },
-          { value: '−2 and Vulnerable 3', cost: 'M' },
+          { value: '−2 to a chosen Defence (Flat Debuff)', cost: 'm' },
+          { value: '−2 to a chosen Defence, and Vulnerable 1 (Flat Debuff)', cost: 'm' },
+          { value: '−2 to a chosen Defence, and Vulnerable 3 (Flat Debuff)', cost: 'M' },
         ],
       },
       duration: { base: 'Save ends' },
@@ -1545,9 +1539,9 @@ const ELDER_MAGIC: Ability[] = [
       effects: {
         base: 'Study an object you handle (no language gate) and make a Knowledge: History check vs its Resonance DC. An object can be read only once, ever, and a failed check silences it for good. On a success, the DM reveals something of the object’s past.',
         advances: [
-          { value: 'the DM reveals more, in greater detail', cost: 'm' },
-          { value: 'more still, and you may ask a clarifying question', cost: 'm' },
-          { value: 'as much as the object knows — its deepest history', cost: 'M' },
+          { value: 'Study an object you handle (no language gate) and make a Knowledge: History check vs its Resonance DC. An object can be read only once, ever, and a failed check silences it for good. On a success, the DM reveals the object’s past in greater detail.', cost: 'm' },
+          { value: 'Study an object you handle (no language gate) and make a Knowledge: History check vs its Resonance DC. An object can be read only once, ever, and a failed check silences it for good. On a success, the DM reveals the object’s past in greater detail, and you may ask a clarifying question.', cost: 'm' },
+          { value: 'Study an object you handle (no language gate) and make a Knowledge: History check vs its Resonance DC. An object can be read only once, ever, and a failed check silences it for good. On a success, the DM reveals as much as the object knows — its deepest history.', cost: 'M' },
         ],
       },
     },
@@ -1562,9 +1556,9 @@ const ELDER_MAGIC: Ability[] = [
       effects: {
         base: 'Resolve a delving hazard with a Dungeoneering or History check in place of the Save or Skill it requires (+0 to the check).',
         advances: [
-          { value: '+1 to the check', cost: 'm' },
-          { value: '+2 to the check', cost: 'm' },
-          { value: '+2, and your allies may use your result', cost: 'M' },
+          { value: 'Resolve a delving hazard with a Dungeoneering or History check in place of the Save or Skill it requires (+1 to the check)', cost: 'm' },
+          { value: 'Resolve a delving hazard with a Dungeoneering or History check in place of the Save or Skill it requires (+2 to the check)', cost: 'm' },
+          { value: 'Resolve a delving hazard with a Dungeoneering or History check in place of the Save or Skill it requires (+2 to the check), and your allies may use your result', cost: 'M' },
         ],
       },
     },
@@ -1586,7 +1580,7 @@ const RANGED_SINGLE_DMG: Variable = { base: '1d4', advances: [{ value: '1d4 + In
 const CLOSE_SINGLE_DMG: Variable = { base: '1d6', advances: [{ value: '1d6 + Int', cost: 'm' }, { value: '1d8 + Int', cost: 'm' }, { value: '2d8 + Int', cost: 'M', note: 'L5' }] };
 const RANGED_AOE_DMG: Variable = { base: '1', advances: [{ value: 'Int', cost: 'm' }, { value: '1d4 + Int', cost: 'm' }, { value: '2d4 + Int', cost: 'M', note: 'L5' }] };
 const CLOSE_AOE_DMG: Variable = { base: 'Int', advances: [{ value: '1d4 + Int', cost: 'm' }, { value: '1d6 + Int', cost: 'm' }, { value: '2d6 + Int', cost: 'M', note: 'L5' }] };
-const NM_DEFENCE: Variable = { base: '+1 to one Defence (until your next turn)', advances: [{ value: '+1 to all Defences', cost: 'm' }, { value: '+2 to all Defences', cost: 'm' }, { value: '+2 to all Defences and DR 1', cost: 'M' }] };
+const NM_DEFENCE: Variable = { base: '+1 to one Defence (until your next turn)', advances: [{ value: '+1 to all Defences (until your next turn)', cost: 'm' }, { value: '+2 to all Defences (until your next turn)', cost: 'm' }, { value: '+2 to all Defences and DR 1 (until your next turn)', cost: 'M' }] };
 const NM_AOE_TARGETS: Variable = { base: 'Each creature in the burst — one Dexterity vs AC roll resolved against each (friendly fire included)' };
 
 const NM_ELEMENT_DETAIL = 'Choose one elemental damage type when you build the spell — Fire, Acid, Cold, Lightning, Sonic, or Force. This is the damage type of the Ability, and you can unlock additional effects if you have the Specialization Feat for that element.';
@@ -1615,9 +1609,9 @@ const EFL_ONGOING: NamedLadder = {
   name: 'Ongoing Damage — Fire & Acid',
   base: '1 damage / round',
   advances: [
-    { value: '2 / round', cost: 'm' },
-    { value: '3 / round', cost: 'm' },
-    { value: '3 / round, and −2 to the Save against it', cost: 'M' },
+    { value: '2 damage / round', cost: 'm' },
+    { value: '3 damage / round', cost: 'm' },
+    { value: '3 damage / round, and −2 to the Save against it', cost: 'M' },
   ],
 };
 const EFL_MOVEMENT: NamedLadder = {
@@ -1647,9 +1641,9 @@ const HKL_SPLASH: NamedLadder = {
   name: 'Splash — Acid & Sonic',
   base: '1 damage to 1 adjacent creature',
   advances: [
-    { value: '1 damage to 2 adjacent', cost: 'm' },
-    { value: '1 damage to Int adjacent', cost: 'm' },
-    { value: '2 damage to all adjacent', cost: 'M' },
+    { value: '1 damage to 2 adjacent creatures', cost: 'm' },
+    { value: '1 damage to Int adjacent creatures', cost: 'm' },
+    { value: '2 damage to all adjacent creatures', cost: 'M' },
   ],
 };
 const HKL_GLANCING: NamedLadder = {
@@ -1658,34 +1652,34 @@ const HKL_GLANCING: NamedLadder = {
   advances: [
     { value: '2 damage on a miss', cost: 'm' },
     { value: 'Int damage on a miss', cost: 'm' },
-    { value: 'half the spell’s damage on a miss', cost: 'M' },
+    { value: 'Half the spell’s damage on a miss', cost: 'M' },
   ],
 };
 const HKL_PIERCE: NamedLadder = {
   name: 'Pierce — Fire & Lightning',
   base: '1 damage to 1 enemy in the line to the target',
   advances: [
-    { value: '1 to 2 enemies in the line', cost: 'm' },
-    { value: '1 to Int enemies in the line', cost: 'm' },
-    { value: '2 to all in the line', cost: 'M' },
+    { value: '1 damage to 2 enemies in the line to the target', cost: 'm' },
+    { value: '1 damage to Int enemies in the line to the target', cost: 'm' },
+    { value: '2 damage to all enemies in the line to the target', cost: 'M' },
   ],
 };
 const HKL_RETAL: NamedLadder = {
   name: 'Retaliation — Fire & Lightning',
   base: 'The next enemy to melee you takes 1 typed damage (until your next turn)',
   advances: [
-    { value: 'all enemies that melee you take it', cost: 'm' },
-    { value: '2 typed damage', cost: 'm' },
-    { value: 'it lasts until the end of the encounter', cost: 'M' },
+    { value: 'All enemies that melee you take 1 typed damage (until your next turn)', cost: 'm' },
+    { value: 'All enemies that melee you take 2 typed damage (until your next turn)', cost: 'm' },
+    { value: 'All enemies that melee you take 2 typed damage (until the end of the encounter)', cost: 'M' },
   ],
 };
 const HKL_LINGER: NamedLadder = {
   name: 'Lingering — Acid & Sonic',
   base: 'A creature entering or ending its turn in the area takes 1 typed damage',
   advances: [
-    { value: '2 typed damage', cost: 'm' },
-    { value: 'Int typed damage', cost: 'm' },
-    { value: 'the hazard lingers a second round', cost: 'M' },
+    { value: 'A creature entering or ending its turn in the area takes 2 typed damage', cost: 'm' },
+    { value: 'A creature entering or ending its turn in the area takes Int typed damage', cost: 'm' },
+    { value: 'A creature entering or ending its turn in the area takes Int typed damage, and the hazard lingers a second round', cost: 'M' },
   ],
 };
 
@@ -1823,9 +1817,9 @@ const NEW_MAGIC: Ability[] = [
       effects: {
         base: 'Move an unattended object up to 10 lb',
         advances: [
-          { value: 'up to 50 lb', cost: 'm' },
-          { value: 'up to 200 lb (a person)', cost: 'm' },
-          { value: 'up to 1,000 lb', cost: 'M' },
+          { value: 'Move an unattended object up to 50 lb', cost: 'm' },
+          { value: 'Move an unattended object up to 200 lb (a person)', cost: 'm' },
+          { value: 'Move an unattended object up to 1,000 lb', cost: 'M' },
         ],
       },
     },
@@ -1839,8 +1833,8 @@ const NEW_MAGIC: Ability[] = [
       effects: {
         base: "Dim light, 10' radius",
         advances: [
-          { value: "bright 20' radius", cost: 'm' },
-          { value: "bright 20' (+ dim 20' beyond); you may move it or affix it to a moving object", cost: 'm' },
+          { value: "Bright light, 20' radius", cost: 'm' },
+          { value: "Bright light, 20' radius (+ dim 20' beyond); you may move it or affix it to a moving object", cost: 'm' },
           { value: "Magical Light, 30' radius — the ceiling of magic; where it overlaps Magical Darkness the two cancel. It is not a sun.", cost: 'M' },
         ],
       },
@@ -1911,9 +1905,9 @@ const THE_LOST: Ability[] = [
       effects: {
         base: 'The mark is Off Guard against your attacks.',
         advances: [
-          { value: 'Off Guard against your attacks and one ally’s', cost: 'm' },
-          { value: 'Off Guard against everyone’s attacks', cost: 'm' },
-          { value: 'Off Guard against everyone’s attacks, and Dazed (no Reactions or Interrupts)', cost: 'M' },
+          { value: 'The mark is Off Guard against your attacks and one ally’s', cost: 'm' },
+          { value: 'The mark is Off Guard against everyone’s attacks', cost: 'm' },
+          { value: 'The mark is Off Guard against everyone’s attacks, and Dazed (no Reactions or Interrupts)', cost: 'M' },
         ],
       },
       duration: { base: 'Until the end of your next turn' },
@@ -1932,8 +1926,8 @@ const THE_LOST: Ability[] = [
       effects: {
         base: 'Sensory: −1 to the mark’s attack and Perception rolls.',
         advances: [
-          { value: '−2 to attack and Perception', cost: 'm' },
-          { value: '−2, and no Interrupts or Reactions', cost: 'm' },
+          { value: 'Sensory: −2 to the mark’s attack and Perception rolls', cost: 'm' },
+          { value: 'Sensory: −2 to the mark’s attack and Perception rolls, and it takes no Interrupts or Reactions', cost: 'm' },
           { value: 'Blinded', cost: 'M' },
         ],
       },
@@ -1955,9 +1949,9 @@ const THE_LOST: Ability[] = [
       effects: {
         base: 'Shift 5′. The movement provokes no Opportunity Attacks.',
         advances: [
-          { value: 'Shift 10′', cost: 'm' },
-          { value: 'Shift 10′, and the next attack against you this round takes −2', cost: 'm' },
-          { value: 'Shift 10′ — and if you end it out of the attacker’s reach, the triggering attack misses', cost: 'M' },
+          { value: 'Shift 10′, provoking no Opportunity Attacks', cost: 'm' },
+          { value: 'Shift 10′, provoking no Opportunity Attacks, and the next attack against you this round takes −2', cost: 'm' },
+          { value: 'Shift 10′, provoking no Opportunity Attacks — and if you end it out of the attacker’s reach, the triggering attack misses', cost: 'M' },
         ],
       },
     },
@@ -1971,9 +1965,9 @@ const THE_LOST: Ability[] = [
       effects: {
         base: 'Hide (Stealth vs Perception) even while observed, so long as you have cover or concealment. Anyone who loses you is Off Guard against you.',
         advances: [
-          { value: '+2 to the Stealth check', cost: 'm' },
-          { value: 'No cover needed — a shadow, a crowd, or a distraction is enough', cost: 'm' },
-          { value: 'Hide in plain sight, with nothing at all to hide behind', cost: 'M' },
+          { value: 'Hide (Stealth vs Perception, at +2) even while observed, so long as you have cover or concealment. Anyone who loses you is Off Guard against you', cost: 'm' },
+          { value: 'Hide (Stealth vs Perception, at +2) even while observed — no cover needed; a shadow, a crowd, or a distraction is enough. Anyone who loses you is Off Guard against you', cost: 'm' },
+          { value: 'Hide (Stealth vs Perception, at +2) in plain sight, with nothing at all to hide behind. Anyone who loses you is Off Guard against you', cost: 'M' },
         ],
       },
       duration: { base: 'Until you attack or are found' },
@@ -1988,9 +1982,9 @@ const THE_LOST: Ability[] = [
       effects: {
         base: 'Move up to half your Speed, provoking no Opportunity Attacks.',
         advances: [
-          { value: 'As above, and you may move through enemies’ squares with no check', cost: 'm' },
-          { value: 'As above, at your full Speed', cost: 'm' },
-          { value: 'As above, and every enemy whose square you pass through is Off Guard until the end of your next turn', cost: 'M' },
+          { value: 'Move up to half your Speed, provoking no Opportunity Attacks, moving through enemies’ squares with no check', cost: 'm' },
+          { value: 'Move up to your full Speed, provoking no Opportunity Attacks, moving through enemies’ squares with no check', cost: 'm' },
+          { value: 'Move up to your full Speed, provoking no Opportunity Attacks, moving through enemies’ squares with no check — and every enemy whose square you pass through is Off Guard until the end of your next turn', cost: 'M' },
         ],
       },
     },
@@ -2006,9 +2000,9 @@ const THE_LOST: Ability[] = [
       effects: {
         base: 'Lift, palm, or plant a small unattended or pocketed item.',
         advances: [
-          { value: 'An item on the mark’s belt or person — a purse, a key, a signet', cost: 'm' },
-          { value: 'An item in the mark’s hand', cost: 'm' },
-          { value: 'And the mark does not notice until the scene has ended — no second check', cost: 'M' },
+          { value: 'Lift, palm, or plant an item on the mark’s belt or person — a purse, a key, a signet', cost: 'm' },
+          { value: 'Lift, palm, or plant an item, even one in the mark’s hand', cost: 'm' },
+          { value: 'Lift, palm, or plant an item, even one in the mark’s hand, and the mark does not notice until the scene has ended — no second check', cost: 'M' },
         ],
       },
     },
@@ -2029,9 +2023,9 @@ const THE_LOST: Ability[] = [
       effects: {
         base: 'You go to ground in some abandoned or hidden place. Opponents take −1 to locate you (Gather Information, or another relevant Skill check).',
         advances: [
-          { value: '−2 to locate you', cost: 'm' },
-          { value: '−2, and a failed check turns up a misdirection ("they left town", "took the river road")', cost: 'm' },
-          { value: '−2, and you may venture out up to 4 hours a day without compromising the hiding place', cost: 'M' },
+          { value: 'You go to ground; opponents take −2 to locate you', cost: 'm' },
+          { value: 'You go to ground; opponents take −2 to locate you, and a failed check turns up a misdirection ("they left town", "took the river road")', cost: 'm' },
+          { value: 'You go to ground; opponents take −2 to locate you, and you may venture out up to 4 hours a day without compromising the hiding place', cost: 'M' },
         ],
       },
       duration: { base: '24 hours', advances: [{ value: '48 hours', cost: 'm' }, { value: '72 hours', cost: 'm' }, { value: '1 week', cost: 'M' }] },
@@ -2119,8 +2113,8 @@ const ASSASSINATION: Ability[] = [
         base: 'A crippling cut to nerve, tendon, or joint: −1 to a Defence of your choice.',
         advances: [
           { value: '−2 to the chosen Defence', cost: 'm' },
-          { value: '−2, and Vulnerable 1', cost: 'm' },
-          { value: '−2, and Vulnerable 3', cost: 'M' },
+          { value: '−2 to the chosen Defence, and Vulnerable 1', cost: 'm' },
+          { value: '−2 to the chosen Defence, and Vulnerable 3', cost: 'M' },
         ],
       },
       duration: { base: 'Save ends' },
@@ -2250,8 +2244,8 @@ const GUILE: Ability[] = [
         base: 'Bluff and bravado throw the Target off its guard: −1 to a Defence of your choice.',
         advances: [
           { value: '−2 to the chosen Defence', cost: 'm' },
-          { value: '−2, and Vulnerable 1', cost: 'm' },
-          { value: '−2, and Vulnerable 3', cost: 'M' },
+          { value: '−2 to the chosen Defence, and Vulnerable 1', cost: 'm' },
+          { value: '−2 to the chosen Defence, and Vulnerable 3', cost: 'M' },
         ],
       },
       duration: { base: 'Save ends' },
@@ -2268,7 +2262,7 @@ const GUILE: Ability[] = [
         advances: [
           { value: 'Cha Temp HP', cost: 'm' },
           { value: 'Cha Temp HP, and +1 to all your Defences while the Temp HP lasts', cost: 'm' },
-          { value: 'And you cannot be made Off Guard while the Temp HP lasts', cost: 'M' },
+          { value: 'Cha Temp HP, +1 to all your Defences while the Temp HP lasts, and you cannot be made Off Guard while it lasts', cost: 'M' },
         ],
       },
       duration: { base: 'Until you lose the Temp HP' },
@@ -2476,20 +2470,12 @@ const MAL_PALSY: NamedLadder = {
   name: 'Palsy',
   base: "Slowed — Speed −5'",
   advances: [
-    { value: "Speed −10'", cost: 'm' },
-    { value: "Speed −15'", cost: 'm' },
+    { value: "Slowed — Speed −10'", cost: 'm' },
+    { value: "Slowed — Speed −15'", cost: 'm' },
     { value: 'Immobilized — Speed 0', cost: 'M' },
   ],
 };
-const MAL_STUPOR: NamedLadder = {
-  name: 'Stupor',
-  base: 'Dazed — no Reactions or Interrupts',
-  advances: [
-    { value: '+ no Minor Action', cost: 'm' },
-    { value: '+ no Move Action', cost: 'm' },
-    { value: 'Stunned — no actions', cost: 'M' },
-  ],
-};
+const MAL_STUPOR: NamedLadder = { name: 'Stupor', ...DAZE_EFFECTS };
 const MAL_ENFEEBLEMENT: NamedLadder = {
   name: 'Enfeeblement',
   base: '−1 to its damage rolls',
@@ -2499,15 +2485,7 @@ const MAL_ENFEEBLEMENT: NamedLadder = {
     { value: '−2 to its attack rolls, and its attacks deal half damage', cost: 'M' },
   ],
 };
-const MAL_DREAD: NamedLadder = {
-  name: 'Dread (Fear)',
-  base: '−1 to its attack rolls (Fear)',
-  advances: [
-    { value: '−1, and it cannot move closer to you', cost: 'm' },
-    { value: '+ it cannot attack you', cost: 'm' },
-    { value: 'It flees you until it Saves', cost: 'M' },
-  ],
-};
+const MAL_DREAD: NamedLadder = { name: 'Dread (Fear)', ...FEAR_EFFECTS };
 const CURSE_MALEDICTIONS = [MAL_WASTING, MAL_ILL_LUCK, MAL_PALSY, MAL_STUPOR, MAL_ENFEEBLEMENT, MAL_DREAD];
 // Implement hooks — parallel to New Magic's, to keep the two builders level.
 const CURSE_IMPL_LIST = [
@@ -2578,7 +2556,7 @@ const WITCHCRAFT: Ability[] = [
     vars: {
       frequency: { base: 'Passive (always on)' },
       effects: {
-        base: '+1 to all your Defences. The Renunciation: you have renounced the Saintly Faith. You may not willingly enter their churches or other places of worship, may not invoke the Saints’ names, and may not receive benefit from any Saintly source (a Friar of the Saintly Faith’s healing, a blessing, a relic).',
+        base: '+1 to all your Defences. The Renunciation: you have renounced the Saintly Faith. You may not willingly enter their churches or other places of worship, may not invoke the Saints’ names, and may not receive benefit from any Saintly source (a Friar of the Saintly Faith’s healing, a blessing, a relic). The Saintly Market is closed to you.',
         advances: [{ value: '+2 to all your Defences', cost: 'M', note: 'L5' }],
       },
     },
@@ -2980,18 +2958,18 @@ const HUSBANDRY: Ability[] = [
         name: 'Defences',
         base: 'AC 12, other Defences 10',
         advances: [
-          { value: '+1 AC, DR 1, Resist Cold 1', cost: 'm' },
-          { value: '+1 to all other Defences', cost: 'm' },
-          { value: '+2 AC and DR 2', cost: 'M' },
+          { value: 'AC 13, other Defences 10, DR 1, Resist Cold 1', cost: 'm' },
+          { value: 'AC 13, other Defences 11, DR 1, Resist Cold 1', cost: 'm' },
+          { value: 'AC 14, other Defences 11, DR 2, Resist Cold 1', cost: 'M' },
         ],
       },
       {
         name: 'Attack',
         base: 'Bite +2, 1d4',
         advances: [
-          { value: '+3, 1d4', cost: 'm' },
-          { value: '+3, 1d6', cost: 'm' },
-          { value: '+4, 1d6+1', cost: 'M' },
+          { value: 'Bite +3, 1d4', cost: 'm' },
+          { value: 'Bite +3, 1d6', cost: 'm' },
+          { value: 'Bite +4, 1d6+1', cost: 'M' },
         ],
       },
       {
@@ -3016,9 +2994,9 @@ const HUSBANDRY: Ability[] = [
         name: 'Tricks',
         base: 'As many tricks as its owner’s Wis',
         advances: [
-          { value: '+1', cost: 'm' },
-          { value: '+2', cost: 'm' },
-          { value: '+4', cost: 'M' },
+          { value: 'As many tricks as its owner’s Wis + 1', cost: 'm' },
+          { value: 'As many tricks as its owner’s Wis + 2', cost: 'm' },
+          { value: 'As many tricks as its owner’s Wis + 4', cost: 'M' },
         ],
       },
     ],
@@ -3296,25 +3274,18 @@ const BOTANY: Ability[] = [
       targets: {
         base: 'All creatures in a 5\' radius — the fumes do not pick sides',
         advances: [
-          { value: '10\' radius', cost: 'M' },
-          { value: '15\' radius', cost: 'M' },
+          { value: 'All creatures in a 10\' radius — the fumes do not pick sides', cost: 'M' },
+          { value: 'All creatures in a 15\' radius — the fumes do not pick sides', cost: 'M' },
         ],
       },
       attack: { base: 'Int vs Unarmoured Constitution' },
-      effects: {
-        base: 'Dazed — no Reactions or Interrupts.',
-        advances: [
-          { value: '+ no Minor Action', cost: 'm' },
-          { value: '+ no Move Action', cost: 'm' },
-          { value: 'Stunned — no actions', cost: 'M' },
-        ],
-      },
+      effects: DAZE_EFFECTS,
       duration: {
         base: 'The cloud lasts 1 round',
         advances: [
-          { value: 'Int rounds', cost: 'm' },
-          { value: 'Int + 1 rounds', cost: 'm' },
-          { value: 'Int ×2 rounds', cost: 'M' },
+          { value: 'The cloud lasts Int rounds', cost: 'm' },
+          { value: 'The cloud lasts Int + 1 rounds', cost: 'm' },
+          { value: 'The cloud lasts Int ×2 rounds', cost: 'M' },
         ],
       },
     },
@@ -3415,14 +3386,7 @@ const OLD_MAGIC: Ability[] = [
       targets: { base: 'One' },
       attack: { base: 'Cha vs AC (Staff)' },
       damage: { base: 'W (fixed — a rap, not a wound)' },
-      effects: {
-        base: '−1 to its attack rolls (Fear).',
-        advances: [
-          { value: '−1, and it cannot move closer to you', cost: 'm' },
-          { value: '+ it cannot attack you', cost: 'm' },
-          { value: 'It flees you until it Saves', cost: 'M' },
-        ],
-      },
+      effects: FEAR_EFFECTS,
       duration: { base: 'Save ends' },
     },
   },
@@ -3446,9 +3410,9 @@ const OLD_MAGIC: Ability[] = [
       effects: {
         base: 'Converse with the animal(s) — simple questions and answers, as its wits allow — and its Attitude improves one step.',
         advances: [
-          { value: 'And the animal will do a brief favour for you, and may ask one in return', cost: 'm' },
-          { value: 'And the animal will provide friendly advice and service for up to 4 hours, depending on its nature; its Attitude improves two steps', cost: 'm' },
-          { value: 'And the animal will fight for you for a short time, as its abilities and bravery allow — it will not sacrifice itself', cost: 'M' },
+          { value: 'Converse with the animal(s); its Attitude improves one step, and it will do a brief favour for you, and may ask one in return', cost: 'm' },
+          { value: 'Converse with the animal(s); its Attitude improves two steps, and it will provide friendly advice and service for up to 4 hours, depending on its nature', cost: 'm' },
+          { value: 'Converse with the animal(s); its Attitude improves two steps, and it will fight for you for a short time, as its abilities and bravery allow — it will not sacrifice itself', cost: 'M' },
         ],
       },
     },
@@ -3465,16 +3429,16 @@ const OLD_MAGIC: Ability[] = [
         base: 'A threshold — a door, gate, or the entrance of a camp',
         advances: [
           { value: 'A 10\' radius circle', cost: 'm' },
-          { value: '15\' radius', cost: 'm' },
-          { value: '20\' radius', cost: 'M' },
+          { value: 'A 15\' radius circle', cost: 'm' },
+          { value: 'A 20\' radius circle', cost: 'M' },
         ],
       },
       effects: {
         base: 'Any creature crossing the boundary activates the Ward, notifying the Drymann or everyone inside (the Drymann chooses upon creation).',
         advances: [
-          { value: 'Undead may not cross the Ward', cost: 'm' },
-          { value: 'Any uninvited creature must make a Wis Save to cross the Ward, or to attack anyone inside', cost: 'm' },
-          { value: 'Those inside the Ward have +1 to all Defences and Saves', cost: 'M' },
+          { value: 'Crossing the boundary activates the Ward, notifying the Drymann or everyone inside (chosen upon creation), and Undead may not cross', cost: 'm' },
+          { value: 'Crossing the boundary activates the Ward, notifying the Drymann or everyone inside (chosen upon creation); Undead may not cross, and any uninvited creature must make a Wis Save to cross or to attack anyone inside', cost: 'm' },
+          { value: 'Crossing the boundary activates the Ward, notifying the Drymann or everyone inside (chosen upon creation); Undead may not cross, any uninvited creature must make a Wis Save to cross or to attack anyone inside, and those inside have +1 to all Defences and Saves', cost: 'M' },
         ],
       },
       duration: {

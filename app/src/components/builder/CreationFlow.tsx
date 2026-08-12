@@ -14,7 +14,7 @@ import AbilityFullCard from './AbilityFullCard';
 import MarketShop, { basketTotalsCp, commerceRankOf } from './MarketShop';
 import type { BasketLine } from './MarketShop';
 import CharacterSheet from './CharacterSheet';
-import { VAR_LABELS, VAR_ORDER, resolveValue } from '../../lib/abilities';
+import { VAR_LABELS, VAR_ORDER, isUnchosenChoiceLadder, resolveValue } from '../../lib/abilities';
 import { CATALOGUE, CRAFTS, fmtCoins, startingClothesFor } from '../../lib/equipment';
 import { itemName } from '../../lib/markets';
 import { briefFor } from '../../lib/ability-briefs';
@@ -81,6 +81,8 @@ interface Draft {
   /** The Character State (New / In Play / Downtime). Absent on older saves;
    * the default derives from Sessions. */
   status?: PlayState;
+  /** The player's box arrangement per sheet page (drag to reorder). */
+  boxOrder?: Record<string, string[]>;
 }
 
 const EMPTY_DRAFT: Draft = {
@@ -407,7 +409,11 @@ export default function CreationFlow() {
             ...(card.options ?? [])
               .filter((o) => !o.hideCosts && !o.baseCost)
               .flatMap((o) => o.ladders ?? []),
-          ].filter((l) => l.advances?.length);
+          ]
+            .filter((l) => l.advances?.length)
+            // A builder copy shows only the choice Ladder it was built with
+            // (its Malediction); the sister Ladders belong to other copies.
+            .filter((l) => !isUnchosenChoiceLadder(card, l.name, owned.choices));
     const strip = (name: string, label: string, base: string, advances: { value: string; cost: 'm' | 'M' }[], rank: number) =>
       LadderStrip({
         stripKey: name,
@@ -635,6 +641,9 @@ export default function CreationFlow() {
               setIdentity={setIdentity}
               status={draft.status ?? (state.sessions === 0 ? 'new' : 'downtime')}
               setStatus={(s) => setDraft((d) => ({ ...d, status: s }))}
+              boxOrder={draft.boxOrder}
+              setBoxOrder={(pageKey, ids) =>
+                setDraft((d) => ({ ...d, boxOrder: { ...d.boxOrder, [pageKey]: ids } }))}
               state={state}
               sheet={sheet}
               events={events}

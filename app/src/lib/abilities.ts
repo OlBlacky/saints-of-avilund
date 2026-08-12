@@ -97,6 +97,18 @@ export interface Ability {
   current?: Partial<Record<VarKey, number>>;
 }
 
+// A builder copy advances only the choice Ladder it was built with. True when
+// `ladderName` is one of the card's builderChoice options (a Malediction) that
+// this copy's build did not pick — that Ladder belongs to a different copy.
+export function isUnchosenChoiceLadder(
+  card: Pick<Ability, 'builderChoice'>,
+  ladderName: string,
+  choices: Record<string, string> | undefined,
+): boolean {
+  const bc = card.builderChoice;
+  return !!bc && bc.options.includes(ladderName) && choices?.[bc.key] !== ladderName;
+}
+
 // Resolve a variable to the value shown in Play mode, given the current rank.
 export function resolveValue(v: Variable | undefined, rank: number | undefined): string | undefined {
   if (!v) return undefined;

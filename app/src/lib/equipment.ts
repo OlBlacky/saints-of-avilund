@@ -166,8 +166,12 @@ export interface SimpleItem {
   unit?: string;
   /** Display override where a single number can't say it ("8–10 sp"). */
   priceText?: string;
-  /** Container coefficient for Load (mechanics/encumbrance.md). */
+  /** Container coefficient for Load (mechanics/encumbrance.md): purpose-built
+   * carriers pack their contents at ×0.9 (Masterwork ×0.8, when those exist);
+   * bulk vessels carry at full weight. */
   coefficient?: number;
+  /** Container capacity in lb (mechanics/encumbrance.md). */
+  capacityLb?: number;
   choice?: ItemChoice;
 }
 
@@ -182,18 +186,18 @@ export const AMMUNITION: SimpleItem[] = [
 ];
 
 export const CONTAINERS: SimpleItem[] = [
-  { id: 'belt-pouch', name: 'Belt pouch', priceCp: 5, weightLb: null, coefficient: 1 },
-  { id: 'sack-large', name: 'Sack, large', priceCp: 2, weightLb: 1, coefficient: 1 },
-  { id: 'basket', name: 'Basket', priceCp: 4, weightLb: 1, coefficient: 1 },
-  { id: 'satchel', name: 'Satchel', priceCp: 10, weightLb: 1, coefficient: 1 },
-  { id: 'backpack', name: 'Backpack', priceCp: 20, weightLb: 2, coefficient: 0.75 },
+  { id: 'belt-pouch', name: 'Belt pouch', priceCp: 5, weightLb: null, coefficient: 0.9, capacityLb: 2 },
+  { id: 'sack-large', name: 'Sack, large', priceCp: 2, weightLb: 1, coefficient: 1, capacityLb: 40 },
+  { id: 'basket', name: 'Basket', priceCp: 4, weightLb: 1, coefficient: 1, capacityLb: 25 },
+  { id: 'satchel', name: 'Satchel', priceCp: 10, weightLb: 1, coefficient: 0.9, capacityLb: 15 },
+  { id: 'backpack', name: 'Backpack', priceCp: 20, weightLb: 2, coefficient: 0.9, capacityLb: 50 },
   { id: 'waterskin', name: 'Waterskin (full)', priceCp: 10, weightLb: 4 },
   { id: 'flask-tin', name: 'Flask, tin', priceCp: 3, weightLb: null },
   { id: 'vial-glass', name: 'Vial, glass', priceCp: 5, weightLb: null },
-  { id: 'chest-wooden', name: 'Chest, wooden', priceCp: 20, weightLb: 25, coefficient: 1 },
-  { id: 'strongbox', name: 'Strongbox, iron-bound (with lock)', priceCp: 100, weightLb: 15, coefficient: 1 },
-  { id: 'barrel', name: 'Barrel', priceCp: 20, weightLb: 30, coefficient: 1 },
-  { id: 'saddlebags', name: 'Saddlebags', priceCp: 40, weightLb: 8, coefficient: 1 },
+  { id: 'chest-wooden', name: 'Chest, wooden', priceCp: 20, weightLb: 25, coefficient: 1, capacityLb: 150 },
+  { id: 'strongbox', name: 'Strongbox, iron-bound (with lock)', priceCp: 100, weightLb: 15, coefficient: 1, capacityLb: 50 },
+  { id: 'barrel', name: 'Barrel', priceCp: 20, weightLb: 30, coefficient: 1, capacityLb: 250 },
+  { id: 'saddlebags', name: 'Saddlebags', priceCp: 40, weightLb: 8, coefficient: 0.9, capacityLb: 60 },
 ];
 
 export interface LightSource extends SimpleItem {
@@ -466,10 +470,10 @@ export interface KitItem extends SimpleItem {
 // The kits are bags: each is a Container (×1 — a working bag, not a
 // packed load) so its Supplies can live inside it.
 export const KITS: KitItem[] = [
-  { id: 'healers-kit', name: "Healer's Kit (empty — tools & bag)", priceCp: 100, weightLb: 3, supply: null, coefficient: 1 },
-  { id: 'friars-kit', name: "Friar's Kit (empty — oils, incense & implements)", priceCp: 100, weightLb: 3, supply: null, coefficient: 1 },
-  { id: 'herbalists-bag', name: "Herbalist's Bag (empty — knives, mortar & pouches)", priceCp: 100, weightLb: 3, supply: null, coefficient: 1 },
-  { id: 'offerings-bag', name: 'Offerings Bag (empty — pouches, knots & charms)', priceCp: 100, weightLb: 3, supply: null, coefficient: 1 },
+  { id: 'healers-kit', name: "Healer's Kit (empty — tools & bag)", priceCp: 100, weightLb: 3, supply: null, coefficient: 0.9, capacityLb: 3 },
+  { id: 'friars-kit', name: "Friar's Kit (empty — oils, incense & implements)", priceCp: 100, weightLb: 3, supply: null, coefficient: 0.9, capacityLb: 3 },
+  { id: 'herbalists-bag', name: "Herbalist's Bag (empty — knives, mortar & pouches)", priceCp: 100, weightLb: 3, supply: null, coefficient: 0.9, capacityLb: 3 },
+  { id: 'offerings-bag', name: 'Offerings Bag (empty — pouches, knots & charms)', priceCp: 100, weightLb: 3, supply: null, coefficient: 0.9, capacityLb: 3 },
   { id: 'supplies', name: 'Supplies (per 10)', priceCp: 10, weightLb: 1, supply: 10, choice: { key: 'kit', label: 'Kit', options: ["Healer's Kit", "Friar's Kit", "Herbalist's Bag", 'Offerings Bag'] } },
 ];
 
@@ -479,6 +483,14 @@ export function containerCoefficient(itemId: string): number | undefined {
   return (
     CONTAINERS.find((c) => c.id === itemId)?.coefficient ??
     KITS.find((k) => k.id === itemId)?.coefficient
+  );
+}
+
+/** A Container's capacity in lb — undefined for non-containers. */
+export function containerCapacityLb(itemId: string): number | undefined {
+  return (
+    CONTAINERS.find((c) => c.id === itemId)?.capacityLb ??
+    KITS.find((k) => k.id === itemId)?.capacityLb
   );
 }
 

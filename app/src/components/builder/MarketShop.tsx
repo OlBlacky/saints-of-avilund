@@ -146,9 +146,10 @@ interface Props {
 
 export default function MarketShop({ state, basket, setBasket }: Props) {
   const ownedFeatIds = state.feats.map((f) => f.featId);
+  const ownedAbilities = state.abilities.map((a) => a.ref);
   const commerce = commerceRankOf(state);
-  const listed = listedMarkets(ownedFeatIds);
-  const openIds = new Set(accessibleMarkets(ownedFeatIds).map((m) => m.id));
+  const listed = listedMarkets(ownedFeatIds, ownedAbilities);
+  const openIds = new Set(accessibleMarkets(ownedFeatIds, ownedAbilities).map((m) => m.id));
 
   const [pickedId, setPickedId] = useState('waldheim');
   const [query, setQuery] = useState('');
@@ -169,7 +170,7 @@ export default function MarketShop({ state, basket, setBasket }: Props) {
       section: sectionOf(line.itemId),
       chips: useChips(state, line.itemId),
       choice: itemChoice(line.itemId),
-      best: bestBuy(line.itemId, ownedFeatIds, commerce),
+      best: bestBuy(line.itemId, ownedFeatIds, commerce, ownedAbilities),
     }))
     .filter((r) => !q || r.name.toLowerCase().includes(q))
     .filter((r) => gearView === 'all' || r.chips.length === 0);
@@ -405,7 +406,7 @@ export default function MarketShop({ state, basket, setBasket }: Props) {
                   );
                 }
                 const price = market ? buyPriceCp(market, l.itemId, commerce) : undefined;
-                const best = bestBuy(l.itemId, ownedFeatIds, commerce);
+                const best = bestBuy(l.itemId, ownedFeatIds, commerce, ownedAbilities);
                 const cheaper =
                   best && price !== undefined && best.market.id !== l.marketId && best.priceCp < price
                     ? best

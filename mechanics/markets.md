@@ -2,6 +2,8 @@
 
 Where characters buy and sell. A **Market** is a defined catalog with access rules. Access arrives four ways: everyone has the open Waldheim Markets; the GM opens a Market (to one character or a whole party); a Feat buys access; a Quirk rolls it. A door opened by Quirk or Feat is open **permanently**.
 
+A door can also be **closed for good**: an Ability that renounces a faith shuts its Market, and no Feat reopens it. The first: the **Renunciation of Nicetus** (Witchcraft) closes the Saintly Market. A closed Market drops off the shop entirely — its prices, its sell lines, its listing. (In code: `closedBy` on the Market, `app/src/lib/markets.ts`.)
+
 Every transaction is a logged event touching Wealth and Gear — the record always knows where the poison came from.
 
 ## The Waldheim Markets

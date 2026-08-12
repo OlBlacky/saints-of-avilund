@@ -369,8 +369,8 @@ describe('containers and Load', () => {
     const { state, flags } = replay([
       ...crystallized(),
       buy([
-        { itemId: 'backpack', qty: 1 },        // 2 lb, ×0.75
-        { itemId: 'chain-10ft', qty: 2 },       // 20 lb → in pack, ×0.75 = 15
+        { itemId: 'backpack', qty: 1 },        // 2 lb, ×0.9
+        { itemId: 'chain-10ft', qty: 2 },       // 20 lb → in pack, ×0.9 = 18
         { itemId: 'chain-mail', qty: 1 },       // 40 lb, worn → weightless
         { itemId: 'maul', qty: 1 },             // 10 lb carried
         { itemId: 'tent-one-man', qty: 1 },     // 20 lb → Home, excluded
@@ -381,9 +381,9 @@ describe('containers and Load', () => {
     ]);
     expect(flags).toEqual([]);
     const { load } = derive(state);
-    // 2 (pack) + 15 (chains ×0.75) + 10 (maul) = 27; starting gear weighs
+    // 2 (pack) + 18 (chains ×0.9) + 10 (maul) = 30; starting gear weighs
     // nothing (unique, no catalogue weight).
-    expect(load.totalLb).toBe(27);
+    expect(load.totalLb).toBe(30);
     expect(load.baseLb).toBe(25); // Str +0
     expect(load.band).toBe('Light');
     expect(load.effect).toContain("−5'");
@@ -568,5 +568,46 @@ describe('Gear States (mechanics/encumbrance.md)', () => {
     ]);
     expect(flags).toEqual([]);
     expect(derive(state).load.totalLb).toBe(21);
+  });
+});
+
+describe('the Renunciation of Nicetus closes the Saintly Market', () => {
+  const RENUNCIATION = { category: 'Witchcraft', ability: 'Renunciation of Nicetus' };
+
+  const renunciant = () => [
+    ev('class-chosen', { classId: 'occultist' }),
+    ev('subclass-chosen', { subclassId: 'witch-warlock' }),
+    ev('ability-bought', { ref: RENUNCIATION }),
+    ev('quirk-rolled', {
+      quirkName: 'Q', slots: {}, rerollsUsed: 0,
+      gearId: badGear.id, gearName: badGear.name, gearSlots: {},
+    }),
+    ev('crystallized', {}),
+  ];
+
+  it('the Market drops from access and from the listing', () => {
+    expect(accessibleMarkets([]).map((m) => m.id)).toContain('imperial-square');
+    expect(accessibleMarkets([], [RENUNCIATION]).map((m) => m.id)).not.toContain('imperial-square');
+    expect(listedMarkets([], [RENUNCIATION]).map((m) => m.id)).not.toContain('imperial-square');
+  });
+
+  it('the engine refuses the trip', () => {
+    const { flags } = replay([
+      ...renunciant(),
+      ev('transaction', { lines: [
+        { direction: 'buy', marketId: 'imperial-square', itemId: 'votive-candle', qty: 1 },
+      ] }),
+    ]);
+    expect(flags.some((f) => f.code === 'no-access' && f.message.includes('closed'))).toBe(true);
+  });
+
+  it('without the Vow the same trip clears', () => {
+    const { flags } = replay([
+      ...crystallized(),
+      ev('transaction', { lines: [
+        { direction: 'buy', marketId: 'imperial-square', itemId: 'votive-candle', qty: 1 },
+      ] }),
+    ]);
+    expect(flags).toEqual([]);
   });
 });

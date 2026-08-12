@@ -9,6 +9,7 @@
 //   - the drift review: rules changed → replay → flags name what broke;
 //   - the sheet: state is what derive() renders.
 
+import { isUnchosenChoiceLadder } from '../abilities';
 import { CATEGORIES } from '../category-abilities';
 import { classById, subclassById } from '../classes';
 import type { ClassDef, SubclassDef } from '../classes';
@@ -688,6 +689,10 @@ export function replay(events: RecordEvent[]): ReplayResult {
             flag(e, 'no-access', `no access to ${market.name}`);
             continue;
           }
+          if (market.closedBy?.some((c) => state.abilities.some((a) => a.ref.category === c.category && a.ref.ability === c.ability))) {
+            flag(e, 'no-access', `${market.name} is closed to you`);
+            continue;
+          }
           if (!Number.isInteger(line.qty) || line.qty < 1) {
             flag(e, 'unknown-ref', 'line quantity must be a positive whole number');
             continue;
@@ -914,6 +919,16 @@ export function replay(events: RecordEvent[]): ReplayResult {
             );
         if (!owned) { flag(e, 'wrong-order', `${e.ref.ability} is not owned`); break; }
         const card = findCard(e.ref);
+        // A builder copy advances only the choice Ladder it was built with
+        // (its Malediction); the sister Ladders belong to other copies.
+        if (card && isUnchosenChoiceLadder(card, e.variable, owned.choices)) {
+          flag(
+            e,
+            'no-access',
+            `this ${(card.builderNoun ?? 'Spell').toLowerCase()} is built with ${owned.choices?.[card.builderChoice!.key]}, not ${e.variable}`,
+          );
+          break;
+        }
         // A card's advanceable Ladders: its variables, plus its named Ladders
         // (extraVars and option-block Ladders — Generic Advances, Scribe /
         // Create). Excluded: automatic hook Ladders (hideCosts — they track

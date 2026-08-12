@@ -38,6 +38,8 @@ Live in `app/src/lib/category-abilities.ts` as shared consts — import them, do
 - **Standard Camp Targets** (`campTargets(attr)`): 1 patient / [attr] patients (m) / [attr] + 1 patients (m) / All in his company (M) — for camp-scale ministrations (rest-time heals and tendings)
 - **Standard Area** (`STD_AREA`): burst radius 5' / 10' (M) / 15' (M) / 20' (M) — every step a Major
 - **Standard Ongoing Damage** (`ongoingDamage()` + `ongoingDuration()`): tick caps at 3; Major buys −2 to the save; duration is mercy-capped save-ends scaling with the Category/Subclass attribute
+- **Daze Ladder** (`DAZE_EFFECTS`): Dazed (no Reactions or Interrupts) → + no Minor (m) → + no Move (m) → Stunned (M) — shared by Rebuke, New Magic's Lightning & Sonic effects, and the Stupor Malediction
+- **Fear Ladder** (`FEAR_EFFECTS`): −1 to its attacks → + can't close (m) → + can't attack you (m) → flees until it Saves (M) — shared by Fly the Wicked and the Dread Malediction
 - **Sensory / Light & Darkness ladder**: 7 rungs, bands of reach (mundane ±1, magic ±2, world ±3)
 
 (When a new ladder earns its place, add it to this list.)

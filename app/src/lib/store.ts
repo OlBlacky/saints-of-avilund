@@ -37,6 +37,8 @@ export interface VersionPayload {
   gearText?: unknown;
   basket?: unknown[];
   status?: PlayState;
+  /** The player's box arrangement per sheet page. */
+  boxOrder?: Record<string, string[]>;
 }
 
 export interface CharacterRecord {
