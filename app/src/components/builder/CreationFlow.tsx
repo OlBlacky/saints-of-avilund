@@ -66,6 +66,7 @@ interface Identity {
   heightIn: string;
   weight: string;
   notes: string;
+  portrait?: string;
 }
 
 interface Draft {
@@ -1054,7 +1055,14 @@ export default function CreationFlow() {
               <div class="cf-chiprow">
                 {sheet.skills.map((s) => (
                   <span key={s.skill} class={`cf-chip ${s.isClassSkill ? 'owned' : 'trained'}`}>
-                    {s.skill} {s.value.total >= 0 ? `+${s.value.total}` : s.value.total}
+                    {s.skill}{' '}
+                    {s.variants
+                      .map((v) =>
+                        s.variants.length > 1
+                          ? `${v.attr.slice(0, 3)} ${v.value.total >= 0 ? `+${v.value.total}` : `−${Math.abs(v.value.total)}`}`
+                          : `${v.value.total >= 0 ? `+${v.value.total}` : `−${Math.abs(v.value.total)}`}`,
+                      )
+                      .join(' · ')}
                     <Undo
                       pred={(e) =>
                         (e.type === 'skill-advanced' && e.skill === s.skill) ||

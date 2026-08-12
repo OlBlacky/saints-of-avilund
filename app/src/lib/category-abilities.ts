@@ -416,9 +416,9 @@ const PROTECTION: Ability[] = [
       effects: {
         base: 'Gain 2 Temp HP.',
         advances: [
-          { value: '3 Temp HP', cost: 'm' },
-          { value: '4 Temp HP', cost: 'm' },
-          { value: '5 Temp HP and +1 DR for 1 round', cost: 'M' },
+          { value: 'Gain 3 Temp HP', cost: 'm' },
+          { value: 'Gain 4 Temp HP', cost: 'm' },
+          { value: 'Gain 5 Temp HP and +1 DR for 1 round', cost: 'M' },
         ],
       },
     },
@@ -1172,7 +1172,7 @@ const CONDUCT_RITUAL: Ability = {
     { label: 'Ritual Specialization Hooks', note: GA_SPECIALIZATION('ritual', 'Ritual Specialization') + ' A Ritual Specialist also gains +1 to any d20 roll for the ritual.' },
   ],
   extraVars: [
-    { name: 'Participant Ladder', base: '—', advances: [{ value: 'improved one degree (more effect from fewer participants)', cost: 'M' }] },
+    { name: 'Participant Ladder', base: '—', advances: [{ value: 'Improved one degree (more effect from fewer participants)', cost: 'M' }] },
     SCRIBE_CREATE,
   ],
 };
@@ -1239,9 +1239,9 @@ const LETTERS: Ability[] = [
       attack: {
         base: 'Intelligence vs Unarmoured Wisdom',
         advances: [
-          { value: 'Intelligence vs Unarmoured Wisdom, at +1', cost: 'm' },
-          { value: 'Intelligence vs Unarmoured Wisdom, at +2', cost: 'm' },
-          { value: 'Intelligence vs Unarmoured Wisdom, at +2; the Shift becomes 2 (10\')', cost: 'M' },
+          { value: 'Intelligence vs Unarmoured Wisdom (+1 to the roll)', cost: 'm' },
+          { value: 'Intelligence vs Unarmoured Wisdom (+2 to the roll)', cost: 'm' },
+          { value: 'Intelligence vs Unarmoured Wisdom (+2 to the roll; the Shift becomes 10\')', cost: 'M' },
         ],
       },
       effects: { base: 'On a hit, Shift 1 (5\'); the opponent may not use a Reaction to this movement.' },
@@ -1782,7 +1782,7 @@ const NEW_MAGIC: Ability[] = [
           { value: '+1 to all Defences, and DR 1', cost: 'M' },
         ],
       },
-      duration: { base: '1 hour', advances: [{ value: '2 hours', cost: 'm' }, { value: '4 hours', cost: 'm' }, { value: 'until your next Long Rest', cost: 'M' }] },
+      duration: { base: '1 hour', advances: [{ value: '2 hours', cost: 'm' }, { value: '4 hours', cost: 'm' }, { value: 'Until your next Long Rest', cost: 'M' }] },
     },
     options: [{ label: 'Implement Specialization Hooks', note: 'No element — Lorica Arcana is not an elemental spell.', detail: ['Magic Staff → every Defence improvement is +1 more'] }],
   },
@@ -1838,7 +1838,7 @@ const NEW_MAGIC: Ability[] = [
           { value: "Magical Light, 30' radius — the ceiling of magic; where it overlaps Magical Darkness the two cancel. It is not a sun.", cost: 'M' },
         ],
       },
-      duration: { base: '1 hour', advances: [{ value: '2 hours', cost: 'm' }, { value: '4 hours', cost: 'm' }, { value: 'until you dismiss it', cost: 'M' }] },
+      duration: { base: '1 hour', advances: [{ value: '2 hours', cost: 'm' }, { value: '4 hours', cost: 'm' }, { value: 'Until you dismiss it', cost: 'M' }] },
     },
     options: [
       { label: 'Specialization Hooks', detail: ['Specialization — Fire → the light is a magical, unquenchable flame (and behaves like a torch for setting things alight)'] },
@@ -2061,9 +2061,9 @@ const ASSASSINATION: Ability[] = [
       effects: {
         base: 'The mark is Studied: +1 damage to any Sneak Attack, Death Blow, or Anatomist’s Cut against it.',
         advances: [
-          { value: '+Int damage instead of +1', cost: 'm' },
-          { value: 'You also learn the mark’s HP and Defences', cost: 'm' },
-          { value: '+2 × Int damage', cost: 'M', note: 'L5' },
+          { value: 'The mark is Studied: +Int damage to any Sneak Attack, Death Blow, or Anatomist’s Cut against it', cost: 'm' },
+          { value: 'The mark is Studied (+Int damage), and you learn its HP and Defences', cost: 'm' },
+          { value: 'The mark is Studied (+2 × Int damage), and you learn its HP and Defences', cost: 'M', note: 'L5' },
         ],
       },
       duration: { base: 'Until the end of the encounter' },
@@ -2133,9 +2133,9 @@ const ASSASSINATION: Ability[] = [
       effects: {
         base: 'The mark is Grabbed and silenced — no speech, no spell with a spoken part.',
         advances: [
-          { value: 'And takes 1[W] damage every round while held', cost: 'm' },
-          { value: 'And Dazed (no Reactions or Interrupts) while held', cost: 'm' },
-          { value: 'And, from the second round it is held, it must make a Constitution Save (vs your Strength Offence + 10) each round or fall Unconscious', cost: 'M' },
+          { value: 'The mark is Grabbed and silenced, and takes 1[W] damage every round while held', cost: 'm' },
+          { value: 'The mark is Grabbed, silenced, and Dazed (no Reactions or Interrupts), and takes 1[W] damage every round while held', cost: 'm' },
+          { value: 'The mark is Grabbed, silenced, and Dazed, and takes 1[W] damage every round while held — and from the second round, it must make a Constitution Save (vs your Strength Offence + 10) each round or fall Unconscious', cost: 'M' },
         ],
       },
       duration: { base: 'While you sustain the grab (a Minor each round)' },
@@ -2153,9 +2153,9 @@ const ASSASSINATION: Ability[] = [
       effects: {
         base: 'You wring out details of your quarry: +2 to any roll to learn its weaknesses or Defences, in or before combat while you can observe it — Study the Mark checks included.',
         advances: [
-          { value: 'You also gain +4 Initiative against the quarry', cost: 'm' },
-          { value: 'You also gain +1 to hit the quarry in your next encounter with it', cost: 'm' },
-          { value: 'You permanently gain +1 to hit and +1 damage against the quarry', cost: 'M' },
+          { value: 'You wring out details of your quarry: +2 to any roll to learn its weaknesses or Defences, and +4 Initiative against it', cost: 'm' },
+          { value: 'You wring out details of your quarry: +2 to any roll to learn its weaknesses or Defences, +4 Initiative against it, and +1 to hit it in your next encounter with it', cost: 'm' },
+          { value: 'You wring out details of your quarry: +2 to any roll to learn its weaknesses or Defences, +4 Initiative against it, and permanently +1 to hit and +1 damage against it', cost: 'M' },
         ],
       },
     },
@@ -2169,9 +2169,9 @@ const ASSASSINATION: Ability[] = [
       effects: {
         base: 'You leave nothing behind: the death raises no alarm, and body and signs are hidden from a casual search.',
         advances: [
-          { value: 'Even a deliberate search takes −2 to turn anything up', cost: 'm' },
-          { value: 'You can make the death read as natural or accidental', cost: 'm' },
-          { value: 'No trace at all — no Gather Information check can connect the death to you', cost: 'M' },
+          { value: 'You leave nothing behind: the death raises no alarm, and even a deliberate search takes −2 to turn anything up', cost: 'm' },
+          { value: 'You leave nothing behind: the death raises no alarm, even a deliberate search takes −2 to turn anything up, and you can make the death read as natural or accidental', cost: 'm' },
+          { value: 'No trace at all — no Gather Information check can connect the death to you, and you can make it read as natural or accidental', cost: 'M' },
         ],
       },
     },
@@ -2206,8 +2206,8 @@ const GUILE: Ability[] = [
         base: '“Look there.” The Target is Off Guard to your attacks.',
         advances: [
           { value: 'The Target is Off Guard to all attacks', cost: 'm' },
-          { value: 'And you may Shift one Target 5′', cost: 'm' },
-          { value: 'And one Target is Dazed until the end of your next turn', cost: 'M' },
+          { value: 'The Target is Off Guard to all attacks, and you may Shift one Target 5′', cost: 'm' },
+          { value: 'The Target is Off Guard to all attacks, you may Shift one Target 5′, and one Target is Dazed until the end of your next turn', cost: 'M' },
         ],
       },
       duration: { base: 'Until the end of your next turn' },
@@ -2224,9 +2224,9 @@ const GUILE: Ability[] = [
       effects: {
         base: 'A jibe that gets under the skin: −1 to the Target’s attack rolls.',
         advances: [
-          { value: '−1 to its attack and damage rolls', cost: 'm' },
-          { value: '−2 to its attack and damage rolls', cost: 'm' },
-          { value: '−2 to attack and damage, and the Target may not take Reactions or Interrupts', cost: 'M' },
+          { value: '−1 to the Target’s attack and damage rolls', cost: 'm' },
+          { value: '−2 to the Target’s attack and damage rolls', cost: 'm' },
+          { value: '−2 to the Target’s attack and damage rolls, and it may not take Reactions or Interrupts', cost: 'M' },
         ],
       },
       duration: { base: 'Until the end of your next turn' },
@@ -2260,9 +2260,9 @@ const GUILE: Ability[] = [
       effects: {
         base: 'A performer’s unshakeable front: gain 1 Temp HP.',
         advances: [
-          { value: 'Cha Temp HP', cost: 'm' },
-          { value: 'Cha Temp HP, and +1 to all your Defences while the Temp HP lasts', cost: 'm' },
-          { value: 'Cha Temp HP, +1 to all your Defences while the Temp HP lasts, and you cannot be made Off Guard while it lasts', cost: 'M' },
+          { value: 'Gain Cha Temp HP', cost: 'm' },
+          { value: 'Gain Cha Temp HP, and +1 to all your Defences while the Temp HP lasts', cost: 'm' },
+          { value: 'Gain Cha Temp HP, +1 to all your Defences while the Temp HP lasts, and you cannot be made Off Guard while it lasts', cost: 'M' },
         ],
       },
       duration: { base: 'Until you lose the Temp HP' },
@@ -2286,9 +2286,9 @@ const GUILE: Ability[] = [
       effects: {
         base: 'Con the Target out of 1d6 sp.',
         advances: [
-          { value: '1d6 + Cha sp', cost: 'm' },
-          { value: '2d6 + Cha sp', cost: 'm' },
-          { value: '1d4 × 10 sp', cost: 'M' },
+          { value: 'Con the Target out of 1d6 + Cha sp', cost: 'm' },
+          { value: 'Con the Target out of 2d6 + Cha sp', cost: 'm' },
+          { value: 'Con the Target out of 1d4 × 10 sp', cost: 'M' },
         ],
       },
       duration: { base: 'Instant — the take is yours' },
@@ -2325,9 +2325,9 @@ const GUILE: Ability[] = [
       effects: {
         base: 'You and your allies gain 1 Temp HP, held until your next encounter with the named foe.',
         advances: [
-          { value: 'Cha Temp HP', cost: 'm' },
-          { value: 'Cha Temp HP, and +1 to AC', cost: 'm' },
-          { value: 'Cha + 1 Temp HP, and +1 to all Defences', cost: 'M' },
+          { value: 'You and your allies gain Cha Temp HP, held until your next encounter with the named foe', cost: 'm' },
+          { value: 'You and your allies gain Cha Temp HP and +1 to AC, held until your next encounter with the named foe', cost: 'm' },
+          { value: 'You and your allies gain Cha + 1 Temp HP and +1 to all Defences, held until your next encounter with the named foe', cost: 'M' },
         ],
       },
       duration: { base: 'Until the end of your next encounter with the named foe (or until the Temp HP is spent)' },
@@ -2373,9 +2373,9 @@ const OCCULT: Ability[] = [
       effects: {
         base: 'Lowlight Vision — Dim Light carries no penalty for you.',
         advances: [
-          { value: 'Darkvision — Darkness carries no penalty either (Magical Darkness and the Void still blind you)', cost: 'm' },
-          { value: 'See Invisible — you see invisible creatures and things', cost: 'm' },
-          { value: 'Ghost Sight — you see spirits and shades, and into the other side', cost: 'M' },
+          { value: 'Darkvision — neither Dim Light nor Darkness carries a penalty for you (Magical Darkness and the Void still blind you)', cost: 'm' },
+          { value: 'Darkvision, and See Invisible — you see invisible creatures and things', cost: 'm' },
+          { value: 'Darkvision, See Invisible, and Ghost Sight — you see spirits and shades, and into the other side', cost: 'M' },
         ],
       },
       duration: { base: '1 minute', advances: [{ value: '5 minutes', cost: 'm' }, { value: '10 minutes', cost: 'm' }, { value: '1 hour', cost: 'M' }] },
@@ -2402,7 +2402,7 @@ const OCCULT: Ability[] = [
         advances: [
           { value: '+1 to their Saves and Defences', cost: 'm' },
           { value: '+1 to their Saves, Defences, and attack rolls', cost: 'm' },
-          { value: 'And one Reroll for the party, on any d20 roll', cost: 'M' },
+          { value: '+1 to their Saves, Defences, and attack rolls, and one Reroll for the party on any d20 roll', cost: 'M' },
         ],
       },
       duration: { base: 'Until your next rest' },
@@ -2418,9 +2418,9 @@ const OCCULT: Ability[] = [
       effects: {
         base: 'You gain 1 Reroll during the Duration, for any non-combat roll.',
         advances: [
-          { value: 'The party gains 1 Reroll', cost: 'm' },
-          { value: 'The party gains 2 Rerolls', cost: 'm' },
-          { value: 'And you know the direction to a safe place', cost: 'M' },
+          { value: 'The party gains 1 Reroll during the Duration, for any non-combat roll', cost: 'm' },
+          { value: 'The party gains 2 Rerolls during the Duration, for any non-combat roll', cost: 'm' },
+          { value: 'The party gains 2 Rerolls during the Duration, for any non-combat roll, and you know the direction to a safe place', cost: 'M' },
         ],
       },
       duration: { base: '1 hour', advances: [{ value: '4 hours', cost: 'm' }, { value: '8 hours', cost: 'm' }, { value: '24 hours', cost: 'M' }] },
@@ -2557,7 +2557,7 @@ const WITCHCRAFT: Ability[] = [
       frequency: { base: 'Passive (always on)' },
       effects: {
         base: '+1 to all your Defences. The Renunciation: you have renounced the Saintly Faith. You may not willingly enter their churches or other places of worship, may not invoke the Saints’ names, and may not receive benefit from any Saintly source (a Friar of the Saintly Faith’s healing, a blessing, a relic). The Saintly Market is closed to you.',
-        advances: [{ value: '+2 to all your Defences', cost: 'M', note: 'L5' }],
+        advances: [{ value: '+2 to all your Defences. The Renunciation: you have renounced the Saintly Faith. You may not willingly enter their churches or other places of worship, may not invoke the Saints’ names, and may not receive benefit from any Saintly source (a Friar of the Saintly Faith’s healing, a blessing, a relic). The Saintly Market is closed to you.', cost: 'M', note: 'L5' }],
       },
     },
   },
@@ -2567,7 +2567,7 @@ const WITCHCRAFT: Ability[] = [
       frequency: { base: 'Passive (always on)' },
       effects: {
         base: 'DR 1. The Renunciation: you have vowed never to willingly bathe in clean water.',
-        advances: [{ value: 'DR 2', cost: 'M', note: 'L5' }],
+        advances: [{ value: 'DR 2. The Renunciation: you have vowed never to willingly bathe in clean water.', cost: 'M', note: 'L5' }],
       },
     },
   },
@@ -2577,7 +2577,7 @@ const WITCHCRAFT: Ability[] = [
       frequency: { base: 'Passive (always on)' },
       effects: {
         base: 'One Reroll per day, on any d20 roll. The Renunciation: you do everything with the left hand, and whenever you are in doubt which way to go, you always turn left.',
-        advances: [{ value: 'One Reroll per encounter', cost: 'M', note: 'L5' }],
+        advances: [{ value: 'One Reroll per encounter, on any d20 roll. The Renunciation: you do everything with the left hand, and whenever you are in doubt which way to go, you always turn left.', cost: 'M', note: 'L5' }],
       },
     },
   },
@@ -2590,9 +2590,9 @@ const WITCHCRAFT: Ability[] = [
       effects: {
         base: 'You summon a shade that performs tasks for the Duration. It has Speed 15, 5 HP, and all Defences 11, and is invulnerable to every kind of damage but Radiant and Force (and weapons made to battle the undead).',
         advances: [
-          { value: 'It will fight your enemies: spend a Move Action to command it, and it may take a move and a Standard Action. Its Standard-Action attack uses your Charisma attack bonus and deals 1d4 Necrotic.', cost: 'm' },
-          { value: 'You may command it with a Minor Action instead of a Move Action.', cost: 'm' },
-          { value: 'The shade grows stronger: Speed 20, 10 HP, all Defences 12, and its attack deals 1d6 Necrotic.', cost: 'M' },
+          { value: 'The shade performs tasks and will fight your enemies: spend a Move Action to command it, and it may take a move and a Standard Action; its attack uses your Charisma attack bonus and deals 1d4 Necrotic. (Speed 15, 5 HP, all Defences 11, invulnerable to all damage but Radiant and Force.)', cost: 'm' },
+          { value: 'The shade performs tasks and will fight your enemies: spend a Minor Action to command it, and it may take a move and a Standard Action; its attack uses your Charisma attack bonus and deals 1d4 Necrotic. (Speed 15, 5 HP, all Defences 11, invulnerable to all damage but Radiant and Force.)', cost: 'm' },
+          { value: 'The shade performs tasks and will fight your enemies: spend a Minor Action to command it, and it may take a move and a Standard Action; its attack uses your Charisma attack bonus and deals 1d6 Necrotic. (Speed 20, 10 HP, all Defences 12, invulnerable to all damage but Radiant and Force.)', cost: 'M' },
         ],
       },
       duration: { base: '1 minute', advances: [{ value: '5 minutes', cost: 'm' }, { value: '10 minutes', cost: 'm' }, { value: '1 hour', cost: 'M' }] },
@@ -2783,7 +2783,7 @@ const HARVEST: Ability[] = [
       targets: {
         base: 'Yourself',
         advances: [
-          { value: 'And your immediate travelling companions', cost: 'm' },
+          { value: 'Yourself and your immediate travelling companions', cost: 'm' },
           { value: 'Up to 10 people', cost: 'm' },
           { value: 'Up to 20 people', cost: 'M' },
         ],
@@ -2791,9 +2791,9 @@ const HARVEST: Ability[] = [
       effects: {
         base: 'The land feeds them: a day’s food and water, and the makings your craft needs (herbs, simples, salves). Those who eat the hot meal gain 1 Temp HP.',
         advances: [
-          { value: '2 Temp HP', cost: 'm' },
-          { value: '3 Temp HP', cost: 'm' },
-          { value: '3 Temp HP, +1 to Saves, and you discover 1d4 Supply for a Herbalist’s Bag', cost: 'M' },
+          { value: 'The land feeds them: a day’s food and water, and the makings your craft needs. Those who eat the hot meal gain 2 Temp HP.', cost: 'm' },
+          { value: 'The land feeds them: a day’s food and water, and the makings your craft needs. Those who eat the hot meal gain 3 Temp HP.', cost: 'm' },
+          { value: 'The land feeds them: a day’s food and water, and the makings your craft needs. Those who eat the hot meal gain 3 Temp HP and +1 to Saves, and you discover 1d4 Supply for a Herbalist’s Bag.', cost: 'M' },
         ],
       },
       duration: { base: 'The day (Temp HP until lost)' },
@@ -2817,9 +2817,9 @@ const HARVEST: Ability[] = [
       effects: {
         base: 'The drinker takes +1 on Saves against poison and disease (a poison’s Interval Saves included).',
         advances: [
-          { value: 'And may make a Save immediately', cost: 'm' },
-          { value: 'And 1 Temp HP', cost: 'm' },
-          { value: '+2 on the Saves, and 2 Temp HP', cost: 'M' },
+          { value: 'The drinker takes +1 on Saves against poison and disease (Interval Saves included), and may make a Save immediately', cost: 'm' },
+          { value: 'The drinker takes +1 on Saves against poison and disease (Interval Saves included), may make a Save immediately, and gains 1 Temp HP', cost: 'm' },
+          { value: 'The drinker takes +2 on Saves against poison and disease (Interval Saves included), may make a Save immediately, and gains 2 Temp HP', cost: 'M' },
         ],
       },
       duration: { base: 'The draughts are meant to be drunk within 24 hours (the Targets ladder can extend their keeping); the Save bonus and Temp HP also last 24 hours.' },
@@ -2844,18 +2844,18 @@ const HARVEST: Ability[] = [
         name: 'Effect(s) — In Combat',
         base: 'You ignore Difficult Terrain movement penalties from vegetation.',
         advances: [
-          { value: 'And +1 Stealth while in vegetation', cost: 'm' },
-          { value: 'And +1 AC while in vegetation', cost: 'm' },
-          { value: 'And DR 2 while in vegetation', cost: 'M' },
+          { value: 'Ignore Difficult Terrain from vegetation, and +1 Stealth while in vegetation', cost: 'm' },
+          { value: 'Ignore Difficult Terrain from vegetation, and +1 Stealth and +1 AC while in vegetation', cost: 'm' },
+          { value: 'Ignore Difficult Terrain from vegetation, and +1 Stealth, +1 AC, and DR 2 while in vegetation', cost: 'M' },
         ],
       },
       {
         name: 'Effect(s) — Overland',
         base: 'You ignore Difficult Terrain movement penalties from vegetation.',
         advances: [
-          { value: 'And +1 Stealth and +1 Initiative while travelling where the vegetation is high or dense enough to partially conceal the travellers', cost: 'm' },
-          { value: 'And the DC to track the travellers is increased by 1', cost: 'm' },
-          { value: '+2 Stealth and Initiative, and the tracking DC is increased by 2', cost: 'M' },
+          { value: 'Ignore Difficult Terrain from vegetation, and +1 Stealth and +1 Initiative while travelling where the vegetation is high or dense enough to partially conceal the travellers', cost: 'm' },
+          { value: 'Ignore Difficult Terrain from vegetation, +1 Stealth and +1 Initiative while travelling in concealing vegetation, and the DC to track the travellers is increased by 1', cost: 'm' },
+          { value: 'Ignore Difficult Terrain from vegetation, +2 Stealth and +2 Initiative while travelling in concealing vegetation, and the DC to track the travellers is increased by 2', cost: 'M' },
         ],
       },
     ],
@@ -2875,15 +2875,15 @@ const HARVEST: Ability[] = [
           { value: 'Self + 1 Ally', cost: 'm' },
           { value: 'Self + Wis Allies', cost: 'm' },
           { value: 'Self and all Allies', cost: 'm' },
-          { value: 'And you can extend the welcome to Wis days', cost: 'M' },
+          { value: 'Self and all Allies, and you can extend the welcome to Wis days', cost: 'M' },
         ],
       },
       effects: {
         base: 'Country folk take you for their own: board and lodging offered where strangers are turned away, and rural NPC Attitude starts one step better toward you and your company.',
         advances: [
-          { value: 'And the lodging, hearth and fellowship provide 1 Temp HP', cost: 'm' },
-          { value: '2 Temp HP', cost: 'm' },
-          { value: 'And they will provide you with material aid, per the DM’s adjudication', cost: 'M' },
+          { value: 'Country folk take you for their own: board and lodging offered, rural NPC Attitude one step better, and the lodging, hearth and fellowship provide 1 Temp HP', cost: 'm' },
+          { value: 'Country folk take you for their own: board and lodging offered, rural NPC Attitude one step better, and the lodging, hearth and fellowship provide 2 Temp HP', cost: 'm' },
+          { value: 'Country folk take you for their own: board and lodging offered, rural NPC Attitude one step better, 2 Temp HP, and they will provide you with material aid, per the DM’s adjudication', cost: 'M' },
         ],
       },
       duration: { base: 'Temp HP last 24 hours' },
@@ -2898,8 +2898,8 @@ const HARVEST: Ability[] = [
       effects: {
         base: '+1 to Handle Animal checks.',
         advances: [
-          { value: 'And you may Push a trained animal as a Minor Action (the skill’s own ceiling is a Move Action)', cost: 'm' },
-          { value: 'And Calm or Control extends to wild animals, and training an animal takes days, not weeks', cost: 'm' },
+          { value: '+1 to Handle Animal checks, and you may Push a trained animal as a Minor Action (the skill’s own ceiling is a Move Action)', cost: 'm' },
+          { value: '+1 to Handle Animal checks, Push a trained animal as a Minor Action, Calm or Control extends to wild animals, and training an animal takes days, not weeks', cost: 'm' },
           { value: '+2 to Handle Animal, Push as a Free Action (once per turn), and Calm or Control works even on beasts set against you — another’s guard-dog, a war-trained mount', cost: 'M' },
         ],
       },
@@ -2915,9 +2915,9 @@ const HARVEST: Ability[] = [
       effects: {
         base: 'The Naturalist becomes trained in Gather Information, which is Wis-based and can only be used with this Ability.',
         advances: [
-          { value: 'And +1 to Gather Information rolls', cost: 'm' },
-          { value: 'And NPC Attitudes toward you are improved by 1 step', cost: 'm' },
-          { value: '+2 to Gather Information, and 2 steps of NPC Attitude improvement', cost: 'M' },
+          { value: 'Trained in Gather Information (Wis-based, only with this Ability), at +1 to the roll', cost: 'm' },
+          { value: 'Trained in Gather Information (Wis-based, only with this Ability), at +1 to the roll, and NPC Attitudes toward you are improved by 1 step', cost: 'm' },
+          { value: 'Trained in Gather Information (Wis-based, only with this Ability), at +2 to the roll, and NPC Attitudes toward you are improved by 2 steps', cost: 'M' },
         ],
       },
     },
@@ -3043,9 +3043,9 @@ const HUSBANDRY: Ability[] = [
       effects: {
         base: 'On a hit, the dog worries what it grips: the target is Slowed (half Speed) until the end of its next turn.',
         advances: [
-          { value: 'And it cannot shift while the dog is adjacent', cost: 'm' },
-          { value: 'Held: Immobilized while the dog stays adjacent, until the end of its next turn', cost: 'm' },
-          { value: 'Dragged down: and knocked Prone', cost: 'M' },
+          { value: 'On a hit, the target is Slowed (half Speed) and cannot shift while the dog is adjacent, until the end of its next turn', cost: 'm' },
+          { value: 'On a hit, the target is Immobilized while the dog stays adjacent, until the end of its next turn', cost: 'm' },
+          { value: 'On a hit, the target is Immobilized while the dog stays adjacent, and dragged down — knocked Prone', cost: 'M' },
         ],
       },
       duration: { base: 'Until the end of the target’s next turn' },
@@ -3062,9 +3062,9 @@ const HUSBANDRY: Ability[] = [
       effects: {
         base: 'The camp cannot be surprised while the dog watches: 2 hours of the rest, guarded by its nose and ears (Perception +3).',
         advances: [
-          { value: '4 hours', cost: 'm' },
-          { value: 'The whole rest', cost: 'm' },
-          { value: 'And it wakes you quietly, and in time: the company meets any night attack on its feet, weapons in hand', cost: 'M' },
+          { value: 'The camp cannot be surprised while the dog watches: 4 hours of the rest, guarded by its nose and ears (Perception +3)', cost: 'm' },
+          { value: 'The camp cannot be surprised while the dog watches: the whole rest, guarded by its nose and ears (Perception +3)', cost: 'm' },
+          { value: 'The camp cannot be surprised for the whole rest, and the dog wakes you quietly, and in time: the company meets any night attack on its feet, weapons in hand', cost: 'M' },
         ],
       },
       duration: { base: 'The rest' },
@@ -3095,9 +3095,9 @@ const HUSBANDRY: Ability[] = [
       effects: {
         base: 'On a hit, the advance breaks: the target’s movement ends where it stands.',
         advances: [
-          { value: 'And −1 to its attacks until the end of its next turn', cost: 'm' },
-          { value: 'And it must end its turn where it stands', cost: 'm' },
-          { value: 'Turned: it cannot willingly approach your flock (you, and allies within 10\' of you) until the end of its next turn', cost: 'M' },
+          { value: 'On a hit, the target’s movement ends where it stands, and −1 to its attacks until the end of its next turn', cost: 'm' },
+          { value: 'On a hit, the target must end its turn where it stands, and −1 to its attacks until the end of its next turn', cost: 'm' },
+          { value: 'On a hit, the target is Turned: it cannot willingly approach your flock (you, and allies within 10\' of you) until the end of its next turn', cost: 'M' },
         ],
       },
       duration: { base: 'Until the end of the target’s next turn' },
@@ -3128,9 +3128,9 @@ const HUSBANDRY: Ability[] = [
       effects: {
         base: 'On a hit, Push the opponent 5\', away from the ally.',
         advances: [
-          { value: 'Push 10\'', cost: 'm' },
-          { value: 'And −1 to its attacks until the end of its next turn', cost: 'm' },
-          { value: 'Driven off: it cannot approach that ally again until the end of its next turn', cost: 'M' },
+          { value: 'On a hit, Push the opponent 10\', away from the ally', cost: 'm' },
+          { value: 'On a hit, Push the opponent 10\' away from the ally, and −1 to its attacks until the end of its next turn', cost: 'm' },
+          { value: 'On a hit, Push the opponent 10\' and it is driven off: it cannot approach that ally again until the end of its next turn', cost: 'M' },
         ],
       },
       duration: { base: 'Until the end of the target’s next turn' },
@@ -3152,9 +3152,9 @@ const HUSBANDRY: Ability[] = [
       effects: {
         base: 'Slide the target 5\' in a direction of your choice — bunch the pack together, or cut one out from it.',
         advances: [
-          { value: 'Slide 10\'', cost: 'm' },
-          { value: 'And the dog may shift 5\' to keep the press', cost: 'm' },
-          { value: 'Driven: the target cannot willingly move back the way it was driven until the end of its next turn', cost: 'M' },
+          { value: 'Slide the target 10\' in a direction of your choice', cost: 'm' },
+          { value: 'Slide the target 10\' in a direction of your choice, and the dog may shift 5\' to keep the press', cost: 'm' },
+          { value: 'Slide the target 10\' and it is Driven: it cannot willingly move back the way it was driven until the end of its next turn', cost: 'M' },
         ],
       },
       duration: { base: 'Instant' },
@@ -3170,8 +3170,8 @@ const HUSBANDRY: Ability[] = [
         base: 'Counting without counting: you know at a glance whether the company is whole, and notice at once when someone slips away or is taken, within your senses or the dog’s.',
         advances: [
           { value: 'You know the moment one strays beyond a bowshot of the company, wherever you are', cost: 'm' },
-          { value: 'And the direction they lie in', cost: 'm' },
-          { value: 'And the dog can follow their trail unerringly, up to a day cold', cost: 'M' },
+          { value: 'You know the moment one strays beyond a bowshot of the company, and the direction they lie in', cost: 'm' },
+          { value: 'You know the moment one strays beyond a bowshot of the company, and the direction they lie in — and the dog can follow their trail unerringly, up to a day cold', cost: 'M' },
         ],
       },
     },
@@ -3214,17 +3214,17 @@ const BOTANY: Ability[] = [
       effects: {
         base: 'Brew a poison whose recipe you know, at its stated Save DC, Onset and potency. Recipes are found, bought, or taught — as spells are.',
         advances: [
-          { value: '+1 to the Save DC', cost: 'm' },
-          { value: 'And adjust the Onset by one Rank, faster or slower', cost: 'm' },
-          { value: '+2 to the Save DC', cost: 'M' },
+          { value: 'Brew a poison whose recipe you know, at +1 to its Save DC', cost: 'm' },
+          { value: 'Brew a poison whose recipe you know, at +1 to its Save DC, and adjust the Onset by one Rank, faster or slower', cost: 'm' },
+          { value: 'Brew a poison whose recipe you know, at +2 to its Save DC, and adjust the Onset by one Rank, faster or slower', cost: 'M' },
         ],
       },
       duration: {
         base: 'The brew keeps 1 day',
         advances: [
-          { value: 'Int days', cost: 'm' },
-          { value: '7 days', cost: 'm' },
-          { value: '30 days', cost: 'M' },
+          { value: 'The brew keeps Int days', cost: 'm' },
+          { value: 'The brew keeps 7 days', cost: 'm' },
+          { value: 'The brew keeps 30 days', cost: 'M' },
         ],
       },
     },
@@ -3303,9 +3303,9 @@ const BOTANY: Ability[] = [
       effects: {
         base: 'The dose quiets pain: suppress the penalties of one bodily Condition — not cured, only stilled.',
         advances: [
-          { value: 'Also suppress its ongoing damage', cost: 'm' },
-          { value: 'Two Conditions', cost: 'm' },
-          { value: 'And the Wounded Condition’s penalties too', cost: 'M' },
+          { value: 'Suppress the penalties and ongoing damage of one bodily Condition — not cured, only stilled', cost: 'm' },
+          { value: 'Suppress the penalties and ongoing damage of two bodily Conditions — not cured, only stilled', cost: 'm' },
+          { value: 'Suppress the penalties and ongoing damage of two bodily Conditions, and the Wounded Condition’s penalties too — not cured, only stilled', cost: 'M' },
         ],
       },
       duration: {
@@ -3345,8 +3345,8 @@ const OLD_MAGIC: Ability[] = [
         base: 'See and address the spirits of place and tree, beast, storm and stone, in the First Tongue. Learn the spirit’s temper, and what it treasures.',
         advances: [
           { value: 'Ask what it has seen: the place answers as a witness — who passed, what was done, within the last day', cost: 'm' },
-          { value: 'Within the last week', cost: 'm' },
-          { value: 'Within the living memory of the place — old spirits remember long, and old trees longest of all', cost: 'M' },
+          { value: 'Ask what it has seen: the place answers as a witness — who passed, what was done, within the last week', cost: 'm' },
+          { value: 'Ask what it has seen: the place answers as a witness, within the living memory of the place — old spirits remember long, and old trees longest of all', cost: 'M' },
         ],
       },
     },
@@ -3366,9 +3366,9 @@ const OLD_MAGIC: Ability[] = [
       effects: {
         base: 'Tended sleep mends: targets recover 1 extra HP after the rest.',
         advances: [
-          { value: '2 HP', cost: 'm' },
-          { value: 'And they may make a Save against any poison or disease they are currently suffering from', cost: 'm' },
-          { value: 'And they may attempt to recover from 1 Wound or 1 point of Attribute Damage (DC as Full Bed Rest with a Healer or Attendant)', cost: 'M' },
+          { value: 'Tended sleep mends: targets recover 2 extra HP after the rest', cost: 'm' },
+          { value: 'Tended sleep mends: targets recover 2 extra HP after the rest, and may make a Save against any poison or disease they are currently suffering from', cost: 'm' },
+          { value: 'Tended sleep mends: targets recover 2 extra HP after the rest, may make a Save against any poison or disease, and may attempt to recover from 1 Wound or 1 point of Attribute Damage (DC as Full Bed Rest with a Healer or Attendant)', cost: 'M' },
         ],
       },
       duration: { base: 'The rest' },
@@ -3470,9 +3470,9 @@ const OLD_MAGIC: Ability[] = [
       effects: {
         base: '+1 to Wis, Cha and Con Saves.',
         advances: [
-          { value: '+1 to all Saves and Defences vs the undead and spirits', cost: 'm' },
-          { value: '+2 to Wis, Cha and Con Saves', cost: 'm' },
-          { value: 'Target gets one Reroll on any Save', cost: 'M' },
+          { value: '+1 to Wis, Cha and Con Saves, and +1 to all Saves and Defences vs the undead and spirits', cost: 'm' },
+          { value: '+2 to Wis, Cha and Con Saves, and +1 to all Saves and Defences vs the undead and spirits', cost: 'm' },
+          { value: '+2 to Wis, Cha and Con Saves, +1 to all Saves and Defences vs the undead and spirits, and the target gets one Reroll on any Save', cost: 'M' },
         ],
       },
       duration: { base: '24 hours' },

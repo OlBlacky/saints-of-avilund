@@ -30,6 +30,9 @@ export interface VersionPayload {
     heightIn: string;
     weight: string;
     notes: string;
+    /** The character portrait as a small data URL — resized on upload so
+     * the record stays light, and it travels in the .avilund.json file. */
+    portrait?: string;
   };
   events: RecordEvent[];
   rerollsLeft: number;

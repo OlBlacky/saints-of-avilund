@@ -428,6 +428,19 @@ const blurb = 'Build a character of Avilund — and once they are Complete, this
   }
 
   /* Details, read-only (Manage Mode opens the inputs) */
+  .sheet-detailrow { display: flex; gap: 1.3rem; align-items: flex-start; flex-wrap: wrap; }
+  .sheet-detailfields { flex: 1; min-width: 14rem; }
+  .sheet-portraitbox { display: flex; flex-direction: column; gap: 0.45rem; }
+  .sheet-portrait {
+    display: block; width: 8.5rem; aspect-ratio: 3 / 4; object-fit: cover;
+    border: 1px solid var(--rule); border-radius: 4px;
+    box-shadow: 0 1px 2px var(--shadow);
+  }
+  .sheet-portrait--empty { background: color-mix(in srgb, var(--gold) 6%, transparent); }
+  .sheet-portraitbtns { display: flex; gap: 0.45rem; align-items: center; }
+  .sheet-uploadbtn { cursor: pointer; text-align: center; }
+  .sheet-uploadbtn input[type='file'] { display: none; }
+  @media print { .sheet-portraitbtns { display: none; } }
   .sheet-details { display: flex; flex-wrap: wrap; gap: 0.4rem 1.6rem; }
   .sheet-details strong {
     font-variant: small-caps; letter-spacing: 0.05em;
@@ -440,6 +453,14 @@ const blurb = 'Build a character of Avilund — and once they are Complete, this
   .sheet-bd { display: inline-flex; flex-direction: column; vertical-align: top; }
   .sheet-bd-total { font-weight: bold; color: var(--oxblood); font-variant-numeric: tabular-nums; }
   .sheet-bd-parts { font-size: 0.74rem; color: var(--ink-soft); white-space: nowrap; }
+
+  /* Multi-attribute Skills: one bonus per rollable attribute */
+  .sheet-skillvars { display: inline-flex; gap: 1.2rem; flex-wrap: wrap; }
+  .sheet-skillvar { display: inline-flex; gap: 0.35rem; align-items: baseline; }
+  .sheet-skillvar-attr {
+    font-variant: small-caps; letter-spacing: 0.05em;
+    color: var(--gold); font-size: 0.8rem;
+  }
 
   /* Packed tables: columns cluster by content instead of spreading */
   .sheet-table--packed { width: auto; }

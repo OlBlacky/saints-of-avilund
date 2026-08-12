@@ -74,6 +74,10 @@ export interface DerivedSkill {
    * the Untrained −1 is then part of its breakdown. */
   untrained?: boolean;
   value: Breakdown;
+  /** One bonus per attribute the Skill may be rolled with ("Str, Cha") —
+   * the pick is made per use at the table, so the sheet shows them all.
+   * `attr`/`value` mirror the first variant. */
+  variants: { attr: Attribute; value: Breakdown }[];
 }
 
 /** A conditional modifier the sheet can show but not sum — it fires only
@@ -367,27 +371,35 @@ export function derive(state: CharacterState): DerivedSheet {
     // name — speciality and all — is what the sheet shows and compares.
     const rank = state.skillRanks[skill] ?? 0;
     const def = SKILLS.find((s) => s.name === skillBase(skill));
-    // A skill's governing attribute is the first listed ("Dex, Wis" → Dex).
-    const short = parseAttr(def?.attrs.split(',')[0] ?? '');
-    const attr: Attribute = short ? ATTR_FULL[short] : 'Wisdom';
-    const attrTotal = attrValue(attr).total;
+    // Every listed attribute derives its own bonus ("Str, Cha" → both) —
+    // which one rolls is chosen per use at the table.
+    const attrs: Attribute[] = (def?.attrs.split(',') ?? [])
+      .map((a) => parseAttr(a.trim()))
+      .flatMap((short) => (short ? [ATTR_FULL[short]] : []));
+    if (attrs.length === 0) attrs.push('Wisdom');
     const isClassSkill = ownClassSkills.includes(skill);
     const untrained =
       !isClassSkill && !state.trainedSkills.includes(skill) && !usesGeneralistAttr(skill);
+    // Everything but the attribute is shared across the variants.
+    const sharedParts: Part[] = [
+      ...(untrained ? [{ label: 'Untrained', value: UNTRAINED_PENALTY }] : []),
+      ...(rank ? [{ label: 'Ranks', value: rank }] : []),
+      ...steadyParts((e) => e.kind === 'skillMod' && e.skill === skill),
+      ...(skill === 'Stealth' && wornArmour?.stealthPenalty
+        ? [{ label: wornArmour.name, value: -wornArmour.stealthPenalty }]
+        : []),
+    ];
+    const variants = attrs.map((attr) => ({
+      attr,
+      value: sum([{ label: attr, value: attrValue(attr).total }, ...sharedParts]),
+    }));
     return {
       skill,
-      attr,
+      attr: variants[0].attr,
       isClassSkill,
       ...(untrained ? { untrained } : {}),
-      value: sum([
-        { label: attr, value: attrTotal },
-        ...(untrained ? [{ label: 'Untrained', value: UNTRAINED_PENALTY }] : []),
-        ...(rank ? [{ label: 'Ranks', value: rank }] : []),
-        ...steadyParts((e) => e.kind === 'skillMod' && e.skill === skill),
-        ...(skill === 'Stealth' && wornArmour?.stealthPenalty
-          ? [{ label: wornArmour.name, value: -wornArmour.stealthPenalty }]
-          : []),
-      ]),
+      value: variants[0].value,
+      variants,
     };
   });
 

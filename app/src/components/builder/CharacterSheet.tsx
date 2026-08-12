@@ -64,6 +64,30 @@ const PAGES: { n: number; label: string; built: boolean }[] = [
 
 const signed = (n: number) => (n >= 0 ? `+${n}` : `−${Math.abs(n)}`);
 
+/** Shrink an uploaded portrait to a small JPEG data URL — browser storage
+ * is modest, and the sheet never shows it larger than a card. */
+function resizePortrait(file: File): Promise<string> {
+  return new Promise((resolve, reject) => {
+    const url = URL.createObjectURL(file);
+    const img = new Image();
+    img.onload = () => {
+      const MAX = 512;
+      const scale = Math.min(1, MAX / Math.max(img.width, img.height));
+      const canvas = document.createElement('canvas');
+      canvas.width = Math.max(1, Math.round(img.width * scale));
+      canvas.height = Math.max(1, Math.round(img.height * scale));
+      canvas.getContext('2d')!.drawImage(img, 0, 0, canvas.width, canvas.height);
+      URL.revokeObjectURL(url);
+      resolve(canvas.toDataURL('image/jpeg', 0.85));
+    };
+    img.onerror = () => {
+      URL.revokeObjectURL(url);
+      reject(new Error('not an image'));
+    };
+    img.src = url;
+  });
+}
+
 const partText = (p: { label: string; value: number }) =>
   p.label === 'Base' ? `${p.label} ${p.value}` : `${p.label} ${signed(p.value)}`;
 
@@ -206,6 +230,16 @@ export default function CharacterSheet({ identity, setIdentity, status, setStatu
     if (location === `in:${dragItem}`) { setDragItem(null); return; }
     append(mk('item-moved', { instanceId: dragItem, location }));
     setDragItem(null);
+  };
+
+  const onPortrait = (e: Event) => {
+    const input = e.target as HTMLInputElement;
+    const file = input.files?.[0];
+    if (!file) return;
+    resizePortrait(file)
+      .then((dataUrl) => setIdentity('portrait', dataUrl))
+      .catch(() => {})
+      .finally(() => { input.value = ''; });
   };
   const [langPick, setLangPick] = useState('');
   const ownedFeatIds = state.feats.map((f) => f.featId);
@@ -491,6 +525,30 @@ export default function CharacterSheet({ identity, setIdentity, status, setStatu
             <section class="cf-step sheet-box" style={boxStyle('p1', 'details')} onDragOver={boxDragOver} onDrop={() => dropBox('p1', 'details')}>
               {grip('p1', 'details')}
               <h3>Details</h3>
+              <div class="sheet-detailrow">
+              {(identity.portrait || manage) && (
+                <div class="sheet-portraitbox">
+                  {identity.portrait ? (
+                    <img class="sheet-portrait" src={identity.portrait} alt="Portrait" draggable={false} />
+                  ) : (
+                    <div class="sheet-portrait sheet-portrait--empty" />
+                  )}
+                  {manage && (
+                    <div class="sheet-portraitbtns">
+                      <label class="buy sheet-uploadbtn">
+                        {identity.portrait ? 'Replace' : 'Add a portrait'}
+                        <input type="file" accept="image/*" onChange={onPortrait} />
+                      </label>
+                      {identity.portrait && (
+                        <button type="button" class="undo" onClick={() => setIdentity('portrait', '')}>
+                          remove
+                        </button>
+                      )}
+                    </div>
+                  )}
+                </div>
+              )}
+              <div class="sheet-detailfields">
               {manage ? (
                 <div class="cf-identity">
                   <label>Name <input value={identity.name} onInput={(e) => setIdentity('name', (e.target as HTMLInputElement).value)} placeholder="Unnamed" /></label>
@@ -533,6 +591,8 @@ export default function CharacterSheet({ identity, setIdentity, status, setStatu
                   {identity.notes && <span class="sheet-details-wide"><strong>Notes</strong> {identity.notes}</span>}
                 </div>
               )}
+              </div>
+              </div>
             </section>
 
             <section class="cf-step sheet-box" style={boxStyle('p1', 'attributes')} onDragOver={boxDragOver} onDrop={() => dropBox('p1', 'attributes')}>
@@ -571,7 +631,16 @@ export default function CharacterSheet({ identity, setIdentity, status, setStatu
                   {sheet.skills.map((s) => (
                     <tr key={s.skill}>
                       <td>{s.skill}{s.isClassSkill ? ' ·' : ''}{s.untrained ? <span class="cf-shop-src"> untrained</span> : ''}</td>
-                      <td><Bd b={s.value} /></td>
+                      <td>
+                        <span class="sheet-skillvars">
+                          {s.variants.map((v) => (
+                            <span key={v.attr} class="sheet-skillvar">
+                              <span class="sheet-skillvar-attr">{v.attr.slice(0, 3)}</span>
+                              <Bd b={v.value} />
+                            </span>
+                          ))}
+                        </span>
+                      </td>
                     </tr>
                   ))}
                 </tbody>

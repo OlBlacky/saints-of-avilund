@@ -20,6 +20,10 @@ Languages read").
   understood in another Dialect of the same Family at **−1 to social checks**.
   Across Families, or with a tongue outside every Family, there is no such
   kinship.
+- **The koiné lands worse than kin.** Falling back on Imperial with anyone
+  whose home tongue it isn't is **−2 to social checks** — everywhere, even
+  within the Imperial Family. The trade tongue gets you understood; a kindred
+  Dialect gets you liked. Speaking a listener's own tongue carries no penalty.
 
 ## The vernaculars
 

@@ -13,12 +13,21 @@ import { CATEGORIES } from './category-abilities';
 // Values that mean "not applicable" rather than describing a Rank.
 const BLANK = new Set(['—', 'None']);
 
+// Fields whose values are machine-parsed notation (see notation.ts) — their
+// grammar, not Rail 11 prose style, decides their shape.
+const NOTATION_FIELDS = new Set(['damage', 'attack']);
+
 // Each rule names one way a value can lean on the row above it.
-const RULES: { reason: string; hit: (v: string) => boolean }[] = [
+const RULES: { reason: string; hit: (v: string, field: string) => boolean }[] = [
   { reason: 'references another row ("as above")', hit: (v) => /\b(as above|ditto|as before)\b/i.test(v) },
   { reason: 'leading "+ " delta (an addition to the previous Rank)', hit: (v) => /^\+ /.test(v) },
+  { reason: 'continuation word — the value adds to the previous Rank instead of restating it', hit: (v) => /^(And|Also|Plus|Then)\b/.test(v) },
   { reason: 'bare modifier with no stated subject', hit: (v) => /^[+−-]\d+\s*(?:$|,|and\b)/.test(v) },
   { reason: 'radius with no stated subject', hit: (v) => /^\d+['′] radius$/.test(v) },
+  {
+    reason: 'starts lowercase — reads as a sentence fragment continuing the row above',
+    hit: (v, field) => !NOTATION_FIELDS.has(field) && /^[a-z]/.test(v),
+  },
 ];
 
 interface Offence {
@@ -27,15 +36,15 @@ interface Offence {
   reasons: string[];
 }
 
-function check(offences: Offence[], key: string, value: string | undefined): void {
+function check(offences: Offence[], key: string, field: string, value: string | undefined): void {
   if (!value || BLANK.has(value)) return;
-  const reasons = RULES.filter((r) => r.hit(value)).map((r) => r.reason);
+  const reasons = RULES.filter((r) => r.hit(value, field)).map((r) => r.reason);
   if (reasons.length) offences.push({ key, value, reasons });
 }
 
-function checkLadder(offences: Offence[], key: string, ladder: Variable | NamedLadder): void {
-  check(offences, `${key} · base`, ladder.base);
-  ladder.advances?.forEach((adv, i) => check(offences, `${key} · rank ${i + 1}`, adv.value));
+function checkLadder(offences: Offence[], key: string, field: string, ladder: Variable | NamedLadder): void {
+  check(offences, `${key} · base`, field, ladder.base);
+  ladder.advances?.forEach((adv, i) => check(offences, `${key} · rank ${i + 1}`, field, adv.value));
 }
 
 // Walk every ladder on every card: the main variables, extra ladders, and the
@@ -50,14 +59,14 @@ function collectOffences(): Offence[] {
       seen.add(ability);
       const prefix = `${cat.name} · ${ability.name}`;
       for (const [varKey, variable] of Object.entries(ability.vars)) {
-        checkLadder(offences, `${prefix} · ${varKey}`, variable);
+        checkLadder(offences, `${prefix} · ${varKey}`, varKey, variable);
       }
       const namedLadders = [
         ...(ability.extraVars ?? []),
         ...(ability.options ?? []).flatMap((o) => o.ladders ?? []),
       ];
       for (const ladder of namedLadders) {
-        checkLadder(offences, `${prefix} · ${ladder.name}`, ladder);
+        checkLadder(offences, `${prefix} · ${ladder.name}`, ladder.name, ladder);
       }
     }
   }

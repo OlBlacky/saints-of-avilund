@@ -2,10 +2,13 @@ import { describe, it, expect } from 'vitest';
 
 import {
   DEFAULT_LANGUAGE,
+  DIALECT_SOCIAL_PENALTY,
+  KOINE_SOCIAL_PENALTY,
   LANGUAGES,
   LANGUAGE_FAMILY,
   LANGUAGE_NOTES,
   sharedFamily,
+  socialPenalty,
 } from './languages';
 import { LANGUAGES as LANGUAGE_SLOTS } from './quirks';
 
@@ -57,6 +60,33 @@ describe('sharedFamily', () => {
 
   it('returns null for the same tongue twice', () => {
     expect(sharedFamily('Imperial', 'Imperial')).toBeNull();
+  });
+});
+
+describe('socialPenalty', () => {
+  it('carries no penalty in the listener\'s own tongue', () => {
+    expect(socialPenalty('Regnal - Patric', 'Regnal - Patric')).toBe(0);
+    expect(socialPenalty('Imperial', 'Imperial')).toBe(0);
+  });
+
+  it('marks the koiné fallback everywhere, even inside its own Family', () => {
+    expect(socialPenalty('Imperial', 'Imperial - Vailish')).toBe(KOINE_SOCIAL_PENALTY);
+    expect(socialPenalty('Imperial', 'Republic - Waldisch')).toBe(KOINE_SOCIAL_PENALTY);
+    expect(socialPenalty('Imperial', 'Kellish')).toBe(KOINE_SOCIAL_PENALTY);
+  });
+
+  it('keeps the koiné stiffer than a kindred Dialect', () => {
+    expect(KOINE_SOCIAL_PENALTY).toBeLessThan(DIALECT_SOCIAL_PENALTY);
+  });
+
+  it('applies the Dialect penalty across kindred Dialects', () => {
+    expect(socialPenalty('Regnal - Patric', 'Regnal - Mantlish')).toBe(DIALECT_SOCIAL_PENALTY);
+    expect(socialPenalty('Imperial - Vailish', 'Imperial')).toBe(DIALECT_SOCIAL_PENALTY);
+  });
+
+  it('returns null where the tongues share nothing', () => {
+    expect(socialPenalty('Imperial - Lysandrine', 'Republic - Waldisch')).toBeNull();
+    expect(socialPenalty('Kellish', 'Cyprian')).toBeNull();
   });
 });
 

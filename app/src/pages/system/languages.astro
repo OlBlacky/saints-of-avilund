@@ -4,6 +4,7 @@ import { url } from '../../lib/url';
 import SystemNav from '../../components/SystemNav.astro';
 import {
   DIALECT_SOCIAL_PENALTY,
+  KOINE_SOCIAL_PENALTY,
   LANGUAGES,
   LANGUAGE_FAMILY,
   LANGUAGE_NOTES,
@@ -19,6 +20,7 @@ const familyMembers = (f: LanguageFamily) =>
 const standalone = LANGUAGES.filter((l) => LANGUAGE_NOTES[l].kind === 'vernacular');
 const learned = LANGUAGES.filter((l) => LANGUAGE_NOTES[l].kind === 'learned');
 const penalty = `−${Math.abs(DIALECT_SOCIAL_PENALTY)}`;
+const koinePenalty = `−${Math.abs(KOINE_SOCIAL_PENALTY)}`;
 ---
 
 <Base title="Languages" description="The tongues of Avilund — the three Language Families and their Dialects, the standalone vernaculars, and the learned and dead tongues.">
@@ -43,6 +45,9 @@ const penalty = `−${Math.abs(DIALECT_SOCIAL_PENALTY)}`;
     its own <strong>Dialect</strong>, named with its Family in front. A speaker of one Dialect can make
     themselves understood in another Dialect of the same Family at <strong>{penalty} to social
     checks</strong>. Across Families there is no such kinship.</p>
+    <p><strong>The common tongue.</strong> Falling back on Imperial with anyone whose home tongue
+    it isn&rsquo;t is <strong>{koinePenalty} to social checks</strong>, even within the Imperial
+    Family. Speaking a listener&rsquo;s own tongue carries no penalty.</p>
   </div>
 
   {FAMILIES.map((family) => (

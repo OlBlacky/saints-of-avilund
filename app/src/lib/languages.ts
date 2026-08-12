@@ -5,7 +5,9 @@
 // Family, each region speaks a Dialect, and a Dialect's name carries its
 // Family in front ("Imperial - Lysandrine"). Every Dialect is its own buy;
 // Dialects of the same Family are close kin — a speaker of one can make
-// themselves understood in another at −1 to social checks. Cyprian and
+// themselves understood in another at −1 to social checks. Falling back on
+// the koiné (Imperial) with anyone whose home tongue it isn't is −2 — the
+// trade tongue always lands worse than a kindred Dialect. Cyprian and
 // Kellish stand alone, outside every Family.
 //
 // See mechanics/languages.md for the design record, and design-principles §10
@@ -59,6 +61,13 @@ export const LANGUAGE_FAMILY: Partial<Record<Language, LanguageFamily>> = {
 
 /** The social-check penalty when speaking across kindred Dialects. */
 export const DIALECT_SOCIAL_PENALTY = -1;
+
+/**
+ * The social-check penalty when falling back on the koiné (Imperial) with a
+ * listener whose home tongue it isn't. Stiffer than the Dialect penalty, so a
+ * kindred Dialect always beats the trade tongue.
+ */
+export const KOINE_SOCIAL_PENALTY = -2;
 
 /** A tongue's entry in the player-facing Languages reference. */
 export interface LanguageNote {
@@ -118,4 +127,17 @@ export function sharedFamily(a: Language, b: Language): LanguageFamily | null {
   if (a === b) return null;
   const fa = LANGUAGE_FAMILY[a];
   return fa !== undefined && fa === LANGUAGE_FAMILY[b] ? fa : null;
+}
+
+/**
+ * The social-check penalty for addressing a listener in `spoken` when their
+ * home tongue is `home`: 0 in their own tongue, KOINE_SOCIAL_PENALTY falling
+ * back on Imperial, DIALECT_SOCIAL_PENALTY across kindred Dialects, and null
+ * where the tongues share nothing (the listener does not understand).
+ */
+export function socialPenalty(spoken: Language, home: Language): number | null {
+  if (spoken === home) return 0;
+  if (spoken === DEFAULT_LANGUAGE) return KOINE_SOCIAL_PENALTY;
+  if (sharedFamily(spoken, home) !== null) return DIALECT_SOCIAL_PENALTY;
+  return null;
 }

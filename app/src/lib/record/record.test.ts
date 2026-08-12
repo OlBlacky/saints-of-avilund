@@ -108,6 +108,17 @@ describe('the worked example replays clean', () => {
     expect(heavyBlades).toMatchObject({ rank: 1, advanceable: true });
   });
 
+  it('a multi-attribute Skill derives one bonus per attribute', () => {
+    const sheet = derive(state);
+    const intimidate = sheet.skills.find((s) => s.skill === 'Intimidate')!;
+    expect(intimidate.variants.map((v) => v.attr)).toEqual(['Strength', 'Charisma']);
+    expect(intimidate.variants[0].value.total).toBe(4); // Str 3 + Rank 1
+    expect(intimidate.variants[1].value.total).toBe(0); // Cha −1 (the Flaw) + Rank 1
+    // attr/value mirror the first variant for single-number consumers.
+    expect(intimidate.attr).toBe('Strength');
+    expect(intimidate.value.total).toBe(4);
+  });
+
   it('every derived number shows its work', () => {
     const sheet = derive(state);
     const str = sheet.attributes.find((a) => a.attr === 'Strength')!;
