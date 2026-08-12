@@ -32,7 +32,7 @@ import { bestSell, itemName, itemWeightLb, marketById } from '../../lib/markets'
 import { fill, PLACES, QUIRKS } from '../../lib/quirks';
 import type { RecordEvent } from '../../lib/record/events';
 import type { ItemLocation } from '../../lib/record/events';
-import type { Breakdown, DerivedSheet } from '../../lib/record/derive';
+import type { Breakdown, DerivedSheet, Part } from '../../lib/record/derive';
 import { languageAllowance } from '../../lib/record/replay';
 import type { CharacterState, OwnedItem } from '../../lib/record/replay';
 import type { PlayState, VersionPayload } from '../../lib/store';
@@ -91,14 +91,30 @@ function resizePortrait(file: File): Promise<string> {
 const partText = (p: { label: string; value: number }) =>
   p.label === 'Base' ? `${p.label} ${p.value}` : `${p.label} ${signed(p.value)}`;
 
+/** Parts that appear, same label and value, in every breakdown of a set —
+ * e.g. a flat Vow bonus that lands on all six Attribute rows alike. Pulling
+ * these out of the per-row text keeps a table-wide constant from being
+ * printed once per row. */
+function commonParts(breakdowns: Breakdown[]): Part[] {
+  const [first, ...rest] = breakdowns;
+  if (!first) return [];
+  return first.parts.filter((p) =>
+    rest.every((b) => b.parts.some((q) => q.label === p.label && q.value === p.value)),
+  );
+}
+
 /** A derived number that shows its work in plain sight — the sheet prints,
- * so the parts sit under the total, never behind a hover. */
-function Bd({ b, plain }: { b: Breakdown; plain?: boolean }) {
+ * so the parts sit under the total, never behind a hover. `omit` drops parts
+ * already stated once for the whole table (see commonParts). */
+function Bd({ b, plain, omit }: { b: Breakdown; plain?: boolean; omit?: Part[] }) {
+  const parts = omit
+    ? b.parts.filter((p) => !omit.some((o) => o.label === p.label && o.value === p.value))
+    : b.parts;
   return (
     <span class="sheet-bd">
       <span class="sheet-bd-total">{plain ? b.total : signed(b.total)}</span>
-      {b.parts.length > 0 && (
-        <span class="sheet-bd-parts">{b.parts.map(partText).join(' · ')}</span>
+      {parts.length > 0 && (
+        <span class="sheet-bd-parts">{parts.map(partText).join(' · ')}</span>
       )}
     </span>
   );
@@ -491,6 +507,8 @@ export default function CharacterSheet({ identity, setIdentity, status, setStatu
       {page === 1 && (() => {
         const quirk = state.quirk?.id ? QUIRKS.find((q) => q.id === state.quirk!.id) : undefined;
         const ac = sheet.attributes.find((a) => a.attr === 'Constitution')!.armouredDefence.total;
+        const unarmouredCommon = commonParts(sheet.attributes.map((a) => a.unarmouredDefence));
+        const armouredCommon = commonParts(sheet.attributes.map((a) => a.armouredDefence));
         return (
           <div class="sheet-boxcol">
             <section class="cf-step sheet-box" style={boxStyle('p1', 'vitals')} onDragOver={boxDragOver} onDrop={() => dropBox('p1', 'vitals')}>
@@ -625,13 +643,19 @@ export default function CharacterSheet({ identity, setIdentity, status, setStatu
                         <td><Bd b={a.value} /></td>
                         <td><Bd b={a.offence} /></td>
                         <td><Bd b={a.save} /></td>
-                        <td><Bd b={a.unarmouredDefence} plain /></td>
-                        <td><Bd b={a.armouredDefence} plain /></td>
+                        <td><Bd b={a.unarmouredDefence} plain omit={unarmouredCommon} /></td>
+                        <td><Bd b={a.armouredDefence} plain omit={armouredCommon} /></td>
                       </tr>
                     ))}
                   </tbody>
                 </table>
               </div>
+              {unarmouredCommon.length > 0 && (
+                <p class="cf-railline">Unarmoured Defence — {unarmouredCommon.map(partText).join(' · ')}</p>
+              )}
+              {armouredCommon.length > 0 && (
+                <p class="cf-railline">Armoured Defence — {armouredCommon.map(partText).join(' · ')}</p>
+              )}
             </section>
 
             <section class="cf-step sheet-box" style={boxStyle('p1', 'skills')} onDragOver={boxDragOver} onDrop={() => dropBox('p1', 'skills')}>

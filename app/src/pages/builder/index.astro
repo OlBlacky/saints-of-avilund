@@ -429,15 +429,18 @@ const blurb = 'Build a character of Avilund — and once they are Complete, this
 
   /* The portrait in the header: sized to the block beside it, so it costs
      no vertical space. Click for the full picture. */
-  .sheet-top { display: flex; gap: 1.1rem; align-items: stretch; }
+  /* The banner's own margin moves to the row, so the portrait can stretch
+     to exactly the banner's bottom edge. */
+  .sheet-top { display: flex; gap: 1.1rem; align-items: stretch; margin-bottom: 1.4rem; }
   .sheet-topmain { flex: 1; min-width: 0; }
+  .sheet-topmain > .cf-step { margin-bottom: 0; }
   .sheet-topportrait {
-    flex: none; padding: 0; cursor: zoom-in;
-    width: 5.4rem; align-self: start;
+    display: flex; flex: none; padding: 0; cursor: zoom-in;
+    width: 6rem; align-self: stretch;
     background: none; border: 1px solid var(--rule); border-radius: 4px;
     box-shadow: 0 1px 2px var(--shadow); overflow: hidden;
   }
-  .sheet-topportrait img { display: block; width: 100%; aspect-ratio: 3 / 4; object-fit: cover; }
+  .sheet-topportrait img { width: 100%; height: 100%; object-fit: cover; }
   .sheet-lightbox {
     position: fixed; inset: 0; z-index: 100; cursor: zoom-out;
     display: flex; align-items: center; justify-content: center;
