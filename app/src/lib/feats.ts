@@ -34,6 +34,10 @@ export type FeatRequirement =
 export interface FeatRank {
   value: string;
   cost: 'm' | 'M';
+  /** Everything in force at this Rank, for the sheet — set when climbing
+   * keeps earlier rungs alive or compounds them, so `value` alone would
+   * understate the state. Falls back to `value`. */
+  now?: string;
   effects?: Effect[];
 }
 
@@ -45,6 +49,9 @@ export interface Feat {
   brief: string;
   /** The full rules text — tooltip on screen, appendix in print. */
   full: string;
+  /** What the Feat does for the character right now — the effect without
+   * its gates. The sheet prints this. Falls back to `full`. */
+  now?: string;
   /** Cost of a plain (non-Ladder) Feat. Ladder Ranks carry their own. */
   cost?: 'm' | 'M';
   /** Minimum Level (all Specializations open at Level 2). */
@@ -80,11 +87,21 @@ const WEAPON_SPEC_GROUPS = [
 const slug = (s: string) =>
   s.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
 
+/** A plain Feat's texts from one source: the sheet prints the effect alone,
+ * the full text (effect + gates) is the tooltip and the printed appendix. */
+const gated = (effect: string, gates?: string) => ({
+  now: effect,
+  full: gates ? `${effect} ${gates}` : effect,
+});
+
 const weaponSpecs: Feat[] = WEAPON_SPEC_GROUPS.map((group) => ({
   id: `spec-${slug(group)}`,
   name: `Specialization — ${group}`,
   brief: `Unlocks the ${group} hooks on your Ability cards.`,
-  full: `While wielding a ${group} weapon, the Weapon Specialization Hooks marked for ${group} on your Ability cards are unlocked. Opens at Level ${SPEC_LEVEL}. Requires proficiency with ${group}.`,
+  ...gated(
+    `While wielding a ${group} weapon, the Weapon Specialization Hooks marked for ${group} on your Ability cards are unlocked.`,
+    `Opens at Level ${SPEC_LEVEL}. Requires proficiency with ${group}.`,
+  ),
   cost: 'm' as const,
   levelGate: SPEC_LEVEL,
   requires: { kind: 'proficiency' as const, group },
@@ -95,7 +112,10 @@ const implementSpecs: Feat[] = [
     id: 'spec-scroll',
     name: 'Specialization — Scrolls',
     brief: 'A chance to keep the scroll, and its second boost set.',
-    full: `When you cast from a scroll, roll a d20: on 11 or higher the scroll is not consumed. The second generic-boost set on scroll casting is unlocked. Opens at Level ${SPEC_LEVEL}. Requires proficiency with Scrolls.`,
+    ...gated(
+      'When you cast from a scroll, roll a d20: on 11 or higher the scroll is not consumed. The second generic-boost set on scroll casting is unlocked.',
+      `Opens at Level ${SPEC_LEVEL}. Requires proficiency with Scrolls.`,
+    ),
     cost: 'm',
     levelGate: SPEC_LEVEL,
     requires: { kind: 'proficiency', group: 'Scrolls' },
@@ -104,7 +124,10 @@ const implementSpecs: Feat[] = [
     id: 'spec-spellbook',
     name: 'Specialization — Spellbooks',
     brief: 'Your Int joins a damaging spell cast from the book.',
-    full: `Add your Int to the damage of a damaging spell cast from a spellbook. The second generic-boost set on spellbook casting is unlocked. Opens at Level ${SPEC_LEVEL}. Requires proficiency with Spellbooks.`,
+    ...gated(
+      'Add your Int to the damage of a damaging spell cast from a spellbook. The second generic-boost set on spellbook casting is unlocked.',
+      `Opens at Level ${SPEC_LEVEL}. Requires proficiency with Spellbooks.`,
+    ),
     cost: 'm',
     levelGate: SPEC_LEVEL,
     requires: { kind: 'proficiency', group: 'Spellbooks' },
@@ -113,7 +136,10 @@ const implementSpecs: Feat[] = [
     id: 'spec-ritual',
     name: 'Specialization — Rituals',
     brief: '+1 to every roll a ritual asks of you.',
-    full: `+1 to any d20 roll a ritual calls for, and the second boost set on Conduct Ritual is unlocked. Opens at Level ${SPEC_LEVEL}. Requires being Trained in Rituals.`,
+    ...gated(
+      '+1 to any d20 roll a ritual calls for, and the second boost set on Conduct Ritual is unlocked.',
+      `Opens at Level ${SPEC_LEVEL}. Requires being Trained in Rituals.`,
+    ),
     cost: 'm',
     levelGate: SPEC_LEVEL,
     requires: { kind: 'skill-trained', skill: 'Rituals' },
@@ -139,7 +165,10 @@ const damageSpecs: Feat[] = DAMAGE_SPECS.map(({ type, signature }) => ({
   id: `spec-${slug(type)}`,
   name: `Specialization — ${type}`,
   brief: `Unlocks ${type}'s signature effect on your cards.`,
-  full: `Your ${type}-dealing Abilities unlock the type's signature effect — ${signature} — as marked on their cards. Opens at Level ${SPEC_LEVEL}. Requires an Ability that deals ${type} damage.`,
+  ...gated(
+    `Your ${type}-dealing Abilities unlock the type's signature effect — ${signature} — as marked on their cards.`,
+    `Opens at Level ${SPEC_LEVEL}. Requires an Ability that deals ${type} damage.`,
+  ),
   cost: 'm' as const,
   levelGate: SPEC_LEVEL,
   requires: { kind: 'damage-type' as const, type },
@@ -160,7 +189,10 @@ const maledictionSpecs: Feat[] = MALEDICTION_SPECS.map(({ name, hook }) => ({
   id: `spec-${slug(name)}`,
   name: `Specialization — ${name}`,
   brief: `+1 to hit when cursing with ${name}, and its standing Hook.`,
-  full: `+1 to hit when you curse with ${name}, and its standing Hook: ${hook}. Opens at Level ${SPEC_LEVEL}. Requires a curse built with ${name}.`,
+  ...gated(
+    `+1 to hit when you curse with ${name}, and its standing Hook: ${hook}.`,
+    `Opens at Level ${SPEC_LEVEL}. Requires a curse built with ${name}.`,
+  ),
   cost: 'm' as const,
   levelGate: SPEC_LEVEL,
   requires: { kind: 'malediction' as const, name },
@@ -184,9 +216,9 @@ const skillSpecs: Feat[] = SKILLS.map((s) => ({
     : {}),
   ladder: [
     { value: 'Take 10', cost: 'm' as const },
-    { value: 'Rolled values ×1.5', cost: 'm' as const },
-    { value: 'Rolled values ×2', cost: 'm' as const },
-    { value: 'Reroll 1/day', cost: 'M' as const },
+    { value: 'Rolled values ×1.5', cost: 'm' as const, now: 'Take 10 · rolled values ×1.5' },
+    { value: 'Rolled values ×2', cost: 'm' as const, now: 'Take 10 · rolled values ×2' },
+    { value: 'Reroll 1/day', cost: 'M' as const, now: 'Take 10 · rolled values ×2 · Reroll 1/day' },
   ],
 }));
 
@@ -210,7 +242,7 @@ const attrSkillSpecs: Feat[] = ATTRIBUTE_LIST.map((attr) => {
       { value: 'Take 10', cost: 'm' as const },
       { value: 'Take 12', cost: 'm' as const },
       { value: 'Take 15 (takes longer)', cost: 'm' as const },
-      { value: 'Reroll 1/day', cost: 'M' as const },
+      { value: 'Reroll 1/day', cost: 'M' as const, now: 'Take 15 (takes longer) · Reroll 1/day' },
     ],
   };
 });
@@ -230,10 +262,11 @@ const defensiveSpecs: Feat[] = ATTRIBUTE_LIST.map((attr) => {
     requires: { kind: 'save-total' as const, attr, value: 3 },
     ladder: [
       { value: `Reroll ${short} Saves 1/day`, cost: 'm' as const },
-      { value: 'Reroll 1/encounter', cost: 'M' as const },
+      { value: 'Reroll 1/encounter', cost: 'M' as const, now: `Reroll ${short} Saves 1/encounter` },
       {
         value: `DR 1 vs ${short} Defences`,
         cost: 'M' as const,
+        now: `Reroll ${short} Saves 1/encounter · DR 1 vs ${short} Defences`,
         effects: [{
           kind: 'drMod' as const,
           value: 1,
@@ -254,7 +287,10 @@ const skillGeneralists: Feat[] = ATTRIBUTE_LIST.map((attr) => {
     id: `skill-generalist-${short.toLowerCase()}`,
     name: `${short} Skill Generalist`,
     brief: `Trained in every ${attr} Skill you are not Trained in.`,
-    full: `Requires ${attr} +1. You count as Trained in every ${attr} Skill you are not Trained in.`,
+    ...gated(
+      `You count as Trained in every ${attr} Skill you are not Trained in.`,
+      `Requires ${attr} +1.`,
+    ),
     cost: 'm' as const,
     requires: { kind: 'attribute' as const, attr, value: 1 },
     effects: [{ kind: 'grantTrainedByAttr' as const, attr }],
@@ -272,10 +308,14 @@ const polyglot: Feat = {
     value: 2,
   },
   ladder: [
-    { value: 'Languages equal to Int, Wis or Cha', cost: 'm' },
-    { value: '+2 more languages', cost: 'm' },
-    { value: 'Another +2', cost: 'm' },
-    { value: 'Linguist', cost: 'M' },
+    { value: 'Languages equal to Int, Wis or Cha', cost: 'm', now: 'Bonus languages equal to the best of Int, Wis, Cha' },
+    { value: '+2 more languages', cost: 'm', now: 'Bonus languages: the best of Int, Wis, Cha, +2' },
+    { value: 'Another +2', cost: 'm', now: 'Bonus languages: the best of Int, Wis, Cha, +4' },
+    {
+      value: 'Linguist',
+      cost: 'M',
+      now: 'Bonus languages: the best of Int, Wis, Cha, +4 · Linguist: you understand the basic verbs and nouns of nearly any language, at −1 to related Skill checks',
+    },
   ],
 };
 
@@ -297,6 +337,7 @@ const ladders: Feat[] = [
     name: 'Second Wind',
     brief: 'Catch your breath: a guard of Temp HP, or true healing.',
     full: 'Grants the Second Wind Ability: Daily, as a Move Action, gain 2 Temp HP or heal 2 HP. The card advances like any Ability.',
+    now: 'Grants the Second Wind Ability card.',
     cost: 'm',
     grantsAbility: { category: 'General', ability: 'Second Wind' },
   },
@@ -307,9 +348,9 @@ const ladders: Feat[] = [
     full: 'Each Rank raises your maximum HP: +1, then +2, then +3. The final Rank grants DR 1. One Rank per Level.',
     ladder: [
       { value: '+1 max HP', cost: 'm', effects: [{ kind: 'maxHpMod', value: 1 }] },
-      { value: '+2 max HP', cost: 'm', effects: [{ kind: 'maxHpMod', value: 2 }] },
-      { value: '+3 max HP', cost: 'm', effects: [{ kind: 'maxHpMod', value: 3 }] },
-      { value: 'DR 1', cost: 'M', effects: [{ kind: 'drMod', value: 1 }] },
+      { value: '+2 max HP', cost: 'm', now: '+3 max HP', effects: [{ kind: 'maxHpMod', value: 2 }] },
+      { value: '+3 max HP', cost: 'm', now: '+6 max HP', effects: [{ kind: 'maxHpMod', value: 3 }] },
+      { value: 'DR 1', cost: 'M', now: '+6 max HP · DR 1', effects: [{ kind: 'drMod', value: 1 }] },
     ],
   },
   {
@@ -318,10 +359,10 @@ const ladders: Feat[] = [
     brief: 'When a physical Save halves damage, you take less still.',
     full: 'When you succeed on a Strength, Dexterity, or Constitution Save that results in half damage, reduce the damage you take by a further 1, then 2, then 3. The final Rank reduces it to no damage. One Rank per Level.',
     ladder: [
-      { value: 'Half damage −1', cost: 'm' },
-      { value: 'Half damage −2', cost: 'm' },
-      { value: 'Half damage −3', cost: 'm' },
-      { value: 'No damage', cost: 'M' },
+      { value: 'Half damage −1', cost: 'm', now: 'A passed Str, Dex or Con Save for half damage: take 1 less' },
+      { value: 'Half damage −2', cost: 'm', now: 'A passed Str, Dex or Con Save for half damage: take 2 less' },
+      { value: 'Half damage −3', cost: 'm', now: 'A passed Str, Dex or Con Save for half damage: take 3 less' },
+      { value: 'No damage', cost: 'M', now: 'A passed Str, Dex or Con Save for half damage: take none' },
     ],
   },
   {
@@ -334,7 +375,7 @@ const ladders: Feat[] = [
       { value: '+2 Initiative', cost: 'm', effects: [{ kind: 'initiativeMod', value: 2 }] },
       { value: '+3 Initiative', cost: 'm', effects: [{ kind: 'initiativeMod', value: 1 }] },
       { value: '+4 Initiative', cost: 'm', effects: [{ kind: 'initiativeMod', value: 1 }] },
-      { value: 'Cannot be Surprised', cost: 'M' },
+      { value: 'Cannot be Surprised', cost: 'M', now: '+4 Initiative · cannot be Surprised' },
     ],
   },
   {
@@ -343,10 +384,10 @@ const ladders: Feat[] = [
     brief: 'When a mental Save halves damage, you take less still.',
     full: 'When you succeed on an Intelligence, Wisdom, or Charisma Save that results in half damage, reduce the damage you take by a further 1, then 2, then 3. The final Rank reduces it to no damage. One Rank per Level.',
     ladder: [
-      { value: 'Half damage −1', cost: 'm' },
-      { value: 'Half damage −2', cost: 'm' },
-      { value: 'Half damage −3', cost: 'm' },
-      { value: 'No damage', cost: 'M' },
+      { value: 'Half damage −1', cost: 'm', now: 'A passed Int, Wis or Cha Save for half damage: take 1 less' },
+      { value: 'Half damage −2', cost: 'm', now: 'A passed Int, Wis or Cha Save for half damage: take 2 less' },
+      { value: 'Half damage −3', cost: 'm', now: 'A passed Int, Wis or Cha Save for half damage: take 3 less' },
+      { value: 'No damage', cost: 'M', now: 'A passed Int, Wis or Cha Save for half damage: take none' },
     ],
   },
   {
@@ -359,7 +400,7 @@ const ladders: Feat[] = [
     ladder: [
       { value: 'Count your Str as +1 greater for Encumbrance', cost: 'm' },
       { value: 'Count your Str as +2 greater for Encumbrance', cost: 'm' },
-      { value: 'Heavy Loads count as Light Loads', cost: 'M' },
+      { value: 'Heavy Loads count as Light Loads', cost: 'M', now: 'Count your Str as +2 greater for Encumbrance · Heavy Loads count as Light Loads' },
     ],
   },
   {
@@ -370,7 +411,7 @@ const ladders: Feat[] = [
     ladder: [
       { value: 'Purchase items for 10% less', cost: 'm' },
       { value: 'Purchase items for 20% less', cost: 'm' },
-      { value: 'And sell items for 10% more', cost: 'M' },
+      { value: 'And sell items for 10% more', cost: 'M', now: 'Purchase items for 20% less · sell items for 10% more' },
     ],
   },
   // ── Market Access Feats ─────────────────────────────────────────────────
@@ -381,7 +422,10 @@ const ladders: Feat[] = [
     id: 'market-anselms-buttery',
     name: "Anselm's Buttery",
     brief: 'The Buttery at Lord\'s University will serve you.',
-    full: "You gain access to Anselm's Buttery — Lord's University — New Magic Market. Requires the Arcane Tongue.",
+    ...gated(
+      "You gain access to Anselm's Buttery — Lord's University — New Magic Market.",
+      'Requires the Arcane Tongue.',
+    ),
     cost: 'm',
     requires: { kind: 'language', language: 'Arcane Tongue' },
   },
@@ -389,7 +433,10 @@ const ladders: Feat[] = [
     id: 'market-ignatius-archive',
     name: 'St. Ignatius College Archive',
     brief: 'The Archive on Elder Isle opens its stores to you.',
-    full: 'You gain access to the St. Ignatius College Archive — Elder Isle — Elder Magic Market. Requires the Elder Arcana Tongue.',
+    ...gated(
+      'You gain access to the St. Ignatius College Archive — Elder Isle — Elder Magic Market.',
+      'Requires the Elder Arcana Tongue.',
+    ),
     cost: 'm',
     requires: { kind: 'language', language: 'Elder Arcana Tongue' },
   },
@@ -397,7 +444,10 @@ const ladders: Feat[] = [
     id: 'market-theobalds-row',
     name: "Theobald's Row",
     brief: "The dealers of Theobald's Row know your face.",
-    full: "You gain access to Theobald's Row — Sebald's Isle — Occult Market. Requires the Black Tongue.",
+    ...gated(
+      "You gain access to Theobald's Row — Sebald's Isle — Occult Market.",
+      'Requires the Black Tongue.',
+    ),
     cost: 'm',
     requires: { kind: 'language', language: 'Black Tongue' },
   },
@@ -405,7 +455,10 @@ const ladders: Feat[] = [
     id: 'market-astronomers',
     name: 'Society of Astronomers',
     brief: 'The Society on Newton Hill admits you.',
-    full: 'You gain access to the Society of Astronomers — Newton Hill — Market of the Outside. Requires the Eldritch Tongue.',
+    ...gated(
+      'You gain access to the Society of Astronomers — Newton Hill — Market of the Outside.',
+      'Requires the Eldritch Tongue.',
+    ),
     cost: 'm',
     requires: { kind: 'language', language: 'Eldritch Tongue' },
   },
@@ -413,7 +466,10 @@ const ladders: Feat[] = [
     id: 'market-green',
     name: 'The Green Market',
     brief: 'The stalls at the edge of The Green will trade with you.',
-    full: 'You gain access to The Green Market — The Green — Old Magic Market. Requires the First Tongue.',
+    ...gated(
+      'You gain access to The Green Market — The Green — Old Magic Market.',
+      'Requires the First Tongue.',
+    ),
     cost: 'm',
     requires: { kind: 'language', language: 'First Tongue' },
   },
@@ -428,7 +484,10 @@ const ladders: Feat[] = [
     id: 'market-dunstans-magazine',
     name: "St. Dunstan's Magazine",
     brief: 'The Abbey of the Artillery sells to you from its own magazine.',
-    full: "You gain access to St. Dunstan's Magazine — Abbey of the Artillery, Lysander — Firearms Market. Open to natives of Lysander and residents of the Bishopric of St. Dunstan.",
+    ...gated(
+      "You gain access to St. Dunstan's Magazine — Abbey of the Artillery, Lysander — Firearms Market.",
+      'Open to natives of Lysander and residents of the Bishopric of St. Dunstan.',
+    ),
     cost: 'm',
     originGate: ['Lysander', 'the Bishopric of St. Dunstan'],
   },
@@ -436,7 +495,10 @@ const ladders: Feat[] = [
     id: 'market-ulrics-exchange',
     name: "St. Ulric's Exchange",
     brief: 'The merchant-houses of Havilah admit you to the Exchange.',
-    full: "You gain access to St. Ulric's Exchange — Freehold of Havilah — Trade Market. Open to natives and residents of the Freehold of Havilah.",
+    ...gated(
+      "You gain access to St. Ulric's Exchange — Freehold of Havilah — Trade Market.",
+      'Open to natives and residents of the Freehold of Havilah.',
+    ),
     cost: 'm',
     originGate: ['Havilah'],
   },

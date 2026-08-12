@@ -751,19 +751,20 @@ export default function CharacterSheet({ identity, setIdentity, status, setStatu
                 <h3>Feats</h3>
                 {state.feats.map((f) => {
                   const feat = featById(f.featId);
+                  // The sheet states only what is in force; the full rules
+                  // ride on hover, as in the shop.
+                  const rung = feat?.ladder && f.rank > 0
+                    ? feat.ladder[Math.min(f.rank, feat.ladder.length) - 1]
+                    : undefined;
+                  const inForce = rung ? rung.now ?? rung.value : feat?.now ?? feat?.full;
                   return (
-                    <div key={f.featId} class="sheet-feat">
+                    <div key={f.featId} class="sheet-feat" title={feat?.full}>
                       <p class="sheet-feat-name">
                         {feat?.name ?? f.featId}
                         {f.choices && <span class="cf-shop-src"> · {Object.values(f.choices).join(', ')}</span>}
                         {feat?.ladder && <span class="cf-shop-src"> · Rank {f.rank}</span>}
                       </p>
-                      {feat?.ladder && f.rank > 0 && (
-                        <p class="sheet-feat-now">
-                          {feat.ladder.slice(0, f.rank).map((r) => r.value).join(' · ')}
-                        </p>
-                      )}
-                      {feat?.full && <p class="sheet-feat-rules">{feat.full}</p>}
+                      {inForce && <p class="sheet-feat-now">{inForce}</p>}
                     </div>
                   );
                 })}

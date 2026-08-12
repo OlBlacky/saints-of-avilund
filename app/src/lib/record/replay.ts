@@ -119,7 +119,8 @@ export interface CharacterState {
    * transaction adjusts it. Display reduces to fewest coins (fmtCoins). */
   wealthCp: number;
   inventory: OwnedItem[];
-  /** Played Sessions logged (gates the Starting Gear sell lock). */
+  /** Played Sessions logged. A character with none is New — and nothing
+   * sells before the first Session. */
   sessions: number;
 }
 
@@ -706,14 +707,11 @@ export function replay(events: RecordEvent[]): ReplayResult {
             buys.push({ itemId: line.itemId, qty: line.qty, choice: line.choice });
           } else {
             if (!state.crystallized) { flag(e, 'creation-only', 'no selling during creation'); continue; }
+            if (state.sessions < 1) { flag(e, 'no-access', 'no selling before the first Session'); continue; }
             const sold = sells.reduce((t, s) => (s.instanceId === line.instanceId ? t + s.qty : t), 0);
             const inst = state.inventory.find((i) => i.instanceId === line.instanceId);
             if (!inst) { flag(e, 'unknown-ref', `no owned item "${line.instanceId}"`); continue; }
             if (line.qty + sold > inst.qty) { flag(e, 'over-cap', `only ${inst.qty} × ${inst.name} owned`); continue; }
-            if (inst.origin === 'starting-gear' && state.sessions < 1) {
-              flag(e, 'no-access', `${inst.name} is not sellable yet`);
-              continue;
-            }
             const price = inst.itemId ? sellPriceCp(market, inst.itemId, commerce) : undefined;
             if (price === undefined) { flag(e, 'no-access', `${market.name} will not buy ${inst.name}`); continue; }
             net += price * line.qty;

@@ -23,6 +23,19 @@ describe('feats data', () => {
     }
   });
 
+  it('sheet text states only what is in force — no gates', () => {
+    const gates = /Requires|Opens at Level|One Rank per Level|Open to natives/;
+    for (const f of FEATS) {
+      if (f.ladder) {
+        for (const r of f.ladder) {
+          expect(r.now ?? r.value, `${f.id}: ${r.value}`).not.toMatch(gates);
+        }
+      } else {
+        expect(f.now ?? f.full, f.id).not.toMatch(gates);
+      }
+    }
+  });
+
   it('is priced: a plain cost or a Ladder, never neither or both', () => {
     for (const f of FEATS) {
       expect(Boolean(f.cost) || Boolean(f.ladder), `${f.id} has no price`).toBe(true);
