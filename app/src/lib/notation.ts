@@ -60,7 +60,7 @@ export type DamageResult =
   | { kind: 'none'; note?: string }
   | { kind: 'unparsed'; text: string };
 
-const DAMAGE_TYPES = ['Acid', 'Fire', 'Cold', 'Lightning', 'Sonic', 'Force',
+export const DAMAGE_TYPES = ['Acid', 'Fire', 'Cold', 'Lightning', 'Sonic', 'Force',
   'Radiant', 'Necrotic', 'Psychic', 'Eldritch'];
 
 /** Split "value (note)" / "value — note", keeping the note verbatim. A

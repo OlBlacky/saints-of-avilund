@@ -109,6 +109,20 @@ export function isUnchosenChoiceLadder(
   return !!bc && bc.options.includes(ladderName) && choices?.[bc.key] !== ladderName;
 }
 
+// The Ladder a builder copy was actually built around — the Malediction it is
+// whispered with, the element it is cast with. It is the copy's real effect,
+// so the sheet resolves it on the card; the card's other option Ladders belong
+// to other copies, or are build-time reference.
+export function chosenLadder(
+  card: Pick<Ability, 'builderChoice' | 'options'>,
+  choices: Record<string, string> | undefined,
+): NamedLadder | undefined {
+  const key = card.builderChoice?.key;
+  const chosen = key ? choices?.[key] : undefined;
+  if (!chosen) return undefined;
+  return (card.options ?? []).flatMap((o) => o.ladders ?? []).find((l) => l.name === chosen);
+}
+
 // Resolve a variable to the value shown in Play mode, given the current rank.
 export function resolveValue(v: Variable | undefined, rank: number | undefined): string | undefined {
   if (!v) return undefined;

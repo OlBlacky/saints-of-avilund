@@ -20,6 +20,15 @@ An attack rolls **d20 + your Offence vs the target's Defence** — meet or beat 
 - Each Attribute has an **Offence** (your bonus to hit with attacks keyed off it) and two **Defences** — an **Unarmoured** and an **Armoured** value. Armour raises the Armoured ones.
 - Most physical attacks target **AC** *(your Armoured Constitution Defence)*; magic that bypasses armour strikes an **Unarmoured** Defence instead.
 - Ranged attacks lose nothing in the first range band, **−2** in the second, **−4** in the third.
+- An area-effect attack against multiple targets is made with a **single attack roll**; the one result is applied against each target's Defence.
+
+## Damage
+
+A hit deals the weapon's damage dice and nothing more. **Your Attribute bonus goes to the attack roll, not the damage roll** — a Soldier with +3 Strength is +3 to hit, not +3 to damage. Extra damage comes only from Abilities and effects that grant it.
+
+**Critical Hits.** A **natural 20** on the attack roll is a Critical Hit: the attack deals its **maximum damage** — every die counts as its highest face. Some Feats and effects widen the range beyond a natural 20.
+
+**Damage Reduction.** A target's **DR** comes off every hit. If you deal maximum damage and the target's DR is still higher than that maximum, you deal **1 damage**.
 
 ## Off Guard and flanking
 

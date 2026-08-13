@@ -10,7 +10,7 @@
 
 import { useState } from 'preact/hooks';
 
-import { VAR_ORDER, resolveValue } from '../../lib/abilities';
+import { VAR_ORDER, chosenLadder, resolveValue } from '../../lib/abilities';
 import type { Ability } from '../../lib/abilities';
 import { CATEGORIES } from '../../lib/category-abilities';
 import { classById } from '../../lib/classes';
@@ -25,11 +25,12 @@ import {
   fmtCoins,
   fmtWeight,
 } from '../../lib/equipment';
-import { featById } from '../../lib/feats';
+import { featById, specializationFor } from '../../lib/feats';
 import { LANGUAGES } from '../../lib/languages';
 import type { Language } from '../../lib/languages';
 import { bestSell, itemName, itemWeightLb, marketById } from '../../lib/markets';
-import { parseAttr } from '../../lib/notation';
+import { DAMAGE_TYPES, parseAttr } from '../../lib/notation';
+import { keywordsFor } from '../../lib/traditions';
 import { fill, PLACES, QUIRKS } from '../../lib/quirks';
 import type { EventSource, RecordEvent } from '../../lib/record/events';
 import type { ItemLocation } from '../../lib/record/events';
@@ -583,14 +584,35 @@ export default function CharacterSheet({ identity, setIdentity, status, setStatu
         const quirk = state.quirk?.id ? QUIRKS.find((q) => q.id === state.quirk!.id) : undefined;
         const ac = sheet.attributes.find((a) => a.attr === 'Constitution')!.armouredDefence.total;
         const unarmouredCommon = commonParts(sheet.attributes.map((a) => a.unarmouredDefence));
-        const armouredCommon = commonParts(sheet.attributes.map((a) => a.armouredDefence));
+        // Worn armour lands on all six rows alike, so the common-parts pass
+        // would hoist it into the footnote. Keep it in the rows instead: the
+        // armour is the whole point of the Armoured column, and each row
+        // should read as its own sum.
+        const wornArmour = state.inventory
+          .filter((i) => i.location === 'worn')
+          .map(armourFor)
+          .find(Boolean);
+        const armouredCommon = commonParts(sheet.attributes.map((a) => a.armouredDefence))
+          .filter((p) => p.label !== wornArmour?.name);
+        // A shield gives its AC and DR only while raised, so the tiles print
+        // the standing numbers and name the raised ones beneath.
+        const borneShield = state.inventory
+          .filter((i) => i.location === 'held' || i.location === 'worn')
+          .map(shieldFor)
+          .find(Boolean);
         return (
           <div class="sheet-boxcol">
             <section class="cf-step sheet-box" style={boxStyle('p1', 'vitals')} onDragOver={boxDragOver} onDrop={() => dropBox('p1', 'vitals')}>
               {grip('p1', 'vitals')}
               <h3>Vitals</h3>
               <div class="sheet-vitals">
-                <div class="sheet-vital"><span class="sheet-vital-num">{ac}</span><span class="sheet-vital-label">AC</span></div>
+                <div class="sheet-vital">
+                  <span class="sheet-vital-num">{ac}</span>
+                  <span class="sheet-vital-label">AC</span>
+                  {borneShield && (
+                    <span class="sheet-vital-alt">{ac + borneShield.ac} with shield</span>
+                  )}
+                </div>
                 <div class="sheet-vital"><span class="sheet-vital-num">{sheet.hitPoints.total}</span><span class="sheet-vital-label">HP</span></div>
                 <div class="sheet-vital">
                   <input
@@ -602,7 +624,15 @@ export default function CharacterSheet({ identity, setIdentity, status, setStatu
                 </div>
                 <div class="sheet-vital"><span class="sheet-vital-num">{sheet.speed.total}'</span><span class="sheet-vital-label">Speed</span></div>
                 <div class="sheet-vital"><span class="sheet-vital-num">{signed(sheet.initiative.total)}</span><span class="sheet-vital-label">Initiative</span></div>
-                <div class="sheet-vital"><span class="sheet-vital-num">{sheet.damageReduction.total}</span><span class="sheet-vital-label">DR</span></div>
+                <div class="sheet-vital">
+                  <span class="sheet-vital-num">{sheet.damageReduction.total}</span>
+                  <span class="sheet-vital-label">DR</span>
+                  {borneShield && borneShield.dr > 0 && (
+                    <span class="sheet-vital-alt">
+                      {sheet.damageReduction.total + borneShield.dr} with shield
+                    </span>
+                  )}
+                </div>
               </div>
               <div class="sheet-vitline">
                 <strong>Conditions</strong>
@@ -848,8 +878,12 @@ export default function CharacterSheet({ identity, setIdentity, status, setStatu
         const shortTotals: Record<string, number> = Object.fromEntries(
           sheet.attributes.map((a) => [a.attr.slice(0, 3), a.value.total]),
         );
-        const offenceOf = (attrFull: string) =>
-          sheet.attributes.find((a) => a.attr === attrFull)?.offence.total ?? 0;
+        // Attack lines name the attribute in full ("Dexterity vs AC"), but
+        // accept the short form too so a card written "Dex vs AC" still
+        // finds its Offence.
+        const attrRow = (attr: string) =>
+          sheet.attributes.find((a) => a.attr === attr || a.attr.slice(0, 3) === attr);
+        const offenceOf = (attr: string) => attrRow(attr)?.offence.total ?? 0;
         const profOf = (group: string) =>
           sheet.proficiencies.find((p) => p.group === group)?.rank;
         const findCard = (category: string, ability: string): Ability | undefined =>
@@ -868,11 +902,13 @@ export default function CharacterSheet({ identity, setIdentity, status, setStatu
           });
 
         // Full math for the Attacks table: [W] becomes the weapon's die,
-        // attribute tokens become their totals.
+        // attribute tokens become their totals. Bare W is one weapon die,
+        // as in the notation grammar (parseDamage).
+        const hasWeaponDie = (text: string) => /\[W\]|\bW\b/.test(text);
         const dmgFor = (text: string, die: string): string =>
           text
             .replace(/(\d+)\[W\]/g, (_, n: string) => (n === '1' ? die : `${n}×${die}`))
-            .replace(/\[W\]/g, die)
+            .replace(/\[W\]|\bW\b/g, die)
             .replace(/\b(Str|Dex|Con|Int|Wis|Cha)\b/g, (m) => String(shortTotals[m] ?? m));
 
         // Attacks list what you can bring to bear this round: weapons in
@@ -885,7 +921,7 @@ export default function CharacterSheet({ identity, setIdentity, status, setStatu
         // The To Hit parts: the Offence breakdown, then the proficiency
         // (or the Untrained −1) — the total's whole arithmetic, printed.
         const toHitPartsFor = (attrFull: string, group?: string): string[] => {
-          const bd = sheet.attributes.find((a) => a.attr === attrFull)?.offence;
+          const bd = attrRow(attrFull)?.offence;
           const parts = bd ? bd.parts.map(partText) : [];
           if (group !== undefined) {
             const p = profOf(group);
@@ -942,7 +978,7 @@ export default function CharacterSheet({ identity, setIdentity, status, setStatu
           const [attrFull, vsDef] = atkText.split(' vs ');
           const dmgText = resolveValue(card.vars.damage, owned.ranks.damage) ?? '—';
           const label = owned.name ?? owned.ref.ability;
-          if (dmgText.includes('[W]')) {
+          if (hasWeaponDie(dmgText)) {
             for (const item of tableWeapons) {
               const w = weaponFor(item)!;
               const p = profOf(w.group);
@@ -1038,12 +1074,18 @@ export default function CharacterSheet({ identity, setIdentity, status, setStatu
                   const val = (k: (typeof VAR_ORDER)[number]) => resolveValue(card.vars[k], owned.ranks[k]);
                   const freq = val('frequency');
                   // The attack line carries this build's math: the attacking
-                  // attribute is annotated with its Offence total.
+                  // attribute is annotated with its Offence total. Only the
+                  // attacker's side — the defense after "vs" is the target's.
                   const atk = val('attack');
-                  const atkNoted = atk?.replace(
-                    /\b(Strength|Dexterity|Constitution|Intelligence|Wisdom|Charisma)\b/g,
-                    (m) => `${m} (${signed(offenceOf(m))})`,
-                  );
+                  const atkNoted = (() => {
+                    if (!atk) return atk;
+                    const [attacker, ...defense] = atk.split(' vs ');
+                    const noted = attacker.replace(
+                      /\b(Strength|Dexterity|Constitution|Intelligence|Wisdom|Charisma)\b/g,
+                      (m) => `${m} (${signed(offenceOf(m))})`,
+                    );
+                    return [noted, ...defense].join(' vs ');
+                  })();
                   const strip = [
                     val('action') && `Action: ${val('action')}`,
                     val('range') && val('range') !== '—' && `Range: ${val('range')}`,
@@ -1053,10 +1095,19 @@ export default function CharacterSheet({ identity, setIdentity, status, setStatu
                   // A weapon-attack card resolves per weapon: every weapon the
                   // character owns gets its own attack & damage line, curated
                   // by hiding — the same treatment as the Attacks table.
-                  const dmgText = val('damage');
+                  // A copy built around an element deals that element's
+                  // damage, so the type rides on the damage line rather than
+                  // sitting alone in the header.
+                  const chosen = card.builderChoice && owned.choices?.[card.builderChoice.key];
+                  const rawDmg = val('damage');
+                  const dmgText =
+                    rawDmg && chosen && DAMAGE_TYPES.includes(chosen) &&
+                    !DAMAGE_TYPES.some((t) => rawDmg.endsWith(t))
+                      ? `${rawDmg} ${chosen}`
+                      : rawDmg;
                   const [atkAttr, atkVs] = atk && atk !== '—' ? atk.split(' vs ') : [];
                   const weaponRows =
-                    card.mode === 'Attack' && atkAttr && dmgText?.includes('[W]')
+                    card.mode === 'Attack' && atkAttr && dmgText && hasWeaponDie(dmgText)
                       ? weapons.map((item) => {
                           const w = weaponFor(item)!;
                           const p = profOf(w.group);
@@ -1070,6 +1121,16 @@ export default function CharacterSheet({ identity, setIdentity, status, setStatu
                           };
                         })
                       : [];
+                  // A builder copy built around a Ladder — a Malediction — is
+                  // that Ladder's effect, so it resolves on the card at the
+                  // Rank this copy holds. The other options (the unchosen
+                  // Maledictions, the hook sets) are build-time reference and
+                  // stay off the sheet.
+                  const ladder = chosenLadder(card, owned.choices);
+                  // A Specialization Feat the character actually holds for
+                  // this copy's choice — the standing Hook, stated on the card
+                  // where it is read rather than only in the Feats box.
+                  const specFeat = chosen ? specializationFor(ownedFeatIds, chosen) : undefined;
                   // Every rules-bearing field the card resolves at its current
                   // Ranks, the named ladders included — complete on the sheet.
                   // The weapon lines carry the resolved damage, so the raw
@@ -1077,11 +1138,16 @@ export default function CharacterSheet({ identity, setIdentity, status, setStatu
                   const body = [
                     ...(weaponRows.length > 0 ? [] : [['Damage', dmgText] as const]),
                     ['Effect', val('effects')],
+                    ...(ladder
+                      ? [[ladder.name, resolveValue(ladder, owned.ranks[ladder.name])] as const]
+                      : []),
                     ['Duration', val('duration')],
                     ...(card.extraVars ?? []).map(
                       (l) => [l.name, resolveValue(l, owned.ranks[l.name])] as const,
                     ),
+                    ...(specFeat ? [['Specialization', specFeat.now ?? specFeat.full] as const] : []),
                   ].filter(([, v]) => v && v !== '—') as [string, string][];
+                  const keywords = keywordsFor(owned.ref.category);
                   const hiddenHere = weaponRows.filter((r) => hiddenCardWeapons.includes(r.key));
                   const revealed = revealedCards.includes(cardKey);
                   const listedRows = revealed
@@ -1149,6 +1215,9 @@ export default function CharacterSheet({ identity, setIdentity, status, setStatu
                       {body.map(([label, v]) => (
                         <p key={label} class="cf-quirk-mech"><strong>{label}.</strong> {noteAttrs(v)}</p>
                       ))}
+                      {keywords && (
+                        <p class="sheet-card-keywords">{keywords.join(' · ')}</p>
+                      )}
                     </div>
                   );
                 })}

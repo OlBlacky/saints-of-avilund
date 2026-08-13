@@ -521,3 +521,18 @@ export const FEATS: Feat[] = [
 export function featById(id: string): Feat | undefined {
   return FEATS.find((f) => f.id === id);
 }
+
+/** The owned Specialization whose standing Hook applies to an Ability copy
+ * built around `choice` — a Malediction, a damage type. The sheet prints it on
+ * the card, where the Hook is read. */
+export function specializationFor(ownedFeatIds: string[], choice: string): Feat | undefined {
+  return ownedFeatIds
+    .map(featById)
+    .find((f): f is Feat => {
+      const r = f?.requires;
+      if (!r) return false;
+      if (r.kind === 'malediction') return r.name === choice;
+      if (r.kind === 'damage-type') return r.type === choice;
+      return false;
+    });
+}

@@ -5,7 +5,7 @@
 import { describe, expect, it } from 'vitest';
 
 import { ARMOUR_PROFICIENCIES, IMPLEMENT_GROUPS, WEAPON_GROUPS } from './classes';
-import { FEATS } from './feats';
+import { FEATS, specializationFor } from './feats';
 import { SKILLS } from './skills';
 
 describe('feats data', () => {
@@ -59,6 +59,22 @@ describe('feats data', () => {
       if (f.requires?.kind === 'skill-rank') {
         expect(skills, `${f.id}: ${f.requires.skill}`).toContain(f.requires.skill);
       }
+    }
+  });
+
+  it('finds the Specialization whose Hook applies to a build choice', () => {
+    const feat = FEATS.find((f) => f.requires?.kind === 'malediction')!;
+    const choice = (feat.requires as { kind: 'malediction'; name: string }).name;
+    expect(specializationFor([feat.id], choice)?.id).toBe(feat.id);
+    // Held for a different Malediction, or not held at all.
+    expect(specializationFor([feat.id], 'Some Other Malediction')).toBeUndefined();
+    expect(specializationFor([], choice)).toBeUndefined();
+  });
+
+  it('matches damage-type Specializations to their type', () => {
+    for (const f of FEATS.filter((x) => x.requires?.kind === 'damage-type')) {
+      const type = (f.requires as { kind: 'damage-type'; type: string }).type;
+      expect(specializationFor([f.id], type)?.id, type).toBe(f.id);
     }
   });
 
