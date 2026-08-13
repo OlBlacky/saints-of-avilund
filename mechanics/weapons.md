@@ -95,7 +95,7 @@ Every weapon has the following traits:
 
 | Name | Group | Type | Damage | Hands | Weight | Cost | Range | Properties |
 |---|---|---|---|---|---|---|---|---|
-| **Dagger** | Light Blades | Piercing | 1d4 | 1H | 1 lb | 2 sp | 20/40/60 | Finesse, Thrown, Concealable |
+| **Dagger** | Light Blades | Piercing | 1d4 | 1H | 1 lb | 2 sp | 10/20/30 | Finesse, Thrown, Concealable |
 | **Parrying Dagger** | Light Blades | Piercing | 1d4 | 1H | 1 lb | 5 sp | — | Finesse, Defensive, Concealable |
 | **Shortsword** | Light Blades | Piercing | 1d6 | 1H | 2 lbs | 10 sp | — | Finesse |
 | **Scimitar** | Heavy Blades | Slashing | 1d6 | 1H | 3 lbs | 15 sp | — | Finesse |
@@ -103,12 +103,12 @@ Every weapon has the following traits:
 | **Longsword** | Heavy Blades | Slashing | 1d8 | 1H | 3 lbs | 15 sp | — | Versatile (1d10) |
 | **Greatsword** | Heavy Blades | Slashing | 2d6 | 2H | 6 lbs | 50 sp | — | — |
 | **Bastard Sword** | Heavy Blades | Slashing | 1d10 | 1H | 6 lbs | 35 sp | — | Versatile (1d12) |
-| **Hatchet** | Axes | Slashing | 1d4 | 1H | 1 lb | 1 sp | 20/40/60 | Thrown |
-| **Handaxe** | Axes | Slashing | 1d6 | 1H | 2 lbs | 5 sp | 20/40/60 | Thrown |
+| **Hatchet** | Axes | Slashing | 1d4 | 1H | 1 lb | 1 sp | 10/20/30 | Thrown |
+| **Handaxe** | Axes | Slashing | 1d6 | 1H | 2 lbs | 5 sp | 10/20/30 | Thrown |
 | **Battleaxe** | Axes | Slashing | 1d8 | 1H | 4 lbs | 10 sp | — | Versatile (1d10) |
 | **Greataxe** | Axes | Slashing | 1d12 | 2H | 7 lbs | 30 sp | — | — |
 | **Halberd** | Polearms | Slashing | 1d10 | 2H | 6 lbs | 20 sp | — | Reach |
-| **Light Hammer** | Hammers/Maces | Blunt | 1d4 | 1H | 2 lbs | 2 sp | 20/40/60 | Thrown |
+| **Light Hammer** | Hammers/Maces | Blunt | 1d4 | 1H | 2 lbs | 2 sp | 10/20/30 | Thrown |
 | **Mace** | Hammers/Maces | Blunt | 1d6 | 1H | 4 lbs | 5 sp | — | — |
 | **Warhammer** | Hammers/Maces | Blunt | 1d8 | 1H | 5 lbs | 15 sp | — | Versatile (1d10) |
 | **Flail** | Flails/Chains | Blunt | 1d8 | 1H | 3 lbs | 10 sp | — | — |

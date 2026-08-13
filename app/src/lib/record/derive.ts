@@ -289,19 +289,19 @@ export function derive(state: CharacterState): DerivedSheet {
       // Save = Attribute + Defence Ranks (one track lifts both; ruled Aug 2026).
       save: sum([
         ...base(attr),
-        ...(def ? [{ label: 'Defence Ranks', value: def }] : []),
+        ...(def ? [{ label: 'Ranks', value: def }] : []),
         ...saveMods,
       ]),
       unarmouredDefence: sum([
         { label: 'Base', value: 10 },
         ...base(attr),
-        ...(def ? [{ label: 'Defence Ranks', value: def }] : []),
+        ...(def ? [{ label: 'Ranks', value: def }] : []),
         ...defenceMods,
       ]),
       armouredDefence: sum([
         { label: 'Base', value: 10 },
         ...base(attr),
-        ...(def ? [{ label: 'Defence Ranks', value: def }] : []),
+        ...(def ? [{ label: 'Ranks', value: def }] : []),
         ...defenceMods,
         ...(wornArmour
           ? [{ label: wornArmour.name, value: ARMOUR_TIER_AC[wornArmour.tier] }]

@@ -71,7 +71,7 @@ export interface Weapon {
 }
 
 export const MELEE_WEAPONS: Weapon[] = [
-  { id: 'dagger', name: 'Dagger', group: 'Light Blades', type: 'Piercing', damage: '1d4', hands: '1H', weightLb: 1, priceCp: 20, range: '20/40/60', properties: ['Finesse', 'Thrown', 'Concealable'] },
+  { id: 'dagger', name: 'Dagger', group: 'Light Blades', type: 'Piercing', damage: '1d4', hands: '1H', weightLb: 1, priceCp: 20, range: '10/20/30', properties: ['Finesse', 'Thrown', 'Concealable'] },
   { id: 'parrying-dagger', name: 'Parrying Dagger', group: 'Light Blades', type: 'Piercing', damage: '1d4', hands: '1H', weightLb: 1, priceCp: 50, range: null, properties: ['Finesse', 'Defensive', 'Concealable'] },
   { id: 'shortsword', name: 'Shortsword', group: 'Light Blades', type: 'Piercing', damage: '1d6', hands: '1H', weightLb: 2, priceCp: 100, range: null, properties: ['Finesse'] },
   { id: 'rapier', name: 'Rapier', group: 'Light Blades', type: 'Piercing', damage: '1d8', hands: '1H', weightLb: 2, priceCp: 250, range: null, properties: ['Finesse'] },
@@ -79,12 +79,12 @@ export const MELEE_WEAPONS: Weapon[] = [
   { id: 'longsword', name: 'Longsword', group: 'Heavy Blades', type: 'Slashing', damage: '1d8', hands: '1H', weightLb: 3, priceCp: 150, range: null, properties: ['Versatile (1d10)'] },
   { id: 'bastard-sword', name: 'Bastard Sword', group: 'Heavy Blades', type: 'Slashing', damage: '1d10', hands: '1H', weightLb: 6, priceCp: 350, range: null, properties: ['Versatile (1d12)'] },
   { id: 'greatsword', name: 'Greatsword', group: 'Heavy Blades', type: 'Slashing', damage: '2d6', hands: '2H', weightLb: 6, priceCp: 500, range: null, properties: [] },
-  { id: 'hatchet', name: 'Hatchet', group: 'Axes', type: 'Slashing', damage: '1d4', hands: '1H', weightLb: 1, priceCp: 10, range: '20/40/60', properties: ['Thrown'] },
-  { id: 'handaxe', name: 'Handaxe', group: 'Axes', type: 'Slashing', damage: '1d6', hands: '1H', weightLb: 2, priceCp: 50, range: '20/40/60', properties: ['Thrown'] },
+  { id: 'hatchet', name: 'Hatchet', group: 'Axes', type: 'Slashing', damage: '1d4', hands: '1H', weightLb: 1, priceCp: 10, range: '10/20/30', properties: ['Thrown'] },
+  { id: 'handaxe', name: 'Handaxe', group: 'Axes', type: 'Slashing', damage: '1d6', hands: '1H', weightLb: 2, priceCp: 50, range: '10/20/30', properties: ['Thrown'] },
   { id: 'battleaxe', name: 'Battleaxe', group: 'Axes', type: 'Slashing', damage: '1d8', hands: '1H', weightLb: 4, priceCp: 100, range: null, properties: ['Versatile (1d10)'] },
   { id: 'greataxe', name: 'Greataxe', group: 'Axes', type: 'Slashing', damage: '1d12', hands: '2H', weightLb: 7, priceCp: 300, range: null, properties: [] },
   { id: 'club', name: 'Club', group: 'Hammers/Maces', type: 'Blunt', damage: '1d4', hands: '1H', weightLb: 2, priceCp: null, range: null, properties: [] },
-  { id: 'light-hammer', name: 'Light Hammer', group: 'Hammers/Maces', type: 'Blunt', damage: '1d4', hands: '1H', weightLb: 2, priceCp: 20, range: '20/40/60', properties: ['Thrown'] },
+  { id: 'light-hammer', name: 'Light Hammer', group: 'Hammers/Maces', type: 'Blunt', damage: '1d4', hands: '1H', weightLb: 2, priceCp: 20, range: '10/20/30', properties: ['Thrown'] },
   { id: 'mace', name: 'Mace', group: 'Hammers/Maces', type: 'Blunt', damage: '1d6', hands: '1H', weightLb: 4, priceCp: 50, range: null, properties: [] },
   { id: 'warhammer', name: 'Warhammer', group: 'Hammers/Maces', type: 'Blunt', damage: '1d8', hands: '1H', weightLb: 5, priceCp: 150, range: null, properties: ['Versatile (1d10)'] },
   { id: 'morningstar', name: 'Morningstar', group: 'Hammers/Maces', type: 'Piercing', damage: '1d8', hands: '1H', weightLb: 4, priceCp: 100, range: null, properties: [] },

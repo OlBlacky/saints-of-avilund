@@ -103,7 +103,7 @@ function resizePortrait(file: File): Promise<string> {
 /** Math-line labels use the 3-letter attribute short (Str, Dex, …) — the
  * same abbreviation the notation grammar and play-mode annotations use
  * elsewhere on the sheet. Non-attribute labels (Vow names, "Base",
- * "Defence Ranks") pass through untouched. */
+ * "Ranks") pass through untouched. */
 const partText = (p: { label: string; value: number }) => {
   const label = parseAttr(p.label) ?? p.label;
   return p.label === 'Base' ? `${label} ${p.value}` : `${label} ${signed(p.value)}`;
@@ -769,6 +769,7 @@ export default function CharacterSheet({ identity, setIdentity, status, setStatu
             <section class="cf-step sheet-box" style={boxStyle('p1', 'attributes')} onDragOver={boxDragOver} onDrop={() => dropBox('p1', 'attributes')}>
               {grip('p1', 'attributes')}
               <h3>Attributes</h3>
+              <p class="cf-how">Every column counts the Attribute itself; the math beneath each shows what is added on top of it.</p>
               <div class="scroll">
                 <table class="cf-shop-table sheet-table sheet-table--packed">
                   <thead>
@@ -779,16 +780,23 @@ export default function CharacterSheet({ identity, setIdentity, status, setStatu
                     </tr>
                   </thead>
                   <tbody>
-                    {sheet.attributes.map((a) => (
-                      <tr key={a.attr}>
-                        <td>{a.attr}</td>
-                        <td><Bd b={a.value} /></td>
-                        <td><Bd b={a.offence} /></td>
-                        <td><Bd b={a.save} /></td>
-                        <td><Bd b={a.unarmouredDefence} plain omit={unarmouredCommon} /></td>
-                        <td><Bd b={a.armouredDefence} plain omit={armouredCommon} /></td>
-                      </tr>
-                    ))}
+                    {sheet.attributes.map((a) => {
+                      // The Attribute is already printed in the Value column
+                      // of this very row, so it comes out of the five math
+                      // lines beside it — each one states what sits on top of
+                      // the Attribute, as the caption says.
+                      const own = [{ label: a.attr, value: a.value.total }];
+                      return (
+                        <tr key={a.attr}>
+                          <td>{a.attr}</td>
+                          <td><Bd b={a.value} /></td>
+                          <td><Bd b={a.offence} omit={own} /></td>
+                          <td><Bd b={a.save} omit={own} /></td>
+                          <td><Bd b={a.unarmouredDefence} plain omit={[...own, ...unarmouredCommon]} /></td>
+                          <td><Bd b={a.armouredDefence} plain omit={[...own, ...armouredCommon]} /></td>
+                        </tr>
+                      );
+                    })}
                   </tbody>
                 </table>
               </div>
