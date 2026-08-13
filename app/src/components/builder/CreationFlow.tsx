@@ -27,10 +27,11 @@ import {
   classById,
 } from '../../lib/classes';
 import type { ClassDef, SubclassDef } from '../../lib/classes';
-import { HOME_LANGUAGES, LANGUAGES } from '../../lib/languages';
+import { LANGUAGES } from '../../lib/languages';
 import { FEATS } from '../../lib/feats';
 import { VOW_OF_POVERTY_GEAR, rollPackage } from '../../lib/gear';
-import { PLACES, fill } from '../../lib/quirks';
+import { PLACES } from '../../lib/places';
+import { fill } from '../../lib/quirks';
 import type { Attribute, SeesawCategory } from '../../lib/quirks';
 import { SKILLS } from '../../lib/skills';
 import { derive } from '../../lib/record/derive';
@@ -65,6 +66,9 @@ const MEDAL_SAINTS = CATALOGUE.find((c) => c.id === 'saints-medal-wood')!.choice
 
 interface Identity {
   name: string;
+  /** Legacy: the Place of Origin lived here before it joined the record.
+   * Kept so characters saved under the old rule still show where they came
+   * from; nothing writes it now. */
   origin: string;
   age: string;
   heightFt: string;
@@ -606,7 +610,7 @@ export default function CreationFlow() {
   const remainingCp = state.wealthCp + totals.net;
 
   const canCrystallize =
-    !crystallized && cls && sub && Boolean(state.homeLanguage) && Boolean(state.startingClothes) &&
+    !crystallized && cls && sub && Boolean(state.origin) && Boolean(state.startingClothes) &&
     quirkRolled && Boolean(state.gear) && flags.length === 0;
   const canFinish = canCrystallize && remainingCp >= 0;
 
@@ -721,11 +725,22 @@ export default function CreationFlow() {
           {!advancing && (
           <section class="cf-step">
             <h2>The Character</h2>
-            <p class="cf-how">Editable at any time. None of this is mechanical.</p>
+            <p class="cf-how">
+              Editable at any time, except the Place of Origin: it carries your
+              Home Language and the markets your birth opens, and it locks when
+              creation finishes.
+            </p>
             <div class="cf-identity">
               <label>Name <input value={draft.identity.name} onInput={(e) => setIdentity('name', (e.target as HTMLInputElement).value)} placeholder="Unnamed" /></label>
               <label>Place of origin
-                <select value={draft.identity.origin} onChange={(e) => setIdentity('origin', (e.target as HTMLSelectElement).value)}>
+                <select
+                  value={state.origin ?? ''}
+                  disabled={crystallized}
+                  onChange={(e) => {
+                    const place = (e.target as HTMLSelectElement).value;
+                    if (place) replaceOne('origin-chosen', mk('origin-chosen', { place }));
+                  }}
+                >
                   <option value=""></option>
                   {PLACES.map((p) => (
                     <option key={p.value} value={p.value}>{p.value}</option>
@@ -1203,24 +1218,12 @@ export default function CreationFlow() {
               </div>
 
               <h3>Languages</h3>
-              <p class="cf-how">Every character speaks Imperial and their home language, free. Further languages cost 1 Minor each.</p>
-              <div class="cf-line">
-                <span class="cf-picker">
-                  <select
-                    value={state.homeLanguage ?? ''}
-                    disabled={crystallized}
-                    onChange={(e) => {
-                      const language = (e.target as HTMLSelectElement).value;
-                      if (language) replaceOne('home-language-chosen', mk('home-language-chosen', { language: language as never }));
-                    }}
-                  >
-                    <option value="">Home language…</option>
-                    {HOME_LANGUAGES.map((l) => (
-                      <option key={l} value={l}>{l}</option>
-                    ))}
-                  </select>
-                </span>
-              </div>
+              <p class="cf-how">
+                Every character speaks Imperial and their home language, free.
+                Your home language is the speech of your Place of Origin, set in
+                The Character above{state.homeLanguage ? `: raised in ${state.origin}, you speak ${state.homeLanguage}` : ''}.
+                Further languages cost 1 Minor each.
+              </p>
               <div class="cf-chiprow">
                 {sheet.languages.map((l) => {
                   const bought = state.languages.includes(l);
@@ -1395,7 +1398,7 @@ export default function CreationFlow() {
                 const visibleFeats = FEATS.filter(
                   (f) =>
                     !f.originGate ||
-                    f.originGate.includes(draft.identity.origin) ||
+                    (state.origin !== undefined && f.originGate.includes(state.origin)) ||
                     ownedIds.has(f.id),
                 );
                 // Eligible = the build qualifies (gates, requirements, caps).

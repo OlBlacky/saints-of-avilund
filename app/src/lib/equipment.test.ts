@@ -88,6 +88,16 @@ describe('the catalogue lift preserves the page counts', () => {
   });
 });
 
+describe('shields carry an attack profile', () => {
+  it('the Buckler bashes for 1d3, every other shield for 1d4', () => {
+    expect(SHIELDS.find((s) => s.id === 'buckler')?.damage).toBe('1d3');
+    for (const s of SHIELDS.filter((s) => s.id !== 'buckler')) {
+      expect(s.damage, s.name).toBe('1d4');
+    }
+    expect(SHIELDS.every((s) => s.type === 'Blunt')).toBe(true);
+  });
+});
+
 describe('catalogue integrity', () => {
   it('every id is unique', () => {
     const ids = CATALOGUE.map((e) => e.id);

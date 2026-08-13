@@ -9,7 +9,12 @@ Languages read").
 
 - **Every character speaks two tongues free from creation: Imperial**, the
   common tongue, **and their home language** — the Dialect or standalone
-  vernacular of where they grew up, chosen at creation.
+  vernacular of where they grew up.
+- **The home language is not chosen. It is dictated by your Place of Origin**,
+  the polity you were raised in, which is itself a creation choice and locks
+  with the rest of the spine. Pick the place and the tongue comes with it. A
+  character who wants a tongue their birth did not give them buys it like any
+  other, for 1 Minor Advance.
 - **Every further language is its own buy: 1 Minor Advance.** Classes and
   Subclasses grant some outright (the Scholar and Friar grant Auld Imperial;
   casting Subclasses grant their tradition's tongue).

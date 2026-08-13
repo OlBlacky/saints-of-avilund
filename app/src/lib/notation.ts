@@ -41,6 +41,7 @@ export function parseAttr(word: string): AttrShort | undefined {
 /** One additive term of a damage expression. */
 export type DamageTerm =
   | { kind: 'weapon'; count: number; sizeStep?: number }
+  | { kind: 'shield'; count: number }
   | { kind: 'dice'; count: number; sides: number }
   | { kind: 'attr'; attr: AttrShort }
   | { kind: 'flat'; value: number }
@@ -112,6 +113,8 @@ export function parseDamage(input: string): DamageResult {
   for (const part of parts) {
     const w = part.match(/^(\d*)\s*\[?W\]?$/);
     if (w) { terms.push({ kind: 'weapon', count: w[1] ? Number(w[1]) : 1 }); continue; }
+    const s = part.match(/^(\d*)\s*\[S\]$/);
+    if (s) { terms.push({ kind: 'shield', count: s[1] ? Number(s[1]) : 1 }); continue; }
     const dice = part.match(/^(\d+)d(\d+)$/i);
     if (dice) { terms.push({ kind: 'dice', count: Number(dice[1]), sides: Number(dice[2]) }); continue; }
     const attr = parseAttr(part);
@@ -129,6 +132,8 @@ export interface ResolveContext {
   attrs: Partial<Record<AttrShort, number>>;
   /** The wielded weapon's damage die, e.g. "1d12". Omit for no weapon. */
   weaponDie?: string;
+  /** The borne shield's damage die, e.g. "1d4". Omit for no shield. */
+  shieldDie?: string;
 }
 
 /**
@@ -141,9 +146,11 @@ export function resolveDamage(d: ParsedDamage, ctx: ResolveContext): string {
   let flat = 0;
   const refs: string[] = [];
   for (const t of d.terms) {
-    if (t.kind === 'weapon') {
-      if (!ctx.weaponDie) { refs.push(`${t.count}[W]`); continue; }
-      const m = ctx.weaponDie.match(/^(\d+)d(\d+)$/i);
+    if (t.kind === 'weapon' || t.kind === 'shield') {
+      const token = t.kind === 'weapon' ? 'W' : 'S';
+      const die = t.kind === 'weapon' ? ctx.weaponDie : ctx.shieldDie;
+      if (!die) { refs.push(`${t.count}[${token}]`); continue; }
+      const m = die.match(/^(\d+)d(\d+)$/i);
       if (m) dice.push(`${Number(m[1]) * t.count}d${m[2]}`);
     } else if (t.kind === 'dice') {
       dice.push(`${t.count}d${t.sides}`);

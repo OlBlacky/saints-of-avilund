@@ -11,6 +11,7 @@
 // Effects, so the character sheet can resolve them in one pass.
 
 import type { Language } from './languages';
+import { PLACES } from './places';
 import { SAINTS } from './saints';
 
 export type Attribute =
@@ -74,25 +75,10 @@ export interface Quirk {
 }
 
 // ── The slot tables ──────────────────────────────────────────────
-// Places draw from the twelve polities; tags follow the three blocs.
+// The {place} slot draws from the place registry in lib/places.ts — the same
+// twelve polities a character takes their Place of Origin from.
 
 interface SlotEntry { value: string; tags: string[] }
-
-export const PLACES: SlotEntry[] = [
-  { value: 'the Bishopric of St. Dunstan', tags: ['south', 'ecclesiastic'] },
-  { value: 'Lysander', tags: ['south', 'city'] },
-  { value: 'the Bishopric of St. Severinius', tags: ['south', 'ecclesiastic'] },
-  { value: 'the Bishopric of St. Mairin', tags: ['south', 'ecclesiastic'] },
-  { value: 'Valdenwail', tags: ['south', 'ecclesiastic'] },
-  { value: 'Waldheim', tags: ['centre', 'republic', 'city'] },
-  { value: 'Dunstanmoore', tags: ['centre', 'republic', 'coastal'] },
-  { value: 'Isenveld', tags: ['centre', 'republic', 'coastal'] },
-  { value: 'Havilah', tags: ['centre', 'colony', 'coastal'] },
-  { value: 'the Bishopric of St. Ignatius', tags: ['centre', 'ecclesiastic'] },
-  { value: 'Patrilund', tags: ['north', 'feudal'] },
-  { value: 'Mantlethorn', tags: ['north', 'feudal'] },
-  { value: 'Heirgallad', tags: ['north', 'feudal'] },
-];
 
 // Language slot values are typed against the Language union so the table can
 // never drift from the canonical list in lib/languages.ts. Bloc tags mirror

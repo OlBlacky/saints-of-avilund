@@ -114,7 +114,7 @@ function useChips(state: CharacterState, itemId: string): UseChip[] {
     if (!profs.includes(prof)) {
       chips.push({
         label: 'untrained',
-        tip: `Not proficient with ${prof} — −${penalty} to attack rolls and physical skill checks.`,
+        tip: `Not proficient with ${prof} — −${penalty} to physical skill checks.`,
       });
     }
     if (armour.strReq !== null) {
@@ -131,7 +131,7 @@ function useChips(state: CharacterState, itemId: string): UseChip[] {
     const penalty = shield.proficiency === 'Heavy Shield' ? 2 : 1;
     chips.push({
       label: 'untrained',
-      tip: `Not proficient with ${shield.proficiency} — −${penalty} to attack rolls and physical skill checks.`,
+      tip: `Not proficient with ${shield.proficiency} — −${penalty} to physical skill checks, and −1 to hit when you bash with it.`,
     });
   }
 

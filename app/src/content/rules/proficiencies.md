@@ -47,12 +47,18 @@ Unlike a sword or bow, an implement's attack uses a **mental or nimble Attribute
 
 Armour has five Proficiencies — **Light, Medium,** and **Heavy** armour, plus **Light Shield** and **Heavy Shield**. *(Unarmoured is a fighting style you take Feats in, not a thing to train.)*
 
-- Wearing armour or carrying a shield you are **not** proficient with imposes a penalty to your **attack rolls and physical Skill checks**: **−1** for Light Armour, Medium Armour, and Light Shield; **−2** for Heavy Armour and Heavy Shield. Proficient is **+0**.
+- Wearing armour or carrying a shield you are **not** proficient with imposes a penalty to your **physical Skill checks**: **−1** for Light Armour, Medium Armour, and Light Shield; **−2** for Heavy Armour and Heavy Shield. Proficient is **+0**. Attack rolls are untouched.
 - Your **Class and Subclass** grant your armour Proficiencies. Any character may **buy any one** for a **Minor Advance** — but one bought this way sits at base forever and can never advance.
 
 ### Advancing an armour Proficiency
 
 Armour Proficiencies advance exactly as weapon Proficiencies do: a Minor Advance buys **+1**, a second **+1** unlocks at **5th Level**, capped at **+2**. The bonus applies to your **AC** while wearing armour — or bearing a shield — of that Proficiency.
+
+### Bashing with a shield
+
+A shield is a weapon as well as armour, so its Proficiency does both jobs. A **Basic Attack with a shield** is a **Standard Action** like any other, rolled with **Strength** against AC for the shield's own damage die — **−1** Untrained, **+0** Trained, and **+1** for each Rank you have advanced it.
+
+The **Shield Bash** Ability sets that aside entirely: it brings its own attack line, its own action, and its own damage Ladder, and borrows nothing from the Proficiency.
 
 Some Classes and Subclasses also reach **Armour Specialization Feats**, which **modify your defensive Abilities** while wearing the relevant armour — the armour counterpart to the Weapon Specialization Feats above. They may be taken from **Level 2**.
 

@@ -54,14 +54,14 @@ Beyond your Class/Subclass grants, **any character may buy any Armour Proficienc
 
 ### Non-Proficiency Penalty
 
-Using armour or a shield you aren't proficient with imposes a penalty to **attack rolls and physical skill checks**:
+Using armour or a shield you aren't proficient with imposes a penalty to **physical skill checks**:
 
 | Without proficiency in… | Penalty |
 |---|---|
 | Light Armour · Medium Armour · Light Shield | −1 |
 | Heavy Armour · Heavy Shield | −2 |
 
-Being proficient is +0.
+Being proficient is +0. Attack rolls are untouched; a shield's bash runs off its Proficiency as a weapon (see [Core Mechanics](core-mechanics.md), Bashing With a Shield).
 
 ### Advancing a Proficiency
 

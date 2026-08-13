@@ -161,7 +161,9 @@ Creation has three parts with three different rules of motion: a free-edit box, 
 
 ### The Identity Box
 
-Top-line details — name, place of origin, height, weight, age, appearance — live in a box that's editable at any moment during creation, in any order, with no mechanical consequences. *(Watch-item, now scheduled: **Place of Origin** (renamed from "country of origin", decided Aug 7 2026) will bias the Starting Gear draw's `{place}` fills — so it becomes a **dropdown of the polity list plus an Other** free-entry, and once the gear picker actually reads it, it graduates out of the box and into the spine.)*
+Top-line details — name, height, weight, age, appearance — live in a box that's editable at any moment during creation, in any order, with no mechanical consequences.
+
+**Place of Origin has graduated out of the box and into the spine** (Aug 13 2026), as the watch-item anticipated. It is now a recorded creation choice (`origin-chosen`), it locks at crystallization, and it carries two mechanical consequences: it **dictates the Home Language** — the free second tongue is the vernacular of where you were raised, never a separate pick — and it **gates the Regional Market Feats**, which the replay now enforces rather than merely hiding. The registry of places is `app/src/lib/places.ts`, one list serving the origin dropdown, the Quirk `{place}` slot, and the Feat gates. It still displays in the Identity Box, read-only once crystallized. Weighting the Starting Gear draw's `{place}` fills toward home remains unbuilt.
 
 ### The Spine — ordered, reversible, keep-and-flag
 
@@ -365,7 +367,7 @@ The **Waldheim family is always listed**: open markets show their catalogs; lock
 
 **Display format everywhere: Market Name — Location — Market Type** (e.g. *Theobald's Row — Sebald's Isle — Occult*). The named roster (Anselm's Buttery, the St. Ignatius College Archive, and the rest) lives in `mechanics/markets.md`, each hosted by a ward of the Waldheim gazetteer.
 
-**Regional Markets** (`mechanics/markets.md`) chain their gates through the Feat system: the Market Feat is **location-gated** (visible in the Feat list only if Place of Origin qualifies), the Market is **Feat-gated** — and Regional Markets are **never listed locked** in the shop (no grey rows; discovery happens in the Feat list; dozens are anticipated). First example: *St. Dunstan's Magazine — Abbey of the Artillery, Lysander — Firearms Market* (origin gate: Lysander natives and Bishopric of St. Dunstan residents; all firearms-related items at 50% of list). Place of Origin is now mechanically load-bearing (second consumer after the `{place}` gear draws) — it graduates into the spine.
+**Regional Markets** (`mechanics/markets.md`) chain their gates through the Feat system: the Market Feat is **location-gated** (visible in the Feat list only if Place of Origin qualifies), the Market is **Feat-gated** — and Regional Markets are **never listed locked** in the shop (no grey rows; discovery happens in the Feat list; dozens are anticipated). First example: *St. Dunstan's Magazine — Abbey of the Artillery, Lysander — Firearms Market* (origin gate: Lysander natives and Bishopric of St. Dunstan residents; all firearms-related items at 50% of list). Place of Origin is mechanically load-bearing, and has graduated into the spine (Aug 13 2026): the gate is enforced in the replay, not merely hidden in the Feat list.
 
 ### Open Commerce (ruled Aug 11 2026)
 
@@ -380,7 +382,7 @@ On the sheet, the Markets are hidden behind a deliberate act: **Open Commerce** 
 ### Shop quality of life (Aug 11 2026)
 
 - **Price hints — inform, never auto-decide**: when another *reachable* Market sells an item cheaper, the row (and any stale Basket line) carries a clickable note — "100 sp at St. Dunstan's Magazine" — that buys from (or reroutes to) the cheaper door. Reachability respects the In Play filter when it lands.
-- **Proficiency chips**: weapons, armour, and shields the build isn't trained for wear an *untrained* chip stating the exact penalty (weapons −1 to attack; Light/Medium armour and Light Shield −1, Heavy armour and Heavy Shield −2 to attack rolls and physical skill checks); Str-short heavy armour adds *needs Str +N*. Buying stays unrestricted.
+- **Proficiency chips**: weapons, armour, and shields the build isn't trained for wear an *untrained* chip stating the exact penalty (weapons −1 to attack; Light/Medium armour and Light Shield −1, Heavy armour and Heavy Shield −2 to physical skill checks, and shields a further −1 to hit when bashed with); Str-short heavy armour adds *needs Str +N*. Buying stays unrestricted.
 - **All Gear / Gear I can Use** toggle (default All): the second view hides chipped rows; sundries always show.
 - **Purchase-time item choices** (`mechanics/markets.md`): Artisan's tools pick their Craft, Saint's medals their saint, Supplies their kit — dropdown (plus free-text Other where the space is open); a Market can **replace** an item's option list wholesale (`choiceOverrides`: Black's Road offers Poison alone, no Other). The pick rides the transaction line, names the instance, and separates stacks.
 - **Kit fill (Page 3, later)**: kit instances carry a Supply gauge 0–20; a named spare stack ("Supplies (Healer's Kit) ×100", in a backpack or at Home) refills it as a Gear-page action. Loose stacks are ordinary located items — the gauge is kit state, not inventory.

@@ -38,16 +38,22 @@ function ev<T extends RecordEvent['type']>(
 const badGear = GEAR.find((g) => g.category === 'bad')!;
 const goodGear = GEAR.find((g) => g.category === 'good')!;
 
-const creation = (gear = badGear) => [
+// The Place of Origin rides along because the Regional Market Feats are gated
+// on it — a stranger to Havilah never sees the Exchange.
+const creation = (gear = badGear, place = 'Waldheim') => [
   ev('class-chosen', { classId: 'soldier' }),
   ev('subclass-chosen', { subclassId: 'vanguard' }),
+  ev('origin-chosen', { place }),
   ev('quirk-rolled', {
     quirkName: 'Q', slots: {}, rerollsUsed: 0,
     gearId: gear.id, gearName: gear.name, gearSlots: {},
   }),
 ];
 
-const crystallized = (gear = badGear) => [...creation(gear), ev('crystallized', {})];
+const crystallized = (gear = badGear, place = 'Waldheim') => [
+  ...creation(gear, place),
+  ev('crystallized', {}),
+];
 
 describe('the Markets roster', () => {
   it('holds the named Waldheim family plus the two Regional Markets', () => {
@@ -223,7 +229,7 @@ describe('the Basket transaction', () => {
     expect(denied.flags.some((f) => f.code === 'no-access')).toBe(true);
 
     const served = replay([
-      ...creation(),
+      ...creation(badGear, 'Lysander'),
       ev('feat-bought', { featId: 'market-dunstans-magazine' }),
       ev('transaction', { lines: [{ direction: 'buy', marketId: 'dunstans-magazine', itemId: 'musket', qty: 1 }] }),
     ]);
@@ -288,7 +294,7 @@ describe('the Basket transaction', () => {
 
   it("the Havilah arbitrage: pelts bought at the Exchange sell in Waldheim", () => {
     const { state, flags } = replay([
-      ...crystallized(),
+      ...crystallized(badGear, 'Havilah'),
       ev('session-logged', {}),
       ev('feat-bought', { featId: 'market-ulrics-exchange' }),
       ev('transaction', { lines: [{ direction: 'buy', marketId: 'ulrics-exchange', itemId: 'animal-pelts-cured', qty: 1 }] }),
@@ -300,7 +306,7 @@ describe('the Basket transaction', () => {
 
   it('a New character cannot run the arbitrage — bought goods hold until the first Session', () => {
     const { flags } = replay([
-      ...crystallized(),
+      ...crystallized(badGear, 'Havilah'),
       ev('feat-bought', { featId: 'market-ulrics-exchange' }),
       ev('transaction', { lines: [{ direction: 'buy', marketId: 'ulrics-exchange', itemId: 'animal-pelts-cured', qty: 1 }] }),
       ev('transaction', { lines: [{ direction: 'sell', marketId: 'waldheim', instanceId: 'item:animal-pelts-cured', qty: 1 }] }),

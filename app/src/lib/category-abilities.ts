@@ -37,6 +37,18 @@ const STRIKE_DAMAGE: Variable = {
   ],
 };
 
+// The Strike Ladder in shield form: the same shape (a flat +1, then Str, then
+// double) climbing the shield's own die instead of a weapon's. Used by Shield
+// Bash — the only Ability that strikes with the shield.
+const SHIELD_DAMAGE: Variable = {
+  base: '1[S]',
+  advances: [
+    { value: '1[S] + 1', cost: 'm' },
+    { value: '1[S] + Str', cost: 'm' },
+    { value: '2[S]', cost: 'M', note: 'L5' },
+  ],
+};
+
 // The Daze Ladder — action denial, Dazed to Stunned. Shared by the Confessor's
 // Rebuke, New Magic's Lightning & Sonic effect ladder, the Stupor Malediction,
 // and the Botanist's Stupefying Fumes.
@@ -330,7 +342,7 @@ const PROTECTION: Ability[] = [
       range: { base: 'Reach' },
       targets: { base: 'One' },
       attack: { base: 'Strength vs AC' },
-      damage: { base: 'Light / shield damage' },
+      damage: SHIELD_DAMAGE,
       effects: DAZE_EFFECTS,
       duration: { base: 'Save ends' },
     },

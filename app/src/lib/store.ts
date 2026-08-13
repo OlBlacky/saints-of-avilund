@@ -24,6 +24,9 @@ export const LEGACY_DRAFT_KEY = 'sova-builder-draft-v1';
 export interface VersionPayload {
   identity: {
     name: string;
+    /** Legacy: the Place of Origin is a recorded creation choice now
+     * (record/events.ts 'origin-chosen'). Retained for characters saved
+     * before the move, which have it here and nowhere else. */
     origin: string;
     age: string;
     heightFt: string;

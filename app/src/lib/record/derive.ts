@@ -29,6 +29,7 @@ import {
   packageEffects,
   skillBase,
   type CharacterState,
+  type EffectGroup,
 } from './replay';
 import { SKILLS } from '../skills';
 
@@ -36,10 +37,13 @@ import { SKILLS } from '../skills';
  * — that flag joins the skills data when Les inventories them). */
 export const UNTRAINED_PENALTY = -1;
 
-/** One labeled component of a derived number. */
+/** One labeled component of a derived number. A part carrying a `group`
+ * prints as that collective word ("Quirks", "Feats") in the math lines —
+ * the source itself is named beneath the table (see `steadyMods`). */
 export interface Part {
   label: string;
   value: number;
+  group?: EffectGroup;
 }
 
 /** A derived number that shows its work. */
@@ -87,6 +91,12 @@ export interface SituationalMod {
   text: string;   // e.g. "−1 social checks (speaking Auld Imperial)"
 }
 
+/** An always-on modifier already folded into the sums. The math lines print
+ * its `group`; these entries say which Quirk, Feat, or Ability it was. */
+export interface SteadyMod extends SituationalMod {
+  group: EffectGroup;
+}
+
 export interface DerivedSheet {
   level: number;
   attributes: DerivedAttribute[];
@@ -106,6 +116,9 @@ export interface DerivedSheet {
   proficiencies: { group: string; rank: number; advanceable: boolean }[];
   /** Conditional modifiers from the Quirk & Gear package (later: Feats). */
   situational: SituationalMod[];
+  /** Always-on modifiers already summed above, named so the sheet can print
+   * a collective word in the math and spell the sources out beneath. */
+  steadyMods: SteadyMod[];
   /** Starting coin in sp, set by the Gear roll's category — bad 200,
    * neutral 150, good 100. Absent until the package is rolled (or on a
    * pre-gear log). Becomes the Wealth ledger's opening balance later. */
@@ -224,10 +237,19 @@ export function derive(state: CharacterState): DerivedSheet {
     .filter((se) => isConditional(se.effect))
     .map((se) => ({ source: se.source, text: describeEffect(se.effect) }));
   const steady = effects.filter((se) => !isConditional(se.effect));
+  const steadyMods: SteadyMod[] = steady.map((se) => ({
+    source: se.source,
+    group: se.group,
+    text: describeEffect(se.effect),
+  }));
   const steadyParts = (match: (e: Effect) => boolean): Part[] =>
     steady
       .filter((se) => match(se.effect))
-      .map((se) => ({ label: se.source, value: (se.effect as { value: number }).value }));
+      .map((se) => ({
+        label: se.source,
+        value: (se.effect as { value: number }).value,
+        group: se.group,
+      }));
 
   const attrValue = (attr: Attribute): Breakdown => {
     const parts: Part[] = [];
@@ -452,6 +474,7 @@ export function derive(state: CharacterState): DerivedSheet {
     languages,
     proficiencies,
     situational,
+    steadyMods,
     ...(startingCoin ? { startingCoin } : {}),
     load: loadFor(state),
     handsHeld: handsHeldFor(state),

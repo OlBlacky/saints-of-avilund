@@ -159,7 +159,8 @@ Your bread-and-butter attack, and the one most shaped by your weapon.
 *Protection attacks run off **Strength**; Constitution carries the Vanguard's defences and HP.*
 
 **Shield Bash** — *Offensive · control*
-- **Attack:** Strength vs AC · light/shield damage + **Daze** on hit
+- **Attack:** Strength vs AC · **1[S]** (the shield's own die — 1d3 Buckler, 1d4 all others) + **Daze** on hit
+- **Damage:** the Strike ladder in shield form — 1[S] → 1[S] + 1 *(Minor)* → 1[S] + Str *(Minor)* → 2[S] *(Major, L5)*
 - **Action:** Move → Minor · **Frequency:** Daily → Encounter
 - **Effect:** the Daze (Action-Denial) ladder — R1 no Reactions/Interrupts → R2 + no Minor action → R3 + no Move action → R4 all actions
 - **Feats:** Light Shield Specialization → Push 5'; Heavy Shield Specialization → Push 5' *or* Prone

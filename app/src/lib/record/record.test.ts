@@ -30,7 +30,7 @@ function gareth(): RecordEvent[] {
   return [
     ev('class-chosen', { classId: 'soldier' }),
     ev('subclass-chosen', { subclassId: 'vanguard' }),
-    ev('home-language-chosen', { language: 'Regnal - Patric' }),
+    ev('origin-chosen', { place: 'Patrilund' }),
     ev('clothes-chosen', { itemId: 'common-outfit' }),
     // 11 Major: Str +3 (6), Con +2 (3), Martial Strike (free — first from
     // Arms), Shield Bash (free — first from Protection), Power Attack (1),
@@ -461,10 +461,10 @@ describe('enforcement', () => {
     for (const a of sheet.attributes) {
       // Vow of Poverty: +1 to every Defence, named on the breakdown.
       expect(a.unarmouredDefence.total).toBe(10 + a.value.total + 1);
-      expect(a.unarmouredDefence.parts).toContainEqual({ label: 'Vow of Poverty', value: 1 });
-      expect(a.armouredDefence.parts).toContainEqual({ label: 'Vow of Poverty', value: 1 });
+      expect(a.unarmouredDefence.parts).toContainEqual({ label: 'Vow of Poverty', value: 1, group: 'Abilities' });
+      expect(a.armouredDefence.parts).toContainEqual({ label: 'Vow of Poverty', value: 1, group: 'Abilities' });
       // Vow of Abstinence: +1 to every Save.
-      expect(a.save.parts).toContainEqual({ label: 'Vow of Abstinence', value: 1 });
+      expect(a.save.parts).toContainEqual({ label: 'Vow of Abstinence', value: 1, group: 'Abilities' });
     }
   });
 
@@ -475,7 +475,7 @@ describe('enforcement', () => {
       ev('ability-bought', { ref: { category: 'Harvest', ability: 'Beast-Wise' } }),
     ]);
     const handle = derive(state).skills.find((s) => s.skill === 'Handle Animal')!;
-    expect(handle.value.parts).toContainEqual({ label: 'Beast-Wise', value: 1 });
+    expect(handle.value.parts).toContainEqual({ label: 'Beast-Wise', value: 1, group: 'Abilities' });
   });
 
   it('gates Feats by the can-use rule and the Level 2 door', () => {
@@ -571,7 +571,7 @@ describe('enforcement', () => {
     ]);
     expect(ritualist.flags).toEqual([]);
     const rituals = derive(ritualist.state).skills.find((s) => s.skill === 'Rituals')!;
-    expect(rituals.value.parts).toContainEqual({ label: 'Specialization — Rituals', value: 1 });
+    expect(rituals.value.parts).toContainEqual({ label: 'Specialization — Rituals', value: 1, group: 'Feats' });
   });
 
   it('sums Toughness Ranks into HP and its capstone into DR', () => {
@@ -581,7 +581,7 @@ describe('enforcement', () => {
       ev('feat-bought', { featId: 'toughness' }),
     ];
     const one = derive(replay(base).state);
-    expect(one.hitPoints.parts).toContainEqual({ label: 'Toughness', value: 1 });
+    expect(one.hitPoints.parts).toContainEqual({ label: 'Toughness', value: 1, group: 'Feats' });
     expect(one.damageReduction.total).toBe(0);
 
     const climbs = [2, 3, 4].flatMap((toRank) => [
@@ -596,7 +596,7 @@ describe('enforcement', () => {
     // Ranks 1–3 stack: +1, +2, +3 max HP.
     expect(sheet.hitPoints.parts.filter((p) => p.label === 'Toughness')).toHaveLength(3);
     expect(sheet.damageReduction.total).toBe(1);
-    expect(sheet.damageReduction.parts).toContainEqual({ label: 'Toughness', value: 1 });
+    expect(sheet.damageReduction.parts).toContainEqual({ label: 'Toughness', value: 1, group: 'Feats' });
   });
 
   it('advances named Ladders: Generic Advances buyable, Scribe / Create gated, shared pace', () => {
@@ -718,52 +718,85 @@ describe('enforcement', () => {
     expect(spoken.state.bank.minor).toBe(9);
   });
 
-  it('grants the home language free at creation, alongside Imperial', () => {
-    const { state, flags } = replay([ev('home-language-chosen', { language: 'Kellish' })]);
+  it('the Place of Origin grants its tongue free at creation, alongside Imperial', () => {
+    const { state, flags } = replay([ev('origin-chosen', { place: 'Patrilund' })]);
     expect(flags).toEqual([]);
-    expect(state.homeLanguage).toBe('Kellish');
+    expect(state.origin).toBe('Patrilund');
+    expect(state.homeLanguage).toBe('Regnal - Patric');
     // Free: the banks are untouched.
     expect(state.bank).toEqual({ major: 11, minor: 11 });
     const languages = derive(state).languages;
-    expect(languages).toEqual(expect.arrayContaining(['Imperial', 'Kellish']));
+    expect(languages).toEqual(expect.arrayContaining(['Imperial', 'Regnal - Patric']));
   });
 
-  it('re-picking the home language replaces, never stacks', () => {
+  it('places that share a tongue grant the same one', () => {
+    const severinius = replay([ev('origin-chosen', { place: 'the Bishopric of St. Severinius' })]);
+    const mairin = replay([ev('origin-chosen', { place: 'the Bishopric of St. Mairin' })]);
+    expect(severinius.state.homeLanguage).toBe('Imperial - Severic');
+    expect(mairin.state.homeLanguage).toBe('Imperial - Severic');
+  });
+
+  it('re-picking the Place of Origin replaces, never stacks', () => {
     const { state, flags } = replay([
-      ev('home-language-chosen', { language: 'Kellish' }),
-      ev('home-language-chosen', { language: 'Regnal - Patric' }),
+      ev('origin-chosen', { place: 'Heirgallad' }),
+      ev('origin-chosen', { place: 'Patrilund' }),
     ]);
     expect(flags).toEqual([]);
+    expect(state.origin).toBe('Patrilund');
     expect(state.homeLanguage).toBe('Regnal - Patric');
-    expect(derive(state).languages).not.toContain('Kellish');
+    expect(derive(state).languages).not.toContain('Regnal - Heirgallic');
   });
 
-  it('refuses a home language outside the mundane vernaculars', () => {
-    const { state, flags } = replay([ev('home-language-chosen', { language: 'Black Tongue' })]);
-    expect(flags.some((f) => f.code === 'no-access')).toBe(true);
+  it('refuses a place that is not on the map', () => {
+    const { state, flags } = replay([ev('origin-chosen', { place: 'Atlantis' })]);
+    expect(flags.some((f) => f.code === 'unknown-ref')).toBe(true);
+    expect(state.origin).toBeUndefined();
     expect(state.homeLanguage).toBeUndefined();
   });
 
-  it('the home language is chosen at creation only', () => {
+  it('the Place of Origin is chosen at creation only', () => {
     const late = replay([
       ev('class-chosen', { classId: 'soldier' }),
       ev('subclass-chosen', { subclassId: 'vanguard' }),
       ev('quirk-rolled', { quirkName: 'Q', slots: {}, rerollsUsed: 0, gearName: 'G', gearSlots: {} }),
       ev('crystallized', {}),
-      ev('home-language-chosen', { language: 'Kellish' }),
+      ev('origin-chosen', { place: 'Patrilund' }),
     ]);
     expect(late.flags.some((f) => f.code === 'creation-only')).toBe(true);
-    expect(late.state.homeLanguage).toBeUndefined();
+    expect(late.state.origin).toBeUndefined();
+  });
+
+  it('still replays the retired home-language pick, for older records', () => {
+    const { state, flags } = replay([ev('home-language-chosen', { language: 'Kellish' })]);
+    expect(flags).toEqual([]);
+    expect(state.homeLanguage).toBe('Kellish');
+    expect(derive(state).languages).toEqual(expect.arrayContaining(['Imperial', 'Kellish']));
   });
 
   it('refuses buying a language the home tongue already covers', () => {
     const { state, flags } = replay([
-      ev('home-language-chosen', { language: 'Kellish' }),
-      ev('language-bought', { language: 'Kellish' }),
+      ev('origin-chosen', { place: 'Patrilund' }),
+      ev('language-bought', { language: 'Regnal - Patric' }),
     ]);
     expect(flags.some((f) => f.code === 'duplicate')).toBe(true);
     // The refused buy spends nothing.
     expect(state.bank.minor).toBe(11);
+  });
+
+  it('a Regional Market Feat is closed to anyone not raised there', () => {
+    const stranger = replay([
+      ev('origin-chosen', { place: 'Patrilund' }),
+      ev('feat-bought', { featId: 'market-ulrics-exchange' }),
+    ]);
+    expect(stranger.flags.some((f) => f.code === 'no-access')).toBe(true);
+    expect(stranger.state.feats).toHaveLength(0);
+
+    const native = replay([
+      ev('origin-chosen', { place: 'Havilah' }),
+      ev('feat-bought', { featId: 'market-ulrics-exchange' }),
+    ]);
+    expect(native.flags).toEqual([]);
+    expect(native.state.feats).toHaveLength(1);
   });
 
   it('grants the starting clothes free, worn from creation', () => {
@@ -1157,13 +1190,19 @@ describe('the package deploys to the sheet', () => {
     const wis = sheet.attributes.find((a) => a.attr === 'Wisdom')!;
     expect(wis.unarmouredDefence.total).toBe(11);
     expect(wis.unarmouredDefence.parts).toContainEqual({
-      label: 'Quirk · Left the Order at Compline', value: 1,
+      label: 'Quirk · Left the Order at Compline', value: 1, group: 'Quirks',
     });
     // The foot's −1 Dex Saves is conditional (while carried) — never summed.
     expect(sheet.attributes.find((a) => a.attr === 'Dexterity')!.save.total).toBe(0);
     expect(sheet.situational).toContainEqual({
       source: 'Gear · A Cursed Rabbit’s Foot',
       text: '−1 Dexterity Saves (while carried)',
+    });
+    // The same modifier, named for the footnote under the sheet's math.
+    expect(sheet.steadyMods).toContainEqual({
+      source: 'Quirk · Left the Order at Compline',
+      group: 'Quirks',
+      text: '+1 Wisdom Defence',
     });
   });
 
@@ -1177,7 +1216,7 @@ describe('the package deploys to the sheet', () => {
     const craft = sheet.skills.find((s) => s.skill === 'Craft')!;
     expect(craft.untrained).toBe(true);
     expect(craft.value.parts).toContainEqual({ label: 'Untrained', value: -1 });
-    expect(craft.value.parts).toContainEqual({ label: 'Quirk · Hands Like a Cooper', value: 1 });
+    expect(craft.value.parts).toContainEqual({ label: 'Quirk · Hands Like a Cooper', value: 1, group: 'Quirks' });
     // The stolen weapon's scoped penalty resolves its {place} fill.
     expect(sheet.situational).toContainEqual({
       source: 'Gear · Another Man’s Axes',

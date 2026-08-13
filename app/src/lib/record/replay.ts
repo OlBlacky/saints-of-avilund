@@ -20,6 +20,7 @@ import { STARTING_COIN, VOW_OF_POVERTY_GEAR, gearById } from '../gear';
 import { buyPriceCp, itemName, marketById, sellPriceCp } from '../markets';
 import { HOME_LANGUAGES } from '../languages';
 import type { Language } from '../languages';
+import { placeByName } from '../places';
 import { fill, fillEffect, QUIRKS } from '../quirks';
 import type { Attribute, Effect } from '../quirks';
 import { SKILLS } from '../skills';
@@ -98,7 +99,11 @@ export interface CharacterState {
   boughtProficiencies: string[];
   /** Class/Subclass proficiency group → advancement rank (1–2). */
   proficiencyRanks: Record<string, number>;
-  /** The free creation tongue — spoken alongside Imperial from Level 0. */
+  /** Where the character was raised — a lib/places.ts name. It dictates the
+   * Home Language, and gates the Regional Market Feats. */
+  origin?: string;
+  /** The free creation tongue — spoken alongside Imperial from Level 0.
+   * Set by the Place of Origin, never picked on its own. */
   homeLanguage?: Language;
   /** The free starting outfit's catalogue id (worn from creation). */
   startingClothes?: string;
@@ -291,8 +296,14 @@ export function vowedToPoverty(state: CharacterState): boolean {
   );
 }
 
+/** The collective term the sheet's math lines print in place of a source
+ * name, so a long Quirk or Feat title never widens a table. The names
+ * themselves are spelled out beneath the table. */
+export type EffectGroup = 'Quirks' | 'Gear' | 'Abilities' | 'Feats';
+
 export interface SourcedEffect {
   source: string;
+  group: EffectGroup;
   effect: Effect;
 }
 
@@ -302,14 +313,22 @@ export function packageEffects(state: CharacterState): SourcedEffect[] {
   if (quirk && state.quirk) {
     const fills = state.quirk.slots;
     for (const e of quirk.effects) {
-      out.push({ source: `Quirk · ${fill(quirk.name, fills)}`, effect: fillEffect(e, fills) });
+      out.push({
+        source: `Quirk · ${fill(quirk.name, fills)}`,
+        group: 'Quirks',
+        effect: fillEffect(e, fills),
+      });
     }
   }
   const gear = state.gear?.id ? gearById(state.gear.id) : undefined;
   if (gear && state.gear) {
     const fills = state.gear.slots;
     for (const e of gear.effects) {
-      out.push({ source: `Gear · ${fill(gear.name, fills)}`, effect: fillEffect(e, fills) });
+      out.push({
+        source: `Gear · ${fill(gear.name, fills)}`,
+        group: 'Gear',
+        effect: fillEffect(e, fills),
+      });
     }
   }
   // Owned abilities' always-on effects (Vows, passives) — the card's
@@ -318,7 +337,7 @@ export function packageEffects(state: CharacterState): SourcedEffect[] {
     const card = CATEGORIES.find((c) => c.name === owned.ref.category)
       ?.abilities.find((a) => a.name === owned.ref.ability);
     for (const e of card?.passiveEffects ?? []) {
-      out.push({ source: owned.name ?? owned.ref.ability, effect: e });
+      out.push({ source: owned.name ?? owned.ref.ability, group: 'Abilities', effect: e });
     }
   }
   // Feats: a plain Feat's effects, or a Ladder's effects up to its Rank.
@@ -328,7 +347,7 @@ export function packageEffects(state: CharacterState): SourcedEffect[] {
     const effects = feat.ladder
       ? feat.ladder.slice(0, ownedFeat.rank).flatMap((r) => r.effects ?? [])
       : feat.effects ?? [];
-    for (const e of effects) out.push({ source: feat.name, effect: e });
+    for (const e of effects) out.push({ source: feat.name, group: 'Feats', effect: e });
   }
   return out;
 }
@@ -567,6 +586,17 @@ export function replay(events: RecordEvent[]): ReplayResult {
         break;
       }
 
+      case 'origin-chosen': {
+        if (state.crystallized) { flag(e, 'creation-only', 'the Place of Origin is chosen at creation'); break; }
+        const place = placeByName(e.place);
+        if (!place) { flag(e, 'unknown-ref', `unknown place "${e.place}"`); break; }
+        state.origin = place.value;
+        // The tongue rides with the place: raised there, you speak it.
+        state.homeLanguage = place.language;
+        break;
+      }
+
+      // Retired — replayed so records written under the old rule still stand.
       case 'home-language-chosen': {
         if (state.crystallized) { flag(e, 'creation-only', 'the home language is chosen at creation'); break; }
         if (!HOME_LANGUAGES.includes(e.language)) { flag(e, 'no-access', `${e.language} is not a home tongue`); break; }
@@ -1157,6 +1187,12 @@ export function replay(events: RecordEvent[]): ReplayResult {
         }
         if (feat.levelGate && levelFor(state.milestones, state.crystallized) < feat.levelGate) {
           flag(e, 'over-cap', `${feat.name} opens at Level ${feat.levelGate}`);
+          break;
+        }
+        // A Regional Market Feat belongs to its region: no Place of Origin on
+        // the list, no door.
+        if (feat.originGate && !(state.origin && feat.originGate.includes(state.origin))) {
+          flag(e, 'no-access', `${feat.name} is open only to natives of ${feat.originGate.join(' or ')}`);
           break;
         }
         // The choice resolves before the requirement: a speciality pick

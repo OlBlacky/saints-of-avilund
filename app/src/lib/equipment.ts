@@ -367,16 +367,19 @@ export interface Shield {
   proficiency: 'Light Shield' | 'Heavy Shield';
   ac: number;
   dr: number;
+  /** The shield's own damage die — what a bash deals. Notation: 1[S]. */
+  damage: string;
+  type: DamageKind;
   speedPenaltyFt: number;
   priceCp: Cp;
   weightLb: number;
 }
 
 export const SHIELDS: Shield[] = [
-  { id: 'buckler', name: 'Buckler', proficiency: 'Light Shield', ac: 1, dr: 0, speedPenaltyFt: 0, priceCp: 50, weightLb: 3 },
-  { id: 'standard-shield', name: 'Standard Shield', proficiency: 'Light Shield', ac: 1, dr: 1, speedPenaltyFt: 0, priceCp: 120, weightLb: 6 },
-  { id: 'heater-kite-round', name: 'Heater / Kite / Round', proficiency: 'Heavy Shield', ac: 2, dr: 1, speedPenaltyFt: 5, priceCp: 300, weightLb: 12 },
-  { id: 'tower-shield', name: 'Tower Shield', proficiency: 'Heavy Shield', ac: 2, dr: 2, speedPenaltyFt: 10, priceCp: 600, weightLb: 25 },
+  { id: 'buckler', name: 'Buckler', proficiency: 'Light Shield', ac: 1, dr: 0, damage: '1d3', type: 'Blunt', speedPenaltyFt: 0, priceCp: 50, weightLb: 3 },
+  { id: 'standard-shield', name: 'Standard Shield', proficiency: 'Light Shield', ac: 1, dr: 1, damage: '1d4', type: 'Blunt', speedPenaltyFt: 0, priceCp: 120, weightLb: 6 },
+  { id: 'heater-kite-round', name: 'Heater / Kite / Round', proficiency: 'Heavy Shield', ac: 2, dr: 1, damage: '1d4', type: 'Blunt', speedPenaltyFt: 5, priceCp: 300, weightLb: 12 },
+  { id: 'tower-shield', name: 'Tower Shield', proficiency: 'Heavy Shield', ac: 2, dr: 2, damage: '1d4', type: 'Blunt', speedPenaltyFt: 10, priceCp: 600, weightLb: 25 },
 ];
 
 // ── Masterwork ───────────────────────────────────────────────────

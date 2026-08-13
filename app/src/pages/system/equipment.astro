@@ -196,7 +196,7 @@ const priceWithUnit = (i: SimpleItem) => (i.unit ? `${price(i)} ${i.unit}` : pri
       </p>
       <table>
         <thead>
-          <tr><th>Shield</th><th>Proficiency</th><th>AC</th><th>DR</th><th>Speed</th><th>Cost</th><th>Weight</th></tr>
+          <tr><th>Shield</th><th>Proficiency</th><th>AC</th><th>DR</th><th>Bash</th><th>Speed</th><th>Cost</th><th>Weight</th></tr>
         </thead>
         <tbody>
           {SHIELDS.map((s) => (
@@ -205,6 +205,7 @@ const priceWithUnit = (i: SimpleItem) => (i.unit ? `${price(i)} ${i.unit}` : pri
               <td>{s.proficiency}</td>
               <td>+{s.ac}</td>
               <td>{s.dr || '—'}</td>
+              <td>{s.damage} {s.type}</td>
               <td>{speed(s.speedPenaltyFt)}</td>
               <td>{fmtPrice(s.priceCp)}</td>
               <td>{fmtWeight(s.weightLb)}</td>
@@ -218,6 +219,17 @@ const priceWithUnit = (i: SimpleItem) => (i.unit ? `${price(i)} ${i.unit}` : pri
         <li><strong>Anyone proficient</strong> may raise their shield as a <strong>Standard Action</strong>, gaining its AC and DR until the start of their next turn — re-paid every turn.</li>
         <li>The <strong>Raise Shield</strong> Ability (Arms) does it far better: from a Move Action down to <strong>Free</strong> — eventually every turn for nothing — and its Feats extend your Shield DR to the allies you protect.</li>
       </ul>
+      <p>
+        A shield is also a weapon, and its Shield Proficiency is its Weapon Proficiency. Bashing with
+        one is a <strong>Standard Action</strong> like any Basic Attack — <strong>Strength</strong> vs
+        AC, dealing the shield's <strong>Bash</strong> die, at <strong>−1</strong> Untrained,
+        <strong>+0</strong> Trained, and <strong>+1</strong> per Rank.
+      </p>
+      <p>
+        The <strong>Shield Bash</strong> Ability (Protection) sets all of that aside: it carries its own
+        attack line and its own action, and only borrows the shield's die — written
+        <strong>1[S]</strong> on the card.
+      </p>
     </details>
 
     <details id="masterwork">

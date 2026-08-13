@@ -31,7 +31,8 @@ import type { Language } from '../../lib/languages';
 import { bestSell, itemName, itemWeightLb, marketById } from '../../lib/markets';
 import { DAMAGE_TYPES, parseAttr } from '../../lib/notation';
 import { keywordsFor } from '../../lib/traditions';
-import { fill, PLACES, QUIRKS } from '../../lib/quirks';
+import { homeLanguageFor } from '../../lib/places';
+import { fill, QUIRKS } from '../../lib/quirks';
 import type { EventSource, RecordEvent } from '../../lib/record/events';
 import type { ItemLocation } from '../../lib/record/events';
 import type { Breakdown, DerivedSheet, Part } from '../../lib/record/derive';
@@ -108,6 +109,24 @@ const partText = (p: { label: string; value: number }) => {
   return p.label === 'Base' ? `${label} ${p.value}` : `${label} ${signed(p.value)}`;
 };
 
+/** Quirk, Gear, Ability, and Feat titles are long enough to stretch a table
+ * out of its box, so the math line prints the collective word instead —
+ * "Quirks +1" — and the sources are named beneath the table. Two parts from
+ * the same family fold into one entry. */
+function condense(parts: Part[]): Part[] {
+  const out: Part[] = [];
+  for (const p of parts) {
+    if (!p.group) {
+      out.push(p);
+      continue;
+    }
+    const held = out.find((q) => q.group === p.group);
+    if (held) held.value += p.value;
+    else out.push({ ...p, label: p.group });
+  }
+  return out;
+}
+
 /** Parts that appear, same label and value, in every breakdown of a set —
  * e.g. a flat Vow bonus that lands on all six Attribute rows alike. Pulling
  * these out of the per-row text keeps a table-wide constant from being
@@ -124,9 +143,11 @@ function commonParts(breakdowns: Breakdown[]): Part[] {
  * so the parts sit under the total, never behind a hover. `omit` drops parts
  * already stated once for the whole table (see commonParts). */
 function Bd({ b, plain, omit }: { b: Breakdown; plain?: boolean; omit?: Part[] }) {
-  const parts = omit
-    ? b.parts.filter((p) => !omit.some((o) => o.label === p.label && o.value === p.value))
-    : b.parts;
+  const parts = condense(
+    omit
+      ? b.parts.filter((p) => !omit.some((o) => o.label === p.label && o.value === p.value))
+      : b.parts,
+  );
   return (
     <span class="sheet-bd">
       <span class="sheet-bd-total">{plain ? b.total : signed(b.total)}</span>
@@ -142,6 +163,7 @@ function describeEvent(e: RecordEvent): string {
   switch (e.type) {
     case 'class-chosen': return `Chose the ${classById(e.classId)?.name ?? e.classId}`;
     case 'subclass-chosen': return `Chose the ${e.subclassId} Subclass`;
+    case 'origin-chosen': return `Raised in ${e.place}${homeLanguageFor(e.place) ? ` — speaks ${homeLanguageFor(e.place)}` : ''}`;
     case 'home-language-chosen': return `Home language: ${e.language}`;
     case 'clothes-chosen': return `Starting clothes: ${itemName(e.itemId) ?? e.itemId}`;
     case 'flaw-taken': return `Took a Flaw: −1 ${e.attr}`;
@@ -600,6 +622,24 @@ export default function CharacterSheet({ identity, setIdentity, status, setStatu
           .filter((i) => i.location === 'held' || i.location === 'worn')
           .map(shieldFor)
           .find(Boolean);
+        // The rows print "Quirks +1"; these lines say which Quirk, and what
+        // it did. One line per source, its effects on this table joined.
+        const attrSources = new Set(
+          sheet.attributes.flatMap((a) =>
+            [...a.save.parts, ...a.unarmouredDefence.parts, ...a.armouredDefence.parts]
+              .filter((p) => p.group)
+              .map((p) => p.label),
+          ),
+        );
+        const attrMods = sheet.steadyMods
+          .filter((m) => attrSources.has(m.source))
+          .reduce<{ group: string; name: string; texts: string[] }[]>((out, m) => {
+            const name = m.source.replace(/^(Quirk|Gear) · /, '');
+            const held = out.find((x) => x.name === name);
+            if (held) held.texts.push(m.text);
+            else out.push({ group: m.group, name, texts: [m.text] });
+            return out;
+          }, []);
         return (
           <div class="sheet-boxcol">
             <section class="cf-step sheet-box" style={boxStyle('p1', 'vitals')} onDragOver={boxDragOver} onDrop={() => dropBox('p1', 'vitals')}>
@@ -688,13 +728,10 @@ export default function CharacterSheet({ identity, setIdentity, status, setStatu
               {manage ? (
                 <div class="cf-identity">
                   <label>Name <input value={identity.name} onInput={(e) => setIdentity('name', (e.target as HTMLInputElement).value)} placeholder="Unnamed" /></label>
+                  {/* Where you were raised is a creation choice, locked with
+                      the rest of the spine — it carries the home tongue. */}
                   <label>Place of origin
-                    <select value={identity.origin} onChange={(e) => setIdentity('origin', (e.target as HTMLSelectElement).value)}>
-                      <option value=""></option>
-                      {PLACES.map((p) => (
-                        <option key={p.value} value={p.value}>{p.value}</option>
-                      ))}
-                    </select>
+                    <span class="sheet-fixed">{state.origin || identity.origin || '—'}</span>
                   </label>
                   <label>Age
                     <input type="number" min="14" max="99" class="num" value={identity.age} onInput={(e) => setIdentity('age', (e.target as HTMLInputElement).value)} />
@@ -717,7 +754,7 @@ export default function CharacterSheet({ identity, setIdentity, status, setStatu
                 </div>
               ) : (
                 <div class="sheet-details">
-                  <span><strong>Place of origin</strong> {identity.origin || '—'}</span>
+                  <span><strong>Place of origin</strong> {state.origin || identity.origin || '—'}</span>
                   <span><strong>Age</strong> {identity.age || '—'}</span>
                   <span>
                     <strong>Height</strong>{' '}
@@ -756,11 +793,16 @@ export default function CharacterSheet({ identity, setIdentity, status, setStatu
                 </table>
               </div>
               {unarmouredCommon.length > 0 && (
-                <p class="cf-railline">Unarmoured Defence — {unarmouredCommon.map(partText).join(' · ')}</p>
+                <p class="cf-railline">Unarmoured Defence — {condense(unarmouredCommon).map(partText).join(' · ')}</p>
               )}
               {armouredCommon.length > 0 && (
-                <p class="cf-railline">Armoured Defence — {armouredCommon.map(partText).join(' · ')}</p>
+                <p class="cf-railline">Armoured Defence — {condense(armouredCommon).map(partText).join(' · ')}</p>
               )}
+              {attrMods.map((m) => (
+                <p class="cf-railline" key={m.name}>
+                  {m.group} — {m.name} · {m.texts.join(' · ')}
+                </p>
+              ))}
             </section>
 
             <section class="cf-step sheet-box" style={boxStyle('p1', 'skills')} onDragOver={boxDragOver} onDrop={() => dropBox('p1', 'skills')}>
@@ -901,19 +943,25 @@ export default function CharacterSheet({ identity, setIdentity, status, setStatu
             return `${whole} (${a})`;
           });
 
-        // Full math for the Attacks table: [W] becomes the weapon's die,
-        // attribute tokens become their totals. Bare W is one weapon die,
-        // as in the notation grammar (parseDamage).
+        // Full math for the Attacks table: [W] becomes the weapon's die and
+        // [S] the shield's, attribute tokens become their totals. Bare W is
+        // one weapon die, as in the notation grammar (parseDamage).
         const hasWeaponDie = (text: string) => /\[W\]|\bW\b/.test(text);
+        const hasShieldDie = (text: string) => /\[S\]/.test(text);
         const dmgFor = (text: string, die: string): string =>
           text
-            .replace(/(\d+)\[W\]/g, (_, n: string) => (n === '1' ? die : `${n}×${die}`))
-            .replace(/\[W\]|\bW\b/g, die)
+            .replace(/(\d+)\[[WS]\]/g, (_, n: string) => (n === '1' ? die : `${n}×${die}`))
+            .replace(/\[W\]|\bW\b|\[S\]/g, die)
             .replace(/\b(Str|Dex|Con|Int|Wis|Cha)\b/g, (m) => String(shortTotals[m] ?? m));
 
         // Attacks list what you can bring to bear this round: weapons in
         // hand or drawable at the ready. Stored weapons stay off the table.
         const tableWeapons = weapons.filter((i) => i.location === 'held' || i.location === 'equipped');
+        // A shield can only be bashed with while it is borne — on the arm or
+        // at the ready.
+        const tableShields = state.inventory.filter(
+          (i) => shieldFor(i) && (i.location === 'held' || i.location === 'worn' || i.location === 'equipped'),
+        );
 
         interface AttackRow { key: string; name: string; toHit: number; toHitParts: string[]; vs: string; damage: string; dmgParts: string[] }
         const rows: AttackRow[] = [];
@@ -922,7 +970,7 @@ export default function CharacterSheet({ identity, setIdentity, status, setStatu
         // (or the Untrained −1) — the total's whole arithmetic, printed.
         const toHitPartsFor = (attrFull: string, group?: string): string[] => {
           const bd = attrRow(attrFull)?.offence;
-          const parts = bd ? bd.parts.map(partText) : [];
+          const parts = bd ? condense(bd.parts).map(partText) : [];
           if (group !== undefined) {
             const p = profOf(group);
             if (p === undefined) parts.push('Untrained −1');
@@ -961,6 +1009,22 @@ export default function CharacterSheet({ identity, setIdentity, status, setStatu
             dmgParts: [],
           });
         }
+        // A shield bashes as a weapon: a Standard Action like any Basic
+        // Attack, with the Shield Proficiency standing in for a weapon
+        // group's — Untrained −1, Trained +0, each Rank +1.
+        for (const item of tableShields) {
+          const sh = shieldFor(item)!;
+          const p = profOf(sh.proficiency);
+          rows.push({
+            key: `basic/${item.instanceId}`,
+            name: `Basic Attack — ${item.name}`,
+            toHit: offenceOf('Strength') + (p ?? -1),
+            toHitParts: toHitPartsFor('Strength', sh.proficiency),
+            vs: 'vs AC',
+            damage: sh.damage,
+            dmgParts: [],
+          });
+        }
         rows.push({
           key: 'basic/unarmed',
           name: 'Basic Unarmed',
@@ -978,7 +1042,23 @@ export default function CharacterSheet({ identity, setIdentity, status, setStatu
           const [attrFull, vsDef] = atkText.split(' vs ');
           const dmgText = resolveValue(card.vars.damage, owned.ranks.damage) ?? '—';
           const label = owned.name ?? owned.ref.ability;
-          if (hasWeaponDie(dmgText)) {
+          if (hasShieldDie(dmgText)) {
+            // An Ability that strikes with the shield brings its own attack
+            // line: the Shield Proficiency does not touch it, trained or not.
+            // All the shield lends is its die.
+            for (const item of tableShields) {
+              const sh = shieldFor(item)!;
+              rows.push({
+                key: `${label}/${item.instanceId}`,
+                name: `${label} — ${item.name}`,
+                toHit: offenceOf(attrFull),
+                toHitParts: toHitPartsFor(attrFull),
+                vs: vsDef ? `vs ${vsDef}` : '',
+                damage: dmgFor(dmgText, sh.damage),
+                dmgParts: dmgPartsFor(dmgText),
+              });
+            }
+          } else if (hasWeaponDie(dmgText)) {
             for (const item of tableWeapons) {
               const w = weaponFor(item)!;
               const p = profOf(w.group);

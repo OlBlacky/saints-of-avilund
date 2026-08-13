@@ -61,9 +61,8 @@ export interface Feat {
   choice?: { key: string; label: string; options: string[] };
   /** A location-gated Feat appears only for characters whose Place of
    * Origin is listed (Regional Market Feats — mechanics/markets.md).
-   * Values match lib/quirks.ts PLACES exactly. The builder's Feat list
-   * enforces it from the Identity Box; record-level enforcement waits
-   * for Place of Origin to join the record. */
+   * Values match lib/places.ts exactly, and the replay enforces it against
+   * the recorded Place of Origin. */
   originGate?: string[];
   /** Feat Ladder Ranks, climbed in order, one Rank per Level. */
   ladder?: FeatRank[];

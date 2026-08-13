@@ -62,9 +62,14 @@ export type RecordEvent =
   // ── The creation spine ────────────────────────────────────────────────
   | (BaseEvent & { type: 'class-chosen'; classId: string })
   | (BaseEvent & { type: 'subclass-chosen'; subclassId: string })
-  /** Creation-only: the free second tongue (every character speaks Imperial
-   * and their home language). Must be a HOME_LANGUAGES entry; a re-pick
-   * replaces the earlier choice. */
+  /** Creation-only: where the character was raised. Must be a lib/places.ts
+   * entry; a re-pick replaces the earlier choice. It carries the Home
+   * Language with it — the free second tongue every character speaks
+   * alongside Imperial — so the tongue is never chosen on its own. */
+  | (BaseEvent & { type: 'origin-chosen'; place: string })
+  /** Retired: the Home Language was once its own pick, before Place of Origin
+   * dictated it. Replayed for records written under the old rule; nothing
+   * emits it now. */
   | (BaseEvent & { type: 'home-language-chosen'; language: Language })
   /** Creation-only: the free starting outfit, from the Class-aware table
    * (equipment.ts STARTING_CLOTHES). A re-pick replaces the earlier choice. */

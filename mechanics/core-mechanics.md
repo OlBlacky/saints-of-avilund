@@ -83,6 +83,9 @@ Any roll can be an attack against any attribute's Defence Target. The attribute 
 ### Basic Attacks Deal Weapon Damage Only
 A basic attack that hits deals the weapon's damage dice (W) and nothing more. **Attribute bonuses apply to the attack roll, not the damage roll** — a fighter with +3 Str gets +3 to hit, but no bonus to damage. Damage bonuses come only from Abilities and effects that explicitly grant them; dealing extra damage is what the damaging Classes are for.
 
+### Bashing With a Shield
+A shield is a weapon too, and its Shield Proficiency is the Weapon Proficiency for the blow: a Basic Attack with a shield is a **Standard Action**, rolled with **Strength** against AC for the shield's die (**1d3** Buckler, **1d4** all others), at **−1** Untrained, **+0** Trained, **+1** per Rank. The **Shield Bash** Ability replaces all of this with its own attack line, action, and Damage Ladder.
+
 ### Critical Hits
 A **natural 20** on the attack roll is a **Critical Hit**: the attack deals its **maximum damage** — every die counts as its highest face. Feats and other buffs may widen the Critical Hit range beyond a natural 20.
 

@@ -36,6 +36,14 @@ describe('damage grammar', () => {
     expect(d.terms[0]).toMatchObject({ kind: 'weapon', count: 1 });
   });
 
+  it('parses the shield die', () => {
+    const d = parseDamage('1[S]');
+    expect(d.kind).toBe('damage');
+    if (d.kind !== 'damage') return;
+    expect(d.terms).toEqual([{ kind: 'shield', count: 1 }]);
+    expect(resolveDamage(d, { attrs: {}, shieldDie: '1d4' })).toBe('1d4');
+  });
+
   it('parses dice, flats, damage types, and named refs', () => {
     const d = parseDamage('2d8 + Wis Eldritch');
     expect(d).toMatchObject({ kind: 'damage', damageType: 'Eldritch' });
@@ -178,7 +186,6 @@ interface Failure {
 const STRICT_EXCEPTIONS: Record<string, string[]> = {
   frequency: ['24 hours of care, per patient'],
   damage: [
-    'Light / shield damage',
     'The dog’s Bite (its Attack Ladder)',
   ],
   attack: [
