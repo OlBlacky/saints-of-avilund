@@ -207,6 +207,17 @@ export function accessibleCategories(state: CharacterState): string[] {
   return cats;
 }
 
+/** A new Ability's Major cost. The first Ability owned from the first
+ * Class's Category is free, and likewise the first from its Subclass's
+ * Category (ruled Aug 12 2026). Added Classes grant no free Abilities. */
+export function abilityCost(state: CharacterState, category: string): number {
+  const [first] = activePairs(state);
+  if (!first) return 1;
+  const freeCategories = [first.cls.abilityCategory, first.sub?.abilityCategory];
+  if (!freeCategories.includes(category)) return 1;
+  return state.abilities.some((a) => a.ref.category === category) ? 1 : 0;
+}
+
 /** A Skill's base name — the parenthetical speciality stripped. Used only to
  * look up the base Skill's definition; a speciality Skill keeps its full name
  * everywhere else ("Religion (Saintly Faith)" and "Religion (Black Faith)"
@@ -551,7 +562,8 @@ export function replay(events: RecordEvent[]): ReplayResult {
           flag(e, 'no-access', `${found.sub.name} belongs to the ${found.cls.name}, not the chosen class`);
           break;
         }
-        state.subclassId = e.subclassId;
+        // store the canonical id — the event may carry a retired one
+        state.subclassId = found.sub.id;
         break;
       }
 
@@ -868,7 +880,7 @@ export function replay(events: RecordEvent[]): ReplayResult {
               break;
             }
           }
-          if (!spend(e, 'major', 1)) break;
+          if (!spend(e, 'major', abilityCost(state, e.ref.category))) break;
           state.abilities.push({
             ref: e.ref,
             instanceId: e.instanceId,
@@ -882,7 +894,7 @@ export function replay(events: RecordEvent[]): ReplayResult {
           flag(e, 'duplicate', `${e.ref.ability} is already owned`);
           break;
         }
-        if (!spend(e, 'major', 1)) break;
+        if (!spend(e, 'major', abilityCost(state, e.ref.category))) break;
         state.abilities.push({
           ref: e.ref,
           ranks: {},
@@ -1045,7 +1057,7 @@ export function replay(events: RecordEvent[]): ReplayResult {
         if (state.addedClasses.length >= 2) { flag(e, 'over-cap', 'at most three Classes'); break; }
         const cost = state.addedClasses.length === 0 ? 3 : 6;
         if (!spend(e, 'major', cost)) break;
-        state.addedClasses.push({ classId: e.classId, subclassId: e.subclassId });
+        state.addedClasses.push({ classId: e.classId, subclassId: found.sub.id });
         break;
       }
 

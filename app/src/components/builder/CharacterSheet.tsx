@@ -222,6 +222,9 @@ export default function CharacterSheet({ identity, setIdentity, status, setStatu
   // table-scratch Conditions (never logged, reset freely).
   const [hiddenAttacks, setHiddenAttacks] = useState<string[]>([]);
   const [showHiddenAttacks, setShowHiddenAttacks] = useState(false);
+  // Weapon lines on Ability cards curate the same way: hidden, never deleted.
+  const [hiddenCardWeapons, setHiddenCardWeapons] = useState<string[]>([]);
+  const [revealedCards, setRevealedCards] = useState<string[]>([]);
   const [conditions, setConditions] = useState<string[]>([]);
   const [conditionEntry, setConditionEntry] = useState('');
   // Temp HP is table scratch, like Conditions — never logged.
@@ -904,6 +907,9 @@ export default function CharacterSheet({ identity, setIdentity, status, setStatu
           return finesse && dex > str ? 'Dexterity' : 'Strength';
         };
 
+        // A basic attack deals the weapon's damage and nothing more — the
+        // attribute bonus goes to the attack roll, never the damage roll
+        // (mechanics/core-mechanics.md, Damage).
         for (const item of tableWeapons) {
           const w = weaponFor(item)!;
           const ranged = RANGED_WEAPONS.some((r) => r.id === w.id);
@@ -915,8 +921,8 @@ export default function CharacterSheet({ identity, setIdentity, status, setStatu
             toHit: offenceOf(attrFull) + (p ?? -1),
             toHitParts: toHitPartsFor(attrFull, w.group),
             vs: 'vs AC',
-            damage: dmgFor(`${w.damage} + ${attrFull.slice(0, 3)}`, w.damage).replace(/^.*?\+/, `${w.damage} +`),
-            dmgParts: dmgPartsFor(`${w.damage} + ${attrFull.slice(0, 3)}`),
+            damage: w.damage,
+            dmgParts: [],
           });
         }
         rows.push({
@@ -925,8 +931,8 @@ export default function CharacterSheet({ identity, setIdentity, status, setStatu
           toHit: offenceOf('Strength') + (profOf('Unarmed/Natural') ?? -1),
           toHitParts: toHitPartsFor('Strength', 'Unarmed/Natural'),
           vs: 'vs AC',
-          damage: `1d3 + ${shortTotals.Str}`,
-          dmgParts: dmgPartsFor('1d3 + Str'),
+          damage: '1d3',
+          dmgParts: [],
         });
 
         for (const owned of state.abilities) {
@@ -1028,6 +1034,7 @@ export default function CharacterSheet({ identity, setIdentity, status, setStatu
                 {state.abilities.map((owned) => {
                   const card = findCard(owned.ref.category, owned.ref.ability);
                   if (!card) return null;
+                  const cardKey = owned.instanceId ?? `${owned.ref.category}/${owned.ref.ability}`;
                   const val = (k: (typeof VAR_ORDER)[number]) => resolveValue(card.vars[k], owned.ranks[k]);
                   const freq = val('frequency');
                   // The attack line carries this build's math: the attacking
@@ -1043,18 +1050,45 @@ export default function CharacterSheet({ identity, setIdentity, status, setStatu
                     val('targets') && val('targets') !== '—' && `Targets: ${val('targets')}`,
                     atkNoted && atkNoted !== '—' && `Attack: ${atkNoted}`,
                   ].filter(Boolean);
+                  // A weapon-attack card resolves per weapon: every weapon the
+                  // character owns gets its own attack & damage line, curated
+                  // by hiding — the same treatment as the Attacks table.
+                  const dmgText = val('damage');
+                  const [atkAttr, atkVs] = atk && atk !== '—' ? atk.split(' vs ') : [];
+                  const weaponRows =
+                    card.mode === 'Attack' && atkAttr && dmgText?.includes('[W]')
+                      ? weapons.map((item) => {
+                          const w = weaponFor(item)!;
+                          const p = profOf(w.group);
+                          return {
+                            key: `${cardKey}/${item.instanceId}`,
+                            name: item.name,
+                            where: rootLocation(item),
+                            toHit: offenceOf(atkAttr) + (p ?? -1),
+                            toHitParts: toHitPartsFor(atkAttr, w.group),
+                            damage: dmgFor(dmgText, w.damage),
+                          };
+                        })
+                      : [];
                   // Every rules-bearing field the card resolves at its current
                   // Ranks, the named ladders included — complete on the sheet.
+                  // The weapon lines carry the resolved damage, so the raw
+                  // [W] formula stays off the card whenever they can.
                   const body = [
-                    ['Damage', val('damage')],
+                    ...(weaponRows.length > 0 ? [] : [['Damage', dmgText] as const]),
                     ['Effect', val('effects')],
                     ['Duration', val('duration')],
                     ...(card.extraVars ?? []).map(
                       (l) => [l.name, resolveValue(l, owned.ranks[l.name])] as const,
                     ),
                   ].filter(([, v]) => v && v !== '—') as [string, string][];
+                  const hiddenHere = weaponRows.filter((r) => hiddenCardWeapons.includes(r.key));
+                  const revealed = revealedCards.includes(cardKey);
+                  const listedRows = revealed
+                    ? weaponRows
+                    : weaponRows.filter((r) => !hiddenCardWeapons.includes(r.key));
                   return (
-                    <div key={owned.instanceId ?? `${owned.ref.category}/${owned.ref.ability}`} class="sheet-card">
+                    <div key={cardKey} class="sheet-card">
                       <p class="cf-quirk-eyebrow">
                         {owned.ref.category}
                         {card.role && <span class="sheet-card-freq"> · {card.role}</span>}
@@ -1065,6 +1099,53 @@ export default function CharacterSheet({ identity, setIdentity, status, setStatu
                         {owned.choices && <span class="cf-shop-src"> · {Object.values(owned.choices).join(', ')}</span>}
                       </h4>
                       {strip.length > 0 && <p class="sheet-card-strip">{strip.join(' · ')}</p>}
+                      {weaponRows.length > 0 && (
+                        <div class="sheet-card-weapons">
+                          {listedRows.map((r) => (
+                            <p
+                              key={r.key}
+                              class={`sheet-card-weapon${hiddenCardWeapons.includes(r.key) ? ' sheet-hiddenrow' : ''}`}
+                            >
+                              <span class="sheet-card-weapon-name">
+                                {r.name}
+                                {r.where !== 'held' && r.where !== 'equipped' && (
+                                  <span class="cf-shop-src"> · {r.where === 'home' ? 'at home' : r.where}</span>
+                                )}
+                              </span>
+                              <span class="sheet-card-weapon-math" title={r.toHitParts.join(' · ')}>
+                                {signed(r.toHit)}{atkVs ? ` vs ${atkVs}` : ''} · {r.damage}
+                              </span>
+                              <button
+                                type="button"
+                                class="undo"
+                                title={hiddenCardWeapons.includes(r.key) ? 'show this weapon' : 'hide this weapon'}
+                                onClick={() =>
+                                  setHiddenCardWeapons((h) =>
+                                    h.includes(r.key) ? h.filter((k) => k !== r.key) : [...h, r.key],
+                                  )
+                                }
+                              >
+                                {hiddenCardWeapons.includes(r.key) ? 'show' : 'hide'}
+                              </button>
+                            </p>
+                          ))}
+                          {hiddenHere.length > 0 && (
+                            <button
+                              type="button"
+                              class="undo"
+                              onClick={() =>
+                                setRevealedCards((c) =>
+                                  revealed ? c.filter((k) => k !== cardKey) : [...c, cardKey],
+                                )
+                              }
+                            >
+                              {revealed
+                                ? 'Tuck the hidden weapons away'
+                                : `Show ${hiddenHere.length} hidden weapon${hiddenHere.length === 1 ? '' : 's'}`}
+                            </button>
+                          )}
+                        </div>
+                      )}
                       {body.map(([label, v]) => (
                         <p key={label} class="cf-quirk-mech"><strong>{label}.</strong> {noteAttrs(v)}</p>
                       ))}

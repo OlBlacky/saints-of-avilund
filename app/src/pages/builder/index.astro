@@ -563,6 +563,16 @@ const blurb = 'Build a character of Avilund — and once they are Complete, this
   .sheet-card h4 { margin: 0 0 0.35rem; font-family: var(--display); color: var(--oxblood); }
   .sheet-card-strip { margin: 0 0 0.4rem; font-size: 0.84rem; color: var(--ink-soft); }
   .sheet-card-freq { text-transform: none; letter-spacing: 0; }
+  .sheet-card-weapons {
+    margin: 0 0 0.45rem; padding: 0.25rem 0;
+    border-top: 1px solid var(--rule); border-bottom: 1px solid var(--rule);
+  }
+  .sheet-card-weapon { display: flex; gap: 0.5rem; align-items: baseline; margin: 0.15rem 0; font-size: 0.84rem; }
+  .sheet-card-weapon-name { flex: 1; }
+  .sheet-card-weapon-math {
+    font-weight: bold; color: var(--oxblood);
+    font-variant-numeric: tabular-nums; white-space: nowrap;
+  }
   .sheet-hiddenrow { opacity: 0.45; }
   .sheet-conditions { display: flex; flex-wrap: wrap; gap: 0.4rem; align-items: center; margin: 0; }
   .sheet-conditions .cf-chip { cursor: pointer; margin-left: 0; font-size: 0.82rem; }

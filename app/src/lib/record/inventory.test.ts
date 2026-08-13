@@ -589,7 +589,7 @@ describe('the Renunciation of Nicetus closes the Saintly Market', () => {
 
   const renunciant = () => [
     ev('class-chosen', { classId: 'occultist' }),
-    ev('subclass-chosen', { subclassId: 'witch-warlock' }),
+    ev('subclass-chosen', { subclassId: 'witch' }),
     ev('ability-bought', { ref: RENUNCIATION }),
     ev('quirk-rolled', {
       quirkName: 'Q', slots: {}, rerollsUsed: 0,

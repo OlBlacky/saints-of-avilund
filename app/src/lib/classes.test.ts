@@ -53,6 +53,10 @@ describe('class roster shape', () => {
     expect(classById('nope')).toBeUndefined();
     expect(subclassById('nope')).toBeUndefined();
   });
+
+  it('resolves retired ids that may survive in saved records', () => {
+    expect(subclassById('witch-warlock')?.sub.id).toBe('witch');
+  });
 });
 
 describe('ability categories', () => {

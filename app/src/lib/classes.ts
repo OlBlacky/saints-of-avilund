@@ -308,8 +308,8 @@ export const CLASSES: ClassDef[] = [
     },
     subclasses: [
       {
-        id: 'witch-warlock',
-        name: 'Witch/Warlock',
+        id: 'witch',
+        name: 'Witch',
         classAttribute: 'Charisma',
         abilityCategory: 'Witchcraft',
         additionalClassSkills: ['Intimidate', 'Nature'],
@@ -402,12 +402,18 @@ export function classSummary(cls: ClassDef): string {
   return `${cls.classAttribute} · ${cls.abilityCategory} · HP ${cls.classHP}. Choose the ${a}, the ${b}, or the ${c}.`;
 }
 
+/** Retired ids that may still be stored inside saved character records. */
+const RETIRED_SUBCLASS_IDS: Record<string, string> = {
+  'witch-warlock': 'witch',
+};
+
 /** Look up a Subclass by stable id, returning its Class alongside it. */
 export function subclassById(
   id: string,
 ): { cls: ClassDef; sub: SubclassDef } | undefined {
+  const canonical = RETIRED_SUBCLASS_IDS[id] ?? id;
   for (const cls of CLASSES) {
-    const sub = cls.subclasses.find((s) => s.id === id);
+    const sub = cls.subclasses.find((s) => s.id === canonical);
     if (sub) return { cls, sub };
   }
   return undefined;

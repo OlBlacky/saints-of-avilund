@@ -2439,11 +2439,11 @@ const OCCULT: Ability[] = [
   CONDUCT_RITUAL,
 ];
 
-// ── Witchcraft (Occultist — Witch/Warlock) ────────────────────────────
+// ── Witchcraft (Occultist — Witch) ────────────────────────────────────
 // The malevolent half of the Occult line, and the Occultist's teeth. The
-// Witch/Warlock never knelt at the Black Faith's altar — he worked out what its
-// worship actually *pays*, and cut out the priest, so the power is his and the
-// sin is not. Charisma vs a foe's Unarmoured Wisdom, the debuffer chassis.
+// Witch never knelt at the Black Faith's altar — she worked out what its
+// worship actually *pays*, and cut out the priest, so the power is hers and
+// the sin is not. Charisma vs a foe's Unarmoured Wisdom, the debuffer chassis.
 //
 // Where Occult bears its own cost (the Price), Witchcraft makes ANOTHER bleed.
 // Its two costed workings soften, at their height, onto a COVEN — willing
@@ -3522,7 +3522,7 @@ export const CATEGORIES: CategoryGroup[] = [
   { name: 'New Magic', source: 'Scholar — Arcanist', blurb: '[[text here]]', abilities: NEW_MAGIC },
   { name: 'The Lost', source: 'Scoundrel — Class', blurb: '[[text here]]', abilities: THE_LOST },
   { name: 'Occult', source: 'Occultist — Class *(hosted by the Scoundrel’s Blackcoat)*', blurb: '[[text here]]', abilities: OCCULT },
-  { name: 'Witchcraft', source: 'Occultist — Witch/Warlock', blurb: '[[text here]]', abilities: WITCHCRAFT },
+  { name: 'Witchcraft', source: 'Occultist — Witch', blurb: '[[text here]]', abilities: WITCHCRAFT },
   { name: 'The Outside', source: 'Occultist — Cosmologist', blurb: '[[text here]]', abilities: OUTSIDE },
   { name: 'Guile', source: 'Scoundrel — Charlatan', blurb: '[[text here]]', abilities: GUILE },
   { name: 'Assassination', source: 'Scoundrel — Assassin', blurb: '[[text here]]', abilities: ASSASSINATION },

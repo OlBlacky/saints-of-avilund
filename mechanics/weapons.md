@@ -81,7 +81,7 @@ Every weapon has the following traits:
 
 | Property | Effect |
 |---|---|
-| **Finesse** | May use Dex instead of Str for attack and damage rolls |
+| **Finesse** | May use Dex instead of Str for attack rolls |
 | **Reach** | Melee range is 10' instead of 5' |
 | **Thrown** | May be used as a ranged weapon; has range increments |
 | **Versatile** | May be used one- or two-handed; two-handed increases the damage die by one step |

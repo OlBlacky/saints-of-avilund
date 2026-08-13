@@ -108,7 +108,9 @@ export type RecordEvent =
   // ── Major purchases ──────────────────────────────────────────────────
   /** One step up the triangular curve (+N costs N Major for the Nth step). */
   | (BaseEvent & { type: 'attribute-bought'; attr: Attribute })
-  /** One Ability from an accessible Category, 1 Major. Builder cards
+  /** One Ability from an accessible Category — 1 Major, except the first
+   * from each of the first Class's two Categories, which is free (cost is
+   * computed at replay by abilityCost). Builder cards
    * (spell/curse builders) may be bought repeatedly: each purchase carries a
    * unique instanceId, a player name, and the card's one build choice
    * (element, Malediction) — validated against the card. */

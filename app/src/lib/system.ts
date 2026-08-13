@@ -33,7 +33,6 @@ export const SYSTEM: SystemPart[] = [
     items: [
       { slug: 'introduction', title: 'Introduction & How to Play', blurb: 'What the game is, the d20 core it runs on, and the Ladders and Ranks every Ability is built from.', status: 'live' },
       { slug: 'character-creation', title: 'Character Creation', blurb: 'Advances (Major & Minor), Levels 0–11, and Milestone advancement.', status: 'live', stub: false },
-      { slug: 'character-sheet', title: 'Character Sheet', blurb: 'A look at the digital character sheet — the example Soldier laid out across four pages.', status: 'live', stub: false },
       { slug: 'attributes', title: 'Attributes, Offences & Defences', blurb: 'The six Attributes, AC, and the Armoured / Unarmoured Defences.', status: 'live' },
       { slug: 'skills', title: 'Skills', blurb: 'The Skills of Avilund, each tied to an Attribute — with the Heal Skill in play.', status: 'live', stub: false },
       { slug: 'languages', title: 'Languages', blurb: 'The tongues of Avilund — three Language Families and their Dialects, the standalone vernaculars, and the learned and dead tongues.', status: 'live', stub: false },

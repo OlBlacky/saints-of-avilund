@@ -24,7 +24,7 @@ export const GLOSSARY: Record<string, string> = {
   'Defence': 'A target number an attacker must beat: 10 + Attribute + Defence Ranks (plus armour, if Armoured).',
   'AC': 'Armour Class — your Armoured Constitution Defence, the number most physical attacks must beat.',
   'Armoured': 'A Defence that includes your armour’s bonus, as opposed to its Unarmoured version.',
-  'Ability': 'An active power, bought for 1 Major Advance from one of your Ability Categories and improved dial by dial.',
+  'Ability': 'An active power from one of your Ability Categories, improved dial by dial. Your first Ability from each Category is free; every further Ability costs 1 Major Advance.',
   'Keywords': 'The tags an Ability carries from its Category: the tradition’s knowledge Skill and the Language its texts are written in.',
   'Language Family': 'A group of kindred Dialects — Imperial, Republic, or Regnal. A speaker of one Dialect can make themselves understood in another of the same Family at −1 to social checks.',
   'Dialect': 'A regional tongue within a Language Family, named Family first — Imperial - Lysandrine, Republic - Waldisch, Regnal - Patric. Each Dialect is learned as its own language.',

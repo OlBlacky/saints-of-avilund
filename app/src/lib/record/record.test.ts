@@ -23,15 +23,18 @@ function ev<T extends RecordEvent['type']>(
 }
 
 /** The creation of Gareth Ironside, per the live Character Creation page:
- * Soldier (Vanguard), Str +3, Con +2, two Abilities, two Flaws (Int, Cha),
- * a Marking Strike bought with the Flaw Majors, and the Minor spread. */
+ * Soldier (Vanguard), Str +3, Con +2, the two free Abilities plus two
+ * bought ones, two Flaws (Int, Cha), a Marking Strike bought with the Flaw
+ * Majors, and the Minor spread. */
 function gareth(): RecordEvent[] {
   return [
     ev('class-chosen', { classId: 'soldier' }),
     ev('subclass-chosen', { subclassId: 'vanguard' }),
     ev('home-language-chosen', { language: 'Regnal - Patric' }),
     ev('clothes-chosen', { itemId: 'common-outfit' }),
-    // 11 Major: Str +3 (6), Con +2 (3), Martial Strike (1), Shield Bash (1)
+    // 11 Major: Str +3 (6), Con +2 (3), Martial Strike (free — first from
+    // Arms), Shield Bash (free — first from Protection), Power Attack (1),
+    // Guard (1)
     ev('attribute-bought', { attr: 'Strength' }),
     ev('attribute-bought', { attr: 'Strength' }),
     ev('attribute-bought', { attr: 'Strength' }),
@@ -39,6 +42,8 @@ function gareth(): RecordEvent[] {
     ev('attribute-bought', { attr: 'Constitution' }),
     ev('ability-bought', { ref: { category: 'Arms', ability: 'Martial Strike' } }),
     ev('ability-bought', { ref: { category: 'Protection', ability: 'Shield Bash' } }),
+    ev('ability-bought', { ref: { category: 'Arms', ability: 'Power Attack' } }),
+    ev('ability-bought', { ref: { category: 'Protection', ability: 'Guard' } }),
     // The two-point Flaw: +2 Major, buying Marking Strike (1) with 1 to spare
     ev('flaw-taken', { attr: 'Intelligence' }),
     ev('flaw-taken', { attr: 'Charisma' }),
@@ -70,7 +75,7 @@ describe('the worked example replays clean', () => {
   });
 
   it('accounts the bank exactly', () => {
-    // Majors: 11 + 2 (Flaws) − 6 − 3 − 1 − 1 − 1 = 1 left
+    // Majors: 11 + 2 (Flaws) − 6 − 3 − 0 − 0 (free firsts) − 1 − 1 − 1 = 1 left
     // Minors: 11 − 1 − 1 − (1+2) − 4 − 1 − 1 = 0 left
     expect(state.bank).toEqual({ major: 1, minor: 0 });
   });
@@ -181,6 +186,71 @@ describe('enforcement', () => {
       ev('ability-bought', { ref: { category: 'Witchcraft', ability: 'Hex' } }),
     ]);
     expect(flags.some((f) => f.code === 'no-access' || f.code === 'unknown-ref')).toBe(true);
+  });
+
+  it('grants the first Ability from each of the two Categories free', () => {
+    const { state, flags } = replay([
+      ev('class-chosen', { classId: 'soldier' }),
+      ev('subclass-chosen', { subclassId: 'vanguard' }),
+      ev('ability-bought', { ref: { category: 'Arms', ability: 'Martial Strike' } }),
+      ev('ability-bought', { ref: { category: 'Protection', ability: 'Shield Bash' } }),
+    ]);
+    expect(flags).toEqual([]);
+    expect(state.abilities).toHaveLength(2);
+    // Both firsts free: the Major bank is untouched.
+    expect(state.bank.major).toBe(11);
+  });
+
+  it('charges 1 Major for every Ability after a Category’s first', () => {
+    const { state, flags } = replay([
+      ev('class-chosen', { classId: 'soldier' }),
+      ev('subclass-chosen', { subclassId: 'vanguard' }),
+      ev('ability-bought', { ref: { category: 'Arms', ability: 'Martial Strike' } }),
+      ev('ability-bought', { ref: { category: 'Arms', ability: 'Power Attack' } }),
+      ev('ability-bought', { ref: { category: 'Arms', ability: 'Parry' } }),
+    ]);
+    expect(flags).toEqual([]);
+    expect(state.bank.major).toBe(9);
+  });
+
+  it('a builder card’s first copy is the Category’s freebie too', () => {
+    const ref = { category: 'New Magic', ability: 'Telum Eminus' };
+    const { state, flags } = replay([
+      ev('class-chosen', { classId: 'scholar' }),
+      ev('subclass-chosen', { subclassId: 'arcanist' }),
+      ev('ability-bought', { ref, instanceId: 'sp1', choices: { element: 'Fire' } }),
+      ev('ability-bought', { ref, instanceId: 'sp2', choices: { element: 'Cold' } }),
+    ]);
+    expect(flags).toEqual([]);
+    // First copy free, second copy 1 Major.
+    expect(state.bank.major).toBe(10);
+  });
+
+  it('the freebie follows the Subclass: a swap re-opens it in the new Category', () => {
+    // Keep-and-flag: the Subclass pick was edited to Marksman, so the old
+    // Protection buy flags (spending nothing) and Marksmanship's first
+    // Ability is the free one.
+    const { state, flags } = replay([
+      ev('class-chosen', { classId: 'soldier' }),
+      ev('subclass-chosen', { subclassId: 'marksman' }),
+      ev('ability-bought', { ref: { category: 'Protection', ability: 'Shield Bash' } }),
+      ev('ability-bought', { ref: { category: 'Marksmanship', ability: 'Marksman’s Shot' } }),
+    ]);
+    expect(flags.some((f) => f.code === 'no-access')).toBe(true);
+    expect(state.abilities).toHaveLength(1);
+    expect(state.bank.major).toBe(11);
+  });
+
+  it('an added Class grants no free Abilities', () => {
+    const { state, flags } = replay([
+      ev('class-chosen', { classId: 'soldier' }),
+      ev('subclass-chosen', { subclassId: 'vanguard' }),
+      ev('class-added', { classId: 'friar', subclassId: 'mendicant' }),
+      ev('ability-bought', { ref: { category: 'Forbearance', ability: 'Vow of Poverty' } }),
+    ]);
+    expect(flags).toEqual([]);
+    // 11 − 3 (the second Class) − 1 (no freebie from an added pair).
+    expect(state.bank.major).toBe(7);
   });
 
   it('re-opens once-per-Level HP at the first Milestone of the next triad', () => {
@@ -358,7 +428,7 @@ describe('enforcement', () => {
     const ref = { category: 'Witchcraft', ability: 'Dictiones Atras Susurrare' };
     const base = [
       ev('class-chosen', { classId: 'occultist' }),
-      ev('subclass-chosen', { subclassId: 'witch-warlock' }),
+      ev('subclass-chosen', { subclassId: 'witch' }),
       ev('ability-bought', { ref, instanceId: 'c1', choices: { malediction: 'Ill Luck' } }),
     ];
 

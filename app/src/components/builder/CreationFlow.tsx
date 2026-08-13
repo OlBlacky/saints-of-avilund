@@ -38,6 +38,7 @@ import type { RecordEvent } from '../../lib/record/events';
 import { getCharacter, putCharacter } from '../../lib/store';
 import type { CharacterRecord, PlayState } from '../../lib/store';
 import {
+  abilityCost,
   accessibleCategories,
   classSkills,
   companionBank,
@@ -802,7 +803,7 @@ export default function CreationFlow() {
           {sub && (
             <section class="cf-step">
               <h2>Step 3 · Spend your Major Advances</h2>
-              <p class="cf-how">Attributes climb the triangular curve (+1 costs 1, +2 costs 2 more, +3 costs 3 more). Abilities cost 1 Major from your two Categories.</p>
+              <p class="cf-how">Attributes climb the triangular curve (+1 costs 1, +2 costs 2 more, +3 costs 3 more). Your first Ability from each of your two Categories is free; every further Ability costs 1 Major.</p>
 
               <h3>Attributes</h3>
               <p class="cf-how">Step any Attribute down past +0 to take a Flaw. Up to two Attributes may drop to −1, each granting +1 Major.</p>
@@ -883,8 +884,8 @@ export default function CreationFlow() {
                 );
               })()}
               <p class="cf-how">
-                An Ability costs 1 Major. Each owned Ability may also take one Minor and one Major
-                advance per Level.
+                Your first Ability from each Category is free; every further Ability costs 1 Major.
+                Each owned Ability may also take one Minor and one Major advance per Level.
               </p>
               {accessibleCategories(state).map((catName) => {
                 const cat = CATEGORIES.find((c) => c.name === catName);
@@ -925,6 +926,7 @@ export default function CreationFlow() {
                                       <BuildControl
                                         choice={ab.builderChoice}
                                         noun={ab.builderNoun ?? 'Spell'}
+                                        label={abilityCost(state, catName) === 0 ? 'Build · Free' : 'Build · 1 M'}
                                         onBuild={(choices) =>
                                           append(
                                             mk('ability-bought', {
@@ -1048,7 +1050,10 @@ export default function CreationFlow() {
                                       </button>
                                     )
                                   ) : (
-                                    <Buy ev={mk('ability-bought', { ref })} label="Buy · 1 M" />
+                                    <Buy
+                                      ev={mk('ability-bought', { ref })}
+                                      label={abilityCost(state, catName) === 0 ? 'Take · Free' : 'Buy · 1 M'}
+                                    />
                                   )}
                                 </td>
                               </tr>
