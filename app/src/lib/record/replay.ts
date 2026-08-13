@@ -24,7 +24,7 @@ import { placeByName } from '../places';
 import { fill, fillEffect, QUIRKS } from '../quirks';
 import type { Attribute, Effect } from '../quirks';
 import { SKILLS } from '../skills';
-import type { AbilityRef, ItemLocation, RecordEvent } from './events';
+import type { AbilityRef, ItemLocation, ItemPosition, RecordEvent } from './events';
 
 // ── State ───────────────────────────────────────────────────────────────────
 
@@ -76,6 +76,20 @@ function normalizeLocation(location: ItemLocation | 'carried', itemId?: string):
     (ARMOURS.some((a) => a.id === itemId) || SHIELDS.some((s) => s.id === itemId))
   ) return 'worn';
   return loc;
+}
+
+/** The inventory array's order is the sheet's order — the arrangement the
+ * player dragged into place. This lifts an item out and sets it down beside
+ * its anchor. An anchor that has since left the inventory (sold, merged)
+ * leaves the item where it stands: the arrangement degrades, nothing breaks. */
+function reposition(inventory: OwnedItem[], item: OwnedItem, position: ItemPosition): void {
+  if (position.anchor === item.instanceId) return;
+  const anchorIndex = inventory.findIndex((i) => i.instanceId === position.anchor);
+  if (anchorIndex === -1) return;
+  const from = inventory.indexOf(item);
+  inventory.splice(from, 1);
+  const to = inventory.findIndex((i) => i.instanceId === position.anchor);
+  inventory.splice(position.side === 'before' ? to : to + 1, 0, item);
 }
 
 export interface CharacterState {
@@ -865,6 +879,7 @@ export function replay(events: RecordEvent[]): ReplayResult {
           if (looped) { flag(e, 'wrong-order', `${inst.name} cannot contain itself`); break; }
         }
         inst.location = normalizeLocation(e.location, inst.itemId);
+        if (e.position) reposition(state.inventory, inst, e.position);
         break;
       }
 

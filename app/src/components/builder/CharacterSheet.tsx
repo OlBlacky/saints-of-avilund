@@ -10,7 +10,7 @@
 
 import { useState } from 'preact/hooks';
 
-import { VAR_ORDER, chosenLadder, resolveValue } from '../../lib/abilities';
+import { VAR_ORDER, actionBadge, chosenLadder, freqBadge, resolveRung, resolveValue } from '../../lib/abilities';
 import type { Ability } from '../../lib/abilities';
 import { CATEGORIES } from '../../lib/category-abilities';
 import { classById } from '../../lib/classes';
@@ -35,12 +35,17 @@ import { homeLanguageFor } from '../../lib/places';
 import { fill, QUIRKS } from '../../lib/quirks';
 import type { EventSource, RecordEvent } from '../../lib/record/events';
 import type { ItemLocation } from '../../lib/record/events';
+import { contentsOf, descendantsOf, gearRows, isStored, locationBeside } from '../../lib/record/arrange';
 import type { Breakdown, DerivedSheet, Part } from '../../lib/record/derive';
 import { languageAllowance } from '../../lib/record/replay';
 import type { CharacterState, OwnedItem } from '../../lib/record/replay';
 import type { PlayState, VersionPayload } from '../../lib/store';
 import MarketShop, { basketTotalsCp, commerceRankOf } from './MarketShop';
 import type { BasketLine } from './MarketShop';
+
+/** Where a dragged item lands on the row under the pointer: beside it, or —
+ * over a Container's middle — inside it. */
+type DropZone = 'before' | 'after' | 'into';
 
 let counter = 0;
 function mk<T extends RecordEvent['type']>(
@@ -255,9 +260,12 @@ export default function CharacterSheet({ identity, setIdentity, status, setStatu
   // Manage Mode: the sheet is read-only at the table; the Manage Character
   // button opens the editing surfaces (Details, Sessions, Milestones).
   const [manage, setManage] = useState(false);
-  // Drag state: a box being reordered, or an item headed for a container.
+  // Drag state: a box being reordered, or an item in flight. An item in
+  // flight also tracks where it would land — beside a row, or inside it.
   const [dragBox, setDragBox] = useState<string | null>(null);
   const [dragItem, setDragItem] = useState<string | null>(null);
+  const [dragFrom, setDragFrom] = useState<string | null>(null);
+  const [dropAt, setDropAt] = useState<{ id: string; zone: DropZone } | null>(null);
   const [portraitOpen, setPortraitOpen] = useState(false);
 
   /** The page's effective box order: the saved order first, then any boxes
@@ -293,12 +301,13 @@ export default function CharacterSheet({ identity, setIdentity, status, setStatu
   const boxDragOver = (e: DragEvent) => {
     if (dragBox || dragItem) e.preventDefault();
   };
+  const endDrag = () => { setDragItem(null); setDragFrom(null); setDropAt(null); };
   /** Drop an in-flight item at a location (a section, a container). */
   const dropItemTo = (location: ItemLocation) => {
     if (!dragItem) return;
-    if (location === `in:${dragItem}`) { setDragItem(null); return; }
+    if (location === `in:${dragItem}`) { endDrag(); return; }
     append(mk('item-moved', { instanceId: dragItem, location }));
-    setDragItem(null);
+    endDrag();
   };
 
   const onPortrait = (e: Event) => {
@@ -327,22 +336,29 @@ export default function CharacterSheet({ identity, setIdentity, status, setStatu
   const armourFor = (i: OwnedItem) => ARMOURS.find((a) => a.id === i.itemId);
   const shieldFor = (i: OwnedItem) => SHIELDS.find((s) => s.id === i.itemId);
 
-  const weapons = state.inventory.filter((i) => weaponFor(i));
-  const wearables = state.inventory.filter((i) => armourFor(i) || shieldFor(i));
-  const equipment = state.inventory.filter((i) => !weaponFor(i) && !armourFor(i) && !shieldFor(i));
+  const isContainer = (i: OwnedItem) => !!i.itemId && containerCoefficient(i.itemId) !== undefined;
 
-  const containers = state.inventory.filter(
-    (i) => i.itemId && containerCoefficient(i.itemId) !== undefined,
+  // A Stored item shows once, nested under the Container that holds it — so
+  // the type tables list only what is on the body. A packed sword lives
+  // under the pack, not in the Weapons block. Page 2's weapon lines want
+  // every weapon owned, wherever it rests, so they read the whole list.
+  const allWeapons = state.inventory.filter((i) => weaponFor(i));
+  const weapons = allWeapons.filter((i) => !isStored(i));
+  const wearables = state.inventory.filter((i) => (armourFor(i) || shieldFor(i)) && !isStored(i));
+  const equipment = state.inventory.filter(
+    (i) => !weaponFor(i) && !armourFor(i) && !shieldFor(i) && !isStored(i),
   );
 
-  /** Direct contents of a container, and their raw weight. */
-  const contentsOf = (instanceId: string) =>
-    state.inventory.filter((i) => i.location === `in:${instanceId}`);
+  const containers = state.inventory.filter((i) => isContainer(i));
+
   const subtotalLb = (instanceId: string) =>
-    contentsOf(instanceId).reduce(
+    contentsOf(state.inventory, instanceId).reduce(
       (t, i) => t + (i.itemId ? (itemWeightLb(i.itemId) ?? 0) : 0) * i.qty,
       0,
     );
+
+  const equipmentCarried = equipment.filter((i) => i.location !== 'home');
+  const equipmentHome = equipment.filter((i) => i.location === 'home');
 
   /** Walk the container chain to the ground an item finally rests on —
    * a pouch in a chest at home is at home. */
@@ -360,8 +376,87 @@ export default function CharacterSheet({ identity, setIdentity, status, setStatu
     return loc as 'held' | 'worn' | 'equipped' | 'home';
   };
 
-  const equipmentCarried = equipment.filter((i) => rootLocation(i) !== 'home');
-  const equipmentHome = equipment.filter((i) => rootLocation(i) === 'home');
+  // The in-flight item's own contents refuse its drop — nothing goes inside
+  // itself, at any depth.
+  const forbidden = dragItem ? descendantsOf(state.inventory, dragItem) : new Set<string>();
+
+  /** The zone under the pointer, or null where the row takes no drop.
+   * Ordering runs within one block — a row dragged into another block would
+   * take its new place out of sight — but a Container accepts packing from
+   * anywhere on the page. A Container's middle band packs; the bands above
+   * and below it set the order. */
+  const zoneAt = (e: DragEvent, item: OwnedItem, block: string): DropZone | null => {
+    if (!dragItem || dragItem === item.instanceId || forbidden.has(item.instanceId)) return null;
+    const container = isContainer(item);
+    if (dragFrom !== block) return container ? 'into' : null;
+    const rect = (e.currentTarget as HTMLElement).getBoundingClientRect();
+    const y = rect.height ? (e.clientY - rect.top) / rect.height : 0.5;
+    if (!container) return y < 0.5 ? 'before' : 'after';
+    return y < 0.3 ? 'before' : y > 0.7 ? 'after' : 'into';
+  };
+
+  /** Set the in-flight item down beside a neighbour. */
+  const dropBeside = (anchor: OwnedItem, side: 'before' | 'after') => {
+    if (!dragItem) return;
+    const item = state.inventory.find((i) => i.instanceId === dragItem);
+    if (!item || item.instanceId === anchor.instanceId) { endDrag(); return; }
+    append(mk('item-moved', {
+      instanceId: item.instanceId,
+      location: locationBeside(item, anchor),
+      position: { anchor: anchor.instanceId, side },
+    }));
+    endDrag();
+  };
+
+  /** The drag handlers every gear row carries: it is a drop target for
+   * whatever is in flight, and its name cell is the grip. A row that takes
+   * no drop swallows it rather than letting the block beneath act on it. */
+  const rowProps = (item: OwnedItem, block: string) => ({
+    class: dropAt?.id === item.instanceId ? `sheet-row is-drop-${dropAt.zone}` : 'sheet-row',
+    onDragOver: (e: DragEvent) => {
+      const zone = zoneAt(e, item, block);
+      if (!zone) return;
+      e.preventDefault();
+      e.stopPropagation();
+      setDropAt((prev) =>
+        prev && prev.id === item.instanceId && prev.zone === zone
+          ? prev
+          : { id: item.instanceId, zone },
+      );
+    },
+    // Crossing between the row's own cells is not leaving the row.
+    onDragLeave: (e: DragEvent) => {
+      const row = e.currentTarget as HTMLElement;
+      const to = e.relatedTarget as Node | null;
+      if (to && row.contains(to)) return;
+      setDropAt((prev) => (prev?.id === item.instanceId ? null : prev));
+    },
+    onDrop: (e: DragEvent) => {
+      if (!dragItem) return;
+      e.preventDefault();
+      e.stopPropagation();
+      const zone = zoneAt(e, item, block);
+      if (!zone) { endDrag(); return; }
+      if (zone === 'into') dropItemTo(`in:${item.instanceId}`);
+      else dropBeside(item, zone);
+    },
+  });
+
+  /** The name cell: the row's drag grip, indented by how deep it is packed.
+   * The grip records which block the item leaves, so ordering stays inside
+   * the block the player can see. */
+  const nameCell = (item: OwnedItem, block: string, depth = 0) => (
+    <td
+      draggable
+      class={depth > 0 ? 'sheet-nested' : undefined}
+      style={depth > 0 ? `--depth:${depth}` : undefined}
+      onDragStart={() => { setDragItem(item.instanceId); setDragFrom(block); }}
+      onDragEnd={endDrag}
+    >
+      {item.name}{item.qty > 1 ? ` ×${item.qty}` : ''}
+      {containerNote(item)}
+    </td>
+  );
 
   /** The location dropdown + the logged move behind it. Armour and shields
    * are never Equipped (mechanics/encumbrance.md), so the option stays off
@@ -465,6 +560,19 @@ export default function CharacterSheet({ identity, setIdentity, status, setStatu
     if (bits.length === 0) return null;
     return <span class="cf-shop-src"> — {bits.join(' · ')}</span>;
   };
+
+  /** A block's rows: each item, then whatever it holds, indented. Contents
+   * of every kind draw here — the Container's block is where a Stored item
+   * lives. */
+  const gearBlock = (roots: OwnedItem[], block: string) =>
+    gearRows(state.inventory, roots).map(({ item, depth }) => (
+      <tr key={item.instanceId} {...rowProps(item, block)}>
+        {nameCell(item, block, depth)}
+        <td class="num">{rowWeight(item)}</td>
+        <td>{moveControl(item)}</td>
+        <td class="act">{splitControl(item)}{sellControl(item)}</td>
+      </tr>
+    ));
 
   const totals = basketTotalsCp(basket, commerce, state);
   const tripLines = basket.filter((l) => l.qty > 0);
@@ -939,6 +1047,14 @@ export default function CharacterSheet({ identity, setIdentity, status, setStatu
         const findCard = (category: string, ability: string): Ability | undefined =>
           CATEGORIES.find((c) => c.name === category)?.abilities.find((a) => a.name === ability);
 
+        // Passives sort to the bottom: they are never read on your turn, so
+        // they give up the top of the box to the Abilities that are.
+        const isPassive = (o: (typeof state.abilities)[number]) =>
+          findCard(o.ref.category, o.ref.ability)?.vars.frequency?.freq === 'passive';
+        const sortedAbilities = [...state.abilities].sort(
+          (a, b) => Number(isPassive(a)) - Number(isPassive(b)),
+        );
+
         // Play-mode text: attribute tokens annotated with this build's math.
         const noteAttrs = (text: string): string =>
           text.replace(/\b(Str|Dex|Con|Int|Wis|Cha)\b(\s*([+×x])\s*(\d+))?/g, (whole, attr: string, _e, op?: string, num?: string) => {
@@ -1155,12 +1271,18 @@ export default function CharacterSheet({ identity, setIdentity, status, setStatu
               {grip('p2', 'abilities')}
               <h3>Abilities</h3>
               <div class="sheet-cards">
-                {state.abilities.map((owned) => {
+                {sortedAbilities.map((owned) => {
                   const card = findCard(owned.ref.category, owned.ref.ability);
                   if (!card) return null;
                   const cardKey = owned.instanceId ?? `${owned.ref.category}/${owned.ref.ability}`;
                   const val = (k: (typeof VAR_ORDER)[number]) => resolveValue(card.vars[k], owned.ranks[k]);
-                  const freq = val('frequency');
+                  // Frequency and Action are read off the card as badges, not
+                  // as prose in the strip: one says whether you still have this,
+                  // the other whether it fits in what's left of your turn.
+                  const freqSpec = resolveRung(card.vars.frequency, owned.ranks.frequency);
+                  const fBadge = freqBadge(freqSpec);
+                  const aBadge = actionBadge(resolveRung(card.vars.action, owned.ranks.action));
+                  const passive = freqSpec?.freq === 'passive';
                   // The attack line carries this build's math: the attacking
                   // attribute is annotated with its Offence total. Only the
                   // attacker's side — the defense after "vs" is the target's.
@@ -1175,7 +1297,6 @@ export default function CharacterSheet({ identity, setIdentity, status, setStatu
                     return [noted, ...defense].join(' vs ');
                   })();
                   const strip = [
-                    val('action') && `Action: ${val('action')}`,
                     val('range') && val('range') !== '—' && `Range: ${val('range')}`,
                     val('targets') && val('targets') !== '—' && `Targets: ${val('targets')}`,
                     atkNoted && atkNoted !== '—' && `Attack: ${atkNoted}`,
@@ -1196,7 +1317,7 @@ export default function CharacterSheet({ identity, setIdentity, status, setStatu
                   const [atkAttr, atkVs] = atk && atk !== '—' ? atk.split(' vs ') : [];
                   const weaponRows =
                     card.mode === 'Attack' && atkAttr && dmgText && hasWeaponDie(dmgText)
-                      ? weapons.map((item) => {
+                      ? allWeapons.map((item) => {
                           const w = weaponFor(item)!;
                           const p = profOf(w.group);
                           return {
@@ -1242,16 +1363,36 @@ export default function CharacterSheet({ identity, setIdentity, status, setStatu
                     ? weaponRows
                     : weaponRows.filter((r) => !hiddenCardWeapons.includes(r.key));
                   return (
-                    <div key={cardKey} class="sheet-card">
+                    <div key={cardKey} class={`sheet-card${passive ? ' sheet-card--passive' : ''}`}>
                       <p class="cf-quirk-eyebrow">
                         {owned.ref.category}
                         {card.role && <span class="sheet-card-freq"> · {card.role}</span>}
-                        {freq && freq !== '—' && <span class="sheet-card-freq"> · {freq}</span>}
                       </p>
                       <h4>
                         {owned.name ?? owned.ref.ability}
                         {owned.choices && <span class="cf-shop-src"> · {Object.values(owned.choices).join(', ')}</span>}
                       </h4>
+                      {(aBadge || fBadge) && (
+                        <p class="sheet-card-badges">
+                          {aBadge && (
+                            <span class={`sheet-badge sheet-badge--act sheet-badge--${aBadge.glyph ? 'turn' : 'span'}`}>
+                              {aBadge.glyph && <span class="sheet-badge-glyph">{aBadge.glyph}</span>}
+                              {aBadge.label}
+                              {aBadge.note && <span class="sheet-badge-note"> · {aBadge.note}</span>}
+                            </span>
+                          )}
+                          {fBadge && (
+                            <span class="sheet-badge sheet-badge--freq">
+                              {fBadge.label}
+                              {fBadge.infinite && <span class="sheet-badge-glyph"> ∞</span>}
+                              {fBadge.boxes !== undefined && (
+                                <span class="sheet-badge-boxes">{'☐'.repeat(fBadge.boxes)}</span>
+                              )}
+                            </span>
+                          )}
+                          {aBadge?.rider && <span class="sheet-badge-rider">{aBadge.rider}</span>}
+                        </p>
+                      )}
                       {strip.length > 0 && <p class="sheet-card-strip">{strip.join(' · ')}</p>}
                       {weaponRows.length > 0 && (
                         <div class="sheet-card-weapons">
@@ -1375,8 +1516,8 @@ export default function CharacterSheet({ identity, setIdentity, status, setStatu
                 {weapons.map((i) => {
                   const w = weaponFor(i)!;
                   return (
-                    <tr key={i.instanceId}>
-                      <td draggable onDragStart={() => setDragItem(i.instanceId)} onDragEnd={() => setDragItem(null)}>{i.name}{i.qty > 1 ? ` ×${i.qty}` : ''}</td>
+                    <tr key={i.instanceId} {...rowProps(i, 'weapons')}>
+                      {nameCell(i, 'weapons')}
                       <td>{w.group}</td>
                       <td>{w.damage} {w.type}{w.hands === '2H' ? ' · 2H' : ''}</td>
                       <td>{w.range ?? '—'}</td>
@@ -1419,8 +1560,8 @@ export default function CharacterSheet({ identity, setIdentity, status, setStatu
                       ].filter(Boolean).join(' · ') || '—'
                     : s!.speedPenaltyFt ? `−${s!.speedPenaltyFt}' Speed` : '—';
                   return (
-                    <tr key={i.instanceId}>
-                      <td draggable onDragStart={() => setDragItem(i.instanceId)} onDragEnd={() => setDragItem(null)}>{i.name}{i.qty > 1 ? ` ×${i.qty}` : ''}</td>
+                    <tr key={i.instanceId} {...rowProps(i, 'wearables')}>
+                      {nameCell(i, 'wearables')}
                       <td>+{a ? ARMOUR_TIER_AC[a.tier] : s!.ac}</td>
                       <td>{a ? (a.drNote ? `${a.dr} (${a.drNote})` : a.dr) : s!.dr || '—'}</td>
                       <td>{drawbacks}</td>
@@ -1456,29 +1597,13 @@ export default function CharacterSheet({ identity, setIdentity, status, setStatu
           <div class="scroll">
           <table class="cf-shop-table sheet-table">
             <tbody>
-              {equipmentCarried.map((i) => (
-                <tr
-                  key={i.instanceId}
-                  onDrop={
-                    i.itemId && containerCoefficient(i.itemId) !== undefined
-                      ? (e) => { e.stopPropagation(); dropItemTo(`in:${i.instanceId}`); }
-                      : undefined
-                  }
-                >
-                  <td draggable onDragStart={() => setDragItem(i.instanceId)} onDragEnd={() => setDragItem(null)}>
-                    {i.name}{i.qty > 1 ? ` ×${i.qty}` : ''}
-                    {containerNote(i)}
-                  </td>
-                  <td class="num">{rowWeight(i)}</td>
-                  <td>{moveControl(i)}</td>
-                  <td class="act">{splitControl(i)}{sellControl(i)}</td>
-                </tr>
-              ))}
+              {gearBlock(equipmentCarried, 'equipment')}
             </tbody>
           </table>
           </div>
         )}
         <p class="cf-how">Drawing an Equipped item takes a Move action. Retrieving a Stored item takes a Standard action.</p>
+        <p class="cf-how">Drag a row onto a Container to pack it, or between rows to set the order.</p>
       </section>
 
       {equipmentHome.length > 0 && (
@@ -1493,24 +1618,7 @@ export default function CharacterSheet({ identity, setIdentity, status, setStatu
           <div class="scroll">
             <table class="cf-shop-table sheet-table">
               <tbody>
-                {equipmentHome.map((i) => (
-                  <tr
-                    key={i.instanceId}
-                    onDrop={
-                      i.itemId && containerCoefficient(i.itemId) !== undefined
-                        ? (e) => { e.stopPropagation(); dropItemTo(`in:${i.instanceId}`); }
-                        : undefined
-                    }
-                  >
-                    <td draggable onDragStart={() => setDragItem(i.instanceId)} onDragEnd={() => setDragItem(null)}>
-                      {i.name}{i.qty > 1 ? ` ×${i.qty}` : ''}
-                      {containerNote(i)}
-                    </td>
-                    <td class="num">{rowWeight(i)}</td>
-                    <td>{moveControl(i)}</td>
-                    <td class="act">{splitControl(i)}{sellControl(i)}</td>
-                  </tr>
-                ))}
+                {gearBlock(equipmentHome, 'home')}
               </tbody>
             </table>
           </div>

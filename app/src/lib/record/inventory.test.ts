@@ -431,6 +431,80 @@ describe('containers and Load', () => {
   });
 });
 
+describe('the sheet arrangement', () => {
+  // The inventory array's order is what the sheet draws, so a drag is an
+  // item-moved carrying a position. Three items, bought in one Basket in
+  // catalogue order, give a known starting arrangement.
+  const stocked = () => [
+    ...crystallized(),
+    ev('transaction', { lines: [
+      { direction: 'buy' as const, marketId: 'waldheim', itemId: 'backpack', qty: 1 },
+      { direction: 'buy' as const, marketId: 'waldheim', itemId: 'torch', qty: 1 },
+      { direction: 'buy' as const, marketId: 'waldheim', itemId: 'maul', qty: 1 },
+    ] }),
+  ];
+  const order = (events: RecordEvent[]) =>
+    replay(events).state.inventory.filter((i) => i.itemId).map((i) => i.itemId);
+
+  it('starts in the order things were acquired', () => {
+    expect(order(stocked())).toEqual(['backpack', 'torch', 'maul']);
+  });
+
+  it('a position moves an item before or after its anchor', () => {
+    expect(order([
+      ...stocked(),
+      ev('item-moved', {
+        instanceId: 'item:maul', location: 'equipped',
+        position: { anchor: 'item:backpack', side: 'before' },
+      }),
+    ])).toEqual(['maul', 'backpack', 'torch']);
+
+    expect(order([
+      ...stocked(),
+      ev('item-moved', {
+        instanceId: 'item:backpack', location: 'equipped',
+        position: { anchor: 'item:maul', side: 'after' },
+      }),
+    ])).toEqual(['torch', 'maul', 'backpack']);
+  });
+
+  it('a move without a position leaves the arrangement alone', () => {
+    const moved = replay([
+      ...stocked(),
+      ev('item-moved', { instanceId: 'item:torch', location: 'in:item:backpack' }),
+    ]);
+    expect(moved.flags).toEqual([]);
+    expect(moved.state.inventory.filter((i) => i.itemId).map((i) => i.itemId))
+      .toEqual(['backpack', 'torch', 'maul']);
+  });
+
+  it('a vanished anchor leaves the item where it stands, unflagged', () => {
+    const sold = [
+      ...stocked(),
+      ev('session-logged', {}),
+      ev('transaction', { lines: [
+        { direction: 'sell' as const, marketId: 'waldheim', instanceId: 'item:torch', qty: 1 },
+      ] }),
+      ev('item-moved', {
+        instanceId: 'item:maul', location: 'equipped',
+        position: { anchor: 'item:torch', side: 'before' },
+      }),
+    ];
+    expect(replay(sold).flags).toEqual([]);
+    expect(order(sold)).toEqual(['backpack', 'maul']);
+  });
+
+  it('an item dropped on itself stays put', () => {
+    expect(order([
+      ...stocked(),
+      ev('item-moved', {
+        instanceId: 'item:torch', location: 'equipped',
+        position: { anchor: 'item:torch', side: 'after' },
+      }),
+    ])).toEqual(['backpack', 'torch', 'maul']);
+  });
+});
+
 describe('splitting stacks', () => {
   const supplied = () => [
     ...crystallized(),

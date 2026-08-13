@@ -6,7 +6,7 @@
 // the Rank each Ladder currently rests at is highlighted.
 
 import type { Ability, AbilityOption, NamedLadder } from '../../lib/abilities';
-import { VAR_LABELS, VAR_ORDER } from '../../lib/abilities';
+import { VAR_LABELS, VAR_ORDER, actionBadge, freqBadge, resolveRung } from '../../lib/abilities';
 import { keywordsFor } from '../../lib/traditions';
 
 const ADV_GLYPHS = ['①', '②', '③', '④', '⑤'];
@@ -33,6 +33,11 @@ export default function AbilityFullCard({ ability, host, ranks, annotate = (s) =
     ...extraVars.map((v) => v.advances?.length ?? 0),
   );
   const MAIN_COLS = Array.from({ length: mainAdvCount }, (_, i) => i);
+
+  // The two badges read the Rank this build actually rests at, so a player
+  // planning purchases sees the cost change as they climb the Ladder.
+  const aBadge = actionBadge(resolveRung(ability.vars.action, ranks?.action));
+  const fBadge = freqBadge(resolveRung(ability.vars.frequency, ranks?.frequency));
 
   const opts = ability.options ?? [];
   const topOpts = opts.filter((o) => o.placement === 'top');
@@ -116,6 +121,27 @@ export default function AbilityFullCard({ ability, host, ranks, annotate = (s) =
         <span class="cf-fullcard-cat">{host}</span>
       </header>
       {sub && <p class="cf-fullcard-sub">{sub}</p>}
+      {(aBadge || fBadge) && (
+        <p class="sheet-card-badges">
+          {aBadge && (
+            <span class={`sheet-badge sheet-badge--act sheet-badge--${aBadge.glyph ? 'turn' : 'span'}`}>
+              {aBadge.glyph && <span class="sheet-badge-glyph">{aBadge.glyph}</span>}
+              {aBadge.label}
+              {aBadge.note && <span class="sheet-badge-note"> · {aBadge.note}</span>}
+            </span>
+          )}
+          {fBadge && (
+            <span class="sheet-badge sheet-badge--freq">
+              {fBadge.label}
+              {fBadge.infinite && <span class="sheet-badge-glyph"> ∞</span>}
+              {fBadge.boxes !== undefined && (
+                <span class="sheet-badge-boxes">{'☐'.repeat(fBadge.boxes)}</span>
+              )}
+            </span>
+          )}
+          {aBadge?.rider && <span class="sheet-badge-rider">{aBadge.rider}</span>}
+        </p>
+      )}
       {keywords && (
         <p class="cf-fullcard-keywords"><strong>Keywords:</strong> {keywords.join(' · ')}</p>
       )}

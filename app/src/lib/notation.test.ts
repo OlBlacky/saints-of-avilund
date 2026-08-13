@@ -184,7 +184,7 @@ interface Failure {
  * deliberate exceptions are listed per field, verbatim.
  */
 const STRICT_EXCEPTIONS: Record<string, string[]> = {
-  frequency: ['24 hours of care, per patient'],
+  frequency: [],
   damage: [
     'The dog’s Bite (its Attack Ladder)',
   ],

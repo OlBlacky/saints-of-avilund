@@ -4,6 +4,7 @@
 // (Vanguard), Leadership (Commander), Marksmanship (Marksman).
 
 import type { Ability, Variable, NamedLadder } from './abilities';
+import { actionCost, frequency } from './abilities';
 
 export interface CategoryGroup {
   name: string;
@@ -13,8 +14,8 @@ export interface CategoryGroup {
 }
 
 // ── Shared building blocks ──────────────────────────────────────
-const FREQ_FULL: Variable = { base: 'Daily', advances: [{ value: 'Encounter', cost: 'M' }, { value: 'At-Will', cost: 'M' }] };
-const FREQ_ENC: Variable = { base: 'Daily', advances: [{ value: 'Encounter', cost: 'M' }] };
+const FREQ_FULL: Variable = frequency({ freq: 'daily' }, { freq: 'encounter', cost: 'M' }, { freq: 'at-will', cost: 'M' });
+const FREQ_ENC: Variable = frequency({ freq: 'daily' }, { freq: 'encounter', cost: 'M' });
 
 // The "power" damage Ladder shared by Power Attack and Marksman's Shot:
 // +attribute baked into the base, two die-size steps, then double.
@@ -213,7 +214,7 @@ const ARMS: Ability[] = [
     name: 'Martial Strike', category: 'Arms', role: 'Offensive', mode: 'Attack',
     vars: {
       frequency: FREQ_FULL,
-      action: { base: 'Standard' },
+      action: actionCost({ act: 'standard' }),
       range: { base: 'Reach' },
       targets: { base: 'One' },
       attack: { base: 'Strength vs AC' },
@@ -226,7 +227,7 @@ const ARMS: Ability[] = [
     name: 'Power Attack', category: 'Arms', role: 'Offensive', mode: 'Attack',
     vars: {
       frequency: FREQ_FULL,
-      action: { base: 'Standard' },
+      action: actionCost({ act: 'standard' }),
       range: { base: 'Reach' },
       targets: { base: 'One' },
       attack: { base: 'Strength vs AC' },
@@ -239,7 +240,7 @@ const ARMS: Ability[] = [
     name: 'Defensive Strike', category: 'Arms', role: 'Offensive + Defensive', mode: 'Attack',
     vars: {
       frequency: FREQ_FULL,
-      action: { base: 'Standard' },
+      action: actionCost({ act: 'standard' }),
       range: { base: 'Reach' },
       targets: { base: 'One' },
       attack: { base: 'Strength vs AC' },
@@ -256,7 +257,7 @@ const ARMS: Ability[] = [
     name: 'Parry', category: 'Arms', role: 'Defensive', mode: 'Effect',
     vars: {
       frequency: FREQ_ENC,
-      action: { base: 'Move', advances: [{ value: 'Minor', cost: 'M' }, { value: 'Interrupt', cost: 'M' }] },
+      action: actionCost({ act: 'move' }, { act: 'minor', cost: 'M' }, { act: 'interrupt', trigger: 'when you are hit by an attack', cost: 'M' }),
       range: { base: 'Self' },
       effects: {
         base: 'Reduce the next incoming damage by 2.',
@@ -273,7 +274,7 @@ const ARMS: Ability[] = [
     name: 'Disarming Strike', category: 'Arms', role: 'Debuff', mode: 'Attack',
     vars: {
       frequency: FREQ_FULL,
-      action: { base: 'Standard' },
+      action: actionCost({ act: 'standard' }),
       range: { base: 'Reach' },
       targets: { base: 'One' },
       attack: { base: 'Strength vs Armoured Dexterity' },
@@ -294,7 +295,7 @@ const ARMS: Ability[] = [
     name: 'Martial Focus', category: 'Arms', role: 'Buff', mode: 'Effect',
     vars: {
       frequency: FREQ_ENC,
-      action: { base: 'Move', advances: [{ value: 'Minor', cost: 'M' }, { value: 'Free', cost: 'M' }] },
+      action: actionCost({ act: 'move' }, { act: 'minor', cost: 'M' }, { act: 'free', cost: 'M' }),
       range: { base: 'Self' },
       effects: {
         base: '+1 to your next attack roll.',
@@ -311,7 +312,7 @@ const ARMS: Ability[] = [
     name: 'Raise Shield', category: 'Arms', role: 'Defensive', mode: 'Effect',
     vars: {
       frequency: FREQ_FULL,
-      action: { base: 'Move', advances: [{ value: 'Minor', cost: 'M' }, { value: 'Free', cost: 'M' }] },
+      action: actionCost({ act: 'move' }, { act: 'minor', cost: 'M' }, { act: 'free', cost: 'M' }),
       range: { base: 'Self' },
       effects: { base: 'While raised, apply your shield’s DR to incoming attack damage — DR you do not get passively. (Requires a shield equipped.)' },
       duration: { base: 'Until your next turn' },
@@ -320,8 +321,8 @@ const ARMS: Ability[] = [
   {
     name: 'Measure the Foe', category: 'Arms', role: 'Utility', mode: 'Effect',
     vars: {
-      frequency: { base: 'Encounter' },
-      action: { base: 'Minor (in combat) / instant (out of combat)' },
+      frequency: frequency({ freq: 'encounter' }),
+      action: actionCost({ act: 'minor', detail: 'instant out of combat' }),
       range: { base: '30\'', advances: [{ value: '60\'', cost: 'm' }] },
       targets: { base: 'One', advances: [{ value: 'Two', cost: 'm' }] },
       effects: {
@@ -338,7 +339,7 @@ const PROTECTION: Ability[] = [
     name: 'Shield Bash', category: 'Protection', role: 'Offensive · control', mode: 'Attack',
     vars: {
       frequency: FREQ_ENC,
-      action: { base: 'Move', advances: [{ value: 'Minor', cost: 'M' }] },
+      action: actionCost({ act: 'move' }, { act: 'minor', cost: 'M' }),
       range: { base: 'Reach' },
       targets: { base: 'One' },
       attack: { base: 'Strength vs AC' },
@@ -352,7 +353,7 @@ const PROTECTION: Ability[] = [
     name: 'Marking Strike', category: 'Protection', role: 'Offensive', mode: 'Attack',
     vars: {
       frequency: FREQ_FULL,
-      action: { base: 'Standard' },
+      action: actionCost({ act: 'standard' }),
       range: { base: 'Reach' },
       targets: { base: 'One' },
       attack: { base: 'Strength vs AC' },
@@ -365,7 +366,7 @@ const PROTECTION: Ability[] = [
     name: 'Sentinel Strike', category: 'Protection', role: 'Offensive + Defensive', mode: 'Attack',
     vars: {
       frequency: FREQ_FULL,
-      action: { base: 'Standard' },
+      action: actionCost({ act: 'standard' }),
       range: { base: 'Reach' },
       targets: { base: 'One (attack)' },
       attack: { base: 'Strength vs AC' },
@@ -385,8 +386,8 @@ const PROTECTION: Ability[] = [
   {
     name: 'Guard', category: 'Protection', role: 'Defensive', mode: 'Effect',
     vars: {
-      frequency: { base: 'Daily', advances: [{ value: 'Encounter', cost: 'M' }, { value: 'At-Will', cost: 'M', note: 'L5' }] },
-      action: { base: 'Move', advances: [{ value: 'Minor', cost: 'M' }, { value: 'Interrupt', cost: 'M' }] },
+      frequency: frequency({ freq: 'daily' }, { freq: 'encounter', cost: 'M' }, { freq: 'at-will', cost: 'M', note: 'L5' }),
+      action: actionCost({ act: 'move' }, { act: 'minor', cost: 'M' }, { act: 'interrupt', trigger: 'when you or an adjacent ally is hit by an attack', cost: 'M' }),
       range: { base: 'Self / 1 adjacent ally' },
       targets: { base: 'Self / 1 adjacent ally' },
       effects: {
@@ -405,7 +406,7 @@ const PROTECTION: Ability[] = [
     name: 'Intercept', category: 'Protection', role: 'Defensive · manoeuvre', mode: 'Effect',
     vars: {
       frequency: FREQ_ENC,
-      action: { base: 'Reaction — when an adjacent ally is hit' },
+      action: actionCost({ act: 'reaction', trigger: 'when an adjacent ally is hit' }),
       range: { base: 'Adjacent ally' },
       effects: {
         base: 'Trade places with the endangered ally, then take the damage in their stead.',
@@ -423,7 +424,7 @@ const PROTECTION: Ability[] = [
     name: 'Bulwark', category: 'Protection', role: 'Buff', mode: 'Effect',
     vars: {
       frequency: FREQ_ENC,
-      action: { base: 'Move', advances: [{ value: 'Minor', cost: 'M' }] },
+      action: actionCost({ act: 'move' }, { act: 'minor', cost: 'M' }),
       range: { base: 'Self' },
       effects: {
         base: 'Gain 2 Temp HP.',
@@ -439,7 +440,8 @@ const PROTECTION: Ability[] = [
   {
     name: 'Stand Watch', category: 'Protection', role: 'Utility', mode: 'Effect',
     vars: {
-      frequency: { base: 'Daily' },
+      frequency: frequency({ freq: 'daily' }),
+      action: actionCost({ act: 'rest' }),
       effects: {
         base: 'You cannot be surprised on your watch (2 hours); +1 Perception.',
         advances: [
@@ -457,8 +459,8 @@ const LEADERSHIP: Ability[] = [
   {
     name: 'Command', category: 'Leadership', role: 'Offensive · action-grant', mode: 'Effect',
     vars: {
-      frequency: { base: 'Daily', advances: [{ value: 'Encounter', cost: 'M' }, { value: 'At-Will', cost: 'M', note: 'L5' }] },
-      action: { base: 'Standard', advances: [{ value: 'Move', cost: 'M' }, { value: 'Minor', cost: 'M' }] },
+      frequency: frequency({ freq: 'daily' }, { freq: 'encounter', cost: 'M' }, { freq: 'at-will', cost: 'M', note: 'L5' }),
+      action: actionCost({ act: 'standard' }, { act: 'move', cost: 'M' }, { act: 'minor', cost: 'M' }),
       range: { base: 'One ally in range' },
       targets: { base: 'One ally' },
       effects: {
@@ -476,7 +478,7 @@ const LEADERSHIP: Ability[] = [
     name: 'Commander’s Strike', category: 'Leadership', role: 'Offensive', mode: 'Attack',
     vars: {
       frequency: FREQ_FULL,
-      action: { base: 'Standard' },
+      action: actionCost({ act: 'standard' }),
       range: { base: 'Reach' },
       targets: { base: 'One (struck); buffs all allies' },
       attack: { base: 'Strength vs AC' },
@@ -496,7 +498,7 @@ const LEADERSHIP: Ability[] = [
     name: 'Focus Fire', category: 'Leadership', role: 'Offensive', mode: 'Effect',
     vars: {
       frequency: FREQ_FULL,
-      action: { base: 'Standard', advances: [{ value: 'Move', cost: 'M' }, { value: 'Minor', cost: 'M' }] },
+      action: actionCost({ act: 'standard' }, { act: 'move', cost: 'M' }, { act: 'minor', cost: 'M' }),
       range: { base: 'One enemy in range' },
       targets: { base: 'One enemy (no attack roll — just designate)' },
       effects: {
@@ -514,7 +516,7 @@ const LEADERSHIP: Ability[] = [
     name: 'Resolute Strike', category: 'Leadership', role: 'Offensive + Defensive', mode: 'Attack',
     vars: {
       frequency: FREQ_FULL,
-      action: { base: 'Standard' },
+      action: actionCost({ act: 'standard' }),
       range: { base: 'Melee or Ranged' },
       targets: { base: 'One (struck); allies within 10\'' },
       attack: { base: 'Weapon (Str / Dex) vs AC' },
@@ -535,7 +537,7 @@ const LEADERSHIP: Ability[] = [
     name: 'Rally', category: 'Leadership', role: 'Defensive', mode: 'Effect',
     vars: {
       frequency: FREQ_FULL,
-      action: { base: 'Standard', advances: [{ value: 'Move', cost: 'M' }, { value: 'Minor', cost: 'M' }] },
+      action: actionCost({ act: 'standard' }, { act: 'move', cost: 'M' }, { act: 'minor', cost: 'M' }),
       range: { base: 'Allies within 10\' (widens)' },
       effects: {
         base: 'Allies within 10\' gain +1 to all Defences until your next turn.',
@@ -552,7 +554,7 @@ const LEADERSHIP: Ability[] = [
     name: 'War Cry', category: 'Leadership', role: 'Buff', mode: 'Effect',
     vars: {
       frequency: FREQ_FULL,
-      action: { base: 'Standard', advances: [{ value: 'Move', cost: 'M' }, { value: 'Minor', cost: 'M' }, { value: 'Free', cost: 'M', note: 'L5' }] },
+      action: actionCost({ act: 'standard' }, { act: 'move', cost: 'M' }, { act: 'minor', cost: 'M' }, { act: 'free', cost: 'M', note: 'L5' }),
       range: { base: 'Allies within 10\' (widens)' },
       effects: {
         base: 'Allies within 10\' gain +1 to hit on all attacks until your next turn.',
@@ -569,7 +571,7 @@ const LEADERSHIP: Ability[] = [
     name: 'Inspiring Word', category: 'Leadership', role: 'Rally / heal', mode: 'Effect',
     vars: {
       frequency: FREQ_ENC,
-      action: { base: 'Move', advances: [{ value: 'Minor', cost: 'M' }] },
+      action: actionCost({ act: 'move' }, { act: 'minor', cost: 'M' }),
       range: { base: 'Up to 30\'' },
       targets: {
         base: '1 ally (≤30\')',
@@ -600,7 +602,7 @@ const MARKSMANSHIP: Ability[] = [
     name: 'Marksman’s Shot', category: 'Marksmanship', role: 'Offensive', mode: 'Attack',
     vars: {
       frequency: FREQ_FULL,
-      action: { base: 'Standard' },
+      action: actionCost({ act: 'standard' }),
       range: WRI_RANGE,
       targets: { base: 'One' },
       attack: { base: 'Dexterity vs AC (−0 / −2 / −4 by band)' },
@@ -613,7 +615,7 @@ const MARKSMANSHIP: Ability[] = [
     name: 'Pinning Shot', category: 'Marksmanship', role: 'Offensive · control', mode: 'Attack',
     vars: {
       frequency: FREQ_FULL,
-      action: { base: 'Standard' },
+      action: actionCost({ act: 'standard' }),
       range: { base: '1×WRI' },
       targets: { base: 'One' },
       attack: { base: 'Dexterity vs AC' },
@@ -633,7 +635,7 @@ const MARKSMANSHIP: Ability[] = [
     name: 'Skirmishing Shot', category: 'Marksmanship', role: 'Offensive + Defensive', mode: 'Attack',
     vars: {
       frequency: FREQ_ENC,
-      action: { base: 'Standard' },
+      action: actionCost({ act: 'standard' }),
       range: { base: '1×WRI' },
       targets: { base: 'One' },
       attack: { base: 'Dexterity vs AC' },
@@ -652,7 +654,7 @@ const MARKSMANSHIP: Ability[] = [
     name: 'Covering Fire', category: 'Marksmanship', role: 'Defensive', mode: 'Effect',
     vars: {
       frequency: FREQ_ENC,
-      action: { base: 'Interrupt — when an enemy in range attacks an ally' },
+      action: actionCost({ act: 'interrupt', trigger: 'when an enemy in range attacks an ally' }),
       range: { base: 'Weapon range' },
       effects: {
         base: '−1 to that attack.',
@@ -668,7 +670,7 @@ const MARKSMANSHIP: Ability[] = [
     name: 'Run and Gun', category: 'Marksmanship', role: 'Movement', mode: 'Effect',
     vars: {
       frequency: FREQ_ENC,
-      action: { base: 'Standard only' },
+      action: actionCost({ act: 'standard' }),
       effects: {
         base: 'Shift 5\'.',
         advances: [
@@ -684,7 +686,7 @@ const MARKSMANSHIP: Ability[] = [
     name: 'Debilitating Shot', category: 'Marksmanship', role: 'Debuff', mode: 'Attack',
     vars: {
       frequency: FREQ_ENC,
-      action: { base: 'Standard' },
+      action: actionCost({ act: 'standard' }),
       range: { base: '1×WRI' },
       targets: { base: 'One' },
       attack: {
@@ -711,6 +713,7 @@ const MARKSMANSHIP: Ability[] = [
     name: 'Marksman’s Eye', category: 'Marksmanship', role: 'Utility', mode: 'Effect',
     vars: {
       frequency: FREQ_ENC,
+      action: actionCost({ act: 'check', check: 'Perception' }),
       effects: {
         base: '+1 on Perception rolls to spot things up to 50\' away.',
         advances: [
@@ -726,8 +729,8 @@ const MARKSMANSHIP: Ability[] = [
 // ── Mercy (Friar — Class) ───────────────────────────────────────
 // The Friar's healer kit: no attacks at all. Healing is deliberately
 // underpowered; most cards do their work through the Effect(s) row.
-const FREQ_FRIAR: Variable = { base: 'Daily', advances: [{ value: 'Encounter', cost: 'M' }, { value: 'Twice per encounter', cost: 'M' }] };
-const ACTION_SMM: Variable = { base: 'Standard', advances: [{ value: 'Move', cost: 'M' }, { value: 'Minor', cost: 'M' }] };
+const FREQ_FRIAR: Variable = frequency({ freq: 'daily' }, { freq: 'encounter', cost: 'M' }, { freq: 'encounter', uses: 2, cost: 'M' });
+const ACTION_SMM: Variable = actionCost({ act: 'standard' }, { act: 'move', cost: 'M' }, { act: 'minor', cost: 'M' });
 
 const MERCY: Ability[] = [
   {
@@ -801,8 +804,8 @@ const MERCY: Ability[] = [
   {
     name: 'Prayer for the Saintly', category: 'Mercy', role: 'Utility', mode: 'Effect',
     vars: {
-      frequency: { base: 'Daily' },
-      action: { base: 'Ritual, during a rest' },
+      frequency: frequency({ freq: 'daily' }),
+      action: actionCost({ act: 'ritual', detail: 'during a rest' }),
       range: { base: 'Those present at the prayer' },
       targets: {
         base: 'One ally',
@@ -827,7 +830,7 @@ const MERCY: Ability[] = [
     name: 'Preach to the Saintly', category: 'Mercy', role: 'Utility', mode: 'Effect',
     vars: {
       frequency: FREQ_ENC,
-      action: { base: 'A few minutes of preaching (Standard in a tense scene)' },
+      action: actionCost({ act: 'scene', combat: 'standard', detail: 'a few minutes of preaching' }),
       range: { base: 'Those within earshot' },
       targets: {
         base: '5 NPCs',
@@ -849,8 +852,8 @@ const MERCY: Ability[] = [
   {
     name: 'Tend the Wounded', category: 'Mercy', role: 'Utility', mode: 'Effect',
     vars: {
-      frequency: { base: 'Daily' },
-      action: { base: 'Ministration, during a rest' },
+      frequency: frequency({ freq: 'daily' }),
+      action: actionCost({ act: 'rest', detail: 'a ministration' }),
       range: { base: 'Those resting in camp' },
       targets: campTargets('Wis'),
       effects: {
@@ -884,7 +887,7 @@ const FORBEARANCE: Ability[] = [
   {
     name: 'Vow of Mercy', category: 'Forbearance', role: 'Vow', mode: 'Passive',
     vars: {
-      frequency: { base: 'Passive (always on)' },
+      frequency: frequency({ freq: 'passive' }),
       effects: {
         base: 'Any Ability you use that heals or grants Temp HP to allies is +1. The Vow: you may never willingly bear arms, make an attack roll, harm an ally, or allow an ally to come to harm if you can prevent it.',
         advances: [{ value: 'Any Ability you use that heals or grants Temp HP to allies is +2. The Vow: you may never willingly bear arms, make an attack roll, harm an ally, or allow an ally to come to harm if you can prevent it.', cost: 'M', note: 'L5' }],
@@ -895,7 +898,7 @@ const FORBEARANCE: Ability[] = [
     name: 'Vow of Poverty', category: 'Forbearance', role: 'Vow', mode: 'Passive',
     passiveEffects: [{ kind: 'defenceMod', value: 1 }],
     vars: {
-      frequency: { base: 'Passive (always on)' },
+      frequency: frequency({ freq: 'passive' }),
       effects: {
         base: '+1 to all Armoured and Unarmoured Defences. The Vow: you may not accumulate personal wealth — nothing beyond the clothes on your back and the instruments of healing and your Saintly office.',
         advances: [{ value: '+2 to all Armoured and Unarmoured Defences. The Vow: you may not accumulate personal wealth — nothing beyond the clothes on your back and the instruments of healing and your Saintly office.', cost: 'M', note: 'L5' }],
@@ -906,7 +909,7 @@ const FORBEARANCE: Ability[] = [
     name: 'Vow of Abstinence', category: 'Forbearance', role: 'Vow', mode: 'Passive',
     passiveEffects: [{ kind: 'saveMod', value: 1 }],
     vars: {
-      frequency: { base: 'Passive (always on)' },
+      frequency: frequency({ freq: 'passive' }),
       effects: {
         base: '+1 to all Saves. The Vow: you may never imbibe alcohol, tobacco, or similar substances, nor drink potions or willingly receive any healing or magical benefit that is not from a Saintly source.',
         advances: [{ value: '+2 to all Saves. The Vow: you may never imbibe alcohol, tobacco, or similar substances, nor drink potions or willingly receive any healing or magical benefit that is not from a Saintly source.', cost: 'M', note: 'L5' }],
@@ -917,7 +920,7 @@ const FORBEARANCE: Ability[] = [
     name: 'Flesh of the Martyr', category: 'Forbearance', role: 'Defensive', mode: 'Effect',
     vars: {
       frequency: FREQ_FRIAR,
-      action: { base: 'Reaction — when you take at least 1 damage (to Temp HP or normal HP)' },
+      action: actionCost({ act: 'reaction', trigger: 'when you take at least 1 damage (to Temp HP or normal HP)' }),
       targets: {
         base: 'One ally',
         advances: [
@@ -953,7 +956,7 @@ const FORBEARANCE: Ability[] = [
   {
     name: 'Endurance of the Saintly', category: 'Forbearance', role: 'Defensive', mode: 'Effect',
     vars: {
-      frequency: { base: 'Daily', advances: [{ value: 'Encounter', cost: 'M', note: 'L5' }] },
+      frequency: frequency({ freq: 'daily' }, { freq: 'encounter', cost: 'M', note: 'L5' }),
       action: ACTION_SMM,
       targets: { base: 'Self' },
       effects: {
@@ -977,7 +980,7 @@ const FORBEARANCE: Ability[] = [
   {
     name: 'Pilgrim\'s Endurance', category: 'Forbearance', role: 'Utility', mode: 'Passive',
     vars: {
-      frequency: { base: 'Passive (always on)' },
+      frequency: frequency({ freq: 'passive' }),
       targets: {
         base: 'Self',
         advances: [
@@ -1008,7 +1011,7 @@ const SPIRITUAL: Ability[] = [
     name: 'Censure', category: 'Spiritual', role: 'Offensive', mode: 'Attack',
     vars: {
       frequency: FREQ_FULL,
-      action: { base: 'Standard' },
+      action: actionCost({ act: 'standard' }),
       range: { base: 'Reach' },
       targets: { base: 'One' },
       attack: { base: 'Charisma vs AC (Light Blade or Mace)' },
@@ -1028,7 +1031,7 @@ const SPIRITUAL: Ability[] = [
     name: 'Rebuke', category: 'Spiritual', role: 'Offensive · debuff', mode: 'Attack',
     vars: {
       frequency: FREQ_FULL,
-      action: { base: 'Standard', advances: [{ value: 'Move', cost: 'M' }, { value: 'Minor', cost: 'M' }, { value: 'Free', cost: 'M' }] },
+      action: actionCost({ act: 'standard' }, { act: 'move', cost: 'M' }, { act: 'minor', cost: 'M' }, { act: 'free', cost: 'M' }),
       range: { base: '30\'' },
       targets: { base: 'One' },
       attack: { base: 'Charisma vs Unarmoured Wisdom' },
@@ -1069,7 +1072,7 @@ const SPIRITUAL: Ability[] = [
   {
     name: 'Vow of Nicetus', category: 'Spiritual', role: 'Vow', mode: 'Passive',
     vars: {
-      frequency: { base: 'Passive (always on)' },
+      frequency: frequency({ freq: 'passive' }),
       effects: {
         base: '+1 to attack rolls and Skill checks against the Black Faith, Demons, Devils, and Undead. The Vow: never knowingly suffer a creature of the Black Faith to pass unopposed — neither aid, shelter, nor parley with them.',
         advances: [{ value: '+2 to attack rolls and Skill checks against the Black Faith, Demons, Devils, and Undead. The Vow: never knowingly suffer a creature of the Black Faith to pass unopposed — neither aid, shelter, nor parley with them.', cost: 'M', note: 'L5' }],
@@ -1102,7 +1105,7 @@ const SPIRITUAL: Ability[] = [
     name: 'Ferret the Wicked', category: 'Spiritual', role: 'Utility', mode: 'Attack',
     vars: {
       frequency: FREQ_ENC,
-      action: { base: 'A few minutes of questioning (Standard in a tense scene)' },
+      action: actionCost({ act: 'scene', combat: 'standard', detail: 'a few minutes of questioning' }),
       range: { base: 'The person before you' },
       targets: { base: 'One NPC' },
       attack: {
@@ -1132,8 +1135,8 @@ const SPIRITUAL: Ability[] = [
 const READ_SCROLLS: Ability = {
   name: 'Read Scrolls', category: 'Letters', role: 'Magic literacy', mode: 'Effect',
   vars: {
-    frequency: { base: 'Daily', advances: [{ value: 'Encounter', cost: 'M' }, { value: '2 / encounter', cost: 'M', note: 'L3' }] },
-    action: { base: 'Full Round', advances: [{ value: 'Standard', cost: 'M' }] },
+    frequency: frequency({ freq: 'daily' }, { freq: 'encounter', cost: 'M' }, { freq: 'encounter', uses: 2, cost: 'M', note: 'L3' }),
+    action: actionCost({ act: 'full-round' }, { act: 'standard', cost: 'M' }),
     attack: { base: 'Int (+ Scroll Specialization) vs the spell’s Defence' },
     effects: {
       base: 'Read only — identify a scroll’s spell. You must know its language (e.g. the Elder Arcana Tongue).',
@@ -1153,8 +1156,8 @@ const READ_SCROLLS: Ability = {
 const READ_SPELLBOOKS: Ability = {
   name: 'Read Spellbooks', category: 'Letters', role: 'Magic literacy', mode: 'Effect',
   vars: {
-    frequency: { base: 'Daily', advances: [{ value: 'Encounter', cost: 'M' }, { value: '2 / encounter', cost: 'M', note: 'L3' }] },
-    action: { base: 'Full Round', advances: [{ value: 'Standard', cost: 'M' }] },
+    frequency: frequency({ freq: 'daily' }, { freq: 'encounter', cost: 'M' }, { freq: 'encounter', uses: 2, cost: 'M', note: 'L3' }),
+    action: actionCost({ act: 'full-round' }, { act: 'standard', cost: 'M' }),
     attack: { base: 'Int (+ Spellbook Specialization) vs the spell’s Defence' },
     effects: {
       base: 'Read only — identify a spellbook’s spell. You must know its language. (Reusable; supply the components each casting.)',
@@ -1174,7 +1177,8 @@ const READ_SPELLBOOKS: Ability = {
 const CONDUCT_RITUAL: Ability = {
   name: 'Conduct Ritual', category: 'Letters', role: 'Magic literacy', mode: 'Effect',
   vars: {
-    action: { base: 'The ritual’s own casting time' },
+    frequency: frequency({ freq: 'uncapped', detail: 'as often as you have scrolls, time, and components' }),
+    action: actionCost({ act: 'varies', detail: 'the ritual’s own casting time' }),
     effects: {
       base: 'Anyone with the materials and the language may perform a ritual at its base. Conduct Ritual lets you improve one, applying your Generic Advances (below) to its variables — e.g. shortening its casting time.',
     },
@@ -1195,8 +1199,8 @@ const CONDUCT_RITUAL: Ability = {
 const RESEARCH: Ability = {
   name: 'Research', category: 'Letters', role: 'Utility · non-combat', mode: 'Effect',
   vars: {
-    frequency: { base: 'Uncapped (limited by time)' },
-    action: { base: '8 hours of study', advances: [{ value: '6 hours', cost: 'm' }, { value: '4 hours', cost: 'm' }, { value: '1 hour', cost: 'M' }] },
+    frequency: frequency({ freq: 'uncapped', detail: 'limited by time' }),
+    action: actionCost({ act: 'downtime', time: '8 hours', detail: 'of study' }, { act: 'downtime', time: '6 hours', detail: 'of study', cost: 'm' }, { act: 'downtime', time: '4 hours', detail: 'of study', cost: 'm' }, { act: 'downtime', time: '1 hour', detail: 'of study', cost: 'M' }),
     effects: {
       base: 'With relevant written sources, make a Knowledge Skill check vs a GM-set DC, with a +1 research bonus.',
       advances: [
@@ -1213,8 +1217,8 @@ const RECALL: Ability = {
   vars: {
     // Daily→Encounter as a MINOR is deliberate (Les, Aug 2026) — a mercy for
     // this utility card; everywhere else that step prices as a Major.
-    frequency: { base: 'Daily', advances: [{ value: 'Encounter', cost: 'm' }, { value: 'Twice per Encounter', cost: 'M' }] },
-    action: { base: 'Standard', advances: [{ value: 'Move', cost: 'm' }, { value: 'Minor', cost: 'm' }, { value: 'Free', cost: 'M' }] },
+    frequency: frequency({ freq: 'daily' }, { freq: 'encounter', cost: 'm' }, { freq: 'encounter', uses: 2, cost: 'M' }),
+    action: actionCost({ act: 'standard' }, { act: 'move', cost: 'm' }, { act: 'minor', cost: 'm' }, { act: 'free', cost: 'M' }),
     effects: {
       base: 'Make a Knowledge Skill check to recall a detail relevant to the situation or foe.',
       advances: [
@@ -1232,7 +1236,7 @@ const LETTERS: Ability[] = [
     name: 'Scholar’s Strike', category: 'Letters', role: 'Offensive', mode: 'Attack',
     vars: {
       frequency: FREQ_FULL,
-      action: { base: 'Standard' },
+      action: actionCost({ act: 'standard' }),
       range: { base: 'Reach' },
       targets: { base: 'One' },
       attack: { base: 'Intelligence vs AC' },
@@ -1245,7 +1249,7 @@ const LETTERS: Ability[] = [
     name: 'Evade', category: 'Letters', role: 'Defensive · mobility', mode: 'Attack',
     vars: {
       frequency: FREQ_ENC,
-      action: { base: 'Standard', advances: [{ value: 'Move', cost: 'M' }, { value: 'Minor', cost: 'M' }] },
+      action: actionCost({ act: 'standard' }, { act: 'move', cost: 'M' }, { act: 'minor', cost: 'M' }),
       range: { base: 'One engaging opponent' },
       targets: { base: 'One' },
       attack: {
@@ -1267,8 +1271,8 @@ const LETTERS: Ability[] = [
   {
     name: 'Identify', category: 'Letters', role: 'Magic literacy · utility', mode: 'Effect',
     vars: {
-      frequency: { base: 'Uncapped' },
-      action: { base: 'A few minutes of study' },
+      frequency: frequency({ freq: 'uncapped' }),
+      action: actionCost({ act: 'scene', detail: 'a few minutes of study' }),
       effects: {
         base: 'An Arcana check vs the object’s DC reveals it is magical, its tradition, and its level.',
         advances: [
@@ -1291,7 +1295,7 @@ const ENVENOM: Ability = {
   name: 'Envenom', category: 'Medicine', role: 'Offensive', mode: 'Attack',
   vars: {
     frequency: FREQ_FULL,
-    action: { base: 'Standard — coats the blade and attacks in one (no Wis check)' },
+    action: actionCost({ act: 'standard', detail: 'coats the blade and attacks in one (no Wis check)' }),
     range: { base: 'Reach' },
     targets: { base: 'One' },
     attack: { base: 'Intelligence vs AC (Light Blade)' },
@@ -1313,7 +1317,7 @@ const MEDICINE: Ability[] = [
     name: 'Surgeon’s Strike', category: 'Medicine', role: 'Offensive', mode: 'Attack',
     vars: {
       frequency: FREQ_FULL,
-      action: { base: 'Standard' },
+      action: actionCost({ act: 'standard' }),
       range: { base: 'Reach' },
       targets: { base: 'One' },
       attack: { base: 'Intelligence vs AC (Light Blade)' },
@@ -1379,8 +1383,8 @@ const MEDICINE: Ability[] = [
   {
     name: 'Tend the Wounded', category: 'Medicine', role: 'Utility · camp heal', mode: 'Effect',
     vars: {
-      frequency: { base: 'Daily' },
-      action: { base: 'During a rest (Healer’s Kit; 1 Supply per target)' },
+      frequency: frequency({ freq: 'daily' }),
+      action: actionCost({ act: 'rest', detail: 'Healer’s Kit; 1 Supply per target' }),
       range: { base: 'Those resting in camp' },
       targets: campTargets('Int'),
       effects: {
@@ -1397,8 +1401,8 @@ const MEDICINE: Ability[] = [
   {
     name: 'Convalescence', category: 'Medicine', role: 'Utility · long-term care', mode: 'Effect',
     vars: {
-      frequency: { base: '24 hours of care, per patient' },
-      action: { base: 'Patient at complete rest, no activity' },
+      frequency: frequency({ freq: 'uncapped', detail: 'one patient at a time; 24 hours of care each' }),
+      action: actionCost({ act: 'downtime', detail: 'the patient at complete rest, no activity' }),
       targets: campTargets('Int'),
       effects: {
         base: 'Tend 1 Wound OR 1 Attribute Damage point as though 7 days had passed (your Heal roll replaces the Save; 2 Supplies each). +3 HP bundled. At most 1 point per Attribute per day.',
@@ -1418,7 +1422,7 @@ const MEDICINE: Ability[] = [
 // carries a Feat Hook, for Elder magic comes only in studied fragments.
 // His own ladders — Sensory, Flat Debuff, Control, and Psychic damage —
 // are reserved away from the Arcanist.
-const FREQ_2ENC: Variable = { base: 'Daily', advances: [{ value: 'Encounter', cost: 'M' }, { value: 'Twice per encounter', cost: 'M' }] };
+const FREQ_2ENC: Variable = frequency({ freq: 'daily' }, { freq: 'encounter', cost: 'M' }, { freq: 'encounter', uses: 2, cost: 'M' });
 
 // Wield Artefact — the artefact engine. Shared verbatim by Elder Magic (the
 // Antiquarian's) and Occult (the Occultist's): the same card in both lists.
@@ -1426,8 +1430,8 @@ const FREQ_2ENC: Variable = { base: 'Daily', advances: [{ value: 'Encounter', co
 const WIELD_ARTEFACT: Ability = {
   name: 'Wield Artefact', category: 'Elder Magic', role: 'Utility · artefact engine', mode: 'Effect',
   vars: {
-    frequency: { base: 'Daily', advances: [{ value: 'Encounter', cost: 'M' }, { value: 'Twice per encounter', cost: 'M' }] },
-    action: { base: "The artefact's own activation" },
+    frequency: frequency({ freq: 'daily' }, { freq: 'encounter', cost: 'M' }, { freq: 'encounter', uses: 2, cost: 'M' }),
+    action: actionCost({ act: 'varies', detail: 'the artefact\'s own activation' }),
     effects: WIELD_EFFECTS('Artefact'),
   },
   options: [
@@ -1442,7 +1446,7 @@ const ELDER_MAGIC: Ability[] = [
     name: 'Whispers from the Doomed', category: 'Elder Magic', role: 'Offensive', mode: 'Attack',
     vars: {
       frequency: FREQ_2ENC,
-      action: { base: 'Standard', advances: [{ value: 'Move', cost: 'M' }] },
+      action: actionCost({ act: 'standard' }, { act: 'move', cost: 'M' }),
       range: STD_RANGE,
       targets: { base: 'One', advances: [{ value: 'Two', cost: 'm' }, { value: 'Three', cost: 'm' }, { value: "All in a 10' radius", cost: 'M' }] },
       attack: { base: 'Charisma vs Unarmoured Wisdom' },
@@ -1455,7 +1459,7 @@ const ELDER_MAGIC: Ability[] = [
     name: 'Memory of Celestia', category: 'Elder Magic', role: 'Control · debuff', mode: 'Attack',
     vars: {
       frequency: FREQ_2ENC,
-      action: { base: 'Standard', advances: [{ value: 'Move', cost: 'M' }, { value: 'Minor', cost: 'M' }, { value: 'Interrupt', cost: 'M' }] },
+      action: actionCost({ act: 'standard' }, { act: 'move', cost: 'M' }, { act: 'minor', cost: 'M' }, { act: 'interrupt', trigger: 'when the target attacks or makes a Perception check', cost: 'M' }),
       range: STD_RANGE,
       targets: { base: 'One', advances: [{ value: 'Two', cost: 'm' }, { value: 'Three', cost: 'm' }, { value: "All in a 10' radius", cost: 'M' }] },
       attack: { base: 'Charisma vs Unarmoured Wisdom' },
@@ -1478,7 +1482,7 @@ const ELDER_MAGIC: Ability[] = [
     name: 'Figments of Forgotten Places', category: 'Elder Magic', role: 'Control · forced movement', mode: 'Attack',
     vars: {
       frequency: FREQ_ENC,
-      action: { base: 'Full Round', advances: [{ value: 'Standard', cost: 'M' }] },
+      action: actionCost({ act: 'full-round' }, { act: 'standard', cost: 'M' }),
       range: { base: "30' (5' burst)", advances: [{ value: "45' (10' burst)", cost: 'M' }, { value: "60' (15' burst)", cost: 'M' }, { value: "120' (20' burst)", cost: 'M' }] },
       targets: { base: 'One enemy in the burst', advances: [{ value: 'Cha enemies in the burst', cost: 'm' }, { value: 'Cha + 1 enemies in the burst', cost: 'm' }, { value: 'All enemies in the burst', cost: 'M' }] },
       attack: { base: 'Charisma vs Unarmoured Wisdom' },
@@ -1501,7 +1505,7 @@ const ELDER_MAGIC: Ability[] = [
     name: 'Edict for the Thralls', category: 'Elder Magic', role: 'Control · domination', mode: 'Attack',
     vars: {
       frequency: FREQ_ENC,
-      action: { base: 'Full Round', advances: [{ value: 'Standard', cost: 'M' }] },
+      action: actionCost({ act: 'full-round' }, { act: 'standard', cost: 'M' }),
       range: STD_RANGE,
       targets: { base: 'One' },
       attack: { base: 'Charisma vs Unarmoured Wisdom' },
@@ -1523,8 +1527,8 @@ const ELDER_MAGIC: Ability[] = [
   {
     name: 'Pall of Doubt', category: 'Elder Magic', role: 'Debuff', mode: 'Attack',
     vars: {
-      frequency: { base: 'Daily', advances: [{ value: 'Encounter', cost: 'M' }, { value: 'At-Will', cost: 'M', note: 'L3' }] },
-      action: { base: 'Full Round', advances: [{ value: 'Standard', cost: 'M' }] },
+      frequency: frequency({ freq: 'daily' }, { freq: 'encounter', cost: 'M' }, { freq: 'at-will', cost: 'M', note: 'L3' }),
+      action: actionCost({ act: 'full-round' }, { act: 'standard', cost: 'M' }),
       range: STD_RANGE,
       targets: { base: 'One' },
       attack: { base: 'Charisma vs Unarmoured Wisdom' },
@@ -1546,8 +1550,8 @@ const ELDER_MAGIC: Ability[] = [
   {
     name: 'Psychometry', category: 'Elder Magic', role: 'Utility · divination', mode: 'Effect',
     vars: {
-      frequency: { base: 'Daily' },
-      action: { base: 'Ritual — 4 hours', advances: [{ value: '2 hours', cost: 'm' }, { value: '1 hour', cost: 'm' }, { value: '10 minutes', cost: 'M' }] },
+      frequency: frequency({ freq: 'daily' }),
+      action: actionCost({ act: 'ritual', time: '4 hours' }, { act: 'ritual', time: '2 hours', cost: 'm' }, { act: 'ritual', time: '1 hour', cost: 'm' }, { act: 'ritual', time: '10 minutes', cost: 'M' }),
       effects: {
         base: 'Study an object you handle (no language gate) and make a Knowledge: History check vs its Resonance DC. An object can be read only once, ever, and a failed check silences it for good. On a success, the DM reveals something of the object’s past.',
         advances: [
@@ -1563,7 +1567,7 @@ const ELDER_MAGIC: Ability[] = [
     name: 'Lessons from Dark Places', category: 'Elder Magic', role: 'Utility · delving', mode: 'Effect',
     vars: {
       frequency: FREQ_ENC,
-      action: { base: 'Standard (exploration)', advances: [{ value: 'Interrupt', cost: 'M' }] },
+      action: actionCost({ act: 'standard', detail: 'exploration' }, { act: 'interrupt', trigger: 'when a delving hazard is sprung', cost: 'M' }),
       range: { base: "Detect hazards & secret doors within 30' (Dungeoneering or History check)", advances: [{ value: "45'", cost: 'm' }, { value: "60'", cost: 'm' }, { value: "120'", cost: 'M' }] },
       effects: {
         base: 'Resolve a delving hazard with a Dungeoneering or History check in place of the Save or Skill it requires (+0 to the check).',
@@ -1586,7 +1590,7 @@ const ELDER_MAGIC: Ability[] = [
 // Specialization — [type] feat), so those ladders live in each card's Feats line;
 // the Effect(s) row shows only the baseline (damage, or a Defence ladder
 // on the close chassis). Implements (wand/staff/spellbook/scroll) lend hooks.
-const FREQ_ATWILL_L3: Variable = { base: 'Daily', advances: [{ value: 'Encounter', cost: 'M' }, { value: 'At-Will', cost: 'M', note: 'L3' }] };
+const FREQ_ATWILL_L3: Variable = frequency({ freq: 'daily' }, { freq: 'encounter', cost: 'M' }, { freq: 'at-will', cost: 'M', note: 'L3' });
 
 const RANGED_SINGLE_DMG: Variable = { base: '1d4', advances: [{ value: '1d4 + Int', cost: 'm' }, { value: '1d6 + Int', cost: 'm' }, { value: '2d6 + Int', cost: 'M', note: 'L5' }] };
 const CLOSE_SINGLE_DMG: Variable = { base: '1d6', advances: [{ value: '1d6 + Int', cost: 'm' }, { value: '1d8 + Int', cost: 'm' }, { value: '2d8 + Int', cost: 'M', note: 'L5' }] };
@@ -1700,7 +1704,7 @@ const NEW_MAGIC: Ability[] = [
     name: 'Telum Eminus', category: 'New Magic', role: 'Offensive · ranged · spell-builder', mode: 'Attack',
     vars: {
       frequency: FREQ_ATWILL_L3,
-      action: { base: 'Standard' },
+      action: actionCost({ act: 'standard' }),
       range: STD_RANGE,
       targets: { base: 'One' },
       attack: { base: 'Dexterity vs AC' },
@@ -1720,7 +1724,7 @@ const NEW_MAGIC: Ability[] = [
     name: 'Tactus Comminus', category: 'New Magic', role: 'Offensive · close · spell-builder', mode: 'Attack',
     vars: {
       frequency: FREQ_ATWILL_L3,
-      action: { base: 'Standard' },
+      action: actionCost({ act: 'standard' }),
       range: { base: 'Reach' },
       targets: { base: 'One' },
       attack: { base: 'Dexterity vs AC' },
@@ -1742,7 +1746,7 @@ const NEW_MAGIC: Ability[] = [
     name: 'Globus Eminus', category: 'New Magic', role: 'Offensive · ranged burst · spell-builder', mode: 'Attack',
     vars: {
       frequency: FREQ_2ENC,
-      action: { base: 'Standard' },
+      action: actionCost({ act: 'standard' }),
       range: { base: "30' (5' burst)", advances: [{ value: "45' (10' burst)", cost: 'M' }, { value: "60' (15' burst)", cost: 'M' }, { value: "120' (20' burst)", cost: 'M' }] },
       targets: NM_AOE_TARGETS,
       attack: { base: 'Dexterity vs AC' },
@@ -1762,7 +1766,7 @@ const NEW_MAGIC: Ability[] = [
     name: 'Corona Comminus', category: 'New Magic', role: 'Offensive · close burst · spell-builder', mode: 'Attack',
     vars: {
       frequency: FREQ_2ENC,
-      action: { base: 'Standard' },
+      action: actionCost({ act: 'standard' }),
       range: { base: "5' burst (centred on you)", advances: [{ value: "10' burst", cost: 'M' }, { value: "15' burst", cost: 'M' }, { value: "20' burst", cost: 'M' }] },
       targets: NM_AOE_TARGETS,
       attack: { base: 'Dexterity vs AC' },
@@ -1783,8 +1787,8 @@ const NEW_MAGIC: Ability[] = [
   {
     name: 'Lorica Arcana', category: 'New Magic', role: 'Defensive · arcane armour', mode: 'Effect',
     vars: {
-      frequency: { base: 'Daily' },
-      action: { base: 'Ritual — 1 minute' },
+      frequency: frequency({ freq: 'daily' }),
+      action: actionCost({ act: 'ritual', time: '1 minute' }),
       targets: { base: 'Self' },
       effects: {
         base: '+1 AC',
@@ -1802,7 +1806,7 @@ const NEW_MAGIC: Ability[] = [
     name: 'Scutum Virium', category: 'New Magic', role: 'Defensive · force shield', mode: 'Effect',
     vars: {
       frequency: FREQ_2ENC,
-      action: { base: 'Interrupt — when you are hit by an attack' },
+      action: actionCost({ act: 'interrupt', trigger: 'when you are hit by an attack' }),
       targets: { base: 'Self' },
       effects: {
         base: '+1 AC (a Buckler)',
@@ -1823,7 +1827,7 @@ const NEW_MAGIC: Ability[] = [
     name: 'Manus Eminus', category: 'New Magic', role: 'Utility · telekinesis', mode: 'Effect',
     vars: {
       frequency: FREQ_2ENC,
-      action: { base: 'Standard' },
+      action: actionCost({ act: 'standard' }),
       range: STD_RANGE,
       attack: { base: "Dexterity vs Armoured Strength (to shove an unwilling creature up to 10', within capacity)" },
       effects: {
@@ -1841,7 +1845,7 @@ const NEW_MAGIC: Ability[] = [
     name: 'Lumen Arcanum', category: 'New Magic', role: 'Utility · light', mode: 'Effect',
     vars: {
       frequency: FREQ_2ENC,
-      action: { base: 'Minor' },
+      action: actionCost({ act: 'minor' }),
       effects: {
         base: "Dim light, 10' radius",
         advances: [
@@ -1879,7 +1883,7 @@ const THE_LOST: Ability[] = [
     name: 'Sneak Attack', category: 'The Lost', role: 'Offensive', mode: 'Attack',
     vars: {
       frequency: FREQ_FULL,
-      action: { base: 'Standard' },
+      action: actionCost({ act: 'standard' }),
       range: { base: 'Reach' },
       targets: { base: 'One Off Guard or flanked opponent' },
       attack: { base: 'Dexterity vs AC' },
@@ -1909,7 +1913,7 @@ const THE_LOST: Ability[] = [
     name: 'Feint', category: 'The Lost', role: 'Debuff · setup', mode: 'Attack',
     vars: {
       frequency: FREQ_FULL,
-      action: { base: 'Standard', advances: [{ value: 'Move', cost: 'M' }, { value: 'Minor', cost: 'M' }] },
+      action: actionCost({ act: 'standard' }, { act: 'move', cost: 'M' }, { act: 'minor', cost: 'M' }),
       range: { base: 'Reach' },
       targets: { base: 'One' },
       attack: { base: 'Dexterity vs Unarmoured Wisdom' },
@@ -1930,7 +1934,7 @@ const THE_LOST: Ability[] = [
     name: 'Dirty Trick', category: 'The Lost', role: 'Debuff', mode: 'Attack',
     vars: {
       frequency: FREQ_2ENC,
-      action: { base: 'Standard', advances: [{ value: 'Move', cost: 'M' }, { value: 'Minor', cost: 'M' }] },
+      action: actionCost({ act: 'standard' }, { act: 'move', cost: 'M' }, { act: 'minor', cost: 'M' }),
       range: { base: 'Reach' },
       targets: { base: 'One' },
       attack: { base: 'Dexterity vs Unarmoured Dexterity' },
@@ -1956,7 +1960,7 @@ const THE_LOST: Ability[] = [
     name: 'Nimble Evasion', category: 'The Lost', role: 'Defensive', mode: 'Effect',
     vars: {
       frequency: FREQ_ENC,
-      action: { base: 'Move', advances: [{ value: 'Minor', cost: 'M' }, { value: 'Interrupt — when an enemy attacks you', cost: 'M' }] },
+      action: actionCost({ act: 'move' }, { act: 'minor', cost: 'M' }, { act: 'interrupt', trigger: 'when an enemy attacks you', cost: 'M' }),
       range: { base: 'Self' },
       effects: {
         base: 'Shift 5′. The movement provokes no Opportunity Attacks.',
@@ -1972,7 +1976,7 @@ const THE_LOST: Ability[] = [
     name: 'Vanish', category: 'The Lost', role: 'Defensive · utility', mode: 'Effect',
     vars: {
       frequency: FREQ_ENC,
-      action: { base: 'Standard', advances: [{ value: 'Move', cost: 'M' }, { value: 'Minor', cost: 'M' }] },
+      action: actionCost({ act: 'standard' }, { act: 'move', cost: 'M' }, { act: 'minor', cost: 'M' }),
       range: { base: 'Self' },
       effects: {
         base: 'Hide (Stealth vs Perception) even while observed, so long as you have cover or concealment. Anyone who loses you is Off Guard against you.',
@@ -1989,7 +1993,7 @@ const THE_LOST: Ability[] = [
     name: 'Tumble', category: 'The Lost', role: 'Movement', mode: 'Effect',
     vars: {
       frequency: FREQ_FULL,
-      action: { base: 'Move' },
+      action: actionCost({ act: 'move' }),
       range: { base: 'Self' },
       effects: {
         base: 'Move up to half your Speed, provoking no Opportunity Attacks.',
@@ -2004,8 +2008,8 @@ const THE_LOST: Ability[] = [
   {
     name: 'Light Fingers', category: 'The Lost', role: 'Utility', mode: 'Effect',
     vars: {
-      frequency: { base: 'Encounter', advances: [{ value: 'At-Will', cost: 'M' }] },
-      action: { base: 'Standard', advances: [{ value: 'Move', cost: 'M' }, { value: 'Minor', cost: 'M' }] },
+      frequency: frequency({ freq: 'encounter' }, { freq: 'at-will', cost: 'M' }),
+      action: actionCost({ act: 'standard' }, { act: 'move', cost: 'M' }, { act: 'minor', cost: 'M' }),
       range: { base: 'Reach' },
       targets: { base: 'One' },
       attack: { base: 'Thievery vs the mark’s Perception' },
@@ -2022,8 +2026,8 @@ const THE_LOST: Ability[] = [
   {
     name: 'Lay Low', category: 'The Lost', role: 'Utility · non-combat', mode: 'Effect',
     vars: {
-      frequency: { base: 'Daily' },
-      action: { base: '1 hour, in a settlement' },
+      frequency: frequency({ freq: 'daily' }),
+      action: actionCost({ act: 'downtime', time: '1 hour', detail: 'in a settlement' }),
       targets: {
         base: 'Self',
         advances: [
@@ -2065,8 +2069,8 @@ const ASSASSINATION: Ability[] = [
   {
     name: 'Study the Mark', category: 'Assassination', role: 'Setup', mode: 'Effect',
     vars: {
-      frequency: { base: 'Encounter', advances: [{ value: 'Twice per encounter', cost: 'M' }] },
-      action: { base: 'Minor (in combat) / a few minutes’ watching (out of combat)' },
+      frequency: frequency({ freq: 'encounter' }, { freq: 'encounter', uses: 2, cost: 'M' }),
+      action: actionCost({ act: 'scene', combat: 'minor', detail: 'a few minutes’ watching' }),
       range: { base: 'Sight' },
       targets: { base: 'One', advances: [{ value: 'Two', cost: 'm' }, { value: 'Int', cost: 'm' }] },
       attack: { base: 'Intelligence vs the target’s Difficulty Class' },
@@ -2085,7 +2089,7 @@ const ASSASSINATION: Ability[] = [
     name: 'Death Blow', category: 'Assassination', role: 'Offensive · finisher', mode: 'Attack',
     vars: {
       frequency: FREQ_2ENC,
-      action: { base: 'Standard' },
+      action: actionCost({ act: 'standard' }),
       range: { base: 'Reach' },
       targets: { base: 'One Studied mark that is Off Guard or flanked' },
       attack: { base: 'Dexterity vs AC' },
@@ -2116,7 +2120,7 @@ const ASSASSINATION: Ability[] = [
     name: 'Anatomist’s Cut', category: 'Assassination', role: 'Debuff', mode: 'Attack',
     vars: {
       frequency: FREQ_FULL,
-      action: { base: 'Standard' },
+      action: actionCost({ act: 'standard' }),
       range: { base: 'Reach' },
       targets: { base: 'One' },
       attack: { base: 'Dexterity vs AC' },
@@ -2137,7 +2141,7 @@ const ASSASSINATION: Ability[] = [
     name: 'Garrote', category: 'Assassination', role: 'Offensive · control', mode: 'Attack',
     vars: {
       frequency: FREQ_ENC,
-      action: { base: 'Standard' },
+      action: actionCost({ act: 'standard' }),
       range: { base: 'Reach (from behind — the mark must be Off Guard)' },
       targets: { base: 'One Off Guard opponent' },
       attack: { base: 'Dexterity vs Armoured Strength (a choke, not a cut)' },
@@ -2158,7 +2162,7 @@ const ASSASSINATION: Ability[] = [
     name: 'Pointed Inquiry', category: 'Assassination', role: 'Utility · non-combat', mode: 'Attack',
     vars: {
       frequency: FREQ_ENC,
-      action: { base: 'A social interaction (non-combat)' },
+      action: actionCost({ act: 'scene', detail: 'a social interaction' }),
       range: { base: 'Conversation' },
       targets: { base: 'A person or creature that knows something about your quarry' },
       attack: { base: 'Intimidate, Diplomacy, or Bluff vs the target’s matching Defence' },
@@ -2175,8 +2179,8 @@ const ASSASSINATION: Ability[] = [
   {
     name: 'Clean Kill', category: 'Assassination', role: 'Utility · non-combat', mode: 'Effect',
     vars: {
-      frequency: { base: 'Encounter' },
-      action: { base: 'A few minutes with the body' },
+      frequency: frequency({ freq: 'encounter' }),
+      action: actionCost({ act: 'scene', detail: 'a few minutes with the body' }),
       range: { base: 'Touch' },
       effects: {
         base: 'You leave nothing behind: the death raises no alarm, and body and signs are hidden from a casual search.',
@@ -2210,7 +2214,7 @@ const GUILE: Ability[] = [
     name: 'Misdirection', category: 'Guile', role: 'Debuff · Off Guard', mode: 'Attack',
     vars: {
       frequency: FREQ_FULL,
-      action: { base: 'Standard', advances: [{ value: 'Move', cost: 'M' }, { value: 'Minor', cost: 'M' }] },
+      action: actionCost({ act: 'standard' }, { act: 'move', cost: 'M' }, { act: 'minor', cost: 'M' }),
       range: STD_RANGE,
       targets: GUILE_TARGETS,
       attack: { base: 'Charisma vs Unarmoured Wisdom' },
@@ -2229,7 +2233,7 @@ const GUILE: Ability[] = [
     name: 'Cutting Remark', category: 'Guile', role: 'Debuff · offence', mode: 'Attack',
     vars: {
       frequency: FREQ_FULL,
-      action: { base: 'Standard', advances: [{ value: 'Move', cost: 'M' }, { value: 'Minor', cost: 'M' }] },
+      action: actionCost({ act: 'standard' }, { act: 'move', cost: 'M' }, { act: 'minor', cost: 'M' }),
       range: STD_RANGE,
       targets: GUILE_TARGETS,
       attack: { base: 'Charisma vs Unarmoured Wisdom' },
@@ -2248,7 +2252,7 @@ const GUILE: Ability[] = [
     name: 'Bluster', category: 'Guile', role: 'Debuff · Defences', mode: 'Attack',
     vars: {
       frequency: FREQ_FULL,
-      action: { base: 'Standard', advances: [{ value: 'Move', cost: 'M' }, { value: 'Minor', cost: 'M' }] },
+      action: actionCost({ act: 'standard' }, { act: 'move', cost: 'M' }, { act: 'minor', cost: 'M' }),
       range: STD_RANGE,
       targets: GUILE_TARGETS,
       attack: { base: 'Charisma vs Unarmoured Wisdom' },
@@ -2267,7 +2271,7 @@ const GUILE: Ability[] = [
     name: 'Confidence', category: 'Guile', role: 'Buff · self', mode: 'Effect',
     vars: {
       frequency: FREQ_ENC,
-      action: { base: 'Move', advances: [{ value: 'Minor', cost: 'M' }, { value: 'Free', cost: 'M' }] },
+      action: actionCost({ act: 'move' }, { act: 'minor', cost: 'M' }, { act: 'free', cost: 'M' }),
       range: { base: 'Self' },
       effects: {
         base: 'A performer’s unshakeable front: gain 1 Temp HP.',
@@ -2283,15 +2287,8 @@ const GUILE: Ability[] = [
   {
     name: 'Swindle', category: 'Guile', role: 'Utility · non-combat', mode: 'Attack',
     vars: {
-      frequency: { base: 'Daily' },
-      action: {
-        base: '24 hours setting up the con',
-        advances: [
-          { value: '12 hours', cost: 'm' },
-          { value: '6 hours', cost: 'm' },
-          { value: '1 hour', cost: 'M' },
-        ],
-      },
+      frequency: frequency({ freq: 'daily' }),
+      action: actionCost({ act: 'downtime', time: '24 hours', detail: 'setting up the con' }, { act: 'downtime', time: '12 hours', detail: 'setting up the con', cost: 'm' }, { act: 'downtime', time: '6 hours', detail: 'setting up the con', cost: 'm' }, { act: 'downtime', time: '1 hour', detail: 'setting up the con', cost: 'M' }),
       range: { base: 'Conversation' },
       targets: { base: 'One person, household, business, or other organization' },
       attack: { base: 'Bluff vs the Target’s Unarmoured Wisdom' },
@@ -2309,8 +2306,8 @@ const GUILE: Ability[] = [
   {
     name: 'Parley', category: 'Guile', role: 'Utility · social', mode: 'Attack',
     vars: {
-      frequency: { base: 'Encounter' },
-      action: { base: 'A conversation (a Standard in a tense standoff)' },
+      frequency: frequency({ freq: 'encounter' }),
+      action: actionCost({ act: 'scene', combat: 'standard', detail: 'a conversation' }),
       range: { base: 'Conversation' },
       targets: { base: 'One NPC' },
       attack: { base: 'Diplomacy vs the Target’s Unarmoured Charisma' },
@@ -2329,8 +2326,8 @@ const GUILE: Ability[] = [
   {
     name: 'Contionem habere', category: 'Guile', role: 'Utility · rally', mode: 'Attack',
     vars: {
-      frequency: { base: 'Daily' },
-      action: { base: 'A rousing speech (a few minutes)' },
+      frequency: frequency({ freq: 'daily' }),
+      action: actionCost({ act: 'scene', detail: 'a rousing speech (a few minutes)' }),
       range: { base: 'You and all allies who can hear you' },
       targets: { base: 'The foe (or foes) your speech names' },
       attack: { base: 'Intimidate vs the named foe’s Unarmoured Wisdom' },
@@ -2380,7 +2377,7 @@ const OCCULT: Ability[] = [
     name: 'Third Eye', category: 'Occult', role: 'Utility · sight', mode: 'Effect',
     vars: {
       frequency: FREQ_ENC,
-      action: { base: 'Minor (in combat) / instant (out of combat)' },
+      action: actionCost({ act: 'minor', detail: 'instant out of combat' }),
       range: STD_RANGE,
       effects: {
         base: 'Lowlight Vision — Dim Light carries no penalty for you.',
@@ -2398,8 +2395,8 @@ const OCCULT: Ability[] = [
   {
     name: 'Dark Blessing', category: 'Occult', role: 'Buff · party support', mode: 'Effect',
     vars: {
-      frequency: { base: 'Daily' },
-      action: { base: 'A few minutes of asking' },
+      frequency: frequency({ freq: 'daily' }),
+      action: actionCost({ act: 'scene', detail: 'a few minutes of asking' }),
       range: { base: 'Touch' },
       targets: {
         base: 'One ally',
@@ -2424,8 +2421,8 @@ const OCCULT: Ability[] = [
   {
     name: 'Spirit Guide', category: 'Occult', role: 'Utility · non-combat', mode: 'Effect',
     vars: {
-      frequency: { base: 'Daily' },
-      action: { base: 'A few minutes of asking' },
+      frequency: frequency({ freq: 'daily' }),
+      action: actionCost({ act: 'scene', detail: 'a few minutes of asking' }),
       range: { base: 'You (the party, from Rank 2)' },
       effects: {
         base: 'You gain 1 Reroll during the Duration, for any non-combat roll.',
@@ -2524,7 +2521,7 @@ const WITCHCRAFT: Ability[] = [
     name: 'Dictiones Atras Susurrare', category: 'Witchcraft', role: 'Offensive · curse · curse-builder', mode: 'Attack',
     vars: {
       frequency: FREQ_ATWILL_L3,
-      action: { base: 'Standard' },
+      action: actionCost({ act: 'standard' }),
       range: STD_RANGE,
       targets: { base: 'One' },
       attack: { base: 'Charisma vs Unarmoured Wisdom' },
@@ -2545,7 +2542,7 @@ const WITCHCRAFT: Ability[] = [
     name: 'Dictiones Atras Clamare', category: 'Witchcraft', role: 'Offensive · curse burst · curse-builder', mode: 'Attack',
     vars: {
       frequency: FREQ_2ENC,
-      action: { base: 'Standard' },
+      action: actionCost({ act: 'standard' }),
       range: STD_RANGE,
       targets: STD_AREA,
       attack: { base: 'Charisma vs Unarmoured Wisdom' },
@@ -2566,7 +2563,7 @@ const WITCHCRAFT: Ability[] = [
     name: 'Renunciation of Nicetus', category: 'Witchcraft', role: 'Vow', mode: 'Passive',
     passiveEffects: [{ kind: 'defenceMod', value: 1 }],
     vars: {
-      frequency: { base: 'Passive (always on)' },
+      frequency: frequency({ freq: 'passive' }),
       effects: {
         base: '+1 to all your Defences. The Renunciation: you have renounced the Saintly Faith. You may not willingly enter their churches or other places of worship, may not invoke the Saints’ names, and may not receive benefit from any Saintly source (a Friar of the Saintly Faith’s healing, a blessing, a relic). The Saintly Market is closed to you.',
         advances: [{ value: '+2 to all your Defences. The Renunciation: you have renounced the Saintly Faith. You may not willingly enter their churches or other places of worship, may not invoke the Saints’ names, and may not receive benefit from any Saintly source (a Friar of the Saintly Faith’s healing, a blessing, a relic). The Saintly Market is closed to you.', cost: 'M', note: 'L5' }],
@@ -2576,7 +2573,7 @@ const WITCHCRAFT: Ability[] = [
   {
     name: 'Aversio Fontis', category: 'Witchcraft', role: 'Vow', mode: 'Passive',
     vars: {
-      frequency: { base: 'Passive (always on)' },
+      frequency: frequency({ freq: 'passive' }),
       effects: {
         base: 'DR 1. The Renunciation: you have vowed never to willingly bathe in clean water.',
         advances: [{ value: 'DR 2. The Renunciation: you have vowed never to willingly bathe in clean water.', cost: 'M', note: 'L5' }],
@@ -2586,7 +2583,7 @@ const WITCHCRAFT: Ability[] = [
   {
     name: 'Votum Sinistrum', category: 'Witchcraft', role: 'Vow', mode: 'Passive',
     vars: {
-      frequency: { base: 'Passive (always on)' },
+      frequency: frequency({ freq: 'passive' }),
       effects: {
         base: 'One Reroll per day, on any d20 roll. The Renunciation: you do everything with the left hand, and whenever you are in doubt which way to go, you always turn left.',
         advances: [{ value: 'One Reroll per encounter, on any d20 roll. The Renunciation: you do everything with the left hand, and whenever you are in doubt which way to go, you always turn left.', cost: 'M', note: 'L5' }],
@@ -2597,7 +2594,7 @@ const WITCHCRAFT: Ability[] = [
     name: 'Bind Spirit', category: 'Witchcraft', role: 'Summon · servant', mode: 'Effect',
     vars: {
       frequency: FREQ_ENC,
-      action: { base: 'Ritual', advances: [{ value: 'Full-Round Action', cost: 'm' }, { value: 'Standard Action', cost: 'm' }] },
+      action: actionCost({ act: 'ritual' }, { act: 'full-round', cost: 'm' }, { act: 'standard', cost: 'm' }),
       range: STD_RANGE,
       effects: {
         base: 'You summon a shade that performs tasks for the Duration. It has Speed 15, 5 HP, and all Defences 11, and is invulnerable to every kind of damage but Radiant and Force (and weapons made to battle the undead).',
@@ -2651,8 +2648,8 @@ const OVERLOAD_ORB = 'Overload — when you use this Ability you may Overload it
 const WIELD_ORB: Ability = {
   name: 'Wield Orb', category: 'The Outside', role: 'Utility · orb engine', mode: 'Effect',
   vars: {
-    frequency: { base: 'Daily', advances: [{ value: 'Encounter', cost: 'M' }, { value: 'Twice per encounter', cost: 'M' }] },
-    action: { base: "The orb's own activation" },
+    frequency: frequency({ freq: 'daily' }, { freq: 'encounter', cost: 'M' }, { freq: 'encounter', uses: 2, cost: 'M' }),
+    action: actionCost({ act: 'varies', detail: 'the orb\'s own activation' }),
     effects: WIELD_EFFECTS('Orb'),
   },
   options: [
@@ -2667,7 +2664,7 @@ const OUTSIDE: Ability[] = [
     name: 'Eldritch Blast', category: 'The Outside', role: 'Offensive · blast', mode: 'Attack',
     vars: {
       frequency: FREQ_ATWILL_L3,
-      action: { base: 'Standard' },
+      action: actionCost({ act: 'standard' }),
       range: STD_RANGE,
       targets: { base: 'One' },
       attack: { base: 'Wisdom vs AC' },
@@ -2684,7 +2681,7 @@ const OUTSIDE: Ability[] = [
     name: 'Unraveling Gaze', category: 'The Outside', role: 'Offensive · Madness', mode: 'Attack',
     vars: {
       frequency: FREQ_FULL,
-      action: { base: 'Standard' },
+      action: actionCost({ act: 'standard' }),
       range: STD_RANGE,
       targets: { base: 'One' },
       attack: { base: 'Wisdom vs Unarmoured Wisdom' },
@@ -2700,7 +2697,7 @@ const OUTSIDE: Ability[] = [
     name: 'Pandemonium', category: 'The Outside', role: 'Control · area', mode: 'Attack',
     vars: {
       frequency: FREQ_2ENC,
-      action: { base: 'Standard' },
+      action: actionCost({ act: 'standard' }),
       range: STD_RANGE,
       targets: STD_AREA,
       attack: { base: 'Wisdom vs Unarmoured Wisdom' },
@@ -2718,7 +2715,7 @@ const OUTSIDE: Ability[] = [
     name: 'Impossible Visage', category: 'The Outside', role: 'Defensive', mode: 'Effect',
     vars: {
       frequency: FREQ_2ENC,
-      action: { base: 'Minor' },
+      action: actionCost({ act: 'minor' }),
       range: { base: 'Self' },
       effects: {
         base: 'You are wrong to look upon: −1 for all opponents to attack you directly.',
@@ -2747,7 +2744,7 @@ const OUTSIDE: Ability[] = [
     name: 'Conversant with the Outside', category: 'The Outside', role: 'Vow', mode: 'Passive',
     passiveEffects: [{ kind: 'defenceMod', value: 1, attr: 'Wisdom' }, { kind: 'saveMod', value: 1, attr: 'Wisdom' }],
     vars: {
-      frequency: { base: 'Passive (always on)' },
+      frequency: frequency({ freq: 'passive' }),
       effects: {
         base: '+1 to your Wisdom Defence and Wisdom Saves, and DR 3 against Psychic damage. The cost: −1 Charisma.',
       },
@@ -2757,7 +2754,7 @@ const OUTSIDE: Ability[] = [
     name: 'Observer of the Outside', category: 'The Outside', role: 'Vow', mode: 'Passive',
     passiveEffects: [{ kind: 'defenceMod', value: 1, attr: 'Intelligence' }, { kind: 'saveMod', value: 1, attr: 'Intelligence' }],
     vars: {
-      frequency: { base: 'Passive (always on)' },
+      frequency: frequency({ freq: 'passive' }),
       effects: {
         base: '+1 to your Intelligence Defence and Intelligence Saves, and DR 3 against Radiant damage. The cost: −1 Dexterity.',
       },
@@ -2767,7 +2764,7 @@ const OUTSIDE: Ability[] = [
     name: 'Traveller', category: 'The Outside', role: 'Vow', mode: 'Passive',
     passiveEffects: [{ kind: 'defenceMod', value: 1, attr: 'Constitution' }, { kind: 'saveMod', value: 1, attr: 'Constitution' }],
     vars: {
-      frequency: { base: 'Passive (always on)' },
+      frequency: frequency({ freq: 'passive' }),
       effects: {
         base: '+1 to your Constitution Defence and Constitution Saves, and DR 3 against Cold damage. The cost: −1 Strength.',
       },
@@ -2789,8 +2786,8 @@ const HARVEST: Ability[] = [
   {
     name: 'Provender', category: 'Harvest', role: 'Utility · provision', mode: 'Effect',
     vars: {
-      frequency: { base: 'Daily' },
-      action: { base: 'Foraging and gathering, over the day’s travel or rest' },
+      frequency: frequency({ freq: 'daily' }),
+      action: actionCost({ act: 'downtime', detail: 'foraging and gathering, over the day’s travel or rest' }),
       range: { base: 'The surrounding country' },
       targets: {
         base: 'Yourself',
@@ -2815,8 +2812,8 @@ const HARVEST: Ability[] = [
   {
     name: 'Simples', category: 'Harvest', role: 'Remedy', mode: 'Effect',
     vars: {
-      frequency: { base: 'Daily' },
-      action: { base: 'Brewing, during a rest; a Minor action to drink' },
+      frequency: frequency({ freq: 'daily' }),
+      action: actionCost({ act: 'rest', detail: 'brewing; a Minor Action to drink' }),
       range: { base: 'The draught is carried and drunk' },
       targets: {
         base: 'One draught',
@@ -2841,7 +2838,7 @@ const HARVEST: Ability[] = [
   {
     name: 'Hedge-Wise', category: 'Harvest', role: 'Movement · defensive', mode: 'Passive',
     vars: {
-      frequency: { base: 'Passive (always on)' },
+      frequency: frequency({ freq: 'passive' }),
       targets: {
         base: 'Self',
         advances: [
@@ -2878,8 +2875,8 @@ const HARVEST: Ability[] = [
   {
     name: 'Countryman’s Welcome', category: 'Harvest', role: 'Utility · social', mode: 'Effect',
     vars: {
-      frequency: { base: 'Daily' },
-      action: { base: 'An evening’s fellowship' },
+      frequency: frequency({ freq: 'daily' }),
+      action: actionCost({ act: 'scene', detail: 'an evening’s fellowship' }),
       range: { base: 'A farmstead, hamlet or village' },
       targets: {
         base: 'Self',
@@ -2905,7 +2902,7 @@ const HARVEST: Ability[] = [
     name: 'Beast-Wise', category: 'Harvest', role: 'Utility · animals', mode: 'Passive',
     passiveEffects: [{ kind: 'skillMod', value: 1, skill: 'Handle Animal' }],
     vars: {
-      frequency: { base: 'Passive (always on)' },
+      frequency: frequency({ freq: 'passive' }),
       targets: { base: 'Self' },
       effects: {
         base: '+1 to Handle Animal checks.',
@@ -2920,8 +2917,8 @@ const HARVEST: Ability[] = [
   {
     name: 'Eola-Gesta', category: 'Harvest', role: 'Utility · social', mode: 'Effect',
     vars: {
-      frequency: { base: 'Daily' },
-      action: { base: 'An evening’s cavorting at a pub, inn, festival or similar gathering' },
+      frequency: frequency({ freq: 'daily' }),
+      action: actionCost({ act: 'scene', detail: 'an evening’s cavorting at a pub, inn, festival or similar gathering' }),
       range: { base: 'The building or event' },
       targets: { base: 'Self' },
       effects: {
@@ -2963,7 +2960,7 @@ const HUSBANDRY: Ability[] = [
   {
     name: 'Shepherd’s Dog', category: 'Husbandry', role: 'Companion', mode: 'Passive',
     vars: {
-      frequency: { base: 'Passive (the dog is always with you)' },
+      frequency: frequency({ freq: 'passive', detail: 'the dog is always with you' }),
     },
     extraVars: [
       {
@@ -3047,7 +3044,7 @@ const HUSBANDRY: Ability[] = [
     name: 'Worry', category: 'Husbandry', role: 'Offensive · control', mode: 'Effect',
     vars: {
       frequency: FREQ_FULL,
-      action: { base: 'Standard', advances: [{ value: 'Move', cost: 'M' }, { value: 'Minor', cost: 'M' }] },
+      action: actionCost({ act: 'standard' }, { act: 'move', cost: 'M' }, { act: 'minor', cost: 'M' }),
       range: { base: 'The dog, within earshot of your whistle' },
       targets: { base: 'One opponent the dog can reach' },
       attack: { base: 'The dog’s Bite vs AC' },
@@ -3067,8 +3064,8 @@ const HUSBANDRY: Ability[] = [
   {
     name: 'The Dog Watches', category: 'Husbandry', role: 'Utility · camp', mode: 'Effect',
     vars: {
-      frequency: { base: 'Daily' },
-      action: { base: 'Set during a rest — the dog stands sentry while the whole company sleeps' },
+      frequency: frequency({ freq: 'daily' }),
+      action: actionCost({ act: 'rest', detail: 'the dog stands sentry while the whole company sleeps' }),
       range: { base: 'The camp' },
       targets: { base: 'You and all who rest with you' },
       effects: {
@@ -3087,12 +3084,7 @@ const HUSBANDRY: Ability[] = [
     name: 'Turn the Wolf', category: 'Husbandry', role: 'Defensive · control', mode: 'Attack',
     vars: {
       frequency: FREQ_ENC,
-      action: {
-        base: 'Reaction — at the end of an opponent’s move, only if it moved closer to or adjacent to an ally',
-        advances: [
-          { value: 'Interrupt — at any point during an opponent’s move, if it attempted to move closer or adjacent to an ally', cost: 'm' },
-        ],
-      },
+      action: actionCost({ act: 'reaction', trigger: 'at the end of an opponent’s move, only if it moved closer to or adjacent to an ally' }, { act: 'interrupt', trigger: 'at any point during an opponent’s move, if it attempted to move closer or adjacent to an ally', cost: 'm' }),
       range: { base: 'Sling, 1×WRI' },
       targets: { base: 'The moving opponent' },
       attack: { base: 'Dex vs AC' },
@@ -3120,12 +3112,7 @@ const HUSBANDRY: Ability[] = [
     name: 'Ward the Fold', category: 'Husbandry', role: 'Defensive', mode: 'Attack',
     vars: {
       frequency: FREQ_ENC,
-      action: {
-        base: 'Reaction — at the end of an opponent’s move, only if it moved closer to or adjacent to an ally',
-        advances: [
-          { value: 'Interrupt — at any point during an opponent’s move, if it attempted to move closer or adjacent to an ally', cost: 'm' },
-        ],
-      },
+      action: actionCost({ act: 'reaction', trigger: 'at the end of an opponent’s move, only if it moved closer to or adjacent to an ally' }, { act: 'interrupt', trigger: 'at any point during an opponent’s move, if it attempted to move closer or adjacent to an ally', cost: 'm' }),
       range: { base: 'Spear’s reach' },
       targets: { base: 'The approaching opponent' },
       attack: { base: 'Dex vs AC' },
@@ -3153,7 +3140,7 @@ const HUSBANDRY: Ability[] = [
     name: 'Drive Them', category: 'Husbandry', role: 'Offensive · control', mode: 'Attack',
     vars: {
       frequency: FREQ_ENC,
-      action: { base: 'Standard' },
+      action: actionCost({ act: 'standard' }),
       range: { base: 'An opponent adjacent to you or your dog' },
       targets: {
         base: 'One opponent',
@@ -3176,7 +3163,7 @@ const HUSBANDRY: Ability[] = [
   {
     name: 'Ninety and Nine', category: 'Husbandry', role: 'Utility', mode: 'Passive',
     vars: {
-      frequency: { base: 'Passive (always on)' },
+      frequency: frequency({ freq: 'passive' }),
       targets: { base: 'Your company — those who travel and camp with you' },
       effects: {
         base: 'Counting without counting: you know at a glance whether the company is whole, and notice at once when someone slips away or is taken, within your senses or the dog’s.',
@@ -3206,15 +3193,8 @@ const BOTANY: Ability[] = [
   {
     name: 'Brew Poison', category: 'Botany', role: 'Utility · craft', mode: 'Effect',
     vars: {
-      frequency: { base: 'Uncapped (limited by time and makings)' },
-      action: {
-        base: 'A full day brewing',
-        advances: [
-          { value: '8 hours', cost: 'm' },
-          { value: '4 hours', cost: 'm' },
-          { value: '2 hours', cost: 'M' },
-        ],
-      },
+      frequency: frequency({ freq: 'uncapped', detail: 'limited by time and makings' }),
+      action: actionCost({ act: 'downtime', time: 'a full day', detail: 'brewing' }, { act: 'downtime', time: '8 hours', detail: 'brewing', cost: 'm' }, { act: 'downtime', time: '4 hours', detail: 'brewing', cost: 'm' }, { act: 'downtime', time: '2 hours', detail: 'brewing', cost: 'M' }),
       targets: {
         base: '1 dose',
         advances: [
@@ -3248,10 +3228,7 @@ const BOTANY: Ability[] = [
     name: 'Vitriol', category: 'Botany', role: 'Offensive', mode: 'Attack',
     vars: {
       frequency: FREQ_FRIAR,
-      action: {
-        base: 'Full Round (you mix the ingredients and throw them)',
-        advances: [{ value: 'Standard (you mixed them beforehand)', cost: 'M' }],
-      },
+      action: actionCost({ act: 'full-round', detail: 'you mix the ingredients and throw them' }, { act: 'standard', detail: 'you mixed them beforehand', cost: 'M' }),
       range: STD_THROWN,
       targets: { base: '1', advances: [{ value: '5\' radius splash', cost: 'M' }] },
       attack: { base: 'Int vs AC' },
@@ -3281,7 +3258,7 @@ const BOTANY: Ability[] = [
     name: 'Stupefying Fumes', category: 'Botany', role: 'Offensive · control', mode: 'Attack',
     vars: {
       frequency: FREQ_ENC,
-      action: { base: 'Standard' },
+      action: actionCost({ act: 'standard' }),
       range: STD_THROWN,
       targets: {
         base: 'All creatures in a 5\' radius — the fumes do not pick sides',
@@ -3308,8 +3285,8 @@ const BOTANY: Ability[] = [
   {
     name: 'Laudanum', category: 'Botany', role: 'Utility · succour', mode: 'Effect',
     vars: {
-      frequency: { base: 'At-Will — one prepared dose per use' },
-      action: { base: 'Minor — administer a prepared dose' },
+      frequency: frequency({ freq: 'at-will', detail: 'one prepared dose per use' }),
+      action: actionCost({ act: 'minor', detail: 'administer a prepared dose' }),
       range: { base: 'Touch' },
       targets: { base: 'One creature' },
       effects: {
@@ -3350,8 +3327,8 @@ const OLD_MAGIC: Ability[] = [
   {
     name: 'The Old Custom', category: 'Old Magic', role: 'Utility · foundation', mode: 'Effect',
     vars: {
-      frequency: { base: 'Daily', advances: [{ value: 'Encounter', cost: 'm' }] },
-      action: { base: 'A few minutes among the spirits of a place' },
+      frequency: frequency({ freq: 'daily' }, { freq: 'encounter', cost: 'm' }),
+      action: actionCost({ act: 'scene', detail: 'a few minutes among the spirits of a place' }),
       range: { base: 'The place you stand in' },
       effects: {
         base: 'See and address the spirits of place and tree, beast, storm and stone, in the First Tongue. Learn the spirit’s temper, and what it treasures.',
@@ -3372,8 +3349,8 @@ const OLD_MAGIC: Ability[] = [
   {
     name: 'Dream Beneath the Yew Bough', category: 'Old Magic', role: 'Healing · camp', mode: 'Effect',
     vars: {
-      frequency: { base: 'Daily' },
-      action: { base: 'A night’s tending, through a rest' },
+      frequency: frequency({ freq: 'daily' }),
+      action: actionCost({ act: 'rest', detail: 'a night’s tending' }),
       targets: campTargets('Cha'),
       effects: {
         base: 'Tended sleep mends: targets recover 1 extra HP after the rest.',
@@ -3393,7 +3370,7 @@ const OLD_MAGIC: Ability[] = [
     name: 'The Warning', category: 'Old Magic', role: 'Defensive · deterrent', mode: 'Attack',
     vars: {
       frequency: FREQ_FRIAR,
-      action: { base: 'Standard' },
+      action: actionCost({ act: 'standard' }),
       range: { base: 'Staff’s reach' },
       targets: { base: 'One' },
       attack: { base: 'Cha vs AC (Staff)' },
@@ -3406,10 +3383,7 @@ const OLD_MAGIC: Ability[] = [
     name: 'Favour of the Fauna', category: 'Old Magic', role: 'Utility', mode: 'Effect',
     vars: {
       frequency: FREQ_ENC,
-      action: {
-        base: '1 minute of discussion with a beast',
-        advances: [{ value: 'Full Round Action, in an encounter', cost: 'M' }],
-      },
+      action: actionCost({ act: 'scene', detail: 'a minute of discussion with a beast' }, { act: 'full-round', detail: 'in an encounter', cost: 'M' }),
       range: STD_RANGE,
       targets: {
         base: '1 small animal (a bird, a squirrel)',
@@ -3435,8 +3409,8 @@ const OLD_MAGIC: Ability[] = [
   {
     name: 'Threshold Ward', category: 'Old Magic', role: 'Defensive · home-magic', mode: 'Effect',
     vars: {
-      frequency: { base: 'Daily' },
-      action: { base: 'Depends on Target and Duration — anywhere from a few minutes to an hour of work, or several days carving stones if Permanent' },
+      frequency: frequency({ freq: 'daily' }),
+      action: actionCost({ act: 'varies', detail: 'depends on Target and Duration — anywhere from a few minutes to an hour of work, or several days carving stones if Permanent' }),
       targets: {
         base: 'A threshold — a door, gate, or the entrance of a camp',
         advances: [
@@ -3469,8 +3443,8 @@ const OLD_MAGIC: Ability[] = [
   {
     name: 'Drymann’s Token', category: 'Old Magic', role: 'Buff · charm', mode: 'Effect',
     vars: {
-      frequency: { base: 'Daily' },
-      action: { base: 'A minute’s charm-work — a knot, a whisper, a pinch of salt in the pocket' },
+      frequency: frequency({ freq: 'daily' }),
+      action: actionCost({ act: 'scene', detail: 'a minute’s charm-work — a knot, a whisper, a pinch of salt in the pocket' }),
       targets: {
         base: '1 creature',
         advances: [
@@ -3507,7 +3481,7 @@ const GENERAL: Ability[] = [
     mode: 'Effect',
     vars: {
       frequency: FREQ_ENC,
-      action: { base: 'Move', advances: [{ value: 'Minor', cost: 'm' }] },
+      action: actionCost({ act: 'move' }, { act: 'minor', cost: 'm' }),
       targets: { base: 'Self' },
       effects: {
         base: 'Gain 2 Temp HP, or heal 2 HP',

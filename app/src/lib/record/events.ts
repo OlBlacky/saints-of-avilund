@@ -43,6 +43,16 @@ export interface AbilityRef {
  * with campaigns. */
 export type ItemLocation = 'held' | 'worn' | 'equipped' | 'home' | `in:${string}`;
 
+/** Where an item sits in the sheet's own ordering — beside a named
+ * neighbour. The inventory's order is the player's arrangement (backpack
+ * first, then the pouch), so it is a decision the record keeps. An anchor
+ * that no longer exists leaves the item where it was. */
+export interface ItemPosition {
+  /** The instanceId of the item to sit beside. */
+  anchor: string;
+  side: 'before' | 'after';
+}
+
 /** One Basket line. Buys reference a Market's stock; sells reference an
  * owned instance. Prices are computed at replay time from the Market data
  * and the character's Commerce rank — the event stores only decisions. */
@@ -103,8 +113,10 @@ export type RecordEvent =
   /** An item arriving outside commerce: DM grant, found gear, a gift. With
    * an itemId it is catalogue-backed; free-named otherwise (unique items). */
   | (BaseEvent & { type: 'item-granted'; name?: string; itemId?: string; qty?: number; note?: string })
-  /** Move an owned item between locations (sheet organization, durable). */
-  | (BaseEvent & { type: 'item-moved'; instanceId: string; location: ItemLocation })
+  /** Move an owned item between locations, and optionally to a new place in
+   * the sheet's order (sheet organization, durable). A move with an
+   * unchanged location is a pure reorder. */
+  | (BaseEvent & { type: 'item-moved'; instanceId: string; location: ItemLocation; position?: ItemPosition })
   /** Split a stack: carve `qty` off into a new stack (id = this event's id)
    * at `location`, provenance inherited — spare Supplies in the backpack,
    * the rest in the kit's pouch. */

@@ -1,6 +1,6 @@
 ---
 import type { Ability } from '../lib/abilities';
-import { VAR_ORDER, VAR_LABELS, resolveValue } from '../lib/abilities';
+import { VAR_ORDER, VAR_LABELS, actionBadge, freqBadge, resolveRung, resolveValue } from '../lib/abilities';
 import { keywordsFor } from '../lib/traditions';
 
 interface Props {
@@ -15,6 +15,12 @@ const ADV_COLS = [0, 1, 2];                 // option sub-tables (hooks/effects)
 const ADV_GLYPHS = ['①', '②', '③', '④', '⑤'];  // ① ② ③ ④ ⑤
 
 const sub = [ability.role, ability.mode].filter(Boolean).join(' · ');
+
+// The two badges: what this costs out of a turn, and how often you get it.
+// In build mode they show the Rank the card starts at — the ladder below says
+// what the rest of the climb buys.
+const aBadge = actionBadge(resolveRung(ability.vars.action, ability.current?.action));
+const fBadge = freqBadge(resolveRung(ability.vars.frequency, ability.current?.frequency));
 
 // The main build table grows its advance columns to fit the longest ladder
 // (standard variables + any extraVars), but never fewer than three.
@@ -43,6 +49,27 @@ const bottomOpts = opts.filter((o) => o.placement !== 'top');
     <span class="acard__cat">{ability.category}</span>
   </header>
   {sub && <p class="acard__sub">{sub}</p>}
+  {(aBadge || fBadge) && (
+    <p class="acard__badges">
+      {aBadge && (
+        <span class={`acard__badge acard__badge--${aBadge.glyph ? 'turn' : 'span'}`}>
+          {aBadge.glyph && <span class="acard__badge-glyph">{aBadge.glyph}</span>}
+          {aBadge.label}
+          {aBadge.note && <span class="acard__badge-note"> · {aBadge.note}</span>}
+        </span>
+      )}
+      {fBadge && (
+        <span class="acard__badge acard__badge--freq">
+          {fBadge.label}
+          {fBadge.infinite && <span class="acard__badge-glyph"> ∞</span>}
+          {fBadge.boxes !== undefined && (
+            <span class="acard__badge-boxes">{'☐'.repeat(fBadge.boxes)}</span>
+          )}
+        </span>
+      )}
+      {aBadge?.rider && <span class="acard__badge-rider">{aBadge.rider}</span>}
+    </p>
+  )}
   {keywords && (
     <p class="acard__keywords">
       <strong>Keywords:</strong> {keywords.join(' · ')}
@@ -270,6 +297,47 @@ const bottomOpts = opts.filter((o) => o.placement !== 'top');
     font-style: italic;
     color: #6a532a;
   }
+  /* Action & Frequency badges: the two values a player reads first. A cost
+     that comes out of your turn is glyphed and loud; one that does not is a
+     quiet worded chip. */
+  .acard__badges {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.35rem;
+    margin: 0;
+    padding: 0.4rem 0.9rem 0;
+  }
+  .acard__badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+    padding: 0.1rem 0.42rem;
+    border: 1px solid rgba(120, 90, 40, 0.45);
+    border-radius: 3px;
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.07em;
+    text-transform: uppercase;
+    white-space: nowrap;
+    color: #4a3719;
+  }
+  .acard__badge--turn {
+    background: #6e1f1a;
+    border-color: #6e1f1a;
+    color: #f4ecd8;
+  }
+  .acard__badge--span,
+  .acard__badge--freq { color: #6a532a; }
+  .acard__badge-note { font-weight: 400; letter-spacing: 0.03em; }
+  .acard__badge-boxes { letter-spacing: 0.05em; }
+  .acard__badge-rider {
+    font-size: 0.78rem;
+    color: #6a532a;
+    text-transform: none;
+    letter-spacing: 0;
+  }
+
   .acard__keywords {
     margin: 0;
     padding: 0.2rem 0.9rem 0;

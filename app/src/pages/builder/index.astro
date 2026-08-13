@@ -546,6 +546,15 @@ const blurb = 'Build a character of Avilund — and once they are Complete, this
   @media print { .sheet-box-grip { display: none; } }
   /* Item rows drag from their name cell */
   .sheet-table td[draggable="true"] { cursor: grab; }
+  /* Stored gear sits beneath the Container that holds it, one step in per depth */
+  .sheet-table td.sheet-nested { padding-left: calc(0.7rem + var(--depth, 1) * 1.3rem); }
+  .sheet-table td.sheet-nested::before {
+    content: '\21B3'; margin-right: 0.35rem; color: var(--gold); opacity: 0.65;
+  }
+  /* Where a dragged row would land: beside a row, or inside a Container */
+  .sheet-row.is-drop-before > td { box-shadow: inset 0 2px 0 var(--oxblood); }
+  .sheet-row.is-drop-after > td { box-shadow: inset 0 -2px 0 var(--oxblood); }
+  .sheet-row.is-drop-into > td { background: color-mix(in srgb, var(--gold) 20%, transparent); }
   .sheet-table th {
     font-variant: small-caps; font-weight: normal; letter-spacing: 0.05em;
     color: var(--gold); text-align: left; padding: 0.2rem 0.7rem;
@@ -566,9 +575,35 @@ const blurb = 'Build a character of Avilund — and once they are Complete, this
     border: 1px solid var(--rule); border-left: 3px solid var(--gold);
     border-radius: 4px; background: var(--panel); padding: 0.7rem 0.9rem;
   }
+  /* A Passive is never read on your turn: no badges, a quiet rail, and it
+     sorts to the bottom of the box. */
+  .sheet-card--passive { border-left-color: var(--rule); }
   .sheet-card h4 { margin: 0 0 0.35rem; font-family: var(--display); color: var(--oxblood); }
   .sheet-card-strip { margin: 0 0 0.4rem; font-size: 0.84rem; color: var(--ink-soft); }
   .sheet-card-freq { text-transform: none; letter-spacing: 0; }
+
+  /* Action & Frequency badges — the two questions asked at the table. */
+  .sheet-card-badges {
+    display: flex; flex-wrap: wrap; align-items: center; gap: 0.35rem;
+    margin: 0 0 0.45rem;
+  }
+  .sheet-badge {
+    display: inline-flex; align-items: center; gap: 0.25rem;
+    padding: 0.1rem 0.4rem; border: 1px solid var(--oxblood); border-radius: 3px;
+    font-size: 0.72rem; letter-spacing: 0.06em; text-transform: uppercase;
+    font-weight: bold; white-space: nowrap;
+  }
+  /* A cost that comes out of your turn is loud; one that does not is quiet. */
+  .sheet-badge--act.sheet-badge--turn { background: var(--oxblood); color: var(--parchment); }
+  .sheet-badge--act.sheet-badge--span { border-color: var(--rule); color: var(--ink-soft); }
+  .sheet-badge--freq { border-color: var(--rule); color: var(--ink-soft); }
+  .sheet-badge-glyph { font-size: 0.9em; }
+  .sheet-badge-note { font-weight: normal; letter-spacing: 0.03em; }
+  /* One box per use — pencilled in at the table, not clicked. */
+  .sheet-badge-boxes { margin-left: 0.15rem; letter-spacing: 0.05em; }
+  .sheet-badge-rider {
+    font-size: 0.78rem; color: var(--ink-soft); text-transform: none; letter-spacing: 0;
+  }
   .sheet-card-weapons {
     margin: 0 0 0.45rem; padding: 0.25rem 0;
     border-top: 1px solid var(--rule); border-bottom: 1px solid var(--rule);
