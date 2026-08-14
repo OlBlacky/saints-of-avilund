@@ -390,21 +390,19 @@ const ladders: Feat[] = [
     ],
   },
   {
-    // Working name from mechanics/encumbrance.md; Les renames at will —
-    // the id never changes.
     id: 'encumbrance-ladder',
-    name: 'Encumbrance Feat Ladder',
-    brief: 'Carry like a stronger man; at its height, Heavy Loads count as Light.',
-    full: 'Count your Str as greater for the purposes of Encumbrance: +1, then +2. The final Rank makes Heavy Loads count as Light Loads. One Rank per Level.',
+    name: 'Strongback',
+    brief: 'Carry more; at its height, Heavy Loads count as Light.',
+    full: 'Add to your Base Load: +15 lb, then +30 lb. The final Rank makes Heavy Loads count as Light Loads. One Rank per Level.',
     ladder: [
-      { value: 'Count your Str as +1 greater for Encumbrance', cost: 'm' },
-      { value: 'Count your Str as +2 greater for Encumbrance', cost: 'm' },
-      { value: 'Heavy Loads count as Light Loads', cost: 'M', now: 'Count your Str as +2 greater for Encumbrance · Heavy Loads count as Light Loads' },
+      { value: '+15 lb to your Base Load', cost: 'm' },
+      { value: '+30 lb to your Base Load', cost: 'm' },
+      { value: 'Heavy Loads count as Light Loads', cost: 'M', now: '+30 lb to your Base Load · Heavy Loads count as Light Loads' },
     ],
   },
   {
     id: 'commerce-ladder',
-    name: 'Commerce Feat Ladder',
+    name: 'Chaffer',
     brief: 'Buy cheaper; at its height, sell dearer too.',
     full: 'Purchase items for 10% less, then 20% less. The final Rank also sells items for 10% more. One Rank per Level. The percentages apply at every Market you can reach.',
     ladder: [

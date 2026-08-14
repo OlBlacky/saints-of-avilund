@@ -59,6 +59,7 @@ export const SYSTEM: SystemPart[] = [
     part: 'IV · Gear',
     items: [
       { slug: 'equipment', title: 'Equipment', blurb: 'Weapons, armour & shields, sundries, and coin.', status: 'live', stub: false },
+      { slug: 'encumbrance', title: 'Encumbrance & Carrying Gear', blurb: 'The three Gear States, the Equipped Limit, and the Load Bands.', status: 'live' },
     ],
   },
   {

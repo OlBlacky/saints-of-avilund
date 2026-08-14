@@ -46,7 +46,7 @@ Your **Load** is the total weight of everything Worn, Equipped, or Stored on you
 
 ## Load Bands
 
-**Base Load = 40 + (10 × Str) lb**, plus **15 lb per Rank** of the Encumbrance Feat Ladder.
+**Base Load = 40 + (10 × Str) lb**, plus **15 lb per Rank** of the Strongback Ladder.
 
 An ordinary person shoulders 40 lb without complaint, and a full adventuring kit lands inside that. The floor is deliberately generous: a Band that fires for everyone all the time is not a penalty, it is a permanent tax nobody notices. Encumbrance should mean *you have overloaded yourself*, not *you have packed*.
 
@@ -120,7 +120,7 @@ The data lives in `app/src/lib/equipment.ts` (`CONTAINERS`, `KITS`: `capacityLb`
 
 Character traits touch Encumbrance in five ways: **pounds on the Base Load** — the blunt hook — **counting your Str as greater (or lesser) for Load purposes** — the fine-grained one, and the one the Quirks use — **Band shifts**, **the Equipped Limit**, and **Access rungs**. Gear Coefficients handle the multiplicative fun.
 
-### The Encumbrance Feat Ladder
+### Strongback
 
 A **Feat Ladder** is a Feat with Ranks, climbed on the same advance economy as any other Ladder (≤1 Rank per Level):
 
@@ -132,7 +132,7 @@ A **Feat Ladder** is a Feat with Ranks, climbed on the same advance economy as a
 
 Ranks 1 and 2 grant **pounds, not Strength**. Read through the ×10 multiplier the same Rank would be worth several times more to a strong character than a weak one, which is backwards for a Feat both pay the same Minor for — and it is the weak character who has reason to buy it.
 
-*(Feat name: [[add text]] — working title "the Encumbrance Feat Ladder".)*
+*(Feat name locked Aug 14 2026: **Strongback**. The id stays `encumbrance-ladder`.)*
 
 ### Quick Draw & Deft Hands
 

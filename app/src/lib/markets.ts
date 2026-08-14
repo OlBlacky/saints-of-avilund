@@ -10,7 +10,7 @@
 //
 // Market lines carry cp values that may hold fractions (the 25% buyback
 // of an odd list price). Fractions stay in the math; the FINAL price —
-// after Commerce Feat percentages — rounds to the nearest cp, in
+// after Chaffer percentages — rounds to the nearest cp, in
 // buyPriceCp/sellPriceCp. Nothing displays a Market line raw.
 
 import { CATALOGUE, type Cp } from './equipment';
@@ -249,7 +249,7 @@ export function listedMarkets(
   );
 }
 
-// ── Pricing with the Commerce Feat Ladder ────────────────────────
+// ── Pricing with the Chaffer Ladder ──────────────────────────────
 // Rank 1: buy 10% off · Rank 2: buy 20% off · Rank 3: sell 10% up.
 // Fractions stay in the math; the final price rounds to the nearest cp.
 

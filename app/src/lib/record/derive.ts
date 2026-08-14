@@ -150,7 +150,7 @@ export type LoadBand = 'None' | 'Light' | 'Heavy';
 export interface DerivedLoad {
   /** Carried weight, rounded to the nearest pound. */
   totalLb: number;
-  /** The top of the no-effect Band: 40 + 10 × Str, plus the Encumbrance Feat
+  /** The top of the no-effect Band: 40 + 10 × Str, plus the Strongback
    * Ladder — showing its work. */
   base: Breakdown;
   /** The base written as an equation. A contributor list cannot say that the
@@ -163,7 +163,7 @@ export interface DerivedLoad {
   /** The whole track, so the sheet can show where the character stands
    * rather than only what they have landed on. */
   rungs: LoadRung[];
-  /** Rank 3 of the Encumbrance Feat Ladder is holding a Heavy Load at Light —
+  /** Rank 3 of the Strongback Ladder is holding a Heavy Load at Light —
    * why the standing Band can sit below the weight carried. */
   tamed: boolean;
 }
@@ -188,7 +188,7 @@ function strForLoad(state: CharacterState): number {
   return (state.attributeRanks.Strength ?? 0) - (state.flaws.includes('Strength') ? 1 : 0);
 }
 
-/** Each Rank of the Encumbrance Feat Ladder is worth this many pounds. It is
+/** Each Rank of the Strongback Ladder is worth this many pounds. It is
  * a flat grant rather than a Strength shift: read through the multiplier it
  * would be worth several times more to a strong character than a weak one,
  * which is backwards for a Feat bought at the same price by both. */
@@ -207,7 +207,7 @@ function loadFor(state: CharacterState): DerivedLoad {
   const baseParts: Part[] = [
     { label: 'Base', value: 40 },
     ...(str ? [{ label: `Strength ×10`, value: 10 * str }] : []),
-    ...(carryRanks ? [{ label: 'Encumbrance Feat', value: LADDER_LB * carryRanks }] : []),
+    ...(carryRanks ? [{ label: 'Strongback', value: LADDER_LB * carryRanks }] : []),
   ];
   const raw = baseParts.reduce((t, p) => t + p.value, 0);
   // A guard rather than a rule: no reachable Strength drives the base this

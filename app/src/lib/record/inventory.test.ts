@@ -2,7 +2,7 @@
 // mechanics/markets.md): opening coin from the Starting Gear category, the
 // atomic Basket transaction, the creation no-sell rule, the first-Session
 // sell lock (a New character sells nothing), Market access via Feats, and
-// the Commerce Feat Ladder's percentages.
+// the Chaffer Ladder's percentages.
 
 import { describe, expect, it } from 'vitest';
 import { GEAR, STARTING_COIN } from '../gear';
@@ -125,7 +125,7 @@ describe('the Markets roster', () => {
     expect(buyPriceCp(magazine, 'longsword')).toBeUndefined();
   });
 
-  it('the Commerce Feat Ladder discounts buys and lifts sells', () => {
+  it('the Chaffer Ladder discounts buys and lifts sells', () => {
     expect(buyPriceCp(WALDHEIM_MARKET, 'longsword', 0)).toBe(150);
     expect(buyPriceCp(WALDHEIM_MARKET, 'longsword', 1)).toBe(135);
     expect(buyPriceCp(WALDHEIM_MARKET, 'longsword', 2)).toBe(120);
@@ -432,7 +432,7 @@ describe('containers and Load', () => {
     expect(rungs[2].effect).toContain("−10'");
   });
 
-  it('the Encumbrance Feat Ladder widens the base and tames Heavy', () => {
+  it('the Strongback Ladder widens the base and tames Heavy', () => {
     const heavyHaul = [
       ...crystallized(),
       buy([{ itemId: 'chain-10ft', qty: 13 }]), // 130 lb > 2 × 40

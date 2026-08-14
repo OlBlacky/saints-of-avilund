@@ -60,6 +60,14 @@ What the table demonstrates, mechanically:
 - **Trade goods** — the pelts are the haul-it-home arbitrage: buy at 20 in Havilah, sell at 30 in Waldheim, profit to whoever carries 10 lb across the map.
 - **Paper wealth** — stock certificates are weightless, near-liquid in Havilah (sell-back at 98–99%), and worth *more* in Waldheim: portable money that appreciates southward, invented by the city that invented shares. (Also, certificates are ownership — plot hooks ride along free.)
 
+### Mantlethorn Castle Market — Mantlethorn — Masterwork Leather Market
+
+The third Regional Market (settled Aug 14 2026). **Mantlethorn is Cattle Country** — the northern kingdom keeps cattle, has leather in abundance, and makes the setting's great leather gear.
+
+- **Feat's origin gate:** Mantlethorn natives and residents. *(Feat name: [[add text]].)*
+- **Catalogue:** **Mantlethorn Leather** *(Masterwork Leather Armour)* — the base grade and its Quality menu, per [masterwork.md](masterwork.md). Masterwork sells **only** in its home market, character creation included.
+- First carrier of the **named-goods pattern**: masterwork bought at a home market takes the market's regional name, canonical type in the parenthetical.
+
 ### Every region gets one (standing intent)
 
 Every state/region of Avilund should eventually carry its own Regional Market — which means deciding what each place **specializes in** (production or trade access) and locking that into the lore. Tracked in the Scriptorium to-do (`design-notes-and-to-do-2026.md`).
@@ -126,7 +134,7 @@ Most items carry criteria for **who will buy them**. An item's sell price exists
 
 ## Feats
 
-### The Commerce Feat Ladder
+### Chaffer
 
 | Rank | Effect | Cost |
 |---|---|---|
@@ -134,7 +142,7 @@ Most items carry criteria for **who will buy them**. An item's sell price exists
 | 2 | …20% less | m |
 | 3 | And sell items for 10% more | M *(assumed — Les to confirm)* |
 
-*(Feat name: [[add text]].)* Standard Ladder pacing (≤1 Rank per Level). Percentages stack with Market rates.
+*(Feat name locked Aug 14 2026: **Chaffer**. The id stays `commerce-ladder`.)* Standard Ladder pacing (≤1 Rank per Level). Percentages stack with Market rates.
 
 ### Market Access Feats
 
