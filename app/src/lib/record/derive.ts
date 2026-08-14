@@ -148,8 +148,8 @@ export type LoadBand = 'None' | 'Light' | 'Heavy';
 export interface DerivedLoad {
   /** Carried weight, rounded to the nearest pound. */
   totalLb: number;
-  /** The top of the no-effect Band: 25 + 5 × Str (min 5), Feat-shifted —
-   * showing its work. */
+  /** The top of the no-effect Band: 40 + 10 × Str, plus the Encumbrance Feat
+   * Ladder — showing its work. */
   base: Breakdown;
   band: LoadBand;
   /** The Band's penalty, null when unburdened. */
@@ -162,24 +162,30 @@ const BAND_EFFECT: Record<LoadBand, string | null> = {
   Heavy: "−10' Speed · −2 physical skill checks",
 };
 
-/** Str as counted for Encumbrance only — the fine-grained hook the Feat
- * Ladder and the Quirks plug into. Kept apart from Strength itself. */
+/** Str as counted for Encumbrance only — the fine-grained hook the Quirks
+ * plug into. Kept apart from Strength itself. */
 function strForLoad(state: CharacterState): number {
-  const ladderRank = state.feats.find((f) => f.featId === 'encumbrance-ladder')?.rank ?? 0;
-  const str =
-    (state.attributeRanks.Strength ?? 0) - (state.flaws.includes('Strength') ? 1 : 0);
-  return str + Math.min(2, ladderRank);
+  return (state.attributeRanks.Strength ?? 0) - (state.flaws.includes('Strength') ? 1 : 0);
 }
+
+/** Each Rank of the Encumbrance Feat Ladder is worth this many pounds. It is
+ * a flat grant rather than a Strength shift: read through the multiplier it
+ * would be worth several times more to a strong character than a weak one,
+ * which is backwards for a Feat bought at the same price by both. */
+const LADDER_LB = 15;
 
 function loadFor(state: CharacterState): DerivedLoad {
   const ladderRank = state.feats.find((f) => f.featId === 'encumbrance-ladder')?.rank ?? 0;
   const str = strForLoad(state);
+  const carryRanks = Math.min(2, ladderRank);
   const baseParts: Part[] = [
-    { label: 'Base', value: 25 },
-    ...(str ? [{ label: `Strength ×5`, value: 5 * str }] : []),
+    { label: 'Base', value: 40 },
+    ...(str ? [{ label: `Strength ×10`, value: 10 * str }] : []),
+    ...(carryRanks ? [{ label: 'Encumbrance Feat', value: LADDER_LB * carryRanks }] : []),
   ];
   const raw = baseParts.reduce((t, p) => t + p.value, 0);
-  // The floor prints its own part, so the arithmetic never appears to lie.
+  // A guard rather than a rule: no reachable Strength drives the base this
+  // low. It prints its own part if it ever does, so the arithmetic cannot lie.
   if (raw < 5) baseParts.push({ label: 'Minimum', value: 5 - raw });
   const base = sum(baseParts);
   const baseLb = base.total;

@@ -546,11 +546,30 @@ const blurb = 'Build a character of Avilund — and once they are Complete, this
   }
   .sheet-cbox-note { margin: 0.3rem 0 0; font-size: 0.82rem; font-style: italic; }
 
-  /* The carry summary leading the Gear page */
-  .sheet-carry { padding: 0.5rem 0.9rem; }
-  .sheet-carry .sheet-vitline { margin: 0; }
-  .sheet-carry-math { font-size: 0.82rem; }
-  .sheet-carry-note { margin: 0.25rem 0 0; font-size: 0.82rem; font-style: italic; }
+  /* The carry summary leading the Gear page: label, figure, and the figure's
+     arithmetic beneath it — one row per number, so nothing runs long */
+  .sheet-carry { padding: 0.7rem 0.9rem 0.8rem; }
+  .sheet-carry-grid {
+    display: grid; grid-template-columns: max-content minmax(0, 1fr);
+    gap: 0.45rem 0.9rem; margin: 0; align-items: baseline;
+  }
+  .sheet-carry-grid dt {
+    font-variant: small-caps; letter-spacing: 0.05em;
+    color: var(--gold); font-size: 0.85rem;
+  }
+  .sheet-carry-grid dd { margin: 0; display: flex; flex-direction: column; gap: 0.05rem; }
+  .sheet-carry-val { color: var(--oxblood); font-weight: bold; }
+  .sheet-carry-math, .sheet-carry-effect { font-size: 0.82rem; color: var(--ink-soft); }
+  .sheet-carry-note { margin: 0.6rem 0 0; font-size: 0.82rem; color: var(--ink-soft); }
+
+  /* The 0-Enc tag, beside the weight it is cancelling */
+  .sheet-enc0 {
+    display: inline-block; margin-right: 0.4rem;
+    border: 1px solid var(--gold); border-radius: 3px;
+    padding: 0 0.25rem; font-size: 0.7rem;
+    font-variant: small-caps; letter-spacing: 0.04em;
+    color: var(--gold); vertical-align: 0.05em;
+  }
 
   /* Write-in space, for the printed sheet only */
   .sheet-writein { display: none; }
@@ -652,6 +671,11 @@ const blurb = 'Build a character of Avilund — and once they are Complete, this
     font-weight: bold; color: var(--oxblood);
     font-variant-numeric: tabular-nums; white-space: nowrap;
   }
+  /* A Specialization Hook in force: the mark on the weapon line whose
+     numbers already carry it, and on the line that names the payoff. */
+  .sheet-card-hooked { color: var(--gold, var(--oxblood)); font-weight: bold; cursor: help; }
+  .sheet-card-weapon-math .sheet-card-hooked { margin-left: 0.25rem; }
+  .sheet-card-hook { color: var(--ink-soft); }
   .sheet-card-keywords {
     margin: 0.5rem 0 0; padding-top: 0.4rem; border-top: 1px solid var(--rule);
     font-size: 0.74rem; letter-spacing: 0.04em; text-transform: uppercase;

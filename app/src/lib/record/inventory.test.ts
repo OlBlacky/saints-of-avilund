@@ -404,15 +404,26 @@ describe('containers and Load', () => {
     // 2 (pack) + 18 (chains ×0.9) + 10 (maul) = 30; starting gear weighs
     // nothing (unique, no catalogue weight).
     expect(load.totalLb).toBe(30);
-    expect(load.base.total).toBe(25); // Str +0
-    expect(load.band).toBe('Light');
-    expect(load.effect).toContain("−5'");
+    expect(load.base.total).toBe(40); // Str +0
+    // 30 of 40: an ordinary kit sits inside the base, which is the point of
+    // the 40 lb floor — the Band is a signal, not a standing penalty.
+    expect(load.band).toBe('None');
+    expect(load.effect).toBeNull();
+  });
+
+  it('Load Bands: past the base is Light, past twice it is Heavy', () => {
+    const carrying = (qty: number) =>
+      derive(replay([...crystallized(), buy([{ itemId: 'chain-10ft', qty }])]).state).load;
+    expect(carrying(4).band).toBe('None');   // 40 of 40
+    expect(carrying(5).band).toBe('Light');  // 50 — past the base
+    expect(carrying(8).band).toBe('Light');  // 80 of 2 × 40
+    expect(carrying(9).band).toBe('Heavy');  // 90 — past twice the base
   });
 
   it('the Encumbrance Feat Ladder widens the base and tames Heavy', () => {
     const heavyHaul = [
       ...crystallized(),
-      buy([{ itemId: 'chain-10ft', qty: 6 }]), // 60 lb > 2 × 25
+      buy([{ itemId: 'chain-10ft', qty: 13 }]), // 130 lb > 2 × 40
     ];
     expect(derive(replay(heavyHaul).state).load.band).toBe('Heavy');
 
@@ -423,12 +434,32 @@ describe('containers and Load', () => {
         ev('milestone-granted', {}), ev('milestone-granted', {}), ev('milestone-granted', {}),
         ev('feat-advanced', { featId: 'encumbrance-ladder', toRank }),
       ]),
-      buy([{ itemId: 'chain-10ft', qty: 8 }]), // 80 lb
+      buy([{ itemId: 'chain-10ft', qty: 17 }]), // 170 lb
     ]);
     expect(laddered.flags).toEqual([]);
     const { load } = derive(laddered.state);
-    expect(load.base.total).toBe(35);   // Str +0 counted as +2
-    expect(load.band).toBe('Light'); // 80 > 70 would be Heavy; Rank 3 tames it
+    expect(load.base.total).toBe(70);   // 40 + two Ranks at 15 lb
+    expect(load.band).toBe('Light'); // 170 > 2 × 70 would be Heavy; Rank 3 tames it
+  });
+
+  it('a Feat Rank is worth the same pounds to a weak character as a strong one', () => {
+    const withRanks = (ranks: number) =>
+      derive(replay([
+        ...crystallized(),
+        ...(ranks
+          ? [
+              ev('feat-bought', { featId: 'encumbrance-ladder' }),
+              ...(ranks > 1
+                ? [
+                    ev('milestone-granted', {}), ev('milestone-granted', {}), ev('milestone-granted', {}),
+                    ev('feat-advanced', { featId: 'encumbrance-ladder', toRank: 2 }),
+                  ]
+                : []),
+            ]
+          : []),
+      ]).state).load.base.total;
+    expect(withRanks(1) - withRanks(0)).toBe(15);
+    expect(withRanks(2) - withRanks(0)).toBe(30);
   });
 });
 

@@ -44,13 +44,25 @@ Your **Load** is the total weight of everything Worn, Equipped, or Stored on you
 
 ## Load Bands
 
-**Base Load = 25 + (5 × Str) lb** *(minimum 5 lb)*.
+**Base Load = 40 + (10 × Str) lb**, plus **15 lb per Rank** of the Encumbrance Feat Ladder.
+
+An ordinary person shoulders 40 lb without complaint, and a full adventuring kit lands inside that. The floor is deliberately generous: a Band that fires for everyone all the time is not a penalty, it is a permanent tax nobody notices. Encumbrance should mean *you have overloaded yourself*, not *you have packed*.
 
 | Band | Carrying | Effect |
 |---|---|---|
 | **None** | up to Base Load | no effect |
 | **Light** | up to 2 × Base Load | −5' Speed · −1 to all physical skill checks |
 | **Heavy** | anything beyond | −10' Speed · −2 to all physical skill checks |
+
+| Str | Base Load | With 1 Rank | With 2 Ranks | Light to (2 Ranks) |
+|---|---|---|---|---|
+| −1 | 30 lb | 45 lb | 60 lb | 120 lb |
+| +0 | 40 lb | 55 lb | 70 lb | 140 lb |
+| +2 | 60 lb | 75 lb | 90 lb | 180 lb |
+| +3 | 70 lb | 85 lb | **100 lb** | 200 lb |
+| +5 | 90 lb | 105 lb | 120 lb | 240 lb |
+
+The really strong soldier who has trained for the march — **+3 Strength with both carrying Ranks** — shoulders 100 lb without complaint. That is the top of the ordinary range; the rest is what Bands are for.
 
 *Physical skill checks* are checks with skills governed by Str, Dex, or Con — the same set the armour non-proficiency penalty touches.
 
@@ -104,7 +116,7 @@ The data lives in `app/src/lib/equipment.ts` (`CONTAINERS`, `KITS`: `capacityLb`
 
 ## Feats & Quirks
 
-Character traits touch Encumbrance in four ways: **counting your Str as greater (or lesser) for Load purposes** — the fine-grained hook — **Band shifts**, **the Equipped Limit**, and **Access rungs**. Gear Coefficients handle the multiplicative fun.
+Character traits touch Encumbrance in five ways: **pounds on the Base Load** — the blunt hook — **counting your Str as greater (or lesser) for Load purposes** — the fine-grained one, and the one the Quirks use — **Band shifts**, **the Equipped Limit**, and **Access rungs**. Gear Coefficients handle the multiplicative fun.
 
 ### The Encumbrance Feat Ladder
 
@@ -112,9 +124,11 @@ A **Feat Ladder** is a Feat with Ranks, climbed on the same advance economy as a
 
 | Rank | Effect | Cost |
 |---|---|---|
-| 1 | Count your Str as +1 greater for the purposes of Encumbrance | m |
-| 2 | …as +2 greater | m |
+| 1 | +15 lb to your Base Load | m |
+| 2 | +30 lb to your Base Load | m |
 | 3 | And Heavy Loads only count as Light Loads | M |
+
+Ranks 1 and 2 grant **pounds, not Strength**. Read through the ×10 multiplier the same Rank would be worth several times more to a strong character than a weak one, which is backwards for a Feat both pay the same Minor for — and it is the weak character who has reason to buy it.
 
 *(Feat name: [[add text]] — working title "the Encumbrance Feat Ladder".)*
 

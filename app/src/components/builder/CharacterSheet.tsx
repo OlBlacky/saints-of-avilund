@@ -21,6 +21,7 @@ import {
   RANGED_WEAPONS,
   SHIELDS,
   ACCESS_LABEL,
+  carriesNoLoad,
   containerAccess,
   containerAccessNote,
   containerCapacityLb,
@@ -139,6 +140,14 @@ function condense(parts: Part[]): Part[] {
   }
   return out;
 }
+
+/** A breakdown's arithmetic alone, without its total — for the places that
+ * have already printed the figure and want only the work beneath it. A lone
+ * part is not arithmetic, it is the figure again, so it prints nothing. */
+const mathOf = (b: Breakdown): string => {
+  const parts = condense(b.parts);
+  return parts.length > 1 ? parts.map(partText).join(' · ') : '';
+};
 
 /** Parts that appear, same label and value, in every breakdown of a set —
  * e.g. a flat Vow bonus that lands on all six Attribute rows alike. Pulling
@@ -559,8 +568,23 @@ export default function CharacterSheet({ identity, setIdentity, status, setStatu
     );
   };
 
-  const rowWeight = (item: OwnedItem) =>
-    item.itemId ? fmtWeight((itemWeightLb(item.itemId) ?? 0) * item.qty || null) : '—';
+  /** The weight cell: the 0-Enc tag where the weight is not counting, then
+   * the figure. The tag tracks the state rather than the item — pack a suit
+   * of armour and the tag goes, because a spare suit counts in full. */
+  const rowWeight = (item: OwnedItem) => {
+    const weight = item.itemId
+      ? fmtWeight((itemWeightLb(item.itemId) ?? 0) * item.qty || null)
+      : '—';
+    const free = item.location === 'worn' && item.itemId && carriesNoLoad(item.itemId);
+    return (
+      <>
+        {free && (
+          <span class="sheet-enc0" title="Worn — does not count toward your Load">0-Enc</span>
+        )}
+        {weight}
+      </>
+    );
+  };
 
   /** A Container's box: its three dials, and whatever is unusual about it
    * stated at the point of use rather than learned from a table elsewhere.
@@ -1196,18 +1220,26 @@ export default function CharacterSheet({ identity, setIdentity, status, setStatu
           let toHit = 0;
           let damage = 0;
           let reach = 0;
-          const parts: string[] = [];
+          const hitParts: string[] = [];
+          const dmgParts: string[] = [];
           for (const h of live) {
             const m = h.math!;
             if (m.toHit) {
               toHit += m.toHit;
-              parts.push(`${h.group} Hook +${m.toHit}`);
+              hitParts.push(`${h.group} Hook +${m.toHit}`);
             }
-            damage += m.damage ?? 0;
-            if (m.damageAttr) damage += shortTotals[m.damageAttr] ?? 0;
+            if (m.damage) {
+              damage += m.damage;
+              dmgParts.push(`${h.group} Hook +${m.damage}`);
+            }
+            if (m.damageAttr) {
+              const v = shortTotals[m.damageAttr] ?? 0;
+              damage += v;
+              dmgParts.push(`${h.group} Hook +${m.damageAttr} (${v})`);
+            }
             reach += m.reach ?? 0;
           }
-          return { toHit, damage, reach, parts };
+          return { toHit, damage, reach, hitParts, dmgParts, live };
         };
 
         // An Ability's Range says which arms can carry it. A card measured in
@@ -1340,10 +1372,10 @@ export default function CharacterSheet({ identity, setIdentity, status, setStatu
                 key: `${label}/${item.instanceId}`,
                 name: `${label} — ${item.name}`,
                 toHit: offenceOf(attrFull) + (p ?? -1) + hook.toHit,
-                toHitParts: [...toHitPartsFor(attrFull, w.group), ...hook.parts],
+                toHitParts: [...toHitPartsFor(attrFull, w.group), ...hook.hitParts],
                 vs: vsDef ? `vs ${vsDef}` : '',
                 damage: addToDamage(dmgFor(dmgText, w.damage), hook.damage),
-                dmgParts: dmgPartsFor(dmgText),
+                dmgParts: [...dmgPartsFor(dmgText), ...hook.dmgParts],
               });
             }
           } else {
@@ -1483,8 +1515,17 @@ export default function CharacterSheet({ identity, setIdentity, status, setStatu
                             group: w.group,
                             where: rootLocation(item),
                             toHit: offenceOf(atkAttr) + (p ?? -1) + hook.toHit,
-                            toHitParts: [...toHitPartsFor(atkAttr, w.group), ...hook.parts],
+                            toHitParts: [...toHitPartsFor(atkAttr, w.group), ...hook.hitParts],
                             damage: addToDamage(dmgFor(dmgText, w.damage), hook.damage),
+                            // The damage line breaks down the way the attack
+                            // does: the weapon's die, then everything added to
+                            // it — the Hook's bonus named among them.
+                            dmgParts: [
+                              `${item.name} ${w.damage}`,
+                              ...dmgPartsFor(dmgText),
+                              ...hook.dmgParts,
+                            ],
+                            hooked: hook.live.length > 0,
                             // A reach Hook lengthens this weapon's line alone,
                             // so it is stated there rather than on the card's
                             // Range, which speaks for every weapon listed.
@@ -1529,14 +1570,6 @@ export default function CharacterSheet({ identity, setIdentity, status, setStatu
                       (l) => [l.name, resolveValue(l, owned.ranks[l.name])] as const,
                     ),
                     ...(specFeat ? [['Specialization', specFeat.now ?? specFeat.full] as const] : []),
-                    // A Hook whose arithmetic reached a weapon's line is
-                    // already said; the card states only what the numbers
-                    // could not carry, so nothing is counted twice.
-                    ...hooks.map((h) => {
-                      const carried =
-                        h.math && weaponRows.some((r) => hookMatchesGroup(h.group, r.group));
-                      return [`Specialization — ${h.group}`, carried ? h.rest ?? '' : h.effect] as const;
-                    }),
                   ].filter(([, v]) => v && v !== '—') as [string, string][];
                   const keywords = keywordsFor(owned.ref.category);
                   const hiddenHere = weaponRows.filter((r) => hiddenCardWeapons.includes(r.key));
@@ -1599,9 +1632,14 @@ export default function CharacterSheet({ identity, setIdentity, status, setStatu
                                   <span class="cf-shop-src"> · {r.where === 'home' ? 'at home' : r.where}</span>
                                 )}
                               </span>
-                              <span class="sheet-card-weapon-math" title={r.toHitParts.join(' · ')}>
-                                {signed(r.toHit)}{atkVs ? ` vs ${atkVs}` : ''} · {r.damage}
+                              <span class="sheet-card-weapon-math">
+                                <span title={r.toHitParts.join(' · ')}>
+                                  {signed(r.toHit)}{atkVs ? ` vs ${atkVs}` : ''}
+                                </span>
+                                {' · '}
+                                <span title={r.dmgParts.join(' · ')}>{r.damage}</span>
                                 {r.range && ` · ${r.range}`}
+                                {r.hooked && <span class="sheet-card-hooked" title="a Specialization Hook is in this line">✦</span>}
                               </span>
                               <button
                                 type="button"
@@ -1636,6 +1674,14 @@ export default function CharacterSheet({ identity, setIdentity, status, setStatu
                       )}
                       {body.map(([label, v]) => (
                         <p key={label} class="cf-quirk-mech"><strong>{label}.</strong> {noteAttrs(v)}</p>
+                      ))}
+                      {/* The Hooks this build has unlocked, marked with the ✦
+                          the weapon lines carrying them wear. */}
+                      {hooks.map((h) => (
+                        <p key={h.group} class="cf-quirk-mech sheet-card-hook">
+                          <span class="sheet-card-hooked">✦</span>{' '}
+                          <strong>Specialization — {h.group}.</strong> {h.effect}
+                        </p>
                       ))}
                       {keywords && (
                         <p class="sheet-card-keywords">{keywords.join(' · ')}</p>
@@ -1691,29 +1737,39 @@ export default function CharacterSheet({ identity, setIdentity, status, setStatu
 
       {page === 3 && (
       <div class="sheet-boxcol">
-      {/* The Gear page is where the Equipped decision is actually made, so
-          the Limit and its arithmetic lead the page rather than hiding in
-          Vitals. Past the Limit it turns amber; it is not a wall. */}
+      {/* The Gear page is where the carrying decisions are actually made, so
+          Load and the Equipped Limit lead the page rather than hiding in
+          Vitals. One row per number: the figure, then its arithmetic beneath.
+          Past a limit the figure turns amber; it is not a wall. */}
       <section class="cf-step sheet-box sheet-carry">
-        <p class="sheet-vitline">
-          <strong>Load</strong>
-          <span class={sheet.load.band !== 'None' ? 'is-over' : undefined}>
-            {sheet.load.totalLb} lb of {sheet.load.base.total} lb · {sheet.load.band}
-            {sheet.load.effect && ` — ${sheet.load.effect}`}
-          </span>
-          <span class="sheet-carry-math"><Bd b={sheet.load.base} plain /></span>
-        </p>
-        <p class="sheet-vitline">
-          <strong>Equipped</strong>
-          <span class={sheet.equipped.over ? 'is-over' : undefined}>
-            {sheet.equipped.count} of {sheet.equipped.cap.total}
-          </span>
-          <span class="sheet-carry-math"><Bd b={sheet.equipped.cap} plain /></span>
-        </p>
-        <p class="sheet-carry-note">
-          Worn gear and anything Stored in a Container cost no slots, whatever the
-          Container's Access. {ACCESS_LABEL[sheet.drawCost]} to draw an Equipped item.
-        </p>
+        <dl class="sheet-carry-grid">
+          <dt>Load</dt>
+          <dd>
+            <span class={sheet.load.band !== 'None' ? 'is-over' : 'sheet-carry-val'}>
+              {sheet.load.totalLb} lb of {sheet.load.base.total} lb · {sheet.load.band}
+            </span>
+            {mathOf(sheet.load.base) && (
+              <span class="sheet-carry-math">{mathOf(sheet.load.base)}</span>
+            )}
+            {sheet.load.effect && (
+              <span class="sheet-carry-effect">{sheet.load.effect}</span>
+            )}
+          </dd>
+
+          <dt>Equipped</dt>
+          <dd>
+            <span class={sheet.equipped.over ? 'is-over' : 'sheet-carry-val'}>
+              {sheet.equipped.count} of {sheet.equipped.cap.total}
+            </span>
+            {mathOf(sheet.equipped.cap) && (
+              <span class="sheet-carry-math">{mathOf(sheet.equipped.cap)}</span>
+            )}
+          </dd>
+
+          <dt>Draw</dt>
+          <dd><span class="sheet-carry-val">{ACCESS_LABEL[sheet.drawCost]}</span></dd>
+        </dl>
+        <p class="sheet-carry-note">Worn gear and Stored items cost no slots.</p>
       </section>
       {weapons.length > 0 && (
         <section
