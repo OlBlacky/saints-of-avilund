@@ -138,6 +138,8 @@ export interface DerivedEquipped {
   count: number;
   /** 5 + Str + Dex + Con, minimum 5 — showing its work. */
   cap: Breakdown;
+  /** The cap written as an equation, to read as arithmetic beside Load's. */
+  formula: string;
   over: boolean;
 }
 
@@ -151,6 +153,10 @@ export interface DerivedLoad {
   /** The top of the no-effect Band: 40 + 10 × Str, plus the Encumbrance Feat
    * Ladder — showing its work. */
   base: Breakdown;
+  /** The base written as an equation. A contributor list cannot say that the
+   * Strength term is a product without garbling it ("Strength ×10 +20"), so
+   * the carrying numbers print proper arithmetic instead. */
+  formula: string;
   band: LoadBand;
   /** The Band's penalty, null when unburdened. */
   effect: string | null;
@@ -188,6 +194,12 @@ function strForLoad(state: CharacterState): number {
  * which is backwards for a Feat bought at the same price by both. */
 const LADDER_LB = 15;
 
+/** One term of a printed equation: its sign as an operator, so the line reads
+ * "40 + (Str 2 × 10) − 5" rather than a string of signed numbers. */
+function term(value: number, text: string): string {
+  return `${value < 0 ? '−' : '+'} ${text}`;
+}
+
 function loadFor(state: CharacterState): DerivedLoad {
   const ladderRank = state.feats.find((f) => f.featId === 'encumbrance-ladder')?.rank ?? 0;
   const str = strForLoad(state);
@@ -203,6 +215,16 @@ function loadFor(state: CharacterState): DerivedLoad {
   if (raw < 5) baseParts.push({ label: 'Minimum', value: 5 - raw });
   const base = sum(baseParts);
   const baseLb = base.total;
+
+  // Nothing but the base is not an equation — "Base 40 = 40 lb" tells the
+  // reader nothing twice, so the tail only appears once there is a sum.
+  const loadTerms = [
+    ...(str ? [term(str, `(Str ${Math.abs(str)} × 10)`)] : []),
+    ...(carryRanks ? [term(1, `Feat ${LADDER_LB * carryRanks}`)] : []),
+  ];
+  const formula = loadTerms.length
+    ? `Base 40 ${loadTerms.join(' ')} = ${baseLb} lb${raw < 5 ? ' (minimum)' : ''}`
+    : 'Base 40 lb';
 
   let total = 0;
   for (const item of state.inventory) {
@@ -236,7 +258,7 @@ function loadFor(state: CharacterState): DerivedLoad {
     { band: 'Heavy', upToLb: null, effect: BAND_EFFECT.Heavy, here: band === 'Heavy' },
   ];
 
-  return { totalLb, base, band, effect: BAND_EFFECT[band], rungs, tamed };
+  return { totalLb, base, formula, band, effect: BAND_EFFECT[band], rungs, tamed };
 }
 
 /** How much a character can keep at the ready, and how much they are keeping.
@@ -256,13 +278,23 @@ function equippedFor(state: CharacterState, attr: (a: Attribute) => number): Der
   // arithmetic stopped where it did.
   if (raw < 5) parts.push({ label: 'Minimum', value: 5 - raw });
 
+  const SHORT: Record<string, string> = {
+    Strength: 'Str', Dexterity: 'Dex', Constitution: 'Con',
+  };
+  const capTerms = parts
+    .filter((p) => p.label !== 'Base' && p.label !== 'Minimum')
+    .map((p) => term(p.value, `${SHORT[p.label] ?? p.label} ${Math.abs(p.value)}`));
+  const formula = capTerms.length
+    ? `Base 5 ${capTerms.join(' ')} = ${Math.max(5, raw)}${raw < 5 ? ' (minimum)' : ''}`
+    : 'Base 5';
+
   // Only the Equipped state spends a slot. Stored items never do, whatever
   // their Container's Access — which is what a bandolier is buying.
   const count = state.inventory
     .filter((i) => i.location === 'equipped')
     .reduce((n, i) => n + i.qty, 0);
   const cap = sum(parts);
-  return { count, cap, over: count > cap.total };
+  return { count, cap, formula, over: count > cap.total };
 }
 
 /** The action to get an Equipped item in hand. A `move` by default; Quick

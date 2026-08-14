@@ -454,6 +454,24 @@ describe('containers and Load', () => {
     expect(load.band).toBe('Light'); // 170 > 2 × 70 would be Heavy; Rank 3 tames it
     // The sheet says so, since the standing Band now sits below the weight.
     expect(load.tamed).toBe(true);
+    expect(load.formula).toBe('Base 40 + Feat 30 = 70 lb');
+  });
+
+  it('the carrying numbers print as equations, not contributor lists', () => {
+    const plain = derive(replay([...crystallized()]).state);
+    // Str +0: no product term, and no "= 40 lb" tail restating the base.
+    expect(plain.load.formula).toBe('Base 40 lb');
+    expect(plain.equipped.formula).toBe('Base 5');
+
+    const strong = derive(
+      replay([
+        ...crystallized(),
+        ev('milestone-granted', {}), ev('milestone-granted', {}), ev('milestone-granted', {}),
+        ev('attribute-bought', { attr: 'Strength' }),
+      ]).state,
+    );
+    expect(strong.load.formula).toBe('Base 40 + (Str 1 × 10) = 50 lb');
+    expect(strong.equipped.formula).toBe('Base 5 + Str 1 = 6');
   });
 
   it('a Feat Rank is worth the same pounds to a weak character as a strong one', () => {

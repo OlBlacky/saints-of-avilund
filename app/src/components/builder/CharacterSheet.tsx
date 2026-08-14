@@ -141,14 +141,6 @@ function condense(parts: Part[]): Part[] {
   return out;
 }
 
-/** A breakdown's arithmetic alone, without its total — for the places that
- * have already printed the figure and want only the work beneath it. A lone
- * part is not arithmetic, it is the figure again, so it prints nothing. */
-const mathOf = (b: Breakdown): string => {
-  const parts = condense(b.parts);
-  return parts.length > 1 ? parts.map(partText).join(' · ') : '';
-};
-
 /** Parts that appear, same label and value, in every breakdown of a set —
  * e.g. a flat Vow bonus that lands on all six Attribute rows alike. Pulling
  * these out of the per-row text keeps a table-wide constant from being
@@ -1750,9 +1742,7 @@ export default function CharacterSheet({ identity, setIdentity, status, setStatu
             <span class={sheet.load.band !== 'None' ? 'is-over' : 'sheet-carry-val'}>
               {sheet.load.totalLb} lb
             </span>
-            {mathOf(sheet.load.base) && (
-              <span class="sheet-carry-math">{mathOf(sheet.load.base)}</span>
-            )}
+            <span class="sheet-carry-math">{sheet.load.formula}</span>
             <ol class="sheet-track">
               {sheet.load.rungs.map((r) => (
                 <li key={r.band} class={r.here ? 'is-here' : undefined}>
@@ -1776,9 +1766,7 @@ export default function CharacterSheet({ identity, setIdentity, status, setStatu
             <span class={sheet.equipped.over ? 'is-over' : 'sheet-carry-val'}>
               {sheet.equipped.count} of {sheet.equipped.cap.total}
             </span>
-            {mathOf(sheet.equipped.cap) && (
-              <span class="sheet-carry-math">{mathOf(sheet.equipped.cap)}</span>
-            )}
+            <span class="sheet-carry-math">{sheet.equipped.formula}</span>
           </div>
         </div>
       </section>
