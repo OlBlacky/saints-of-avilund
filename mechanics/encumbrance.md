@@ -8,13 +8,13 @@ Everything on your person is in one of three states. Where a thing rides is the 
 
 | State | Where it is | To get it in hand | Load |
 |---|---|---|---|
-| **Worn** | on the body: clothing, armour, a backpack, a bandolier | not retrieved — you are already wearing it | full weight, unless **0-Enc** |
+| **Worn** | on the body: clothing, armour, and every Container | not retrieved — you are already wearing it | full weight, unless **0-Enc** |
 | **Equipped** | at the ready on your person: a dagger in the belt, a quiver, a shield | `move` | full weight |
 | **Stored** | inside a Container | the Container's **Access** | Container Coefficient |
 
-- **Only tagged items may be Worn.** Clothing, armour, and Containers with straps carry the tag; a greatsword does not. The sheet offers a state only where it is legal.
+- **Only tagged items may be Worn.** Clothing, armour, and Containers carry the tag; a greatsword does not. The sheet offers a state only where it is legal.
 - **Armour is Worn. Shields are Equipped.** A shield rides on the arm at the ready, and the first Equipped shield feeds AC and DR on the sheet. There is no drawing a cuirass — changing what you wear happens out of combat.
-- **A Container that does not ride on straps is Equipped.** A backpack, satchel, belt pouch, bandolier, and the kit bags are Worn. A sack, basket, chest, or barrel is lugged, and lugging is Equipped — which costs a slot, and so prices carrying a barrel about right.
+- **A Container is never Equipped.** You do not draw a backpack, you open it, and the action for that is its Access — so a Container's own state answers only whether it is on you. Worn covers a barrel as readily as a bandolier; the Load Bands are what make hauling a barrel a bad idea.
 - **You still have two hands.** The sheet does not track what is in them; the table does. Weapons state the hands they fill, and a shield fills one.
 - Putting a thing away costs the same action as getting it out.
 
@@ -34,7 +34,7 @@ All three physical attributes contribute: how much you can keep at the ready is 
 
 The minimum of 5 is deliberate. A floor lower than that does not make a frail character interesting, it gives them a per-session inventory chore — everyone can carry a staff and a few things besides.
 
-Past the Limit the sheet warns in amber and the GM adjudicates. It is not a wall.
+The Limit and its arithmetic lead the Gear page alongside Load, where the decision is actually made. Past the Limit the sheet warns in amber and the GM adjudicates. It is not a wall.
 
 **Items in a Container are Stored, not Equipped, whatever the Container's Access.** They never count against the Limit. This is why a bandolier is worth buying: it buys you readiness that the Limit does not charge you for, bounded instead by the Container's Capacity and its price.
 
@@ -68,6 +68,10 @@ A **Container** is any item that holds other items. Each has three dials:
 |---|---|---|---|
 | Belt pouch | 2 lb | ×0.9 | `move` |
 | Bandolier | 5 lb | ×1 | `move` |
+| Quiver | 3 lb | ×1 | `free` — part of the reload action |
+| Bolt case | 1 lb | ×1 | `free` — part of the reload action |
+| Sling stone bag | 1 lb | ×1 | `free` — part of the reload action |
+| Powder horn | 2 lb | ×1 | `free` — part of the reload action |
 | Kit bags (Healer's Kit and kin) | 3 lb | ×0.9 | `standard` |
 | Satchel | 15 lb | ×0.9 | `standard` |
 | Backpack | 50 lb | ×0.9 | `standard` |
@@ -78,7 +82,9 @@ A **Container** is any item that holds other items. Each has three dials:
 | Chest, wooden | 150 lb | ×1 | `standard` |
 | Barrel | 250 lb | ×1 | `standard` |
 
-- The **Bandolier** takes no Coefficient discount. Its edge is speed, so it is not also the best pack. Its box says what it is for — vials, ammunition, daggers — without enforcing it.
+- The **Bandolier** takes no Coefficient discount. Its edge is speed, so it is not also the best pack.
+- **Ammunition Containers** — quiver, bolt case, sling stone bag, powder horn — take no Coefficient discount either. Drawing from one is not an action of its own: it is folded into the reload the weapon already charges for. Packed inside something slower they lose the qualifier along with the rung, because then the pack has to be opened first.
+- **Ammunition is the shot; what carries it is a Container.** A quiver is a bag with an Access rung, not a kind of arrow, so it lives with the Containers.
 - Masterwork versions of the ×0.9 carriers pack at ×0.8; they join the catalogue with the Masterwork gear batch.
 - **Nested Containers** compound their Coefficients and take the **slowest Access in the chain**.
 - Keep the fractions in the math; round the final Load to the nearest pound.

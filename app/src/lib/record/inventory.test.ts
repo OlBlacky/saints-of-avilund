@@ -404,7 +404,7 @@ describe('containers and Load', () => {
     // 2 (pack) + 18 (chains ×0.9) + 10 (maul) = 30; starting gear weighs
     // nothing (unique, no catalogue weight).
     expect(load.totalLb).toBe(30);
-    expect(load.baseLb).toBe(25); // Str +0
+    expect(load.base.total).toBe(25); // Str +0
     expect(load.band).toBe('Light');
     expect(load.effect).toContain("−5'");
   });
@@ -427,7 +427,7 @@ describe('containers and Load', () => {
     ]);
     expect(laddered.flags).toEqual([]);
     const { load } = derive(laddered.state);
-    expect(load.baseLb).toBe(35);   // Str +0 counted as +2
+    expect(load.base.total).toBe(35);   // Str +0 counted as +2
     expect(load.band).toBe('Light'); // 80 > 70 would be Heavy; Rank 3 tames it
   });
 });
@@ -651,17 +651,26 @@ describe('Gear States (mechanics/encumbrance.md)', () => {
       ...crystallized(),
       buy([
         { itemId: 'maul', qty: 1 },      // no tag
-        { itemId: 'backpack', qty: 1 },  // a Container on straps
         { itemId: 'cloak-wool', qty: 1 },// clothing
       ]),
       ev('item-moved', { instanceId: 'item:maul', location: 'worn' }),
-      ev('item-moved', { instanceId: 'item:backpack', location: 'worn' }),
       ev('item-moved', { instanceId: 'item:cloak-wool', location: 'worn' }),
     ]);
     expect(flags).toEqual([]);
     expect(state.inventory.find((i) => i.itemId === 'maul')!.location).toBe('equipped');
-    expect(state.inventory.find((i) => i.itemId === 'backpack')!.location).toBe('worn');
     expect(state.inventory.find((i) => i.itemId === 'cloak-wool')!.location).toBe('worn');
+  });
+
+  it('a Container is never Equipped — you open a backpack, you do not draw it', () => {
+    const { state, flags } = replay([
+      ...crystallized(),
+      buy([{ itemId: 'backpack', qty: 1 }, { itemId: 'barrel', qty: 1 }]),
+      ev('item-moved', { instanceId: 'item:backpack', location: 'equipped' }),
+    ]);
+    expect(flags).toEqual([]);
+    // Both arrive from the Market at 'equipped' and are corrected on the way in.
+    expect(state.inventory.find((i) => i.itemId === 'backpack')!.location).toBe('worn');
+    expect(state.inventory.find((i) => i.itemId === 'barrel')!.location).toBe('worn');
   });
 
   it('Worn and Equipped both weigh in full, unless the item is 0-Enc', () => {
@@ -683,10 +692,9 @@ describe('Gear States (mechanics/encumbrance.md)', () => {
     const { state, flags } = replay([
       ...crystallized(),
       buy([
-        { itemId: 'backpack', qty: 1 },    // 2 lb, ×0.9 contents
+        { itemId: 'backpack', qty: 1 },    // 2 lb, ×0.9 contents — Worn on arrival
         { itemId: 'leather', qty: 1 },
       ]),
-      ev('item-moved', { instanceId: 'item:backpack', location: 'worn' }),
       ev('item-moved', { instanceId: 'item:leather', location: 'in:item:backpack' }),
     ]);
     expect(flags).toEqual([]);
@@ -705,10 +713,12 @@ describe('the Equipped Limit (mechanics/encumbrance.md)', () => {
     const { state } = replay([...crystallized()]);
     const sheet = derive(state);
     const attr = (a: string) => sheet.attributes.find((x) => x.attr === a)!.value.total;
-    expect(sheet.equipped.cap).toBe(
+    expect(sheet.equipped.cap.total).toBe(
       Math.max(5, 5 + attr('Strength') + attr('Dexterity') + attr('Constitution')),
     );
-    expect(sheet.equipped.cap).toBeGreaterThanOrEqual(5);
+    expect(sheet.equipped.cap.total).toBeGreaterThanOrEqual(5);
+    // It shows its work: the base is always a part.
+    expect(sheet.equipped.cap.parts).toContainEqual({ label: 'Base', value: 5 });
   });
 
   it('counts Equipped items and their quantities, and warns rather than blocks', () => {
@@ -726,12 +736,10 @@ describe('the Equipped Limit (mechanics/encumbrance.md)', () => {
     const empty = replay([
       ...crystallized(),
       buy([{ itemId: 'bandolier', qty: 1 }]),
-      ev('item-moved', { instanceId: 'item:bandolier', location: 'worn' }),
     ]);
     const packed = replay([
       ...crystallized(),
       buy([{ itemId: 'bandolier', qty: 1 }, { itemId: 'torch', qty: 40 }]),
-      ev('item-moved', { instanceId: 'item:bandolier', location: 'worn' }),
       ev('item-moved', { instanceId: 'item:torch', location: 'in:item:bandolier' }),
     ]);
     expect(packed.flags).toEqual([]);

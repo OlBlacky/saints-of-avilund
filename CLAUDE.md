@@ -35,6 +35,7 @@ source/           # Original source archive — reference only
 - Write mechanics in plain language first, formal notation second
 - Do not commit unless explicitly asked
 - Do not push unless explicitly asked
+- **No unrequested flavour text (standing order):** never add descriptive, colour, or flavour prose — item notes, card blurbs, identity paragraphs, tooltips — unless the user specifically asks for it and approves it. Write the mechanics; leave the voice to Les.
 
 ## Must-Never-Miss Rules
 

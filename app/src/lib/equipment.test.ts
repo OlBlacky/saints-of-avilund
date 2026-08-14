@@ -68,11 +68,11 @@ describe('the catalogue lift preserves the page counts', () => {
   it('section counts match the hand-written tables', () => {
     expect(MELEE_WEAPONS).toHaveLength(30);
     expect(RANGED_WEAPONS).toHaveLength(15);
-    expect(AMMUNITION).toHaveLength(7);
+    expect(AMMUNITION).toHaveLength(4);
     expect(ARMOURS).toHaveLength(9);
     expect(SHIELDS).toHaveLength(4);
     expect(MASTERWORK).toHaveLength(4);
-    expect(CONTAINERS).toHaveLength(13);
+    expect(CONTAINERS).toHaveLength(17);
     expect(LIGHT_AND_FIRE).toHaveLength(7);
     expect(CAMP_AND_TRAIL).toHaveLength(9);
     expect(ROPE_IRON_CLIMBING).toHaveLength(13);

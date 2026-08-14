@@ -71,15 +71,20 @@ export interface OwnedItem {
 
 /** Every location entering state passes through here. Two jobs: read old
  * records written before the Gear States (the retired 'carried' and 'held'
- * both mean 'equipped'), and hold the tag rules — armour is Worn, shields
- * are Equipped, and only a tagged item may be Worn at all
+ * both mean 'equipped'), and hold the tag rules — armour and Containers are
+ * Worn, shields are Equipped, and only a tagged item may be Worn at all
  * (mechanics/encumbrance.md). */
 function normalizeLocation(location: ItemLocation | 'carried' | 'held', itemId?: string): ItemLocation {
   const loc: ItemLocation =
     location === 'carried' || location === 'held' ? 'equipped' : location;
   if (!itemId) return loc;
-  // Armour rides on the body; there is no drawing a cuirass.
-  if (loc === 'equipped' && ARMOURS.some((a) => a.id === itemId)) return 'worn';
+  // Armour rides on the body; there is no drawing a cuirass. A Container is
+  // never Equipped either — you do not draw a backpack, you open it, and the
+  // action for that is its Access.
+  if (
+    loc === 'equipped' &&
+    (ARMOURS.some((a) => a.id === itemId) || containerCoefficient(itemId) !== undefined)
+  ) return 'worn';
   // A shield rides on the arm at the ready, and feeds AC and DR from there.
   if (loc === 'worn' && SHIELDS.some((s) => s.id === itemId)) return 'equipped';
   // Anything Worn without the tag falls back to Equipped.

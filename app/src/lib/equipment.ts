@@ -184,9 +184,9 @@ export interface SimpleItem {
   /** The action to get one item out of this Container. `standard` when
    * absent; quick-draw carriers do better. */
   access?: AccessRung;
-  /** Rides on the body, so Worn is a legal state for it. Bulk vessels are
-   * not worn — a barrel is lugged, which is Equipped. */
-  worn?: boolean;
+  /** The qualifier printed after the Access rung — "Free — part of the
+   * reload action". */
+  accessNote?: string;
   /** The plain rules text on a Container's box: whatever is unusual about
    * it, stated at the point of use. */
   note?: string;
@@ -219,33 +219,55 @@ export function rungAt(index: number): AccessRung {
   return ACCESS_LADDER[Math.max(0, Math.min(ACCESS_LADDER.length - 1, index))];
 }
 
+// Ammunition is the shot itself. What carries it is a Container, and lives
+// in CONTAINERS with the rest — a quiver is a bag with an Access rung, not a
+// kind of arrow.
 export const AMMUNITION: SimpleItem[] = [
   { id: 'sling-bullets', name: 'Sling bullets (10)', priceCp: 1, weightLb: 1 },
   { id: 'arrows', name: 'Arrows (20)', priceCp: 10, weightLb: 3 },
-  { id: 'quiver', name: 'Quiver (holds 20)', priceCp: 10, weightLb: 2 },
   { id: 'crossbow-bolts', name: 'Crossbow bolts (10)', priceCp: 10, weightLb: 1 },
-  { id: 'bolt-case', name: 'Bolt case (holds 10)', priceCp: 10, weightLb: 1 },
-  { id: 'powder-horn', name: 'Powder horn', priceCp: 20, weightLb: 1 },
   { id: 'powder-and-shot', name: 'Powder and shot (10 rounds)', priceCp: 30, weightLb: 2 },
 ];
 
 export const CONTAINERS: SimpleItem[] = [
   {
     id: 'belt-pouch', name: 'Belt pouch', priceCp: 5, weightLb: null,
-    coefficient: 0.9, capacityLb: 2, access: 'move', worn: true,
-    note: 'Coin and small trinkets, at the belt. What is inside is Stored, so it costs no Equipped slots.',
+    coefficient: 0.9, capacityLb: 2, access: 'move',
   },
   // The Bandolier takes no discount: its edge is speed, so it is not also the
   // best pack. Price provisional until the next gear batch.
   {
     id: 'bandolier', name: 'Bandolier', priceCp: 30, weightLb: 1,
-    coefficient: 1, capacityLb: 5, access: 'move', worn: true,
-    note: 'Vials, ammunition and daggers, across the chest. What is inside is Stored, so it costs no Equipped slots.',
+    coefficient: 1, capacityLb: 5, access: 'move',
   },
+
+  // Ammunition Containers. Drawing from one is not an action of its own — it
+  // is folded into the reload, which is what the weapon already charges for.
+  {
+    id: 'quiver', name: 'Quiver', priceCp: 10, weightLb: 2,
+    coefficient: 1, capacityLb: 3, access: 'free',
+    accessNote: 'part of the reload action',
+  },
+  {
+    id: 'bolt-case', name: 'Bolt case', priceCp: 10, weightLb: 1,
+    coefficient: 1, capacityLb: 1, access: 'free',
+    accessNote: 'part of the reload action',
+  },
+  {
+    id: 'sling-stone-bag', name: 'Sling stone bag', priceCp: 5, weightLb: 1,
+    coefficient: 1, capacityLb: 1, access: 'free',
+    accessNote: 'part of the reload action',
+  },
+  {
+    id: 'powder-horn', name: 'Powder horn', priceCp: 20, weightLb: 1,
+    coefficient: 1, capacityLb: 2, access: 'free',
+    accessNote: 'part of the reload action',
+  },
+
   { id: 'sack-large', name: 'Sack, large', priceCp: 2, weightLb: 1, coefficient: 1, capacityLb: 40 },
   { id: 'basket', name: 'Basket', priceCp: 4, weightLb: 1, coefficient: 1, capacityLb: 25 },
-  { id: 'satchel', name: 'Satchel', priceCp: 10, weightLb: 1, coefficient: 0.9, capacityLb: 15, worn: true },
-  { id: 'backpack', name: 'Backpack', priceCp: 20, weightLb: 2, coefficient: 0.9, capacityLb: 50, worn: true },
+  { id: 'satchel', name: 'Satchel', priceCp: 10, weightLb: 1, coefficient: 0.9, capacityLb: 15 },
+  { id: 'backpack', name: 'Backpack', priceCp: 20, weightLb: 2, coefficient: 0.9, capacityLb: 50 },
   { id: 'waterskin', name: 'Waterskin (full)', priceCp: 10, weightLb: 4 },
   { id: 'flask-tin', name: 'Flask, tin', priceCp: 3, weightLb: null },
   { id: 'vial-glass', name: 'Vial, glass', priceCp: 5, weightLb: null },
@@ -528,10 +550,10 @@ export interface KitItem extends SimpleItem {
 // The kits are bags: each is a Container (×1 — a working bag, not a
 // packed load) so its Supplies can live inside it.
 export const KITS: KitItem[] = [
-  { id: 'healers-kit', name: "Healer's Kit (empty — tools & bag)", priceCp: 100, weightLb: 3, supply: null, coefficient: 0.9, capacityLb: 3, worn: true },
-  { id: 'friars-kit', name: "Friar's Kit (empty — oils, incense & implements)", priceCp: 100, weightLb: 3, supply: null, coefficient: 0.9, capacityLb: 3, worn: true },
-  { id: 'herbalists-bag', name: "Herbalist's Bag (empty — knives, mortar & pouches)", priceCp: 100, weightLb: 3, supply: null, coefficient: 0.9, capacityLb: 3, worn: true },
-  { id: 'offerings-bag', name: 'Offerings Bag (empty — pouches, knots & charms)', priceCp: 100, weightLb: 3, supply: null, coefficient: 0.9, capacityLb: 3, worn: true },
+  { id: 'healers-kit', name: "Healer's Kit (empty — tools & bag)", priceCp: 100, weightLb: 3, supply: null, coefficient: 0.9, capacityLb: 3 },
+  { id: 'friars-kit', name: "Friar's Kit (empty — oils, incense & implements)", priceCp: 100, weightLb: 3, supply: null, coefficient: 0.9, capacityLb: 3 },
+  { id: 'herbalists-bag', name: "Herbalist's Bag (empty — knives, mortar & pouches)", priceCp: 100, weightLb: 3, supply: null, coefficient: 0.9, capacityLb: 3 },
+  { id: 'offerings-bag', name: 'Offerings Bag (empty — pouches, knots & charms)', priceCp: 100, weightLb: 3, supply: null, coefficient: 0.9, capacityLb: 3 },
   { id: 'supplies', name: 'Supplies (per 10)', priceCp: 10, weightLb: 1, supply: 10, choice: { key: 'kit', label: 'Kit', options: ["Healer's Kit", "Friar's Kit", "Herbalist's Bag", 'Offerings Bag'] } },
 ];
 
@@ -570,6 +592,14 @@ export function containerNote(itemId: string): string | undefined {
   );
 }
 
+/** The qualifier printed after a Container's Access rung. */
+export function containerAccessNote(itemId: string): string | undefined {
+  return (
+    CONTAINERS.find((c) => c.id === itemId)?.accessNote ??
+    KITS.find((k) => k.id === itemId)?.accessNote
+  );
+}
+
 // ── The 0-Enc tag and the Worn tag ───────────────────────────────
 // Two invisible tags decide how an item behaves on the body
 // (mechanics/encumbrance.md). They are derived from the catalogue rather
@@ -582,14 +612,11 @@ export function carriesNoLoad(itemId: string): boolean {
   return ARMOURS.some((a) => a.id === itemId) || CLOTHING.some((c) => c.id === itemId);
 }
 
-/** Items that may be Worn: clothing, armour, and Containers that ride on
- * straps. A bulk vessel is lugged, not worn — that is Equipped. */
+/** Items that may be Worn: clothing, armour, and every Container. A Container
+ * is never Equipped — you do not draw a backpack, you open it, and the action
+ * for that is its Access. */
 export function isWearable(itemId: string): boolean {
-  if (carriesNoLoad(itemId)) return true;
-  return (
-    CONTAINERS.find((c) => c.id === itemId)?.worn === true ||
-    KITS.find((k) => k.id === itemId)?.worn === true
-  );
+  return carriesNoLoad(itemId) || containerCoefficient(itemId) !== undefined;
 }
 
 // ── The whole catalogue, flat ────────────────────────────────────

@@ -8,6 +8,7 @@ import { VAR_ORDER } from './abilities';
 import { CATEGORIES } from './category-abilities';
 import { SKILLS } from './skills';
 import {
+  addToDamage,
   parseAction,
   parseAttack,
   parseDamage,
@@ -72,6 +73,16 @@ describe('damage grammar', () => {
     const two = parseDamage('2[W] + Dex');
     if (two.kind !== 'damage') throw new Error('unexpected');
     expect(resolveDamage(two, { attrs: { Dex: 1 }, weaponDie: '1d6' })).toBe('2d6+1');
+  });
+
+  it('adds a Hook bonus into the line, ahead of the damage type', () => {
+    expect(addToDamage('1d8 + 1', 2)).toBe('1d8 + 3');
+    expect(addToDamage('1d8', 2)).toBe('1d8 + 2');
+    expect(addToDamage('2×1d6', 1)).toBe('2×1d6 + 1');
+    expect(addToDamage('1d8 + 1 Fire', 2)).toBe('1d8 + 3 Fire');
+    expect(addToDamage('1d6 Necrotic', 2)).toBe('1d6 + 2 Necrotic');
+    // Nothing to add, nothing changed.
+    expect(addToDamage('1d8 + 1', 0)).toBe('1d8 + 1');
   });
 });
 

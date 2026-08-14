@@ -287,15 +287,20 @@ const priceWithUnit = (i: SimpleItem) => (i.unit ? `${price(i)} ${i.unit}` : pri
               <td>{fmtWeight(i.weightLb)}</td>
               <td>{i.capacityLb ? `${i.capacityLb} lb` : '—'}</td>
               <td>{i.coefficient ? `×${i.coefficient}` : '—'}</td>
-              <td>{containerAccess(i.id) ? ACCESS_LABEL[containerAccess(i.id)!] : '—'}</td>
+              <td>
+                {containerAccess(i.id) ? ACCESS_LABEL[containerAccess(i.id)!] : '—'}
+                {i.accessNote ? ` — ${i.accessNote}` : ''}
+              </td>
             </tr>
           ))}
         </tbody>
       </table>
       <p>
-        A Container's own weight always counts in full. Whatever is inside one is
-        <strong>Stored</strong>, so it never spends an Equipped slot however quick the
-        Container is to reach into — which is what a bandolier is buying.
+        A Container's own weight always counts in full, and a Container is
+        <strong>Worn</strong> rather than Equipped — you do not draw a backpack, you open
+        it. Whatever is inside one is <strong>Stored</strong>, so it never spends an
+        Equipped slot however quick the Container is to reach into — which is what a
+        bandolier is buying.
       </p>
 
       <h3>Light &amp; Fire</h3>

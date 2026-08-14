@@ -521,9 +521,104 @@ export function featById(id: string): Feat | undefined {
   return FEATS.find((f) => f.id === id);
 }
 
-/** The owned Specialization whose standing Hook applies to an Ability copy
- * built around `choice` — a Malediction, a damage type. The sheet prints it on
- * the card, where the Hook is read. */
+/** The arithmetic half of a Hook — what it adds to the attack, the damage, or
+ * the reach of the weapon it is read on. */
+export interface HookMath {
+  toHit?: number;
+  /** A flat number added to damage. */
+  damage?: number;
+  /** An attribute added to damage; the sheet holds its value. */
+  damageAttr?: string;
+  /** Feet added to the Ability's reach. */
+  reach?: number;
+}
+
+/** One Hook a card lists for a proficiency group, split at the arrow:
+ * "Heavy Blades → +2 damage". */
+export interface UnlockedHook {
+  group: string;
+  /** The Hook as authored, both halves of it. */
+  effect: string;
+  /** The arithmetic, when the Hook opens with an unconditional bonus. */
+  math?: HookMath;
+  /** What the Hook does beyond the arithmetic ("Push 5'"), when it does. */
+  rest?: string;
+}
+
+// A Hook names its groups on the left of the arrow in the card's shorthand —
+// "Hammers" for Hammers/Maces, "Bows / Crossbows" for both — so the names are
+// compared bare: split on the slash, lowercased, and singular.
+const hookTokens = (s: string): string[] =>
+  s
+    .split('/')
+    .map((t) => t.trim().toLowerCase().replace(/s$/, ''))
+    .filter(Boolean);
+
+/** Whether a Hook written for `hookGroup` is the Proficiency group `profGroup`
+ * — the card's shorthand against the roster's full name. */
+export function hookMatchesGroup(hookGroup: string, profGroup: string): boolean {
+  const held = hookTokens(profGroup);
+  return hookTokens(hookGroup).some((g) => held.some((h) => h === g || h.endsWith(` ${g}`)));
+}
+
+// The Hook vocabulary that resolves to arithmetic. Everything else a Hook can
+// say — Push, Bleed, ignore the target's shield — is prose the player applies,
+// and the sheet prints it instead.
+const HOOK_MATH: { re: RegExp; read: (m: RegExpMatchArray) => HookMath }[] = [
+  { re: /^\+(\d+) damage\b/, read: (m) => ({ damage: Number(m[1]) }) },
+  { re: /^\+(Str|Dex|Con|Int|Wis|Cha) damage\b/, read: (m) => ({ damageAttr: m[1] }) },
+  { re: /^\+(\d+) to hit\b/, read: (m) => ({ toHit: Number(m[1]) }) },
+  { re: /^\+(\d+) to the [^,.]*?attack roll\b/, read: (m) => ({ toHit: Number(m[1]) }) },
+  { re: /^\+(\d+)['′] reach\b/, read: (m) => ({ reach: Number(m[1]) }) },
+];
+
+/** The arithmetic a Hook opens with, and whatever it says after that. A bonus
+ * counts only when nothing qualifies it: "+2 damage" and "+2 damage and Push
+ * 5'" are the row's to keep, while "+2 damage within the first increment" is a
+ * condition the sheet cannot judge, so it stays prose. */
+export function hookMath(effect: string): { math?: HookMath; rest?: string } {
+  for (const { re, read } of HOOK_MATH) {
+    const m = effect.match(re);
+    if (!m) continue;
+    const after = effect.slice(m[0].length);
+    if (after === '') return { math: read(m) };
+    const also = after.match(/^(?:,\s+and|,| and)\s+(.+)$/);
+    if (!also) return {};
+    return { math: read(m), rest: also[1][0].toUpperCase() + also[1].slice(1) };
+  }
+  return {};
+}
+
+/** The Specialization Hooks an owned Feat unlocks on an Ability card. A card
+ * lists every group's Hook for reference; only the groups the character holds
+ * the Specialization Feat for are in force, and those are what the sheet
+ * prints. */
+export function unlockedHooks(
+  options: { label: string; detail?: string | string[] }[] | undefined,
+  ownedFeatIds: string[],
+): UnlockedHook[] {
+  const owned = ownedFeatIds
+    .map(featById)
+    .flatMap((f) => (f?.requires?.kind === 'proficiency' ? hookTokens(f.requires.group) : []));
+  if (owned.length === 0) return [];
+  const hooks: UnlockedHook[] = [];
+  for (const o of options ?? []) {
+    if (!/\bHooks\b/.test(o.label)) continue;
+    const lines = Array.isArray(o.detail) ? o.detail : o.detail ? [o.detail] : [];
+    for (const line of lines) {
+      const m = line.match(/^(.+?)\s*→\s*(.+)$/);
+      if (!m) continue;
+      const listed = hookTokens(m[1]);
+      // A Feat's group may be the wider name ("Light Shield" for a card's
+      // "Shields"), so a listed name also matches as the tail of one.
+      const held = listed.some((g) => owned.some((o2) => o2 === g || o2.endsWith(` ${g}`)));
+      const effect = m[2].trim();
+      if (held) hooks.push({ group: m[1].trim(), effect, ...hookMath(effect) });
+    }
+  }
+  return hooks;
+}
+
 export function specializationFor(ownedFeatIds: string[], choice: string): Feat | undefined {
   return ownedFeatIds
     .map(featById)

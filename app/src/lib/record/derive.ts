@@ -136,8 +136,8 @@ export interface DerivedSheet {
 export interface DerivedEquipped {
   /** Items in the Equipped state, quantities counted. */
   count: number;
-  /** 5 + Str + Dex + Con, minimum 5. */
-  cap: number;
+  /** 5 + Str + Dex + Con, minimum 5 — showing its work. */
+  cap: Breakdown;
   over: boolean;
 }
 
@@ -148,8 +148,9 @@ export type LoadBand = 'None' | 'Light' | 'Heavy';
 export interface DerivedLoad {
   /** Carried weight, rounded to the nearest pound. */
   totalLb: number;
-  /** The top of the no-effect Band: 25 + 5 × Str (min 5), Feat-shifted. */
-  baseLb: number;
+  /** The top of the no-effect Band: 25 + 5 × Str (min 5), Feat-shifted —
+   * showing its work. */
+  base: Breakdown;
   band: LoadBand;
   /** The Band's penalty, null when unburdened. */
   effect: string | null;
@@ -172,7 +173,16 @@ function strForLoad(state: CharacterState): number {
 
 function loadFor(state: CharacterState): DerivedLoad {
   const ladderRank = state.feats.find((f) => f.featId === 'encumbrance-ladder')?.rank ?? 0;
-  const baseLb = Math.max(5, 25 + 5 * strForLoad(state));
+  const str = strForLoad(state);
+  const baseParts: Part[] = [
+    { label: 'Base', value: 25 },
+    ...(str ? [{ label: `Strength ×5`, value: 5 * str }] : []),
+  ];
+  const raw = baseParts.reduce((t, p) => t + p.value, 0);
+  // The floor prints its own part, so the arithmetic never appears to lie.
+  if (raw < 5) baseParts.push({ label: 'Minimum', value: 5 - raw });
+  const base = sum(baseParts);
+  const baseLb = base.total;
 
   let total = 0;
   for (const item of state.inventory) {
@@ -198,7 +208,7 @@ function loadFor(state: CharacterState): DerivedLoad {
   const totalLb = Math.round(total);
   let band: LoadBand = totalLb <= baseLb ? 'None' : totalLb <= 2 * baseLb ? 'Light' : 'Heavy';
   if (band === 'Heavy' && ladderRank >= 3) band = 'Light';
-  return { totalLb, baseLb, band, effect: BAND_EFFECT[band] };
+  return { totalLb, base, band, effect: BAND_EFFECT[band] };
 }
 
 /** How much a character can keep at the ready, and how much they are keeping.
@@ -207,16 +217,24 @@ function loadFor(state: CharacterState): DerivedLoad {
  * that gives a frail character an inventory chore, not an interesting
  * constraint. Past the cap the sheet warns; it is not a wall. */
 function equippedFor(state: CharacterState, attr: (a: Attribute) => number): DerivedEquipped {
-  const cap = Math.max(
-    5,
-    5 + attr('Strength') + attr('Dexterity') + attr('Constitution'),
-  );
+  const parts: Part[] = [
+    { label: 'Base', value: 5 },
+    ...(['Strength', 'Dexterity', 'Constitution'] as Attribute[])
+      .map((a) => ({ label: a, value: attr(a) }))
+      .filter((p) => p.value !== 0),
+  ];
+  const raw = parts.reduce((t, p) => t + p.value, 0);
+  // The floor prints its own part, so a frail character can see why the
+  // arithmetic stopped where it did.
+  if (raw < 5) parts.push({ label: 'Minimum', value: 5 - raw });
+
   // Only the Equipped state spends a slot. Stored items never do, whatever
   // their Container's Access — which is what a bandolier is buying.
   const count = state.inventory
     .filter((i) => i.location === 'equipped')
     .reduce((n, i) => n + i.qty, 0);
-  return { count, cap, over: count > cap };
+  const cap = sum(parts);
+  return { count, cap, over: count > cap.total };
 }
 
 /** The action to get an Equipped item in hand. A `move` by default; Quick

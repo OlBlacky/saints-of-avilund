@@ -64,6 +64,18 @@ export type DamageResult =
 export const DAMAGE_TYPES = ['Acid', 'Fire', 'Cold', 'Lightning', 'Sonic', 'Force',
   'Radiant', 'Necrotic', 'Psychic', 'Eldritch'];
 
+/** Add a flat bonus to a resolved damage line — a Specialization Hook's +2
+ * joining the numbers the player rolls. It merges into the line's trailing
+ * numeric term (1d8 + 1 becomes 1d8 + 3) and stays in front of the damage
+ * type, so the line reads as one sum. */
+export function addToDamage(text: string, n: number): string {
+  if (!n) return text;
+  const tail = text.match(/^(.*?)\s*\+\s*(\d+)(\s.*)?$/);
+  if (tail) return `${tail[1]} + ${Number(tail[2]) + n}${tail[3] ?? ''}`;
+  const typed = text.match(new RegExp(`^(.*?)(\\s+(?:${DAMAGE_TYPES.join('|')}))$`));
+  return typed ? `${typed[1]} + ${n}${typed[2]}` : `${text} + ${n}`;
+}
+
 /** Split "value (note)" / "value — note", keeping the note verbatim. A
  * trailing parenthetical wins over an em-dash so "W (fixed — a rap)" keeps
  * its whole aside together. */
