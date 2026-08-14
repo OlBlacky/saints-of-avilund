@@ -35,13 +35,17 @@ export interface AbilityRef {
 }
 
 /** Where an owned item sits — the Gear States of mechanics/encumbrance.md.
- * Held is in hand; Worn is on the body; Equipped is at the ready (a Move
- * action to draw); `in:<instanceId>` is Stored inside an owned Container
- * (a Standard action to retrieve, coefficient math applies). Home is off
- * the body and weightless. Old records may carry the retired value
- * 'carried' — replay reads it as 'equipped'. The Party Inventory joins
+ * Worn is on the body and needs the wearable tag; Equipped is at the ready
+ * (a Move action to draw, and it spends an Equipped slot); `in:<instanceId>`
+ * is Stored inside an owned Container (the Container's Access to retrieve,
+ * coefficient math applies). Home is off the body and weightless.
+ *
+ * Old records may carry retired values — 'carried' and 'held' both read as
+ * 'equipped'. Held was cut deliberately: what is in your hands is a moment,
+ * not a state, and a printed sheet cannot hold a moment. A VTT layer should
+ * track it as runtime state, never as sheet data. The Party Inventory joins
  * with campaigns. */
-export type ItemLocation = 'held' | 'worn' | 'equipped' | 'home' | `in:${string}`;
+export type ItemLocation = 'worn' | 'equipped' | 'home' | `in:${string}`;
 
 /** Where an item sits in the sheet's own ordering — beside a named
  * neighbour. The inventory's order is the player's arrangement (backpack

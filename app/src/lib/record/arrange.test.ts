@@ -3,7 +3,7 @@
 // and a row dropped beside another joins that row's Container.
 
 import { describe, expect, it } from 'vitest';
-import { contentsOf, descendantsOf, gearRows, isStored, locationBeside } from './arrange';
+import { accessFor, contentsOf, descendantsOf, gearRows, isStored, locationBeside } from './arrange';
 import type { OwnedItem } from './replay';
 import type { ItemLocation } from './events';
 
@@ -22,7 +22,7 @@ const inventory: OwnedItem[] = [
   item('pack', 'equipped'),
   item('pouch', 'in:pack'),
   item('chalk', 'in:pouch'),
-  item('sword', 'held'),
+  item('sword', 'equipped'),
   item('torch', 'in:pack'),
 ];
 
@@ -58,13 +58,38 @@ describe('nesting', () => {
   });
 });
 
+describe('Container Access (mechanics/encumbrance.md)', () => {
+  const carrier = (id: string, itemId: string, location: ItemLocation): OwnedItem =>
+    ({ ...item(id, location), itemId });
+
+  it('reads a Container\'s own rung, and nothing for a non-Container', () => {
+    const bandolier = carrier('b', 'bandolier', 'worn');
+    const pack = carrier('p', 'backpack', 'worn');
+    expect(accessFor([bandolier], bandolier)).toBe('move');
+    expect(accessFor([pack], pack)).toBe('standard');
+    expect(accessFor([item('sword', 'equipped')], item('sword', 'equipped'))).toBeUndefined();
+  });
+
+  it('takes the slowest link in the chain — a bandolier in a pack gives up its speed', () => {
+    const pack = carrier('p', 'backpack', 'worn');
+    const bandolier = carrier('b', 'bandolier', 'in:p');
+    expect(accessFor([pack, bandolier], bandolier)).toBe('standard');
+  });
+
+  it('advances a rung for Deft Hands, and never past Free', () => {
+    const bandolier = carrier('b', 'bandolier', 'worn');
+    expect(accessFor([bandolier], bandolier, 1)).toBe('minor');
+    expect(accessFor([bandolier], bandolier, 9)).toBe('free');
+  });
+});
+
 describe('setting an item down beside another', () => {
-  const held = item('a', 'held');
+  const worn = item('a', 'worn');
   const packed = item('b', 'in:pack');
   const equipped = item('c', 'equipped');
 
   it('joins the neighbour\'s Container', () => {
-    expect(locationBeside(held, packed)).toBe('in:pack');
+    expect(locationBeside(worn, packed)).toBe('in:pack');
   });
 
   it('unpacks an item dropped beside a loose one', () => {
@@ -72,6 +97,6 @@ describe('setting an item down beside another', () => {
   });
 
   it('leaves the Gear State alone when neither is Stored', () => {
-    expect(locationBeside(held, equipped)).toBe('held');
+    expect(locationBeside(worn, equipped)).toBe('worn');
   });
 });

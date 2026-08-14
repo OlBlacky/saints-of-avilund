@@ -15,7 +15,7 @@ import { classById, subclassById } from '../classes';
 import type { ClassDef, SubclassDef } from '../classes';
 import { featById } from '../feats';
 import type { FeatRequirement } from '../feats';
-import { ARMOURS, SHIELDS, containerCoefficient, startingClothesFor } from '../equipment';
+import { ARMOURS, SHIELDS, containerCoefficient, isWearable, startingClothesFor } from '../equipment';
 import { STARTING_COIN, VOW_OF_POVERTY_GEAR, gearById } from '../gear';
 import { buyPriceCp, itemName, marketById, sellPriceCp } from '../markets';
 import { HOME_LANGUAGES } from '../languages';
@@ -70,17 +70,20 @@ export interface OwnedItem {
 }
 
 /** Every location entering state passes through here. Two jobs: read old
- * records written before the Gear States (the retired 'carried' means
- * 'equipped'), and hold the rule that armour and shields are never
- * Equipped — either arriving at 'equipped' is Worn
+ * records written before the Gear States (the retired 'carried' and 'held'
+ * both mean 'equipped'), and hold the tag rules — armour is Worn, shields
+ * are Equipped, and only a tagged item may be Worn at all
  * (mechanics/encumbrance.md). */
-function normalizeLocation(location: ItemLocation | 'carried', itemId?: string): ItemLocation {
-  const loc: ItemLocation = location === 'carried' ? 'equipped' : location;
-  if (
-    loc === 'equipped' &&
-    itemId &&
-    (ARMOURS.some((a) => a.id === itemId) || SHIELDS.some((s) => s.id === itemId))
-  ) return 'worn';
+function normalizeLocation(location: ItemLocation | 'carried' | 'held', itemId?: string): ItemLocation {
+  const loc: ItemLocation =
+    location === 'carried' || location === 'held' ? 'equipped' : location;
+  if (!itemId) return loc;
+  // Armour rides on the body; there is no drawing a cuirass.
+  if (loc === 'equipped' && ARMOURS.some((a) => a.id === itemId)) return 'worn';
+  // A shield rides on the arm at the ready, and feeds AC and DR from there.
+  if (loc === 'worn' && SHIELDS.some((s) => s.id === itemId)) return 'equipped';
+  // Anything Worn without the tag falls back to Equipped.
+  if (loc === 'worn' && !isWearable(itemId)) return 'equipped';
   return loc;
 }
 

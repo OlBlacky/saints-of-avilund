@@ -121,6 +121,14 @@ export const RANGED_WEAPONS: Weapon[] = [
   { id: 'fragmentation-grenade', name: 'Fragmentation Grenade', group: 'Grenades', type: 'Blunt', damage: '2d6', hands: '1H', weightLb: 1, priceCp: 500, range: '20/40/60', properties: ['Thrown'] },
 ];
 
+/** A weapon's range increments scaled by an Ability's WRI multiplier and
+ * written out in feet: `1×WRI` on a Sling reads 50'/100'/150', `2×WRI`
+ * reads 100'/200'/300'. Null for a weapon with no increments to scale. */
+export function scaleIncrements(range: string | null, times = 1): string | null {
+  if (!range) return null;
+  return range.split('/').map((n) => `${Number(n) * times}'`).join('/');
+}
+
 export interface WeaponProperty { name: string; effect: string }
 export const WEAPON_PROPERTIES: WeaponProperty[] = [
   { name: 'Finesse', effect: 'Use Dexterity instead of Strength for attack and damage.' },
@@ -170,9 +178,45 @@ export interface SimpleItem {
    * carriers pack their contents at ×0.9 (Masterwork ×0.8, when those exist);
    * bulk vessels carry at full weight. */
   coefficient?: number;
-  /** Container capacity in lb (mechanics/encumbrance.md). */
+  /** Container capacity in lb (mechanics/encumbrance.md), checked against the
+   * raw weight of the contents — a good bag carries easier, not more. */
   capacityLb?: number;
+  /** The action to get one item out of this Container. `standard` when
+   * absent; quick-draw carriers do better. */
+  access?: AccessRung;
+  /** Rides on the body, so Worn is a legal state for it. Bulk vessels are
+   * not worn — a barrel is lugged, which is Equipped. */
+  worn?: boolean;
+  /** The plain rules text on a Container's box: whatever is unusual about
+   * it, stated at the point of use. */
+  note?: string;
   choice?: ItemChoice;
+}
+
+// ── The access ladder ────────────────────────────────────────────────────
+// Container Access and weapon drawCost both move along the in-turn rungs of
+// the action ladder. Held as an INDEX so a Feat that improves a rung is
+// arithmetic (Deft Hands) and nested Access is a max(), not a lookup table
+// of special cases. The tokens are the same vocabulary as ActionToken.
+
+export const ACCESS_LADDER = ['full-round', 'standard', 'move', 'minor', 'free'] as const;
+export type AccessRung = (typeof ACCESS_LADDER)[number];
+
+export const ACCESS_LABEL: Record<AccessRung, string> = {
+  'full-round': 'Full Round',
+  standard: 'Standard',
+  move: 'Move',
+  minor: 'Minor',
+  free: 'Free',
+};
+
+export function rungIndex(rung: AccessRung): number {
+  return ACCESS_LADDER.indexOf(rung);
+}
+
+/** Clamped to the ends of the ladder — no rung better than Free. */
+export function rungAt(index: number): AccessRung {
+  return ACCESS_LADDER[Math.max(0, Math.min(ACCESS_LADDER.length - 1, index))];
 }
 
 export const AMMUNITION: SimpleItem[] = [
@@ -186,11 +230,22 @@ export const AMMUNITION: SimpleItem[] = [
 ];
 
 export const CONTAINERS: SimpleItem[] = [
-  { id: 'belt-pouch', name: 'Belt pouch', priceCp: 5, weightLb: null, coefficient: 0.9, capacityLb: 2 },
+  {
+    id: 'belt-pouch', name: 'Belt pouch', priceCp: 5, weightLb: null,
+    coefficient: 0.9, capacityLb: 2, access: 'move', worn: true,
+    note: 'Coin and small trinkets, at the belt. What is inside is Stored, so it costs no Equipped slots.',
+  },
+  // The Bandolier takes no discount: its edge is speed, so it is not also the
+  // best pack. Price provisional until the next gear batch.
+  {
+    id: 'bandolier', name: 'Bandolier', priceCp: 30, weightLb: 1,
+    coefficient: 1, capacityLb: 5, access: 'move', worn: true,
+    note: 'Vials, ammunition and daggers, across the chest. What is inside is Stored, so it costs no Equipped slots.',
+  },
   { id: 'sack-large', name: 'Sack, large', priceCp: 2, weightLb: 1, coefficient: 1, capacityLb: 40 },
   { id: 'basket', name: 'Basket', priceCp: 4, weightLb: 1, coefficient: 1, capacityLb: 25 },
-  { id: 'satchel', name: 'Satchel', priceCp: 10, weightLb: 1, coefficient: 0.9, capacityLb: 15 },
-  { id: 'backpack', name: 'Backpack', priceCp: 20, weightLb: 2, coefficient: 0.9, capacityLb: 50 },
+  { id: 'satchel', name: 'Satchel', priceCp: 10, weightLb: 1, coefficient: 0.9, capacityLb: 15, worn: true },
+  { id: 'backpack', name: 'Backpack', priceCp: 20, weightLb: 2, coefficient: 0.9, capacityLb: 50, worn: true },
   { id: 'waterskin', name: 'Waterskin (full)', priceCp: 10, weightLb: 4 },
   { id: 'flask-tin', name: 'Flask, tin', priceCp: 3, weightLb: null },
   { id: 'vial-glass', name: 'Vial, glass', priceCp: 5, weightLb: null },
@@ -473,10 +528,10 @@ export interface KitItem extends SimpleItem {
 // The kits are bags: each is a Container (×1 — a working bag, not a
 // packed load) so its Supplies can live inside it.
 export const KITS: KitItem[] = [
-  { id: 'healers-kit', name: "Healer's Kit (empty — tools & bag)", priceCp: 100, weightLb: 3, supply: null, coefficient: 0.9, capacityLb: 3 },
-  { id: 'friars-kit', name: "Friar's Kit (empty — oils, incense & implements)", priceCp: 100, weightLb: 3, supply: null, coefficient: 0.9, capacityLb: 3 },
-  { id: 'herbalists-bag', name: "Herbalist's Bag (empty — knives, mortar & pouches)", priceCp: 100, weightLb: 3, supply: null, coefficient: 0.9, capacityLb: 3 },
-  { id: 'offerings-bag', name: 'Offerings Bag (empty — pouches, knots & charms)', priceCp: 100, weightLb: 3, supply: null, coefficient: 0.9, capacityLb: 3 },
+  { id: 'healers-kit', name: "Healer's Kit (empty — tools & bag)", priceCp: 100, weightLb: 3, supply: null, coefficient: 0.9, capacityLb: 3, worn: true },
+  { id: 'friars-kit', name: "Friar's Kit (empty — oils, incense & implements)", priceCp: 100, weightLb: 3, supply: null, coefficient: 0.9, capacityLb: 3, worn: true },
+  { id: 'herbalists-bag', name: "Herbalist's Bag (empty — knives, mortar & pouches)", priceCp: 100, weightLb: 3, supply: null, coefficient: 0.9, capacityLb: 3, worn: true },
+  { id: 'offerings-bag', name: 'Offerings Bag (empty — pouches, knots & charms)', priceCp: 100, weightLb: 3, supply: null, coefficient: 0.9, capacityLb: 3, worn: true },
   { id: 'supplies', name: 'Supplies (per 10)', priceCp: 10, weightLb: 1, supply: 10, choice: { key: 'kit', label: 'Kit', options: ["Healer's Kit", "Friar's Kit", "Herbalist's Bag", 'Offerings Bag'] } },
 ];
 
@@ -494,6 +549,46 @@ export function containerCapacityLb(itemId: string): number | undefined {
   return (
     CONTAINERS.find((c) => c.id === itemId)?.capacityLb ??
     KITS.find((k) => k.id === itemId)?.capacityLb
+  );
+}
+
+/** A Container's Access rung — the action to get one item out of it.
+ * `standard` where the catalogue says nothing; undefined for non-containers. */
+export function containerAccess(itemId: string): AccessRung | undefined {
+  const entry =
+    CONTAINERS.find((c) => c.id === itemId) ?? KITS.find((k) => k.id === itemId);
+  if (!entry || entry.coefficient === undefined) return undefined;
+  return entry.access ?? 'standard';
+}
+
+/** The plain rules text on a Container's box — undefined where there is
+ * nothing unusual to say. */
+export function containerNote(itemId: string): string | undefined {
+  return (
+    CONTAINERS.find((c) => c.id === itemId)?.note ??
+    KITS.find((k) => k.id === itemId)?.note
+  );
+}
+
+// ── The 0-Enc tag and the Worn tag ───────────────────────────────
+// Two invisible tags decide how an item behaves on the body
+// (mechanics/encumbrance.md). They are derived from the catalogue rather
+// than hand-set per item, so a new cloak or cuirass inherits them.
+
+/** Items whose weight does not count toward Load. Armour carries the tag
+ * because its burden is already priced into its Speed and Stealth penalties;
+ * clothing carries it because it is trivial. Containers never carry it. */
+export function carriesNoLoad(itemId: string): boolean {
+  return ARMOURS.some((a) => a.id === itemId) || CLOTHING.some((c) => c.id === itemId);
+}
+
+/** Items that may be Worn: clothing, armour, and Containers that ride on
+ * straps. A bulk vessel is lugged, not worn — that is Equipped. */
+export function isWearable(itemId: string): boolean {
+  if (carriesNoLoad(itemId)) return true;
+  return (
+    CONTAINERS.find((c) => c.id === itemId)?.worn === true ||
+    KITS.find((k) => k.id === itemId)?.worn === true
   );
 }
 

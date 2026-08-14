@@ -1,28 +1,46 @@
 # Encumbrance & Carrying Gear
 
-How a character carries their gear, how much it weighs on them, and what it takes to get a thing into hand. Deliberately light: four states, one number, three bands, no bookkeeping beyond a weight column.
+How a character carries their gear, how much it weighs on them, and what it takes to get a thing into hand. Deliberately light: three states, two numbers, three bands, no bookkeeping beyond a weight column.
 
 ## Gear States
 
-Everything on your body is in one of four states. Where a thing rides is the player's choice, and the choice is a trade: the readier it is, the more it weighs on you.
+Everything on your person is in one of three states. Where a thing rides is the player's choice, and the choice is a trade: the readier it is, the fewer of them you can keep that way.
 
 | State | Where it is | To get it in hand | Load |
 |---|---|---|---|
-| **Held** | in your hands | — | full weight |
-| **Worn** | on the body: clothing, armour | — | full weight; worn armour none |
-| **Equipped** | at the ready on your person: a dagger in the belt, a quiver | **Move action** | full weight |
-| **Stored** | inside a Container | **Standard action** | Container coefficient |
+| **Worn** | on the body: clothing, armour, a backpack, a bandolier | not retrieved — you are already wearing it | full weight, unless **0-Enc** |
+| **Equipped** | at the ready on your person: a dagger in the belt, a quiver, a shield | `move` | full weight |
+| **Stored** | inside a Container | the Container's **Access** | Container Coefficient |
 
-- **You have two hands.** Weapons state the hands they fill; a shield fills one. Held gear beyond two hands is the table's problem — the sheet warns, the GM adjudicates.
-- **Armour and shields are never Equipped.** On your person they are Worn or Stored — there is no drawing a cuirass, and strapping on a shield takes longer than a Move.
-- Putting a thing away costs the same action as getting it out. Dropping a Held item is free.
-- Feats and gear can improve these actions. *(Cues: a bandolier, a quick-draw scabbard, a Quick Draw Feat — for the Feats and equipment sessions.)*
+- **Only tagged items may be Worn.** Clothing, armour, and Containers with straps carry the tag; a greatsword does not. The sheet offers a state only where it is legal.
+- **Armour is Worn. Shields are Equipped.** A shield rides on the arm at the ready, and the first Equipped shield feeds AC and DR on the sheet. There is no drawing a cuirass — changing what you wear happens out of combat.
+- **A Container that does not ride on straps is Equipped.** A backpack, satchel, belt pouch, bandolier, and the kit bags are Worn. A sack, basket, chest, or barrel is lugged, and lugging is Equipped — which costs a slot, and so prices carrying a barrel about right.
+- **You still have two hands.** The sheet does not track what is in them; the table does. Weapons state the hands they fill, and a shield fills one.
+- Putting a thing away costs the same action as getting it out.
+
+### The 0-Enc Tag
+
+Some Worn items carry the **0-Enc** tag: their weight does not count toward Load.
+
+- **Armour** carries it because its burden is already priced into its own Speed and Stealth penalties. Counting the weight too would charge twice. A *spare* suit packed in a bag counts in full.
+- **Clothing** carries it because it is trivial.
+- **Containers never carry it.** The thing doing the carrying is not clothing, and its own weight always counts.
+
+## The Equipped Limit
+
+**Equipped Limit = 5 + Str + Dex + Con** *(minimum 5)*.
+
+All three physical attributes contribute: how much you can keep at the ready is a matter of strength, deftness, and the stamina to wear it all day.
+
+The minimum of 5 is deliberate. A floor lower than that does not make a frail character interesting, it gives them a per-session inventory chore — everyone can carry a staff and a few things besides.
+
+Past the Limit the sheet warns in amber and the GM adjudicates. It is not a wall.
+
+**Items in a Container are Stored, not Equipped, whatever the Container's Access.** They never count against the Limit. This is why a bandolier is worth buying: it buys you readiness that the Limit does not charge you for, bounded instead by the Container's Capacity and its price.
 
 ## Load
 
-Your **Load** is the total weight of everything Held, Worn, Equipped, or Stored on your body, Containers included.
-
-**Worn armour does not count toward Load.** Its burden is already priced into its own Speed and Stealth penalties — counting its weight too would charge twice. A *spare* suit of armour packed in a bag counts in full.
+Your **Load** is the total weight of everything Worn, Equipped, or Stored on your person, Containers included, less anything tagged 0-Enc.
 
 ## Load Bands
 
@@ -40,33 +58,47 @@ There is no hard maximum. Heavy has no upper edge; when someone shoulders someth
 
 ## Containers
 
-A **Container** is any item that holds other items (backpack, sack, saddlebag). Each carries two numbers *(re-ruled Aug 12 2026 — capacities are now tracked, and the discount standardized at 10%/20%)*:
+A **Container** is any item that holds other items. Each has three dials:
 
-- **Capacity** — the weight it holds, in lb. The sheet lists it beside the Container. What exceeds it is the table's problem — the sheet warns, the GM adjudicates.
-- **Coefficient** — a purpose-built carrier multiplies its contents' weight by **×0.9** (a 10% discount); a **Masterwork** carrier by **×0.8** (20%). Bulk vessels carry at full weight (×1). The Container's own weight always counts in full.
+- **Capacity** — the weight it holds, in lb, checked against the **raw** weight of its contents. A good bag carries easier, not more. What exceeds Capacity is the table's problem — the sheet warns, the GM adjudicates.
+- **Coefficient** — multiplies its contents' Load. A purpose-built carrier packs at **×0.9**, a **Masterwork** carrier at **×0.8**, a bulk vessel at **×1**.
+- **Access** — the action to get one item out, on the standard action ladder. `standard` by default; quick-draw carriers do better.
 
-| Container | Capacity | Coefficient |
-|---|---|---|
-| Belt pouch | 2 lb | ×0.9 |
-| Satchel | 15 lb | ×0.9 |
-| Backpack | 50 lb | ×0.9 |
-| Saddlebags | 60 lb | ×0.9 |
-| Kit bags (Healer's Kit and kin) | 3 lb | ×0.9 |
-| Sack, large | 40 lb | ×1 |
-| Basket | 25 lb | ×1 |
-| Chest, wooden | 150 lb | ×1 |
-| Strongbox | 50 lb | ×1 |
-| Barrel | 250 lb | ×1 |
+| Container | Capacity | Coefficient | Access |
+|---|---|---|---|
+| Belt pouch | 2 lb | ×0.9 | `move` |
+| Bandolier | 5 lb | ×1 | `move` |
+| Kit bags (Healer's Kit and kin) | 3 lb | ×0.9 | `standard` |
+| Satchel | 15 lb | ×0.9 | `standard` |
+| Backpack | 50 lb | ×0.9 | `standard` |
+| Saddlebags | 60 lb | ×0.9 | `standard` |
+| Sack, large | 40 lb | ×1 | `standard` |
+| Basket | 25 lb | ×1 | `standard` |
+| Strongbox | 50 lb | ×1 | `standard` |
+| Chest, wooden | 150 lb | ×1 | `standard` |
+| Barrel | 250 lb | ×1 | `standard` |
 
+- The **Bandolier** takes no Coefficient discount. Its edge is speed, so it is not also the best pack. Its box says what it is for — vials, ammunition, daggers — without enforcing it.
 - Masterwork versions of the ×0.9 carriers pack at ×0.8; they join the catalogue with the Masterwork gear batch.
-- Nested Containers compound their coefficients.
+- **Nested Containers** compound their Coefficients and take the **slowest Access in the chain**.
 - Keep the fractions in the math; round the final Load to the nearest pound.
 
-The data lives in `app/src/lib/equipment.ts` (`CONTAINERS`, `KITS`: `capacityLb` + `coefficient`).
+### Two Weights, Always
+
+A Container shows both of its numbers, because they answer different questions:
+
+- **Capacity used** — raw weight against Capacity (*18 / 50 lb*)
+- **Load contribution** — after the Coefficient (*16.2 lb*)
+
+### The Container Box
+
+Every Container prints a box on the sheet carrying its three dials and a line of plain rules text. Whatever is unusual about a Container is stated there, at the point of use, rather than learned from a table elsewhere.
+
+The data lives in `app/src/lib/equipment.ts` (`CONTAINERS`, `KITS`: `capacityLb` + `coefficient` + `access`).
 
 ## Feats & Quirks
 
-Character traits touch Encumbrance in two ways: **counting your Str as greater (or lesser) for Load purposes** — the fine-grained hook — and **Band shifts** — the big moves. Gear coefficients handle the multiplicative fun.
+Character traits touch Encumbrance in four ways: **counting your Str as greater (or lesser) for Load purposes** — the fine-grained hook — **Band shifts**, **the Equipped Limit**, and **Access rungs**. Gear Coefficients handle the multiplicative fun.
 
 ### The Encumbrance Feat Ladder
 
@@ -80,10 +112,36 @@ A **Feat Ladder** is a Feat with Ranks, climbed on the same advance economy as a
 
 *(Feat name: [[add text]] — working title "the Encumbrance Feat Ladder".)*
 
+### Quick Draw & Deft Hands
+
+Two Feats, one Minor each, on two different rungs with no overlap between them:
+
+| Feat | Effect |
+|---|---|
+| **Quick Draw** | Drawing or swapping an Equipped item costs a `minor` instead of a `move`. |
+| **Deft Hands** | Advance a Container's Access by one rung. A bandolier in quick hands gives up its contents on a `minor`. |
+
+Both are cues awaiting flavour text: [[add text]].
+
 ### Quirk hooks
 
-Quirks may count Str as ±1 for Load, or shift a Band in either direction (an unlucky Quirk makes you carry heavier). Flagged for the next Quirks session.
+Quirks may count Str as ±1 for Load, shift a Band in either direction, or move the Equipped Limit. Flagged for the next Quirks session.
+
+## For the Sheet
+
+Every number here is derived, built from `{ label, value }` contributors the way AC and Speed already are, so a Feat, Quirk, or item can add a line to any of them.
+
+**Character:** `strForLoad` (Str as counted for Encumbrance only, separate from Str) · `baseLoad` · `load` · `loadBand` (with a band-shift modifier applied *after* the raw band) · `equippedCap` · `drawCost`.
+
+**Per Container:** `capacityLb` · `coefficient` · `access` · `contentsRaw` · `contentsEffective` · `overCapacity`.
+
+**Per item:** `countsForLoad` (from 0-Enc) · `effectiveWeight` · `allowedLocations` (from the `wearable` and `carrier` tags).
+
+Store `access` and `drawCost` as **indices on the action ladder** (`full-round` → `standard` → `move` → `minor` → `free`), not as strings. Then Deft Hands is arithmetic, and nested Access is a `max()`.
 
 ## Still to author
 
 - ~~**Item weights**~~ — ✅ done: the equipment page (`app/src/content/rules/equipment.md`) carries a weight column across all its tables.
+- ~~**Quick Draw Feat**~~ · ~~**Access-modifying Feats**~~ — ✅ specified above; the Feat cards themselves still want authoring.
+- **Bandolier pricing** — joins the catalogue with the next gear batch. Watch whether its 5 lb against the belt pouch's 2 lb is edge enough; that is the dial to turn.
+- **Held, for the VTT** — deliberately cut from the sheet: what is in your hands is a moment, not a state, and a printed sheet cannot hold a moment. A VTT or app layer should track it as runtime state, never as sheet data.

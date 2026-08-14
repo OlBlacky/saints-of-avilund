@@ -20,11 +20,16 @@ import {
   MELEE_WEAPONS,
   RANGED_WEAPONS,
   SHIELDS,
+  ACCESS_LABEL,
   containerCapacityLb,
   containerCoefficient,
+  containerNote,
   fmtCoins,
   fmtWeight,
+  isWearable,
+  scaleIncrements,
 } from '../../lib/equipment';
+import type { Weapon } from '../../lib/equipment';
 import { featById, specializationFor } from '../../lib/feats';
 import { LANGUAGES } from '../../lib/languages';
 import type { Language } from '../../lib/languages';
@@ -35,7 +40,7 @@ import { homeLanguageFor } from '../../lib/places';
 import { fill, QUIRKS } from '../../lib/quirks';
 import type { EventSource, RecordEvent } from '../../lib/record/events';
 import type { ItemLocation } from '../../lib/record/events';
-import { contentsOf, descendantsOf, gearRows, isStored, locationBeside } from '../../lib/record/arrange';
+import { accessFor, contentsOf, descendantsOf, gearRows, isStored, locationBeside } from '../../lib/record/arrange';
 import type { Breakdown, DerivedSheet, Part } from '../../lib/record/derive';
 import { abilityKey, languageAllowance } from '../../lib/record/replay';
 import type { CharacterState, OwnedItem } from '../../lib/record/replay';
@@ -341,6 +346,11 @@ export default function CharacterSheet({ identity, setIdentity, status, setStatu
 
   const isContainer = (i: OwnedItem) => !!i.itemId && containerCoefficient(i.itemId) !== undefined;
 
+  // Deft Hands advances every Container's Access by one rung — the reason a
+  // quick-handed rogue with a bandolier is more dangerous than the same
+  // rogue with slower hands.
+  const accessBonus = state.feats.some((f) => f.featId === 'deft-hands') ? 1 : 0;
+
   // A Stored item shows once, nested under the Container that holds it — so
   // the type tables list only what is on the body. A packed sword lives
   // under the pack, not in the Weapons block. Page 2's weapon lines want
@@ -365,7 +375,7 @@ export default function CharacterSheet({ identity, setIdentity, status, setStatu
 
   /** Walk the container chain to the ground an item finally rests on —
    * a pouch in a chest at home is at home. */
-  const rootLocation = (item: OwnedItem): 'held' | 'worn' | 'equipped' | 'home' => {
+  const rootLocation = (item: OwnedItem): 'worn' | 'equipped' | 'home' => {
     let loc: string = item.location;
     const seen = new Set<string>();
     while (loc.startsWith('in:')) {
@@ -376,7 +386,7 @@ export default function CharacterSheet({ identity, setIdentity, status, setStatu
       if (!holder) return 'equipped';
       loc = holder.location;
     }
-    return loc as 'held' | 'worn' | 'equipped' | 'home';
+    return loc as 'worn' | 'equipped' | 'home';
   };
 
   // The in-flight item's own contents refuse its drop — nothing goes inside
@@ -457,13 +467,13 @@ export default function CharacterSheet({ identity, setIdentity, status, setStatu
       onDragEnd={endDrag}
     >
       {item.name}{item.qty > 1 ? ` ×${item.qty}` : ''}
-      {containerNote(item)}
     </td>
   );
 
-  /** The location dropdown + the logged move behind it. Armour and shields
-   * are never Equipped (mechanics/encumbrance.md), so the option stays off
-   * their lists. */
+  /** The location dropdown + the logged move behind it. The list offers only
+   * what is legal for the item (mechanics/encumbrance.md): Worn wants the
+   * wearable tag, and armour is never Equipped — there is no drawing a
+   * cuirass. A shield rides on the arm, so it takes Equipped and not Worn. */
   const moveControl = (item: OwnedItem) => (
     <select
       class="sheet-move"
@@ -473,9 +483,8 @@ export default function CharacterSheet({ identity, setIdentity, status, setStatu
         if (location !== item.location) append(mk('item-moved', { instanceId: item.instanceId, location }));
       }}
     >
-      <option value="held">Held</option>
-      <option value="worn">Worn</option>
-      {!armourFor(item) && !shieldFor(item) && <option value="equipped">Equipped</option>}
+      {item.itemId && isWearable(item.itemId) && <option value="worn">Worn</option>}
+      {!armourFor(item) && <option value="equipped">Equipped</option>}
       <option value="home">At Home</option>
       {containers.filter((c) => c.instanceId !== item.instanceId).length > 0 && (
         <optgroup label="Stored">
@@ -549,33 +558,64 @@ export default function CharacterSheet({ identity, setIdentity, status, setStatu
   const rowWeight = (item: OwnedItem) =>
     item.itemId ? fmtWeight((itemWeightLb(item.itemId) ?? 0) * item.qty || null) : '—';
 
-  /** A container's note: contents weight against capacity, and the discount. */
-  const containerNote = (i: OwnedItem) => {
+  /** A Container's box: its three dials, and whatever is unusual about it
+   * stated at the point of use rather than learned from a table elsewhere.
+   *
+   * Two weights, because they answer different questions — the raw weight
+   * against Capacity (a good bag carries easier, not more), and what the
+   * contents actually cost in Load after the Coefficient. */
+  const containerBox = (i: OwnedItem) => {
     if (!i.itemId) return null;
     const coeff = containerCoefficient(i.itemId);
     if (coeff === undefined) return null;
     const cap = containerCapacityLb(i.itemId);
-    const sub = subtotalLb(i.instanceId);
-    const bits = [
-      cap ? `holds ${sub ? fmtWeight(sub) : '0 lb'} of ${cap} lb` : sub ? `holds ${fmtWeight(sub)}` : null,
-      coeff < 1 ? `contents −${Math.round((1 - coeff) * 100)}%` : null,
-    ].filter(Boolean);
-    if (bits.length === 0) return null;
-    return <span class="cf-shop-src"> — {bits.join(' · ')}</span>;
+    // The rung it actually answers to: a bandolier packed in a backpack has
+    // given up its speed, and Deft Hands gives a rung back.
+    const access = accessFor(state.inventory, i, accessBonus) ?? 'standard';
+    const raw = subtotalLb(i.instanceId);
+    const note = containerNote(i.itemId);
+    return (
+      <div class="sheet-cbox">
+        <p class="sheet-cbox-dials">
+          <span class={cap !== undefined && raw > cap ? 'is-over' : undefined}>
+            <strong>Holds</strong> {raw ? fmtWeight(raw) : '0 lb'}
+            {cap !== undefined ? ` of ${cap} lb` : ''}
+          </span>
+          <span>
+            <strong>Load</strong> {raw ? fmtWeight(Math.round(raw * coeff * 10) / 10) : '0 lb'}
+            {coeff < 1 ? ` (×${coeff})` : ''}
+          </span>
+          <span><strong>Access</strong> {ACCESS_LABEL[access]}</span>
+        </p>
+        {note && <p class="sheet-cbox-note">{note}</p>}
+      </div>
+    );
   };
 
   /** A block's rows: each item, then whatever it holds, indented. Contents
    * of every kind draw here — the Container's block is where a Stored item
-   * lives. */
+   * lives. A Container trails its box beneath its own row. */
   const gearBlock = (roots: OwnedItem[], block: string) =>
-    gearRows(state.inventory, roots).map(({ item, depth }) => (
-      <tr key={item.instanceId} {...rowProps(item, block)}>
-        {nameCell(item, block, depth)}
-        <td class="num">{rowWeight(item)}</td>
-        <td>{moveControl(item)}</td>
-        <td class="act">{splitControl(item)}{sellControl(item)}</td>
-      </tr>
-    ));
+    gearRows(state.inventory, roots).flatMap(({ item, depth }) => {
+      const box = containerBox(item);
+      return [
+        <tr key={item.instanceId} {...rowProps(item, block)}>
+          {nameCell(item, block, depth)}
+          <td class="num">{rowWeight(item)}</td>
+          <td>{moveControl(item)}</td>
+          <td class="act">{splitControl(item)}{sellControl(item)}</td>
+        </tr>,
+        ...(box
+          ? [
+              <tr key={`${item.instanceId}-box`} class="sheet-boxrow">
+                <td colSpan={4} class={depth > 0 ? 'sheet-nested' : undefined} style={depth > 0 ? `--depth:${depth}` : undefined}>
+                  {box}
+                </td>
+              </tr>,
+            ]
+          : []),
+      ];
+    });
 
   const totals = basketTotalsCp(basket, commerce, state);
   const tripLines = basket.filter((l) => l.qty > 0);
@@ -730,7 +770,7 @@ export default function CharacterSheet({ identity, setIdentity, status, setStatu
         // A shield gives its AC and DR only while raised, so the tiles print
         // the standing numbers and name the raised ones beneath.
         const borneShield = state.inventory
-          .filter((i) => i.location === 'held' || i.location === 'worn')
+          .filter((i) => i.location === 'equipped')
           .map(shieldFor)
           .find(Boolean);
         // The rows print "Quirks +1"; these lines say which Quirk, and what
@@ -815,6 +855,12 @@ export default function CharacterSheet({ identity, setIdentity, status, setStatu
                 <span>
                   {sheet.load.totalLb} lb of {sheet.load.baseLb} lb · {sheet.load.band}
                   {sheet.load.effect && ` — ${sheet.load.effect}`}
+                </span>
+              </p>
+              <p class="sheet-vitline">
+                <strong>Equipped</strong>
+                <span class={sheet.equipped.over ? 'is-over' : undefined}>
+                  {sheet.equipped.count} of {sheet.equipped.cap} · {ACCESS_LABEL[sheet.drawCost]} to draw
                 </span>
               </p>
             </section>
@@ -1130,13 +1176,27 @@ export default function CharacterSheet({ identity, setIdentity, status, setStatu
             .replace(/\[W\]|\bW\b|\[S\]/g, die)
             .replace(/\b(Str|Dex|Con|Int|Wis|Cha)\b/g, (m) => String(shortTotals[m] ?? m));
 
-        // Attacks list what you can bring to bear this round: weapons in
-        // hand or drawable at the ready. Stored weapons stay off the table.
-        const tableWeapons = weapons.filter((i) => i.location === 'held' || i.location === 'equipped');
-        // A shield can only be bashed with while it is borne — on the arm or
-        // at the ready.
+        // An Ability's Range says which arms can carry it. A card measured in
+        // Weapon Range Increments needs a weapon that has increments to
+        // measure — a Greatsword has none — and a melee card cannot be worked
+        // with a bow or a sling. A card that states neither takes any weapon.
+        const wriTimes = (range?: string): number | undefined => {
+          const m = range?.match(/(\d+)×WRI/i);
+          return m ? Number(m[1]) : undefined;
+        };
+        const rangeFits = (range?: string): ((w: Weapon) => boolean) => {
+          if (wriTimes(range)) return (w) => w.range !== null;
+          if (range && /^(melee|reach)\b/i.test(range))
+            return (w) => !RANGED_WEAPONS.some((r) => r.id === w.id);
+          return () => true;
+        };
+
+        // Attacks list what you can bring to bear this round: weapons at the
+        // ready. Stored weapons stay off the table.
+        const tableWeapons = weapons.filter((i) => i.location === 'equipped');
+        // A shield can only be bashed with while it is borne on the arm.
         const tableShields = state.inventory.filter(
-          (i) => shieldFor(i) && (i.location === 'held' || i.location === 'worn' || i.location === 'equipped'),
+          (i) => shieldFor(i) && i.location === 'equipped',
         );
 
         interface AttackRow { key: string; name: string; toHit: number; toHitParts: string[]; vs: string; damage: string; dmgParts: string[] }
@@ -1235,8 +1295,10 @@ export default function CharacterSheet({ identity, setIdentity, status, setStatu
               });
             }
           } else if (hasWeaponDie(dmgText)) {
+            const fits = rangeFits(resolveValue(card.vars.range, owned.ranks.range));
             for (const item of tableWeapons) {
               const w = weaponFor(item)!;
+              if (!fits(w)) continue;
               const p = profOf(w.group);
               rows.push({
                 key: `${label}/${item.instanceId}`,
@@ -1348,11 +1410,6 @@ export default function CharacterSheet({ identity, setIdentity, status, setStatu
                     );
                     return [noted, ...defense].join(' vs ');
                   })();
-                  const strip = [
-                    val('range') && val('range') !== '—' && `Range: ${val('range')}`,
-                    val('targets') && val('targets') !== '—' && `Targets: ${val('targets')}`,
-                    atkNoted && atkNoted !== '—' && `Attack: ${atkNoted}`,
-                  ].filter(Boolean);
                   // A weapon-attack card resolves per weapon: every weapon the
                   // character owns gets its own attack & damage line, curated
                   // by hiding — the same treatment as the Attacks table.
@@ -1367,9 +1424,15 @@ export default function CharacterSheet({ identity, setIdentity, status, setStatu
                       ? `${rawDmg} ${chosen}`
                       : rawDmg;
                   const [atkAttr, atkVs] = atk && atk !== '—' ? atk.split(' vs ') : [];
+                  // Range resolves per weapon the way damage does: a card
+                  // measured in Weapon Range Increments prints each weapon's
+                  // own bands, and only weapons the Range admits are listed.
+                  const rangeText = val('range');
+                  const times = wriTimes(rangeText);
+                  const fits = rangeFits(rangeText);
                   const weaponRows =
                     card.mode === 'Attack' && atkAttr && dmgText && hasWeaponDie(dmgText)
-                      ? allWeapons.map((item) => {
+                      ? allWeapons.filter((item) => fits(weaponFor(item)!)).map((item) => {
                           const w = weaponFor(item)!;
                           const p = profOf(w.group);
                           return {
@@ -1379,9 +1442,18 @@ export default function CharacterSheet({ identity, setIdentity, status, setStatu
                             toHit: offenceOf(atkAttr) + (p ?? -1),
                             toHitParts: toHitPartsFor(atkAttr, w.group),
                             damage: dmgFor(dmgText, w.damage),
+                            range: times ? scaleIncrements(w.range, times) : null,
                           };
                         })
                       : [];
+                  // The weapon lines carry the resolved bands, so the abstract
+                  // multiplier leaves the strip once they can say it in feet.
+                  const stripRange = weaponRows.some((r) => r.range) ? undefined : rangeText;
+                  const strip = [
+                    stripRange && stripRange !== '—' && `Range: ${stripRange}`,
+                    val('targets') && val('targets') !== '—' && `Targets: ${val('targets')}`,
+                    atkNoted && atkNoted !== '—' && `Attack: ${atkNoted}`,
+                  ].filter(Boolean);
                   // A builder copy built around a Ladder — a Malediction — is
                   // that Ladder's effect, so it resolves on the card at the
                   // Rank this copy holds. The other options (the unchosen
@@ -1465,12 +1537,13 @@ export default function CharacterSheet({ identity, setIdentity, status, setStatu
                             >
                               <span class="sheet-card-weapon-name">
                                 {r.name}
-                                {r.where !== 'held' && r.where !== 'equipped' && (
+                                {r.where !== 'equipped' && (
                                   <span class="cf-shop-src"> · {r.where === 'home' ? 'at home' : r.where}</span>
                                 )}
                               </span>
                               <span class="sheet-card-weapon-math" title={r.toHitParts.join(' · ')}>
                                 {signed(r.toHit)}{atkVs ? ` vs ${atkVs}` : ''} · {r.damage}
+                                {r.range && ` · ${r.range}`}
                               </span>
                               <button
                                 type="button"
@@ -1639,9 +1712,9 @@ export default function CharacterSheet({ identity, setIdentity, status, setStatu
         </section>
       )}
 
-      {sheet.handsHeld > 2 && (
+      {sheet.equipped.over && (
         <div class="cf-flags" style="order:-1">
-          Held gear fills {sheet.handsHeld} hands — you have two.
+          {sheet.equipped.count} items Equipped — your limit is {sheet.equipped.cap}.
         </div>
       )}
 

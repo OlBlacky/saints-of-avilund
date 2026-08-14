@@ -12,6 +12,7 @@ import {
   accessibleMarkets,
   bestBuy,
   buyPriceCp,
+  itemWeightLb,
   listedMarkets,
   marketById,
   sellPriceCp,
@@ -619,7 +620,18 @@ describe('Gear States (mechanics/encumbrance.md)', () => {
     expect(state.inventory.find((i) => i.itemId === 'longsword')!.location).toBe('equipped');
   });
 
-  it('armour and shields are never Equipped — they arrive Worn and stay Worn', () => {
+  it("reads the retired 'held' as Equipped — a sheet cannot hold a moment", () => {
+    const grant = ev('item-granted', { itemId: 'longsword' });
+    const legacyMove = {
+      ...ev('item-moved', { instanceId: grant.id, location: 'home' }),
+      location: 'held',
+    } as RecordEvent;
+    const { state, flags } = replay([...crystallized(), grant, legacyMove]);
+    expect(flags).toEqual([]);
+    expect(state.inventory.find((i) => i.itemId === 'longsword')!.location).toBe('equipped');
+  });
+
+  it('armour is Worn and shields are Equipped, whichever way the record asks', () => {
     const { state, flags } = replay([
       ...crystallized(),
       buy([
@@ -627,40 +639,106 @@ describe('Gear States (mechanics/encumbrance.md)', () => {
         { itemId: 'heater-kite-round', qty: 1 },
       ]),
       ev('item-moved', { instanceId: 'item:chain-mail', location: 'equipped' }),
+      ev('item-moved', { instanceId: 'item:heater-kite-round', location: 'worn' }),
     ]);
     expect(flags).toEqual([]);
     expect(state.inventory.find((i) => i.itemId === 'chain-mail')!.location).toBe('worn');
-    expect(state.inventory.find((i) => i.itemId === 'heater-kite-round')!.location).toBe('worn');
+    expect(state.inventory.find((i) => i.itemId === 'heater-kite-round')!.location).toBe('equipped');
   });
 
-  it('Held gear fills hands: weapons declare theirs, everything else one per item', () => {
+  it('only a tagged item may be Worn — everything else falls back to Equipped', () => {
     const { state, flags } = replay([
       ...crystallized(),
       buy([
-        { itemId: 'maul', qty: 1 },  // 2H
-        { itemId: 'torch', qty: 2 }, // one hand each
+        { itemId: 'maul', qty: 1 },      // no tag
+        { itemId: 'backpack', qty: 1 },  // a Container on straps
+        { itemId: 'cloak-wool', qty: 1 },// clothing
       ]),
-      ev('item-moved', { instanceId: 'item:maul', location: 'held' }),
-      ev('item-moved', { instanceId: 'item:torch', location: 'held' }),
+      ev('item-moved', { instanceId: 'item:maul', location: 'worn' }),
+      ev('item-moved', { instanceId: 'item:backpack', location: 'worn' }),
+      ev('item-moved', { instanceId: 'item:cloak-wool', location: 'worn' }),
     ]);
     expect(flags).toEqual([]);
-    expect(derive(state).handsHeld).toBe(4);
+    expect(state.inventory.find((i) => i.itemId === 'maul')!.location).toBe('equipped');
+    expect(state.inventory.find((i) => i.itemId === 'backpack')!.location).toBe('worn');
+    expect(state.inventory.find((i) => i.itemId === 'cloak-wool')!.location).toBe('worn');
   });
 
-  it('Held, Worn, and Equipped all weigh in full', () => {
+  it('Worn and Equipped both weigh in full, unless the item is 0-Enc', () => {
     const { state, flags } = replay([
       ...crystallized(),
       buy([
-        { itemId: 'maul', qty: 1 },      // 10 lb
-        { itemId: 'chain-10ft', qty: 1 }, // 10 lb
-        { itemId: 'torch', qty: 1 },     // 1 lb
+        { itemId: 'maul', qty: 1 },       // 10 lb, Equipped
+        { itemId: 'chain-10ft', qty: 1 }, // 10 lb, Equipped (no Worn tag)
+        { itemId: 'torch', qty: 1 },      // 1 lb, Equipped
+        { itemId: 'cloak-wool', qty: 1 }, // 2 lb of clothing — 0-Enc, Worn
       ]),
-      ev('item-moved', { instanceId: 'item:maul', location: 'held' }),
-      ev('item-moved', { instanceId: 'item:chain-10ft', location: 'worn' }),
-      // the torch stays where purchases arrive: Equipped
+      ev('item-moved', { instanceId: 'item:cloak-wool', location: 'worn' }),
     ]);
     expect(flags).toEqual([]);
     expect(derive(state).load.totalLb).toBe(21);
+  });
+
+  it('0-Enc spends itself on the body: a packed suit of armour weighs in full', () => {
+    const { state, flags } = replay([
+      ...crystallized(),
+      buy([
+        { itemId: 'backpack', qty: 1 },    // 2 lb, ×0.9 contents
+        { itemId: 'leather', qty: 1 },
+      ]),
+      ev('item-moved', { instanceId: 'item:backpack', location: 'worn' }),
+      ev('item-moved', { instanceId: 'item:leather', location: 'in:item:backpack' }),
+    ]);
+    expect(flags).toEqual([]);
+    const armourLb = itemWeightLb('leather')!;
+    expect(derive(state).load.totalLb).toBe(Math.round(2 + armourLb * 0.9));
+  });
+});
+
+describe('the Equipped Limit (mechanics/encumbrance.md)', () => {
+  const buy = (lines: { itemId: string; qty: number }[]) =>
+    ev('transaction', {
+      lines: lines.map((l) => ({ direction: 'buy' as const, marketId: 'waldheim', ...l })),
+    });
+
+  it('is 5 + Str + Dex + Con, and never less than 5', () => {
+    const { state } = replay([...crystallized()]);
+    const sheet = derive(state);
+    const attr = (a: string) => sheet.attributes.find((x) => x.attr === a)!.value.total;
+    expect(sheet.equipped.cap).toBe(
+      Math.max(5, 5 + attr('Strength') + attr('Dexterity') + attr('Constitution')),
+    );
+    expect(sheet.equipped.cap).toBeGreaterThanOrEqual(5);
+  });
+
+  it('counts Equipped items and their quantities, and warns rather than blocks', () => {
+    const { state, flags } = replay([
+      ...crystallized(),
+      buy([{ itemId: 'torch', qty: 40 }]),
+    ]);
+    expect(flags).toEqual([]);
+    const sheet = derive(state);
+    expect(sheet.equipped.count).toBeGreaterThanOrEqual(40);
+    expect(sheet.equipped.over).toBe(true);
+  });
+
+  it('never charges for Stored items — which is what a bandolier buys', () => {
+    const empty = replay([
+      ...crystallized(),
+      buy([{ itemId: 'bandolier', qty: 1 }]),
+      ev('item-moved', { instanceId: 'item:bandolier', location: 'worn' }),
+    ]);
+    const packed = replay([
+      ...crystallized(),
+      buy([{ itemId: 'bandolier', qty: 1 }, { itemId: 'torch', qty: 40 }]),
+      ev('item-moved', { instanceId: 'item:bandolier', location: 'worn' }),
+      ev('item-moved', { instanceId: 'item:torch', location: 'in:item:bandolier' }),
+    ]);
+    expect(packed.flags).toEqual([]);
+    // Forty torches Stored cost nothing against the Limit; Equipped they would
+    // have swamped it.
+    expect(derive(packed.state).equipped.count).toBe(derive(empty.state).equipped.count);
+    expect(derive(packed.state).equipped.over).toBe(false);
   });
 });
 

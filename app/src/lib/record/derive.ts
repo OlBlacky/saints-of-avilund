@@ -11,11 +11,13 @@ import { classById } from '../classes';
 import {
   ARMOURS,
   ARMOUR_TIER_AC,
-  MELEE_WEAPONS,
-  RANGED_WEAPONS,
   SHIELDS,
+  carriesNoLoad,
   containerCoefficient,
+  rungAt,
+  rungIndex,
 } from '../equipment';
+import type { AccessRung } from '../equipment';
 import { DEFAULT_LANGUAGE } from '../languages';
 import { STARTING_COIN, gearById } from '../gear';
 import { itemWeightLb } from '../markets';
@@ -124,9 +126,19 @@ export interface DerivedSheet {
    * pre-gear log). Becomes the Wealth ledger's opening balance later. */
   startingCoin?: Breakdown;
   load: DerivedLoad;
-  /** Hands filled by Held gear. The sheet warns past two; the table
-   * adjudicates (mechanics/encumbrance.md). */
-  handsHeld: number;
+  /** The Equipped Limit and what is spent against it. The sheet warns past
+   * the cap; the table adjudicates (mechanics/encumbrance.md). */
+  equipped: DerivedEquipped;
+  /** The action to draw an Equipped item — a Move, or better with Quick Draw. */
+  drawCost: AccessRung;
+}
+
+export interface DerivedEquipped {
+  /** Items in the Equipped state, quantities counted. */
+  count: number;
+  /** 5 + Str + Dex + Con, minimum 5. */
+  cap: number;
+  over: boolean;
 }
 
 // ── Load (mechanics/encumbrance.md) ─────────────────────────────────────────
@@ -149,17 +161,25 @@ const BAND_EFFECT: Record<LoadBand, string | null> = {
   Heavy: "−10' Speed · −2 physical skill checks",
 };
 
-function loadFor(state: CharacterState): DerivedLoad {
+/** Str as counted for Encumbrance only — the fine-grained hook the Feat
+ * Ladder and the Quirks plug into. Kept apart from Strength itself. */
+function strForLoad(state: CharacterState): number {
   const ladderRank = state.feats.find((f) => f.featId === 'encumbrance-ladder')?.rank ?? 0;
   const str =
     (state.attributeRanks.Strength ?? 0) - (state.flaws.includes('Strength') ? 1 : 0);
-  const baseLb = Math.max(5, 25 + 5 * (str + Math.min(2, ladderRank)));
+  return str + Math.min(2, ladderRank);
+}
+
+function loadFor(state: CharacterState): DerivedLoad {
+  const ladderRank = state.feats.find((f) => f.featId === 'encumbrance-ladder')?.rank ?? 0;
+  const baseLb = Math.max(5, 25 + 5 * strForLoad(state));
 
   let total = 0;
   for (const item of state.inventory) {
-    // Worn armour is weightless for Load — its burden is already priced
-    // into its own penalties. A spare suit in a bag counts in full.
-    if (item.location === 'worn' && item.itemId && ARMOURS.some((a) => a.id === item.itemId)) continue;
+    // The 0-Enc tag: armour's burden is already priced into its own
+    // penalties, and clothing is trivial. A spare suit in a bag counts in
+    // full, so the tag only spends itself on the body.
+    if (item.location === 'worn' && item.itemId && carriesNoLoad(item.itemId)) continue;
     // Walk the container chain: contents multiply by each encloser's
     // coefficient; anything resting at Home (at any depth) is off the body.
     let factor = 1;
@@ -181,18 +201,29 @@ function loadFor(state: CharacterState): DerivedLoad {
   return { totalLb, baseLb, band, effect: BAND_EFFECT[band] };
 }
 
-/** Weapons declare the hands they fill; everything else Held (a shield,
- * a torch, a lantern) fills one per item. */
-function handsHeldFor(state: CharacterState): number {
-  let hands = 0;
-  for (const item of state.inventory) {
-    if (item.location !== 'held') continue;
-    const weapon = item.itemId
-      ? [...MELEE_WEAPONS, ...RANGED_WEAPONS].find((w) => w.id === item.itemId)
-      : undefined;
-    hands += (weapon?.hands === '2H' ? 2 : 1) * item.qty;
-  }
-  return hands;
+/** How much a character can keep at the ready, and how much they are keeping.
+ * All three physical attributes contribute: strength, deftness, and the
+ * stamina to wear it all day. The minimum of 5 is deliberate — a floor below
+ * that gives a frail character an inventory chore, not an interesting
+ * constraint. Past the cap the sheet warns; it is not a wall. */
+function equippedFor(state: CharacterState, attr: (a: Attribute) => number): DerivedEquipped {
+  const cap = Math.max(
+    5,
+    5 + attr('Strength') + attr('Dexterity') + attr('Constitution'),
+  );
+  // Only the Equipped state spends a slot. Stored items never do, whatever
+  // their Container's Access — which is what a bandolier is buying.
+  const count = state.inventory
+    .filter((i) => i.location === 'equipped')
+    .reduce((n, i) => n + i.qty, 0);
+  return { count, cap, over: count > cap };
+}
+
+/** The action to get an Equipped item in hand. A `move` by default; Quick
+ * Draw buys the next rung down the ladder. */
+function drawCostFor(state: CharacterState): AccessRung {
+  const quickDraw = state.feats.some((f) => f.featId === 'quick-draw');
+  return rungAt(rungIndex('move') + (quickDraw ? 1 : 0));
 }
 
 function signed(n: number): string {
@@ -259,16 +290,18 @@ export function derive(state: CharacterState): DerivedSheet {
     return sum(parts);
   };
 
-  // Worn gear: the first Worn armour and the first shield Held or Worn feed
-  // the sheet. Armour is passive (AC, DR, Speed, Stealth); a shield gives
-  // its AC and DR only while raised, so it lands in the situational list,
-  // not the sums.
-  const onBody = state.inventory.filter((i) => i.location === 'held' || i.location === 'worn');
+  // Gear on the body: the first Worn armour and the first Equipped shield
+  // feed the sheet. Armour is passive (AC, DR, Speed, Stealth); a shield
+  // rides on the arm and gives its AC and DR only while raised, so it lands
+  // in the situational list, not the sums.
   const wornArmour = state.inventory
     .filter((i) => i.location === 'worn')
     .map((i) => ARMOURS.find((a) => a.id === i.itemId))
     .find(Boolean);
-  const borneShield = onBody.map((i) => SHIELDS.find((s) => s.id === i.itemId)).find(Boolean);
+  const borneShield = state.inventory
+    .filter((i) => i.location === 'equipped')
+    .map((i) => SHIELDS.find((s) => s.id === i.itemId))
+    .find(Boolean);
 
   const attributes: DerivedAttribute[] = ATTRIBUTES.map((attr) => {
     const value = attrValue(attr);
@@ -477,7 +510,8 @@ export function derive(state: CharacterState): DerivedSheet {
     steadyMods,
     ...(startingCoin ? { startingCoin } : {}),
     load: loadFor(state),
-    handsHeld: handsHeldFor(state),
+    equipped: equippedFor(state, (a) => attributes.find((x) => x.attr === a)!.value.total),
+    drawCost: drawCostFor(state),
   };
 }
 

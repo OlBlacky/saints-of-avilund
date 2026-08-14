@@ -27,6 +27,7 @@ import {
   fmtCoins,
   fmtPrice,
   fmtWeight,
+  scaleIncrements,
   startingClothesFor,
 } from './equipment';
 import { CLASSES } from './classes';
@@ -71,7 +72,7 @@ describe('the catalogue lift preserves the page counts', () => {
     expect(ARMOURS).toHaveLength(9);
     expect(SHIELDS).toHaveLength(4);
     expect(MASTERWORK).toHaveLength(4);
-    expect(CONTAINERS).toHaveLength(12);
+    expect(CONTAINERS).toHaveLength(13);
     expect(LIGHT_AND_FIRE).toHaveLength(7);
     expect(CAMP_AND_TRAIL).toHaveLength(9);
     expect(ROPE_IRON_CLIMBING).toHaveLength(13);
@@ -154,6 +155,22 @@ describe('catalogue integrity', () => {
     const musket = RANGED_WEAPONS.find((w) => w.id === 'musket')!;
     expect(fmtPrice(musket.priceCp)).toBe('200 sp');
     expect(musket.range).toBe('80/160/240');
+  });
+});
+
+describe('range increments', () => {
+  it('scales a weapon’s bands by the Ability’s WRI multiplier', () => {
+    const sling = RANGED_WEAPONS.find((w) => w.id === 'sling')!;
+    expect(scaleIncrements(sling.range)).toBe("50'/100'/150'");
+    expect(scaleIncrements(sling.range, 2)).toBe("100'/200'/300'");
+    const spear = MELEE_WEAPONS.find((w) => w.id === 'spear')!;
+    expect(scaleIncrements(spear.range, 3)).toBe("60'/120'/180'");
+  });
+
+  it('gives no bands to a weapon that has none', () => {
+    const greatsword = MELEE_WEAPONS.find((w) => w.id === 'greatsword')!;
+    expect(greatsword.range).toBeNull();
+    expect(scaleIncrements(greatsword.range, 2)).toBeNull();
   });
 });
 

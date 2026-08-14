@@ -5,6 +5,8 @@
 // The inventory array's order is the player's own arrangement (item-moved
 // carries a position); these helpers preserve it everywhere.
 
+import { containerAccess, rungAt, rungIndex } from '../equipment';
+import type { AccessRung } from '../equipment';
 import type { ItemLocation } from './events';
 import type { OwnedItem } from './replay';
 
@@ -56,6 +58,38 @@ export function gearRows(inventory: OwnedItem[], roots: OwnedItem[]): GearRow[] 
   };
   walk(roots, 0);
   return rows;
+}
+
+/** The Access a Container actually answers to: its own rung, or the slowest
+ * link in the chain of Containers it is packed inside — a bandolier stuffed
+ * in a backpack gives up its speed, because the pack has to be opened first.
+ * `bonus` is the Feat shift (Deft Hands), applied once at the end.
+ *
+ * Undefined for anything that is not a Container. Rungs are indices, so the
+ * slowest link is a min() and the Feat is arithmetic
+ * (mechanics/encumbrance.md). */
+export function accessFor(
+  inventory: OwnedItem[],
+  item: OwnedItem,
+  bonus = 0,
+): AccessRung | undefined {
+  const own = item.itemId ? containerAccess(item.itemId) : undefined;
+  if (own === undefined) return undefined;
+
+  let slowest = rungIndex(own);
+  let loc: string = item.location;
+  const seen = new Set<string>([item.instanceId]);
+  while (loc.startsWith('in:')) {
+    const id = loc.slice(3);
+    if (seen.has(id)) break;
+    seen.add(id);
+    const holder = inventory.find((i) => i.instanceId === id);
+    if (!holder) break;
+    const rung = holder.itemId ? containerAccess(holder.itemId) : undefined;
+    if (rung !== undefined) slowest = Math.min(slowest, rungIndex(rung));
+    loc = holder.location;
+  }
+  return rungAt(slowest + bonus);
 }
 
 /** Where an item lands when it is set down beside a neighbour: it joins

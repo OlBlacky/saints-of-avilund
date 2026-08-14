@@ -3085,7 +3085,7 @@ const HUSBANDRY: Ability[] = [
     vars: {
       frequency: FREQ_ENC,
       action: actionCost({ act: 'reaction', trigger: 'at the end of an opponent’s move, only if it moved closer to or adjacent to an ally' }, { act: 'interrupt', trigger: 'at any point during an opponent’s move, if it attempted to move closer or adjacent to an ally', cost: 'm' }),
-      range: { base: 'Sling, 1×WRI' },
+      range: { base: '1×WRI' },
       targets: { base: 'The moving opponent' },
       attack: { base: 'Dex vs AC' },
       damage: {

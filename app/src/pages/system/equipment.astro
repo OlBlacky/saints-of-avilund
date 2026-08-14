@@ -3,9 +3,11 @@ import Base from '../../layouts/Base.astro';
 import { url } from '../../lib/url';
 import SystemNav from '../../components/SystemNav.astro';
 import {
+  ACCESS_LABEL,
   AMMUNITION,
   ARMOURS,
   ARMOUR_TIER_AC,
+  containerAccess,
   CAMP_AND_TRAIL,
   CLOTHING,
   CONTAINERS,
@@ -268,14 +270,33 @@ const priceWithUnit = (i: SimpleItem) => (i.unit ? `${price(i)} ${i.unit}` : pri
       <summary>Adventuring Gear <span class="fold__meta">packs · light · camp · tools</span></summary>
 
       <h3>Packs &amp; Containers</h3>
+      <p>
+        A Container has three dials. <strong>Capacity</strong> is the weight it holds, checked
+        against the raw weight of what is inside — a good bag carries easier, not more.
+        <strong>Coefficient</strong> multiplies its contents toward your Load.
+        <strong>Access</strong> is the action to get one item out of it. Nested Containers
+        compound their Coefficients and take the slowest Access in the chain.
+      </p>
       <table>
-        <thead><tr><th>Item</th><th>Cost</th><th>Weight</th></tr></thead>
+        <thead><tr><th>Item</th><th>Cost</th><th>Weight</th><th>Capacity</th><th>Coeff.</th><th>Access</th></tr></thead>
         <tbody>
           {CONTAINERS.map((i) => (
-            <tr><td>{i.name}</td><td>{fmtPrice(i.priceCp)}</td><td>{fmtWeight(i.weightLb)}</td></tr>
+            <tr>
+              <td>{i.name}</td>
+              <td>{fmtPrice(i.priceCp)}</td>
+              <td>{fmtWeight(i.weightLb)}</td>
+              <td>{i.capacityLb ? `${i.capacityLb} lb` : '—'}</td>
+              <td>{i.coefficient ? `×${i.coefficient}` : '—'}</td>
+              <td>{containerAccess(i.id) ? ACCESS_LABEL[containerAccess(i.id)!] : '—'}</td>
+            </tr>
           ))}
         </tbody>
       </table>
+      <p>
+        A Container's own weight always counts in full. Whatever is inside one is
+        <strong>Stored</strong>, so it never spends an Equipped slot however quick the
+        Container is to reach into — which is what a bandolier is buying.
+      </p>
 
       <h3>Light &amp; Fire</h3>
       <table>

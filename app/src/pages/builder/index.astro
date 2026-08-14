@@ -525,6 +525,26 @@ const blurb = 'Build a character of Avilund — and once they are Complete, this
     font-variant: small-caps; letter-spacing: 0.05em;
     color: var(--gold); font-weight: normal; font-size: 0.85rem;
   }
+  /* Past a limit the sheet warns and the table adjudicates — amber, never a wall */
+  .is-over { color: var(--amber, #b3701a); font-weight: bold; }
+
+  /* A Container's box: its three dials, and whatever is unusual about it
+     stated at the point of use */
+  .sheet-boxrow > td { padding: 0 0 0.5rem; border: none; }
+  .sheet-cbox {
+    border: 1px solid var(--rule); border-left: 3px solid var(--gold);
+    background: rgba(0, 0, 0, 0.02); padding: 0.35rem 0.6rem;
+    margin-left: calc(var(--depth, 0) * 1.1rem);
+  }
+  .sheet-cbox-dials {
+    display: flex; flex-wrap: wrap; gap: 0.15rem 1.1rem;
+    margin: 0; font-size: 0.82rem;
+  }
+  .sheet-cbox-dials > span > strong {
+    font-variant: small-caps; letter-spacing: 0.05em;
+    color: var(--gold); font-weight: normal;
+  }
+  .sheet-cbox-note { margin: 0.3rem 0 0; font-size: 0.82rem; font-style: italic; }
 
   /* Write-in space, for the printed sheet only */
   .sheet-writein { display: none; }
