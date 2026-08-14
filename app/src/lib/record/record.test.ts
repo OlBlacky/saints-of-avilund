@@ -1279,6 +1279,78 @@ describe('the package deploys to the sheet', () => {
   });
 });
 
+describe('arranging the Abilities box', () => {
+  /** Two bought Abilities on top of the Soldier's two free ones. */
+  const base = () => [
+    ev('class-chosen', { classId: 'soldier' }),
+    ev('subclass-chosen', { subclassId: 'vanguard' }),
+    ev('ability-bought', { ref: { category: 'Arms', ability: 'Martial Strike' } }),
+    ev('ability-bought', { ref: { category: 'Protection', ability: 'Shield Bash' } }),
+    ev('ability-bought', { ref: { category: 'Arms', ability: 'Parry' } }),
+  ];
+  const order = (s: { abilities: { ref: { ability: string } }[] }) =>
+    s.abilities.map((a) => a.ref.ability);
+
+  it('leaves the box unarranged until a card is dragged', () => {
+    const { state } = replay(base());
+    expect(state.abilitiesArranged).toBe(false);
+    expect(order(state)).toEqual(['Martial Strike', 'Shield Bash', 'Parry']);
+  });
+
+  it('sets a card down beside the one it was dropped on', () => {
+    const { state, flags } = replay([
+      ...base(),
+      ev('ability-moved', {
+        key: 'Arms/Parry',
+        position: { anchor: 'Arms/Martial Strike', side: 'before' },
+      }),
+    ]);
+    expect(flags).toEqual([]);
+    expect(state.abilitiesArranged).toBe(true);
+    expect(order(state)).toEqual(['Parry', 'Martial Strike', 'Shield Bash']);
+  });
+
+  it('drops a card after its anchor too, and keeps the last word', () => {
+    const { state } = replay([
+      ...base(),
+      ev('ability-moved', {
+        key: 'Arms/Martial Strike',
+        position: { anchor: 'Arms/Parry', side: 'after' },
+      }),
+      ev('ability-moved', {
+        key: 'Protection/Shield Bash',
+        position: { anchor: 'Arms/Parry', side: 'before' },
+      }),
+    ]);
+    expect(order(state)).toEqual(['Shield Bash', 'Parry', 'Martial Strike']);
+  });
+
+  it('flags a move of a card the character does not own', () => {
+    const { state, flags } = replay([
+      ...base(),
+      ev('ability-moved', {
+        key: 'Arms/Nothing At All',
+        position: { anchor: 'Arms/Parry', side: 'after' },
+      }),
+    ]);
+    expect(flags.some((f) => f.code === 'unknown-ref')).toBe(true);
+    expect(state.abilitiesArranged).toBe(false);
+    expect(order(state)).toEqual(['Martial Strike', 'Shield Bash', 'Parry']);
+  });
+
+  it('leaves the order alone when the anchor is gone, but still counts as arranged', () => {
+    const { state } = replay([
+      ...base(),
+      ev('ability-moved', {
+        key: 'Arms/Parry',
+        position: { anchor: 'Arms/Long Gone', side: 'before' },
+      }),
+    ]);
+    expect(state.abilitiesArranged).toBe(true);
+    expect(order(state)).toEqual(['Martial Strike', 'Shield Bash', 'Parry']);
+  });
+});
+
 describe('the derivation clock', () => {
   it('derives Level from Milestones per §7', () => {
     expect(levelFor(0, false)).toBe(0);   // creation

@@ -28,6 +28,12 @@ import type { AbilityRef, ItemLocation, ItemPosition, RecordEvent } from './even
 
 // ── State ───────────────────────────────────────────────────────────────────
 
+/** How the sheet keys one Ability card: a builder copy by its own instanceId,
+ * any other card by its Category and name. */
+export function abilityKey(o: Pick<OwnedAbility, 'ref' | 'instanceId'>): string {
+  return o.instanceId ?? `${o.ref.category}/${o.ref.ability}`;
+}
+
 export interface OwnedAbility {
   ref: AbilityRef;
   /** Builder cards: which copy this is, its player name, its build choice. */
@@ -125,6 +131,9 @@ export interface CharacterState {
   /** Languages taken free on Polyglot's allowance (subset of `languages`). */
   freeLanguagesUsed: number;
   abilities: OwnedAbility[];
+  /** True once the player has dragged an Ability card into place. Until then
+   * the sheet arranges the box for them, sinking Passives to the bottom. */
+  abilitiesArranged: boolean;
   /** Owned Feats: rank 1 for plain Feats, the climbed Rank for Ladders. */
   feats: { featId: string; choices?: Record<string, string>; rank: number }[];
   quirk?: { id?: string; name: string; slots: Record<string, string>; rerollsUsed: number };
@@ -541,6 +550,7 @@ export function replay(events: RecordEvent[]): ReplayResult {
     languages: [],
     freeLanguagesUsed: 0,
     abilities: [],
+    abilitiesArranged: false,
     feats: [],
     crystallized: false,
     milestones: 0,
@@ -965,6 +975,19 @@ export function replay(events: RecordEvent[]): ReplayResult {
         const inst = state.abilities.find((a) => a.instanceId === e.instanceId);
         if (!inst) { flag(e, 'unknown-ref', `no instance "${e.instanceId}" to rename`); break; }
         inst.name = e.name;
+        break;
+      }
+
+      case 'ability-moved': {
+        const card = state.abilities.find((a) => abilityKey(a) === e.key);
+        if (!card) { flag(e, 'unknown-ref', `no Ability card "${e.key}" to move`); break; }
+        state.abilitiesArranged = true;
+        if (e.position.anchor === e.key) break;
+        const anchor = state.abilities.findIndex((a) => abilityKey(a) === e.position.anchor);
+        if (anchor === -1) break;
+        state.abilities.splice(state.abilities.indexOf(card), 1);
+        const to = state.abilities.findIndex((a) => abilityKey(a) === e.position.anchor);
+        state.abilities.splice(e.position.side === 'before' ? to : to + 1, 0, card);
         break;
       }
 

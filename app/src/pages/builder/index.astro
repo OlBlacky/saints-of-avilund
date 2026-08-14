@@ -576,8 +576,20 @@ const blurb = 'Build a character of Avilund — and once they are Complete, this
     border-radius: 4px; background: var(--panel); padding: 0.7rem 0.9rem;
   }
   /* A Passive is never read on your turn: no badges, a quiet rail, and it
-     sorts to the bottom of the box. */
+     sorts to the bottom of the box until the player arranges it themselves. */
   .sheet-card--passive { border-left-color: var(--rule); }
+  /* Cards drag from their own grip, so the buttons and text inside stay live. */
+  .sheet-card-grip {
+    float: right; margin-left: 0.5rem;
+    cursor: grab; user-select: none;
+    color: var(--ink-soft); opacity: 0.4; font-size: 0.95rem; line-height: 1;
+  }
+  .sheet-card-grip:hover { opacity: 1; color: var(--oxblood); }
+  .sheet-card-grip:active { cursor: grabbing; }
+  .sheet-card--lifted { opacity: 0.45; }
+  .sheet-card.is-drop-before { box-shadow: inset 3px 0 0 var(--oxblood); }
+  .sheet-card.is-drop-after { box-shadow: inset -3px 0 0 var(--oxblood); }
+  @media print { .sheet-card-grip { display: none; } }
   .sheet-card h4 { margin: 0 0 0.35rem; font-family: var(--display); color: var(--oxblood); }
   .sheet-card-strip { margin: 0 0 0.4rem; font-size: 0.84rem; color: var(--ink-soft); }
   .sheet-card-freq { text-transform: none; letter-spacing: 0; }

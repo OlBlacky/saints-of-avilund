@@ -175,9 +175,11 @@ Frequency prints one box per use — a card showing one lonely box reads as
 precious without a word of explanation. The box is pencilled in at the table;
 the app does not track it.
 
-Passive cards carry neither chip. They get a rail down the left edge and sort to
+Passive cards carry neither chip. They get a rail down the left edge and sink to
 the bottom of the Abilities box, out of the way of the cards you read on your
-turn.
+turn — but only until the player arranges the box themselves. Every card has a
+grip; drag one into place and your order stands from then on, kept in the
+record with the character.
 
 ---
 

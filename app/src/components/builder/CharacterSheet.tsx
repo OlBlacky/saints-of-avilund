@@ -37,7 +37,7 @@ import type { EventSource, RecordEvent } from '../../lib/record/events';
 import type { ItemLocation } from '../../lib/record/events';
 import { contentsOf, descendantsOf, gearRows, isStored, locationBeside } from '../../lib/record/arrange';
 import type { Breakdown, DerivedSheet, Part } from '../../lib/record/derive';
-import { languageAllowance } from '../../lib/record/replay';
+import { abilityKey, languageAllowance } from '../../lib/record/replay';
 import type { CharacterState, OwnedItem } from '../../lib/record/replay';
 import type { PlayState, VersionPayload } from '../../lib/store';
 import MarketShop, { basketTotalsCp, commerceRankOf } from './MarketShop';
@@ -264,6 +264,9 @@ export default function CharacterSheet({ identity, setIdentity, status, setStatu
   // flight also tracks where it would land — beside a row, or inside it.
   const [dragBox, setDragBox] = useState<string | null>(null);
   const [dragItem, setDragItem] = useState<string | null>(null);
+  // An Ability card in flight, and the card it would land beside.
+  const [dragCard, setDragCard] = useState<string | null>(null);
+  const [cardDropAt, setCardDropAt] = useState<{ key: string; side: 'before' | 'after' } | null>(null);
   const [dragFrom, setDragFrom] = useState<string | null>(null);
   const [dropAt, setDropAt] = useState<{ id: string; zone: DropZone } | null>(null);
   const [portraitOpen, setPortraitOpen] = useState(false);
@@ -1047,13 +1050,62 @@ export default function CharacterSheet({ identity, setIdentity, status, setStatu
         const findCard = (category: string, ability: string): Ability | undefined =>
           CATEGORIES.find((c) => c.name === category)?.abilities.find((a) => a.name === ability);
 
-        // Passives sort to the bottom: they are never read on your turn, so
-        // they give up the top of the box to the Abilities that are.
+        // Until the player arranges the box themselves, the sheet sinks
+        // Passives to the bottom — they are never read on your turn, so they
+        // give up the top to the Abilities that are. The first card dragged
+        // into place pins the order, and the record's order stands from then on.
         const isPassive = (o: (typeof state.abilities)[number]) =>
           findCard(o.ref.category, o.ref.ability)?.vars.frequency?.freq === 'passive';
-        const sortedAbilities = [...state.abilities].sort(
-          (a, b) => Number(isPassive(a)) - Number(isPassive(b)),
+        const sortedAbilities = state.abilitiesArranged
+          ? state.abilities
+          : [...state.abilities].sort((a, b) => Number(isPassive(a)) - Number(isPassive(b)));
+
+        /** The grip that lifts an Ability card — the same handle the sheet's
+         * boxes carry, so the card's own buttons and text stay usable. */
+        const cardGrip = (key: string) => (
+          <span
+            class="sheet-card-grip"
+            draggable
+            title="drag to reorder"
+            onDragStart={() => setDragCard(key)}
+            onDragEnd={() => { setDragCard(null); setCardDropAt(null); }}
+          >
+            ⠿
+          </span>
         );
+
+        /** Every Ability card is a drop target for whichever card is in
+         * flight. The cards flow in a grid, so the pointer's side of the card
+         * sets where the dragged one lands. */
+        const cardDropProps = (key: string) => ({
+          onDragOver: (e: DragEvent) => {
+            if (!dragCard || dragCard === key) return;
+            e.preventDefault();
+            e.stopPropagation();
+            const rect = (e.currentTarget as HTMLElement).getBoundingClientRect();
+            const side = e.clientX - rect.left < rect.width / 2 ? 'before' : 'after';
+            setCardDropAt((prev) =>
+              prev && prev.key === key && prev.side === side ? prev : { key, side },
+            );
+          },
+          onDragLeave: (e: DragEvent) => {
+            const el = e.currentTarget as HTMLElement;
+            const to = e.relatedTarget as Node | null;
+            if (to && el.contains(to)) return;
+            setCardDropAt((prev) => (prev?.key === key ? null : prev));
+          },
+          onDrop: (e: DragEvent) => {
+            if (!dragCard) return;
+            e.preventDefault();
+            e.stopPropagation();
+            const side = cardDropAt?.key === key ? cardDropAt.side : 'after';
+            if (dragCard !== key) {
+              append(mk('ability-moved', { key: dragCard, position: { anchor: key, side } }));
+            }
+            setDragCard(null);
+            setCardDropAt(null);
+          },
+        });
 
         // Play-mode text: attribute tokens annotated with this build's math.
         const noteAttrs = (text: string): string =>
@@ -1274,7 +1326,7 @@ export default function CharacterSheet({ identity, setIdentity, status, setStatu
                 {sortedAbilities.map((owned) => {
                   const card = findCard(owned.ref.category, owned.ref.ability);
                   if (!card) return null;
-                  const cardKey = owned.instanceId ?? `${owned.ref.category}/${owned.ref.ability}`;
+                  const cardKey = abilityKey(owned);
                   const val = (k: (typeof VAR_ORDER)[number]) => resolveValue(card.vars[k], owned.ranks[k]);
                   // Frequency and Action are read off the card as badges, not
                   // as prose in the strip: one says whether you still have this,
@@ -1363,8 +1415,18 @@ export default function CharacterSheet({ identity, setIdentity, status, setStatu
                     ? weaponRows
                     : weaponRows.filter((r) => !hiddenCardWeapons.includes(r.key));
                   return (
-                    <div key={cardKey} class={`sheet-card${passive ? ' sheet-card--passive' : ''}`}>
+                    <div
+                      key={cardKey}
+                      class={[
+                        'sheet-card',
+                        passive ? 'sheet-card--passive' : '',
+                        dragCard === cardKey ? 'sheet-card--lifted' : '',
+                        cardDropAt?.key === cardKey ? `is-drop-${cardDropAt.side}` : '',
+                      ].filter(Boolean).join(' ')}
+                      {...cardDropProps(cardKey)}
+                    >
                       <p class="cf-quirk-eyebrow">
+                        {cardGrip(cardKey)}
                         {owned.ref.category}
                         {card.role && <span class="sheet-card-freq"> · {card.role}</span>}
                       </p>

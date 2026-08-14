@@ -48,7 +48,7 @@ export type ItemLocation = 'held' | 'worn' | 'equipped' | 'home' | `in:${string}
  * first, then the pouch), so it is a decision the record keeps. An anchor
  * that no longer exists leaves the item where it was. */
 export interface ItemPosition {
-  /** The instanceId of the item to sit beside. */
+  /** The key of the row to sit beside — an item's instanceId, an Ability's card key. */
   anchor: string;
   side: 'before' | 'after';
 }
@@ -140,6 +140,13 @@ export type RecordEvent =
     })
   /** Rename a builder instance — free, non-mechanical. */
   | (BaseEvent & { type: 'ability-renamed'; ref: AbilityRef; instanceId: string; name: string })
+  /** Move an Ability card to a new place in the Abilities box (sheet
+   * organization, durable — the order a player wants to read their cards in
+   * at the table). Cards are keyed the way the sheet keys them: a builder
+   * copy by its instanceId, any other card by "Category/Ability". The first
+   * move of a character's life pins the box to the player's own order —
+   * before that the sheet sinks Passives to the bottom for them. */
+  | (BaseEvent & { type: 'ability-moved'; key: string; position: ItemPosition })
   /** A second/third Class + Subclass (3 Major, then 6). */
   | (BaseEvent & { type: 'class-added'; classId: string; subclassId: string })
 
