@@ -1739,37 +1739,48 @@ export default function CharacterSheet({ identity, setIdentity, status, setStatu
       <div class="sheet-boxcol">
       {/* The Gear page is where the carrying decisions are actually made, so
           Load and the Equipped Limit lead the page rather than hiding in
-          Vitals. One row per number: the figure, then its arithmetic beneath.
-          Past a limit the figure turns amber; it is not a wall. */}
+          Vitals. Load draws its whole track, all three Bands with what each
+          costs, so a player can see the next threshold coming instead of only
+          the one they have crossed. Past a limit the figure turns amber; it is
+          not a wall. */}
       <section class="cf-step sheet-box sheet-carry">
-        <dl class="sheet-carry-grid">
-          <dt>Load</dt>
-          <dd>
+        <div class="sheet-carry-cols">
+          <div class="sheet-carry-col">
+            <p class="sheet-carry-label">Load</p>
             <span class={sheet.load.band !== 'None' ? 'is-over' : 'sheet-carry-val'}>
-              {sheet.load.totalLb} lb of {sheet.load.base.total} lb · {sheet.load.band}
+              {sheet.load.totalLb} lb
             </span>
             {mathOf(sheet.load.base) && (
               <span class="sheet-carry-math">{mathOf(sheet.load.base)}</span>
             )}
-            {sheet.load.effect && (
-              <span class="sheet-carry-effect">{sheet.load.effect}</span>
+            <ol class="sheet-track">
+              {sheet.load.rungs.map((r) => (
+                <li key={r.band} class={r.here ? 'is-here' : undefined}>
+                  <span class="sheet-track-band">{r.band}</span>
+                  <span class="sheet-track-at">
+                    {r.upToLb === null
+                      ? `past ${sheet.load.rungs[1].upToLb} lb`
+                      : `up to ${r.upToLb} lb`}
+                  </span>
+                  <span class="sheet-track-eff">{r.effect ?? 'no effect'}</span>
+                </li>
+              ))}
+            </ol>
+            {sheet.load.tamed && (
+              <span class="sheet-carry-effect">Heavy Loads count as Light.</span>
             )}
-          </dd>
+          </div>
 
-          <dt>Equipped</dt>
-          <dd>
+          <div class="sheet-carry-col">
+            <p class="sheet-carry-label">Equipped</p>
             <span class={sheet.equipped.over ? 'is-over' : 'sheet-carry-val'}>
               {sheet.equipped.count} of {sheet.equipped.cap.total}
             </span>
             {mathOf(sheet.equipped.cap) && (
               <span class="sheet-carry-math">{mathOf(sheet.equipped.cap)}</span>
             )}
-          </dd>
-
-          <dt>Draw</dt>
-          <dd><span class="sheet-carry-val">{ACCESS_LABEL[sheet.drawCost]}</span></dd>
-        </dl>
-        <p class="sheet-carry-note">Worn gear and Stored items cost no slots.</p>
+          </div>
+        </div>
       </section>
       {weapons.length > 0 && (
         <section

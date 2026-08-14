@@ -549,18 +549,48 @@ const blurb = 'Build a character of Avilund — and once they are Complete, this
   /* The carry summary leading the Gear page: label, figure, and the figure's
      arithmetic beneath it — one row per number, so nothing runs long */
   .sheet-carry { padding: 0.7rem 0.9rem 0.8rem; }
-  .sheet-carry-grid {
-    display: grid; grid-template-columns: max-content minmax(0, 1fr);
-    gap: 0.45rem 0.9rem; margin: 0; align-items: baseline;
+  .sheet-carry-cols {
+    display: grid; grid-template-columns: minmax(0, 2.2fr) minmax(0, 1fr);
+    gap: 0.6rem 1.6rem; align-items: start;
   }
-  .sheet-carry-grid dt {
+  .sheet-carry-col { display: flex; flex-direction: column; gap: 0.05rem; min-width: 0; }
+  .sheet-carry-label {
+    margin: 0 0 0.1rem; font-weight: normal;
     font-variant: small-caps; letter-spacing: 0.05em;
     color: var(--gold); font-size: 0.85rem;
   }
-  .sheet-carry-grid dd { margin: 0; display: flex; flex-direction: column; gap: 0.05rem; }
   .sheet-carry-val { color: var(--oxblood); font-weight: bold; }
   .sheet-carry-math, .sheet-carry-effect { font-size: 0.82rem; color: var(--ink-soft); }
-  .sheet-carry-note { margin: 0.6rem 0 0; font-size: 0.82rem; color: var(--ink-soft); }
+  @media (max-width: 46rem) {
+    .sheet-carry-cols { grid-template-columns: minmax(0, 1fr); }
+  }
+
+  /* The Load track: all three Bands with what each costs, the one the
+     character stands on picked out — the next threshold is visible before
+     it is crossed */
+  .sheet-track {
+    display: grid; grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 0.4rem; margin: 0.35rem 0 0; padding: 0; list-style: none;
+  }
+  .sheet-track li {
+    display: flex; flex-direction: column; gap: 0.05rem;
+    border: 1px solid var(--rule); border-top: 2px solid var(--rule);
+    border-radius: 3px; padding: 0.25rem 0.45rem 0.35rem;
+  }
+  .sheet-track li.is-here {
+    border-color: var(--gold); border-top-color: var(--gold);
+    background: color-mix(in srgb, var(--gold) 12%, transparent);
+  }
+  .sheet-track-band {
+    font-variant: small-caps; letter-spacing: 0.05em;
+    color: var(--ink-soft); font-size: 0.8rem;
+  }
+  .sheet-track li.is-here .sheet-track-band { color: var(--oxblood); font-weight: bold; }
+  .sheet-track-at { font-size: 0.85rem; font-variant-numeric: tabular-nums; }
+  .sheet-track-eff { font-size: 0.75rem; color: var(--ink-soft); }
+  @media (max-width: 34rem) {
+    .sheet-track { grid-template-columns: minmax(0, 1fr); }
+  }
 
   /* The 0-Enc tag, beside the weight it is cancelling */
   .sheet-enc0 {

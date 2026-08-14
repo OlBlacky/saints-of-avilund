@@ -420,6 +420,18 @@ describe('containers and Load', () => {
     expect(carrying(9).band).toBe('Heavy');  // 90 — past twice the base
   });
 
+  it('the Load track carries every Band and marks the one stood on', () => {
+    const { rungs } = derive(
+      replay([...crystallized(), buy([{ itemId: 'chain-10ft', qty: 5 }])]).state,
+    ).load;
+    expect(rungs.map((r) => [r.band, r.upToLb])).toEqual([
+      ['None', 40], ['Light', 80], ['Heavy', null],
+    ]);
+    expect(rungs.filter((r) => r.here).map((r) => r.band)).toEqual(['Light']);
+    expect(rungs[0].effect).toBeNull();
+    expect(rungs[2].effect).toContain("−10'");
+  });
+
   it('the Encumbrance Feat Ladder widens the base and tames Heavy', () => {
     const heavyHaul = [
       ...crystallized(),
@@ -440,6 +452,8 @@ describe('containers and Load', () => {
     const { load } = derive(laddered.state);
     expect(load.base.total).toBe(70);   // 40 + two Ranks at 15 lb
     expect(load.band).toBe('Light'); // 170 > 2 × 70 would be Heavy; Rank 3 tames it
+    // The sheet says so, since the standing Band now sits below the weight.
+    expect(load.tamed).toBe(true);
   });
 
   it('a Feat Rank is worth the same pounds to a weak character as a strong one', () => {

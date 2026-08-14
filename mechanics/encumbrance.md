@@ -34,7 +34,9 @@ All three physical attributes contribute: how much you can keep at the ready is 
 
 The minimum of 5 is deliberate. A floor lower than that does not make a frail character interesting, it gives them a per-session inventory chore — everyone can carry a staff and a few things besides.
 
-The Limit and its arithmetic lead the Gear page alongside Load, where the decision is actually made. Past the Limit the sheet warns in amber and the GM adjudicates. It is not a wall.
+The Limit and its arithmetic lead the Gear page beside Load, where the decision is actually made. Past the Limit the sheet warns in amber and the GM adjudicates. It is not a wall.
+
+Load draws its **whole track** there — all three Bands, each with its ceiling and what standing on it costs, the one the character occupies picked out. A player should see the next threshold before they cross it, not only the one they have already crossed.
 
 **Items in a Container are Stored, not Equipped, whatever the Container's Access.** They never count against the Limit. This is why a bandolier is worth buying: it buys you readiness that the Limit does not charge you for, bounded instead by the Container's Capacity and its price.
 

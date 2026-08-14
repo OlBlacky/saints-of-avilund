@@ -154,6 +154,20 @@ export interface DerivedLoad {
   band: LoadBand;
   /** The Band's penalty, null when unburdened. */
   effect: string | null;
+  /** The whole track, so the sheet can show where the character stands
+   * rather than only what they have landed on. */
+  rungs: LoadRung[];
+  /** Rank 3 of the Encumbrance Feat Ladder is holding a Heavy Load at Light —
+   * why the standing Band can sit below the weight carried. */
+  tamed: boolean;
+}
+
+export interface LoadRung {
+  band: LoadBand;
+  /** The weight this rung tops out at; null on Heavy, which has no edge. */
+  upToLb: number | null;
+  effect: string | null;
+  here: boolean;
 }
 
 const BAND_EFFECT: Record<LoadBand, string | null> = {
@@ -212,9 +226,17 @@ function loadFor(state: CharacterState): DerivedLoad {
   }
 
   const totalLb = Math.round(total);
-  let band: LoadBand = totalLb <= baseLb ? 'None' : totalLb <= 2 * baseLb ? 'Light' : 'Heavy';
-  if (band === 'Heavy' && ladderRank >= 3) band = 'Light';
-  return { totalLb, base, band, effect: BAND_EFFECT[band] };
+  const stood: LoadBand = totalLb <= baseLb ? 'None' : totalLb <= 2 * baseLb ? 'Light' : 'Heavy';
+  const tamed = stood === 'Heavy' && ladderRank >= 3;
+  const band: LoadBand = tamed ? 'Light' : stood;
+
+  const rungs: LoadRung[] = [
+    { band: 'None', upToLb: baseLb, effect: BAND_EFFECT.None, here: band === 'None' },
+    { band: 'Light', upToLb: 2 * baseLb, effect: BAND_EFFECT.Light, here: band === 'Light' },
+    { band: 'Heavy', upToLb: null, effect: BAND_EFFECT.Heavy, here: band === 'Heavy' },
+  ];
+
+  return { totalLb, base, band, effect: BAND_EFFECT[band], rungs, tamed };
 }
 
 /** How much a character can keep at the ready, and how much they are keeping.
