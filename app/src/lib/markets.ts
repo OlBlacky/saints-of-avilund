@@ -105,11 +105,16 @@ const IMPERIAL_SQUARE_IDS = new Set([
   'friars-kit',
 ]);
 
+/** Regional-market exclusives: catalogued items that only their home
+ * market sells (mechanics/markets.md). Not on the Waldheim shelves. */
+const REGIONAL_ONLY_IDS = new Set(['war-quiver', 'moorish-pasty']);
+
 const stocked = CATALOGUE.filter(
   (e) =>
     e.priceCp !== null &&
     !UNSTOCKED_SECTIONS.includes(e.section) &&
-    !IMPERIAL_SQUARE_IDS.has(e.id),
+    !IMPERIAL_SQUARE_IDS.has(e.id) &&
+    !REGIONAL_ONLY_IDS.has(e.id),
 );
 
 const imperialStock = CATALOGUE.filter(
@@ -213,6 +218,25 @@ export const MARKETS: Market[] = [
     ],
     purseCp: null,
   },
+  {
+    id: 'long-butts',
+    name: 'The Long Butts',
+    location: 'Bynithbrack Water',
+    marketType: 'Masterwork Bows Market',
+    access: { kind: 'feat', featId: 'market-long-butts' },
+    // Standard bows, arrows, and quivers at 90% of list, plus the Butts'
+    // own stock. Masterwork (Bowyercraft, Fletchercraft, the Cory) arrives
+    // with the commissioning model — mechanics/masterwork.md.
+    sells: [
+      ...CATALOGUE.filter((e) =>
+        ['shortbow', 'longbow', 'arrows', 'quiver'].includes(e.id),
+      ).map((e) => ({ itemId: e.id, priceCp: Math.round(e.priceCp! * 0.9) })),
+      { itemId: 'war-quiver', priceCp: 20 },
+      { itemId: 'moorish-pasty', priceCp: 4 },
+    ],
+    buys: [],
+    purseCp: null,
+  },
 ];
 
 export function marketById(id: string): Market | undefined {
@@ -240,7 +264,7 @@ export function listedMarkets(
   ownedFeatIds: string[],
   ownedAbilities: OwnedAbilityRef[] = [],
 ): Market[] {
-  const regional = ['dunstans-magazine', 'ulrics-exchange'];
+  const regional = ['dunstans-magazine', 'ulrics-exchange', 'long-butts'];
   return MARKETS.filter(
     (m) =>
       (!regional.includes(m.id) ||

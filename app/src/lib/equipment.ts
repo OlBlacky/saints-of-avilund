@@ -248,6 +248,12 @@ export const CONTAINERS: SimpleItem[] = [
     coefficient: 1, capacityLb: 3, access: 'free',
     accessNote: 'part of the reload action',
   },
+  // Long Butts stock (mechanics/masterwork.md, Quivers) — sold there alone.
+  {
+    id: 'war-quiver', name: 'War Quiver', priceCp: 20, weightLb: 3,
+    coefficient: 1, capacityLb: 6, access: 'free',
+    accessNote: 'part of the reload action',
+  },
   {
     id: 'bolt-case', name: 'Bolt case', priceCp: 10, weightLb: 1,
     coefficient: 1, capacityLb: 1, access: 'free',
@@ -298,6 +304,9 @@ export const CAMP_AND_TRAIL: SimpleItem[] = [
   { id: 'whetstone', name: 'Whetstone', priceCp: 1, weightLb: 1 },
   { id: 'cooking-pot', name: 'Cooking pot', priceCp: 3, weightLb: 4 },
   { id: 'rations-trail', name: 'Rations, trail (one day)', priceCp: 5, weightLb: 1 },
+  // A fancy trail ration (mechanics/markets.md): 1 Temp HP until the next
+  // full rest, one ration's benefit at a time. Long Butts stock only.
+  { id: 'moorish-pasty', name: 'Moorish Pasty (one day)', priceCp: 4, weightLb: 1 },
   { id: 'fishing-tackle', name: 'Fishing tackle', priceCp: 10, weightLb: 2 },
   { id: 'fishing-net', name: 'Fishing net', priceCp: 40, weightLb: 5 },
   { id: 'tent-one-man', name: 'Tent, one man', priceCp: 80, weightLb: 20 },

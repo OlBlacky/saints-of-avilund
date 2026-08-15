@@ -72,9 +72,9 @@ describe('the catalogue lift preserves the page counts', () => {
     expect(ARMOURS).toHaveLength(9);
     expect(SHIELDS).toHaveLength(4);
     expect(MASTERWORK).toHaveLength(4);
-    expect(CONTAINERS).toHaveLength(17);
+    expect(CONTAINERS).toHaveLength(18);
     expect(LIGHT_AND_FIRE).toHaveLength(7);
-    expect(CAMP_AND_TRAIL).toHaveLength(9);
+    expect(CAMP_AND_TRAIL).toHaveLength(10);
     expect(ROPE_IRON_CLIMBING).toHaveLength(13);
     expect(TOOLS_AND_IMPLEMENTS).toHaveLength(22);
     expect(CLOTHING).toHaveLength(11);

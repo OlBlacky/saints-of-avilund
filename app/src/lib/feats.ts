@@ -499,6 +499,17 @@ const ladders: Feat[] = [
     cost: 'm',
     originGate: ['Havilah'],
   },
+  {
+    id: 'market-long-butts',
+    name: 'The Long Butts',
+    brief: 'The bowyers and fletchers of Bynithbrack sell to you.',
+    ...gated(
+      'You gain access to The Long Butts — Bynithbrack Water — Masterwork Bows Market.',
+      'Open to natives and residents of Dunstanmoore.',
+    ),
+    cost: 'm',
+    originGate: ['Dunstanmoore'],
+  },
 ];
 
 export const FEATS: Feat[] = [

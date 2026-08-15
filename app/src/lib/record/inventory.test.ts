@@ -57,11 +57,11 @@ const crystallized = (gear = badGear, place = 'Waldheim') => [
 ];
 
 describe('the Markets roster', () => {
-  it('holds the named Waldheim family plus the two Regional Markets', () => {
+  it('holds the named Waldheim family plus the Regional Markets', () => {
     expect(MARKETS.map((m) => m.id)).toEqual([
       'waldheim', 'imperial-square', 'anselms-buttery', 'ignatius-archive',
       'theobalds-row', 'astronomers', 'green-market', 'blacks-road',
-      'dunstans-magazine', 'ulrics-exchange',
+      'dunstans-magazine', 'ulrics-exchange', 'long-butts',
     ]);
   });
 
@@ -116,6 +116,18 @@ describe('the Markets roster', () => {
     expect(anon).not.toContain('dunstans-magazine');
     expect(anon).not.toContain('ulrics-exchange');
     expect(listedMarkets(['market-dunstans-magazine']).map((m) => m.id)).toContain('dunstans-magazine');
+  });
+
+  it('The Long Butts sells the archer\'s kit at 90% of list, and its own stock alone', () => {
+    const butts = marketById('long-butts')!;
+    expect(buyPriceCp(butts, 'longbow')).toBe(450);
+    expect(buyPriceCp(butts, 'arrows')).toBe(9);
+    expect(buyPriceCp(butts, 'war-quiver')).toBe(20);
+    expect(buyPriceCp(butts, 'moorish-pasty')).toBe(4);
+    expect(buyPriceCp(butts, 'longsword')).toBeUndefined();
+    // Regional exclusives never reach the Waldheim shelves.
+    expect(WALDHEIM_MARKET.sells.some((l) => l.itemId === 'war-quiver')).toBe(false);
+    expect(WALDHEIM_MARKET.sells.some((l) => l.itemId === 'moorish-pasty')).toBe(false);
   });
 
   it("St. Dunstan's Magazine sells firearms at half list", () => {
