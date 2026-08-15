@@ -62,7 +62,7 @@ export const SAINTS: Saint[] = [
   },
   {
     slug: 'conrad', name: 'Conrad', tier: 'Primi', office: 'Arms', meaning: 'Brave counsel',
-    blurb: 'The foundational warrior-defender of the clan in its earliest and most perilous days — the shield raised against the dark of the Archipelago. His name survives chiefly in the old battle-liturgies.',
+    blurb: 'The foundational warrior-defender of the clan in its earliest and most perilous days — the shield raised against the dark of the Archipelago. His name survives in the old battle-liturgies, and in the forges of the Port of St. Sever, where the weaponsmiths keep him as their patron under his southern name, San Corrado.',
   },
   {
     slug: 'ida', name: 'Ida', tier: 'Primi', office: 'Passage',

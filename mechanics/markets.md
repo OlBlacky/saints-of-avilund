@@ -67,12 +67,32 @@ The third Regional Market (settled Aug 14 2026). **Mantlethorn is Cattle Country
 - **Feat's origin gate:** Mantlethorn natives and residents. *(Feat name: [[add text]].)*
 - **Catalogue:** **Mantlethorn Leather** *(Masterwork Leather Armour)* — the base grade and its Quality menu, per [masterwork.md](masterwork.md). Masterwork sells **only** in its home market, character creation included.
 - First carrier of the **named-goods pattern**: masterwork bought at a home market takes the market's regional name, canonical type in the parenthetical.
+- **Knights' Stew** — salted and roasted beef and root vegetables packed in tallow. Trail Ration (one day), **4 cp**, 1 lb. Consuming it grants **1 Temp HP** until your next full rest; one stew's benefit at a time.
+
+### The Long Butts — Bynithbrack Water — Masterwork Bows Market
+
+The fourth Regional Market (settled Aug 15 2026). **Dunstanmoore are the masters of the Longbow** — the Republic took Dunstan the craftsman, and the bowyer's and fletcher's trades are its pride. The **City of Bynithbrack Water**, Dunstanmoore's capital, grew up where the **River Nith** (issuing from Lake Nith in the Bishopric of St. Ignatius, at the edge of the Imperial Rampart Mountains) meets the **River Brack**; The Long Butts stand in the city.
+
+- **Feat's origin gate:** Dunstanmoore natives and residents. *(Feat name: [[add text]].)*
+- **Catalogue:** **Dunstanmoore Bowyercraft** *(Masterwork Longbow / Shortbow)* and **Dunstanmoore Fletchercraft** *(masterwork ammunition by the sheaf)* — base grades, Quality menu, and ammunition families per [masterwork.md](masterwork.md).
+- **Standard stock at 10% off:** all standard-list bows, arrows, and quivers sell here at **90% of list price** (the St. Dunstan's Magazine pattern, gentler).
+- **The Moorish Pasty** — a lamb-filled pastry made to travel well. Trail Ration (one day), **4 cp**, 1 lb. Consuming it grants **1 Temp HP** until your next full rest; one pasty's benefit at a time.
+
+### The Forge Monastery of San Corrado — Port of St. Sever — Masterwork Blades Market
+
+The fifth Regional Market (settled Aug 15 2026). The **Port of St. Sever** has been the place for the best swords and blades in the Empire for over 1000 years. It stands on the southern coast of the **Bishopric of St. Severinius**, where the **River Tempra** (issuing from **Lake Tempra**) lets into the **Choleric Sea** — the smiths' quenching water is in the name. The Patron of Weaponsmiths is **Conrad** (Primi, Arms), who in the Port goes by his Italicized name, **San Corrado**; the Forge Monastery bears it.
+
+- **Feat's origin gate:** Port of St. Sever natives and residents of the Bishopric of St. Severinius *(assumed on the Lysander pattern — Les to confirm)*. *(Feat name: [[add text]].)*
+- **Catalogue:** any Masterwork blade (Heavy Blades and Light Blades groups) — the named good is **Temper Quenched [weapon]**, at 20% off the standard Masterwork weapon price, with the Quality menu per [masterwork.md](masterwork.md).
+- **[[add text]]** — the signature ration (Fancy Trail Ration template: 4 cp, 1 lb, 1 Temp HP until next full rest).
 
 ### Every region gets one (standing intent)
 
 Every state/region of Avilund should eventually carry its own Regional Market — which means deciding what each place **specializes in** (production or trade access) and locking that into the lore. Tracked in the Scriptorium to-do (`design-notes-and-to-do-2026.md`).
 
 **Every special market carries treats** — beyond the practical stock (implements, supplies, tradition goods), each offers some fun and enticing gear, so opening a door always feels like a reward. Catalogues to be fleshed out.
+
+**Fancy trail rations (standard, settled Aug 15 2026):** a Regional Market's signature ration is always *Trail Ration (one day), 4 cp, 1 lb; consuming grants 1 Temp HP until your next full rest; one ration's benefit at a time.* The name and the filling are the region's; the numbers never move. First two: the Moorish Pasty (The Long Butts), Knights' Stew (Mantlethorn Castle Market).
 
 ### Visibility
 
