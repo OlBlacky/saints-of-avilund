@@ -134,16 +134,17 @@ Ranks 1 and 2 grant **pounds, not Strength**. Read through the ×10 multiplier t
 
 *(Feat name locked Aug 14 2026: **Strongback**. The id stays `encumbrance-ladder`.)*
 
-### Quick Draw & Deft Hands
+### Quick Draw
 
-Two Feats, one Minor each, on two different rungs with no overlap between them:
+One Feat, one Minor, one rung — it advances everything about getting an item in hand by a single step on the action ladder:
 
 | Feat | Effect |
 |---|---|
-| **Quick Draw** | Drawing or swapping an Equipped item costs a `minor` instead of a `move`. |
-| **Deft Hands** | Advance a Container's Access by one rung. A bandolier in quick hands gives up its contents on a `minor`. |
+| **Quick Draw** | Retrieving an item improves by one rung on the action ladder. Drawing or swapping an Equipped item costs a `minor` instead of a `move`, and every Container's Access advances a rung — a bandolier in quick hands gives up its contents on a `minor`. |
 
-Both are cues awaiting flavour text: [[add text]].
+A cue awaiting flavour text: [[add text]].
+
+*(Merged Aug 15 2026: **Deft Hands** was the same Feat wearing the other half of the rule, and is retired. Records that bought it replay as a no-op and refund the Minor.)*
 
 ### Quirk hooks
 
@@ -159,7 +160,7 @@ Every number here is derived, built from `{ label, value }` contributors the way
 
 **Per item:** `countsForLoad` (from 0-Enc) · `effectiveWeight` · `allowedLocations` (from the `wearable` and `carrier` tags).
 
-Store `access` and `drawCost` as **indices on the action ladder** (`full-round` → `standard` → `move` → `minor` → `free`), not as strings. Then Deft Hands is arithmetic, and nested Access is a `max()`.
+Store `access` and `drawCost` as **indices on the action ladder** (`full-round` → `standard` → `move` → `minor` → `free`), not as strings. Then Quick Draw is arithmetic, and nested Access is a `max()`.
 
 ## Still to author
 

@@ -619,12 +619,15 @@ export function replay(events: RecordEvent[]): ReplayResult {
       }
 
       case 'origin-chosen': {
-        if (state.crystallized) { flag(e, 'creation-only', 'the Place of Origin is chosen at creation'); break; }
+        // Chosen at creation — but a record crystallized before origin
+        // entered the spine (Aug 13 2026) may backfill it once.
+        if (state.crystallized && state.origin) { flag(e, 'creation-only', 'the Place of Origin is fixed once set'); break; }
         const place = placeByName(e.place);
         if (!place) { flag(e, 'unknown-ref', `unknown place "${e.place}"`); break; }
         state.origin = place.value;
-        // The tongue rides with the place: raised there, you speak it.
-        state.homeLanguage = place.language;
+        // The tongue rides with the place: raised there, you speak it. A
+        // backfilled origin never overwrites a home tongue already recorded.
+        if (!state.crystallized || !state.homeLanguage) state.homeLanguage = place.language;
         break;
       }
 

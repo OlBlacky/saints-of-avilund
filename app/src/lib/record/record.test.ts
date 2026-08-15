@@ -754,16 +754,17 @@ describe('enforcement', () => {
     expect(state.homeLanguage).toBeUndefined();
   });
 
-  it('the Place of Origin is chosen at creation only', () => {
+  it('a Place of Origin chosen at creation is fixed for good', () => {
     const late = replay([
       ev('class-chosen', { classId: 'soldier' }),
       ev('subclass-chosen', { subclassId: 'vanguard' }),
+      ev('origin-chosen', { place: 'Havilah' }),
       ev('quirk-rolled', { quirkName: 'Q', slots: {}, rerollsUsed: 0, gearName: 'G', gearSlots: {} }),
       ev('crystallized', {}),
       ev('origin-chosen', { place: 'Patrilund' }),
     ]);
     expect(late.flags.some((f) => f.code === 'creation-only')).toBe(true);
-    expect(late.state.origin).toBeUndefined();
+    expect(late.state.origin).toBe('Havilah');
   });
 
   it('still replays the retired home-language pick, for older records', () => {
@@ -783,6 +784,35 @@ describe('enforcement', () => {
     expect(state.bank.minor).toBe(11);
   });
 
+  it('a crystallized record without an origin backfills it once, keeping its tongue', () => {
+    // Records older than origin-in-the-spine (Aug 13 2026): the sheet offers
+    // the pick once; the recorded home tongue survives the backfill.
+    const spine = [
+      ev('class-chosen', { classId: 'soldier' }),
+      ev('subclass-chosen', { subclassId: 'vanguard' }),
+      ev('quirk-rolled', { quirkName: 'Q', slots: {}, rerollsUsed: 0, gearName: 'G', gearSlots: {} }),
+    ];
+    const backfilled = replay([
+      ...spine,
+      ev('home-language-chosen', { language: 'Kellish' }),
+      ev('crystallized', {}),
+      ev('origin-chosen', { place: 'Dunstanmoore' }),
+    ]);
+    expect(backfilled.flags).toEqual([]);
+    expect(backfilled.state.origin).toBe('Dunstanmoore');
+    expect(backfilled.state.homeLanguage).toBe('Kellish');
+
+    const again = replay([
+      ...spine,
+      ev('home-language-chosen', { language: 'Kellish' }),
+      ev('crystallized', {}),
+      ev('origin-chosen', { place: 'Dunstanmoore' }),
+      ev('origin-chosen', { place: 'Havilah' }),
+    ]);
+    expect(again.flags.some((f) => f.code === 'creation-only')).toBe(true);
+    expect(again.state.origin).toBe('Dunstanmoore');
+  });
+
   it('a retired Regional Market Feat replays as a no-op — the Minor comes back', () => {
     // Records written while the Market Feats existed (pre Aug 15 2026) still
     // replay: the unknown Feat flags and spends nothing, and the Market now
@@ -791,6 +821,14 @@ describe('enforcement', () => {
       ev('origin-chosen', { place: 'Havilah' }),
       ev('feat-bought', { featId: 'market-ulrics-exchange' }),
     ]);
+    expect(old.flags.some((f) => f.code === 'unknown-ref')).toBe(true);
+    expect(old.state.feats).toHaveLength(0);
+    expect(old.state.bank.minor).toBe(11);
+  });
+
+  it('the retired Deft Hands replays as a no-op — Quick Draw carries both halves', () => {
+    // Folded into Quick Draw Aug 15 2026. Older records flag and refund.
+    const old = replay([ev('feat-bought', { featId: 'deft-hands' })]);
     expect(old.flags.some((f) => f.code === 'unknown-ref')).toBe(true);
     expect(old.state.feats).toHaveLength(0);
     expect(old.state.bank.minor).toBe(11);

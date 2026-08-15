@@ -76,7 +76,7 @@ describe('Container Access (mechanics/encumbrance.md)', () => {
     expect(accessFor([pack, bandolier], bandolier)).toBe('standard');
   });
 
-  it('advances a rung for Deft Hands, and never past Free', () => {
+  it('advances a rung for Quick Draw, and never past Free', () => {
     const bandolier = carrier('b', 'bandolier', 'worn');
     expect(accessFor([bandolier], bandolier, 1)).toBe('minor');
     expect(accessFor([bandolier], bandolier, 9)).toBe('free');

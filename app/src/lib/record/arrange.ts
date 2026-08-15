@@ -63,7 +63,7 @@ export function gearRows(inventory: OwnedItem[], roots: OwnedItem[]): GearRow[] 
 /** The Access a Container actually answers to: its own rung, or the slowest
  * link in the chain of Containers it is packed inside — a bandolier stuffed
  * in a backpack gives up its speed, because the pack has to be opened first.
- * `bonus` is the Feat shift (Deft Hands), applied once at the end.
+ * `bonus` is the Feat shift (Quick Draw), applied once at the end.
  *
  * Undefined for anything that is not a Container. Rungs are indices, so the
  * slowest link is a min() and the Feat is arithmetic

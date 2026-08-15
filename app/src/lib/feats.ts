@@ -324,23 +324,16 @@ const craftingSpec: Feat = {
 };
 
 // ── Handling: the action economy of getting a thing in hand ─────────────────
-// Two Feats on two different rungs with no overlap between them
-// (mechanics/encumbrance.md). Both are read by id: Quick Draw by the record
-// engine's drawCost, Deft Hands by the per-Container Access.
+// One Feat, one rung, read by id in two places (mechanics/encumbrance.md):
+// the record engine's drawCost and the per-Container Access.
+// Deft Hands was folded into it Aug 15 2026 — the two Feats did the same job.
 
 const handling: Feat[] = [
   {
     id: 'quick-draw',
     name: 'Quick Draw',
-    brief: 'Draw or swap an Equipped item for a Minor Action.',
-    full: 'Drawing or swapping an item you have Equipped costs a Minor Action instead of a Move Action.',
-    cost: 'm',
-  },
-  {
-    id: 'deft-hands',
-    name: 'Deft Hands',
-    brief: "Every Container's Access improves by one rung.",
-    full: "Each Container you carry gives up its contents one rung faster along the action ladder — a Standard becomes a Move, a Move becomes a Minor. A Container packed inside a slower one still answers to the slower rung first.",
+    brief: 'Retrieve an item one rung faster on the Action Ladder.',
+    full: "Getting an item in hand comes one rung faster along the action ladder. Drawing or swapping an item you have Equipped costs a Minor Action instead of a Move Action, and each Container you carry gives up its contents one rung faster — a Standard becomes a Move, a Move becomes a Minor. A Container packed inside a slower one still answers to the slower rung first.",
     cost: 'm',
   },
 ];

@@ -40,7 +40,7 @@ import type { Language } from '../../lib/languages';
 import { bestSell, itemName, itemWeightLb, marketById } from '../../lib/markets';
 import { addToDamage, DAMAGE_TYPES, parseAttr } from '../../lib/notation';
 import { keywordsFor } from '../../lib/traditions';
-import { homeLanguageFor } from '../../lib/places';
+import { PLACES, homeLanguageFor } from '../../lib/places';
 import { fill, QUIRKS } from '../../lib/quirks';
 import type { EventSource, RecordEvent } from '../../lib/record/events';
 import type { ItemLocation } from '../../lib/record/events';
@@ -350,10 +350,9 @@ export default function CharacterSheet({ identity, setIdentity, status, setStatu
 
   const isContainer = (i: OwnedItem) => !!i.itemId && containerCoefficient(i.itemId) !== undefined;
 
-  // Deft Hands advances every Container's Access by one rung — the reason a
-  // quick-handed rogue with a bandolier is more dangerous than the same
-  // rogue with slower hands.
-  const accessBonus = state.feats.some((f) => f.featId === 'deft-hands') ? 1 : 0;
+  // Quick Draw advances every Container's Access by one rung, the same rung
+  // it gives the draw itself.
+  const accessBonus = state.feats.some((f) => f.featId === 'quick-draw') ? 1 : 0;
 
   // A Stored item shows once, nested under the Container that holds it — so
   // the type tables list only what is on the body. A packed sword lives
@@ -590,7 +589,7 @@ export default function CharacterSheet({ identity, setIdentity, status, setStatu
     if (coeff === undefined) return null;
     const cap = containerCapacityLb(i.itemId);
     // The rung it actually answers to: a bandolier packed in a backpack has
-    // given up its speed, and Deft Hands gives a rung back.
+    // given up its speed, and Quick Draw gives a rung back.
     const access = accessFor(state.inventory, i, accessBonus) ?? 'standard';
     const raw = subtotalLb(i.instanceId);
     const note = containerNote(i.itemId);
@@ -914,9 +913,26 @@ export default function CharacterSheet({ identity, setIdentity, status, setStatu
                 <div class="cf-identity">
                   <label>Name <input value={identity.name} onInput={(e) => setIdentity('name', (e.target as HTMLInputElement).value)} placeholder="Unnamed" /></label>
                   {/* Where you were raised is a creation choice, locked with
-                      the rest of the spine — it carries the home tongue. */}
+                      the rest of the spine — it carries the home tongue. A
+                      record from before origin joined the spine backfills it
+                      here, once. */}
                   <label>Place of origin
-                    <span class="sheet-fixed">{state.origin || identity.origin || '—'}</span>
+                    {state.origin ? (
+                      <span class="sheet-fixed">{state.origin}</span>
+                    ) : (
+                      <select
+                        value=""
+                        onChange={(e) => {
+                          const place = (e.target as HTMLSelectElement).value;
+                          if (place) append(mk('origin-chosen', { place }));
+                        }}
+                      >
+                        <option value="">{identity.origin ? `${identity.origin}?` : '—'}</option>
+                        {PLACES.map((p) => (
+                          <option value={p.value}>{p.value}</option>
+                        ))}
+                      </select>
+                    )}
                   </label>
                   <label>Age
                     <input type="number" min="14" max="99" class="num" value={identity.age} onInput={(e) => setIdentity('age', (e.target as HTMLInputElement).value)} />

@@ -25,7 +25,7 @@ describe('feats data', () => {
   it('carries every Feat the engine reads by id', () => {
     const ids = new Set(FEATS.map((f) => f.id));
     for (const id of [
-      'quick-draw', 'deft-hands', 'encumbrance-ladder', 'commerce-ladder', 'polyglot',
+      'quick-draw', 'encumbrance-ladder', 'commerce-ladder', 'polyglot',
     ]) {
       expect(ids, id).toContain(id);
     }

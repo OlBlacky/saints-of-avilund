@@ -90,9 +90,8 @@ A **Feat Ladder** is a [Feat](../feats/) with Ranks, climbed on the same advance
 
 Ranks 1 and 2 grant pounds, not Strength.
 
-### Quick Draw &amp; Deft Hands
+### Quick Draw
 
 | Feat | Effect |
 |---|---|
-| **Quick Draw** | Drawing or swapping an Equipped item costs a `minor` instead of a `move`. |
-| **Deft Hands** | Advance a Container's Access by one rung. |
+| **Quick Draw** | Retrieving an item improves by one rung on the action ladder: drawing or swapping an Equipped item costs a `minor` instead of a `move`, and every Container's Access advances a rung. |
