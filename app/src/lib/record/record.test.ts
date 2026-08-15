@@ -783,20 +783,17 @@ describe('enforcement', () => {
     expect(state.bank.minor).toBe(11);
   });
 
-  it('a Regional Market Feat is closed to anyone not raised there', () => {
-    const stranger = replay([
-      ev('origin-chosen', { place: 'Patrilund' }),
-      ev('feat-bought', { featId: 'market-ulrics-exchange' }),
-    ]);
-    expect(stranger.flags.some((f) => f.code === 'no-access')).toBe(true);
-    expect(stranger.state.feats).toHaveLength(0);
-
-    const native = replay([
+  it('a retired Regional Market Feat replays as a no-op — the Minor comes back', () => {
+    // Records written while the Market Feats existed (pre Aug 15 2026) still
+    // replay: the unknown Feat flags and spends nothing, and the Market now
+    // opens by origin anyway.
+    const old = replay([
       ev('origin-chosen', { place: 'Havilah' }),
       ev('feat-bought', { featId: 'market-ulrics-exchange' }),
     ]);
-    expect(native.flags).toEqual([]);
-    expect(native.state.feats).toHaveLength(1);
+    expect(old.flags.some((f) => f.code === 'unknown-ref')).toBe(true);
+    expect(old.state.feats).toHaveLength(0);
+    expect(old.state.bank.minor).toBe(11);
   });
 
   it('grants the starting clothes free, worn from creation', () => {

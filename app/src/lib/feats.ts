@@ -59,11 +59,6 @@ export interface Feat {
   requires?: FeatRequirement;
   /** A purchase-time choice (an element, a tradition). */
   choice?: { key: string; label: string; options: string[] };
-  /** A location-gated Feat appears only for characters whose Place of
-   * Origin is listed (Regional Market Feats — mechanics/markets.md).
-   * Values match lib/places.ts exactly, and the replay enforces it against
-   * the recorded Place of Origin. */
-  originGate?: string[];
   /** Feat Ladder Ranks, climbed in order, one Rank per Level. */
   ladder?: FeatRank[];
   /** Machine effects while owned (plain Feats). */
@@ -328,6 +323,28 @@ const craftingSpec: Feat = {
   cost: 'm',
 };
 
+// ── Handling: the action economy of getting a thing in hand ─────────────────
+// Two Feats on two different rungs with no overlap between them
+// (mechanics/encumbrance.md). Both are read by id: Quick Draw by the record
+// engine's drawCost, Deft Hands by the per-Container Access.
+
+const handling: Feat[] = [
+  {
+    id: 'quick-draw',
+    name: 'Quick Draw',
+    brief: 'Draw or swap an Equipped item for a Minor Action.',
+    full: 'Drawing or swapping an item you have Equipped costs a Minor Action instead of a Move Action.',
+    cost: 'm',
+  },
+  {
+    id: 'deft-hands',
+    name: 'Deft Hands',
+    brief: "Every Container's Access improves by one rung.",
+    full: "Each Container you carry gives up its contents one rung faster along the action ladder — a Standard becomes a Move, a Move becomes a Minor. A Container packed inside a slower one still answers to the slower rung first.",
+    cost: 'm',
+  },
+];
+
 // ── Feat Ladders & Market access ────────────────────────────────────────────
 
 const ladders: Feat[] = [
@@ -470,45 +487,15 @@ const ladders: Feat[] = [
     cost: 'm',
     requires: { kind: 'language', language: 'First Tongue' },
   },
+  // The Regional Markets (St. Dunstan's Magazine, St. Ulric's Exchange, The
+  // Long Butts…) carry no Feats: Place of Origin opens the home Market by
+  // itself (ruled Aug 15 2026) — the access lives on the Market, lib/markets.ts.
   {
     id: 'market-blacks-road',
     name: "Black's Road Market",
     brief: "Black's Road does business with you.",
     full: "You gain access to the Black's Road Market — Black's Road — Black Market.",
     cost: 'm',
-  },
-  {
-    id: 'market-dunstans-magazine',
-    name: "St. Dunstan's Magazine",
-    brief: 'The Abbey of the Artillery sells to you from its own magazine.',
-    ...gated(
-      "You gain access to St. Dunstan's Magazine — Abbey of the Artillery, Lysander — Firearms Market.",
-      'Open to natives of Lysander and residents of the Bishopric of St. Dunstan.',
-    ),
-    cost: 'm',
-    originGate: ['Lysander', 'the Bishopric of St. Dunstan'],
-  },
-  {
-    id: 'market-ulrics-exchange',
-    name: "St. Ulric's Exchange",
-    brief: 'The merchant-houses of Havilah admit you to the Exchange.',
-    ...gated(
-      "You gain access to St. Ulric's Exchange — Freehold of Havilah — Trade Market.",
-      'Open to natives and residents of the Freehold of Havilah.',
-    ),
-    cost: 'm',
-    originGate: ['Havilah'],
-  },
-  {
-    id: 'market-long-butts',
-    name: 'The Long Butts',
-    brief: 'The bowyers and fletchers of Bynithbrack sell to you.',
-    ...gated(
-      'You gain access to The Long Butts — Bynithbrack Water — Masterwork Bows Market.',
-      'Open to natives and residents of Dunstanmoore.',
-    ),
-    cost: 'm',
-    originGate: ['Dunstanmoore'],
   },
 ];
 
@@ -523,6 +510,7 @@ export const FEATS: Feat[] = [
   ...defensiveSpecs,
   polyglot,
   craftingSpec,
+  ...handling,
   ...ladders,
 ];
 

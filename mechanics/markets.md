@@ -27,16 +27,16 @@ The **Black Faith Market** exists but is **fully hidden** — never listed, neve
 
 ## Regional Markets
 
-A **Regional Market** is double-gated, and the gates chain through the Feat system: **the Market Feat is location-gated** (it appears in a character's Feat list only if their Place of Origin qualifies), and **the Market is Feat-gated** (it opens only when the Feat is taken).
+A **Regional Market** opens by **Place of Origin alone** (re-ruled Aug 15 2026 — the earlier Feat toll is retired): each Market carries an origin tag naming the places it serves, and a character from one of them simply has the door. No Feat, no Advance spent. (In code: `access: { kind: 'origin', places: [...] }` on the Market, values matching `lib/places.ts`; the retired Market Feats replay as no-ops, the Minor refunded.)
 
-- **Visibility: never listed locked.** Unlike the Waldheim family, Regional Markets do not appear greyed out in the shop — they are invisible until open. Discovery happens in the **Feat list**, where only a qualifying character ever sees the Feat. This keeps the shop short as the roster grows — dozens of Regional Markets are anticipated.
-- This makes **Place of Origin mechanically load-bearing** (with the Starting Gear `{place}` draws, its second consumer) — reinforcing its graduation from the Identity Box into the spine (builder spec §6).
+- **Visibility: never listed locked.** Unlike the Waldheim family, Regional Markets do not appear greyed out in the shop — they are invisible to everyone but their own, for whom they simply appear. This keeps the shop short as the roster grows — dozens of Regional Markets are anticipated.
+- This makes **Place of Origin mechanically load-bearing** (with the Starting Gear `{place}` draws and the Home Language, a third consumer) — reinforcing its graduation from the Identity Box into the spine (builder spec §6).
 
 ### St. Dunstan's Magazine — Abbey of the Artillery, Lysander — Firearms Market
 
 The first Regional Market (settled Aug 10 2026). Saint Dunstan — patron of the artillery, whose sect is credited with the invention of gunpowder — keeps his Cathedral at Lysander; the Abbey of the Artillery sells from its own magazine.
 
-- **Feat's origin gate:** Lysander natives **and** residents of the Bishopric of St. Dunstan. *(Feat name: [[add text]].)*
+- **Open to:** Lysander natives and those of the Bishopric of St. Dunstan.
 - **Catalogue:** everything firearms-related on the standard list at **50% of list price** — the Pistols and Rifles weapon groups, grenades, powder and shot, powder horns.
 - Later flesh: models the general market doesn't stock, and western exotica off the crusade road.
 
@@ -44,7 +44,7 @@ The first Regional Market (settled Aug 10 2026). Saint Dunstan — patron of the
 
 The second Regional Market (Aug 10 2026). Havilah — guild-run, inventor of paper money (1388) and of shares (by 1530); St. Ulric's one thriving church there now patronizes the merchant-houses. The funnel for every northern good off the Kellish and Feral marches.
 
-- **Feat's origin gate:** Havilah natives and residents of the Freehold. *(Feat name: [[add text]].)*
+- **Open to:** Havilah natives.
 - **Catalogue** (first stock — more to flesh: furs, northern goods, paper instruments):
 
 | Item | Wt | Buy (Havilah) | Sell (Havilah) | Sell (Waldheim) |
@@ -64,7 +64,7 @@ What the table demonstrates, mechanically:
 
 The third Regional Market (settled Aug 14 2026). **Mantlethorn is Cattle Country** — the northern kingdom keeps cattle, has leather in abundance, and makes the setting's great leather gear.
 
-- **Feat's origin gate:** Mantlethorn natives and residents. *(Feat name: [[add text]].)*
+- **Open to:** Mantlethorn natives.
 - **Catalogue:** **Mantlethorn Leather** *(Masterwork Leather Armour)* — the base grade and its Quality menu, per [masterwork.md](masterwork.md). Masterwork sells **only** in its home market, character creation included.
 - First carrier of the **named-goods pattern**: masterwork bought at a home market takes the market's regional name, canonical type in the parenthetical.
 - **Knights' Stew** — salted and roasted beef and root vegetables packed in tallow. Trail Ration (one day), **4 cp**, 1 lb. Consuming it grants **1 Temp HP** until your next full rest; one stew's benefit at a time.
@@ -73,7 +73,7 @@ The third Regional Market (settled Aug 14 2026). **Mantlethorn is Cattle Country
 
 The fourth Regional Market (settled Aug 15 2026). **Dunstanmoore are the masters of the Longbow** — the Republic took Dunstan the craftsman, and the bowyer's and fletcher's trades are its pride. The **City of Bynithbrack Water**, Dunstanmoore's capital, grew up where the **River Nith** (issuing from Lake Nith in the Bishopric of St. Ignatius, at the edge of the Imperial Rampart Mountains) meets the **River Brack**; The Long Butts stand in the city.
 
-- **Feat's origin gate:** Dunstanmoore natives and residents. *(Feat name: [[add text]].)*
+- **Open to:** Dunstanmoore natives.
 - **Catalogue:** **Dunstanmoore Bowyercraft** *(Masterwork Longbow / Shortbow)* and **Dunstanmoore Fletchercraft** *(masterwork ammunition by the sheaf)* — base grades, Quality menu, and ammunition families per [masterwork.md](masterwork.md).
 - **Standard stock at 10% off:** all standard-list bows, arrows, and quivers sell here at **90% of list price** (the St. Dunstan's Magazine pattern, gentler).
 - **The Moorish Pasty** — a lamb-filled pastry made to travel well. Trail Ration (one day), **4 cp**, 1 lb. Consuming it grants **1 Temp HP** until your next full rest; one pasty's benefit at a time.
@@ -82,7 +82,7 @@ The fourth Regional Market (settled Aug 15 2026). **Dunstanmoore are the masters
 
 The fifth Regional Market (settled Aug 15 2026). The **Port of St. Sever** has been the place for the best swords and blades in the Empire for over 1000 years. It stands on the southern coast of the **Bishopric of St. Severinius**, where the **River Tempra** (issuing from **Lake Tempra**) lets into the **Choleric Sea** — the smiths' quenching water is in the name. The Patron of Weaponsmiths is **Conrad** (Primi, Arms), who in the Port goes by his Italicized name, **San Corrado**; the Forge Monastery bears it.
 
-- **Feat's origin gate:** Port of St. Sever natives and residents of the Bishopric of St. Severinius *(assumed on the Lysander pattern — Les to confirm)*. *(Feat name: [[add text]].)*
+- **Open to:** natives of the Bishopric of St. Severinius *(the Port has no separate place entry — Les to confirm)*.
 - **Catalogue:** any Masterwork blade (Heavy Blades and Light Blades groups) — the named good is **Temper Quenched [weapon]**, at 20% off the standard Masterwork weapon price, with the Quality menu per [masterwork.md](masterwork.md).
 - **[[add text]]** — the signature ration (Fancy Trail Ration template: 4 cp, 1 lb, 1 Temp HP until next full rest).
 

@@ -100,22 +100,26 @@ describe('the Markets roster', () => {
 
   it('bestBuy finds the cheapest reachable source only', () => {
     expect(bestBuy('musket', [])!.market.id).toBe('waldheim');
-    const withFeat = bestBuy('musket', ['market-dunstans-magazine'])!;
-    expect(withFeat.market.id).toBe('dunstans-magazine');
-    expect(withFeat.priceCp).toBe(1000);
+    const local = bestBuy('musket', [], 0, [], 'Lysander')!;
+    expect(local.market.id).toBe('dunstans-magazine');
+    expect(local.priceCp).toBe(1000);
   });
 
-  it('access: open markets for everyone, Feat markets for Feat owners', () => {
+  it('access: open markets for everyone, Feat markets for Feat owners, home markets by origin', () => {
     expect(accessibleMarkets([]).map((m) => m.id)).toEqual(['waldheim', 'imperial-square']);
     expect(accessibleMarkets(['market-theobalds-row']).map((m) => m.id)).toContain('theobalds-row');
+    expect(accessibleMarkets([], [], 'Dunstanmoore').map((m) => m.id)).toContain('long-butts');
+    expect(accessibleMarkets([], [], 'Waldheim').map((m) => m.id)).not.toContain('long-butts');
   });
 
-  it('listing: the Waldheim family always shows; Regional Markets only once open', () => {
+  it('listing: the Waldheim family always shows; a Regional Market only for its own', () => {
     const anon = listedMarkets([]).map((m) => m.id);
     expect(anon).toContain('theobalds-row'); // locked but listed
     expect(anon).not.toContain('dunstans-magazine');
     expect(anon).not.toContain('ulrics-exchange');
-    expect(listedMarkets(['market-dunstans-magazine']).map((m) => m.id)).toContain('dunstans-magazine');
+    expect(anon).not.toContain('long-butts');
+    expect(listedMarkets([], [], 'Lysander').map((m) => m.id)).toContain('dunstans-magazine');
+    expect(listedMarkets([], [], 'Havilah').map((m) => m.id)).toContain('ulrics-exchange');
   });
 
   it('The Long Butts sells the archer\'s kit at 90% of list, and its own stock alone', () => {
@@ -234,7 +238,7 @@ describe('the Basket transaction', () => {
     expect(state.wealthCp).toBe(1000);
   });
 
-  it('a Feat-gated Market refuses strangers and serves Feat owners at its prices', () => {
+  it('a Regional Market refuses strangers and serves its own at its prices', () => {
     const denied = replay([
       ...creation(),
       ev('transaction', { lines: [{ direction: 'buy', marketId: 'dunstans-magazine', itemId: 'musket', qty: 1 }] }),
@@ -243,7 +247,6 @@ describe('the Basket transaction', () => {
 
     const served = replay([
       ...creation(badGear, 'Lysander'),
-      ev('feat-bought', { featId: 'market-dunstans-magazine' }),
       ev('transaction', { lines: [{ direction: 'buy', marketId: 'dunstans-magazine', itemId: 'musket', qty: 1 }] }),
     ]);
     expect(served.flags).toEqual([]);
@@ -309,7 +312,6 @@ describe('the Basket transaction', () => {
     const { state, flags } = replay([
       ...crystallized(badGear, 'Havilah'),
       ev('session-logged', {}),
-      ev('feat-bought', { featId: 'market-ulrics-exchange' }),
       ev('transaction', { lines: [{ direction: 'buy', marketId: 'ulrics-exchange', itemId: 'animal-pelts-cured', qty: 1 }] }),
       ev('transaction', { lines: [{ direction: 'sell', marketId: 'waldheim', instanceId: 'item:animal-pelts-cured', qty: 1 }] }),
     ]);
@@ -320,7 +322,6 @@ describe('the Basket transaction', () => {
   it('a New character cannot run the arbitrage — bought goods hold until the first Session', () => {
     const { flags } = replay([
       ...crystallized(badGear, 'Havilah'),
-      ev('feat-bought', { featId: 'market-ulrics-exchange' }),
       ev('transaction', { lines: [{ direction: 'buy', marketId: 'ulrics-exchange', itemId: 'animal-pelts-cured', qty: 1 }] }),
       ev('transaction', { lines: [{ direction: 'sell', marketId: 'waldheim', instanceId: 'item:animal-pelts-cured', qty: 1 }] }),
     ]);

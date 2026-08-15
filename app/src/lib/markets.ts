@@ -17,7 +17,10 @@ import { CATALOGUE, type Cp } from './equipment';
 
 export type MarketAccess =
   | { kind: 'open' }
-  | { kind: 'feat'; featId: string };
+  | { kind: 'feat'; featId: string }
+  /** A Regional Market opens by Place of Origin alone (ruled Aug 15 2026 —
+   * no Feat toll for the local). Values match lib/places.ts exactly. */
+  | { kind: 'origin'; places: string[] };
 
 export interface MarketLine {
   itemId: string;
@@ -188,7 +191,7 @@ export const MARKETS: Market[] = [
     name: "St. Dunstan's Magazine",
     location: 'Abbey of the Artillery, Lysander',
     marketType: 'Firearms Market',
-    access: { kind: 'feat', featId: 'market-dunstans-magazine' },
+    access: { kind: 'origin', places: ['Lysander', 'the Bishopric of St. Dunstan'] },
     // Everything firearms-related at 50% of list: the Pistols and Rifles
     // groups, grenades, powder and shot, powder horns.
     sells: CATALOGUE.filter((e) =>
@@ -203,7 +206,7 @@ export const MARKETS: Market[] = [
     name: "St. Ulric's Exchange",
     location: 'Freehold of Havilah',
     marketType: 'Trade Market',
-    access: { kind: 'feat', featId: 'market-ulrics-exchange' },
+    access: { kind: 'origin', places: ['Havilah'] },
     sells: [
       { itemId: 'animal-pelts-cured', priceCp: 200 },
       { itemId: 'stock-havilah', priceCp: 500 },
@@ -223,7 +226,7 @@ export const MARKETS: Market[] = [
     name: 'The Long Butts',
     location: 'Bynithbrack Water',
     marketType: 'Masterwork Bows Market',
-    access: { kind: 'feat', featId: 'market-long-butts' },
+    access: { kind: 'origin', places: ['Dunstanmoore'] },
     // Standard bows, arrows, and quivers at 90% of list, plus the Butts'
     // own stock. Masterwork (Bowyercraft, Fletchercraft, the Cory) arrives
     // with the commissioning model — mechanics/masterwork.md.
@@ -243,32 +246,45 @@ export function marketById(id: string): Market | undefined {
   return MARKETS.find((m) => m.id === id);
 }
 
+/** Whether the character stands inside this Market's door: open to all,
+ * opened by an owned Feat, or a Regional Market's own Place of Origin. */
+export function marketOpen(
+  market: Market,
+  ownedFeatIds: string[],
+  origin: string | null = null,
+): boolean {
+  switch (market.access.kind) {
+    case 'open': return true;
+    case 'feat': return ownedFeatIds.includes(market.access.featId);
+    case 'origin': return origin !== null && market.access.places.includes(origin);
+  }
+}
+
 /** The Markets a character can shop, given the Feats and Abilities they
- * own. Feats open doors; a Renunciation closes one for good. */
+ * own and where they are from. Feats open doors, origin opens the home
+ * Regional Market; a Renunciation closes one for good. */
 export function accessibleMarkets(
   ownedFeatIds: string[],
   ownedAbilities: OwnedAbilityRef[] = [],
+  origin: string | null = null,
 ): Market[] {
   return MARKETS.filter(
-    (m) =>
-      (m.access.kind === 'open' || ownedFeatIds.includes(m.access.featId)) &&
-      !marketClosed(m, ownedAbilities),
+    (m) => marketOpen(m, ownedFeatIds, origin) && !marketClosed(m, ownedAbilities),
   );
 }
 
 /** The Markets the shop lists. The Waldheim family is always shown (locked
- * ones by title, with the Feat named); Regional Markets appear only once
- * their Feat is owned — no grey rows, discovery lives in the Feat list. A
- * Market closed by a Renunciation is not listed at all. */
+ * ones by title, with the Feat named); Regional Markets appear only for
+ * their own — no grey rows, the local simply knows the way. A Market
+ * closed by a Renunciation is not listed at all. */
 export function listedMarkets(
   ownedFeatIds: string[],
   ownedAbilities: OwnedAbilityRef[] = [],
+  origin: string | null = null,
 ): Market[] {
-  const regional = ['dunstans-magazine', 'ulrics-exchange', 'long-butts'];
   return MARKETS.filter(
     (m) =>
-      (!regional.includes(m.id) ||
-        (m.access.kind === 'feat' && ownedFeatIds.includes(m.access.featId))) &&
+      (m.access.kind !== 'origin' || marketOpen(m, ownedFeatIds, origin)) &&
       !marketClosed(m, ownedAbilities),
   );
 }
@@ -299,9 +315,10 @@ export function bestSell(
   ownedFeatIds: string[],
   commerceRank = 0,
   ownedAbilities: OwnedAbilityRef[] = [],
+  origin: string | null = null,
 ): { market: Market; priceCp: Cp } | undefined {
   let best: { market: Market; priceCp: Cp } | undefined;
-  for (const market of accessibleMarkets(ownedFeatIds, ownedAbilities)) {
+  for (const market of accessibleMarkets(ownedFeatIds, ownedAbilities, origin)) {
     const price = sellPriceCp(market, itemId, commerceRank);
     if (price !== undefined && (!best || price > best.priceCp)) best = { market, priceCp: price };
   }
@@ -316,9 +333,10 @@ export function bestBuy(
   ownedFeatIds: string[],
   commerceRank = 0,
   ownedAbilities: OwnedAbilityRef[] = [],
+  origin: string | null = null,
 ): { market: Market; priceCp: Cp } | undefined {
   let best: { market: Market; priceCp: Cp } | undefined;
-  for (const market of accessibleMarkets(ownedFeatIds, ownedAbilities)) {
+  for (const market of accessibleMarkets(ownedFeatIds, ownedAbilities, origin)) {
     const price = buyPriceCp(market, itemId, commerceRank);
     if (price !== undefined && (!best || price < best.priceCp)) best = { market, priceCp: price };
   }

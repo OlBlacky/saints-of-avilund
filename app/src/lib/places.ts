@@ -3,7 +3,7 @@
 //
 // This is the registry behind three things at once: the Place of Origin a
 // character is born to, the {place} slot a Quirk fills at roll time, and the
-// originGate on the Regional Market Feats (lib/feats.ts). One list, so the
+// origin access on the Regional Markets (lib/markets.ts). One list, so the
 // three can never drift.
 //
 // Each place carries its Home Language. That is the whole rule: where you

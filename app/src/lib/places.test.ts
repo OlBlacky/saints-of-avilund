@@ -1,10 +1,10 @@
 // The place registry — the twelve polities, the tongues they raise, and the
 // two other tables that key off them (Quirk {place} slots, Regional Market
-// Feat gates). These tests exist to catch drift between the three.
+// origin access). These tests exist to catch drift between the three.
 
 import { describe, expect, it } from 'vitest';
-import { FEATS } from './feats';
 import { HOME_LANGUAGES } from './languages';
+import { MARKETS } from './markets';
 import { PLACES, homeLanguageFor, placeByName } from './places';
 
 describe('the places of Avilund', () => {
@@ -33,12 +33,13 @@ describe('the places of Avilund', () => {
     expect(placeByName('Atlantis')).toBeUndefined();
   });
 
-  it('gates every Regional Market Feat on places that exist', () => {
-    const gated = FEATS.filter((f) => f.originGate);
-    expect(gated.length).toBeGreaterThan(0);
-    for (const feat of gated) {
-      for (const name of feat.originGate!) {
-        expect(placeByName(name), `${feat.name} gates on "${name}"`).toBeDefined();
+  it('opens every Regional Market on places that exist', () => {
+    const regional = MARKETS.filter((m) => m.access.kind === 'origin');
+    expect(regional.length).toBeGreaterThan(0);
+    for (const market of regional) {
+      const places = (market.access as { places: string[] }).places;
+      for (const name of places) {
+        expect(placeByName(name), `${market.name} opens for "${name}"`).toBeDefined();
       }
     }
   });

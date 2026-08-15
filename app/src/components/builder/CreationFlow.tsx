@@ -1391,16 +1391,7 @@ export default function CreationFlow() {
                 };
 
                 const ownedIds = new Set(state.feats.map((f) => f.featId));
-                // A location-gated Feat (Regional Markets) exists only for a
-                // qualifying Place of Origin — invisible in every view
-                // otherwise. Discovery lives in this list; the shop never
-                // advertises the door.
-                const visibleFeats = FEATS.filter(
-                  (f) =>
-                    !f.originGate ||
-                    (state.origin !== undefined && f.originGate.includes(state.origin)) ||
-                    ownedIds.has(f.id),
-                );
+                const visibleFeats = FEATS;
                 // Eligible = the build qualifies (gates, requirements, caps).
                 // An empty bank never hides a Feat — affordability lives on
                 // the Take button, which still disables.

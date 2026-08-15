@@ -511,7 +511,7 @@ export default function CharacterSheet({ identity, setIdentity, status, setStatu
     if (!commerceOpen || !atMarket) return null;
     if (!item.itemId) return null;
     if (state.sessions < 1) return null;
-    const best = bestSell(item.itemId, ownedFeatIds, commerce, ownedAbilities);
+    const best = bestSell(item.itemId, ownedFeatIds, commerce, ownedAbilities, state.origin ?? null);
     if (!best || best.priceCp < 1) return null;
     const inBasket = basket
       .filter((l): l is Extract<BasketLine, { direction: 'sell' }> => l.direction === 'sell')

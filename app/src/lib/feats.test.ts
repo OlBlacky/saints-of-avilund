@@ -19,6 +19,18 @@ describe('feats data', () => {
     for (const id of ids) expect(id, id).toMatch(/^[a-z0-9]+(-[a-z0-9]+)*$/);
   });
 
+  // The engine reads these by literal id — drawCost, Container Access, Load,
+  // prices, bonus languages. A Feat missing from the catalogue cannot be
+  // bought, so the rule it carries is dead code until it is listed here.
+  it('carries every Feat the engine reads by id', () => {
+    const ids = new Set(FEATS.map((f) => f.id));
+    for (const id of [
+      'quick-draw', 'deft-hands', 'encumbrance-ladder', 'commerce-ladder', 'polyglot',
+    ]) {
+      expect(ids, id).toContain(id);
+    }
+  });
+
   it('every Feat carries brief and full texts, briefly', () => {
     for (const f of FEATS) {
       expect(f.brief, f.id).toBeTruthy();

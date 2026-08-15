@@ -17,7 +17,7 @@ import { featById } from '../feats';
 import type { FeatRequirement } from '../feats';
 import { ARMOURS, SHIELDS, containerCoefficient, isWearable, startingClothesFor } from '../equipment';
 import { STARTING_COIN, VOW_OF_POVERTY_GEAR, gearById } from '../gear';
-import { buyPriceCp, itemName, marketById, sellPriceCp } from '../markets';
+import { buyPriceCp, itemName, marketById, marketOpen, sellPriceCp } from '../markets';
 import { HOME_LANGUAGES } from '../languages';
 import type { Language } from '../languages';
 import { placeByName } from '../places';
@@ -762,7 +762,7 @@ export function replay(events: RecordEvent[]): ReplayResult {
         for (const line of e.lines) {
           const market = marketById(line.marketId);
           if (!market) { flag(e, 'unknown-ref', `unknown Market "${line.marketId}"`); continue; }
-          if (market.access.kind === 'feat' && !state.feats.some((f) => f.featId === (market.access as { featId: string }).featId)) {
+          if (!marketOpen(market, state.feats.map((f) => f.featId), state.origin ?? null)) {
             flag(e, 'no-access', `no access to ${market.name}`);
             continue;
           }
@@ -1233,12 +1233,6 @@ export function replay(events: RecordEvent[]): ReplayResult {
         }
         if (feat.levelGate && levelFor(state.milestones, state.crystallized) < feat.levelGate) {
           flag(e, 'over-cap', `${feat.name} opens at Level ${feat.levelGate}`);
-          break;
-        }
-        // A Regional Market Feat belongs to its region: no Place of Origin on
-        // the list, no door.
-        if (feat.originGate && !(state.origin && feat.originGate.includes(state.origin))) {
-          flag(e, 'no-access', `${feat.name} is open only to natives of ${feat.originGate.join(' or ')}`);
           break;
         }
         // The choice resolves before the requirement: a speciality pick
