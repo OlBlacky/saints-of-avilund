@@ -718,6 +718,33 @@ export default function CharacterSheet({ identity, setIdentity, status, setStatu
     );
   };
 
+  /** The rows that trail an item's main row in any table: its rules note
+   * and its Masterwork box (Qualities + the commission control). The
+   * Weapons and Armour tables use these too — a Temper Quenched blade is
+   * commissioned where it is listed. */
+  const trailingRows = (i: OwnedItem, colSpan: number) => {
+    const mwBox = masterworkBox(i);
+    const note = i.itemId ? itemNote(i.itemId) : undefined;
+    return [
+      ...(note
+        ? [
+            <tr key={`${i.instanceId}-note`} class="sheet-boxrow">
+              <td colSpan={colSpan}>
+                <div class="sheet-cbox"><p class="sheet-cbox-note">{note}</p></div>
+              </td>
+            </tr>,
+          ]
+        : []),
+      ...(mwBox
+        ? [
+            <tr key={`${i.instanceId}-mw`} class="sheet-boxrow">
+              <td colSpan={colSpan}>{mwBox}</td>
+            </tr>,
+          ]
+        : []),
+    ];
+  };
+
   /** A block's rows: each item, then whatever it holds, indented. Contents
    * of every kind draw here — the Container's block is where a Stored item
    * lives. A Container trails its box beneath its own row. */
@@ -1018,8 +1045,8 @@ export default function CharacterSheet({ identity, setIdentity, status, setStatu
               </div>
               <p class="sheet-vitline">
                 <strong>Load</strong>
-                <span>
-                  {sheet.load.totalLb} lb of {sheet.load.baseLb} lb · {sheet.load.band}
+                <span title={sheet.load.formula}>
+                  {sheet.load.totalLb} lb of {sheet.load.base.total} lb · {sheet.load.band}
                   {sheet.load.effect && ` — ${sheet.load.effect}`}
                 </span>
               </p>
@@ -1661,21 +1688,27 @@ export default function CharacterSheet({ identity, setIdentity, status, setStatu
                           const w = weaponFor(item)!;
                           const p = profOf(w.group);
                           const hook = hookSum(hooks, w.group);
+                          const qd = qualityDamage(item);
                           return {
                             key: `${cardKey}/${item.instanceId}`,
-                            name: item.name,
+                            name: gearName(item),
                             group: w.group,
                             where: rootLocation(item),
-                            toHit: offenceOf(atkAttr) + (p ?? -1) + hook.toHit,
-                            toHitParts: [...toHitPartsFor(atkAttr, w.group), ...hook.hitParts],
-                            damage: addToDamage(dmgFor(dmgText, w.damage), hook.damage),
+                            toHit: offenceOf(atkAttr) + (p ?? -1) + hook.toHit + mwBonus(w),
+                            toHitParts: [
+                              ...toHitPartsFor(atkAttr, w.group),
+                              ...hook.hitParts,
+                              ...mwParts(w),
+                            ],
+                            damage: addToDamage(dmgFor(dmgText, w.damage), hook.damage + qd.bonus),
                             // The damage line breaks down the way the attack
                             // does: the weapon's die, then everything added to
                             // it — the Hook's bonus named among them.
                             dmgParts: [
-                              `${item.name} ${w.damage}`,
+                              `${gearName(item)} ${w.damage}`,
                               ...dmgPartsFor(dmgText),
                               ...hook.dmgParts,
+                              ...qd.parts,
                             ],
                             hooked: hook.live.length > 0,
                             // A reach Hook lengthens this weapon's line alone,
@@ -1945,9 +1978,9 @@ export default function CharacterSheet({ identity, setIdentity, status, setStatu
                 <tr><th>Weapon</th><th>Group</th><th>Damage</th><th>Range</th><th>Properties</th><th>Wt</th><th>Location</th><th></th></tr>
               </thead>
               <tbody>
-                {weapons.map((i) => {
+                {weapons.flatMap((i) => {
                   const w = weaponFor(i)!;
-                  return (
+                  return [
                     <tr key={i.instanceId} {...rowProps(i, 'weapons')}>
                       {nameCell(i, 'weapons')}
                       <td>{w.group}</td>
@@ -1957,8 +1990,9 @@ export default function CharacterSheet({ identity, setIdentity, status, setStatu
                       <td class="num">{rowWeight(i)}</td>
                       <td>{moveControl(i)}</td>
                       <td class="act">{splitControl(i)}{sellControl(i)}</td>
-                    </tr>
-                  );
+                    </tr>,
+                    ...trailingRows(i, 8),
+                  ];
                 })}
               </tbody>
             </table>
@@ -1981,7 +2015,7 @@ export default function CharacterSheet({ identity, setIdentity, status, setStatu
                 <tr><th>Piece</th><th>AC</th><th>DR</th><th>Drawbacks</th><th>Wt</th><th>Location</th><th></th></tr>
               </thead>
               <tbody>
-                {wearables.map((i) => {
+                {wearables.flatMap((i) => {
                   const a = armourFor(i);
                   const s = shieldFor(i);
                   const drawbacks = a
@@ -1991,17 +2025,18 @@ export default function CharacterSheet({ identity, setIdentity, status, setStatu
                         a.strReq !== null ? `Str +${a.strReq}` : null,
                       ].filter(Boolean).join(' · ') || '—'
                     : s!.speedPenaltyFt ? `−${s!.speedPenaltyFt}' Speed` : '—';
-                  return (
+                  return [
                     <tr key={i.instanceId} {...rowProps(i, 'wearables')}>
                       {nameCell(i, 'wearables')}
-                      <td>+{a ? ARMOUR_TIER_AC[a.tier] : s!.ac}</td>
+                      <td>+{(a ? ARMOUR_TIER_AC[a.tier] : s!.ac) + (a?.acBonus ?? 0)}</td>
                       <td>{a ? (a.drNote ? `${a.dr} (${a.drNote})` : a.dr) : s!.dr || '—'}</td>
                       <td>{drawbacks}</td>
                       <td class="num">{rowWeight(i)}</td>
                       <td>{moveControl(i)}</td>
                       <td class="act">{splitControl(i)}{sellControl(i)}</td>
-                    </tr>
-                  );
+                    </tr>,
+                    ...trailingRows(i, 7),
+                  ];
                 })}
               </tbody>
             </table>
