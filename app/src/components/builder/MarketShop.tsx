@@ -81,7 +81,8 @@ export function basketTotalsCp(
 /** The Masterwork Quality menu, printed whole (Les, Aug 16 2026): every
  * Quality with its effect, days, and cost, a tick box against each. Owned
  * work shows ticked and locked; a blocked tick is greyed with its reason.
- * The shop and the sheet both print this chart. */
+ * The shop and the sheet both print this chart — folded shut by default,
+ * the summary line counting the work (Les, same day: the chart is tall). */
 export function QualityMenu({ itemId, owned = [], picked, onToggle, title }: {
   itemId: string;
   /** Quality ids already worked into the piece — ticked and locked. */
@@ -94,9 +95,13 @@ export function QualityMenu({ itemId, owned = [], picked, onToggle, title }: {
   const menu = qualitiesFor(itemId);
   if (menu.length === 0) return null;
   const held = [...owned, ...picked];
+  const tally =
+    held.length > 0
+      ? ` — ${owned.length ? `${owned.length} worked in` : ''}${owned.length && picked.length ? ', ' : ''}${picked.length ? `${picked.length} ticked` : ''}`
+      : '';
   return (
-    <div class="mw-menu">
-      {title && <p class="mw-menu-title">{title}</p>}
+    <details class="mw-menu">
+      <summary>{title ?? 'Masterwork Qualities'}{tally}</summary>
       <table class="mw-menu-table">
         <thead>
           <tr><th></th><th>Name</th><th>Quality</th><th>Days</th><th>Cost</th></tr>
@@ -135,7 +140,7 @@ export function QualityMenu({ itemId, owned = [], picked, onToggle, title }: {
           })}
         </tbody>
       </table>
-    </div>
+    </details>
   );
 }
 

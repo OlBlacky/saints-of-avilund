@@ -129,7 +129,7 @@ describe('the worked example replays clean', () => {
     const str = sheet.attributes.find((a) => a.attr === 'Strength')!;
     expect(str.offence.parts).toEqual([
       { label: 'Strength', value: 3 },
-      { label: 'Offence Ranks', value: 1 },
+      { label: 'Ranks', value: 1 },
     ]);
     expect(sheet.hitPoints.parts[0]).toEqual({ label: 'Base', value: 5 });
   });

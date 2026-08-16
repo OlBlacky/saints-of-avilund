@@ -379,9 +379,13 @@ const blurb = 'Build a character of Avilund — and once they are Complete, this
     font-size: 0.78rem; font-style: italic; opacity: 0.85;
     border-left: 2px solid var(--gold); background: rgba(0, 0, 0, 0.02);
   }
-  /* The Masterwork Quality menu, printed whole with tick boxes */
+  /* The Masterwork Quality menu — a fold per piece, the chart inside */
   .mw-menu { margin: 0.25rem 0 0.35rem; }
-  .mw-menu-title { margin: 0 0 0.15rem; font-size: 0.8rem; font-variant: small-caps; letter-spacing: 0.04em; }
+  .mw-menu > summary {
+    cursor: pointer; font-size: 0.8rem;
+    font-variant: small-caps; letter-spacing: 0.04em; color: var(--gold);
+  }
+  .mw-menu > summary:hover { color: var(--oxblood); }
   .mw-menu-table { width: 100%; border-collapse: collapse; font-size: 0.82rem; }
   .mw-menu-table th { text-align: left; font-size: 0.72rem; font-variant: small-caps; opacity: 0.7; padding: 0.05rem 0.4rem; }
   .mw-menu-table td { padding: 0.1rem 0.4rem; border-top: 1px solid rgba(0, 0, 0, 0.06); }

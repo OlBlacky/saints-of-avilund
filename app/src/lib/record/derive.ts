@@ -406,7 +406,7 @@ export function derive(state: CharacterState): DerivedSheet {
       value,
       offence: sum([
         ...base(attr),
-        ...(off ? [{ label: 'Offence Ranks', value: off }] : []),
+        ...(off ? [{ label: 'Ranks', value: off }] : []),
       ]),
       // Save = Attribute + Defence Ranks (one track lifts both; ruled Aug 2026).
       save: sum([
