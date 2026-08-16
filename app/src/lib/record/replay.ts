@@ -158,7 +158,8 @@ export interface CharacterState {
   /** Advances granted minus spent. */
   bank: { major: number; minor: number };
   /** Coin on hand, in cp. Opens at the Starting Gear roll's coin; every
-   * transaction adjusts it. Display reduces to fewest coins (fmtCoins). */
+   * transaction, Quality, and Reward adjusts it. Display reduces to fewest
+   * coins (fmtCoins). */
   wealthCp: number;
   inventory: OwnedItem[];
   /** Played Sessions logged. A character with none is New — and nothing
@@ -899,7 +900,8 @@ export function replay(events: RecordEvent[]): ReplayResult {
           flag(e, 'insufficient-funds', `${quality.name} costs ${quality.priceCp / 10} sp`);
           break;
         }
-        state.wealthCp -= quality.priceCp;
+        netCp -= quality.priceCp;
+        state.wealthCp = openingCp + netCp;
         inst.qualities = [...owned, quality.id];
         break;
       }
@@ -915,6 +917,22 @@ export function replay(events: RecordEvent[]): ReplayResult {
         const name = e.name.trim().slice(0, 60);
         if (name) inst.customName = name;
         else delete inst.customName;
+        break;
+      }
+
+      case 'coin-granted': {
+        if (!state.gear) { flag(e, 'wrong-order', 'no purse before the Starting Gear roll'); break; }
+        if (!Number.isInteger(e.amountSp) || e.amountSp === 0) {
+          flag(e, 'unknown-ref', 'a Reward moves a whole number of silver');
+          break;
+        }
+        const cp = e.amountSp * 10;
+        if (state.wealthCp + cp < 0) {
+          flag(e, 'insufficient-funds', `${-e.amountSp} sp taken against ${state.wealthCp / 10} sp on hand`);
+          break;
+        }
+        netCp += cp;
+        state.wealthCp = openingCp + netCp;
         break;
       }
 

@@ -22,6 +22,7 @@ import {
   SHIELDS,
   ACCESS_LABEL,
   carriesNoLoad,
+  itemNote,
   containerAccess,
   containerAccessNote,
   containerCapacityLb,
@@ -209,6 +210,7 @@ function describeEvent(e: RecordEvent): string {
       return `${e.note === 'creation shopping' ? 'Creation shopping' : 'A market trip'} — ${n} line${n === 1 ? '' : 's'} at ${markets.join(', ')}`;
     }
     case 'item-granted': return `Received ${e.name ?? e.itemId}${e.qty && e.qty > 1 ? ` ×${e.qty}` : ''}${e.note ? ` — ${e.note}` : ''}`;
+    case 'coin-granted': return `${e.amountSp >= 0 ? 'Reward' : 'Coin taken'}: ${fmtCoins(Math.abs(e.amountSp) * 10)}${e.note ? ` — ${e.note}` : ''}`;
     case 'item-moved': return `Moved an item`;
   }
 }
@@ -270,6 +272,8 @@ export default function CharacterSheet({ identity, setIdentity, status, setStatu
   // Manage Mode: the sheet is read-only at the table; the Manage Character
   // button opens the editing surfaces (Details, Sessions, Milestones).
   const [manage, setManage] = useState(false);
+  // The Reward field — silver granted (or taken) outside commerce.
+  const [rewardSp, setRewardSp] = useState('');
   // Drag state: a box being reordered, or an item in flight. An item in
   // flight also tracks where it would land — beside a row, or inside it.
   const [dragBox, setDragBox] = useState<string | null>(null);
@@ -462,6 +466,25 @@ export default function CharacterSheet({ identity, setIdentity, status, setStatu
   /** The name cell: the row's drag grip, indented by how deep it is packed.
    * The grip records which block the item leaves, so ordering stays inside
    * the block the player can see. */
+  /** The one-time origin backfill (records from before origin joined the
+   * spine). Shown wherever the origin would print, so an unset origin never
+   * masquerades as a set one — the Identity text rides in the hint only. */
+  const originPicker = () => (
+    <select
+      class="sheet-originpick"
+      value=""
+      onChange={(e) => {
+        const place = (e.target as HTMLSelectElement).value;
+        if (place) append(mk('origin-chosen', { place }));
+      }}
+    >
+      <option value="">{identity.origin ? `${identity.origin}?` : 'Set the Place of Origin…'}</option>
+      {PLACES.map((p) => (
+        <option value={p.value}>{p.value}</option>
+      ))}
+    </select>
+  );
+
   const nameCell = (item: OwnedItem, block: string, depth = 0) => (
     <td
       draggable
@@ -702,6 +725,14 @@ export default function CharacterSheet({ identity, setIdentity, status, setStatu
     gearRows(state.inventory, roots).flatMap(({ item, depth }) => {
       const box = containerBox(item);
       const mwBox = masterworkBox(item);
+      // A Container's box prints its note itself; everything else states
+      // its rules in a line of its own.
+      const note = !box && item.itemId ? itemNote(item.itemId) : undefined;
+      const noteRow = note ? (
+        <div class="sheet-cbox">
+          <p class="sheet-cbox-note">{note}</p>
+        </div>
+      ) : null;
       return [
         <tr key={item.instanceId} {...rowProps(item, block)}>
           {nameCell(item, block, depth)}
@@ -709,7 +740,7 @@ export default function CharacterSheet({ identity, setIdentity, status, setStatu
           <td>{moveControl(item)}</td>
           <td class="act">{splitControl(item)}{sellControl(item)}</td>
         </tr>,
-        ...[box, mwBox].filter(Boolean).map((b, n) => (
+        ...[box, noteRow, mwBox].filter(Boolean).map((b, n) => (
           <tr key={`${item.instanceId}-box${n}`} class="sheet-boxrow">
             <td colSpan={4} class={depth > 0 ? 'sheet-nested' : undefined} style={depth > 0 ? `--depth:${depth}` : undefined}>
               {b}
@@ -820,6 +851,39 @@ export default function CharacterSheet({ identity, setIdentity, status, setStatu
                 Grant a Milestone
               </button>
             )}
+            {/* Rewards: coin arriving outside the Markets. The full version
+                is the DM's reward table; this is the light one — an amount
+                in silver, negative for a fine. Same sourcing rule as the
+                Milestone: free in the sandbox, the DM's word on a roster. */}
+            <label class="sheet-statelabel">
+              Reward (sp)
+              <input
+                class="sheet-move"
+                type="number"
+                step="1"
+                style="width: 7ch"
+                value={rewardSp}
+                placeholder="0"
+                disabled={!state.gear}
+                title={!state.gear ? 'No purse until the Starting Gear is rolled.' : undefined}
+                onInput={(ev) => setRewardSp((ev.target as HTMLInputElement).value)}
+              />
+            </label>
+            <button
+              type="button"
+              class="buy"
+              disabled={!state.gear || !Number.isInteger(Number(rewardSp)) || Number(rewardSp) === 0}
+              onClick={() => {
+                const amountSp = Number(rewardSp);
+                if (!Number.isInteger(amountSp) || amountSp === 0) return;
+                const words = `${amountSp > 0 ? 'Grant' : 'Take'} ${fmtCoins(Math.abs(amountSp) * 10)}?`;
+                if (sandbox) append(mk('coin-granted', { amountSp }));
+                else if (confirm(words)) append(mk('coin-granted', { amountSp }, 'gm'));
+                setRewardSp('');
+              }}
+            >
+              {Number(rewardSp) < 0 ? 'Take Coin' : 'Grant Coin'}
+            </button>
             <button
               type="button"
               class="cf-roll"
@@ -995,18 +1059,7 @@ export default function CharacterSheet({ identity, setIdentity, status, setStatu
                     {state.origin ? (
                       <span class="sheet-fixed">{state.origin}</span>
                     ) : (
-                      <select
-                        value=""
-                        onChange={(e) => {
-                          const place = (e.target as HTMLSelectElement).value;
-                          if (place) append(mk('origin-chosen', { place }));
-                        }}
-                      >
-                        <option value="">{identity.origin ? `${identity.origin}?` : '—'}</option>
-                        {PLACES.map((p) => (
-                          <option value={p.value}>{p.value}</option>
-                        ))}
-                      </select>
+                      originPicker()
                     )}
                   </label>
                   <label>Age
@@ -1030,7 +1083,7 @@ export default function CharacterSheet({ identity, setIdentity, status, setStatu
                 </div>
               ) : (
                 <div class="sheet-details">
-                  <span><strong>Place of origin</strong> {state.origin || identity.origin || '—'}</span>
+                  <span><strong>Place of origin</strong> {state.origin ?? originPicker()}</span>
                   <span><strong>Age</strong> {identity.age || '—'}</span>
                   <span>
                     <strong>Height</strong>{' '}

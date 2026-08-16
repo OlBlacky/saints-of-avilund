@@ -117,6 +117,11 @@ export type RecordEvent =
   /** An item arriving outside commerce: DM grant, found gear, a gift. With
    * an itemId it is catalogue-backed; free-named otherwise (unique items). */
   | (BaseEvent & { type: 'item-granted'; name?: string; itemId?: string; qty?: number; note?: string })
+  /** Coin arriving outside commerce — the Reward. A whole number of silver,
+   * negative for a fine, a theft, or a correction. The DM's to grant: a
+   * roster sheet records it at the DM's word (source 'gm'); the sandbox
+   * grants freely. Amount is the decision here, so the event carries it. */
+  | (BaseEvent & { type: 'coin-granted'; amountSp: number; note?: string })
   /** Move an owned item between locations, and optionally to a new place in
    * the sheet's order (sheet organization, durable). A move with an
    * unchanged location is a pure reorder. */

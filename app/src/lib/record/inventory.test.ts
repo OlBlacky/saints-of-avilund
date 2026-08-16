@@ -5,7 +5,7 @@
 // the Chaffer Ladder's percentages.
 
 import { describe, expect, it } from 'vitest';
-import { ARMOURS, MELEE_WEAPONS } from '../equipment';
+import { ARMOURS, MELEE_WEAPONS, itemNote } from '../equipment';
 import { GEAR, STARTING_COIN } from '../gear';
 import {
   MARKETS,
@@ -160,6 +160,16 @@ describe('the Markets roster', () => {
     expect(ARMOURS.find((a) => a.id === 'mw-leather')!.acBonus).toBe(1);
   });
 
+  it('every special item states its rules where it is used', () => {
+    // Both the shop line and the gear row print the note (Les, Aug 16 2026).
+    for (const id of [
+      'moorish-pasty', 'knights-stew', 'war-quiver', 'st-dunstans-corytos',
+      'bodkin-arrows', 'cage-flaming-arrows', 'mw-longsword', 'mw-leather', 'mw-longbow',
+    ]) {
+      expect(itemNote(id), id).toBeTruthy();
+    }
+  });
+
   it("St. Dunstan's Magazine sells firearms at half list", () => {
     const magazine = marketById('dunstans-magazine')!;
     expect(buyPriceCp(magazine, 'musket')).toBe(1000);
@@ -300,6 +310,50 @@ describe('opening coin and Starting Gear', () => {
     ]);
     expect(state.inventory.filter((i) => i.origin === 'starting-gear')).toHaveLength(1);
     expect(state.wealthCp).toBe(STARTING_COIN.good * 10);
+  });
+});
+
+describe('the Reward — coin granted outside the Markets', () => {
+  it('adds to the purse and spends like any other coin', () => {
+    const { state, flags } = replay([
+      ...creation(), // 200 sp
+      ev('coin-granted', { amountSp: 50, note: 'the baron pays' }),
+      ev('transaction', { lines: [{ direction: 'buy', marketId: 'waldheim', itemId: 'longsword', qty: 1 }] }),
+    ]);
+    expect(flags).toEqual([]);
+    expect(state.wealthCp).toBe(2000 + 500 - 150);
+  });
+
+  it('takes coin back when the amount is negative, but never past empty', () => {
+    const fined = replay([...creation(goodGear), ev('coin-granted', { amountSp: -40 })]);
+    expect(fined.flags).toEqual([]);
+    expect(fined.state.wealthCp).toBe(1000 - 400);
+
+    const overdrawn = replay([...creation(goodGear), ev('coin-granted', { amountSp: -200 })]);
+    expect(overdrawn.flags.some((f) => f.code === 'insufficient-funds')).toBe(true);
+    expect(overdrawn.state.wealthCp).toBe(1000);
+  });
+
+  it('refuses a fractional or empty Reward, and any Reward before the purse exists', () => {
+    expect(replay([...creation(), ev('coin-granted', { amountSp: 2.5 })]).flags).toHaveLength(1);
+    expect(replay([...creation(), ev('coin-granted', { amountSp: 0 })]).flags).toHaveLength(1);
+    const early = replay([
+      ev('class-chosen', { classId: 'soldier' }),
+      ev('coin-granted', { amountSp: 10 }),
+    ]);
+    expect(early.flags.some((f) => f.code === 'wrong-order')).toBe(true);
+  });
+
+  it('survives a Gear reroll — the opening moves, the Reward stays', () => {
+    const { state } = replay([
+      ...creation(badGear), // 200 sp
+      ev('coin-granted', { amountSp: 25 }),
+      ev('quirk-rolled', {
+        quirkName: 'Q2', slots: {}, rerollsUsed: 1,
+        gearId: goodGear.id, gearName: goodGear.name, gearSlots: {},
+      }),
+    ]);
+    expect(state.wealthCp).toBe(1000 + 250);
   });
 });
 

@@ -73,6 +73,9 @@ export interface Weapon {
   attackBonus?: number;
   /** A Masterwork variant — sold only at its home market. */
   masterwork?: true;
+  /** Plain rules text stated at the point of use — the shop line and the
+   * gear row both print it. */
+  note?: string;
 }
 
 export const MELEE_WEAPONS: Weapon[] = [
@@ -139,6 +142,7 @@ MELEE_WEAPONS.push(
     .map((w): Weapon => ({
       ...w, id: `mw-${w.id}`, name: `Temper Quenched ${w.name}`,
       priceCp: w.priceCp! + 1600, attackBonus: 1, masterwork: true,
+      note: 'Masterwork: +1 to attack.',
     })),
 );
 
@@ -148,6 +152,7 @@ RANGED_WEAPONS.push(
     .map((w): Weapon => ({
       ...w, id: `mw-${w.id}`, name: `Masterwork ${w.name}`,
       priceCp: w.priceCp! + 2000, attackBonus: 1, masterwork: true,
+      note: 'Masterwork: +1 to attack.',
     })),
 );
 
@@ -258,16 +263,16 @@ export const AMMUNITION: SimpleItem[] = [
   { id: 'crossbow-bolts', name: 'Crossbow bolts (10)', priceCp: 10, weightLb: 1 },
   { id: 'powder-and-shot', name: 'Powder and shot (10 rounds)', priceCp: 30, weightLb: 2 },
   // Dunstanmoore Fletchercraft — masterwork arrows by the sheaf, Long Butts
-  // stock alone (mechanics/masterwork.md). Their effects ride the card text
-  // for now; per-arrow arithmetic arrives with commissioning.
-  { id: 'bodkin-arrows', name: 'Bodkin arrows (10)', priceCp: 50, weightLb: 1.5 },
-  { id: 'needle-bodkin-arrows', name: 'Hardened Needle Bodkin arrows (10)', priceCp: 100, weightLb: 1.5 },
-  { id: 'broadhead-arrows', name: 'Broadhead arrows (10)', priceCp: 50, weightLb: 1.5 },
-  { id: 'forge-broadhead-arrows', name: 'Forge Wrought Broadhead arrows (10)', priceCp: 100, weightLb: 1.5 },
-  { id: 'flight-arrows', name: 'Flight arrows (10)', priceCp: 50, weightLb: 1.5 },
-  { id: 'swan-flight-arrows', name: 'Swan Feather & Ash Flight arrows (10)', priceCp: 100, weightLb: 1.5 },
-  { id: 'flaming-arrows', name: 'Flaming arrows (10)', priceCp: 50, weightLb: 1.5 },
-  { id: 'cage-flaming-arrows', name: 'Cage Head Flaming arrows (10)', priceCp: 100, weightLb: 1.5 },
+  // stock alone (mechanics/masterwork.md). Each states its rule; per-arrow
+  // arithmetic in the Attacks table is still to come.
+  { id: 'bodkin-arrows', name: 'Bodkin arrows (10)', priceCp: 50, weightLb: 1.5, note: 'Ignore 1 DR at the first Range Increment.' },
+  { id: 'needle-bodkin-arrows', name: 'Hardened Needle Bodkin arrows (10)', priceCp: 100, weightLb: 1.5, note: 'Ignore 2 DR at the first Range Increment, 1 DR otherwise.' },
+  { id: 'broadhead-arrows', name: 'Broadhead arrows (10)', priceCp: 50, weightLb: 1.5, note: '+1 Piercing Damage.' },
+  { id: 'forge-broadhead-arrows', name: 'Forge Wrought Broadhead arrows (10)', priceCp: 100, weightLb: 1.5, note: 'Bleed 1, Save DC 10.' },
+  { id: 'flight-arrows', name: 'Flight arrows (10)', priceCp: 50, weightLb: 1.5, note: '+25% Range Increments. Stacks with a Masterwork bow’s range improvements.' },
+  { id: 'swan-flight-arrows', name: 'Swan Feather & Ash Flight arrows (10)', priceCp: 100, weightLb: 1.5, note: '+50% Range Increments. Stacks with a Masterwork bow’s range improvements.' },
+  { id: 'flaming-arrows', name: 'Flaming arrows (10)', priceCp: 50, weightLb: 1.5, note: '+1 Fire Damage.' },
+  { id: 'cage-flaming-arrows', name: 'Cage Head Flaming arrows (10)', priceCp: 100, weightLb: 1.5, note: 'Ongoing 1 Fire, Save DC 10.' },
 ];
 
 export const CONTAINERS: SimpleItem[] = [
@@ -288,24 +293,26 @@ export const CONTAINERS: SimpleItem[] = [
     id: 'quiver', name: 'Quiver', priceCp: 10, weightLb: 2,
     coefficient: 1, capacityLb: 3, access: 'free',
     accessNote: 'part of the reload action',
+    note: 'Holds 20 arrows.',
   },
   // Long Butts stock (mechanics/masterwork.md, Quivers) — sold there alone.
   {
     id: 'war-quiver', name: 'War Quiver', priceCp: 20, weightLb: 3,
     coefficient: 1, capacityLb: 6, access: 'free',
     accessNote: 'part of the reload action',
+    note: 'Holds 40 arrows.',
   },
   {
     id: 'mw-quiver', name: 'Masterwork Quiver', priceCp: 1000, weightLb: 2,
     coefficient: 0.8, capacityLb: 3, access: 'free',
     accessNote: 'part of the reload action',
+    note: 'Holds 20 arrows.',
   },
-  // Holds 40 arrows and a bow besides (the 8 lb covers both); the stored
-  // bow's Equipped-slot and Minor-draw rules arrive with commissioning.
   {
     id: 'st-dunstans-corytos', name: "St. Dunstan's Corytos", priceCp: 2500, weightLb: 3,
     coefficient: 0.8, capacityLb: 8, access: 'free',
     accessNote: 'part of the reload action',
+    note: 'Holds 40 arrows and a bow. The stored bow takes no Equipped slot and is drawn with a Minor Action.',
   },
   {
     id: 'bolt-case', name: 'Bolt case', priceCp: 10, weightLb: 1,
@@ -357,10 +364,9 @@ export const CAMP_AND_TRAIL: SimpleItem[] = [
   { id: 'whetstone', name: 'Whetstone', priceCp: 1, weightLb: 1 },
   { id: 'cooking-pot', name: 'Cooking pot', priceCp: 3, weightLb: 4 },
   { id: 'rations-trail', name: 'Rations, trail (one day)', priceCp: 5, weightLb: 1 },
-  // Fancy trail rations (mechanics/markets.md): 1 Temp HP until the next
-  // full rest, one ration's benefit at a time. Home-market stock only.
-  { id: 'moorish-pasty', name: 'Moorish Pasty (one day)', priceCp: 4, weightLb: 1 },
-  { id: 'knights-stew', name: "Knights' Stew (one day)", priceCp: 4, weightLb: 1 },
+  // Fancy trail rations (mechanics/markets.md). Home-market stock only.
+  { id: 'moorish-pasty', name: 'Moorish Pasty (one day)', priceCp: 4, weightLb: 1, note: 'Consuming it grants 1 Temp HP until your next full rest. One ration’s benefit at a time.' },
+  { id: 'knights-stew', name: "Knights' Stew (one day)", priceCp: 4, weightLb: 1, note: 'Consuming it grants 1 Temp HP until your next full rest. One ration’s benefit at a time.' },
   { id: 'fishing-tackle', name: 'Fishing tackle', priceCp: 10, weightLb: 2 },
   { id: 'fishing-net', name: 'Fishing net', priceCp: 40, weightLb: 5 },
   { id: 'tent-one-man', name: 'Tent, one man', priceCp: 80, weightLb: 20 },
@@ -492,6 +498,9 @@ export interface Armour {
   acBonus?: number;
   /** A Masterwork variant — sold only at its home market. */
   masterwork?: true;
+  /** Plain rules text stated at the point of use — the shop line and the
+   * gear row both print it. */
+  note?: string;
 }
 
 export const ARMOURS: Armour[] = [
@@ -516,6 +525,7 @@ ARMOURS.push(
     .map((a): Armour => ({
       ...a, id: `mw-${a.id}`, name: `Mantlethorn ${a.name}`,
       priceCp: a.priceCp + 3000, acBonus: 1, masterwork: true,
+      note: 'Masterwork: +1 AC.',
     })),
 );
 
@@ -709,10 +719,17 @@ export interface CatalogueEntry {
   weightLb: number | null;
   section: string;
   choice?: ItemChoice;
+  /** Plain rules text stated at the point of use (the shop and the sheet). */
+  note?: string;
 }
 
-const flat = (section: string, items: { id: string; name: string; priceCp: Cp | null; weightLb: number | null; choice?: ItemChoice }[]): CatalogueEntry[] =>
-  items.map((i) => ({ id: i.id, name: i.name, priceCp: i.priceCp, weightLb: i.weightLb, section, choice: i.choice }));
+const flat = (section: string, items: { id: string; name: string; priceCp: Cp | null; weightLb: number | null; choice?: ItemChoice; note?: string }[]): CatalogueEntry[] =>
+  items.map((i) => ({ id: i.id, name: i.name, priceCp: i.priceCp, weightLb: i.weightLb, section, choice: i.choice, note: i.note }));
+
+/** The rules text an item states wherever it appears. */
+export function itemNote(itemId: string): string | undefined {
+  return CATALOGUE.find((e) => e.id === itemId)?.note;
+}
 
 export const CATALOGUE: CatalogueEntry[] = [
   ...flat('Melee Weapons', MELEE_WEAPONS),

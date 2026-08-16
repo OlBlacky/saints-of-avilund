@@ -26,6 +26,7 @@ import {
   SHIELDS,
   fmtCoins,
   fmtWeight,
+  itemNote,
 } from '../../lib/equipment';
 import type { ItemChoice } from '../../lib/equipment';
 import { FEATS } from '../../lib/feats';
@@ -298,6 +299,9 @@ export default function MarketShop({ state, basket, setBasket }: Props) {
                               {r.chips.map((c) => (
                                 <span class="cf-chip" title={c.tip}>{c.label}</span>
                               ))}
+                              {itemNote(r.itemId) && (
+                                <div class="cf-shop-note">{itemNote(r.itemId)}</div>
+                              )}
                               {r.choice && (
                                 <span class="cf-shop-choice">
                                   <select
