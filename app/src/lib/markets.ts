@@ -13,7 +13,7 @@
 // after Chaffer percentages — rounds to the nearest cp, in
 // buyPriceCp/sellPriceCp. Nothing displays a Market line raw.
 
-import { CATALOGUE, type Cp } from './equipment';
+import { ARMOURS, CATALOGUE, MELEE_WEAPONS, RANGED_WEAPONS, type Cp } from './equipment';
 
 export type MarketAccess =
   | { kind: 'open' }
@@ -109,8 +109,15 @@ const IMPERIAL_SQUARE_IDS = new Set([
 ]);
 
 /** Regional-market exclusives: catalogued items that only their home
- * market sells (mechanics/markets.md). Not on the Waldheim shelves. */
-const REGIONAL_ONLY_IDS = new Set(['war-quiver', 'moorish-pasty']);
+ * market sells (mechanics/markets.md) — every Masterwork variant, the
+ * Fletchercraft sheaves, the fancy rations. Not on the Waldheim shelves. */
+const REGIONAL_ONLY_IDS = new Set([
+  'war-quiver', 'moorish-pasty', 'knights-stew',
+  'mw-quiver', 'st-dunstans-corytos',
+  'bodkin-arrows', 'needle-bodkin-arrows', 'broadhead-arrows', 'forge-broadhead-arrows',
+  'flight-arrows', 'swan-flight-arrows', 'flaming-arrows', 'cage-flaming-arrows',
+  ...[...MELEE_WEAPONS, ...RANGED_WEAPONS, ...ARMOURS].filter((i) => i.masterwork).map((i) => i.id),
+]);
 
 const stocked = CATALOGUE.filter(
   (e) =>
@@ -227,16 +234,53 @@ export const MARKETS: Market[] = [
     location: 'Bynithbrack Water',
     marketType: 'Masterwork Bows Market',
     access: { kind: 'origin', places: ['Dunstanmoore'] },
-    // Standard bows, arrows, and quivers at 90% of list, plus the Butts'
-    // own stock. Masterwork (Bowyercraft, Fletchercraft, the Cory) arrives
-    // with the commissioning model — mechanics/masterwork.md.
+    // Standard bows, arrows, and quivers at 90% of list; the Butts' own
+    // stock at list — Masterwork bows (Dunstanmoore Bowyercraft), the
+    // Fletchercraft sheaves, the quivers, and lunch. Quality menus arrive
+    // with commissioning — mechanics/masterwork.md.
     sells: [
       ...CATALOGUE.filter((e) =>
         ['shortbow', 'longbow', 'arrows', 'quiver'].includes(e.id),
       ).map((e) => ({ itemId: e.id, priceCp: Math.round(e.priceCp! * 0.9) })),
+      ...RANGED_WEAPONS.filter((w) => w.masterwork && w.group === 'Bows')
+        .map((w) => ({ itemId: w.id, priceCp: w.priceCp! })),
+      ...CATALOGUE.filter((e) => e.id.endsWith('-arrows'))
+        .map((e) => ({ itemId: e.id, priceCp: e.priceCp! })),
       { itemId: 'war-quiver', priceCp: 20 },
+      { itemId: 'mw-quiver', priceCp: 1000 },
+      { itemId: 'st-dunstans-corytos', priceCp: 2500 },
       { itemId: 'moorish-pasty', priceCp: 4 },
     ],
+    buys: [],
+    purseCp: null,
+  },
+  {
+    id: 'mantlethorn-castle',
+    name: 'Mantlethorn Castle Market',
+    location: 'Mantlethorn',
+    marketType: 'Masterwork Leather Market',
+    access: { kind: 'origin', places: ['Mantlethorn'] },
+    // Mantlethorn Leather — the Masterwork armour base grade — and the
+    // stew. Quality menus arrive with commissioning.
+    sells: [
+      ...ARMOURS.filter((a) => a.masterwork)
+        .map((a) => ({ itemId: a.id, priceCp: a.priceCp })),
+      { itemId: 'knights-stew', priceCp: 4 },
+    ],
+    buys: [],
+    purseCp: null,
+  },
+  {
+    id: 'forge-monastery',
+    name: 'The Forge Monastery of San Corrado',
+    location: 'Port of St. Sever',
+    marketType: 'Masterwork Blades Market',
+    access: { kind: 'origin', places: ['the Bishopric of St. Severinius'] },
+    // Temper Quenched blades: the Masterwork weapon base grade at the
+    // monastic wage (list + 160 sp, already in the item price). Quality
+    // menus arrive with commissioning.
+    sells: MELEE_WEAPONS.filter((w) => w.masterwork)
+      .map((w) => ({ itemId: w.id, priceCp: w.priceCp! })),
     buys: [],
     purseCp: null,
   },

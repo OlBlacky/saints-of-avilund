@@ -125,6 +125,13 @@ export type RecordEvent =
    * at `location`, provenance inherited — spare Supplies in the backpack,
    * the rest in the kit's pouch. */
   | (BaseEvent & { type: 'item-split'; instanceId: string; qty: number; location: ItemLocation })
+  /** A Masterwork Quality worked into an owned Masterwork item at its home
+   * market — at purchase or a later retrofit (mechanics/masterwork.md).
+   * Pays the Quality's price; at most two per item, exclusions enforced. */
+  | (BaseEvent & { type: 'quality-added'; instanceId: string; qualityId: string })
+  /** The owner names (or renames, or clears with an empty name) a Masterwork
+   * weapon — anytime, freely. The canon item stays in the parenthetical. */
+  | (BaseEvent & { type: 'item-renamed'; instanceId: string; name: string })
 
   // ── Major purchases ──────────────────────────────────────────────────
   /** One step up the triangular curve (+N costs N Major for the Nth step). */

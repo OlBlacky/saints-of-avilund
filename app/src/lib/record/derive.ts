@@ -32,6 +32,7 @@ import {
   skillBase,
   type CharacterState,
   type EffectGroup,
+  type OwnedItem,
 } from './replay';
 import { SKILLS } from '../skills';
 
@@ -372,14 +373,24 @@ export function derive(state: CharacterState): DerivedSheet {
   // feed the sheet. Armour is passive (AC, DR, Speed, Stealth); a shield
   // rides on the arm and gives its AC and DR only while raised, so it lands
   // in the situational list, not the sums.
-  const wornArmour = state.inventory
+  const wornArmourItem = state.inventory
     .filter((i) => i.location === 'worn')
-    .map((i) => ARMOURS.find((a) => a.id === i.itemId))
-    .find(Boolean);
+    .find((i) => ARMOURS.some((a) => a.id === i.itemId));
+  const wornArmour = wornArmourItem
+    ? ARMOURS.find((a) => a.id === wornArmourItem.itemId)
+    : undefined;
   const borneShield = state.inventory
     .filter((i) => i.location === 'equipped')
     .map((i) => SHIELDS.find((s) => s.id === i.itemId))
     .find(Boolean);
+
+  // Masterwork Qualities (mechanics/masterwork.md): the worn armour's, and
+  // those of Equipped ("ready") weapons. Flat ones join the sums below;
+  // conditional ones print as situational lines with the rest.
+  const armourHas = (qid: string): boolean =>
+    wornArmourItem?.qualities?.includes(qid) ?? false;
+  const readyWeaponsWith = (qid: string): OwnedItem[] =>
+    state.inventory.filter((i) => i.location === 'equipped' && i.qualities?.includes(qid));
 
   const attributes: DerivedAttribute[] = ATTRIBUTES.map((attr) => {
     const value = attrValue(attr);
@@ -402,6 +413,9 @@ export function derive(state: CharacterState): DerivedSheet {
         ...base(attr),
         ...(def ? [{ label: 'Ranks', value: def }] : []),
         ...saveMods,
+        ...(attr === 'Dexterity' && armourHas('layered')
+          ? [{ label: 'Layered', value: 1 }]
+          : []),
       ]),
       unarmouredDefence: sum([
         { label: 'Base', value: 10 },
@@ -416,6 +430,12 @@ export function derive(state: CharacterState): DerivedSheet {
         ...defenceMods,
         ...(wornArmour
           ? [{ label: wornArmour.name, value: ARMOUR_TIER_AC[wornArmour.tier] }]
+          : []),
+        ...(wornArmour?.acBonus
+          ? [{ label: 'Masterwork', value: wornArmour.acBonus }]
+          : []),
+        ...(attr === 'Dexterity' && armourHas('layered')
+          ? [{ label: 'Layered', value: 1 }]
           : []),
       ]),
     };
@@ -451,12 +471,34 @@ export function derive(state: CharacterState): DerivedSheet {
     });
   }
 
+  // Conditional Qualities print beside the other situational lines.
+  if (armourHas('fur-lined')) situational.push({ source: 'Fur Lined', text: 'Resist Cold 1' });
+  if (armourHas('boiled-leather')) situational.push({ source: 'Boiled Leather', text: '+1 DR vs. Slashing and Piercing' });
+  if (armourHas('layered')) situational.push({ source: 'Layered', text: '+1 DR vs. Area Effects' });
+  const weaponLine = (qid: string, text: string) => {
+    for (const inst of readyWeaponsWith(qid)) {
+      situational.push({ source: inst.customName ?? inst.name, text });
+    }
+  };
+  weaponLine('needle-point', 'Ignores 1 DR');
+  weaponLine('patterned-steel', 'Critical on 19, 20 — a natural 19 crits only if the attack hits');
+  weaponLine('heartwood-belly', '+50% Range Increments');
+  weaponLine('composite-heartwood-belly', '+100% Range Increments');
+
   // Initiative = Dex or Wis, whichever is bigger, + modifiers (ruled Aug 2026).
+  // A readiness Quality (Silken Bowstring, Fuller / Balanced) counts while
+  // its weapon is Equipped — Equipped is what "ready" means on the sheet.
   const dex = attributes.find((a) => a.attr === 'Dexterity')!.value.total;
   const wis = attributes.find((a) => a.attr === 'Wisdom')!.value.total;
   const initiative = sum([
     wis > dex ? { label: 'Wisdom', value: wis } : { label: 'Dexterity', value: dex },
     ...steadyParts((e) => e.kind === 'initiativeMod'),
+    ...(readyWeaponsWith('silken-bowstring').length
+      ? [{ label: 'Silken Bowstring', value: 1 }]
+      : []),
+    ...(readyWeaponsWith('fuller-balanced').length
+      ? [{ label: 'Fuller / Balanced', value: 1 }]
+      : []),
   ]);
 
   // Trained Skills: every Class Skill (Trained free, +0 until advanced) plus
@@ -497,6 +539,9 @@ export function derive(state: CharacterState): DerivedSheet {
       ...moddedSkills,
       // Armour's Stealth penalty lands on the sheet even Untrained.
       ...(wornArmour?.stealthPenalty ? ['Stealth'] : []),
+      // A worn Quality's skill bonus lands the same way.
+      ...(armourHas('blackened') ? ['Stealth'] : []),
+      ...(armourHas('grim-trophy') ? ['Intimidate'] : []),
     ]),
   ];
   const skills: DerivedSkill[] = trainedNames.map((skill) => {
@@ -520,6 +565,12 @@ export function derive(state: CharacterState): DerivedSheet {
       ...steadyParts((e) => e.kind === 'skillMod' && e.skill === skill),
       ...(skill === 'Stealth' && wornArmour?.stealthPenalty
         ? [{ label: wornArmour.name, value: -wornArmour.stealthPenalty }]
+        : []),
+      ...(skill === 'Stealth' && armourHas('blackened')
+        ? [{ label: 'Blackened', value: 1 }]
+        : []),
+      ...(skill === 'Intimidate' && armourHas('grim-trophy')
+        ? [{ label: 'Grim Trophy', value: 1 }]
         : []),
     ];
     const variants = attrs.map((attr) => ({

@@ -18,6 +18,7 @@ import type { FeatRequirement } from '../feats';
 import { ARMOURS, SHIELDS, containerCoefficient, isWearable, startingClothesFor } from '../equipment';
 import { STARTING_COIN, VOW_OF_POVERTY_GEAR, gearById } from '../gear';
 import { buyPriceCp, itemName, marketById, marketOpen, sellPriceCp } from '../markets';
+import { MAX_QUALITIES, isMasterworkWeapon, qualityById } from '../masterwork';
 import { HOME_LANGUAGES } from '../languages';
 import type { Language } from '../languages';
 import { placeByName } from '../places';
@@ -67,6 +68,11 @@ export interface OwnedItem {
   qty: number;
   location: ItemLocation;
   origin: 'starting-gear' | 'purchase' | 'grant';
+  /** Masterwork Qualities worked into this instance (mechanics/masterwork.md). */
+  qualities?: string[];
+  /** The owner's name for a Masterwork weapon — leads on the sheet, the
+   * canon item in the parenthetical. */
+  customName?: string;
 }
 
 /** Every location entering state passes through here. Two jobs: read old
@@ -858,6 +864,57 @@ export function replay(events: RecordEvent[]): ReplayResult {
           location: normalizeLocation(e.location, inst.itemId),
           origin: inst.origin,
         });
+        break;
+      }
+
+      case 'quality-added': {
+        const inst = state.inventory.find((i) => i.instanceId === e.instanceId);
+        if (!inst) { flag(e, 'unknown-ref', `no owned item "${e.instanceId}"`); break; }
+        const quality = qualityById(e.qualityId);
+        if (!quality) { flag(e, 'unknown-ref', `unknown Quality "${e.qualityId}"`); break; }
+        if (!inst.itemId || !quality.fits(inst.itemId)) {
+          flag(e, 'no-access', `${quality.name} cannot be worked into ${inst.name}`);
+          break;
+        }
+        // The work is done at the home market — the character must stand
+        // inside its door (origin or Feat, same as any purchase there).
+        const home = marketById(quality.marketId);
+        if (!home || !marketOpen(home, state.feats.map((f) => f.featId), state.origin ?? null)) {
+          flag(e, 'no-access', `no access to ${home?.name ?? quality.marketId}`);
+          break;
+        }
+        if (inst.qty !== 1) { flag(e, 'over-cap', 'one item takes the work — split the stack first'); break; }
+        const owned = inst.qualities ?? [];
+        if (owned.includes(quality.id)) { flag(e, 'duplicate', `${inst.name} already carries ${quality.name}`); break; }
+        if (owned.length >= MAX_QUALITIES) {
+          flag(e, 'over-cap', `a master can only work ${MAX_QUALITIES} Qualities into one item`);
+          break;
+        }
+        const clash = owned.find((id) => quality.excludes?.includes(id) || qualityById(id)?.excludes?.includes(quality.id));
+        if (clash) {
+          flag(e, 'no-access', `${quality.name} cannot share an item with ${qualityById(clash)?.name ?? clash}`);
+          break;
+        }
+        if (state.wealthCp < quality.priceCp) {
+          flag(e, 'insufficient-funds', `${quality.name} costs ${quality.priceCp / 10} sp`);
+          break;
+        }
+        state.wealthCp -= quality.priceCp;
+        inst.qualities = [...owned, quality.id];
+        break;
+      }
+
+      case 'item-renamed': {
+        const inst = state.inventory.find((i) => i.instanceId === e.instanceId);
+        if (!inst) { flag(e, 'unknown-ref', `no owned item "${e.instanceId}"`); break; }
+        if (!inst.itemId || !isMasterworkWeapon(inst.itemId)) {
+          flag(e, 'no-access', 'only a Masterwork weapon takes a name');
+          break;
+        }
+        if (inst.qty !== 1) { flag(e, 'over-cap', 'one blade, one name — split the stack first'); break; }
+        const name = e.name.trim().slice(0, 60);
+        if (name) inst.customName = name;
+        else delete inst.customName;
         break;
       }
 

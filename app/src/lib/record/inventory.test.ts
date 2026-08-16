@@ -5,6 +5,7 @@
 // the Chaffer Ladder's percentages.
 
 import { describe, expect, it } from 'vitest';
+import { ARMOURS, MELEE_WEAPONS } from '../equipment';
 import { GEAR, STARTING_COIN } from '../gear';
 import {
   MARKETS,
@@ -62,6 +63,7 @@ describe('the Markets roster', () => {
       'waldheim', 'imperial-square', 'anselms-buttery', 'ignatius-archive',
       'theobalds-row', 'astronomers', 'green-market', 'blacks-road',
       'dunstans-magazine', 'ulrics-exchange', 'long-butts',
+      'mantlethorn-castle', 'forge-monastery',
     ]);
   });
 
@@ -134,6 +136,30 @@ describe('the Markets roster', () => {
     expect(WALDHEIM_MARKET.sells.some((l) => l.itemId === 'moorish-pasty')).toBe(false);
   });
 
+  it('the Masterwork base grades sell at their home markets alone, priced list + surcharge', () => {
+    const butts = marketById('long-butts')!;
+    expect(buyPriceCp(butts, 'mw-longbow')).toBe(2500); // 500 + 200 sp
+    expect(buyPriceCp(butts, 'bodkin-arrows')).toBe(50);
+    expect(buyPriceCp(butts, 'st-dunstans-corytos')).toBe(2500);
+
+    const castle = marketById('mantlethorn-castle')!;
+    expect(buyPriceCp(castle, 'mw-leather')).toBe(3100); // 100 + 300 sp
+    expect(buyPriceCp(castle, 'knights-stew')).toBe(4);
+
+    const forge = marketById('forge-monastery')!;
+    expect(buyPriceCp(forge, 'mw-longsword')).toBe(1750); // 150 + the monastic 160 sp
+    expect(buyPriceCp(forge, 'mw-rapier')).toBe(1850);
+    expect(buyPriceCp(forge, 'mw-longbow')).toBeUndefined(); // blades only
+
+    // None of it on the Waldheim shelves.
+    for (const id of ['mw-longbow', 'mw-longsword', 'mw-leather', 'bodkin-arrows', 'knights-stew']) {
+      expect(WALDHEIM_MARKET.sells.some((l) => l.itemId === id), id).toBe(false);
+    }
+    // The variants carry their +1 in the data the sheet reads.
+    expect(MELEE_WEAPONS.find((w) => w.id === 'mw-longsword')!.attackBonus).toBe(1);
+    expect(ARMOURS.find((a) => a.id === 'mw-leather')!.acBonus).toBe(1);
+  });
+
   it("St. Dunstan's Magazine sells firearms at half list", () => {
     const magazine = marketById('dunstans-magazine')!;
     expect(buyPriceCp(magazine, 'musket')).toBe(1000);
@@ -147,6 +173,107 @@ describe('the Markets roster', () => {
     expect(buyPriceCp(WALDHEIM_MARKET, 'longsword', 2)).toBe(120);
     expect(sellPriceCp(WALDHEIM_MARKET, 'longsword', 0)).toBe(38); // 37.5 → 38
     expect(sellPriceCp(WALDHEIM_MARKET, 'longsword', 3)).toBe(41); // 41.25 → 41
+  });
+});
+
+describe('Masterwork Qualities and named weapons', () => {
+  it('a Quality is worked in at the home market, paid in coin, and reaches the sheet', () => {
+    const grant = ev('item-granted', { itemId: 'mw-leather', qty: 1 });
+    const { state, flags } = replay([
+      ...crystallized(badGear, 'Mantlethorn'),
+      grant,
+      ev('item-moved', { instanceId: grant.id, location: 'worn' }),
+      ev('quality-added', { instanceId: grant.id, qualityId: 'blackened' }),
+    ]);
+    expect(flags).toEqual([]);
+    expect(state.wealthCp).toBe(2000 - 1000);
+    expect(state.inventory.find((i) => i.instanceId === grant.id)!.qualities).toEqual(['blackened']);
+    const stealth = derive(state).skills.find((s) => s.skill === 'Stealth')!;
+    expect(stealth.value.parts.some((p) => p.label === 'Blackened' && p.value === 1)).toBe(true);
+  });
+
+  it('the cap, the exclusions, the menu, and the wrong shop all refuse', () => {
+    const grant = ev('item-granted', { itemId: 'mw-leather', qty: 1 });
+    const base = [...crystallized(badGear, 'Mantlethorn'), grant];
+
+    // Grim Trophy is Hide's slot alone.
+    const wrongItem = replay([...base, ev('quality-added', { instanceId: grant.id, qualityId: 'grim-trophy' })]);
+    expect(wrongItem.flags.some((f) => f.code === 'no-access')).toBe(true);
+
+    // Boiled and Layered cannot share a hide.
+    const clash = replay([
+      ...base,
+      ev('quality-added', { instanceId: grant.id, qualityId: 'boiled-leather' }),
+      ev('quality-added', { instanceId: grant.id, qualityId: 'layered' }),
+    ]);
+    expect(clash.flags.some((f) => f.code === 'no-access')).toBe(true);
+
+    // Two Qualities are the most a master can work into one item.
+    const third = replay([
+      ...base,
+      ev('quality-added', { instanceId: grant.id, qualityId: 'blackened' }),
+      ev('quality-added', { instanceId: grant.id, qualityId: 'fur-lined' }),
+      ev('quality-added', { instanceId: grant.id, qualityId: 'boiled-leather' }),
+    ]);
+    expect(third.flags.some((f) => f.code === 'insufficient-funds' || f.code === 'over-cap')).toBe(true);
+
+    // A stranger to Mantlethorn has no one to ask.
+    const strangerGrant = ev('item-granted', { itemId: 'mw-leather', qty: 1 });
+    const stranger = replay([
+      ...crystallized(badGear, 'Waldheim'),
+      strangerGrant,
+      ev('quality-added', { instanceId: strangerGrant.id, qualityId: 'blackened' }),
+    ]);
+    expect(stranger.flags.some((f) => f.code === 'no-access')).toBe(true);
+  });
+
+  it('readiness and worn Qualities join the arithmetic; conditionals print as lines', () => {
+    const bow = ev('item-granted', { itemId: 'mw-longbow', qty: 1 });
+    const armour = ev('item-granted', { itemId: 'mw-leather', qty: 1 });
+    const { state, flags } = replay([
+      ...crystallized(badGear, 'Mantlethorn'),
+      bow, armour,
+      ev('item-moved', { instanceId: armour.id, location: 'worn' }),
+    ]);
+    expect(flags).toEqual([]);
+    // Qualities stamped straight onto state for the derive test.
+    state.inventory.find((i) => i.instanceId === bow.id)!.qualities = ['silken-bowstring', 'composite-heartwood-belly'];
+    state.inventory.find((i) => i.instanceId === armour.id)!.qualities = ['layered'];
+    const sheet = derive(state);
+    expect(sheet.initiative.parts.some((p) => p.label === 'Silken Bowstring')).toBe(true);
+    const dex = sheet.attributes.find((a) => a.attr === 'Dexterity')!;
+    expect(dex.save.parts.some((p) => p.label === 'Layered' && p.value === 1)).toBe(true);
+    expect(dex.armouredDefence.parts.some((p) => p.label === 'Layered')).toBe(true);
+    expect(dex.armouredDefence.parts.some((p) => p.label === 'Masterwork' && p.value === 1)).toBe(true);
+    expect(sheet.situational.some((s) => s.text.includes('+100% Range Increments'))).toBe(true);
+    expect(sheet.situational.some((s) => s.source === 'Layered' && s.text.includes('Area Effects'))).toBe(true);
+  });
+
+  it('only a Masterwork weapon takes a name, and an empty name clears it', () => {
+    const blade = ev('item-granted', { itemId: 'mw-longsword', qty: 1 });
+    const named = replay([
+      ...crystallized(),
+      blade,
+      ev('item-renamed', { instanceId: blade.id, name: 'Widowmaker' }),
+    ]);
+    expect(named.flags).toEqual([]);
+    expect(named.state.inventory.find((i) => i.instanceId === blade.id)!.customName).toBe('Widowmaker');
+
+    const cleared = replay([
+      ...crystallized(),
+      blade,
+      ev('item-renamed', { instanceId: blade.id, name: 'Widowmaker' }),
+      ev('item-renamed', { instanceId: blade.id, name: '  ' }),
+    ]);
+    expect(cleared.state.inventory.find((i) => i.instanceId === blade.id)!.customName).toBeUndefined();
+
+    const plain = ev('item-granted', { itemId: 'longsword', qty: 1 });
+    const refused = replay([
+      ...crystallized(),
+      plain,
+      ev('item-renamed', { instanceId: plain.id, name: 'Widowmaker' }),
+    ]);
+    expect(refused.flags.some((f) => f.code === 'no-access')).toBe(true);
   });
 });
 

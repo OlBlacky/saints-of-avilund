@@ -112,9 +112,14 @@ One menu covering the **Heavy Blades** and **Light Blades** groups. Sold at **Th
 - No exclusions: any two Qualities combine (the 2-per-item cap still rules).
 - A natural 19 is a Critical only if the attack hits; only the natural 20 auto-hits.
 
+## In the builder (Aug 16 2026)
+
+Fully live: the **base grades as purchasable items** at their home markets (list + surcharge, the +1 in the Attacks table / AC arithmetic), the Fletchercraft sheaves, the quivers — and **commissioning**: on the sheet's gear page, standing at the home market in Downtime, a Masterwork item offers its Quality menu (prices and days shown; cap, exclusions, and coin engine-enforced), retrofit included. "Ready" on the sheet means Equipped: the readiness Initiative bonuses count while the weapon is Equipped. Flat Qualities join the arithmetic; conditional ones print as situational lines. Masterwork weapons take an owner's name (the ✎ on the gear row), renameable anytime — the name leads, the canon item in the parenthetical.
+
+**Not yet built:** the Cory's bow-slot rules (Minor-Action draw is card text, not machinery) and the ammunition families' per-arrow arithmetic.
+
 ## Still to author
 
 - Remaining weapon menus, shield and tool menus, the other armour categories and their home markets.
-- Code sweep: `MASTERWORK` in `app/src/lib/equipment.ts`, market data, equipment page display, item instances carrying Qualities, the ammunition families.
 - The **Bleed** Condition (Conditions roster).
 - Terminology sweep: older mechanics docs still say "Reflex" — canonical is **Dex Defence / Dex Save**.

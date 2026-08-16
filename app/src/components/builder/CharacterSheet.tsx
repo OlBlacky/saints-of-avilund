@@ -37,7 +37,8 @@ import type { UnlockedHook } from '../../lib/feats';
 import { featById, hookMatchesGroup, specializationFor, unlockedHooks } from '../../lib/feats';
 import { LANGUAGES } from '../../lib/languages';
 import type { Language } from '../../lib/languages';
-import { bestSell, itemName, itemWeightLb, marketById } from '../../lib/markets';
+import { bestSell, itemName, itemWeightLb, marketById, marketOpen } from '../../lib/markets';
+import { MAX_QUALITIES, isMasterworkWeapon, isMasterworkItem, qualitiesFor, qualityById, type Quality } from '../../lib/masterwork';
 import { addToDamage, DAMAGE_TYPES, parseAttr } from '../../lib/notation';
 import { keywordsFor } from '../../lib/traditions';
 import { PLACES, homeLanguageFor } from '../../lib/places';
@@ -469,7 +470,27 @@ export default function CharacterSheet({ identity, setIdentity, status, setStatu
       onDragStart={() => { setDragItem(item.instanceId); setDragFrom(block); }}
       onDragEnd={endDrag}
     >
-      {item.name}{item.qty > 1 ? ` ×${item.qty}` : ''}
+      {item.customName ? (
+        <>
+          {item.customName} <span class="sheet-canon">({item.name})</span>
+        </>
+      ) : (
+        item.name
+      )}
+      {item.qty > 1 ? ` ×${item.qty}` : ''}
+      {item.itemId && item.qty === 1 && isMasterworkWeapon(item.itemId) && (
+        <button
+          type="button"
+          class="undo sheet-namebtn"
+          title={item.customName ? 'rename this weapon' : 'name this weapon'}
+          onClick={() => {
+            const name = window.prompt('Name this weapon', item.customName ?? '');
+            if (name !== null) append(mk('item-renamed', { instanceId: item.instanceId, name }));
+          }}
+        >
+          ✎
+        </button>
+      )}
     </td>
   );
 
@@ -619,12 +640,68 @@ export default function CharacterSheet({ identity, setIdentity, status, setStatu
     );
   };
 
+  /** A Masterwork item's box: the Qualities worked into it, and — standing
+   * at its home market with a slot free — the commission control. Every
+   * option carries its price and days; a blocked pick names its reason. */
+  const masterworkBox = (i: OwnedItem) => {
+    if (!i.itemId || !isMasterworkItem(i.itemId)) return null;
+    const owned = (i.qualities ?? [])
+      .map((q) => qualityById(q))
+      .filter(Boolean) as Quality[];
+    const menu = qualitiesFor(i.itemId);
+    const home = menu.length ? marketById(menu[0].marketId) : undefined;
+    const homeOpen =
+      home !== undefined &&
+      atMarket &&
+      marketOpen(home, ownedFeatIds, state.origin ?? null);
+    if (owned.length === 0 && !homeOpen) return null;
+    return (
+      <div class="sheet-cbox">
+        {owned.map((q) => (
+          <p class="sheet-cbox-note" key={q.id}>
+            <strong>{q.name}</strong> — {q.effect}
+          </p>
+        ))}
+        {homeOpen && owned.length < MAX_QUALITIES && i.qty === 1 && (
+          <p class="sheet-cbox-dials">
+            <label>
+              Commission at {home.name}{' '}
+              <select
+                value=""
+                onChange={(e) => {
+                  const id = (e.target as HTMLSelectElement).value;
+                  (e.target as HTMLSelectElement).value = '';
+                  if (!id) return;
+                  const ev = mk('quality-added', { instanceId: i.instanceId, qualityId: id });
+                  if (!why(ev)) append(ev);
+                }}
+              >
+                <option value="">Add a Quality…</option>
+                {menu
+                  .filter((q) => !owned.some((o) => o.id === q.id))
+                  .map((q) => {
+                    const blocked = why(mk('quality-added', { instanceId: i.instanceId, qualityId: q.id }));
+                    return (
+                      <option key={q.id} value={q.id} disabled={Boolean(blocked)}>
+                        {q.name} — {fmtCoins(q.priceCp)} · {q.days} days{blocked ? ` (${blocked})` : ''}
+                      </option>
+                    );
+                  })}
+              </select>
+            </label>
+          </p>
+        )}
+      </div>
+    );
+  };
+
   /** A block's rows: each item, then whatever it holds, indented. Contents
    * of every kind draw here — the Container's block is where a Stored item
    * lives. A Container trails its box beneath its own row. */
   const gearBlock = (roots: OwnedItem[], block: string) =>
     gearRows(state.inventory, roots).flatMap(({ item, depth }) => {
       const box = containerBox(item);
+      const mwBox = masterworkBox(item);
       return [
         <tr key={item.instanceId} {...rowProps(item, block)}>
           {nameCell(item, block, depth)}
@@ -632,15 +709,13 @@ export default function CharacterSheet({ identity, setIdentity, status, setStatu
           <td>{moveControl(item)}</td>
           <td class="act">{splitControl(item)}{sellControl(item)}</td>
         </tr>,
-        ...(box
-          ? [
-              <tr key={`${item.instanceId}-box`} class="sheet-boxrow">
-                <td colSpan={4} class={depth > 0 ? 'sheet-nested' : undefined} style={depth > 0 ? `--depth:${depth}` : undefined}>
-                  {box}
-                </td>
-              </tr>,
-            ]
-          : []),
+        ...[box, mwBox].filter(Boolean).map((b, n) => (
+          <tr key={`${item.instanceId}-box${n}`} class="sheet-boxrow">
+            <td colSpan={4} class={depth > 0 ? 'sheet-nested' : undefined} style={depth > 0 ? `--depth:${depth}` : undefined}>
+              {b}
+            </td>
+          </tr>
+        )),
       ];
     });
 
@@ -1304,19 +1379,34 @@ export default function CharacterSheet({ identity, setIdentity, status, setStatu
         // A basic attack deals the weapon's damage and nothing more — the
         // attribute bonus goes to the attack roll, never the damage roll
         // (mechanics/core-mechanics.md, Damage).
+        // A Masterwork weapon's +1 lands in the line the player rolls from,
+        // and a damage Quality (Crucible Steel, Laminated Warbow) in the
+        // damage beside it. A named weapon leads with its name.
+        const mwBonus = (w: { attackBonus?: number }): number => w.attackBonus ?? 0;
+        const mwParts = (w: { attackBonus?: number }): string[] =>
+          w.attackBonus ? [`Masterwork +${w.attackBonus}`] : [];
+        const qualityDamage = (i: OwnedItem): { bonus: number; parts: string[] } => {
+          const parts: string[] = [];
+          if (i.qualities?.includes('crucible-steel')) parts.push('Crucible Steel +1');
+          if (i.qualities?.includes('laminated-warbow')) parts.push('Laminated Warbow +1');
+          return { bonus: parts.length, parts };
+        };
+        const gearName = (i: OwnedItem): string => i.customName ?? i.name;
+
         for (const item of tableWeapons) {
           const w = weaponFor(item)!;
           const ranged = RANGED_WEAPONS.some((r) => r.id === w.id);
           const attrFull = ranged ? 'Dexterity' : meleeAttr(w);
           const p = profOf(w.group);
+          const qd = qualityDamage(item);
           rows.push({
             key: `basic/${item.instanceId}`,
-            name: `Basic Attack — ${item.name}`,
-            toHit: offenceOf(attrFull) + (p ?? -1),
-            toHitParts: toHitPartsFor(attrFull, w.group),
+            name: `Basic Attack — ${gearName(item)}`,
+            toHit: offenceOf(attrFull) + (p ?? -1) + mwBonus(w),
+            toHitParts: [...toHitPartsFor(attrFull, w.group), ...mwParts(w)],
             vs: 'vs AC',
-            damage: w.damage,
-            dmgParts: [],
+            damage: qd.bonus ? `${w.damage} + ${qd.bonus}` : w.damage,
+            dmgParts: qd.parts,
           });
         }
         // A shield bashes as a weapon: a Standard Action like any Basic
@@ -1376,14 +1466,15 @@ export default function CharacterSheet({ identity, setIdentity, status, setStatu
               if (!fits(w)) continue;
               const p = profOf(w.group);
               const hook = hookSum(hooks, w.group);
+              const qd = qualityDamage(item);
               rows.push({
                 key: `${label}/${item.instanceId}`,
-                name: `${label} — ${item.name}`,
-                toHit: offenceOf(attrFull) + (p ?? -1) + hook.toHit,
-                toHitParts: [...toHitPartsFor(attrFull, w.group), ...hook.hitParts],
+                name: `${label} — ${gearName(item)}`,
+                toHit: offenceOf(attrFull) + (p ?? -1) + hook.toHit + mwBonus(w),
+                toHitParts: [...toHitPartsFor(attrFull, w.group), ...hook.hitParts, ...mwParts(w)],
                 vs: vsDef ? `vs ${vsDef}` : '',
-                damage: addToDamage(dmgFor(dmgText, w.damage), hook.damage),
-                dmgParts: [...dmgPartsFor(dmgText), ...hook.dmgParts],
+                damage: addToDamage(dmgFor(dmgText, w.damage), hook.damage + qd.bonus),
+                dmgParts: [...dmgPartsFor(dmgText), ...hook.dmgParts, ...qd.parts],
               });
             }
           } else {

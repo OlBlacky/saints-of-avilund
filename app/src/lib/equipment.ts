@@ -68,6 +68,11 @@ export interface Weapon {
   /** Range increments, e.g. "20/40/60" — null for melee-only. */
   range: string | null;
   properties: string[];
+  /** The Masterwork base grade's +1 to attack (mechanics/masterwork.md),
+   * read into the Attacks table so the math maths. */
+  attackBonus?: number;
+  /** A Masterwork variant — sold only at its home market. */
+  masterwork?: true;
 }
 
 export const MELEE_WEAPONS: Weapon[] = [
@@ -120,6 +125,31 @@ export const RANGED_WEAPONS: Weapon[] = [
   { id: 'firebomb', name: 'Firebomb', group: 'Grenades', type: 'Blunt', damage: '1d6', hands: '1H', weightLb: 1, priceCp: 250, range: '20/40/60', properties: ['Thrown'] },
   { id: 'fragmentation-grenade', name: 'Fragmentation Grenade', group: 'Grenades', type: 'Blunt', damage: '2d6', hands: '1H', weightLb: 1, priceCp: 500, range: '20/40/60', properties: ['Thrown'] },
 ];
+
+// ── Masterwork base grades as items (mechanics/masterwork.md) ────
+// The standard item plus the master's surcharge, carrying its +1 attack.
+// Named goods: Temper Quenched blades (Forge Monastery of San Corrado, at
+// the monastic 160 sp), Masterwork bows (The Long Butts, 200 sp). Pushed
+// into the weapon arrays so proficiency, Load, and the Attacks table treat
+// them as the weapons they are; Quality menus arrive with commissioning.
+
+MELEE_WEAPONS.push(
+  ...MELEE_WEAPONS
+    .filter((w) => (w.group === 'Heavy Blades' || w.group === 'Light Blades') && w.priceCp !== null)
+    .map((w): Weapon => ({
+      ...w, id: `mw-${w.id}`, name: `Temper Quenched ${w.name}`,
+      priceCp: w.priceCp! + 1600, attackBonus: 1, masterwork: true,
+    })),
+);
+
+RANGED_WEAPONS.push(
+  ...RANGED_WEAPONS
+    .filter((w) => w.group === 'Bows')
+    .map((w): Weapon => ({
+      ...w, id: `mw-${w.id}`, name: `Masterwork ${w.name}`,
+      priceCp: w.priceCp! + 2000, attackBonus: 1, masterwork: true,
+    })),
+);
 
 /** A weapon's range increments scaled by an Ability's WRI multiplier and
  * written out in feet: `1×WRI` on a Sling reads 50'/100'/150', `2×WRI`
@@ -227,6 +257,17 @@ export const AMMUNITION: SimpleItem[] = [
   { id: 'arrows', name: 'Arrows (20)', priceCp: 10, weightLb: 3 },
   { id: 'crossbow-bolts', name: 'Crossbow bolts (10)', priceCp: 10, weightLb: 1 },
   { id: 'powder-and-shot', name: 'Powder and shot (10 rounds)', priceCp: 30, weightLb: 2 },
+  // Dunstanmoore Fletchercraft — masterwork arrows by the sheaf, Long Butts
+  // stock alone (mechanics/masterwork.md). Their effects ride the card text
+  // for now; per-arrow arithmetic arrives with commissioning.
+  { id: 'bodkin-arrows', name: 'Bodkin arrows (10)', priceCp: 50, weightLb: 1.5 },
+  { id: 'needle-bodkin-arrows', name: 'Hardened Needle Bodkin arrows (10)', priceCp: 100, weightLb: 1.5 },
+  { id: 'broadhead-arrows', name: 'Broadhead arrows (10)', priceCp: 50, weightLb: 1.5 },
+  { id: 'forge-broadhead-arrows', name: 'Forge Wrought Broadhead arrows (10)', priceCp: 100, weightLb: 1.5 },
+  { id: 'flight-arrows', name: 'Flight arrows (10)', priceCp: 50, weightLb: 1.5 },
+  { id: 'swan-flight-arrows', name: 'Swan Feather & Ash Flight arrows (10)', priceCp: 100, weightLb: 1.5 },
+  { id: 'flaming-arrows', name: 'Flaming arrows (10)', priceCp: 50, weightLb: 1.5 },
+  { id: 'cage-flaming-arrows', name: 'Cage Head Flaming arrows (10)', priceCp: 100, weightLb: 1.5 },
 ];
 
 export const CONTAINERS: SimpleItem[] = [
@@ -252,6 +293,18 @@ export const CONTAINERS: SimpleItem[] = [
   {
     id: 'war-quiver', name: 'War Quiver', priceCp: 20, weightLb: 3,
     coefficient: 1, capacityLb: 6, access: 'free',
+    accessNote: 'part of the reload action',
+  },
+  {
+    id: 'mw-quiver', name: 'Masterwork Quiver', priceCp: 1000, weightLb: 2,
+    coefficient: 0.8, capacityLb: 3, access: 'free',
+    accessNote: 'part of the reload action',
+  },
+  // Holds 40 arrows and a bow besides (the 8 lb covers both); the stored
+  // bow's Equipped-slot and Minor-draw rules arrive with commissioning.
+  {
+    id: 'st-dunstans-corytos', name: "St. Dunstan's Corytos", priceCp: 2500, weightLb: 3,
+    coefficient: 0.8, capacityLb: 8, access: 'free',
     accessNote: 'part of the reload action',
   },
   {
@@ -304,9 +357,10 @@ export const CAMP_AND_TRAIL: SimpleItem[] = [
   { id: 'whetstone', name: 'Whetstone', priceCp: 1, weightLb: 1 },
   { id: 'cooking-pot', name: 'Cooking pot', priceCp: 3, weightLb: 4 },
   { id: 'rations-trail', name: 'Rations, trail (one day)', priceCp: 5, weightLb: 1 },
-  // A fancy trail ration (mechanics/markets.md): 1 Temp HP until the next
-  // full rest, one ration's benefit at a time. Long Butts stock only.
+  // Fancy trail rations (mechanics/markets.md): 1 Temp HP until the next
+  // full rest, one ration's benefit at a time. Home-market stock only.
   { id: 'moorish-pasty', name: 'Moorish Pasty (one day)', priceCp: 4, weightLb: 1 },
+  { id: 'knights-stew', name: "Knights' Stew (one day)", priceCp: 4, weightLb: 1 },
   { id: 'fishing-tackle', name: 'Fishing tackle', priceCp: 10, weightLb: 2 },
   { id: 'fishing-net', name: 'Fishing net', priceCp: 40, weightLb: 5 },
   { id: 'tent-one-man', name: 'Tent, one man', priceCp: 80, weightLb: 20 },
@@ -433,6 +487,11 @@ export interface Armour {
   strReq: number | null; // as a modifier: +1, +2
   priceCp: Cp;
   weightLb: number;
+  /** The Masterwork base grade's +1 AC (mechanics/masterwork.md), joined
+   * to the armoured Defence Targets. */
+  acBonus?: number;
+  /** A Masterwork variant — sold only at its home market. */
+  masterwork?: true;
 }
 
 export const ARMOURS: Armour[] = [
@@ -446,6 +505,19 @@ export const ARMOURS: Armour[] = [
   { id: 'splint-banded-mail', name: 'Splint / Banded Mail', tier: 'Heavy', dr: 3, trait: null, speedPenaltyFt: 10, stealthPenalty: 2, strReq: 2, priceCp: 2000, weightLb: 45 },
   { id: 'full-plate', name: 'Full Plate', tier: 'Heavy', dr: 3, drNote: '4 vs Area-Effect', trait: 'sealed vs blasts', speedPenaltyFt: 10, stealthPenalty: 2, strReq: 2, priceCp: 15000, weightLb: 50 },
 ];
+
+// Mantlethorn Leather — the Masterwork armour base grade as items, named
+// goods of Mantlethorn Castle Market (mechanics/masterwork.md): the armour
+// plus the 300 sp surcharge, carrying its +1 AC. Quality menus arrive with
+// commissioning.
+ARMOURS.push(
+  ...ARMOURS
+    .filter((a) => ['leather', 'studded-leather', 'hide'].includes(a.id))
+    .map((a): Armour => ({
+      ...a, id: `mw-${a.id}`, name: `Mantlethorn ${a.name}`,
+      priceCp: a.priceCp + 3000, acBonus: 1, masterwork: true,
+    })),
+);
 
 export interface Shield {
   id: string;

@@ -60,21 +60,28 @@ describe('the starting-clothes table', () => {
 });
 
 describe('the catalogue lift preserves the page counts', () => {
-  it('45 arms across 17 groups', () => {
-    expect(MELEE_WEAPONS.length + RANGED_WEAPONS.length).toBe(45);
+  it('45 standard arms across 17 groups, plus 10 Masterwork variants', () => {
+    const standard = [...MELEE_WEAPONS, ...RANGED_WEAPONS].filter((w) => !w.masterwork);
+    expect(standard).toHaveLength(45);
+    expect(MELEE_WEAPONS.length + RANGED_WEAPONS.length).toBe(55);
     expect(WEAPON_GROUPS.length).toBe(17);
   });
 
   it('section counts match the hand-written tables', () => {
-    expect(MELEE_WEAPONS).toHaveLength(30);
-    expect(RANGED_WEAPONS).toHaveLength(15);
-    expect(AMMUNITION).toHaveLength(4);
-    expect(ARMOURS).toHaveLength(9);
+    // Weapon and armour arrays carry generated Masterwork variants on top
+    // of the hand-written standards (mechanics/masterwork.md).
+    expect(MELEE_WEAPONS.filter((w) => !w.masterwork)).toHaveLength(30);
+    expect(MELEE_WEAPONS.filter((w) => w.masterwork)).toHaveLength(8); // the blades
+    expect(RANGED_WEAPONS.filter((w) => !w.masterwork)).toHaveLength(15);
+    expect(RANGED_WEAPONS.filter((w) => w.masterwork)).toHaveLength(2); // the bows
+    expect(AMMUNITION).toHaveLength(12);
+    expect(ARMOURS.filter((a) => !a.masterwork)).toHaveLength(9);
+    expect(ARMOURS.filter((a) => a.masterwork)).toHaveLength(3); // the leathers
     expect(SHIELDS).toHaveLength(4);
     expect(MASTERWORK).toHaveLength(4);
-    expect(CONTAINERS).toHaveLength(18);
+    expect(CONTAINERS).toHaveLength(20);
     expect(LIGHT_AND_FIRE).toHaveLength(7);
-    expect(CAMP_AND_TRAIL).toHaveLength(10);
+    expect(CAMP_AND_TRAIL).toHaveLength(11);
     expect(ROPE_IRON_CLIMBING).toHaveLength(13);
     expect(TOOLS_AND_IMPLEMENTS).toHaveLength(22);
     expect(CLOTHING).toHaveLength(11);
