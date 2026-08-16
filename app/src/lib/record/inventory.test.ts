@@ -18,6 +18,7 @@ import {
   marketById,
   sellPriceCp,
 } from '../markets';
+import { qualityWeightLb } from '../masterwork';
 import type { RecordEvent } from './events';
 import { derive } from './derive';
 import { replay } from './replay';
@@ -257,6 +258,34 @@ describe('Masterwork Qualities and named weapons', () => {
     expect(dex.armouredDefence.parts.some((p) => p.label === 'Masterwork' && p.value === 1)).toBe(true);
     expect(sheet.situational.some((s) => s.text.includes('+100% Range Increments'))).toBe(true);
     expect(sheet.situational.some((s) => s.source === 'Layered' && s.text.includes('Area Effects'))).toBe(true);
+  });
+
+  it('Fuller / Balanced pays Initiative while Equipped and takes a quarter off the blade', () => {
+    // Four of them, so the quarter comes off as whole pounds and the Load
+    // total's own rounding cannot swallow the difference.
+    const blades = ev('item-granted', { itemId: 'mw-longsword', qty: 4 });
+    const { state, flags } = replay([...crystallized(badGear, 'Mantlethorn'), blades]);
+    expect(flags).toEqual([]);
+    const bare = derive(state);
+    expect(bare.initiative.parts.some((p) => p.label === 'Fuller / Balanced')).toBe(false);
+
+    state.inventory.find((i) => i.instanceId === blades.id)!.qualities = ['fuller-balanced'];
+    const sheet = derive(state);
+    expect(sheet.initiative.parts.some((p) => p.label === 'Fuller / Balanced' && p.value === 1)).toBe(true);
+    expect(qualityWeightLb(itemWeightLb('mw-longsword')!, ['fuller-balanced'])).toBe(2.25);
+    expect(sheet.load.totalLb).toBe(bare.load.totalLb - 3);
+  });
+
+  it('Fur Lined puts its two pounds on the armour', () => {
+    const armour = ev('item-granted', { itemId: 'mw-leather', qty: 1 });
+    const { state } = replay([...crystallized(badGear, 'Mantlethorn'), armour]);
+    const bare = derive(state).load.totalLb;
+    // Granted armour arrives Worn and 0-Enc, so the pounds show on the row
+    // rather than in the Load — until the suit comes off and is carried.
+    state.inventory.find((i) => i.instanceId === armour.id)!.qualities = ['fur-lined'];
+    expect(qualityWeightLb(itemWeightLb('mw-leather')!, ['fur-lined']))
+      .toBe(itemWeightLb('mw-leather')! + 2);
+    expect(derive(state).load.totalLb).toBe(bare);
   });
 
   it('Qualities commission with the purchase itself, priced into the trip', () => {

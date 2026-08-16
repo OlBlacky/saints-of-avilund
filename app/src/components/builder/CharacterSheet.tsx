@@ -40,7 +40,7 @@ import { featById, hookMatchesGroup, specializationFor, unlockedHooks } from '..
 import { LANGUAGES } from '../../lib/languages';
 import type { Language } from '../../lib/languages';
 import { bestSell, itemName, itemWeightLb, marketById, marketOpen } from '../../lib/markets';
-import { MAX_QUALITIES, isMasterworkWeapon, isMasterworkItem, qualitiesFor, qualityById, type Quality } from '../../lib/masterwork';
+import { MAX_QUALITIES, isMasterworkWeapon, isMasterworkItem, qualitiesFor, qualityById, qualityWeightLb, type Quality } from '../../lib/masterwork';
 import { addToDamage, DAMAGE_TYPES, parseAttr } from '../../lib/notation';
 import { keywordsFor } from '../../lib/traditions';
 import { PLACES, homeLanguageFor } from '../../lib/places';
@@ -79,7 +79,7 @@ const PAGES: { n: number; label: string; built: boolean }[] = [
   { n: 1, label: 'Basics', built: true },
   { n: 2, label: 'Attacks & Abilities', built: true },
   { n: 3, label: 'Inventory', built: true },
-  { n: 4, label: 'Advancement Log', built: true },
+  { n: 4, label: 'Log', built: true },
   { n: 5, label: 'Full Detail', built: false },
 ];
 
@@ -377,7 +377,7 @@ export default function CharacterSheet({ identity, setIdentity, status, setStatu
 
   const subtotalLb = (instanceId: string) =>
     contentsOf(state.inventory, instanceId).reduce(
-      (t, i) => t + (i.itemId ? (itemWeightLb(i.itemId) ?? 0) : 0) * i.qty,
+      (t, i) => t + qualityWeightLb(i.itemId ? (itemWeightLb(i.itemId) ?? 0) : 0, i.qualities) * i.qty,
       0,
     );
 
@@ -612,7 +612,7 @@ export default function CharacterSheet({ identity, setIdentity, status, setStatu
    * of armour and the tag goes, because a spare suit counts in full. */
   const rowWeight = (item: OwnedItem) => {
     const weight = item.itemId
-      ? fmtWeight((itemWeightLb(item.itemId) ?? 0) * item.qty || null)
+      ? fmtWeight(qualityWeightLb(itemWeightLb(item.itemId) ?? 0, item.qualities) * item.qty || null)
       : '—';
     const free = item.location === 'worn' && item.itemId && carriesNoLoad(item.itemId);
     return (
@@ -1129,7 +1129,6 @@ export default function CharacterSheet({ identity, setIdentity, status, setStatu
             <section class="cf-step sheet-box" style={boxStyle('p1', 'attributes')} onDragOver={boxDragOver} onDrop={() => dropBox('p1', 'attributes')}>
               {grip('p1', 'attributes')}
               <h3>Attributes</h3>
-              <p class="cf-how">Every column counts the Attribute itself; the math beneath each shows what is added on top of it.</p>
               <div class="scroll">
                 <table class="cf-shop-table sheet-table sheet-table--packed">
                   <thead>
@@ -1583,10 +1582,6 @@ export default function CharacterSheet({ identity, setIdentity, status, setStatu
             <section class="cf-step sheet-box" style={boxStyle('p2', 'attacks')} onDragOver={boxDragOver} onDrop={() => dropBox('p2', 'attacks')}>
               {grip('p2', 'attacks')}
               <h3>Attacks</h3>
-              <p class="cf-how">
-                Generated from your attack Abilities and your Held and Equipped weapons. Hide the
-                lines you never use.
-              </p>
               <div class="scroll">
                 <table class="cf-shop-table sheet-table">
                   <thead>
@@ -1886,7 +1881,7 @@ export default function CharacterSheet({ identity, setIdentity, status, setStatu
 
       {page === 4 && (
         <section class="cf-step">
-          <h3>Advancement Log</h3>
+          <h3>Log</h3>
           <p class="cf-how">Every event on the record, in order — the build back-trackable to legal.</p>
           <table class="cf-shop-table sheet-table">
             <tbody>
@@ -1966,6 +1961,8 @@ export default function CharacterSheet({ identity, setIdentity, status, setStatu
             <span class="sheet-carry-math">{sheet.equipped.formula}</span>
           </div>
         </div>
+        <p class="cf-how">Drawing an Equipped item takes a Move action. Retrieving a Stored item takes a Standard action.</p>
+        <p class="cf-how">Drag a row onto a Container to pack it, or between rows to set the order.</p>
       </section>
       {weapons.length > 0 && (
         <section
@@ -2073,8 +2070,6 @@ export default function CharacterSheet({ identity, setIdentity, status, setStatu
           </table>
           </div>
         )}
-        <p class="cf-how">Drawing an Equipped item takes a Move action. Retrieving a Stored item takes a Standard action.</p>
-        <p class="cf-how">Drag a row onto a Container to pack it, or between rows to set the order.</p>
       </section>
 
       {equipmentHome.length > 0 && (

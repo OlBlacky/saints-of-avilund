@@ -38,7 +38,7 @@ The armoured anchor of the line. Vanguards hold ground, shield their comrades, a
 | **Class Attribute** | Constitution |
 | **Category** | Protection |
 | **Skills** | Survival, Perception |
-| **Weapon Proficiencies** | Hammers/Maces, Spears/Lances |
+| **Weapon Proficiencies** | Hammers/Maces, Spears/Lances, Light Blades |
 | **Armour Proficiencies** | Heavy Armour, Heavy Shield |
 
 *Note: Constitution never powers an attack, so a Vanguard's Protection attacks run off **Strength**; Constitution carries their defences, HP, and saves — "Strength hits, Constitution endures."*

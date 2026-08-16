@@ -56,7 +56,7 @@ Covers the **Bows** group (Shortbow, Longbow). Sold at **The Long Butts — Byni
 | Name | Quality | Days | Cost | Notes |
 |---|---|---|---|---|
 | Heartwood Belly | +50% Range Increments | 10 | 100 sp | May not be selected with Composite Heartwood Belly |
-| Silken Looped Bowstring & Beeswax | +1 Initiative if bow ready, resistant to moisture | 10 | 100 sp | |
+| Silken Looped Bowstring & Beeswax | +1 Initiative if the bow is Equipped, resistant to moisture | 10 | 100 sp | |
 | Composite Heartwood Belly | +100% Range Increments | 20 | 200 sp | May not be selected with Heartwood Belly or Laminated Warbow |
 | Laminated Warbow | +1 Damage | 20 | 200 sp | May not be selected with Composite Heartwood Belly |
 
@@ -104,7 +104,7 @@ One menu covering the **Heavy Blades** and **Light Blades** groups. Sold at **Th
 
 | Name | Quality | Days | Cost | Notes |
 |---|---|---|---|---|
-| Fuller / Balanced | +1 Initiative if the blade is ready | 10 | 100 sp | Blade weighs 25% less |
+| Fuller / Balanced | +1 Initiative if the blade is Equipped | 10 | 100 sp | Blade weighs 25% less |
 | Needle Point | Ignore 1 DR | 10 | 100 sp | |
 | Crucible Steel | +1 Damage | 20 | 200 sp | |
 | Forge Monastery Patterned Steel | Critical on 19, 20 | 30 | 300 sp | |

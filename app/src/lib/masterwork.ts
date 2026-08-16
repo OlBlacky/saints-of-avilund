@@ -24,6 +24,11 @@ export interface Quality {
   fits: (itemId: string) => boolean;
   /** Quality ids that cannot share an item with this one. */
   excludes?: string[];
+  /** What the work does to the item's weight: a multiplier on the base
+   * pounds, and pounds the work puts on. Read by qualityWeightLb, so the
+   * Load arithmetic follows. */
+  weightFactor?: number;
+  weightAddLb?: number;
 }
 
 const LEATHERS = ['mw-leather', 'mw-studded-leather', 'mw-hide'];
@@ -46,6 +51,7 @@ export const QUALITIES: Quality[] = [
     priceCp: 1000, days: 10, marketId: 'mantlethorn-castle',
     // Hide is already fur — Grim Trophy takes its slot.
     fits: (id) => id === 'mw-leather' || id === 'mw-studded-leather',
+    weightAddLb: 2,
   },
   {
     id: 'grim-trophy', name: 'Grim Trophy', effect: '+1 Intimidate',
@@ -73,7 +79,7 @@ export const QUALITIES: Quality[] = [
   },
   {
     id: 'silken-bowstring', name: 'Silken Looped Bowstring & Beeswax',
-    effect: '+1 Initiative if the bow is ready. Resistant to moisture.',
+    effect: '+1 Initiative if the bow is Equipped. Resistant to moisture.',
     priceCp: 1000, days: 10, marketId: 'long-butts',
     fits: (id) => BOWS.includes(id),
   },
@@ -92,9 +98,9 @@ export const QUALITIES: Quality[] = [
   // ── Blades — The Forge Monastery of San Corrado ────────────────
   {
     id: 'fuller-balanced', name: 'Fuller / Balanced',
-    effect: '+1 Initiative if the blade is ready. The blade weighs 25% less.',
+    effect: '+1 Initiative if the blade is Equipped. The blade weighs 25% less.',
     priceCp: 1000, days: 10, marketId: 'forge-monastery',
-    fits: isBlade,
+    fits: isBlade, weightFactor: 0.75,
   },
   {
     id: 'needle-point', name: 'Needle Point', effect: 'Ignore 1 DR',
@@ -116,6 +122,17 @@ export const QUALITIES: Quality[] = [
 
 export function qualityById(id: string): Quality | undefined {
   return QUALITIES.find((q) => q.id === id);
+}
+
+/** One instance's weight after its Qualities have had their say — the
+ * catalogue pounds, scaled by whatever the work took out of the piece, then
+ * carrying whatever it put on. The scaling goes first: a lining is sewn into
+ * the armour that arrives, not into the one it was cut from. */
+export function qualityWeightLb(baseLb: number, qualities?: string[]): number {
+  if (!qualities?.length) return baseLb;
+  const worked = qualities.map((id) => qualityById(id)).filter((q) => q !== undefined) as Quality[];
+  const scaled = worked.reduce((lb, q) => lb * (q.weightFactor ?? 1), baseLb);
+  return worked.reduce((lb, q) => lb + (q.weightAddLb ?? 0), scaled);
 }
 
 /** Whether a catalogue id is a Masterwork variant at all. */

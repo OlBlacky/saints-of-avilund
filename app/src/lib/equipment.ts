@@ -39,9 +39,16 @@ export function fmtCoins(cp: Cp): string {
   return `${rest} cp`;
 }
 
+/** Quarter pounds print as fractions rather than decimals — the table's own
+ * hand, and where a Quality takes a quarter off a blade the figure lands
+ * there. */
+const WEIGHT_FRACTION: Record<string, string> = { '0.25': '¼', '0.5': '½', '0.75': '¾' };
+
 export function fmtWeight(lb: number | null): string {
   if (lb === null) return '—';
-  if (lb === 0.5) return '½ lb';
+  const whole = Math.floor(lb);
+  const fraction = WEIGHT_FRACTION[String(Math.round((lb - whole) * 100) / 100)];
+  if (fraction) return `${whole || ''}${fraction} lb`;
   return `${lb.toLocaleString('en-US')} lb`;
 }
 

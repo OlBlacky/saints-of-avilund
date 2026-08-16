@@ -21,6 +21,7 @@ import type { AccessRung } from '../equipment';
 import { DEFAULT_LANGUAGE } from '../languages';
 import { STARTING_COIN, gearById } from '../gear';
 import { itemWeightLb } from '../markets';
+import { qualityWeightLb } from '../masterwork';
 import { ATTR_FULL, parseAttr } from '../notation';
 import type { Attribute, Condition, Effect } from '../quirks';
 import {
@@ -245,7 +246,8 @@ function loadFor(state: CharacterState): DerivedLoad {
       loc = holder.location;
     }
     if (excluded || loc === 'home') continue;
-    total += (item.itemId ? itemWeightLb(item.itemId) ?? 0 : 0) * item.qty * factor;
+    const lb = qualityWeightLb(item.itemId ? itemWeightLb(item.itemId) ?? 0 : 0, item.qualities);
+    total += lb * item.qty * factor;
   }
 
   const totalLb = Math.round(total);
@@ -487,7 +489,7 @@ export function derive(state: CharacterState): DerivedSheet {
 
   // Initiative = Dex or Wis, whichever is bigger, + modifiers (ruled Aug 2026).
   // A readiness Quality (Silken Bowstring, Fuller / Balanced) counts while
-  // its weapon is Equipped — Equipped is what "ready" means on the sheet.
+  // its weapon is Equipped.
   const dex = attributes.find((a) => a.attr === 'Dexterity')!.value.total;
   const wis = attributes.find((a) => a.attr === 'Wisdom')!.value.total;
   const initiative = sum([

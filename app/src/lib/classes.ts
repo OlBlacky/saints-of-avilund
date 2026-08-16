@@ -135,7 +135,7 @@ export const CLASSES: ClassDef[] = [
         classAttribute: 'Constitution',
         abilityCategory: 'Protection',
         additionalClassSkills: ['Survival', 'Perception'],
-        weaponProficiencies: ['Hammers/Maces', 'Spears/Lances'],
+        weaponProficiencies: ['Hammers/Maces', 'Spears/Lances', 'Light Blades'],
         armourProficiencies: ['Heavy Armour', 'Heavy Shield'],
       },
       {

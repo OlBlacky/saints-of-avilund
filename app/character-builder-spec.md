@@ -247,9 +247,9 @@ Sections: Weapons · Armour · Equipment · Wealth. Weapons and armour reproduce
 
 **The sheet's arrangement is the player's** (Aug 13 2026). Stored items are drawn **nested beneath the Container that holds them**, indented one step per depth, and a Stored item draws there and nowhere else — so a packed sword leaves the Weapons block for the pack (its attack lines on page 2 are unaffected). The **order of the blocks is dragged**, not fixed: a row's name cell is its grip, dropping between rows sets the order, and dropping on a Container's middle packs the item into it. Ordering runs **within one block** — a row cannot be ordered into a block it would vanish from — while packing is accepted from anywhere on the page. Dropping beside a neighbour joins that neighbour's Container; where neither is Stored, the Gear State is the player's own and a reorder leaves it alone. The arrangement is durable, carried on `item-moved` as an optional `position` (an anchor and a side): it is a decision, so the record keeps it, and an anchor that later leaves the inventory leaves the item where it stands.
 
-### Page 4 · Advancement Log
+### Page 4 · Log
 
-The character's **unified event log** (grants, purchases, retrains, retcons, gear, transfers, CEs, transactions, adjustments) **filtered to build events** — every Advance in order, the build back-trackable to legal. On screen the same log offers its other filters; print keeps the clean Advancement Log.
+The character's **unified event log** (grants, purchases, retrains, retcons, gear, transfers, CEs, transactions, adjustments) **filtered to build events** — every Advance in order, the build back-trackable to legal. On screen the same log offers its other filters; print keeps the clean build log.
 
 ### Page 5 · Full Detail
 

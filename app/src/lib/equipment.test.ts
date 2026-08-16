@@ -202,5 +202,9 @@ describe('money formatting', () => {
     expect(fmtWeight(0.5)).toBe('½ lb');
     expect(fmtWeight(10)).toBe('10 lb');
     expect(fmtWeight(null)).toBe('—');
+    // A quarter off a blade lands on the fractions, not on decimals.
+    expect(fmtWeight(2.25)).toBe('2¼ lb');
+    expect(fmtWeight(4.5)).toBe('4½ lb');
+    expect(fmtWeight(0.75)).toBe('¾ lb');
   });
 });
