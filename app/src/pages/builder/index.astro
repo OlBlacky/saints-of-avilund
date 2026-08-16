@@ -372,7 +372,22 @@ const blurb = 'Build a character of Avilund — and once they are Complete, this
   }
   .cf-shop-hint:hover:not(:disabled) { background: rgba(47, 93, 58, 0.16); }
   .cf-shop-hint:disabled { opacity: 0.45; cursor: not-allowed; }
-  .cf-shop-note { font-size: 0.8rem; font-style: italic; opacity: 0.85; margin-top: 0.1rem; }
+  /* An item's rules ride beside its name, not beneath it — a line saved on
+     every row that has one. Long notes still wrap under the name. */
+  .cf-shop-note {
+    display: inline-block; margin-left: 0.5rem; padding: 0.05rem 0.45rem;
+    font-size: 0.78rem; font-style: italic; opacity: 0.85;
+    border-left: 2px solid var(--gold); background: rgba(0, 0, 0, 0.02);
+  }
+  /* The Masterwork Quality menu, printed whole with tick boxes */
+  .mw-menu { margin: 0.25rem 0 0.35rem; }
+  .mw-menu-title { margin: 0 0 0.15rem; font-size: 0.8rem; font-variant: small-caps; letter-spacing: 0.04em; }
+  .mw-menu-table { width: 100%; border-collapse: collapse; font-size: 0.82rem; }
+  .mw-menu-table th { text-align: left; font-size: 0.72rem; font-variant: small-caps; opacity: 0.7; padding: 0.05rem 0.4rem; }
+  .mw-menu-table td { padding: 0.1rem 0.4rem; border-top: 1px solid rgba(0, 0, 0, 0.06); }
+  .mw-menu-table td.num { text-align: right; white-space: nowrap; }
+  .mw-menu-table tr.is-blocked { opacity: 0.45; }
+  .cf-shop-menurow > td { padding: 0 0.4rem 0.3rem 1.4rem; }
   .cf-shop-choice { display: inline-flex; gap: 0.35rem; margin-left: 0.5rem; }
   .cf-shop-choice select, .cf-shop-choice input {
     font: inherit; font-size: 0.82rem; padding: 0.1rem 0.3rem;
@@ -546,6 +561,15 @@ const blurb = 'Build a character of Avilund — and once they are Complete, this
     color: var(--gold); font-weight: normal;
   }
   .sheet-cbox-note { margin: 0.3rem 0 0; font-size: 0.82rem; font-style: italic; }
+  /* Riding beside the name rather than beneath it: no indent of its own
+     (the name cell is already indented), and tighter, since it shares a row. */
+  .sheet-cbox.is-inline {
+    display: inline-block; vertical-align: middle;
+    margin: 0 0 0 0.6rem; padding: 0.15rem 0.5rem;
+    border-top: none; border-right: none; border-bottom: none;
+  }
+  .sheet-cbox.is-inline .sheet-cbox-note { margin: 0; }
+  .sheet-cbox.is-inline .sheet-cbox-dials { gap: 0.15rem 0.9rem; }
 
   /* The carry summary leading the Gear page: label, figure, and the figure's
      arithmetic beneath it — one row per number, so nothing runs long */

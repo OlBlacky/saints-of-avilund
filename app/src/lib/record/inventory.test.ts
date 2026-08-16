@@ -259,6 +259,34 @@ describe('Masterwork Qualities and named weapons', () => {
     expect(sheet.situational.some((s) => s.source === 'Layered' && s.text.includes('Area Effects'))).toBe(true);
   });
 
+  it('Qualities commission with the purchase itself, priced into the trip', () => {
+    const bought = replay([
+      ...crystallized(badGear, 'the Bishopric of St. Severinius'),
+      ev('coin-granted', { amountSp: 100 }),
+      ev('transaction', { lines: [{ direction: 'buy', marketId: 'forge-monastery', itemId: 'mw-dagger', qty: 1, qualities: ['needle-point'] }] }),
+    ]);
+    expect(bought.flags).toEqual([]);
+    // 20 cp dagger + 160 sp masterwork + 100 sp Needle Point.
+    expect(bought.state.wealthCp).toBe(2000 + 1000 - (20 + 1600) - 1000);
+    const inst = bought.state.inventory.find((i) => i.itemId === 'mw-dagger')!;
+    expect(inst.qualities).toEqual(['needle-point']);
+    expect(inst.qty).toBe(1);
+
+    // The wrong market refuses the work even when it stocks nothing anyway.
+    const wrongShop = replay([
+      ...crystallized(badGear, 'the Bishopric of St. Severinius'),
+      ev('transaction', { lines: [{ direction: 'buy', marketId: 'forge-monastery', itemId: 'mw-dagger', qty: 1, qualities: ['blackened'] }] }),
+    ]);
+    expect(wrongShop.flags.some((f) => f.code === 'no-access')).toBe(true);
+
+    // Excluded pairs refuse together at the counter too.
+    const clash = replay([
+      ...crystallized(badGear, 'Dunstanmoore'),
+      ev('transaction', { lines: [{ direction: 'buy', marketId: 'long-butts', itemId: 'mw-shortbow', qty: 1, qualities: ['heartwood-belly', 'composite-heartwood-belly'] }] }),
+    ]);
+    expect(clash.flags.some((f) => f.code === 'no-access')).toBe(true);
+  });
+
   it('only a Masterwork weapon takes a name, and an empty name clears it', () => {
     const blade = ev('item-granted', { itemId: 'mw-longsword', qty: 1 });
     const named = replay([

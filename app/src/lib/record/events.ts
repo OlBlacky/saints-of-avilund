@@ -69,6 +69,10 @@ export type TransactionLine =
       /** The item's purchase-time pick (a Craft, a saint), where the item
        * defines one. Renders into the instance name; picks never stack. */
       choice?: string;
+      /** Masterwork Qualities commissioned with the purchase, at the same
+       * home market (mechanics/masterwork.md). Implies qty 1; the piece
+       * arrives with the work done and never stacks. */
+      qualities?: string[];
     }
   | { direction: 'sell'; marketId: string; instanceId: string; qty: number };
 

@@ -41,11 +41,13 @@ import {
   sellPriceCp,
 } from '../../lib/markets';
 import type { Market } from '../../lib/markets';
+import { MAX_QUALITIES, qualitiesFor, qualityById } from '../../lib/masterwork';
+import type { Quality } from '../../lib/masterwork';
 import { allProficiencies } from '../../lib/record/replay';
 import type { CharacterState } from '../../lib/record/replay';
 
 export type BasketLine =
-  | { direction: 'buy'; marketId: string; itemId: string; qty: number; choice?: string }
+  | { direction: 'buy'; marketId: string; itemId: string; qty: number; choice?: string; qualities?: string[] }
   | { direction: 'sell'; marketId: string; instanceId: string; qty: number };
 
 export function commerceRankOf(state: CharacterState): number {
@@ -66,12 +68,75 @@ export function basketTotalsCp(
     if (!market) continue;
     if (line.direction === 'buy') {
       buys += (buyPriceCp(market, line.itemId, commerceRank) ?? 0) * line.qty;
+      // Commissioned Qualities ride the line at the master's price.
+      for (const qid of line.qualities ?? []) buys += qualityById(qid)?.priceCp ?? 0;
     } else {
       const inst = state.inventory.find((i) => i.instanceId === line.instanceId);
       if (inst?.itemId) sells += (sellPriceCp(market, inst.itemId, commerceRank) ?? 0) * line.qty;
     }
   }
   return { buys, sells, net: sells - buys };
+}
+
+/** The Masterwork Quality menu, printed whole (Les, Aug 16 2026): every
+ * Quality with its effect, days, and cost, a tick box against each. Owned
+ * work shows ticked and locked; a blocked tick is greyed with its reason.
+ * The shop and the sheet both print this chart. */
+export function QualityMenu({ itemId, owned = [], picked, onToggle, title }: {
+  itemId: string;
+  /** Quality ids already worked into the piece — ticked and locked. */
+  owned?: string[];
+  /** Pending ticks. */
+  picked: string[];
+  onToggle: (q: Quality, on: boolean) => void;
+  title?: string;
+}) {
+  const menu = qualitiesFor(itemId);
+  if (menu.length === 0) return null;
+  const held = [...owned, ...picked];
+  return (
+    <div class="mw-menu">
+      {title && <p class="mw-menu-title">{title}</p>}
+      <table class="mw-menu-table">
+        <thead>
+          <tr><th></th><th>Name</th><th>Quality</th><th>Days</th><th>Cost</th></tr>
+        </thead>
+        <tbody>
+          {menu.map((q) => {
+            const has = owned.includes(q.id);
+            const on = has || picked.includes(q.id);
+            const excluded =
+              !on &&
+              held.some((id) => q.excludes?.includes(id) || qualityById(id)?.excludes?.includes(q.id));
+            const capFull = !on && held.length >= MAX_QUALITIES;
+            const blocked = has
+              ? undefined
+              : excluded
+                ? 'cannot share the item with the ticked work'
+                : capFull
+                  ? `a master can only work ${MAX_QUALITIES} Qualities into one item`
+                  : undefined;
+            return (
+              <tr key={q.id} class={blocked ? 'is-blocked' : undefined} title={blocked}>
+                <td>
+                  <input
+                    type="checkbox"
+                    checked={on}
+                    disabled={has || Boolean(blocked)}
+                    onChange={(ev) => onToggle(q, (ev.target as HTMLInputElement).checked)}
+                  />
+                </td>
+                <td>{q.name}</td>
+                <td>{q.effect}</td>
+                <td class="num">{q.days}</td>
+                <td class="num">{has ? 'worked in' : fmtCoins(q.priceCp)}</td>
+              </tr>
+            );
+          })}
+        </tbody>
+      </table>
+    </div>
+  );
 }
 
 /** The Feat that opens a locked Market, for the shopfront note. */
@@ -201,8 +266,34 @@ export default function MarketShop({ state, basket, setBasket }: Props) {
 
   const setQty = (marketId: string, itemId: string, choice: string | undefined, qty: number) => {
     const key = `b/${marketId}/${itemId}/${choice ?? ''}`;
+    const prior = basket.find((l) => lineKey(l) === key);
+    // Commissioned work rides the line; a commissioned piece is one of a kind.
+    const qualities = prior?.direction === 'buy' ? prior.qualities : undefined;
     const rest = basket.filter((l) => lineKey(l) !== key);
-    setBasket(qty > 0 ? [...rest, { direction: 'buy', marketId, itemId, qty, choice }] : rest);
+    setBasket(
+      qty > 0
+        ? [...rest, { direction: 'buy', marketId, itemId, qty: qualities?.length ? 1 : qty, choice, qualities }]
+        : rest,
+    );
+  };
+
+  /** Tick or untick a Quality on a buy line — ticking with no line yet puts
+   * the piece in the Basket. */
+  const toggleQuality = (itemId: string, choice: string | undefined, q: Quality, on: boolean) => {
+    const key = `b/${active.id}/${itemId}/${choice ?? ''}`;
+    const line = basket.find((l) => lineKey(l) === key);
+    const current = line?.direction === 'buy' ? line.qualities ?? [] : [];
+    if (!line && !on) return;
+    const next = on ? [...current, q.id] : current.filter((id) => id !== q.id);
+    const rest = basket.filter((l) => lineKey(l) !== key);
+    setBasket([
+      ...rest,
+      {
+        direction: 'buy', marketId: active.id, itemId,
+        qty: next.length > 0 ? 1 : line?.qty ?? 1,
+        choice, qualities: next.length > 0 ? next : undefined,
+      },
+    ]);
   };
 
   /** Move a buy line to a cheaper Market, merging with any existing line. */
@@ -277,7 +368,7 @@ export default function MarketShop({ state, basket, setBasket }: Props) {
                   <tbody>
                     {rows
                       .filter((r) => r.section === section)
-                      .map((r) => {
+                      .flatMap((r) => {
                         const pickKey = `${active.id}/${r.itemId}`;
                         const picked = pickedChoice(r.itemId, r.choice);
                         // A market may replace an item's whole option list
@@ -292,7 +383,27 @@ export default function MarketShop({ state, basket, setBasket }: Props) {
                           r.best && r.best.market.id !== active.id && r.best.priceCp < r.priceCp
                             ? r.best
                             : undefined;
-                        return (
+                        // This market's own Masterwork menu prints whole
+                        // under the piece — tick the work to commission it
+                        // with the purchase (a tick puts it in the Basket).
+                        const menu = qualitiesFor(r.itemId);
+                        const menuHere = menu.length > 0 && menu[0].marketId === active.id;
+                        const line = basket.find((l) => lineKey(l) === `b/${active.id}/${r.itemId}/${picked ?? ''}`);
+                        const ticked = line?.direction === 'buy' ? line.qualities ?? [] : [];
+                        const chartRows = menuHere
+                          ? [
+                              <tr key={`${r.itemId}-menu`} class="cf-shop-menurow">
+                                <td colSpan={4}>
+                                  <QualityMenu
+                                    itemId={r.itemId}
+                                    picked={ticked}
+                                    onToggle={(q, on) => toggleQuality(r.itemId, picked ?? undefined, q, on)}
+                                  />
+                                </td>
+                              </tr>,
+                            ]
+                          : [];
+                        return [
                           <tr key={r.itemId}>
                             <td>
                               {r.name}
@@ -300,7 +411,7 @@ export default function MarketShop({ state, basket, setBasket }: Props) {
                                 <span class="cf-chip" title={c.tip}>{c.label}</span>
                               ))}
                               {itemNote(r.itemId) && (
-                                <div class="cf-shop-note">{itemNote(r.itemId)}</div>
+                                <span class="cf-shop-note">{itemNote(r.itemId)}</span>
                               )}
                               {r.choice && (
                                 <span class="cf-shop-choice">
@@ -365,8 +476,9 @@ export default function MarketShop({ state, basket, setBasket }: Props) {
                                 +
                               </button>
                             </td>
-                          </tr>
-                        );
+                          </tr>,
+                          ...chartRows,
+                        ];
                       })}
                   </tbody>
                 </table>
@@ -411,9 +523,10 @@ export default function MarketShop({ state, basket, setBasket }: Props) {
                   );
                 }
                 const price = market ? buyPriceCp(market, l.itemId, commerce) : undefined;
+                const workCp = (l.qualities ?? []).reduce((t, id) => t + (qualityById(id)?.priceCp ?? 0), 0);
                 const best = bestBuy(l.itemId, ownedFeatIds, commerce, ownedAbilities, origin);
                 const cheaper =
-                  best && price !== undefined && best.market.id !== l.marketId && best.priceCp < price
+                  best && price !== undefined && best.market.id !== l.marketId && best.priceCp < price && !l.qualities
                     ? best
                     : undefined;
                 return (
@@ -421,6 +534,11 @@ export default function MarketShop({ state, basket, setBasket }: Props) {
                     <td>
                       {itemName(l.itemId) ?? l.itemId}
                       {l.choice ? ` (${l.choice})` : ''}
+                      {l.qualities && (
+                        <span class="cf-shop-src">
+                          {' '}with {l.qualities.map((id) => qualityById(id)?.name ?? id).join(', ')}
+                        </span>
+                      )}
                       {l.marketId !== 'waldheim' && market && (
                         <span class="cf-shop-src"> — {market.name}</span>
                       )}
@@ -436,7 +554,7 @@ export default function MarketShop({ state, basket, setBasket }: Props) {
                       )}
                     </td>
                     <td class="num">×{l.qty}</td>
-                    <td class="num">{price !== undefined ? fmtCoins(price * l.qty) : '—'}</td>
+                    <td class="num">{price !== undefined ? fmtCoins(price * l.qty + workCp) : '—'}</td>
                     <td class="act">
                       <button
                         type="button"

@@ -8,6 +8,7 @@
 // named; nothing shows a price before the first Session is logged (the New
 // state), silently. Moves and trips are logged events through the engine gate.
 
+import type { JSX } from 'preact';
 import { useState } from 'preact/hooks';
 
 import { VAR_ORDER, actionBadge, chosenLadder, freqBadge, resolveRung, resolveValue } from '../../lib/abilities';
@@ -51,7 +52,7 @@ import type { Breakdown, DerivedSheet, Part } from '../../lib/record/derive';
 import { abilityKey, languageAllowance } from '../../lib/record/replay';
 import type { CharacterState, OwnedItem } from '../../lib/record/replay';
 import type { PlayState, VersionPayload } from '../../lib/store';
-import MarketShop, { basketTotalsCp, commerceRankOf } from './MarketShop';
+import MarketShop, { QualityMenu, basketTotalsCp, commerceRankOf } from './MarketShop';
 import type { BasketLine } from './MarketShop';
 
 /** Where a dragged item lands on the row under the pointer: beside it, or —
@@ -272,6 +273,8 @@ export default function CharacterSheet({ identity, setIdentity, status, setStatu
   // Manage Mode: the sheet is read-only at the table; the Manage Character
   // button opens the editing surfaces (Details, Sessions, Milestones).
   const [manage, setManage] = useState(false);
+  // Pending Quality ticks per owned instance (the Commission button spends them).
+  const [mwTicks, setMwTicks] = useState<Record<string, string[]>>({});
   // The Reward field — silver granted (or taken) outside commerce.
   const [rewardSp, setRewardSp] = useState('');
   // Drag state: a box being reordered, or an item in flight. An item in
@@ -485,7 +488,7 @@ export default function CharacterSheet({ identity, setIdentity, status, setStatu
     </select>
   );
 
-  const nameCell = (item: OwnedItem, block: string, depth = 0) => (
+  const nameCell = (item: OwnedItem, block: string, depth = 0, aside: JSX.Element | null = null) => (
     <td
       draggable
       class={depth > 0 ? 'sheet-nested' : undefined}
@@ -514,6 +517,7 @@ export default function CharacterSheet({ identity, setIdentity, status, setStatu
           ✎
         </button>
       )}
+      {aside}
     </td>
   );
 
@@ -643,7 +647,7 @@ export default function CharacterSheet({ identity, setIdentity, status, setStatu
     const accessNote =
       access === containerAccess(i.itemId) ? containerAccessNote(i.itemId) : undefined;
     return (
-      <div class="sheet-cbox">
+      <div class="sheet-cbox is-inline">
         <p class="sheet-cbox-dials">
           <span class={cap !== undefined && raw > cap ? 'is-over' : undefined}>
             <strong>Holds</strong> {raw ? fmtWeight(raw) : '0 lb'}
@@ -663,117 +667,117 @@ export default function CharacterSheet({ identity, setIdentity, status, setStatu
     );
   };
 
-  /** A Masterwork item's box: the Qualities worked into it, and — standing
-   * at its home market with a slot free — the commission control. Every
-   * option carries its price and days; a blocked pick names its reason. */
+  /** A Masterwork item's box: the Qualities worked into it — and, standing
+   * at its home market with a slot free, the whole menu printed with tick
+   * boxes and a Commission button (Les, Aug 16 2026). */
   const masterworkBox = (i: OwnedItem) => {
     if (!i.itemId || !isMasterworkItem(i.itemId)) return null;
-    const owned = (i.qualities ?? [])
-      .map((q) => qualityById(q))
-      .filter(Boolean) as Quality[];
+    const owned = i.qualities ?? [];
+    const ownedQs = owned.map((q) => qualityById(q)).filter(Boolean) as Quality[];
     const menu = qualitiesFor(i.itemId);
     const home = menu.length ? marketById(menu[0].marketId) : undefined;
     const homeOpen =
       home !== undefined &&
       atMarket &&
       marketOpen(home, ownedFeatIds, state.origin ?? null);
-    if (owned.length === 0 && !homeOpen) return null;
+    const canCommission = homeOpen && i.qty === 1 && owned.length < MAX_QUALITIES;
+    if (owned.length === 0 && !canCommission) return null;
+    const ticks = mwTicks[i.instanceId] ?? [];
+    const cost = ticks.reduce((t, id) => t + (qualityById(id)?.priceCp ?? 0), 0);
     return (
       <div class="sheet-cbox">
-        {owned.map((q) => (
-          <p class="sheet-cbox-note" key={q.id}>
-            <strong>{q.name}</strong> — {q.effect}
-          </p>
-        ))}
-        {homeOpen && owned.length < MAX_QUALITIES && i.qty === 1 && (
-          <p class="sheet-cbox-dials">
-            <label>
-              Commission at {home.name}{' '}
-              <select
-                value=""
-                onChange={(e) => {
-                  const id = (e.target as HTMLSelectElement).value;
-                  (e.target as HTMLSelectElement).value = '';
-                  if (!id) return;
-                  const ev = mk('quality-added', { instanceId: i.instanceId, qualityId: id });
-                  if (!why(ev)) append(ev);
+        {!canCommission &&
+          ownedQs.map((q) => (
+            <p class="sheet-cbox-note" key={q.id}>
+              <strong>{q.name}</strong> — {q.effect}
+            </p>
+          ))}
+        {canCommission && (
+          <>
+            <QualityMenu
+              itemId={i.itemId}
+              owned={owned}
+              picked={ticks}
+              title={`Commission at ${home.name} — ${home.location}`}
+              onToggle={(q, on) =>
+                setMwTicks((m) => ({
+                  ...m,
+                  [i.instanceId]: on
+                    ? [...(m[i.instanceId] ?? []), q.id]
+                    : (m[i.instanceId] ?? []).filter((id) => id !== q.id),
+                }))
+              }
+            />
+            {ticks.length > 0 && (
+              <button
+                type="button"
+                class="buy"
+                disabled={cost > state.wealthCp}
+                title={cost > state.wealthCp ? 'not enough coin' : undefined}
+                onClick={() => {
+                  for (const id of ticks) append(mk('quality-added', { instanceId: i.instanceId, qualityId: id }));
+                  setMwTicks((m) => ({ ...m, [i.instanceId]: [] }));
                 }}
               >
-                <option value="">Add a Quality…</option>
-                {menu
-                  .filter((q) => !owned.some((o) => o.id === q.id))
-                  .map((q) => {
-                    const blocked = why(mk('quality-added', { instanceId: i.instanceId, qualityId: q.id }));
-                    return (
-                      <option key={q.id} value={q.id} disabled={Boolean(blocked)}>
-                        {q.name} — {fmtCoins(q.priceCp)} · {q.days} days{blocked ? ` (${blocked})` : ''}
-                      </option>
-                    );
-                  })}
-              </select>
-            </label>
-          </p>
+                Commission ({fmtCoins(cost)})
+              </button>
+            )}
+          </>
         )}
       </div>
     );
   };
 
-  /** The rows that trail an item's main row in any table: its rules note
-   * and its Masterwork box (Qualities + the commission control). The
-   * Weapons and Armour tables use these too — a Temper Quenched blade is
-   * commissioned where it is listed. */
+  /** The box an item states beside its name: a Container's dials, or a
+   * plain item's rules note. Short enough to ride on the name row, which
+   * is where it saves a line the sheet would rather spend on gear. The
+   * Masterwork box carries a menu and a button, so it stays beneath. */
+  const itemAside = (i: OwnedItem) => {
+    const box = containerBox(i);
+    if (box) return box;
+    const note = i.itemId ? itemNote(i.itemId) : undefined;
+    return note ? (
+      <div class="sheet-cbox is-inline"><p class="sheet-cbox-note">{note}</p></div>
+    ) : null;
+  };
+
+  /** The rows that trail an item's main row in any table: its Masterwork
+   * box (Qualities + the commission control). The Weapons and Armour
+   * tables use these too — a Temper Quenched blade is commissioned where
+   * it is listed. */
   const trailingRows = (i: OwnedItem, colSpan: number) => {
     const mwBox = masterworkBox(i);
-    const note = i.itemId ? itemNote(i.itemId) : undefined;
-    return [
-      ...(note
-        ? [
-            <tr key={`${i.instanceId}-note`} class="sheet-boxrow">
-              <td colSpan={colSpan}>
-                <div class="sheet-cbox"><p class="sheet-cbox-note">{note}</p></div>
-              </td>
-            </tr>,
-          ]
-        : []),
-      ...(mwBox
-        ? [
-            <tr key={`${i.instanceId}-mw`} class="sheet-boxrow">
-              <td colSpan={colSpan}>{mwBox}</td>
-            </tr>,
-          ]
-        : []),
-    ];
+    return mwBox
+      ? [
+          <tr key={`${i.instanceId}-mw`} class="sheet-boxrow">
+            <td colSpan={colSpan}>{mwBox}</td>
+          </tr>,
+        ]
+      : [];
   };
 
   /** A block's rows: each item, then whatever it holds, indented. Contents
    * of every kind draw here — the Container's block is where a Stored item
-   * lives. A Container trails its box beneath its own row. */
+   * lives. A Container states its dials beside its own name. */
   const gearBlock = (roots: OwnedItem[], block: string) =>
     gearRows(state.inventory, roots).flatMap(({ item, depth }) => {
-      const box = containerBox(item);
       const mwBox = masterworkBox(item);
-      // A Container's box prints its note itself; everything else states
-      // its rules in a line of its own.
-      const note = !box && item.itemId ? itemNote(item.itemId) : undefined;
-      const noteRow = note ? (
-        <div class="sheet-cbox">
-          <p class="sheet-cbox-note">{note}</p>
-        </div>
-      ) : null;
       return [
         <tr key={item.instanceId} {...rowProps(item, block)}>
-          {nameCell(item, block, depth)}
+          {nameCell(item, block, depth, itemAside(item))}
           <td class="num">{rowWeight(item)}</td>
           <td>{moveControl(item)}</td>
           <td class="act">{splitControl(item)}{sellControl(item)}</td>
         </tr>,
-        ...[box, noteRow, mwBox].filter(Boolean).map((b, n) => (
-          <tr key={`${item.instanceId}-box${n}`} class="sheet-boxrow">
-            <td colSpan={4} class={depth > 0 ? 'sheet-nested' : undefined} style={depth > 0 ? `--depth:${depth}` : undefined}>
-              {b}
-            </td>
-          </tr>
-        )),
+        ...(mwBox
+          ? [
+              <tr key={`${item.instanceId}-mw`} class="sheet-boxrow">
+                <td colSpan={4} class={depth > 0 ? 'sheet-nested' : undefined} style={depth > 0 ? `--depth:${depth}` : undefined}>
+                  {mwBox}
+                </td>
+              </tr>,
+            ]
+          : []),
       ];
     });
 
@@ -1982,7 +1986,7 @@ export default function CharacterSheet({ identity, setIdentity, status, setStatu
                   const w = weaponFor(i)!;
                   return [
                     <tr key={i.instanceId} {...rowProps(i, 'weapons')}>
-                      {nameCell(i, 'weapons')}
+                      {nameCell(i, 'weapons', 0, itemAside(i))}
                       <td>{w.group}</td>
                       <td>{w.damage} {w.type}{w.hands === '2H' ? ' · 2H' : ''}</td>
                       <td>{w.range ?? '—'}</td>
@@ -2027,7 +2031,7 @@ export default function CharacterSheet({ identity, setIdentity, status, setStatu
                     : s!.speedPenaltyFt ? `−${s!.speedPenaltyFt}' Speed` : '—';
                   return [
                     <tr key={i.instanceId} {...rowProps(i, 'wearables')}>
-                      {nameCell(i, 'wearables')}
+                      {nameCell(i, 'wearables', 0, itemAside(i))}
                       <td>+{(a ? ARMOUR_TIER_AC[a.tier] : s!.ac) + (a?.acBonus ?? 0)}</td>
                       <td>{a ? (a.drNote ? `${a.dr} (${a.drNote})` : a.dr) : s!.dr || '—'}</td>
                       <td>{drawbacks}</td>

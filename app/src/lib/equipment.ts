@@ -365,8 +365,8 @@ export const CAMP_AND_TRAIL: SimpleItem[] = [
   { id: 'cooking-pot', name: 'Cooking pot', priceCp: 3, weightLb: 4 },
   { id: 'rations-trail', name: 'Rations, trail (one day)', priceCp: 5, weightLb: 1 },
   // Fancy trail rations (mechanics/markets.md). Home-market stock only.
-  { id: 'moorish-pasty', name: 'Moorish Pasty (one day)', priceCp: 4, weightLb: 1, note: 'Consuming it grants 1 Temp HP until your next full rest. One ration’s benefit at a time.' },
-  { id: 'knights-stew', name: "Knights' Stew (one day)", priceCp: 4, weightLb: 1, note: 'Consuming it grants 1 Temp HP until your next full rest. One ration’s benefit at a time.' },
+  { id: 'moorish-pasty', name: 'Moorish Pasty (one day)', priceCp: 4, weightLb: 1, note: '1 Temp HP until your next full rest.' },
+  { id: 'knights-stew', name: "Knights' Stew (one day)", priceCp: 4, weightLb: 1, note: '1 Temp HP until your next full rest.' },
   { id: 'fishing-tackle', name: 'Fishing tackle', priceCp: 10, weightLb: 2 },
   { id: 'fishing-net', name: 'Fishing net', priceCp: 40, weightLb: 5 },
   { id: 'tent-one-man', name: 'Tent, one man', priceCp: 80, weightLb: 20 },

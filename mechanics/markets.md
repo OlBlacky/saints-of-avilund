@@ -76,7 +76,7 @@ The fourth Regional Market (settled Aug 15 2026). **Dunstanmoore are the masters
 - **Open to:** Dunstanmoore natives.
 - **Catalogue:** **Dunstanmoore Bowyercraft** *(Masterwork Longbow / Shortbow)* and **Dunstanmoore Fletchercraft** *(masterwork ammunition by the sheaf)* — base grades, Quality menu, and ammunition families per [masterwork.md](masterwork.md).
 - **Standard stock at 10% off:** all standard-list bows, arrows, and quivers sell here at **90% of list price** (the St. Dunstan's Magazine pattern, gentler).
-- **The Moorish Pasty** — a lamb-filled pastry made to travel well. Trail Ration (one day), **4 cp**, 1 lb. Consuming it grants **1 Temp HP** until your next full rest; one pasty's benefit at a time.
+- **The Moorish Pasty** — a lamb-filled pastry made to travel well. Trail Ration (one day), **4 cp**, 1 lb. **1 Temp HP** until your next full rest.
 
 ### The Forge Monastery of San Corrado — Port of St. Sever — Masterwork Blades Market
 

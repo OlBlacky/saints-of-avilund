@@ -20,6 +20,8 @@ A running log of corrections and patterns. Claude appends an entry whenever Les 
 
 **How to apply:** in tooltips, help text, and card text, write the rule as plain declarative sentences and end there. No trailing "— …" afterthought, no parenthetical reassurance, no edge-case footnote unless the edge case changes what the player does. If a clarification genuinely earns its place, give it its own plain sentence — and first ask whether it is needed at all.
 
+**Recurrence (Aug 16 2026) — item notes.** The Moorish Pasty read "Consuming it grants 1 Temp HP until your next full rest. One ration's benefit at a time." Both halves were cuttable: the second sentence restated a *global* rations rule on a single item, and "Consuming it grants" narrated an action the item type already implies. Correct note: "1 Temp HP until your next full rest." Two tests for any item note — (1) does this sentence state what *this* item does, or a category-wide rule that belongs in the rules text? (2) can the leading verb phrase go without loss? If a rule governs a whole class of items, it lives in `mechanics/` once, not on every card.
+
 ## Never add flavour text that wasn't asked for
 
 **Why:** the Belt pouch carried an authored note — "Coin and small trinkets, at the belt…" — that Les never requested. Les (Aug 2026): "You don't need to add any colour text I don't specifically ask you for and approve." Unrequested colour is in my voice, not his, and he ends up rewriting or deleting it.

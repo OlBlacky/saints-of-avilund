@@ -35,7 +35,8 @@ import { fill } from '../../lib/quirks';
 import type { Attribute, SeesawCategory } from '../../lib/quirks';
 import { SKILLS } from '../../lib/skills';
 import { derive } from '../../lib/record/derive';
-import type { RecordEvent } from '../../lib/record/events';
+import { renamedInstance } from '../../lib/record/draft';
+import type { AbilityRef, RecordEvent } from '../../lib/record/events';
 import { getCharacter, putCharacter } from '../../lib/store';
 import type { CharacterRecord, PlayState } from '../../lib/store';
 import {
@@ -257,6 +258,22 @@ export default function CreationFlow() {
       }
       return d;
     });
+
+  /** Name a builder instance — a Spell, a Companion card. While the purchase
+   * is still the draft's own, the name rides on the buy event. Once that buy
+   * is history, the rename is its own free event, and this Session's rename
+   * takes every further keystroke rather than logging one per letter. */
+  const renameInstance = (ref: AbilityRef, instanceId: string, name: string) =>
+    setDraft((d) => ({
+      ...d,
+      events: renamedInstance(
+        d.events,
+        d.events.some((e) => e.type === 'crystallized') ? advanceFrom : 0,
+        instanceId,
+        name,
+        () => mk('ability-renamed', { ref, instanceId, name }),
+      ),
+    }));
 
   /** Draft privilege: replace the single event of a type (class, subclass, quirk). */
   const replaceOne = (type: RecordEvent['type'], e: RecordEvent) =>
@@ -963,19 +980,15 @@ export default function CreationFlow() {
                                         <input
                                           class="cf-instname"
                                           value={inst.name}
-                                          disabled={crystallized}
+                                          disabled={locked}
                                           title={`name this ${(ab.builderNoun ?? 'Spell').toLowerCase()}`}
-                                          onInput={(ev2) => {
-                                            const name = (ev2.target as HTMLInputElement).value;
-                                            setDraft((d) => ({
-                                              ...d,
-                                              events: d.events.map((x) =>
-                                                x.type === 'ability-bought' && x.instanceId === inst.instanceId
-                                                  ? { ...x, instanceName: name }
-                                                  : x,
-                                              ),
-                                            }));
-                                          }}
+                                          onInput={(ev2) =>
+                                            renameInstance(
+                                              inst.ref,
+                                              inst.instanceId!,
+                                              (ev2.target as HTMLInputElement).value,
+                                            )
+                                          }
                                         />
                                         {inst.choices && (
                                           <span class="cf-instchoice">{Object.values(inst.choices).join(' · ')}</span>
@@ -989,7 +1002,12 @@ export default function CreationFlow() {
                                               x.type === 'ability-renamed') &&
                                             x.instanceId === inst.instanceId;
                                           const floor = crystallized ? advanceFrom : 0;
-                                          const undoable = events.some((x, i) => mine(x) && i >= floor);
+                                          // Only spending makes a refund: a rename this
+                                          // Session is free, and rides along when the
+                                          // purchase behind it goes.
+                                          const undoable = events.some(
+                                            (x, i) => mine(x) && x.type !== 'ability-renamed' && i >= floor,
+                                          );
                                           const noun = (ab.builderNoun ?? 'Spell').toLowerCase();
                                           return (
                                             <button
@@ -1212,7 +1230,7 @@ export default function CreationFlow() {
                   options={[...WEAPON_GROUPS, ...ARMOUR_PROFICIENCIES, ...IMPLEMENT_GROUPS].filter(
                     (g) => !grantedProficiencies(state).includes(g) && !state.boughtProficiencies.includes(g),
                   )}
-                  disabled={crystallized}
+                  disabled={locked}
                   onPick={(group) => append(mk('proficiency-bought', { group: group as never }))}
                 />
               </div>
@@ -1242,7 +1260,7 @@ export default function CreationFlow() {
                     <GroupPicker
                       label={free > 0 ? `Add a language (${free} free — Polyglot)` : 'Buy a language (1 m)'}
                       options={LANGUAGES.filter((l) => !sheet.languages.includes(l))}
-                      disabled={crystallized}
+                      disabled={locked}
                       onPick={(language) => append(mk('language-bought', { language: language as never }))}
                     />
                   );

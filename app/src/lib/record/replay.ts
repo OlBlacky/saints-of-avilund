@@ -767,7 +767,7 @@ export function replay(events: RecordEvent[]): ReplayResult {
         const commerce = state.feats.find((f) => f.featId === 'commerce-ladder')?.rank ?? 0;
         const before = flags.length;
         let net = 0;
-        const buys: { itemId: string; qty: number; choice?: string }[] = [];
+        const buys: { itemId: string; qty: number; choice?: string; qualities?: string[] }[] = [];
         const sells: { instanceId: string; qty: number }[] = [];
         for (const line of e.lines) {
           const market = marketById(line.marketId);
@@ -787,8 +787,28 @@ export function replay(events: RecordEvent[]): ReplayResult {
           if (line.direction === 'buy') {
             const price = buyPriceCp(market, line.itemId, commerce);
             if (price === undefined) { flag(e, 'no-access', `${market.name} does not stock "${line.itemId}"`); continue; }
-            net -= price * line.qty;
-            buys.push({ itemId: line.itemId, qty: line.qty, choice: line.choice });
+            // Qualities commissioned with the purchase (mechanics/masterwork.md):
+            // same rules as a retrofit, the work priced into the trip.
+            const qids = line.qualities ?? [];
+            let qualityCost = 0;
+            if (qids.length > 0) {
+              if (line.qty !== 1) { flag(e, 'over-cap', 'one item takes the work — commission a single piece'); continue; }
+              if (qids.length > MAX_QUALITIES) { flag(e, 'over-cap', `a master can only work ${MAX_QUALITIES} Qualities into one item`); continue; }
+              if (new Set(qids).size !== qids.length) { flag(e, 'duplicate', 'each Quality once per item'); continue; }
+              const qs = qids.map((id) => qualityById(id));
+              const missingAt = qs.findIndex((q) => !q);
+              if (missingAt !== -1) { flag(e, 'unknown-ref', `unknown Quality "${qids[missingAt]}"`); continue; }
+              const quals = qs as NonNullable<(typeof qs)[number]>[];
+              const misfit = quals.find((q) => !q.fits(line.itemId));
+              if (misfit) { flag(e, 'no-access', `${misfit.name} cannot be worked into ${itemName(line.itemId) ?? line.itemId}`); continue; }
+              const elsewhere = quals.find((q) => q.marketId !== line.marketId);
+              if (elsewhere) { flag(e, 'no-access', `${market.name} does not work ${elsewhere.name}`); continue; }
+              const clash = quals.find((a) => quals.some((b) => a !== b && a.excludes?.includes(b.id)));
+              if (clash) { flag(e, 'no-access', `${clash.name} cannot share an item with its excluded work`); continue; }
+              qualityCost = quals.reduce((t, q) => t + q.priceCp, 0);
+            }
+            net -= price * line.qty + qualityCost;
+            buys.push({ itemId: line.itemId, qty: line.qty, choice: line.choice, qualities: qids.length > 0 ? qids : undefined });
           } else {
             if (!state.crystallized) { flag(e, 'creation-only', 'no selling during creation'); continue; }
             if (state.sessions < 1) { flag(e, 'no-access', 'no selling before the first Session'); continue; }
@@ -812,12 +832,27 @@ export function replay(events: RecordEvent[]): ReplayResult {
           // Crafts, medals of different saints.
           const name = (itemName(b.itemId) ?? b.itemId) + (b.choice ? ` (${b.choice})` : '');
           const arrival = normalizeLocation('equipped', b.itemId);
+          // A commissioned piece is one of a kind — its own instance, never
+          // a stack.
+          if (b.qualities) {
+            state.inventory.push({
+              instanceId: `${e.id}:${b.itemId}`,
+              itemId: b.itemId,
+              name,
+              qty: 1,
+              location: arrival,
+              origin: 'purchase',
+              qualities: b.qualities,
+            });
+            continue;
+          }
           const existing = state.inventory.find(
             (i) =>
               i.itemId === b.itemId &&
               i.name === name &&
               i.origin === 'purchase' &&
-              i.location === arrival,
+              i.location === arrival &&
+              !i.qualities,
           );
           if (existing) existing.qty += b.qty;
           else {
