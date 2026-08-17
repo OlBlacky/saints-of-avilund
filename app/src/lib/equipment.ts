@@ -790,11 +790,35 @@ export function carriesNoLoad(itemId: string): boolean {
   return ARMOURS.some((a) => a.id === itemId) || CLOTHING.some((c) => c.id === itemId);
 }
 
-/** Items that may be Worn: clothing, armour, and every Container. A Container
- * is never Equipped — you do not draw a backpack, you open it, and the action
- * for that is its Access. */
+/** The Worn tag, hand-set where the derivation gets it wrong. Trinkets ride on
+ * a cord, a belt, or a finger, so they cost no Equipped slot; the bulk vessels
+ * are furniture, and nobody wears a barrel. */
+const WORN_OVERRIDES: Record<string, boolean> = {
+  // Trinkets: at the neck, the belt, the hat, or the finger.
+  'saints-medal-wood': true,
+  'saints-medal-tin': true,
+  'saints-medal-silver': true,
+  'pilgrims-badge': true,
+  'prayer-beads': true,
+  'reliquary-empty': true,
+  'signet-ring': true,
+  whistle: true,
+  // Bulk vessels: they hold goods, but they do not ride on a body.
+  'chest-wooden': false,
+  strongbox: false,
+  barrel: false,
+  saddlebags: false,
+};
+
+/** Items that may be Worn: clothing, armour, and the Containers small enough to
+ * carry on the body, plus the trinkets tagged above. A Container is never
+ * Equipped — you do not draw a backpack, you open it, and the action for that
+ * is its Access. */
 export function isWearable(itemId: string): boolean {
-  return carriesNoLoad(itemId) || containerCoefficient(itemId) !== undefined;
+  return (
+    WORN_OVERRIDES[itemId] ??
+    (carriesNoLoad(itemId) || containerCoefficient(itemId) !== undefined)
+  );
 }
 
 // ── The whole catalogue, flat ────────────────────────────────────

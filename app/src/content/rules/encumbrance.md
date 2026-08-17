@@ -1,23 +1,28 @@
 ---
 title: Encumbrance &amp; Carrying Gear
-summary: The three Gear States, the Equipped Limit, and the Load Bands.
+summary: The five Gear States, the Equipped Limit, and the Load Bands.
 ---
 
-Everything on your person sits in one of three **Gear States**, and two numbers govern them: the **Equipped Limit**, which caps what you keep at the ready, and your **Load**, which is what it all weighs.
+Everything you own sits in one of five **Gear States**, and two numbers govern the three that ride on you: the **Equipped Limit**, which caps what you keep at the ready, and your **Load**, which is what it all weighs.
 
 ## Gear States
 
-Where a thing rides is your choice, and the choice is a trade: the readier it is, the fewer of them you can keep that way.
+Where a thing rides is your choice, and the choice is a trade: the readier it is, the fewer of them you can keep that way. The first three are on your person; the last two are not, and neither weighs anything nor spends a slot.
 
 | State | Where it is | To get it in hand | Load |
 |---|---|---|---|
-| **Worn** | on the body: clothing, armour, and every Container | not retrieved — you are already wearing it | full weight, unless **0-Enc** |
+| **Worn** | on the body: clothing, armour, trinkets, and the Containers you can carry | not retrieved — you are already wearing it | full weight, unless **0-Enc** |
 | **Equipped** | at the ready on your person: a dagger in the belt, a quiver, a shield | `move` | full weight |
 | **Stored** | inside a Container | the Container's **Access** | after the Container's Coefficient |
+| **Nearby** | in the scene but off your person | walk over to it | nothing |
+| **At Home** | wherever you keep what you are not travelling with | not this session | nothing |
 
-- **Only tagged items may be Worn.** Clothing, armour, and Containers carry the tag; a greatsword does not.
+- **Only tagged items may be Worn.** Clothing, armour, trinkets, and body-borne Containers carry the tag; a greatsword does not.
 - **Armour is Worn. Shields are Equipped.** The first Equipped shield feeds your AC and DR. Changing what you wear happens out of combat.
+- **Trinkets are Worn.** A Saint's medal, prayer beads, a pilgrim's badge, a reliquary, a signet ring, a whistle on a cord — these hang about the person and cost no Equipped slot.
 - **A Container is never Equipped.** You do not draw a backpack, you open it, and the action for that is its Access.
+- **Bulk vessels are not Worn either.** A chest, a strongbox, a barrel, saddlebags: these ride on a cart or a mule, never on a body. They sit Nearby.
+- **Nearby is a scene, At Home is a season.** Nearby is reachable now, on foot; At Home waits until you go back for it. A Container in either state still holds what is packed in it, and none of it weighs on you.
 - **You still have two hands.** Weapons state the hands they fill, and a shield fills one.
 - Putting a thing away costs the same action as getting it out.
 

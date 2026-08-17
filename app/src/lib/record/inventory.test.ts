@@ -1097,13 +1097,73 @@ describe('Gear States (mechanics/encumbrance.md)', () => {
   it('a Container is never Equipped — you open a backpack, you do not draw it', () => {
     const { state, flags } = replay([
       ...crystallized(),
-      buy([{ itemId: 'backpack', qty: 1 }, { itemId: 'barrel', qty: 1 }]),
+      buy([{ itemId: 'backpack', qty: 1 }]),
       ev('item-moved', { instanceId: 'item:backpack', location: 'equipped' }),
     ]);
     expect(flags).toEqual([]);
-    // Both arrive from the Market at 'equipped' and are corrected on the way in.
+    // It arrives from the Market at 'equipped' and is corrected on the way in.
     expect(state.inventory.find((i) => i.itemId === 'backpack')!.location).toBe('worn');
-    expect(state.inventory.find((i) => i.itemId === 'barrel')!.location).toBe('worn');
+  });
+
+  it('a bulk vessel rides on the cart, not the body — it falls back to Nearby', () => {
+    const { state, flags } = replay([
+      ...crystallized(),
+      buy([{ itemId: 'barrel', qty: 1 }, { itemId: 'saddlebags', qty: 1 }]),
+      ev('item-moved', { instanceId: 'item:saddlebags', location: 'worn' }),
+    ]);
+    expect(flags).toEqual([]);
+    // The barrel arrives from the Market at 'equipped'; both fall off the body.
+    expect(state.inventory.find((i) => i.itemId === 'barrel')!.location).toBe('nearby');
+    expect(state.inventory.find((i) => i.itemId === 'saddlebags')!.location).toBe('nearby');
+  });
+
+  it('Nearby is off the body: it weighs nothing, contents and all', () => {
+    const { state, flags } = replay([
+      ...crystallized(),
+      buy([
+        { itemId: 'barrel', qty: 1 },     // 30 lb, falls to Nearby
+        { itemId: 'maul', qty: 1 },       // 10 lb, Equipped
+        { itemId: 'chain-10ft', qty: 1 }, // 10 lb — into the barrel
+      ]),
+      ev('item-moved', { instanceId: 'item:chain-10ft', location: 'in:item:barrel' }),
+    ]);
+    expect(flags).toEqual([]);
+    // Only the maul is on the body; the barrel and its chain are not.
+    expect(derive(state).load.totalLb).toBe(10);
+  });
+
+  it('anything may be set Nearby, tag or no tag', () => {
+    const { state, flags } = replay([
+      ...crystallized(),
+      buy([{ itemId: 'maul', qty: 1 }, { itemId: 'chain-mail', qty: 1 }]),
+      ev('item-moved', { instanceId: 'item:maul', location: 'nearby' }),
+      ev('item-moved', { instanceId: 'item:chain-mail', location: 'nearby' }),
+    ]);
+    expect(flags).toEqual([]);
+    expect(state.inventory.find((i) => i.itemId === 'maul')!.location).toBe('nearby');
+    expect(state.inventory.find((i) => i.itemId === 'chain-mail')!.location).toBe('nearby');
+    expect(derive(state).load.totalLb).toBe(0);
+  });
+
+  it('a trinket is Worn and costs no Equipped slot', () => {
+    // The religious shelf is Imperial Square's, not Waldheim's.
+    const { state, flags } = replay([
+      ...crystallized(),
+      ev('transaction', {
+        lines: [
+          { direction: 'buy' as const, marketId: 'imperial-square', itemId: 'prayer-beads', qty: 1 },
+          { direction: 'buy' as const, marketId: 'imperial-square', itemId: 'reliquary-empty', qty: 1 },
+        ],
+      }),
+      ev('item-moved', { instanceId: 'item:prayer-beads', location: 'worn' }),
+      ev('item-moved', { instanceId: 'item:reliquary-empty', location: 'worn' }),
+    ]);
+    expect(flags).toEqual([]);
+    for (const id of ['prayer-beads', 'reliquary-empty']) {
+      expect(state.inventory.find((i) => i.itemId === id)!.location).toBe('worn');
+    }
+    // A trinket is Worn, not 0-Enc: the reliquary's 2 lb still tell.
+    expect(derive(state).load.totalLb).toBe(2);
   });
 
   it('Worn and Equipped both weigh in full, unless the item is 0-Enc', () => {

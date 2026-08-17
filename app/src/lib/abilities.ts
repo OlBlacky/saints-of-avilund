@@ -71,10 +71,12 @@ export interface Advance extends RungSpec {
                           // pace, e.g. "L5" (omit it when the pace already covers it)
 }
 
-// One variable on the card: a base value and up to three advancements.
+// One variable on the card: a base value and its advancements. Three is the
+// standard climb; the build table grows to fit a longer one, and the four that
+// run to a fourth Rank are named in rails.test.ts so a fifth is a decision.
 export interface Variable extends RungSpec {
   base?: string;          // omit (or '—') when not applicable to this ability
-  advances?: Advance[];   // 0–3 steps
+  advances?: Advance[];
 }
 
 // A labelled block of options shown under the card — used to break a dense

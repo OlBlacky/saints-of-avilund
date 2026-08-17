@@ -87,7 +87,7 @@ export const ABILITY_BRIEFS: Record<string, string> = {
   'Medicine/Guard Vitals': 'Know where you can least afford to be hit, and cover it.',
   'Medicine/Field Dressing': 'Kit-and-supplies healing on the spot.',
   'Medicine/Field Medicine': 'Treat a Condition, a poison, or a dying patient in the field.',
-  'Medicine/Tend the Wounded': 'Camp care: the tended heal more on a rest.',
+  'Medicine/Dress the Wounded': 'Camp care: the tended heal more on a rest.',
   'Medicine/Convalescence': 'Long care that compresses a week of mending into a day.',
 
   // ── New Magic ─────────────────────────────────────────────────────────

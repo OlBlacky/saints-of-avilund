@@ -247,7 +247,7 @@ interface Props {
 const PAGE_BOXES: Record<string, string[]> = {
   p1: ['vitals', 'details', 'attributes', 'skills', 'profs', 'feats', 'situational', 'quirks'],
   p2: ['attacks', 'abilities'],
-  p3: ['weapons', 'wearables', 'equipment', 'home', 'wealth', 'markets'],
+  p3: ['weapons', 'wearables', 'equipment', 'nearby', 'home', 'wealth', 'markets'],
 };
 
 export default function CharacterSheet({ identity, setIdentity, status, setStatus, state, sheet, events, basket, setBasket, append, why, boxOrder, setBoxOrder, onAdvance, sandbox, onSandboxCopy }: Props) {
@@ -381,12 +381,15 @@ export default function CharacterSheet({ identity, setIdentity, status, setStatu
       0,
     );
 
-  const equipmentCarried = equipment.filter((i) => i.location !== 'home');
+  const equipmentCarried = equipment.filter(
+    (i) => i.location !== 'home' && i.location !== 'nearby',
+  );
+  const equipmentNearby = equipment.filter((i) => i.location === 'nearby');
   const equipmentHome = equipment.filter((i) => i.location === 'home');
 
   /** Walk the container chain to the ground an item finally rests on —
    * a pouch in a chest at home is at home. */
-  const rootLocation = (item: OwnedItem): 'worn' | 'equipped' | 'home' => {
+  const rootLocation = (item: OwnedItem): 'worn' | 'equipped' | 'nearby' | 'home' => {
     let loc: string = item.location;
     const seen = new Set<string>();
     while (loc.startsWith('in:')) {
@@ -397,7 +400,7 @@ export default function CharacterSheet({ identity, setIdentity, status, setStatu
       if (!holder) return 'equipped';
       loc = holder.location;
     }
-    return loc as 'worn' | 'equipped' | 'home';
+    return loc as 'worn' | 'equipped' | 'nearby' | 'home';
   };
 
   // The in-flight item's own contents refuse its drop — nothing goes inside
@@ -537,6 +540,7 @@ export default function CharacterSheet({ identity, setIdentity, status, setStatu
     >
       {item.itemId && isWearable(item.itemId) && <option value="worn">Worn</option>}
       {!armourFor(item) && !isContainer(item) && <option value="equipped">Equipped</option>}
+      <option value="nearby">Nearby</option>
       <option value="home">At Home</option>
       {containers.filter((c) => c.instanceId !== item.instanceId).length > 0 && (
         <optgroup label="Stored">
@@ -1468,7 +1472,7 @@ export default function CharacterSheet({ identity, setIdentity, status, setStatu
         const mwBonus = (w: { attackBonus?: number }): number => w.attackBonus ?? 0;
         const mwParts = (w: { attackBonus?: number }): string[] =>
           w.attackBonus ? [`Masterwork +${w.attackBonus}`] : [];
-        const qualityDamage = (i: OwnedItem): { bonus: number; parts: string[] } => {
+        const damageQualityBonus = (i: OwnedItem): { bonus: number; parts: string[] } => {
           const parts: string[] = [];
           if (i.qualities?.includes('crucible-steel')) parts.push('Crucible Steel +1');
           if (i.qualities?.includes('laminated-warbow')) parts.push('Laminated Warbow +1');
@@ -1481,7 +1485,7 @@ export default function CharacterSheet({ identity, setIdentity, status, setStatu
           const ranged = RANGED_WEAPONS.some((r) => r.id === w.id);
           const attrFull = ranged ? 'Dexterity' : meleeAttr(w);
           const p = profOf(w.group);
-          const qd = qualityDamage(item);
+          const qd = damageQualityBonus(item);
           rows.push({
             key: `basic/${item.instanceId}`,
             name: `Basic Attack — ${gearName(item)}`,
@@ -1498,14 +1502,16 @@ export default function CharacterSheet({ identity, setIdentity, status, setStatu
         for (const item of tableShields) {
           const sh = shieldFor(item)!;
           const p = profOf(sh.proficiency);
+          const die = qualityDamage(sh.damage, item.qualities);
+          const qd = damageQualityBonus(item);
           rows.push({
             key: `basic/${item.instanceId}`,
             name: `Basic Attack — ${item.name}`,
             toHit: offenceOf('Strength') + (p ?? -1),
             toHitParts: toHitPartsFor('Strength', sh.proficiency),
             vs: 'vs AC',
-            damage: qualityDamage(sh.damage, item.qualities),
-            dmgParts: [],
+            damage: addToDamage(die, qd.bonus),
+            dmgParts: qd.parts,
           });
         }
         rows.push({
@@ -1549,7 +1555,7 @@ export default function CharacterSheet({ identity, setIdentity, status, setStatu
               if (!fits(w)) continue;
               const p = profOf(w.group);
               const hook = hookSum(hooks, w.group);
-              const qd = qualityDamage(item);
+              const qd = damageQualityBonus(item);
               rows.push({
                 key: `${label}/${item.instanceId}`,
                 name: `${label} — ${gearName(item)}`,
@@ -1687,7 +1693,7 @@ export default function CharacterSheet({ identity, setIdentity, status, setStatu
                           const w = weaponFor(item)!;
                           const p = profOf(w.group);
                           const hook = hookSum(hooks, w.group);
-                          const qd = qualityDamage(item);
+                          const qd = damageQualityBonus(item);
                           return {
                             key: `${cardKey}/${item.instanceId}`,
                             name: gearName(item),
@@ -2071,6 +2077,25 @@ export default function CharacterSheet({ identity, setIdentity, status, setStatu
           </div>
         )}
       </section>
+
+      {equipmentNearby.length > 0 && (
+        <section
+          class="cf-step sheet-box"
+          style={boxStyle('p3', 'nearby')}
+          onDragOver={boxDragOver}
+          onDrop={() => (dragBox ? dropBox('p3', 'nearby') : dropItemTo('nearby'))}
+        >
+          {grip('p3', 'nearby')}
+          <h3>Nearby</h3>
+          <div class="scroll">
+            <table class="cf-shop-table sheet-table">
+              <tbody>
+                {gearBlock(equipmentNearby, 'nearby')}
+              </tbody>
+            </table>
+          </div>
+        </section>
+      )}
 
       {equipmentHome.length > 0 && (
         <section

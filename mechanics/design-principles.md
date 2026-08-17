@@ -28,6 +28,7 @@ Read this before authoring any new mechanic, Ability, Feat, or Quirk. When a new
 - **Ladders:** a new Ability reaches for a standard ladder first. Authoring a new ladder requires a stated reason the existing ones can't serve — similar-but-different ladders are how systems rot.
 - **Cards:** if another Ability Category already has a fitting card, reuse it verbatim (shared const), as Chaplain reuses the Soldier's Arms. Don't author near-duplicates.
 - **Vocabulary:** Feats, Quirks, and Abilities share one effect vocabulary. New effect types need the same justification as new ladders.
+- **Enforced by lint:** `app/src/lib/rails.test.ts` fails when two ladders have the same rungs but are not the same ladder. A shared const, a memoized factory (`campTargets('Wis')`), and a named alias (`{ name: 'Stupor', ...DAZE_EFFECTS }`) all count as the same ladder; a retyped copy does not.
 
 ## 5. The standard ladders
 
@@ -42,6 +43,12 @@ Live in `app/src/lib/category-abilities.ts` as shared consts — import them, do
 - **Daze Ladder** (`DAZE_EFFECTS`): Dazed (no Reactions or Interrupts) → + no Minor (m) → + no Move (m) → Stunned (M) — shared by Rebuke, New Magic's Lightning & Sonic effects, and the Stupor Malediction
 - **Fear Ladder** (`FEAR_EFFECTS`): −1 to its attacks → + can't close (m) → + can't attack you (m) → flees until it Saves (M) — shared by Fly the Wicked and the Dread Malediction
 - **Sensory / Light & Darkness ladder**: 7 rungs, bands of reach (mundane ±1, magic ±2, world ±3)
+- **Standard Burst Range** (`STD_BURST_RANGE`): 30' (5' burst) / 45' (10') / 60' (15') / 120' (20') — reach and radius growing together, every step a Major
+- **Standard Scene Duration** (`STD_SCENE_DURATION`): 1 minute / 5 (m) / 10 (m) / 1 hour (M) — for what lasts a scene rather than a fight
+- **Standard Few Targets** (`STD_FEW_TARGETS`): One / Two (m) / Three (m) / all in a 10' radius (M)
+- **Bleed Ladder** (`BLEED_EFFECTS`): None / Bleed 1 (M) / Bleed 2 (M) — bought onto a strike that already hits hard, so every step is a Major
+
+**Frequency** and **Action** are token ladders, and their repeated shapes are named consts too — `FREQ_FULL`, `FREQ_ENC`, `FREQ_2ENC`, `FREQ_DAILY`, `FREQ_PASSIVE`, `ACTION_STANDARD`, `ACTION_SMM`, and the rest. The header of `category-abilities.ts` lists each with its rungs. Author from the const; only a genuinely one-off cost is written inline.
 
 (When a new ladder earns its place, add it to this list.)
 
@@ -51,6 +58,13 @@ Live in `app/src/lib/category-abilities.ts` as shared consts — import them, do
 - Class HP is bought **once per level** (refreshes at the next level's first milestone).
 - Abilities cost 1 Major each; Feats cost 1 Minor each; everyone is on the same triangular 1/3/6/10/15 advance curve.
 - These caps do the pacing work — 4-Rank ladders self-pace and rarely need a Level gate.
+
+**Two dials, two prices.** Making an Ability cheaper to use is not one thing:
+
+- **In-turn Action cost** — Full Round → Standard → Move → Minor → Free. Every step down buys combat power, and prices as a **Major**. Frequency climbs the same way (Daily → Encounter → Twice per Encounter → At-Will): a Major a step.
+- **Out-of-turn time** — hours of study, hours brewing, a ritual's span. Every step down buys only convenience, and prices as a **Minor**.
+
+**The utility mercy.** A card with no attack and no combat effect — a Utility card — may price its Frequency and in-turn Action steps one rung cheaper. It is buying convenience on a card that was never going to win a fight. *Recall* and *The Old Custom* are the standing cases. Enforced by lint: a cheap step on a non-Utility card fails.
 
 ## 7. Benchmarks
 

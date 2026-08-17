@@ -40,12 +40,18 @@ export interface AbilityRef {
  * is Stored inside an owned Container (the Container's Access to retrieve,
  * coefficient math applies). Home is off the body and weightless.
  *
+ * Nearby is the other off-body state, and the difference from Home is time,
+ * not distance: Home is a campaign state, reached between sessions; Nearby is
+ * a scene state — the chest in the room, the barrel on the cart, the
+ * saddlebags on the mule — reached this session by walking over. Both weigh
+ * nothing and neither touches the Equipped Limit.
+ *
  * Old records may carry retired values — 'carried' and 'held' both read as
  * 'equipped'. Held was cut deliberately: what is in your hands is a moment,
  * not a state, and a printed sheet cannot hold a moment. A VTT layer should
  * track it as runtime state, never as sheet data. The Party Inventory joins
  * with campaigns. */
-export type ItemLocation = 'worn' | 'equipped' | 'home' | `in:${string}`;
+export type ItemLocation = 'worn' | 'equipped' | 'nearby' | 'home' | `in:${string}`;
 
 /** Where an item sits in the sheet's own ordering — beside a named
  * neighbour. The inventory's order is the player's arrangement (backpack

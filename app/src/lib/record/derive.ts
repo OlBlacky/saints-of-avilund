@@ -237,7 +237,8 @@ function loadFor(state: CharacterState): DerivedLoad {
     // full, so the tag only spends itself on the body.
     if (item.location === 'worn' && item.itemId && carriesNoLoad(item.itemId)) continue;
     // Walk the container chain: contents multiply by each encloser's
-    // coefficient; anything resting at Home (at any depth) is off the body.
+    // coefficient; anything rooted off the body (at any depth) — at Home or
+    // Nearby — is not being carried, so it does not weigh.
     let factor = 1;
     let loc: string = item.location;
     let excluded = false;
@@ -247,7 +248,7 @@ function loadFor(state: CharacterState): DerivedLoad {
       factor *= (holder.itemId && containerCoefficient(holder.itemId)) || 1;
       loc = holder.location;
     }
-    if (excluded || loc === 'home') continue;
+    if (excluded || loc === 'home' || loc === 'nearby') continue;
     const lb = qualityWeightLb(item.itemId ? itemWeightLb(item.itemId) ?? 0 : 0, item.qualities);
     total += lb * item.qty * factor;
   }

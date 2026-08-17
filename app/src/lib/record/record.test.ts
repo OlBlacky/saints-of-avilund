@@ -1088,23 +1088,25 @@ describe('enforcement', () => {
     expect(granted.state.abilities).toContainEqual({ ref, ranks: {} });
 
     // The card advances on the ordinary machinery: one Minor + one Major
-    // per Level, Ranks in order.
+    // per Level, Ranks in order. Effects Rank 1 is the Minor; Frequency
+    // (Daily → Encounter) is the Major.
     const advanced = replay([
       ...base,
       ev('feat-bought', { featId: 'second-wind' }),
-      ev('ability-advanced', { ref, variable: 'action', toRank: 1 }),
+      ev('ability-advanced', { ref, variable: 'effects', toRank: 1 }),
       ev('ability-advanced', { ref, variable: 'frequency', toRank: 1 }),
     ]);
     expect(advanced.flags).toEqual([]);
     const owned = advanced.state.abilities.find((a) => a.ref.ability === 'Second Wind')!;
-    expect(owned.ranks).toEqual({ action: 1, frequency: 1 });
+    expect(owned.ranks).toEqual({ effects: 1, frequency: 1 });
 
-    // A second Minor advance in the same Level refuses.
+    // A second Major advance in the same Level refuses. Both the Action step
+    // (Move → Minor) and the Frequency step price as Majors, per Rail 6.
     const tooFast = replay([
       ...base,
       ev('feat-bought', { featId: 'second-wind' }),
       ev('ability-advanced', { ref, variable: 'action', toRank: 1 }),
-      ev('ability-advanced', { ref, variable: 'effects', toRank: 1 }),
+      ev('ability-advanced', { ref, variable: 'frequency', toRank: 1 }),
     ]);
     expect(tooFast.flags.some((f) => f.code === 'ladder-pace')).toBe(true);
   });

@@ -89,10 +89,18 @@ function normalizeLocation(location: ItemLocation | 'carried' | 'held', itemId?:
   // action for that is its Access.
   if (
     loc === 'equipped' &&
-    (ARMOURS.some((a) => a.id === itemId) || containerCoefficient(itemId) !== undefined)
+    (ARMOURS.some((a) => a.id === itemId) ||
+      (containerCoefficient(itemId) !== undefined && isWearable(itemId)))
   ) return 'worn';
   // A shield rides on the arm at the ready, and feeds AC and DR from there.
   if (loc === 'worn' && SHIELDS.some((s) => s.id === itemId)) return 'equipped';
+  // A bulk vessel is neither Worn nor Equipped: a barrel rides on the cart, not
+  // on anybody. It falls back to Nearby — still in the scene, just not on you.
+  if (
+    (loc === 'worn' || loc === 'equipped') &&
+    containerCoefficient(itemId) !== undefined &&
+    !isWearable(itemId)
+  ) return 'nearby';
   // Anything Worn without the tag falls back to Equipped.
   if (loc === 'worn' && !isWearable(itemId)) return 'equipped';
   return loc;
