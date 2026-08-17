@@ -13,7 +13,10 @@
 // after Chaffer percentages — rounds to the nearest cp, in
 // buyPriceCp/sellPriceCp. Nothing displays a Market line raw.
 
-import { ARMOURS, CATALOGUE, MELEE_WEAPONS, RANGED_WEAPONS, type Cp } from './equipment';
+import {
+  ARMOURS, CATALOGUE, MELEE_WEAPONS, RANGED_WEAPONS, REGIONAL_ONLY_IDS, SHIELDS,
+  type Cp,
+} from './equipment';
 
 export type MarketAccess =
   | { kind: 'open' }
@@ -106,17 +109,6 @@ const IMPERIAL_SQUARE_IDS = new Set([
   ...CATALOGUE.filter((e) => e.section === 'Faith & Superstition').map((e) => e.id),
   'clerics-vestments',
   'friars-kit',
-]);
-
-/** Regional-market exclusives: catalogued items that only their home
- * market sells (mechanics/markets.md) — every Masterwork variant, the
- * Fletchercraft sheaves, the fancy rations. Not on the Waldheim shelves. */
-const REGIONAL_ONLY_IDS = new Set([
-  'war-quiver', 'moorish-pasty', 'knights-stew',
-  'mw-quiver', 'st-dunstans-corytos',
-  'bodkin-arrows', 'needle-bodkin-arrows', 'broadhead-arrows', 'forge-broadhead-arrows',
-  'flight-arrows', 'swan-flight-arrows', 'flaming-arrows', 'cage-flaming-arrows',
-  ...[...MELEE_WEAPONS, ...RANGED_WEAPONS, ...ARMOURS].filter((i) => i.masterwork).map((i) => i.id),
 ]);
 
 const stocked = CATALOGUE.filter(
@@ -261,9 +253,11 @@ export const MARKETS: Market[] = [
     marketType: 'Masterwork Leather Market',
     access: { kind: 'origin', places: ['Mantlethorn'] },
     // Mantlethorn Leather — the Masterwork armour base grade — and the
-    // stew. Quality menus arrive with commissioning.
+    // stew. Quality menus arrive with commissioning. Selected by home
+    // market, not by `masterwork` alone: the Plattnerhalle's plate is
+    // masterwork armour too, and must not reach these shelves.
     sells: [
-      ...ARMOURS.filter((a) => a.masterwork)
+      ...ARMOURS.filter((a) => a.homeMarketId === 'mantlethorn-castle')
         .map((a) => ({ itemId: a.id, priceCp: a.priceCp })),
       { itemId: 'knights-stew', priceCp: 4 },
     ],
@@ -281,6 +275,31 @@ export const MARKETS: Market[] = [
     // menus arrive with commissioning.
     sells: MELEE_WEAPONS.filter((w) => w.masterwork)
       .map((w) => ({ itemId: w.id, priceCp: w.priceCp! })),
+    buys: [],
+    purseCp: null,
+  },
+  {
+    id: 'plattnerhalle',
+    name: 'The Plattnerhalle',
+    location: 'St. Aquila',
+    marketType: 'Masterwork Plate Market',
+    access: { kind: 'origin', places: ['Isenveld'] },
+    // The plate-armourers' hall of the Isenveld capital, working the steel
+    // of the Peakes of St. Sebald. Its trade is plate — Breastplate and
+    // Full Plate, cut by material and not by armour tier — and the buckler,
+    // the small steel shield of the same bench. Standard stock at 75% of
+    // list (the St. Dunstan's Magazine pattern at a gentler rate); the
+    // masterwork grades at list + surcharge. Quality menus to author.
+    sells: [
+      ...CATALOGUE.filter((e) =>
+        ['breastplate', 'full-plate', 'buckler'].includes(e.id),
+      ).map((e) => ({ itemId: e.id, priceCp: Math.round(e.priceCp! * 0.75) })),
+      ...[...ARMOURS, ...SHIELDS]
+        .filter((i) => i.homeMarketId === 'plattnerhalle')
+        .map((i) => ({ itemId: i.id, priceCp: i.priceCp })),
+      { itemId: 'sailors-feast', priceCp: 4 },
+      { itemId: 'salted-cod', priceCp: 2 },
+    ],
     buys: [],
     purseCp: null,
   },

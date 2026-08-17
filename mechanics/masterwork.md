@@ -19,18 +19,18 @@ A Masterwork weapon may be given a name by its owner, at purchase or at any time
 
 | Item | Base benefit | Days | Surcharge |
 |---|---|---|---|
-| Shield | −5 lb | 5 | 50 sp |
+| Shield | **+1 DR** while raised | 5 | 50 sp |
 | Tools | +1 to its checks | 10 | 100 sp |
 | Weapon | +1 attack | 20 | 200 sp |
 | Armour | **+1 AC** | 30 | 300 sp |
 
-Armour's old benefit (−10 lb, one drawback eased) is replaced: worn armour carries no Load, so weight had no game effect. The surcharge is still the master's wage (10 sp/day) × the days — derived, not picked.
+Armour's old benefit (−10 lb, one drawback eased) is replaced: worn armour carries no Load, so weight had no game effect. **The Shield line went the same way on Aug 16 2026** — its old −5 lb could not be taken off a 3 lb Buckler at all — and is now **+1 DR while raised**, counted with the shield's own DR. The 5 days · 50 sp were not re-derived when the benefit changed; **that price is open** (+1 attack costs 200 sp, +1 AC costs 300 sp). The surcharge is still the master's wage (10 sp/day) × the days — derived, not picked.
 
 ## Qualities
 
 - A Quality attaches **only to a Masterwork item**, bought at the item's home market at purchase or retrofitted later.
 - **Maximum 2 Qualities per item** — flat, universal, every category. Each Quality once per item.
-- Each home market offers a menu of **4 Qualities per item**: **two good** (10 days · 100 sp) and **two great** (20 days · 200 sp). Priced as wage × days, like the base.
+- Each home market offers a menu of **4 Qualities per item**: **two good** (10 days · 100 sp) and **two great** (20 days · 200 sp). Priced as wage × days, like the base. *(Exception: the Buckler's menu is two, one of each, and they exclude each other — see below.)*
 - The two greats may be **mutually exclusive** where the craft demands it (you can't boil and layer the same hide) — then the top build is base + one great + one good.
 - Menus hold the category's character; the base grade is uniform. Prefer conditional effects over flat numbers for greats (design-principles §2).
 
@@ -48,6 +48,50 @@ Covers Leather, Studded Leather, and Hide. Sold at **Mantlethorn Castle Market**
 
 - Hide swaps Fur Lined for Grim Trophy — hide is already fur. First case of a Quality slot varying by item within a category.
 - DR never stacks; use the better line.
+
+## Plate Armour — St. Aquila, Isenveld *(scope settled Aug 16 2026; menu to author)*
+
+Covers **Breastplate** and **Full Plate** — the two solid-plate armours, and only those. The cut is by **material, not tier**: Breastplate is Medium and Full Plate is Heavy, but both are beaten plate, and plate is what Isenveld makes. The mails (Chain Shirt, Scale / Ring, Chain Mail, Splint / Banded) are a separate craft and await a separate region.
+
+Sold at **The Plattnerhalle — St. Aquila — Masterwork Plate Market** (see [markets.md](markets.md)), the plate-armourers' hall of the Isenveld capital, whose steel comes off the north face of the **Peakes of St. Sebald**. Named good: **[[add text]]**.
+
+The **Buckler** is sold here too, and its Masterwork grade with it — a buckler is a small steel shield off the same bench. It sells the standard Breastplate, Full Plate, and Buckler at **75% of list** besides.
+
+Base grades: armour **+1 AC, 30 days, 300 sp**; the buckler on the shield line, **+1 DR, 5 days, 50 sp**.
+
+### The plate menu
+
+One menu covering both plates. Prices are the standard shape and await the end-of-project pass.
+
+| Name | Quality | Days | Cost | Notes |
+|---|---|---|---|---|
+| Deflective Design | The **first Critical Hit against you each encounter** is a normal hit instead | 10 | 100 sp | Rounded surfaces, fluting, glancing ridges |
+| Tailored and Articulated | Eases the armour's drawbacks: **5' of Speed** and **1 point of Stealth** given back | 10 | 100 sp | |
+| Case Hardened | **+1 DR** | 20 | 200 sp | |
+| Besagews, Gorgets & Goussets | An attack whose maximum damage cannot beat your DR deals **no damage at all**, not 1 | 20 | 200 sp | |
+
+- **No exclusions**: any two combine, under the usual 2-per-item cap.
+- **An ease is a refund, never a bonus.** Tailored and Articulated gives back what the armour took and stops at zero — on a **Breastplate**, whose Speed penalty is already 0, only the Stealth point is worth anything. The Quality is therefore worth much more on Full Plate than on a Breastplate, which is as it should be: the heavier the harness, the more the articulation buys.
+- **Besagews answers the floor in [core-mechanics.md](core-mechanics.md)** — "if you deal maximum damage and the target's DR is still higher than that maximum, you deal 1 damage." Against this harness, that attack deals nothing.
+- The two greats **compound on purpose**: Case Hardened raises the bar that damage must clear, and Besagews takes the last point off everything that fails to clear it. Full Plate with both sits at **DR 4** and takes nothing from anything that cannot beat it.
+- Case Hardened's **+1 DR is a modifier on the armour's own DR**, not one of the typed DR lines — the "DR never stacks, use the better line" rule governs Boiled Leather against Layered, not this.
+
+### The Buckler menu — two Qualities, take one
+
+The first menu that breaks the universal shape (Les, Aug 16 2026). A shield is a simple thing and there are not four ways to better one, so the menu holds **two** where every other holds four, and the pair **exclude each other**: a Masterwork Buckler carries **one** Quality, not the usual two.
+
+Base grade **50 sp · 5 days**, and the menu is priced at **half** the standard good and great — a buckler is a small piece and the work is short. The days follow the price down, so the surcharge is still the master's wage × the days.
+
+| Name | Quality | Days | Cost | Notes |
+|---|---|---|---|---|
+| Bossed | The buckler bashes for **1d4** in place of 1d3 | 5 | 50 sp | Can't be taken with Enarmed |
+| Enarmed | Reduce the action to **Raise a Shield by one step** | 10 | 100 sp | Can't be taken with Bossed |
+
+A finished Masterwork Buckler therefore costs **5 sp + 50 sp + 50 or 100 sp** — 105 sp Bossed, 155 sp Enarmed.
+
+- The step runs down the closed Action ladder of [action-and-frequency.md](action-and-frequency.md): **Standard → Move → Minor → Free**, and it stops at Free.
+- It therefore stacks with the **Raise Shield** Ability rather than replacing it. Anyone proficient raises a shield as a Standard Action ([armour.md](armour.md)); Enarmed alone makes that a Move. A Vanguard whose Raise Shield already sits at Minor gets it Free.
+- **This menu is the Buckler's alone.** The larger shields are expected to carry traits of their own rather than share this bench; nothing here fits them.
 
 ## Bows — The Long Butts, Bynithbrack Water
 
@@ -114,12 +158,15 @@ One menu covering the **Heavy Blades** and **Light Blades** groups. Sold at **Th
 
 ## In the builder (Aug 16 2026)
 
-Fully live: the **base grades as purchasable items** at their home markets (list + surcharge, the +1 in the Attacks table / AC arithmetic), the Fletchercraft sheaves, the quivers — and **commissioning**: on the sheet's gear page, standing at the home market in Downtime, a Masterwork item offers its Quality menu (prices and days shown; cap, exclusions, and coin engine-enforced), retrofit included. "Ready" on the sheet means Equipped: the readiness Initiative bonuses count while the weapon is Equipped. Flat Qualities join the arithmetic; conditional ones print as situational lines. Masterwork weapons take an owner's name (the ✎ on the gear row), renameable anytime — the name leads, the canon item in the parenthetical.
+Fully live: the **base grades as purchasable items** at their home markets (list + surcharge, the +1 in the Attacks table / AC arithmetic), the Fletchercraft sheaves, the quivers — and **commissioning**: on the sheet's gear page, standing at the home market in Downtime, a Masterwork item offers its Quality menu (prices and days shown; cap, exclusions, and coin engine-enforced), retrofit included. "Ready" on the sheet means Equipped: the readiness Initiative bonuses count while the weapon is Equipped. Flat Qualities join the arithmetic; conditional ones print as situational lines. A range Quality scales every increment: the Weapons table lists the bands the bow actually shoots, and the situational line states them rather than the percentage. Masterwork weapons take an owner's name (the ✎ on the gear row), renameable anytime — the name leads, the canon item in the parenthetical.
 
 **Not yet built:** the Cory's bow-slot rules (Minor-Action draw is card text, not machinery) and the ammunition families' per-arrow arithmetic.
 
 ## Still to author
 
 - Remaining weapon menus, shield and tool menus, the other armour categories and their home markets.
+- **Plate** (The Plattnerhalle, St. Aquila): the **named good** — the regional name the plate carries, as Mantlethorn Leather and Temper Quenched do. Both Quality menus are done.
+- **The larger shields** (Standard, Heater / Kite / Round, Tower): their own traits, and whichever market makes them.
+- **The Shield surcharge** stands at 50 sp · 5 days (confirmed Aug 16 2026 for the +1 DR benefit). Every other price is being settled in one pass at the end. Mail has no region yet.
 - The **Bleed** Condition (Conditions roster).
 - Terminology sweep: older mechanics docs still say "Reflex" — canonical is **Dex Defence / Dex Save**.

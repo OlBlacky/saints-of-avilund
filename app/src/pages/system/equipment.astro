@@ -4,37 +4,45 @@ import { url } from '../../lib/url';
 import SystemNav from '../../components/SystemNav.astro';
 import {
   ACCESS_LABEL,
-  AMMUNITION,
-  ARMOURS,
   ARMOUR_TIER_AC,
   containerAccess,
-  CAMP_AND_TRAIL,
-  CLOTHING,
-  CONTAINERS,
-  FAITH_AND_SUPERSTITION,
-  FOOD_AND_DRINK,
-  HIRE,
-  KITS,
-  LIGHT_AND_FIRE,
-  LODGING,
   MASTERWORK,
-  MELEE_WEAPONS,
-  MOUNTS_AND_VEHICLES,
-  PASSAGE,
-  RANGED_WEAPONS,
-  ROPE_IRON_CLIMBING,
-  SHIELDS,
-  TOOLS_AND_IMPLEMENTS,
+  standardStock,
   WEAPON_GROUPS,
   WEAPON_PROPERTIES,
   fmtPrice,
   fmtWeight,
 } from '../../lib/equipment';
+import * as CATALOGUE from '../../lib/equipment';
 import type { SimpleItem } from '../../lib/equipment';
 
 // Equipment reference — a hand-built route (stub: false in system.ts).
 // The tables render from lib/equipment.ts (the single source of truth the
 // Markets/shop machinery also reads); the prose between them is authored here.
+//
+// This page prints the STANDARD catalogue only. Regional Market exclusives —
+// the Masterwork variants, the Fletchercraft sheaves and quivers, the regional
+// dishes — are found at their home markets in play, not read off the price
+// list. Every list is filtered, so a regional good added to any of them later
+// stays off this page without anyone remembering to come back here.
+const AMMUNITION = standardStock(CATALOGUE.AMMUNITION);
+const ARMOURS = standardStock(CATALOGUE.ARMOURS);
+const CAMP_AND_TRAIL = standardStock(CATALOGUE.CAMP_AND_TRAIL);
+const CLOTHING = standardStock(CATALOGUE.CLOTHING);
+const CONTAINERS = standardStock(CATALOGUE.CONTAINERS);
+const FAITH_AND_SUPERSTITION = standardStock(CATALOGUE.FAITH_AND_SUPERSTITION);
+const FOOD_AND_DRINK = standardStock(CATALOGUE.FOOD_AND_DRINK);
+const HIRE = standardStock(CATALOGUE.HIRE);
+const KITS = standardStock(CATALOGUE.KITS);
+const LIGHT_AND_FIRE = standardStock(CATALOGUE.LIGHT_AND_FIRE);
+const LODGING = standardStock(CATALOGUE.LODGING);
+const MELEE_WEAPONS = standardStock(CATALOGUE.MELEE_WEAPONS);
+const MOUNTS_AND_VEHICLES = standardStock(CATALOGUE.MOUNTS_AND_VEHICLES);
+const PASSAGE = standardStock(CATALOGUE.PASSAGE);
+const RANGED_WEAPONS = standardStock(CATALOGUE.RANGED_WEAPONS);
+const ROPE_IRON_CLIMBING = standardStock(CATALOGUE.ROPE_IRON_CLIMBING);
+const SHIELDS = standardStock(CATALOGUE.SHIELDS);
+const TOOLS_AND_IMPLEMENTS = standardStock(CATALOGUE.TOOLS_AND_IMPLEMENTS);
 
 const armCount = MELEE_WEAPONS.length + RANGED_WEAPONS.length;
 
@@ -152,8 +160,8 @@ const priceWithUnit = (i: SimpleItem) => (i.unit ? `${price(i)} ${i.unit}` : pri
         Your <strong>AC</strong> is your Armoured Constitution Defence — the number most physical
         attacks must beat. Armour's bonus is flat <strong>by tier</strong>: Light <strong>+1</strong>,
         Medium <strong>+2</strong>, Heavy <strong>+3</strong> to your Armoured Defences.
-        <em>Within</em> a tier, the heavier pieces buy more <strong>DR</strong> (and a small Trait on
-        the third) at the price of weight, coin, and drawback.
+        <em>Within</em> a tier, the heavier pieces buy more <strong>DR</strong> — and sometimes a small
+        Trait — at the price of weight, coin, and drawback.
       </p>
 
       <h3>Armour</h3>
@@ -187,7 +195,7 @@ const priceWithUnit = (i: SimpleItem) => (i.unit ? `${price(i)} ${i.unit}` : pri
       <ul>
         <li><strong>Light</strong> armour carries <strong>no penalties</strong> at all.</li>
         <li><strong>Medium</strong> armour takes <strong>−1 Stealth</strong> — the <strong>Breastplate</strong> keeps the Stealth penalty but loses the Speed penalty (its <strong>Mobility</strong>).</li>
-        <li><strong>Heavy</strong> armour takes <strong>−10' Speed and −2 Stealth</strong>, and needs the listed <strong>Strength</strong>. Masterwork armour and Armour Specialization Feats can ease these drawbacks.</li>
+        <li><strong>Heavy</strong> armour takes <strong>−2 Stealth</strong> and needs the listed <strong>Strength</strong> — <strong>−10' Speed</strong>, but <strong>Chain Mail</strong> bends enough to cost only <strong>−5'</strong>. Masterwork armour and Armour Specialization Feats can ease these drawbacks.</li>
       </ul>
 
       <h3>Shields</h3>
@@ -261,7 +269,7 @@ const priceWithUnit = (i: SimpleItem) => (i.unit ? `${price(i)} ${i.unit}` : pri
         <li>The surcharge is <strong>added to the base price</strong>. A masterwork Longsword is 15 + 200 = <strong>215 sp</strong>.</li>
         <li>A weapon's <strong>+1 stacks with your Proficiency</strong> — a master at +2 wielding a masterwork blade attacks at <strong>+3</strong>.</li>
         <li>Tools likewise <strong>stack past a Skill's training cap</strong>. Fine instruments let a man punch above his training.</li>
-        <li><strong>Light armour</strong> has no drawbacks to ease, so it gains only the weight. No armour drops below <strong>5 lb</strong>.</li>
+        <li>Armour's <strong>+1 AC</strong> likewise stacks past the <strong>+2</strong> Armour Proficiency cap.</li>
         <li>The surcharge is the master's time at his own wage <em>(8–10 sp a day — see the <a href="#wealth">Wealth</a> fold)</em>. In a village there is no one to ask.</li>
       </ul>
     </details>

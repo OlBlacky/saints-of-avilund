@@ -76,12 +76,13 @@ describe('the catalogue lift preserves the page counts', () => {
     expect(RANGED_WEAPONS.filter((w) => w.masterwork)).toHaveLength(2); // the bows
     expect(AMMUNITION).toHaveLength(12);
     expect(ARMOURS.filter((a) => !a.masterwork)).toHaveLength(9);
-    expect(ARMOURS.filter((a) => a.masterwork)).toHaveLength(3); // the leathers
-    expect(SHIELDS).toHaveLength(4);
+    expect(ARMOURS.filter((a) => a.masterwork)).toHaveLength(5); // 3 leathers + 2 plate
+    expect(SHIELDS.filter((s) => !s.masterwork)).toHaveLength(4);
+    expect(SHIELDS.filter((s) => s.masterwork)).toHaveLength(1); // the buckler
     expect(MASTERWORK).toHaveLength(4);
     expect(CONTAINERS).toHaveLength(20);
     expect(LIGHT_AND_FIRE).toHaveLength(7);
-    expect(CAMP_AND_TRAIL).toHaveLength(11);
+    expect(CAMP_AND_TRAIL).toHaveLength(13); // 9 standard + 4 regional rations
     expect(ROPE_IRON_CLIMBING).toHaveLength(13);
     expect(TOOLS_AND_IMPLEMENTS).toHaveLength(22);
     expect(CLOTHING).toHaveLength(11);
@@ -98,8 +99,11 @@ describe('the catalogue lift preserves the page counts', () => {
 
 describe('shields carry an attack profile', () => {
   it('the Buckler bashes for 1d3, every other shield for 1d4', () => {
-    expect(SHIELDS.find((s) => s.id === 'buckler')?.damage).toBe('1d3');
-    for (const s of SHIELDS.filter((s) => s.id !== 'buckler')) {
+    // The Masterwork Buckler is a buckler: it bashes for the same 1d3.
+    for (const id of ['buckler', 'mw-buckler']) {
+      expect(SHIELDS.find((s) => s.id === id)?.damage, id).toBe('1d3');
+    }
+    for (const s of SHIELDS.filter((s) => !s.id.endsWith('buckler'))) {
       expect(s.damage, s.name).toBe('1d4');
     }
     expect(SHIELDS.every((s) => s.type === 'Blunt')).toBe(true);
@@ -158,7 +162,7 @@ describe('catalogue integrity', () => {
     expect(fmtPrice(longsword.priceCp)).toBe('15 sp');
     expect(longsword.properties).toContain('Versatile (1d10)');
     const plate = ARMOURS.find((a) => a.id === 'full-plate')!;
-    expect(fmtPrice(plate.priceCp)).toBe('1,500 sp');
+    expect(fmtPrice(plate.priceCp)).toBe('750 sp');
     const musket = RANGED_WEAPONS.find((w) => w.id === 'musket')!;
     expect(fmtPrice(musket.priceCp)).toBe('200 sp');
     expect(musket.range).toBe('80/160/240');

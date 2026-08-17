@@ -374,6 +374,10 @@ export const CAMP_AND_TRAIL: SimpleItem[] = [
   // Fancy trail rations (mechanics/markets.md). Home-market stock only.
   { id: 'moorish-pasty', name: 'Moorish Pasty (one day)', priceCp: 4, weightLb: 1, note: '1 Temp HP until your next full rest.' },
   { id: 'knights-stew', name: "Knights' Stew (one day)", priceCp: 4, weightLb: 1, note: '1 Temp HP until your next full rest.' },
+  { id: 'sailors-feast', name: "Sailor's Feast (one day)", priceCp: 4, weightLb: 1, note: '1 Temp HP until your next full rest.' },
+  // The Plattnerhalle's plain ration: St. Aquila is a fishing city, and cod
+  // is the cheapest day's food in Avilund — trail rations at 5 cp are dearer.
+  { id: 'salted-cod', name: 'Salted Cod (one day)', priceCp: 2, weightLb: 1 },
   { id: 'fishing-tackle', name: 'Fishing tackle', priceCp: 10, weightLb: 2 },
   { id: 'fishing-net', name: 'Fishing net', priceCp: 40, weightLb: 5 },
   { id: 'tent-one-man', name: 'Tent, one man', priceCp: 80, weightLb: 20 },
@@ -505,6 +509,11 @@ export interface Armour {
   acBonus?: number;
   /** A Masterwork variant — sold only at its home market. */
   masterwork?: true;
+  /** The Market id that alone stocks this variant. Markets select their
+   * masterwork by this field, never by tier or name: two armour markets
+   * exist (Mantlethorn's leather, the Plattnerhalle's plate) and a bare
+   * `masterwork` filter would put each one's goods on the other's shelves. */
+  homeMarketId?: string;
   /** Plain rules text stated at the point of use — the shop line and the
    * gear row both print it. */
   note?: string;
@@ -517,9 +526,12 @@ export const ARMOURS: Armour[] = [
   { id: 'chain-shirt', name: 'Chain Shirt', tier: 'Medium', dr: 1, trait: null, speedPenaltyFt: 5, stealthPenalty: 1, strReq: null, priceCp: 500, weightLb: 25 },
   { id: 'scale-ring-mail', name: 'Scale / Ring Mail', tier: 'Medium', dr: 2, trait: null, speedPenaltyFt: 5, stealthPenalty: 1, strReq: null, priceCp: 1000, weightLb: 30 },
   { id: 'breastplate', name: 'Breastplate', tier: 'Medium', dr: 2, trait: 'Mobility', speedPenaltyFt: 0, stealthPenalty: 1, strReq: null, priceCp: 2000, weightLb: 20 },
-  { id: 'chain-mail', name: 'Chain Mail', tier: 'Heavy', dr: 2, trait: null, speedPenaltyFt: 10, stealthPenalty: 2, strReq: 1, priceCp: 1500, weightLb: 40 },
-  { id: 'splint-banded-mail', name: 'Splint / Banded Mail', tier: 'Heavy', dr: 3, trait: null, speedPenaltyFt: 10, stealthPenalty: 2, strReq: 2, priceCp: 2000, weightLb: 45 },
-  { id: 'full-plate', name: 'Full Plate', tier: 'Heavy', dr: 3, drNote: '4 vs Area-Effect', trait: 'sealed vs blasts', speedPenaltyFt: 10, stealthPenalty: 2, strReq: 2, priceCp: 15000, weightLb: 50 },
+  // Heavy runs a clean DR 1 / 2 / 3, so Full Plate owns the top of the ladder
+  // alone. Chain Mail pays for that with the least stopping power and buys
+  // back half the Speed penalty — mail bends where plate does not.
+  { id: 'chain-mail', name: 'Chain Mail', tier: 'Heavy', dr: 1, trait: null, speedPenaltyFt: 5, stealthPenalty: 2, strReq: 1, priceCp: 1500, weightLb: 40 },
+  { id: 'splint-banded-mail', name: 'Splint / Banded Mail', tier: 'Heavy', dr: 2, trait: null, speedPenaltyFt: 10, stealthPenalty: 2, strReq: 1, priceCp: 2000, weightLb: 45 },
+  { id: 'full-plate', name: 'Full Plate', tier: 'Heavy', dr: 3, trait: null, speedPenaltyFt: 10, stealthPenalty: 2, strReq: 2, priceCp: 7500, weightLb: 50 },
 ];
 
 // Mantlethorn Leather — the Masterwork armour base grade as items, named
@@ -532,6 +544,24 @@ ARMOURS.push(
     .map((a): Armour => ({
       ...a, id: `mw-${a.id}`, name: `Mantlethorn ${a.name}`,
       priceCp: a.priceCp + 3000, acBonus: 1, masterwork: true,
+      homeMarketId: 'mantlethorn-castle',
+      note: 'Masterwork: +1 AC.',
+    })),
+);
+
+// The Plattnerhalle's plate — Breastplate and Full Plate, the two solid-plate
+// armours (mechanics/masterwork.md, Plate Armour). The cut is by material,
+// not by armour tier: Breastplate is Medium and Full Plate is Heavy, and the
+// mails belong to a craft with no home market yet. Same 300 sp armour
+// surcharge, same +1 AC. The regional name is unauthored, so these carry the
+// plain "Masterwork [item]" until it lands.
+ARMOURS.push(
+  ...ARMOURS
+    .filter((a) => ['breastplate', 'full-plate'].includes(a.id))
+    .map((a): Armour => ({
+      ...a, id: `mw-${a.id}`, name: `Masterwork ${a.name}`,
+      priceCp: a.priceCp + 3000, acBonus: 1, masterwork: true,
+      homeMarketId: 'plattnerhalle',
       note: 'Masterwork: +1 AC.',
     })),
 );
@@ -548,6 +578,16 @@ export interface Shield {
   speedPenaltyFt: number;
   priceCp: Cp;
   weightLb: number;
+  /** The Masterwork base grade's +1 DR (mechanics/masterwork.md), counted
+   * with the shield's own DR while it is raised. Mirrors Armour.acBonus:
+   * the bonus is held apart from the base so the sheet can name its source. */
+  drBonus?: number;
+  /** A Masterwork variant — sold only at its home market. */
+  masterwork?: true;
+  /** The Market id that alone stocks this variant (see Armour.homeMarketId). */
+  homeMarketId?: string;
+  /** Plain rules text stated at the point of use. */
+  note?: string;
 }
 
 export const SHIELDS: Shield[] = [
@@ -556,6 +596,46 @@ export const SHIELDS: Shield[] = [
   { id: 'heater-kite-round', name: 'Heater / Kite / Round', proficiency: 'Heavy Shield', ac: 2, dr: 1, damage: '1d4', type: 'Blunt', speedPenaltyFt: 5, priceCp: 300, weightLb: 12 },
   { id: 'tower-shield', name: 'Tower Shield', proficiency: 'Heavy Shield', ac: 2, dr: 2, damage: '1d4', type: 'Blunt', speedPenaltyFt: 10, priceCp: 600, weightLb: 25 },
 ];
+
+// The Plattnerhalle's buckler. The Masterwork shield base grade is +1 DR
+// (settled Aug 16 2026, replacing the old −5 lb, which a 3 lb buckler could
+// not take): the plate city beats a small steel shield that turns a blow as
+// well as catching it. A raised Masterwork Buckler carries DR 1 where the
+// standard one carries none. Regional name unauthored.
+SHIELDS.push(
+  ...SHIELDS
+    .filter((s) => s.id === 'buckler')
+    .map((s): Shield => ({
+      ...s, id: `mw-${s.id}`, name: `Masterwork ${s.name}`,
+      priceCp: s.priceCp + 500, drBonus: 1, masterwork: true,
+      homeMarketId: 'plattnerhalle',
+      note: 'Masterwork: +1 DR while raised.',
+    })),
+);
+
+/** Regional Market exclusives: catalogued goods that only their home market
+ * sells (mechanics/markets.md) — every Masterwork variant, the Dunstanmoore
+ * Fletchercraft sheaves and quivers, the regional dishes. They are in the
+ * catalogue so the shop, Load, and the Attacks table can treat them as the
+ * items they are, but they are not standard stock: the Waldheim Market does
+ * not shelve them, and the Equipment reference does not print them.
+ *
+ * Declared after every masterwork push above — it reads those arrays at
+ * module load, so anything pushed later would silently miss the set. */
+export const REGIONAL_ONLY_IDS: ReadonlySet<string> = new Set([
+  'war-quiver', 'moorish-pasty', 'knights-stew', 'sailors-feast', 'salted-cod',
+  'mw-quiver', 'st-dunstans-corytos',
+  'bodkin-arrows', 'needle-bodkin-arrows', 'broadhead-arrows', 'forge-broadhead-arrows',
+  'flight-arrows', 'swan-flight-arrows', 'flaming-arrows', 'cage-flaming-arrows',
+  ...[...MELEE_WEAPONS, ...RANGED_WEAPONS, ...ARMOURS, ...SHIELDS]
+    .filter((i) => i.masterwork).map((i) => i.id),
+]);
+
+/** The standard catalogue's view of a list: everything but the Regional
+ * Market exclusives. */
+export function standardStock<T extends { id: string }>(items: readonly T[]): T[] {
+  return items.filter((i) => !REGIONAL_ONLY_IDS.has(i.id));
+}
 
 // ── Masterwork ───────────────────────────────────────────────────
 
@@ -568,10 +648,10 @@ export interface MasterworkGrade {
 }
 
 export const MASTERWORK: MasterworkGrade[] = [
-  { id: 'mw-shield', item: 'Shield', benefit: '−5 lb', surchargeCp: 500, days: 5 },
+  { id: 'mw-shield', item: 'Shield', benefit: '+1 DR', surchargeCp: 500, days: 5 },
   { id: 'mw-tools', item: 'Tools', benefit: '+1 to checks made with them', surchargeCp: 1000, days: 10 },
   { id: 'mw-weapon', item: 'Weapon', benefit: '+1 to attack', surchargeCp: 2000, days: 20 },
-  { id: 'mw-armour', item: 'Armour', benefit: "−10 lb, and one drawback eased (Stealth by 1, or Speed by 5')", surchargeCp: 3000, days: 30 },
+  { id: 'mw-armour', item: 'Armour', benefit: '+1 AC', surchargeCp: 3000, days: 30 },
 ];
 
 // ── Lodging, travel & hire ───────────────────────────────────────

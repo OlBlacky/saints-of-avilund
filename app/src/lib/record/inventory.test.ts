@@ -5,7 +5,7 @@
 // the Chaffer Ladder's percentages.
 
 import { describe, expect, it } from 'vitest';
-import { ARMOURS, MELEE_WEAPONS, itemNote } from '../equipment';
+import { ARMOURS, MELEE_WEAPONS, SHIELDS, itemNote } from '../equipment';
 import { GEAR, STARTING_COIN } from '../gear';
 import {
   MARKETS,
@@ -18,7 +18,7 @@ import {
   marketById,
   sellPriceCp,
 } from '../markets';
-import { qualityWeightLb } from '../masterwork';
+import { qualitiesFor, qualityById, qualityDamage, qualityRange, qualityWeightLb } from '../masterwork';
 import type { RecordEvent } from './events';
 import { derive } from './derive';
 import { replay } from './replay';
@@ -64,7 +64,7 @@ describe('the Markets roster', () => {
       'waldheim', 'imperial-square', 'anselms-buttery', 'ignatius-archive',
       'theobalds-row', 'astronomers', 'green-market', 'blacks-road',
       'dunstans-magazine', 'ulrics-exchange', 'long-butts',
-      'mantlethorn-castle', 'forge-monastery',
+      'mantlethorn-castle', 'forge-monastery', 'plattnerhalle',
     ]);
   });
 
@@ -152,13 +152,40 @@ describe('the Markets roster', () => {
     expect(buyPriceCp(forge, 'mw-rapier')).toBe(1850);
     expect(buyPriceCp(forge, 'mw-longbow')).toBeUndefined(); // blades only
 
+    const halle = marketById('plattnerhalle')!;
+    // Standard plate and the buckler at 75% of list.
+    expect(buyPriceCp(halle, 'breastplate')).toBe(1500); // 200 sp → 150
+    expect(buyPriceCp(halle, 'full-plate')).toBe(5625); // 750 sp → 562.5
+    expect(buyPriceCp(halle, 'buckler')).toBe(38); // 5 sp → 3.75, rounded
+    // The masterwork grades at list + surcharge, undiscounted.
+    expect(buyPriceCp(halle, 'mw-breastplate')).toBe(5000); // 200 + 300 sp
+    expect(buyPriceCp(halle, 'mw-full-plate')).toBe(10500); // 750 + 300 sp
+    expect(buyPriceCp(halle, 'mw-buckler')).toBe(550); // 5 + 50 sp
+    // Plate is cut by material, not by tier: the mails are not its trade.
+    for (const id of ['mw-chain-mail', 'mw-splint-banded-mail', 'mw-chain-shirt']) {
+      expect(buyPriceCp(halle, id), id).toBeUndefined();
+    }
+
+    // The two armour markets do not stock each other's goods.
+    for (const id of ['mw-breastplate', 'mw-full-plate', 'mw-buckler']) {
+      expect(castle.sells.some((l) => l.itemId === id), id).toBe(false);
+    }
+    for (const id of ['mw-leather', 'mw-studded-leather', 'mw-hide']) {
+      expect(halle.sells.some((l) => l.itemId === id), id).toBe(false);
+    }
+
     // None of it on the Waldheim shelves.
-    for (const id of ['mw-longbow', 'mw-longsword', 'mw-leather', 'bodkin-arrows', 'knights-stew']) {
+    for (const id of [
+      'mw-longbow', 'mw-longsword', 'mw-leather', 'bodkin-arrows', 'knights-stew',
+      'mw-breastplate', 'mw-full-plate', 'mw-buckler',
+    ]) {
       expect(WALDHEIM_MARKET.sells.some((l) => l.itemId === id), id).toBe(false);
     }
     // The variants carry their +1 in the data the sheet reads.
     expect(MELEE_WEAPONS.find((w) => w.id === 'mw-longsword')!.attackBonus).toBe(1);
     expect(ARMOURS.find((a) => a.id === 'mw-leather')!.acBonus).toBe(1);
+    expect(ARMOURS.find((a) => a.id === 'mw-full-plate')!.acBonus).toBe(1);
+    expect(SHIELDS.find((s) => s.id === 'mw-buckler')!.drBonus).toBe(1);
   });
 
   it('every special item states its rules where it is used', () => {
@@ -256,7 +283,8 @@ describe('Masterwork Qualities and named weapons', () => {
     expect(dex.save.parts.some((p) => p.label === 'Layered' && p.value === 1)).toBe(true);
     expect(dex.armouredDefence.parts.some((p) => p.label === 'Layered')).toBe(true);
     expect(dex.armouredDefence.parts.some((p) => p.label === 'Masterwork' && p.value === 1)).toBe(true);
-    expect(sheet.situational.some((s) => s.text.includes('+100% Range Increments'))).toBe(true);
+    // Longbow 100/200/300 doubled by the Composite Heartwood Belly.
+    expect(sheet.situational.some((s) => s.text === 'Range 200/400/600')).toBe(true);
     expect(sheet.situational.some((s) => s.source === 'Layered' && s.text.includes('Area Effects'))).toBe(true);
   });
 
@@ -286,6 +314,96 @@ describe('Masterwork Qualities and named weapons', () => {
     expect(qualityWeightLb(itemWeightLb('mw-leather')!, ['fur-lined']))
       .toBe(itemWeightLb('mw-leather')! + 2);
     expect(derive(state).load.totalLb).toBe(bare);
+  });
+
+  it('the plate menu: an easing Quality refunds a drawback but never past zero', () => {
+    expect(qualitiesFor('mw-full-plate').map((q) => q.id).sort()).toEqual(
+      ['besagews', 'case-hardened', 'deflective-design', 'tailored-articulated'],
+    );
+    // The same menu serves both plates; nothing else sees it.
+    expect(qualitiesFor('mw-breastplate').map((q) => q.id).sort())
+      .toEqual(qualitiesFor('mw-full-plate').map((q) => q.id).sort());
+    expect(qualitiesFor('mw-leather').map((q) => q.id)).not.toContain('case-hardened');
+
+    // Full Plate: Speed −10 and Stealth −2, both eased by the articulation,
+    // and Case Hardened adds its point to the armour's own DR.
+    const plate = ev('item-granted', { itemId: 'mw-full-plate', qty: 1 });
+    const { state } = replay([...crystallized(badGear, 'Isenveld'), plate]);
+    const inst = state.inventory.find((i) => i.instanceId === plate.id)!;
+    inst.location = 'worn';
+    inst.qualities = ['tailored-articulated', 'case-hardened'];
+    const sheet = derive(state);
+    expect(sheet.speed.total).toBe(25); // 30 − 10 + 5
+    expect(sheet.damageReduction.total).toBe(4); // Full Plate 3 + 1
+    expect(sheet.skills.find((s) => s.skill === 'Stealth')!.value.parts
+      .some((p) => p.label === 'Tailored and Articulated' && p.value === 1)).toBe(true);
+
+    // Breastplate has no Speed penalty to give back, so the refund is 0 —
+    // articulation never makes armour faster than going without.
+    const bp = ev('item-granted', { itemId: 'mw-breastplate', qty: 1 });
+    const two = replay([...crystallized(badGear, 'Isenveld'), bp]);
+    const bpInst = two.state.inventory.find((i) => i.instanceId === bp.id)!;
+    bpInst.location = 'worn';
+    bpInst.qualities = ['tailored-articulated'];
+    expect(derive(two.state).speed.total).toBe(30);
+
+    // The conditional pair state their rules rather than joining the sums.
+    bpInst.qualities = ['deflective-design', 'besagews'];
+    const said = derive(two.state).situational.map((s) => s.source);
+    expect(said).toContain('Deflective Design');
+    expect(said).toContain('Besagews, Gorgets & Goussets');
+  });
+
+  it('the Buckler menu is two Qualities, and you take one of them', () => {
+    // A shield is a simple thing: two options, not the usual four, and the
+    // pair exclude each other (Les, Aug 16 2026).
+    const menu = qualitiesFor('mw-buckler');
+    expect(menu.map((q) => q.id).sort()).toEqual(['bossed', 'enarmed']);
+    expect(menu.every((q) => q.marketId === 'plattnerhalle')).toBe(true);
+    expect(qualityById('bossed')!.excludes).toEqual(['enarmed']);
+    expect(qualityById('enarmed')!.excludes).toEqual(['bossed']);
+    // Half the standard good/great, and the days follow the price down so
+    // the surcharge stays the master's wage (10 sp/day) × the days.
+    for (const q of menu) expect(q.priceCp, q.name).toBe(q.days * 100);
+    expect(qualityById('bossed')!.priceCp).toBe(500); // 50 sp · 5 days
+    expect(qualityById('enarmed')!.priceCp).toBe(1000); // 100 sp · 10 days
+    // The menu is the Buckler's alone — the larger shields get their own.
+    for (const id of ['buckler', 'standard-shield', 'tower-shield', 'mw-full-plate']) {
+      expect(qualitiesFor(id).map((q) => q.id), id).not.toContain('bossed');
+    }
+    // Bossed re-cuts the die the Attacks table prints; Enarmed does not.
+    expect(qualityDamage('1d3', ['bossed'])).toBe('1d4');
+    expect(qualityDamage('1d3', ['enarmed'])).toBe('1d3');
+    expect(qualityDamage('1d3', [])).toBe('1d3');
+
+    // Enarmed states its rule on the sheet — one step, not a number, because
+    // where the step lands depends on the character's own Raise Shield.
+    const buckler = ev('item-granted', { itemId: 'mw-buckler', qty: 1 });
+    const { state } = replay([...crystallized(badGear, 'Isenveld'), buckler]);
+    const inst = state.inventory.find((i) => i.instanceId === buckler.id)!;
+    inst.location = 'equipped';
+    inst.qualities = ['enarmed'];
+    const sheet = derive(state);
+    expect(sheet.situational.some((s) => s.source === 'Enarmed')).toBe(true);
+    // And the Masterwork buckler's +1 DR reaches the raised line.
+    expect(sheet.situational.some((s) => s.text.includes('DR 1'))).toBe(true);
+  });
+
+  it('a range Quality scales every increment, and prints the bands it buys', () => {
+    // Longbow 100/200/300 (mechanics/masterwork.md, Bows).
+    expect(qualityRange('100/200/300', ['heartwood-belly'])).toBe('150/300/450');
+    expect(qualityRange('100/200/300', ['composite-heartwood-belly'])).toBe('200/400/600');
+    // A Quality with nothing to say about range leaves the bands alone, and
+    // a melee-only weapon has no bands to scale.
+    expect(qualityRange('100/200/300', ['silken-bowstring'])).toBe('100/200/300');
+    expect(qualityRange(null, ['composite-heartwood-belly'])).toBeNull();
+
+    const bow = ev('item-granted', { itemId: 'mw-longbow', qty: 1 });
+    const { state } = replay([...crystallized(badGear, 'Dunstanmoore'), bow]);
+    const inst = state.inventory.find((i) => i.instanceId === bow.id)!;
+    inst.location = 'equipped';
+    inst.qualities = ['heartwood-belly'];
+    expect(derive(state).situational).toContainEqual({ source: inst.name, text: 'Range 150/300/450' });
   });
 
   it('Qualities commission with the purchase itself, priced into the trip', () => {
@@ -877,9 +995,10 @@ describe('worn gear feeds the sheet', () => {
     const con = sheet.attributes.find((a) => a.attr === 'Constitution')!;
     expect(con.armouredDefence.parts).toContainEqual({ label: 'Chain Mail', value: 3 });
     expect(con.unarmouredDefence.parts.some((p) => p.label === 'Chain Mail')).toBe(false);
-    expect(sheet.damageReduction.parts).toContainEqual({ label: 'Chain Mail', value: 2 });
-    // Speed: −10' armour, −5' heavy shield (its weight-and-Speed is passive).
-    expect(sheet.speed.total).toBe(15);
+    expect(sheet.damageReduction.parts).toContainEqual({ label: 'Chain Mail', value: 1 });
+    // Speed: −5' armour (Chain Mail bends), −5' heavy shield (its
+    // weight-and-Speed is passive).
+    expect(sheet.speed.total).toBe(20);
     const stealth = sheet.skills.find((s) => s.skill === 'Stealth')!;
     expect(stealth.value.parts).toContainEqual({ label: 'Chain Mail', value: -2 });
     // The shield's AC and DR bind only while raised — situational, never summed.

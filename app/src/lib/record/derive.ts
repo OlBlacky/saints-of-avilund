@@ -11,6 +11,8 @@ import { classById } from '../classes';
 import {
   ARMOURS,
   ARMOUR_TIER_AC,
+  MELEE_WEAPONS,
+  RANGED_WEAPONS,
   SHIELDS,
   carriesNoLoad,
   containerCoefficient,
@@ -21,7 +23,7 @@ import type { AccessRung } from '../equipment';
 import { DEFAULT_LANGUAGE } from '../languages';
 import { STARTING_COIN, gearById } from '../gear';
 import { itemWeightLb } from '../markets';
-import { qualityWeightLb } from '../masterwork';
+import { qualityEase, qualityRange, qualityWeightLb } from '../masterwork';
 import { ATTR_FULL, parseAttr } from '../notation';
 import type { Attribute, Condition, Effect } from '../quirks';
 import {
@@ -381,10 +383,12 @@ export function derive(state: CharacterState): DerivedSheet {
   const wornArmour = wornArmourItem
     ? ARMOURS.find((a) => a.id === wornArmourItem.itemId)
     : undefined;
-  const borneShield = state.inventory
+  const borneShieldItem = state.inventory
     .filter((i) => i.location === 'equipped')
-    .map((i) => SHIELDS.find((s) => s.id === i.itemId))
-    .find(Boolean);
+    .find((i) => SHIELDS.some((s) => s.id === i.itemId));
+  const borneShield = borneShieldItem
+    ? SHIELDS.find((s) => s.id === borneShieldItem.itemId)
+    : undefined;
 
   // Masterwork Qualities (mechanics/masterwork.md): the worn armour's, and
   // those of Equipped ("ready") weapons. Flat ones join the sums below;
@@ -452,11 +456,23 @@ export function derive(state: CharacterState): DerivedSheet {
     ...steadyParts((e) => e.kind === 'maxHpMod'),
   ]);
 
+  // An easing Quality gives back what the armour took, and no more: it can
+  // never carry a drawback past zero into a bonus.
+  const speedEase = Math.min(
+    qualityEase(wornArmourItem?.qualities, 'speedEaseFt'),
+    wornArmour?.speedPenaltyFt ?? 0,
+  );
+  const stealthEase = Math.min(
+    qualityEase(wornArmourItem?.qualities, 'stealthEase'),
+    wornArmour?.stealthPenalty ?? 0,
+  );
+
   const speed = sum([
     { label: 'Base', value: 30 },
     ...(wornArmour?.speedPenaltyFt
       ? [{ label: wornArmour.name, value: -wornArmour.speedPenaltyFt }]
       : []),
+    ...(speedEase ? [{ label: 'Tailored and Articulated', value: speedEase }] : []),
     ...(borneShield?.speedPenaltyFt
       ? [{ label: borneShield.name, value: -borneShield.speedPenaltyFt }]
       : []),
@@ -465,15 +481,37 @@ export function derive(state: CharacterState): DerivedSheet {
   const damageReduction = sum([
     ...steadyParts((e) => e.kind === 'drMod'),
     ...(wornArmour?.dr ? [{ label: wornArmour.name, value: wornArmour.dr }] : []),
+    ...(armourHas('case-hardened') ? [{ label: 'Case Hardened', value: 1 }] : []),
   ]);
   if (borneShield) {
+    // A Masterwork shield's +1 DR is carried apart from the base so the
+    // item can name its source; the raised line prints the total.
+    const shieldDr = borneShield.dr + (borneShield.drBonus ?? 0);
     situational.push({
       source: borneShield.name,
-      text: `+${borneShield.ac} AC${borneShield.dr ? ` · DR ${borneShield.dr}` : ''} while raised`,
+      text: `+${borneShield.ac} AC${shieldDr ? ` · DR ${shieldDr}` : ''} while raised`,
+    });
+  }
+
+  // Enarmed cannot be summed: how far one step falls depends on where the
+  // character's own Raise Shield sits on the ladder, so the sheet states the
+  // rule and the player counts the step.
+  if (borneShieldItem?.qualities?.includes('enarmed')) {
+    situational.push({
+      source: 'Enarmed',
+      text: 'Raise a Shield costs one step less: Standard → Move → Minor → Free',
     });
   }
 
   // Conditional Qualities print beside the other situational lines.
+  if (armourHas('deflective-design')) situational.push({
+    source: 'Deflective Design',
+    text: 'The first Critical Hit against you each encounter is a normal hit instead',
+  });
+  if (armourHas('besagews')) situational.push({
+    source: 'Besagews, Gorgets & Goussets',
+    text: 'An attack whose maximum damage cannot beat your DR deals no damage at all, not 1',
+  });
   if (armourHas('fur-lined')) situational.push({ source: 'Fur Lined', text: 'Resist Cold 1' });
   if (armourHas('boiled-leather')) situational.push({ source: 'Boiled Leather', text: '+1 DR vs. Slashing and Piercing' });
   if (armourHas('layered')) situational.push({ source: 'Layered', text: '+1 DR vs. Area Effects' });
@@ -484,8 +522,15 @@ export function derive(state: CharacterState): DerivedSheet {
   };
   weaponLine('needle-point', 'Ignores 1 DR');
   weaponLine('patterned-steel', 'Critical on 19, 20 — a natural 19 crits only if the attack hits');
-  weaponLine('heartwood-belly', '+50% Range Increments');
-  weaponLine('composite-heartwood-belly', '+100% Range Increments');
+  // A range Quality states the bands it buys, not the percentage: the sheet
+  // prints what you shoot.
+  for (const inst of state.inventory.filter((i) => i.location === 'equipped' && i.qualities?.length)) {
+    const w = [...MELEE_WEAPONS, ...RANGED_WEAPONS].find((x) => x.id === inst.itemId);
+    const worked = qualityRange(w?.range ?? null, inst.qualities);
+    if (w?.range && worked && worked !== w.range) {
+      situational.push({ source: inst.customName ?? inst.name, text: `Range ${worked}` });
+    }
+  }
 
   // Initiative = Dex or Wis, whichever is bigger, + modifiers (ruled Aug 2026).
   // A readiness Quality (Silken Bowstring, Fuller / Balanced) counts while
@@ -567,6 +612,9 @@ export function derive(state: CharacterState): DerivedSheet {
       ...steadyParts((e) => e.kind === 'skillMod' && e.skill === skill),
       ...(skill === 'Stealth' && wornArmour?.stealthPenalty
         ? [{ label: wornArmour.name, value: -wornArmour.stealthPenalty }]
+        : []),
+      ...(skill === 'Stealth' && stealthEase
+        ? [{ label: 'Tailored and Articulated', value: stealthEase }]
         : []),
       ...(skill === 'Stealth' && armourHas('blackened')
         ? [{ label: 'Blackened', value: 1 }]

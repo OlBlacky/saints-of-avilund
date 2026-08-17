@@ -86,6 +86,20 @@ The fifth Regional Market (settled Aug 15 2026). The **Port of St. Sever** has b
 - **Catalogue:** any Masterwork blade (Heavy Blades and Light Blades groups) — the named good is **Temper Quenched [weapon]**, at 20% off the standard Masterwork weapon price, with the Quality menu per [masterwork.md](masterwork.md).
 - **[[add text]]** — the signature ration (Fancy Trail Ration template: 4 cp, 1 lb, 1 Temp HP until next full rest).
 
+### The Plattnerhalle — St. Aquila — Masterwork Plate Market
+
+The sixth Regional Market (location, specialty, and name settled Aug 16 2026; catalogue still to author). The **Plattnerhalle** is the plate-armourers' hall of St. Aquila — *plattner*, a maker of plate, in the Veldish of the Republic. **Isenveld makes the best steel in Avilund.** The mining towns on the north face of the **Peakes of St. Sebald** — the range that walls the Republic of Waldheim off from Isenveld — have worked that ore since before there were records, and the armourers of the capital work it into plate.
+
+**The City of St. Aquila** is Isenveld's capital and one of the older cities of the Centre, standing where the **River Isen** carries **Lake Isen** down to the **Melancholic Sea**. It built boats once and fishes now, but it still holds the continent's last working sea-trade route: the **Strait of Aquila**, the sheltered water between the city and **St. Barnabas**, the Waldheim Republic's port on the far side. The shipwright's saint keeps the far bank; Isenveld gave that trade up and took the forge instead.
+
+- **Open to:** Isenveld natives.
+- **Specialty: plate, not the Heavy tier.** The market sells Masterwork **Breastplate** and **Full Plate** only — the two solid-plate armours, one Medium and one Heavy. The mails (Chain Shirt, Scale / Ring, Chain Mail, Splint / Banded) are a different trade and belong to a later region. The cut follows the material, not the armour tier.
+- **Standard stock at 25% off:** Breastplate, Full Plate, and the Buckler sell here at **75% of list** (the St. Dunstan's Magazine pattern at a gentler rate). The city makes them; the city undersells on them.
+- **Catalogue:** the Masterwork base grades — **Breastplate**, **Full Plate**, and the **Buckler** — at list + surcharge, with both Quality menus authored in [masterwork.md](masterwork.md). Still open: the **named good** (the Mantlethorn Leather / Temper Quenched pattern: a regional name leading, the canon item in the parenthetical). The market name is settled; the goods' name is not.
+- **The Buckler is here because the bench is the same.** A buckler is a small steel shield, beaten by the men who beat the plate. It also forced the **Masterwork shield base grade** to be re-ruled from −5 lb to **+1 DR** (a 3 lb buckler cannot lose five pounds) — see [masterwork.md](masterwork.md).
+- **Sailor's Feast** — salted cod, salted butter, and Isen Valley cheese, a semi-hard milk-cheese in orange beeswax that keeps well. Trail Ration (one day), **4 cp**, 1 lb. **1 Temp HP** until your next full rest.
+- **Salted Cod** — a preserved ration at **2 cp/day**, 1 lb, no Temp HP. St. Aquila has cod in quantity, and this is the cheapest day's food in Avilund: the standard trail ration costs 5 cp. First Regional Market to sell a *plain* ration alongside its fancy one.
+
 ### Every region gets one (standing intent)
 
 Every state/region of Avilund should eventually carry its own Regional Market — which means deciding what each place **specializes in** (production or trade access) and locking that into the lore. Tracked in the Scriptorium to-do (`design-notes-and-to-do-2026.md`).

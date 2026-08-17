@@ -40,7 +40,7 @@ import { featById, hookMatchesGroup, specializationFor, unlockedHooks } from '..
 import { LANGUAGES } from '../../lib/languages';
 import type { Language } from '../../lib/languages';
 import { bestSell, itemName, itemWeightLb, marketById, marketOpen } from '../../lib/markets';
-import { MAX_QUALITIES, isMasterworkWeapon, isMasterworkItem, qualitiesFor, qualityById, qualityWeightLb, type Quality } from '../../lib/masterwork';
+import { MAX_QUALITIES, isMasterworkWeapon, isMasterworkItem, qualitiesFor, qualityById, qualityDamage, qualityRange, qualityWeightLb, type Quality } from '../../lib/masterwork';
 import { addToDamage, DAMAGE_TYPES, parseAttr } from '../../lib/notation';
 import { keywordsFor } from '../../lib/traditions';
 import { PLACES, homeLanguageFor } from '../../lib/places';
@@ -1015,9 +1015,9 @@ export default function CharacterSheet({ identity, setIdentity, status, setStatu
                 <div class="sheet-vital">
                   <span class="sheet-vital-num">{sheet.damageReduction.total}</span>
                   <span class="sheet-vital-label">DR</span>
-                  {borneShield && borneShield.dr > 0 && (
+                  {borneShield && borneShield.dr + (borneShield.drBonus ?? 0) > 0 && (
                     <span class="sheet-vital-alt">
-                      {sheet.damageReduction.total + borneShield.dr} with shield
+                      {sheet.damageReduction.total + borneShield.dr + (borneShield.drBonus ?? 0)} with shield
                     </span>
                   )}
                 </div>
@@ -1504,7 +1504,7 @@ export default function CharacterSheet({ identity, setIdentity, status, setStatu
             toHit: offenceOf('Strength') + (p ?? -1),
             toHitParts: toHitPartsFor('Strength', sh.proficiency),
             vs: 'vs AC',
-            damage: sh.damage,
+            damage: qualityDamage(sh.damage, item.qualities),
             dmgParts: [],
           });
         }
@@ -1537,7 +1537,7 @@ export default function CharacterSheet({ identity, setIdentity, status, setStatu
                 toHit: offenceOf(attrFull),
                 toHitParts: toHitPartsFor(attrFull),
                 vs: vsDef ? `vs ${vsDef}` : '',
-                damage: dmgFor(dmgText, sh.damage),
+                damage: dmgFor(dmgText, qualityDamage(sh.damage, item.qualities)),
                 dmgParts: dmgPartsFor(dmgText),
               });
             }
@@ -1986,7 +1986,7 @@ export default function CharacterSheet({ identity, setIdentity, status, setStatu
                       {nameCell(i, 'weapons', 0, itemAside(i))}
                       <td>{w.group}</td>
                       <td>{w.damage} {w.type}{w.hands === '2H' ? ' · 2H' : ''}</td>
-                      <td>{w.range ?? '—'}</td>
+                      <td>{qualityRange(w.range, i.qualities) ?? '—'}</td>
                       <td>{w.properties.length ? w.properties.join(', ') : '—'}</td>
                       <td class="num">{rowWeight(i)}</td>
                       <td>{moveControl(i)}</td>
@@ -2030,7 +2030,7 @@ export default function CharacterSheet({ identity, setIdentity, status, setStatu
                     <tr key={i.instanceId} {...rowProps(i, 'wearables')}>
                       {nameCell(i, 'wearables', 0, itemAside(i))}
                       <td>+{(a ? ARMOUR_TIER_AC[a.tier] : s!.ac) + (a?.acBonus ?? 0)}</td>
-                      <td>{a ? (a.drNote ? `${a.dr} (${a.drNote})` : a.dr) : s!.dr || '—'}</td>
+                      <td>{a ? (a.drNote ? `${a.dr} (${a.drNote})` : a.dr) : (s!.dr + (s!.drBonus ?? 0)) || '—'}</td>
                       <td>{drawbacks}</td>
                       <td class="num">{rowWeight(i)}</td>
                       <td>{moveControl(i)}</td>
