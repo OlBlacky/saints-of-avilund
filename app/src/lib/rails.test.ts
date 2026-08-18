@@ -17,6 +17,7 @@ import { describe, expect, it } from 'vitest';
 import type { Ability, NamedLadder, Variable } from './abilities';
 import { CATEGORIES } from './category-abilities';
 import { CLASSES } from './classes';
+import { COMPANION_TYPES } from './companions';
 import { TRADITIONS } from './traditions';
 
 // ── Walking the corpus ──────────────────────────────────────────────────────
@@ -85,7 +86,7 @@ describe('Rail 1 — small numbers', () => {
 // Bonuses above +3 on a single card, reviewed and allowed. Each needs a reason.
 const CEILING_EXCEPTIONS = new Map<string, string>([
   ['Husbandry · Shepherd’s Dog · Attack', 'a Companion stat block, not the character sheet — the dog has its own numbers'],
-  ['Husbandry · Shepherd’s Dog · Tricks', 'a count of tricks known, not a roll modifier'],
+  ['Husbandry · Shepherd’s Dog · Orders', 'a count of Orders known, not a roll modifier'],
   ['Assassination · Garrote · effects', 'the +10 is a Save DC (Offence + 10), not a bonus to a roll'],
 ]);
 
@@ -394,6 +395,16 @@ describe('Structure', () => {
         .map((f) => `${homeCategory} · ${card.name}: no ${f}`),
     );
     expect(missing).toEqual([]);
+  });
+
+  it('every Companion card declares a Type, and only Companion cards do', () => {
+    const undeclared = CARDS.filter(({ card }) => card.role === 'Companion' && !card.companionType)
+      .map(({ card, homeCategory }) => `${homeCategory} · ${card.name}: no companionType`);
+    const orphan = CARDS.filter(({ card }) => card.companionType && card.role !== 'Companion')
+      .map(({ card, homeCategory }) => `${homeCategory} · ${card.name}: a Type without the Companion role`);
+    const unknown = CARDS.filter(({ card }) => card.companionType && !COMPANION_TYPES[card.companionType])
+      .map(({ card, homeCategory }) => `${homeCategory} · ${card.name}: unknown Type`);
+    expect([...undeclared, ...orphan, ...unknown]).toEqual([]);
   });
 
   it('every card states a Frequency', () => {

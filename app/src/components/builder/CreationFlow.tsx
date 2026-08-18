@@ -27,6 +27,7 @@ import {
   classById,
 } from '../../lib/classes';
 import type { ClassDef, SubclassDef } from '../../lib/classes';
+import { hasOwnLevel } from '../../lib/companions';
 import { LANGUAGES } from '../../lib/languages';
 import { FEATS } from '../../lib/feats';
 import { VOW_OF_POVERTY_GEAR, rollPackage } from '../../lib/gear';
@@ -459,7 +460,7 @@ export default function CreationFlow() {
     // (hideCosts), base-priced hook sets (baseCost), and a Companion's stat
     // Ladders (the Companion box owns those) are not buyable here.
     const namedLadders =
-      card.role === 'Companion'
+      hasOwnLevel(card.companionType)
         ? []
         : [
             ...(card.extraVars ?? []),

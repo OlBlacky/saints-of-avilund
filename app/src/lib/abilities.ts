@@ -102,12 +102,16 @@ export interface AbilityOption {
 }
 
 import type { Effect } from './quirks';
+import type { CompanionType } from './companions';
 
 export interface Ability {
   name: string;
   category: string;
   role?: string;          // Offensive / Defensive / Buff / …
   mode?: string;          // Attack / Effect
+  // Every card with the Companion role declares its Type, and the Type sets
+  // the five dials in companions.ts (mechanics/companions.md).
+  companionType?: CompanionType;
   vars: Partial<Record<VarKey, Variable>>;
   // Spell-builder chassis: the card comes with a default name (the Ability
   // name), which the player may rename, and may be bought more than once —

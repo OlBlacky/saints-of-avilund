@@ -53,9 +53,9 @@ Covers Leather, Studded Leather, and Hide. Sold at **Mantlethorn Castle Market**
 
 Covers **Breastplate** and **Full Plate** — the two solid-plate armours, and only those. The cut is by **material, not tier**: Breastplate is Medium and Full Plate is Heavy, but both are beaten plate, and plate is what Isenveld makes. The mails (Chain Shirt, Scale / Ring, Chain Mail, Splint / Banded) are a separate craft and await a separate region.
 
-Sold at **The Plattnerhalle — St. Aquila — Masterwork Plate Market** (see [markets.md](markets.md)), the plate-armourers' hall of the Isenveld capital, whose steel comes off the north face of the **Peakes of St. Sebald**. Named good: **[[add text]]**.
+Sold at **The Plattnerhalle — St. Aquila — Masterwork Plate Market** (see [markets.md](markets.md)), the plate-armourers' hall of the Isenveld capital, whose steel comes off the north face of the **Peakes of St. Sebald**. Named goods: the **Plattnerhalle Breastplate** and **Plattnerhalle Full Plate** (settled Aug 18 2026).
 
-The **Buckler** is sold here too, and its Masterwork grade with it — a buckler is a small steel shield off the same bench. It sells the standard Breastplate, Full Plate, and Buckler at **75% of list** besides.
+The **Buckler** is sold here too, and its Masterwork grade with it — a buckler is a small steel shield off the same bench — sold under the regional name **Plattnerhalle Buckler** (settled Aug 18 2026). It sells the standard Breastplate, Full Plate, and Buckler at **75% of list** besides.
 
 Base grades: armour **+1 AC, 30 days, 300 sp**; the buckler on the shield line, **+1 DR, 5 days, 50 sp**.
 
@@ -78,7 +78,7 @@ One menu covering both plates. Prices are the standard shape and await the end-o
 
 ### The Buckler menu — two Qualities, take one
 
-The first menu that breaks the universal shape (Les, Aug 16 2026). A shield is a simple thing and there are not four ways to better one, so the menu holds **two** where every other holds four, and the pair **exclude each other**: a Masterwork Buckler carries **one** Quality, not the usual two.
+The first menu that breaks the universal shape (Les, Aug 16 2026). A shield is a simple thing and there are not four ways to better one, so the menu holds **two** where every other holds four, and the pair **exclude each other**: a **Plattnerhalle Buckler** carries **one** Quality, not the usual two.
 
 Base grade **50 sp · 5 days**, and the menu is priced at **half** the standard good and great — a buckler is a small piece and the work is short. The days follow the price down, so the surcharge is still the master's wage × the days.
 
@@ -87,7 +87,7 @@ Base grade **50 sp · 5 days**, and the menu is priced at **half** the standard 
 | Bossed | The buckler bashes for **1d4** in place of 1d3 | 5 | 50 sp | Can't be taken with Enarmed |
 | Enarmed | Reduce the action to **Raise a Shield by one step** | 10 | 100 sp | Can't be taken with Bossed |
 
-A finished Masterwork Buckler therefore costs **5 sp + 50 sp + 50 or 100 sp** — 105 sp Bossed, 155 sp Enarmed.
+A finished Plattnerhalle Buckler therefore costs **5 sp + 50 sp + 50 or 100 sp** — 105 sp Bossed, 155 sp Enarmed.
 
 - The step runs down the closed Action ladder of [action-and-frequency.md](action-and-frequency.md): **Standard → Move → Minor → Free**, and it stops at Free.
 - It therefore stacks with the **Raise Shield** Ability rather than replacing it. Anyone proficient raises a shield as a Standard Action ([armour.md](armour.md)); Enarmed alone makes that a Move. A Vanguard whose Raise Shield already sits at Minor gets it Free.

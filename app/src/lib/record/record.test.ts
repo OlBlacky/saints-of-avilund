@@ -684,6 +684,76 @@ describe('enforcement', () => {
     expect(grown.state.bank.minor).toBe(15);
   });
 
+  it('a Companion’s death refunds the owner’s Advances, never the beast’s own', () => {
+    const ref = { category: 'Husbandry', ability: 'Shepherd’s Dog' };
+    const base = [
+      ev('class-chosen', { classId: 'naturalist' }),
+      ev('subclass-chosen', { subclassId: 'shepherd' }),
+      ev('ability-bought', { ref }),
+    ];
+
+    // The owner invested a Minor; it comes back and the card stands empty.
+    const lost = replay([
+      ...base,
+      ev('companion-advanced', { ref, ladder: 'HP', toRank: 1 }),
+      ev('companion-died', { ref, note: 'wolves' }),
+    ]);
+    expect(lost.flags).toEqual([]);
+    expect(lost.state.abilities[0].companion).toBeUndefined();
+    expect(lost.state.bank.minor).toBe(11);
+
+    // What the beast earned itself dies with it: the owner is no richer.
+    const earned = [
+      ...base,
+      ev('quirk-rolled', { quirkName: 'Q', slots: {}, rerollsUsed: 0, gearName: 'G', gearSlots: {} }),
+      ev('crystallized', {}),
+      ...Array.from({ length: 4 }, () => ev('milestone-granted', {})),
+      ev('companion-advanced', { ref, ladder: 'HP', toRank: 1 }),
+    ];
+    const buried = replay([...earned, ev('companion-died', { ref })]);
+    expect(buried.flags).toEqual([]);
+    expect(buried.state.bank.minor).toBe(15);
+
+    // The card is the bond, not the beast: a new one bonds free, at Level 0.
+    const replaced = replay([...earned, ev('companion-died', { ref }), ev('companion-bonded', { ref })]);
+    expect(replaced.flags).toEqual([]);
+    const pup = replaced.state.abilities[0];
+    expect(pup.companion?.ranks).toEqual({});
+    expect(companionLevel(replaced.state, pup)).toBe(0);
+    expect(replaced.state.bank.major).toBe(buried.state.bank.major);
+
+    // Two Companions on one card, or a death with no Companion, are refused.
+    const twice = replay([...base, ev('companion-bonded', { ref })]);
+    expect(twice.flags.some((f) => f.code === 'duplicate')).toBe(true);
+    const nothing = replay([
+      ev('class-chosen', { classId: 'naturalist' }),
+      ev('subclass-chosen', { subclassId: 'shepherd' }),
+      ev('companion-died', { ref }),
+    ]);
+    expect(nothing.flags.some((f) => f.code === 'unknown-ref')).toBe(true);
+  });
+
+  it('a Summoned Companion bonds nothing and climbs the card’s own Ladders', () => {
+    const ref = { category: 'Witchcraft', ability: 'Bind Spirit' };
+    const base = [
+      ev('class-chosen', { classId: 'occultist' }),
+      ev('subclass-chosen', { subclassId: 'witch' }),
+      ev('ability-bought', { ref }),
+    ];
+    const bound = replay(base);
+    expect(bound.flags).toEqual([]);
+    const shade = bound.state.abilities.find((a) => a.ref.ability === 'Bind Spirit')!;
+    // No Level, no bank, no death refund — its numbers belong to the card.
+    expect(shade.companion).toBeUndefined();
+
+    // And the card's Ladders are bought like any Ability's, not through the
+    // Companion economy.
+    const advanced = replay([...base, ev('ability-advanced', { ref, variable: 'effects', toRank: 1 })]);
+    expect(advanced.flags).toEqual([]);
+    const refused = replay([...base, ev('companion-bonded', { ref })]);
+    expect(refused.flags.some((f) => f.code === 'unknown-ref')).toBe(true);
+  });
+
   it('Polyglot opens on any one of Int, Wis, or Cha at +2', () => {
     const base = [
       ev('class-chosen', { classId: 'soldier' }),

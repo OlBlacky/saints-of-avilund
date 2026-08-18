@@ -49,7 +49,8 @@ import type { EventSource, RecordEvent } from '../../lib/record/events';
 import type { ItemLocation } from '../../lib/record/events';
 import { accessFor, contentsOf, descendantsOf, gearRows, isStored, locationBeside } from '../../lib/record/arrange';
 import type { Breakdown, DerivedSheet, Part } from '../../lib/record/derive';
-import { abilityKey, languageAllowance } from '../../lib/record/replay';
+import { COMPANION_TYPES, hasOwnLevel } from '../../lib/companions';
+import { abilityKey, companionBank, companionLevel, languageAllowance } from '../../lib/record/replay';
 import type { CharacterState, OwnedItem } from '../../lib/record/replay';
 import type { PlayState, VersionPayload } from '../../lib/store';
 import MarketShop, { QualityMenu, basketTotalsCp, commerceRankOf } from './MarketShop';
@@ -246,7 +247,7 @@ interface Props {
 /** The boxes each page owns, in their default order. */
 const PAGE_BOXES: Record<string, string[]> = {
   p1: ['vitals', 'details', 'attributes', 'skills', 'profs', 'feats', 'situational', 'quirks'],
-  p2: ['attacks', 'abilities'],
+  p2: ['attacks', 'abilities', 'companions'],
   p3: ['weapons', 'wearables', 'equipment', 'nearby', 'home', 'wealth', 'markets'],
 };
 
@@ -1302,6 +1303,14 @@ export default function CharacterSheet({ identity, setIdentity, status, setStatu
         const findCard = (category: string, ability: string): Ability | undefined =>
           CATEGORIES.find((c) => c.name === category)?.abilities.find((a) => a.name === ability);
 
+        // The cards that bond a Companion with a Level of its own. The
+        // Companions box owns their stat Ladders — a card whose Companion
+        // stands empty is here too, waiting to bond a new one.
+        const companionCards = state.abilities.flatMap((owned) => {
+          const card = findCard(owned.ref.category, owned.ref.ability);
+          return card && hasOwnLevel(card.companionType) ? [{ owned, card }] : [];
+        });
+
         // Until the player arranges the box themselves, the sheet sinks
         // Passives to the bottom — they are never read on your turn, so they
         // give up the top to the Abilities that are. The first card dragged
@@ -1756,9 +1765,14 @@ export default function CharacterSheet({ identity, setIdentity, status, setStatu
                       ? [[ladder.name, resolveValue(ladder, owned.ranks[ladder.name])] as const]
                       : []),
                     ['Duration', val('duration')],
-                    ...(card.extraVars ?? []).map(
-                      (l) => [l.name, resolveValue(l, owned.ranks[l.name])] as const,
-                    ),
+                    // A bonded Companion's stat Ladders climb on its own
+                    // Ranks, not the owner's, and the Companions box prints
+                    // them — printing them here would show the beast at base.
+                    ...(hasOwnLevel(card.companionType)
+                      ? []
+                      : (card.extraVars ?? []).map(
+                          (l) => [l.name, resolveValue(l, owned.ranks[l.name])] as const,
+                        )),
                     ...(specFeat ? [['Specialization', specFeat.now ?? specFeat.full] as const] : []),
                   ].filter(([, v]) => v && v !== '—') as [string, string][];
                   const keywords = keywordsFor(owned.ref.category);
@@ -1881,6 +1895,115 @@ export default function CharacterSheet({ identity, setIdentity, status, setStatu
                 })}
               </div>
             </section>
+
+            {/* Companions — the bonded ones, each a little character of its
+                own: the stat block at its bought Ranks, its Level and DC, and
+                the two events that only happen at the table. Its Ladders are
+                spent through the Advancement door, like every other purchase.
+                A summoned thing has no box: its numbers are its card's, and
+                the card prints them above. */}
+            {companionCards.length > 0 && (
+              <section class="cf-step sheet-box" style={boxStyle('p2', 'companions')} onDragOver={boxDragOver} onDrop={() => dropBox('p2', 'companions')}>
+                {grip('p2', 'companions')}
+                <h3>Companions</h3>
+                <div class="sheet-cards">
+                  {companionCards.map(({ owned, card }) => {
+                    const ref = { category: owned.ref.category, ability: owned.ref.ability };
+                    const comp = owned.companion;
+                    const level = comp ? companionLevel(state, owned) : 0;
+                    const bank = comp ? companionBank(state, owned) : { minor: 0, major: 0 };
+                    const dials = COMPANION_TYPES[card.companionType!];
+                    return (
+                      <div key={abilityKey(owned)} class="sheet-card">
+                        <p class="cf-quirk-eyebrow">
+                          {owned.ref.ability}
+                          <span class="sheet-card-freq" title={`${dials.command} ${dials.upkeep}`}>
+                            {' '}· {card.companionType}
+                          </span>
+                        </p>
+                        {comp ? (
+                          <>
+                            <h4>
+                              {/* Named on the sheet as well as in the builder:
+                                  a Companion bonded at the table is nameless
+                                  until someone names it. The event is logged
+                                  on commit, not per keystroke. */}
+                              <input
+                                class="cf-instname"
+                                value={comp.name ?? ''}
+                                placeholder="Name it"
+                                title="name this Companion"
+                                onChange={(ev2) =>
+                                  append(mk('companion-named', {
+                                    ref,
+                                    name: (ev2.target as HTMLInputElement).value,
+                                    description: comp.description ?? '',
+                                  }))}
+                              />
+                              <span class="cf-shop-src"> · Level {level} · DC {10 + level}</span>
+                            </h4>
+                            <input
+                              class="cf-compdesc"
+                              value={comp.description ?? ''}
+                              placeholder="Describe it"
+                              title="describe this Companion"
+                              onChange={(ev2) =>
+                                append(mk('companion-named', {
+                                  ref,
+                                  name: comp.name ?? '',
+                                  description: (ev2.target as HTMLInputElement).value,
+                                }))}
+                            />
+                            <table class="cf-shop-table sheet-table">
+                              <tbody>
+                                {(card.extraVars ?? []).map((l) => (
+                                  <tr key={l.name}>
+                                    <td>{l.name}</td>
+                                    <td>{resolveValue(l, comp.ranks[l.name])}</td>
+                                  </tr>
+                                ))}
+                                {(card.options ?? [])
+                                  .filter((o) => o.placement !== 'top' && o.note)
+                                  .map((o) => (
+                                    <tr key={o.label}>
+                                      <td>{o.label}</td>
+                                      <td>{o.note}</td>
+                                    </tr>
+                                  ))}
+                              </tbody>
+                            </table>
+                            <p class="sheet-record">
+                              Its own bank: {bank.minor}m · {bank.major}M
+                              <span class="cf-shop-src"> · upkeep {dials.upkeep.toLowerCase()}</span>
+                            </p>
+                            <button
+                              type="button"
+                              class="undo"
+                              title="Record its death. Your invested Advances return; its own die with it."
+                              onClick={() => {
+                                if (confirm(`Record the death of ${comp.name ?? owned.ref.ability}?`)) {
+                                  append(mk('companion-died', { ref }));
+                                }
+                              }}
+                            >
+                              It died
+                            </button>
+                          </>
+                        ) : (
+                          <>
+                            <h4>No Companion</h4>
+                            <p class="cf-how">A new one costs no Major and starts at Level 0.</p>
+                            <button type="button" class="buy" onClick={() => append(mk('companion-bonded', { ref }))}>
+                              Bond a new one
+                            </button>
+                          </>
+                        )}
+                      </div>
+                    );
+                  })}
+                </div>
+              </section>
+            )}
           </div>
         );
       })()}

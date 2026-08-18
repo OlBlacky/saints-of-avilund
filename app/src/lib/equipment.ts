@@ -553,13 +553,13 @@ ARMOURS.push(
 // armours (mechanics/masterwork.md, Plate Armour). The cut is by material,
 // not by armour tier: Breastplate is Medium and Full Plate is Heavy, and the
 // mails belong to a craft with no home market yet. Same 300 sp armour
-// surcharge, same +1 AC. The regional name is unauthored, so these carry the
-// plain "Masterwork [item]" until it lands.
+// surcharge, same +1 AC. Regional name settled Aug 18 2026: the hall's name
+// leads, as it does on the buckler.
 ARMOURS.push(
   ...ARMOURS
     .filter((a) => ['breastplate', 'full-plate'].includes(a.id))
     .map((a): Armour => ({
-      ...a, id: `mw-${a.id}`, name: `Masterwork ${a.name}`,
+      ...a, id: `mw-${a.id}`, name: `Plattnerhalle ${a.name}`,
       priceCp: a.priceCp + 3000, acBonus: 1, masterwork: true,
       homeMarketId: 'plattnerhalle',
       note: 'Masterwork: +1 AC.',
@@ -600,13 +600,13 @@ export const SHIELDS: Shield[] = [
 // The Plattnerhalle's buckler. The Masterwork shield base grade is +1 DR
 // (settled Aug 16 2026, replacing the old −5 lb, which a 3 lb buckler could
 // not take): the plate city beats a small steel shield that turns a blow as
-// well as catching it. A raised Masterwork Buckler carries DR 1 where the
-// standard one carries none. Regional name unauthored.
+// well as catching it. A raised Plattnerhalle Buckler carries DR 1 where the
+// standard one carries none. Regional name settled Aug 18 2026.
 SHIELDS.push(
   ...SHIELDS
     .filter((s) => s.id === 'buckler')
     .map((s): Shield => ({
-      ...s, id: `mw-${s.id}`, name: `Masterwork ${s.name}`,
+      ...s, id: `mw-${s.id}`, name: `Plattnerhalle ${s.name}`,
       priceCp: s.priceCp + 500, drBonus: 1, masterwork: true,
       homeMarketId: 'plattnerhalle',
       note: 'Masterwork: +1 DR while raised.',

@@ -12,6 +12,7 @@
 import { isUnchosenChoiceLadder } from '../abilities';
 import { CATEGORIES } from '../category-abilities';
 import { classById, subclassById } from '../classes';
+import { hasOwnLevel } from '../companions';
 import type { ClassDef, SubclassDef } from '../classes';
 import { featById } from '../feats';
 import type { FeatRequirement } from '../feats';
@@ -1082,9 +1083,10 @@ export function replay(events: RecordEvent[]): ReplayResult {
         state.abilities.push({
           ref: e.ref,
           ranks: {},
-          // A Companion card bonds on purchase; the log position fixes the
-          // Level it lags from.
-          ...(card.role === 'Companion'
+          // A bonded Companion bonds on purchase; the log position fixes the
+          // Level it lags from. Types whose numbers belong to the card (a
+          // summoned thing) get none of this machinery — mechanics/companions.md.
+          ...(hasOwnLevel(card.companionType)
             ? {
                 companion: {
                   // Creation bonding counts as Level 1 — the dog is 0 while
@@ -1142,9 +1144,10 @@ export function replay(events: RecordEvent[]): ReplayResult {
         // (extraVars and option-block Ladders — Generic Advances, Scribe /
         // Create). Excluded: automatic hook Ladders (hideCosts — they track
         // another Ladder), base-priced hook sets (baseCost — not yet modeled),
-        // and a Companion's stat Ladders (companion-advanced owns those).
+        // and a bonded Companion's stat Ladders (companion-advanced owns
+        // those; a summoned thing's Ladders are bought here, like any card's).
         const namedLadders =
-          card && card.role !== 'Companion'
+          card && !hasOwnLevel(card.companionType)
             ? [
                 ...(card.extraVars ?? []),
                 ...(card.options ?? [])
@@ -1237,6 +1240,41 @@ export function replay(events: RecordEvent[]): ReplayResult {
         }
         owned.companion.ranks[e.ladder] = e.toRank;
         advanceSlots.add(slot);
+        break;
+      }
+
+      case 'companion-died': {
+        const owned = state.abilities.find(
+          (a) => a.ref.category === e.ref.category && a.ref.ability === e.ref.ability,
+        );
+        if (!owned?.companion) { flag(e, 'unknown-ref', `no Companion "${e.ref.ability}" to lose`); break; }
+        // The owner's investment comes back to him; what the beast earned
+        // itself dies with it (mechanics/companions.md).
+        state.bank.minor += owned.companion.ownerSpent.minor;
+        state.bank.major += owned.companion.ownerSpent.major;
+        delete owned.companion;
+        break;
+      }
+
+      case 'companion-bonded': {
+        const owned = state.abilities.find(
+          (a) => a.ref.category === e.ref.category && a.ref.ability === e.ref.ability,
+        );
+        const card = findCard(e.ref);
+        if (!owned || !card) { flag(e, 'unknown-ref', `no card "${e.ref.ability}" to bond to`); break; }
+        if (!hasOwnLevel(card.companionType)) {
+          flag(e, 'unknown-ref', `${e.ref.ability} bonds no Companion`);
+          break;
+        }
+        if (owned.companion) { flag(e, 'duplicate', `${e.ref.ability} already has a Companion`); break; }
+        // The card is the bond, not the beast: no Major is paid again, and
+        // the new one starts at Level 0.
+        owned.companion = {
+          bondedAtLevel: Math.max(1, levelFor(state.milestones, state.crystallized)),
+          ranks: {},
+          ownSpent: { minor: 0, major: 0 },
+          ownerSpent: { minor: 0, major: 0 },
+        };
         break;
       }
 

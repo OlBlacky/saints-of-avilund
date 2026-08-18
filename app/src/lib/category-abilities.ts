@@ -2683,7 +2683,7 @@ const WITCHCRAFT: Ability[] = [
     },
   },
   {
-    name: 'Bind Spirit', category: 'Witchcraft', role: 'Summon · servant', mode: 'Effect',
+    name: 'Bind Spirit', category: 'Witchcraft', role: 'Companion', companionType: 'Summoned', mode: 'Effect',
     vars: {
       frequency: FREQ_ENC,
       action: actionCost({ act: 'ritual' }, { act: 'full-round', cost: 'm' }, { act: 'standard', cost: 'm' }),
@@ -3038,6 +3038,8 @@ const HARVEST: Ability[] = [
 
 // ── Husbandry (Naturalist — Shepherd) ───────────────────────────
 // The Shepherd's craft: the dog. Home of the game's first Animal Companion.
+// The general Companion rules now live in mechanics/companions.md and, as
+// data, in lib/companions.ts — this card states only what is the dog's own.
 // COMPANION RULES (general — locked by Les, Aug 2 2026, for ALL Companions):
 // a Companion is nameable and describable by the player (the future Character
 // Builder must carry fields for both on every Companion card).
@@ -3050,7 +3052,7 @@ const HARVEST: Ability[] = [
 // himself or on a new companion; the beast's own earned Advances die with it.
 const HUSBANDRY: Ability[] = [
   {
-    name: 'Shepherd’s Dog', category: 'Husbandry', role: 'Companion', mode: 'Passive',
+    name: 'Shepherd’s Dog', category: 'Husbandry', role: 'Companion', companionType: 'Beast', mode: 'Passive',
     vars: {
       frequency: frequency({ freq: 'passive', detail: 'the dog is always with you' }),
     },
@@ -3092,12 +3094,12 @@ const HUSBANDRY: Ability[] = [
         ],
       },
       {
-        name: 'Tricks',
-        base: 'As many tricks as its owner’s Wis',
+        name: 'Orders',
+        base: 'As many Orders as its owner’s Wis',
         advances: [
-          { value: 'As many tricks as its owner’s Wis + 1', cost: 'm' },
-          { value: 'As many tricks as its owner’s Wis + 2', cost: 'm' },
-          { value: 'As many tricks as its owner’s Wis + 4', cost: 'M' },
+          { value: 'As many Orders as its owner’s Wis + 1', cost: 'm' },
+          { value: 'As many Orders as its owner’s Wis + 2', cost: 'm' },
+          { value: 'As many Orders as its owner’s Wis + 4', cost: 'M' },
         ],
       },
     ],
@@ -3118,17 +3120,13 @@ const HUSBANDRY: Ability[] = [
         note: 'Built in. Interrupt, when an opponent attempts to move adjacent to an ally: the dog may shift 10\' and snap at them — the opponent takes −1 on attacks until the end of its next turn.',
       },
       {
-        label: 'Tricks',
-        note: 'The dog knows as many tricks as its Tricks Ladder allows, chosen from the list. [[trick effects to come]]',
+        label: 'Orders',
+        note: 'The dog knows as many Orders as its Orders Ladder allows, chosen from the list. [[Order effects to come]]',
         detail: ['Come', 'Stay', 'Attack', 'Guard', 'Fetch', 'Follow'],
       },
       {
-        label: 'A Companion',
-        note: 'The dog is a character: give it a name and a description of its own — every Companion card carries both. It has its own Level: 0 when bonded, rising whenever its owner levels thereafter — one taken late, or a replacement, lags behind. Each of its own levels earns it 1 Minor Advance, and every third level a Major (the rule for all Companions). Its owner may also spend his own Advances on these Ladders.',
-      },
-      {
-        label: 'Loss',
-        note: 'If the dog dies, the Advances its owner invested return to him — to respend on himself, or on a new companion. A new dog starts at Level 0 and takes weeks of training to bond (days, with Beast-Wise).',
+        label: 'Bonding',
+        note: 'Bonding a dog takes weeks of training — days, with Beast-Wise.',
       },
     ],
   },

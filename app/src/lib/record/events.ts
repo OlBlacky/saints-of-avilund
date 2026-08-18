@@ -220,6 +220,14 @@ export type RecordEvent =
   /** Climb one of a Companion's stat Ladders one Rank. The payer is decided
    * at replay time — the Companion's own earned Advances first, the owner's
    * bank after — and recorded in state for the death-refund rule. */
-  | (BaseEvent & { type: 'companion-advanced'; ref: AbilityRef; ladder: string; toRank: number });
+  | (BaseEvent & { type: 'companion-advanced'; ref: AbilityRef; ladder: string; toRank: number })
+  /** The Companion dies (or is lost — a beast left unfed a week counts).
+   * The owner's invested Advances return to his bank; the Companion's own
+   * earned Advances die with it, and the card stands empty until a new one
+   * is bonded. */
+  | (BaseEvent & { type: 'companion-died'; ref: AbilityRef; note?: string })
+  /** Bond a new Companion to a card that stands empty. The card is the bond,
+   * not the beast: no Major is paid again, and the new one starts at Level 0. */
+  | (BaseEvent & { type: 'companion-bonded'; ref: AbilityRef });
 
 export type RecordEventType = RecordEvent['type'];

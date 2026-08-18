@@ -200,7 +200,7 @@ export const SKILLS: Skill[] = [
     how: 'Train, calm, and direct animals.',
     actions: [
       { name: 'Calm or Control', rule: 'Steady a frightened or hostile beast: Handle Animal vs a DC by the animal.' },
-      { name: 'Train', rule: 'Teach an animal a task over time: Handle Animal vs the trick’s DC.' },
+      { name: 'Train', rule: 'Teach an animal a task over time: Handle Animal vs the Order’s DC.' },
       { name: 'Push', rule: 'In play, goad a trained animal to act: Handle Animal as a Move Action.' },
     ],
   },
