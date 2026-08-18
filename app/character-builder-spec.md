@@ -468,20 +468,41 @@ What the DM's browser stores per Campaign:
 - **The grant ledger** — every issue: what, to whom (a roster entry), which Session.
 - **Campaign Options** — the DM-togglable rule-module flags (§12): Party Inventory first, Currencies someday.
 
-### The Adventure Module file
+### The Adventure Module file (structure ruled Aug 18 2026)
 
 **One format, three sources.** An Adventure Module is a content package in a single file shape, the same whether **we** authored it (free one-offs and paid campaigns shipped with the site), **a DM** built it in the Campaign Builder (a later UI), or it was **bought** (the later store delivers the same file). The format is the foundation; the Builder UI and the store sit on top of it.
 
-Contents (settling §12's list into fields):
+The structure:
 
 - **Identity** — id, title, author, version, recommended entry level.
-- **Information for the DM** — the module's GM text, in sections.
-- **CEs** — each with its entry code and a reveal rule: *on attach* or *held as a Reward*.
-- **Maps** — Map Book entries (§4) with reveal rules: *on enrollment*, *DM-activated*, or *DM-only* (private maps stay with the DM Information).
-- **Encounters** — the prepared set pieces; monster profiles with DCs when the bestiary lands (the field exists now, the profile shape waits).
-- **Rewards** — what completing things grants: CEs · gear/treasure · Milestone Advancement · Marks. All land as granted events on character records — in v1 by the table-is-the-wire routes.
+- **The Campaign Summary** — the Module's first page, for the DM: an overview of the whole campaign in prose, followed by the outline — every Book and Chapter with its short summary. The outline is assembled from the Chapters' own summary fields, never written twice, so reorganizing Chapters keeps the page true.
+- **Front matter** — the DM introduction, and the CEs and maps revealed on enrollment.
+- **Chapters**, in order — the constituent unit of a campaign. Each Chapter holds its short summary, its DM text, its CEs, maps, and encounters (monster profiles with DCs when the bestiary lands), and its **Reward** at the end. CEs and maps held back for later live in the Reward of the Chapter that pays them out; reveal rules (*on enrollment* / *DM-activated* / *DM-only*) ride with each entry.
+- **Books** — an optional grouping of Chapters, with a bigger Reward at the Book's end. Small campaigns never see them.
 
-Repo-shipped Modules live as data in `lib/modules/` (the `texts.ts` / `saints.ts` pattern); **St. Carpathi is the first**. The file is versioned like the character file (§10), so a bought Module can be updated.
+**A one-off is a Module with one Chapter.** There is no campaign "type" flag: a one-off becomes a campaign by adding Chapter 2, and the DM reorganizes — reordering or regrouping Chapters, content moving with its Chapter — at any time. Chapters are content-time; Sessions are table-time (a Chapter may span several Sessions); Rewards attach to Chapters, the Session log stays the table record.
+
+Repo-shipped Modules live as data in `lib/modules/` (the `texts.ts` / `saints.ts` pattern); **St. Carpathi is the first** — three Chapters, no Books. The file is versioned like the character file (§10), so a bought Module can be updated.
+
+### Rewards & Marks (ruled Aug 18 2026)
+
+A **Reward** is a bundle, any part empty: **CEs · maps · gear/treasure · Milestone Advancement · Marks.** All of it lands as granted events on character records — in v1 by the table-is-the-wire routes.
+
+A **Mark** is the lasting non-physical award (§12): the world marks you, for good or ill. Its v1 shape is **a name + rule text** — display-only on the sheet (per the Aug 12 ruling) — plus machine teeth only where the engine already has them: **Market access and standing discounts** enforce through the Markets machinery. Numeric effects can join the Feat effect vocabulary later without reshaping the Mark.
+
+The **Reward Builder** (a later DM UI) is a small form over this shape: pick CEs and maps, list gear, grant Milestones, and author Marks — name, rule text, tick any Market access.
+
+### The In Box and the Out Box (ruled Aug 18 2026)
+
+**The In Box is the one door into a character.** Everything that arrives from outside — a Milestone, gear and treasure, a Mark, a CE, a map, a transfer from another PC, a Party Inventory payout — stages in the character's In Box, and nothing is written to the record until the player accepts it.
+
+**What the DM sends is not negotiable.** A DM grant carries only **Accept** — the click is receipt, and that's that.
+
+**PC to PC carries Accept and Decline.** Declining informs the sender; tangible goods return to the sender's In Box (the one door in, even for your own returning sword). A declined CE or map simply never entered — the sender keeps theirs and is told.
+
+**The Out Box is the door out.** A PC sends a physical thing to another PC: the item leaves the sender's inventory as a logged transfer and lands in the receiver's In Box. A PC shares a CE or a map: it **copies** — sharing is irreversible once accepted (§4) — the sender keeps theirs, and the receiver's copy carries its provenance.
+
+**v1: the doors are real, the wire is the table.** A DM grant reaches the In Box by entry code, or by the player staging what the DM said aloud; staging and accepting may be one motion in the v1 UI. PC-to-PC transfers happen at the table, each side logging its half — the Out Box is the sender's record of what left their hands. When accounts land, Distribute and Send push straight into In Boxes, and none of the shapes change.
 
 ### Session Adjustment (promoted from the Parking Lot)
 
