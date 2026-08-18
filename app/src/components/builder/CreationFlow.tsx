@@ -27,7 +27,7 @@ import {
   classById,
 } from '../../lib/classes';
 import type { ClassDef, SubclassDef } from '../../lib/classes';
-import { hasOwnLevel } from '../../lib/companions';
+import { ORDERS_LADDER, hasOwnLevel } from '../../lib/companions';
 import { LANGUAGES } from '../../lib/languages';
 import { FEATS } from '../../lib/feats';
 import { VOW_OF_POVERTY_GEAR, rollPackage } from '../../lib/gear';
@@ -521,6 +521,12 @@ export default function CreationFlow() {
     const roster = card.orderRoster ?? [];
     const known = comp?.orders ?? [];
     const allowance = comp ? companionOrdersAllowed(state, owned, card) : 0;
+    // What the Ladder says it can hold, in the card's own words — the rule
+    // behind a count of zero.
+    const ordersRule = resolveValue(
+      card.extraVars?.find((l) => l.name === ORDERS_LADDER),
+      comp?.ranks[ORDERS_LADDER],
+    );
     const teach = (orders: string[]) =>
       setDraft((d) => ({
         ...d,
@@ -594,6 +600,9 @@ export default function CreationFlow() {
               <strong>Orders</strong>
               <span class="cf-instchoice">{known.length} of {allowance}</span>
             </span>
+            {allowance === 0 && (
+              <p class="cf-how">{ordersRule ?? 'It can hold no Orders yet.'}</p>
+            )}
             <div class="cf-orderpick">
               {roster.map((order) => {
                 const has = known.includes(order);
