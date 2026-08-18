@@ -5,9 +5,11 @@
 import { describe, expect, it } from 'vitest';
 
 import {
+  addGrant,
   addRosterEntry,
   addSession,
   createCampaign,
+  removeGrant,
   removeRosterEntry,
   removeSession,
   updateRosterEntry,
@@ -111,5 +113,48 @@ describe('session-log mutations', () => {
   it('update and remove throw on an unknown id', () => {
     expect(() => updateSession(base(), 'nope', { notes: 'x' })).toThrow();
     expect(() => removeSession(base(), 'nope')).toThrow();
+  });
+});
+
+describe('grant-ledger mutations', () => {
+  /** A campaign with two seats and one Session, for issuing against. */
+  const seated = () => {
+    let c = addRosterEntry(createCampaign('a', 0), 'Piotr', 'Wulfric');
+    c = addRosterEntry(c, 'Anna', 'Elspeth');
+    return addSession(c, '2026-08-18');
+  };
+
+  it('add appends the trimmed issue with its recipients, untethered from the input array', () => {
+    const c = seated();
+    const to = [c.roster[0].id];
+    const after = addGrant(c, '  Milestone  ', to, c.sessions[0].id);
+    to.push('tamper');
+    expect(c.ledger).toEqual([]);
+    expect(after.ledger).toHaveLength(1);
+    expect(after.ledger[0]).toMatchObject({
+      what: 'Milestone',
+      to: [c.roster[0].id],
+      sessionId: c.sessions[0].id,
+    });
+  });
+
+  it('add works without a Session and omits the field', () => {
+    const c = seated();
+    expect(addGrant(c, 'K-17', [c.roster[1].id]).ledger[0].sessionId).toBeUndefined();
+  });
+
+  it('add rejects blank contents, no recipients, and unknown ids', () => {
+    const c = seated();
+    expect(() => addGrant(c, '   ', [c.roster[0].id])).toThrow();
+    expect(() => addGrant(c, 'Milestone', [])).toThrow();
+    expect(() => addGrant(c, 'Milestone', ['nope'])).toThrow();
+    expect(() => addGrant(c, 'Milestone', [c.roster[0].id], 'nope')).toThrow();
+  });
+
+  it('remove drops the grant and throws on an unknown id', () => {
+    let c = seated();
+    c = addGrant(c, 'Milestone', [c.roster[0].id]);
+    expect(removeGrant(c, c.ledger[0].id).ledger).toEqual([]);
+    expect(() => removeGrant(c, 'nope')).toThrow();
   });
 });

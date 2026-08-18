@@ -132,6 +132,39 @@ export function removeSession(c: CampaignRecord, id: string): CampaignRecord {
   return { ...c, sessions: c.sessions.filter((s) => s.id !== id) };
 }
 
+/** Grant-ledger mutations — pure, like the roster's. The ledger is the
+ * DM's record of what was issued; a wrong entry is removed and re-issued,
+ * not edited. */
+export function addGrant(
+  c: CampaignRecord,
+  what: string,
+  to: string[],
+  sessionId?: string,
+): CampaignRecord {
+  const trimmed = what.trim();
+  if (!trimmed) throw new Error('a grant needs contents');
+  if (to.length === 0) throw new Error('a grant needs at least one recipient');
+  for (const id of to) {
+    if (!c.roster.some((r) => r.id === id)) throw new Error('no such roster entry');
+  }
+  if (sessionId && !c.sessions.some((s) => s.id === sessionId)) {
+    throw new Error('no such Session');
+  }
+  const entry: GrantEntry = {
+    id: crypto.randomUUID(),
+    at: new Date().toISOString(),
+    to: [...to],
+    what: trimmed,
+    ...(sessionId ? { sessionId } : {}),
+  };
+  return { ...c, ledger: [...c.ledger, entry] };
+}
+
+export function removeGrant(c: CampaignRecord, id: string): CampaignRecord {
+  if (!c.ledger.some((g) => g.id === id)) throw new Error('no such grant');
+  return { ...c, ledger: c.ledger.filter((g) => g.id !== id) };
+}
+
 export function listCampaigns(): Promise<CampaignRecord[]> {
   return tx(CAMPAIGN_STORE, 'readonly', (s) => s.getAll() as IDBRequest<CampaignRecord[]>);
 }

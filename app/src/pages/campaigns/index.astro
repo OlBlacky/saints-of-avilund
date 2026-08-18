@@ -11,10 +11,6 @@ import Campaigns from '../../components/campaigns/Campaigns.tsx';
 <Base title="Campaigns" description="Campaigns — the DM's table: roster, Sessions, and what was granted.">
   <p class="eyebrow">The Record</p>
   <h1>Campaigns</h1>
-  <p class="lede">
-    A Campaign gathers a DM, players, and their characters around an Adventure Module. Your
-    campaigns live in this browser.
-  </p>
 
   <Campaigns client:only="preact" />
 
@@ -59,5 +55,9 @@ import Campaigns from '../../components/campaigns/Campaigns.tsx';
     .session { margin: 0 0 1.1rem; }
     .session-head { display: flex; gap: 0.8rem; align-items: center; margin-bottom: 0.4rem; }
     .session-notes { display: block; width: 100%; min-height: 4.5rem; resize: vertical; }
+    .grant-form { margin-top: 1rem; }
+    .grant-what { display: block; width: 100%; }
+    .grant-recipients { display: flex; gap: 1rem; flex-wrap: wrap; align-items: center; margin: 0.6rem 0; }
+    .grant-recipient { cursor: pointer; }
   </style>
 </Base>

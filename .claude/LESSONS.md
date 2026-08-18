@@ -51,3 +51,5 @@ A running log of corrections and patterns. Claude appends an entry whenever Les 
 **Why:** the project allowlist was a pile of one-off literal commands, so ordinary `pnpm build` / `pnpm vitest` runs prompted every time. Les (Aug 2026): "quit asking me all the time."
 
 **How to apply:** when a routine command prompts, add a prefix rule (`Bash(pnpm:*)`, `PowerShell(Get-ChildItem:*)`) to `.claude/settings.json` rather than accepting the prompt as the cost of doing business. Build, test, and read-only inspection commands belong on the list permanently.
+
+**Recurrence (Aug 18 2026) — page ledes.** The Campaigns page carried an authored lede ("A Campaign gathers a DM, players, and their characters…") that Les removed: "Please don't add in words where I don't ask you to." The rule covers page introductions, ledes, and section blurbs, not just item notes and card text — a new page gets its heading and its machinery; any framing prose is Les's to write.

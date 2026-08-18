@@ -475,10 +475,14 @@ What the DM's browser stores per Campaign:
 The structure:
 
 - **Identity** — id, title, author, version, recommended entry level.
+- **Cover** *(optional; every field optional)* — the physical book's face: title and subtitle/tagline · cover artwork with artist and medium credited (the Library's artist-credit convention) · the banner line (entry level, party size, play length) · a series line ("Book Two of …") · the imprint.
+- **Inside cover** *(optional; every field optional)* — the title page and credits: author(s) · additional design · editing · cover and interior artists · cartography · **Playtested By** · special thanks · dedication · version/printing and publication date · publisher line · legal line · content notes.
+- **Table of Contents** — the first page after the covers, assembled from Books, Chapters, and the Appendix at packaging — never written by hand (the same rule as the Campaign Summary's outline).
 - **The Campaign Summary** — the Module's first page, for the DM: an overview of the whole campaign in prose, followed by the outline — every Book and Chapter with its short summary. The outline is assembled from the Chapters' own summary fields, never written twice, so reorganizing Chapters keeps the page true.
 - **Front matter** — the DM introduction, and the CEs and maps revealed on enrollment.
 - **Chapters**, in order — the constituent unit of a campaign. Each Chapter holds its short summary, its DM text, its CEs, maps, and encounters (monster profiles with DCs when the bestiary lands), and its **Reward** at the end. CEs and maps held back for later live in the Reward of the Chapter that pays them out; reveal rules (*on enrollment* / *DM-activated* / *DM-only*) ride with each entry.
-- **Books** — an optional grouping of Chapters, with a bigger Reward at the Book's end. Small campaigns never see them.
+- **Books** — an optional grouping of Chapters, with a bigger Reward at the Book's end. Small campaigns never see them. Because Books may be sold separately, a Book may carry its own Cover and inside cover (the same fields), and a separately-sold Book renders its own Table of Contents and may close with its own Appendix.
+- **Appendix** — end matter: authored sections as the module needs them (pregenerated characters, tables, an NPC index), plus collections assembled at packaging for use at the table — the module's encounters gathered in one place, CE handouts, map plates.
 
 **A one-off is a Module with one Chapter.** There is no campaign "type" flag: a one-off becomes a campaign by adding Chapter 2, and the DM reorganizes — reordering or regrouping Chapters, content moving with its Chapter — at any time. Chapters are content-time; Sessions are table-time (a Chapter may span several Sessions); Rewards attach to Chapters, the Session log stays the table record.
 

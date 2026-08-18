@@ -12,6 +12,38 @@ on every rendered/printed page when this becomes site or PDF output. -->
 
 ---
 
+## Cover *(optional; leave any field blank)*
+
+- Title:
+- Subtitle / tagline:
+- Cover artwork: [[artist · medium]]
+- Banner (entry level · party size · play length):
+- Series line:
+- Imprint:
+
+## Inside Cover *(optional; leave any field blank)*
+
+- Author(s):
+- Additional design:
+- Editing:
+- Cover artist:
+- Interior artists:
+- Cartography:
+- Playtested By:
+- Special thanks:
+- Dedication:
+- Version / printing:
+- Publication date:
+- Publisher:
+- Legal line:
+- Content notes:
+
+## Table of Contents
+
+*Assembled from the Chapters and the Appendix at packaging; nothing to author here.*
+
+---
+
 ## Campaign Summary
 
 *The DM's first page: what this campaign is, then the outline. The outline lines below live with their Chapters — keep each Chapter's Summary line and this list saying the same thing until packaging assembles them automatically.*
@@ -131,3 +163,11 @@ on every rendered/printed page when this becomes site or PDF output. -->
 - Gear/treasure:
 - CEs / maps:
 - Marks:
+
+---
+
+## Appendix
+
+*Authored sections as needed; the encounter gathering, CE handouts, and map plates assemble at packaging.*
+
+- [[add text]]

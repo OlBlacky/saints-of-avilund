@@ -6,6 +6,7 @@
 import { useEffect, useState } from 'preact/hooks';
 
 import {
+  addGrant,
   addRosterEntry,
   addSession,
   createCampaign,
@@ -13,6 +14,7 @@ import {
   getCampaign,
   listCampaigns,
   putCampaign,
+  removeGrant,
   removeRosterEntry,
   removeSession,
   updateRosterEntry,
@@ -82,6 +84,122 @@ function SessionLog({
       <div class="roster-actions">
         <button type="button" class="cf-crystallize" onClick={log}>Log a Session</button>
       </div>
+    </div>
+  );
+}
+
+/** A roster entry's display name: the character if named, else the player. */
+function seatName(campaign: CampaignRecord, rosterId: string): string {
+  const seat = campaign.roster.find((r) => r.id === rosterId);
+  if (!seat) return '(no longer on the Roster)';
+  return seat.character || seat.player;
+}
+
+/** The grant ledger — the DM's record of what was issued, to whom, in
+ * which Session. The players' sheets are updated at the table (spec §13);
+ * this is the DM's side of the wire. */
+function GrantLedger({
+  campaign,
+  save,
+}: {
+  campaign: CampaignRecord;
+  save: (next: CampaignRecord) => Promise<void>;
+}) {
+  const [what, setWhat] = useState('');
+  const [to, setTo] = useState<string[]>([]);
+  const [sessionId, setSessionId] = useState('');
+  const [note, setNote] = useState('');
+
+  /** Session number by position (the log renumbers itself). */
+  const sessionNumber = (id: string) => {
+    const i = campaign.sessions.findIndex((s) => s.id === id);
+    return i === -1 ? undefined : i + 1;
+  };
+
+  const toggle = (id: string) =>
+    setTo(to.includes(id) ? to.filter((x) => x !== id) : [...to, id]);
+
+  const issue = async () => {
+    // Untouched checkboxes mean the whole party — the common case.
+    const recipients = to.length > 0 ? to : campaign.roster.map((r) => r.id);
+    try {
+      await save(addGrant(campaign, what, recipients, sessionId || undefined));
+    } catch (e) {
+      setNote((e as Error).message);
+      return;
+    }
+    setNote('');
+    setWhat('');
+    setTo([]);
+  };
+
+  return (
+    <div class="session-log">
+      <h3>Grant ledger</h3>
+      {note && <p class="roster-note">{note}</p>}
+      {campaign.ledger.length === 0 ? (
+        <p class="cf-how">Nothing issued yet.</p>
+      ) : (
+        <table class="roster-table">
+          <thead>
+            <tr><th>Issued</th><th>To</th><th>Session</th><th></th></tr>
+          </thead>
+          <tbody>
+            {[...campaign.ledger].reverse().map((g) => (
+              <tr key={g.id}>
+                <td>{g.what}</td>
+                <td>{g.to.map((id) => seatName(campaign, id)).join(', ')}</td>
+                <td>{g.sessionId && sessionNumber(g.sessionId) ? `Session ${sessionNumber(g.sessionId)}` : ''}</td>
+                <td class="act">
+                  <button type="button" class="undo" onClick={() => save(removeGrant(campaign, g.id))}>
+                    Remove
+                  </button>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      )}
+
+      {campaign.roster.length === 0 ? (
+        <p class="cf-how">Grants need recipients — fill the Roster first.</p>
+      ) : (
+        <div class="grant-form">
+          <input
+            class="roster-field grant-what"
+            type="text"
+            placeholder="What was issued — a Milestone, gear, a Mark, an entry code"
+            value={what}
+            onInput={(e) => setWhat((e.target as HTMLInputElement).value)}
+          />
+          <div class="grant-recipients">
+            {campaign.roster.map((r) => (
+              <label key={r.id} class="grant-recipient">
+                <input
+                  type="checkbox"
+                  checked={to.includes(r.id)}
+                  onChange={() => toggle(r.id)}
+                />{' '}
+                {r.character || r.player}
+              </label>
+            ))}
+            <span class="cf-how">Nobody ticked = everybody.</span>
+          </div>
+          <div class="roster-actions">
+            <select
+              class="roster-field"
+              value={sessionId}
+              onChange={(e) => setSessionId((e.target as HTMLSelectElement).value)}
+            >
+              <option value="">No Session</option>
+              {campaign.sessions.map((s, i) => (
+                <option key={s.id} value={s.id}>Session {i + 1} · {s.date}</option>
+              ))}
+            </select>
+            <button type="button" class="cf-crystallize" onClick={issue}>Issue</button>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
@@ -187,8 +305,9 @@ function CampaignHome({ campaign: initial }: { campaign: CampaignRecord }) {
 
       <SessionLog campaign={campaign} save={save} />
 
-      <p class="cf-how" style="margin-top:1.6rem;">The grant ledger is the next piece to arrive.</p>
-      <p><a href={`${BASE}campaigns/`}>&larr; All campaigns</a></p>
+      <GrantLedger campaign={campaign} save={save} />
+
+      <p style="margin-top:1.6rem;"><a href={`${BASE}campaigns/`}>&larr; All campaigns</a></p>
     </div>
   );
 }
