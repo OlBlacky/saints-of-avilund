@@ -25,13 +25,29 @@ A card grants **one** Companion at a time.
 
 ---
 
+## Initiative — the owner's turn, after him
+
+**A Companion does not roll initiative.** It acts on its owner's turn, and the owner always goes first: he takes his actions, and then the Companion takes its own — a move and an action of its own, on the Order it stands under.
+
+This is the table's rule before it is the fiction's. Initiative is the heaviest tax a d20 table pays, and every extra entry in the order costs everybody time on every round. A party of five with a dog, a shade and a mount is ten entries where there were five. A Companion under a **standing Order** has no decision to make, only an instruction to carry out, so it needs a moment of resolution rather than a turn of its own — and the natural place for that moment is the turn of the person whose decision it was.
+
+- **The owner acts first, every time.** No declaring, no holding, no interleaving. Your turn resolves, then your Companion's.
+- **Changing the Order and acting on it happen in the same turn.** Spend the Standard Action to change the standing Order, finish your turn, and the Companion acts on the new Order — the change bites immediately.
+- **Reactions ignore all of this.** A built-in Interrupt or Reaction (Interpose) fires on its trigger whenever the trigger happens, off anyone's turn. Instincts are the beast's; instructions are yours.
+- **If the owner cannot act** — unconscious, Dying, dead — the Companion keeps its standing Order and acts on the owner's place in the order regardless. The Order outlives the hand that gave it.
+- **The one exception is the Henchman.** A hired man is a person, not an extension of anyone, and he rolls his own initiative. It is part of what makes hiring different from bonding: he moves on his own schedule, and his Morale may move him somewhere you did not ask for.
+
+The cost of this rule is a longer turn for the player who keeps a Companion, and the rest of the table waits through it. That is the trade taken deliberately: one longer turn a round rather than two turns spread across the order.
+
+---
+
 ## The five dials
 
 The Type answers five questions, and those answers are the whole difference between a sheepdog and a shade.
 
 | Dial | The question |
 |---|---|
-| **Command** | How does it act — its own turn, or the owner's action? What will it do at all? |
+| **Command** | Whose turn does it act on, what does directing it cost, and what will it do at all? |
 | **Permanence** | Does it stay until it dies, or expire on a Duration? |
 | **Loyalty** | Can it refuse? |
 | **Upkeep** | What does keeping it cost? |
@@ -39,7 +55,7 @@ The Type answers five questions, and those answers are the whole difference betw
 
 | Dial | **Beast** | **Summoned** |
 |---|---|---|
-| Command | Its own turn, its own initiative. A **Standard Action** to change its standing Order. | It acts **only** when the owner spends the Action the card names. |
+| Command | The owner's turn, **after** he has acted. A **Standard Action** to change its standing Order. | The owner's turn, **after** he has acted, and only when he spends the Action the card names. |
 | Permanence | Until it dies. | The card's **Duration**, then it is gone. |
 | Loyalty | Cannot refuse, but knows only its **Orders**. | Cannot refuse. It is bound. |
 | Upkeep | Feed, **1 cp/day**. | A material component, spent per summoning. |
@@ -51,7 +67,7 @@ The Type answers five questions, and those answers are the whole difference betw
 
 A living animal, bonded to its owner. The first is the Naturalist's **Shepherd's Dog** (Husbandry).
 
-- **Command.** It acts on its own turn, on its own initiative, and it will do only what it has been taught. **Orders are its command vocabulary**: an Order is a standing instruction it carries out (*Come, Stay, Attack, Guard, Fetch, Follow*), and it knows as many as its Orders Ladder allows. Ask it for anything outside its Orders and it does not understand you.
+- **Command.** It acts on its owner's turn, after him (see Initiative), and it will do only what it has been taught. **Orders are its command vocabulary**: an Order is a standing instruction it carries out (*Come, Stay, Attack, Guard, Fetch, Follow*), and it knows as many as its Orders Ladder allows. Ask it for anything outside its Orders and it does not understand you.
   - **An Order stands until it is changed.** The beast keeps to its standing Order — guarding, following, holding — every round, for nothing.
   - **Changing it costs a Standard Action.** The cost sits on the decision, not on the upkeep: switching the dog from Guard to Attack mid-fight is your turn. The **Command — Beast** Feat buys that Action down.
   - **A built-in reaction is not an Order.** Interpose and its kin fire on their own trigger, off your turn, and cost you nothing — they are the beast's instincts, not your instructions.
@@ -70,7 +86,7 @@ A living animal, bonded to its owner. The first is the Naturalist's **Shepherd's
 
 A thing called up and held for a while. The first — and, for now, the only one — is the Witch's **Bind Spirit** (Witchcraft).
 
-- **Command.** It does nothing on its own. The owner spends the Action the card names to command it, and that action cost is a Ladder on the card: buying it down from a Move Action to a Minor is exactly the purchase Rail 6 prices as a Major.
+- **Command.** It does nothing on its own, and acts on its owner's turn, after him. The owner spends the Action the card names to command it, and that action cost is a Ladder on the card: buying it down from a Move Action to a Minor is exactly the purchase Rail 6 prices as a Major.
 - **Permanence.** It lasts the card's **Duration** and then it is gone. Nothing carries over to the next summoning.
 - **Loyalty.** It cannot refuse. The binding is the loyalty, and the component is the tether.
 - **Upkeep.** No wage and no feed — a **material component consumed per summoning** (Bind Spirit: 1 sp of powdered obsidian).

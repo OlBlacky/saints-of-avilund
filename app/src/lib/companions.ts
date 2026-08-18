@@ -25,6 +25,9 @@ export interface CompanionDials {
   /** Whose numbers: its own stat block climbing its own Level, or the card's
    * Ladders bought with the owner's Advances. */
   numbers: 'own' | 'card';
+  /** Whose turn it acts on: its owner's, after he has acted, or its own
+   * roll in the order. */
+  initiative: 'owner' | 'own';
   /** What commanding costs before any Command Feat buys it down. Absent
    * where the card states the Action itself. */
   commandAction?: CommandStep;
@@ -34,20 +37,22 @@ export interface CompanionDials {
 
 export const COMPANION_TYPES: Record<CompanionType, CompanionDials> = {
   Beast: {
-    command: 'Its own turn, its own initiative. A Standard Action to change its standing Order.',
+    command: 'It acts on your turn, after you. A Standard Action to change its standing Order.',
     permanence: 'Until it dies.',
     loyalty: 'Cannot refuse, but knows only its Orders.',
     upkeep: 'Feed, 1 cp/day.',
     numbers: 'own',
+    initiative: 'owner',
     commandAction: 'standard',
     commandFeatId: 'command-beast',
   },
   Summoned: {
-    command: 'It acts only when the owner spends the Action the card names.',
+    command: 'It acts on your turn, after you, and only when you spend the Action the card names.',
     permanence: 'The card’s Duration, then it is gone.',
     loyalty: 'Cannot refuse. It is bound.',
     upkeep: 'A material component, spent per summoning.',
     numbers: 'card',
+    initiative: 'owner',
   },
 };
 

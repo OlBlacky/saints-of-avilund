@@ -53,3 +53,9 @@ A running log of corrections and patterns. Claude appends an entry whenever Les 
 **How to apply:** when a routine command prompts, add a prefix rule (`Bash(pnpm:*)`, `PowerShell(Get-ChildItem:*)`) to `.claude/settings.json` rather than accepting the prompt as the cost of doing business. Build, test, and read-only inspection commands belong on the list permanently.
 
 **Recurrence (Aug 18 2026) — page ledes.** The Campaigns page carried an authored lede ("A Campaign gathers a DM, players, and their characters…") that Les removed: "Please don't add in words where I don't ask you to." The rule covers page introductions, ledes, and section blurbs, not just item notes and card text — a new page gets its heading and its machinery; any framing prose is Les's to write.
+
+## No "honest", "honestly", or "actually" — in chat as well as on the page
+
+**Why:** Les had already ruled these out as filler. They reappeared in a summary — "That's the honest token reading" — where the sentence had also finished its work a clause earlier. Two standing rules broken in five words: the banned filler, and the editorial flourish trailing a description Les has said he always dislikes.
+
+**How to apply:** the ban covers replies in chat, not only player-facing text and card prose. Before sending, cut "honest/honestly/actually" outright — the sentence reads better without them — and check whether the last clause is doing work or taking a bow. Say what the thing is ("the dog is At-Will with a Standard Action") and stop.

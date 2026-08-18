@@ -3052,7 +3052,7 @@ const HARVEST: Ability[] = [
 // himself or on a new companion; the beast's own earned Advances die with it.
 const HUSBANDRY: Ability[] = [
   {
-    name: 'Shepherd’s Dog', category: 'Husbandry', role: 'Companion', companionType: 'Beast', mode: 'Passive',
+    name: 'Shepherd’s Dog', category: 'Husbandry', role: 'Companion', companionType: 'Beast', mode: 'Effect',
     orderRoster: ['Come', 'Stay', 'Attack', 'Guard', 'Fetch', 'Follow'],
     vars: {
       // The dog is always with you, but commanding it is a thing you DO: as
