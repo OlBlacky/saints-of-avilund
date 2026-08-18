@@ -3094,6 +3094,10 @@ const HUSBANDRY: Ability[] = [
         ],
       },
       {
+        name: 'Senses',
+        base: 'Perception +3, and it smells what no man can',
+      },
+      {
         name: 'Orders',
         base: 'As many Orders as its owner’s Wis',
         advances: [
@@ -3115,16 +3119,11 @@ const HUSBANDRY: Ability[] = [
         placement: 'top',
       },
       {
-        label: 'Senses',
-        note: 'Perception +3, and it smells what no man can.',
-      },
-      {
         label: 'Interpose',
         note: 'Built in. Interrupt, when an opponent attempts to move adjacent to an ally: the dog may shift 10\' and snap at them — the opponent takes −1 on attacks until the end of its next turn.',
       },
       {
-        label: 'Orders',
-        note: 'The dog knows as many Orders as its Orders Ladder allows, chosen from the list. [[Order effects to come]]',
+        label: 'Orders it can be taught',
         detail: ['Come', 'Stay', 'Attack', 'Guard', 'Fetch', 'Follow'],
       },
       {

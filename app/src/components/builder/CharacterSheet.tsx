@@ -253,6 +253,12 @@ const PAGE_BOXES: Record<string, string[]> = {
 
 export default function CharacterSheet({ identity, setIdentity, status, setStatus, state, sheet, events, basket, setBasket, append, why, boxOrder, setBoxOrder, onAdvance, sandbox, onSandboxCopy }: Props) {
   const [page, setPage] = useState(1);
+  const keepsCompanions = state.abilities.some((o) =>
+    hasOwnLevel(
+      CATEGORIES.find((c) => c.name === o.ref.category)
+        ?.abilities.find((a) => a.name === o.ref.ability)?.companionType,
+    ),
+  );
   // Commerce is a deliberate act: the Markets show only once opened. An
   // unfinished trip (a Basket with lines) re-opens itself — you are still
   // at market. Nothing is logged until the trip commits.
@@ -825,7 +831,7 @@ export default function CharacterSheet({ identity, setIdentity, status, setStatu
               title={p.built ? undefined : 'This page is still being built'}
               onClick={() => setPage(p.n)}
             >
-              {p.label}
+              {p.n === 2 && keepsCompanions ? 'Attacks, Abilities & Companions' : p.label}
             </button>
           ))}
         </div>
@@ -1317,15 +1323,9 @@ export default function CharacterSheet({ identity, setIdentity, status, setStatu
         // into place pins the order, and the record's order stands from then on.
         const isPassive = (o: (typeof state.abilities)[number]) =>
           findCard(o.ref.category, o.ref.ability)?.vars.frequency?.freq === 'passive';
-        // A bonded Companion is not an Ability you use — it is a creature,
-        // and the Companions box below prints it whole. Left here it would
-        // render as a card with nothing on it.
-        const abilityCards = state.abilities.filter(
-          (o) => !companionCards.some(({ owned }) => owned === o),
-        );
         const sortedAbilities = state.abilitiesArranged
-          ? abilityCards
-          : [...abilityCards].sort((a, b) => Number(isPassive(a)) - Number(isPassive(b)));
+          ? state.abilities
+          : [...state.abilities].sort((a, b) => Number(isPassive(a)) - Number(isPassive(b)));
 
         /** The grip that lifts an Ability card — the same handle the sheet's
          * boxes carry, so the card's own buttons and text stay usable. */
@@ -1764,16 +1764,35 @@ export default function CharacterSheet({ identity, setIdentity, status, setStatu
                   // Ranks, the named ladders included — complete on the sheet.
                   // The weapon lines carry the resolved damage, so the raw
                   // [W] formula stays off the card whenever they can.
+                  const compDials = card.companionType ? COMPANION_TYPES[card.companionType] : undefined;
                   const body = [
+                    ...(compDials
+                      ? [
+                          ['Command', compDials.command] as const,
+                          ...(card.options ?? [])
+                            .filter((o) => o.placement !== 'top')
+                            .map(
+                              (o) =>
+                                [
+                                  o.label,
+                                  [o.note, ...(Array.isArray(o.detail) ? [o.detail.join(' · ')] : o.detail ? [o.detail] : [])]
+                                    .filter(Boolean)
+                                    .join(' '),
+                                ] as const,
+                            ),
+                        ]
+                      : []),
                     ...(weaponRows.length > 0 ? [] : [['Damage', dmgText] as const]),
                     ['Effect', val('effects')],
                     ...(ladder
                       ? [[ladder.name, resolveValue(ladder, owned.ranks[ladder.name])] as const]
                       : []),
                     ['Duration', val('duration')],
-                    ...(card.extraVars ?? []).map(
-                      (l) => [l.name, resolveValue(l, owned.ranks[l.name])] as const,
-                    ),
+                    ...(hasOwnLevel(card.companionType)
+                      ? []
+                      : (card.extraVars ?? []).map(
+                          (l) => [l.name, resolveValue(l, owned.ranks[l.name])] as const,
+                        )),
                     ...(specFeat ? [['Specialization', specFeat.now ?? specFeat.full] as const] : []),
                   ].filter(([, v]) => v && v !== '—') as [string, string][];
                   const keywords = keywordsFor(owned.ref.category);
@@ -1800,6 +1819,7 @@ export default function CharacterSheet({ identity, setIdentity, status, setStatu
                       </p>
                       <h4>
                         {owned.name ?? owned.ref.ability}
+                        {owned.companion?.name && <span class="cf-shop-src"> · {owned.companion.name}</span>}
                         {owned.choices && <span class="cf-shop-src"> · {Object.values(owned.choices).join(', ')}</span>}
                       </h4>
                       {(aBadge || fBadge) && (
@@ -1907,7 +1927,7 @@ export default function CharacterSheet({ identity, setIdentity, status, setStatu
               <section class="cf-step sheet-box" style={boxStyle('p2', 'companions')} onDragOver={boxDragOver} onDrop={() => dropBox('p2', 'companions')}>
                 {grip('p2', 'companions')}
                 <h3>Companions</h3>
-                <div class="sheet-cards">
+                <div class="sheet-companions">
                   {companionCards.map(({ owned, card }) => {
                     const ref = { category: owned.ref.category, ability: owned.ref.ability };
                     const comp = owned.companion;
@@ -1915,7 +1935,7 @@ export default function CharacterSheet({ identity, setIdentity, status, setStatu
                     const bank = comp ? companionBank(state, owned) : { minor: 0, major: 0 };
                     const dials = COMPANION_TYPES[card.companionType!];
                     return (
-                      <div key={abilityKey(owned)} class="sheet-card">
+                      <div key={abilityKey(owned)} class="sheet-card sheet-companion">
                         <p class="cf-quirk-eyebrow">
                           {owned.ref.ability}
                           <span class="sheet-card-freq" title={`${dials.command} ${dials.upkeep}`}>
@@ -1963,14 +1983,6 @@ export default function CharacterSheet({ identity, setIdentity, status, setStatu
                                     <td>{resolveValue(l, comp.ranks[l.name])}</td>
                                   </tr>
                                 ))}
-                                {(card.options ?? [])
-                                  .filter((o) => o.placement !== 'top' && o.note)
-                                  .map((o) => (
-                                    <tr key={o.label}>
-                                      <td>{o.label}</td>
-                                      <td>{o.note}</td>
-                                    </tr>
-                                  ))}
                               </tbody>
                             </table>
                             <p class="sheet-record">

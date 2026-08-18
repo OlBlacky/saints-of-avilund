@@ -680,6 +680,10 @@ const blurb = 'Build a character of Avilund — and once they are Complete, this
     border: 1px solid var(--rule); border-left: 3px solid var(--gold);
     border-radius: 4px; background: var(--panel); padding: 0.7rem 0.9rem;
   }
+  .sheet-companions { display: grid; gap: 0.9rem; }
+  .sheet-companion .sheet-table td:first-child { width: 9rem; white-space: nowrap; }
+  .sheet-companion .cf-instname { font-size: 1.05rem; }
+  .sheet-companion .cf-compdesc { width: min(100%, 28rem); }
   /* A Passive is never read on your turn: no badges, a quiet rail, and it
      sorts to the bottom of the box until the player arranges it themselves. */
   .sheet-card--passive { border-left-color: var(--rule); }

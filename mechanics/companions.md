@@ -93,3 +93,9 @@ Named here so the dials are already waiting for them; the rules are not written 
 - **Henchman** — a hired person. The one Type where **Loyalty** does real work: the five-rung **Hireling Morale** ladder (Broken → Wavering → Steady → Resolute → Devoted) already exists in [friar.md](characters/friar.md), and wages already exist in the economy. A henchman is a person, so his numbers will be a person's.
 - **Familiar** — a caster's small bound creature. The Type that will test the **Numbers** dial: derived from its master rather than climbing a Level of its own.
 - **Mount** — a beast whose rules are mostly about carrying and moving another creature.
+
+---
+
+## Open
+
+- **Order effects.** A Beast's Orders are named (*Come, Stay, Attack, Guard, Fetch, Follow*) and counted by the Orders Ladder, but what each one does at the table is unwritten.
