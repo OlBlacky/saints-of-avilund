@@ -1022,6 +1022,70 @@ export function replay(events: RecordEvent[]): ReplayResult {
         break;
       }
 
+      case 'session-adjustment': {
+        // The paper-reconciliation batch (spec §13). Atomic like the
+        // Basket: everything validates first, and any bad line refuses
+        // the whole batch — no partial commits.
+        if (!state.gear) { flag(e, 'wrong-order', 'no reconciliation before the Starting Gear roll'); break; }
+        const coin = e.coinSp ?? 0;
+        const gained = e.gained ?? [];
+        const lost = e.lost ?? [];
+        if (coin === 0 && gained.length === 0 && lost.length === 0) {
+          flag(e, 'unknown-ref', 'an empty adjustment changes nothing');
+          break;
+        }
+        const before = flags.length;
+        if (!Number.isInteger(coin)) {
+          flag(e, 'unknown-ref', 'coin moves a whole number of silver');
+        } else if (state.wealthCp + coin * 10 < 0) {
+          flag(e, 'insufficient-funds', `${-coin} sp taken against ${state.wealthCp / 10} sp on hand`);
+        }
+        for (const g of gained) {
+          if (!(g.itemId ? itemName(g.itemId) ?? g.name : g.name)) {
+            flag(e, 'unknown-ref', 'a gained item needs a name or a catalogue id');
+          }
+          if (g.qty !== undefined && (!Number.isInteger(g.qty) || g.qty < 1)) {
+            flag(e, 'unknown-ref', 'gained quantities are whole and positive');
+          }
+        }
+        // Lost lines tally per stack, so two lines on one stack cannot
+        // together take more than it holds.
+        const taken = new Map<string, number>();
+        for (const l of lost) {
+          const inst = state.inventory.find((i) => i.instanceId === l.instanceId);
+          if (!inst) { flag(e, 'unknown-ref', `no owned item "${l.instanceId}" to remove`); continue; }
+          const qty = l.qty ?? inst.qty;
+          if (!Number.isInteger(qty) || qty < 1) {
+            flag(e, 'unknown-ref', 'removed quantities are whole and positive');
+            continue;
+          }
+          const total = (taken.get(l.instanceId) ?? 0) + qty;
+          if (total > inst.qty) { flag(e, 'unknown-ref', `${inst.name} has only ${inst.qty} to remove`); continue; }
+          taken.set(l.instanceId, total);
+        }
+        if (flags.length > before) break;
+        if (coin !== 0) {
+          netCp += coin * 10;
+          state.wealthCp = openingCp + netCp;
+        }
+        for (const [instanceId, qty] of taken) {
+          const inst = state.inventory.find((i) => i.instanceId === instanceId)!;
+          inst.qty -= qty;
+          if (inst.qty === 0) state.inventory = state.inventory.filter((i) => i !== inst);
+        }
+        gained.forEach((g, i) => {
+          state.inventory.push({
+            instanceId: `${e.id}:g${i}`,
+            itemId: g.itemId,
+            name: (g.itemId ? itemName(g.itemId) ?? g.name : g.name)!,
+            qty: g.qty ?? 1,
+            location: normalizeLocation('equipped', g.itemId),
+            origin: 'grant',
+          });
+        });
+        break;
+      }
+
       case 'item-moved': {
         const inst = state.inventory.find((i) => i.instanceId === e.instanceId);
         if (!inst) { flag(e, 'unknown-ref', `no owned item "${e.instanceId}" to move`); break; }

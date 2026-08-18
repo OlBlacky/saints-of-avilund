@@ -63,6 +63,24 @@ import Campaigns from '../../components/campaigns/Campaigns.tsx';
     .session { margin: 0 0 1.1rem; }
     .session-head { display: flex; gap: 0.8rem; align-items: center; margin-bottom: 0.4rem; }
     .session-notes { display: block; width: 100%; min-height: 4.5rem; resize: vertical; }
+    .campaign-tabs { display: flex; gap: 0.6rem; margin: 1.2rem 0 0.4rem; }
+    .roster .campaign-tab.on { background: var(--gold); color: var(--panel); }
+    .sheet-statelabel {
+      display: inline-flex; align-items: center; gap: 0.4rem;
+      font-variant: small-caps; letter-spacing: 0.05em;
+      color: var(--gold); font-size: 0.85rem;
+    }
+    .module { margin-top: 1rem; }
+    .module-identity { display: flex; gap: 0.8rem; flex-wrap: wrap; margin-bottom: 1rem; }
+    .module-identity .module-wide { flex: 1 1 16rem; }
+    .module-identity .module-wide input { flex: 1; }
+    .module-text { display: block; width: 100%; min-height: 7rem; resize: vertical; margin-bottom: 0.6rem; }
+    .module-outline { margin-bottom: 1.4rem; }
+    .module-chapter { border-top: 1px dotted var(--rule); padding-top: 0.8rem; margin-bottom: 1.2rem; }
+    .module-chapter-head { display: flex; gap: 0.5rem; align-items: center; margin-bottom: 0.5rem; }
+    .module-chapter-head strong { white-space: nowrap; }
+    .module-grow { flex: 1; }
+    .module-chapter > input.module-wide { display: block; width: 100%; margin-bottom: 0.5rem; }
     .grant-form { margin-top: 1rem; }
     .grant-what { display: block; width: 100%; }
     .grant-recipients { display: flex; gap: 1rem; flex-wrap: wrap; align-items: center; margin: 0.6rem 0; }

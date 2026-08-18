@@ -132,6 +132,21 @@ export type RecordEvent =
    * roster sheet records it at the DM's word (source 'gm'); the sandbox
    * grants freely. Amount is the decision here, so the event carries it. */
   | (BaseEvent & { type: 'coin-granted'; amountSp: number; note?: string })
+  /** The paper-reconciliation batch (spec §13): after a Session played on
+   * paper, the whole changeset — coin, things gained, things gone — commits
+   * as one event. Atomic like the Basket: any bad line refuses the batch.
+   * v1 is self-approved; the accounts era inserts the DM's approval. */
+  | (BaseEvent & {
+      type: 'session-adjustment';
+      /** The player's label for the Session it reconciles. */
+      note?: string;
+      /** The session's net coin change, in signed whole silver. */
+      coinSp?: number;
+      /** Picked up on paper: catalogue-backed by id, free-named otherwise. */
+      gained?: { itemId?: string; name?: string; qty?: number }[];
+      /** Spent, lost, or given away: an owned stack — all of it unless qty. */
+      lost?: { instanceId: string; qty?: number }[];
+    })
   /** Move an owned item between locations, and optionally to a new place in
    * the sheet's order (sheet organization, durable). A move with an
    * unchanged location is a pure reorder. */

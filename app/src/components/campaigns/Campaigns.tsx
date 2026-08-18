@@ -23,6 +23,7 @@ import {
   updateSession,
 } from '../../lib/campaign-store';
 import type { CampaignRecord } from '../../lib/campaign-store';
+import ModuleEditor from './ModuleEditor';
 
 const BASE = import.meta.env.BASE_URL;
 
@@ -217,6 +218,7 @@ function GrantLedger({
 
 function CampaignHome({ campaign: initial }: { campaign: CampaignRecord }) {
   const [campaign, setCampaign] = useState(initial);
+  const [view, setView] = useState<'table' | 'module'>('table');
   const [player, setPlayer] = useState('');
   const [character, setCharacter] = useState('');
   const [note, setNote] = useState('');
@@ -244,6 +246,26 @@ function CampaignHome({ campaign: initial }: { campaign: CampaignRecord }) {
       <h2>{campaign.name}</h2>
       <p>Entry Level {campaign.entryLevel}</p>
 
+      <div class="campaign-tabs">
+        <button
+          type="button"
+          class={view === 'table' ? 'buy campaign-tab on' : 'buy campaign-tab'}
+          onClick={() => setView('table')}
+        >
+          The Table
+        </button>
+        <button
+          type="button"
+          class={view === 'module' ? 'buy campaign-tab on' : 'buy campaign-tab'}
+          onClick={() => setView('module')}
+        >
+          The Module
+        </button>
+      </div>
+
+      {view === 'module' && <ModuleEditor campaign={campaign} stage={setCampaign} save={save} />}
+
+      {view === 'table' && (<>
       <h3>Roster</h3>
       {note && <p class="roster-note">{note}</p>}
       {campaign.roster.length === 0 ? (
@@ -317,6 +339,7 @@ function CampaignHome({ campaign: initial }: { campaign: CampaignRecord }) {
       <SessionLog campaign={campaign} save={save} />
 
       <GrantLedger campaign={campaign} save={save} />
+      </>)}
 
       <p style="margin-top:1.6rem;"><a href={`${BASE}campaigns/`}>&larr; All campaigns</a></p>
     </div>

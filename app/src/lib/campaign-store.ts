@@ -49,14 +49,143 @@ export interface CampaignOptions {
   partyInventory: boolean;
 }
 
+// ── The Adventure Module (spec §13) ─────────────────────────────────────
+// One file shape whether we shipped it, the DM authored it here in the
+// Campaign Builder, or it was bought. Authored modules live embedded in
+// the campaign record.
+
+/** A Chronicle Entry authored in the Module (spec §4). */
+export interface ModuleCE {
+  id: string;
+  title: string;
+  /** The entry code the table speaks aloud ("K-17"). */
+  code: string;
+  text: string;
+  /** When players get it: on attach/enrollment, or held for a Reward. */
+  reveal: 'on-attach' | 'held';
+}
+
+/** A Map Book entry; the image travels as a data URL, like the portrait. */
+export interface ModuleMap {
+  id: string;
+  title: string;
+  image?: string;
+  reveal: 'on-enrollment' | 'dm-activated' | 'dm-only';
+}
+
+/** A prepared set piece. Text until the bestiary lands. */
+export interface ModuleEncounter {
+  id: string;
+  title: string;
+  text: string;
+}
+
+/** A Mark: name + rule text (spec §13; display-only on the sheet, Market
+ * access and standing discounts the enforced exceptions — later). */
+export interface Mark {
+  name: string;
+  rule: string;
+}
+
+/** The Reward bundle at a Chapter's or Book's end — any part empty. */
+export interface Reward {
+  milestones: number;
+  /** Gear and treasure, as text lines in v1. */
+  gear: string[];
+  /** Held-back CEs and maps this Reward pays out, by id. */
+  ceIds: string[];
+  mapIds: string[];
+  marks: Mark[];
+}
+
+export function newReward(): Reward {
+  return { milestones: 0, gear: [], ceIds: [], mapIds: [], marks: [] };
+}
+
+/** The constituent unit of a campaign. A one-off is one Chapter. */
+export interface Chapter {
+  id: string;
+  title: string;
+  /** One line; the Campaign Summary outline assembles from these. */
+  summary: string;
+  dmText: string;
+  ces: ModuleCE[];
+  maps: ModuleMap[];
+  encounters: ModuleEncounter[];
+  reward: Reward;
+  /** Optional grouping (spec §13); absent = no Book. */
+  bookId?: string;
+}
+
+/** An optional grouping of Chapters; Books may be sold separately. */
+export interface Book {
+  id: string;
+  title: string;
+  cover?: Cover;
+  insideCover?: InsideCover;
+  reward: Reward;
+}
+
+/** The physical book's face — every field optional (spec §13). */
+export interface Cover {
+  title?: string;
+  subtitle?: string;
+  /** Cover artwork as a data URL. */
+  artwork?: string;
+  artist?: string;
+  medium?: string;
+  /** Entry level · party size · play length. */
+  banner?: string;
+  seriesLine?: string;
+  imprint?: string;
+}
+
+/** The title page and credits — every field optional (spec §13). */
+export interface InsideCover {
+  authors?: string;
+  additionalDesign?: string;
+  editing?: string;
+  coverArtist?: string;
+  interiorArtists?: string;
+  cartography?: string;
+  playtestedBy?: string;
+  specialThanks?: string;
+  dedication?: string;
+  versionPrinting?: string;
+  publicationDate?: string;
+  publisher?: string;
+  legalLine?: string;
+  contentNotes?: string;
+}
+
+export interface AdventureModule {
+  id: string;
+  title: string;
+  author: string;
+  version: string;
+  cover?: Cover;
+  insideCover?: InsideCover;
+  /** The Campaign Summary's overview prose; its outline assembles from
+   * the Chapters' summary lines and is never stored. */
+  overview: string;
+  /** Front matter: the DM introduction, and the CEs and maps revealed on
+   * enrollment. */
+  dmIntro: string;
+  frontCes: ModuleCE[];
+  frontMaps: ModuleMap[];
+  chapters: Chapter[];
+  books: Book[];
+  appendix: { id: string; title: string; text: string }[];
+}
+
 export interface CampaignRecord {
   id: string;
   schemaVersion: 1;
   name: string;
   /** The Level characters join at: 0 to the cap. */
   entryLevel: number;
-  /** The attached Adventure Module's id; absent = no Module. */
-  moduleId?: string;
+  /** The Adventure Module — authored here, shipped, or bought. */
+  module?: AdventureModule;
   roster: RosterEntry[];
   sessions: SessionEntry[];
   ledger: GrantEntry[];
@@ -130,6 +259,87 @@ export function updateSession(
 export function removeSession(c: CampaignRecord, id: string): CampaignRecord {
   if (!c.sessions.some((s) => s.id === id)) throw new Error('no such Session');
   return { ...c, sessions: c.sessions.filter((s) => s.id !== id) };
+}
+
+/** Module mutations — pure, like the roster's. ensureModule starts the
+ * authored Module; the rest require one and throw without it. */
+export function ensureModule(c: CampaignRecord): CampaignRecord {
+  if (c.module) return c;
+  return {
+    ...c,
+    module: {
+      id: crypto.randomUUID(),
+      title: c.name,
+      author: '',
+      version: 'draft',
+      overview: '',
+      dmIntro: '',
+      frontCes: [],
+      frontMaps: [],
+      chapters: [],
+      books: [],
+      appendix: [],
+    },
+  };
+}
+
+function withModule(c: CampaignRecord): AdventureModule {
+  if (!c.module) throw new Error('no Module to edit');
+  return c.module;
+}
+
+export function updateModule(
+  c: CampaignRecord,
+  patch: Partial<Pick<AdventureModule, 'title' | 'author' | 'version' | 'overview' | 'dmIntro'>>,
+): CampaignRecord {
+  return { ...c, module: { ...withModule(c), ...patch } };
+}
+
+export function addChapter(c: CampaignRecord): CampaignRecord {
+  const m = withModule(c);
+  const chapter: Chapter = {
+    id: crypto.randomUUID(),
+    title: '',
+    summary: '',
+    dmText: '',
+    ces: [],
+    maps: [],
+    encounters: [],
+    reward: newReward(),
+  };
+  return { ...c, module: { ...m, chapters: [...m.chapters, chapter] } };
+}
+
+export function updateChapter(
+  c: CampaignRecord,
+  id: string,
+  patch: Partial<Pick<Chapter, 'title' | 'summary' | 'dmText'>>,
+): CampaignRecord {
+  const m = withModule(c);
+  if (!m.chapters.some((ch) => ch.id === id)) throw new Error('no such Chapter');
+  return {
+    ...c,
+    module: { ...m, chapters: m.chapters.map((ch) => (ch.id === id ? { ...ch, ...patch } : ch)) },
+  };
+}
+
+export function removeChapter(c: CampaignRecord, id: string): CampaignRecord {
+  const m = withModule(c);
+  if (!m.chapters.some((ch) => ch.id === id)) throw new Error('no such Chapter');
+  return { ...c, module: { ...m, chapters: m.chapters.filter((ch) => ch.id !== id) } };
+}
+
+/** Move a Chapter one place up (-1) or down (+1); at the edge, no move. */
+export function moveChapter(c: CampaignRecord, id: string, dir: -1 | 1): CampaignRecord {
+  const m = withModule(c);
+  const from = m.chapters.findIndex((ch) => ch.id === id);
+  if (from === -1) throw new Error('no such Chapter');
+  const to = from + dir;
+  if (to < 0 || to >= m.chapters.length) return c;
+  const chapters = [...m.chapters];
+  const [moved] = chapters.splice(from, 1);
+  chapters.splice(to, 0, moved);
+  return { ...c, module: { ...m, chapters } };
 }
 
 /** Grant-ledger mutations — pure, like the roster's. The ledger is the

@@ -5,15 +5,20 @@
 import { describe, expect, it } from 'vitest';
 
 import {
+  addChapter,
   addGrant,
   addRosterEntry,
   addSession,
   createCampaign,
+  ensureModule,
   exportCampaignFile,
+  moveChapter,
   parseCampaignFile,
+  removeChapter,
   removeGrant,
   removeRosterEntry,
   removeSession,
+  updateChapter,
   updateRosterEntry,
   updateSession,
 } from './campaign-store';
@@ -27,7 +32,7 @@ describe('createCampaign', () => {
     expect(c.sessions).toEqual([]);
     expect(c.ledger).toEqual([]);
     expect(c.options).toEqual({ partyInventory: false });
-    expect(c.moduleId).toBeUndefined();
+    expect(c.module).toBeUndefined();
     expect(c.schemaVersion).toBe(1);
   });
 
@@ -176,5 +181,47 @@ describe('campaign file', () => {
     });
     expect(() => parseCampaignFile(characterFile)).toThrow();
     expect(() => parseCampaignFile('nonsense')).toThrow();
+  });
+});
+
+describe('module mutations', () => {
+  const withModule = () => ensureModule(createCampaign('The Femur', 0));
+
+  it('ensureModule starts once, titled after the campaign, and is idempotent', () => {
+    const c = withModule();
+    expect(c.module!.title).toBe('The Femur');
+    expect(c.module!.chapters).toEqual([]);
+    expect(ensureModule(c)).toBe(c);
+  });
+
+  it('chapter edits require a Module', () => {
+    expect(() => addChapter(createCampaign('a', 0))).toThrow();
+  });
+
+  it('adds, updates, and removes Chapters without mutating the original', () => {
+    const before = withModule();
+    let c = addChapter(before);
+    expect(before.module!.chapters).toEqual([]);
+    c = updateChapter(c, c.module!.chapters[0].id, { title: 'The Road', summary: 'To Vyshgorod' });
+    expect(c.module!.chapters[0]).toMatchObject({ title: 'The Road', summary: 'To Vyshgorod' });
+    expect(removeChapter(c, c.module!.chapters[0].id).module!.chapters).toEqual([]);
+    expect(() => updateChapter(c, 'nope', { title: 'x' })).toThrow();
+    expect(() => removeChapter(c, 'nope')).toThrow();
+  });
+
+  it('moves Chapters and stops at the edges', () => {
+    let c = addChapter(addChapter(addChapter(withModule())));
+    const [a, b, third] = c.module!.chapters.map((ch) => ch.id);
+    c = moveChapter(c, third, -1);
+    expect(c.module!.chapters.map((ch) => ch.id)).toEqual([a, third, b]);
+    expect(moveChapter(c, a, -1).module!.chapters[0].id).toBe(a);
+    expect(() => moveChapter(c, 'nope', 1)).toThrow();
+  });
+
+  it('a new Chapter carries an empty Reward', () => {
+    const c = addChapter(withModule());
+    expect(c.module!.chapters[0].reward).toEqual({
+      milestones: 0, gear: [], ceIds: [], mapIds: [], marks: [],
+    });
   });
 });

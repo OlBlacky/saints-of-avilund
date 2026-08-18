@@ -1283,3 +1283,74 @@ describe('the Renunciation of Nicetus closes the Saintly Market', () => {
     expect(flags).toEqual([]);
   });
 });
+
+describe('Session Adjustment', () => {
+  // A crystallized character holding a granted stack of 4 Rations.
+  const withStock = () => {
+    const grant = ev('item-granted', { itemId: 'rations-trail', qty: 4 });
+    return { events: [...crystallized(goodGear), grant], stackId: grant.id };
+  };
+
+  it('commits coin, gained, and lost as one batch', () => {
+    const { events, stackId } = withStock();
+    const { state, flags } = replay([
+      ...events,
+      ev('session-adjustment', {
+        note: 'Session at the mill',
+        coinSp: -12,
+        gained: [{ name: 'sprigs of feverfew', qty: 3 }, { itemId: 'longsword' }],
+        lost: [{ instanceId: stackId, qty: 1 }],
+      }),
+    ]);
+    expect(flags).toEqual([]);
+    const before = replay(events).state;
+    expect(state.wealthCp).toBe(before.wealthCp - 120);
+    expect(state.inventory.find((i) => i.name === 'sprigs of feverfew')!.qty).toBe(3);
+    expect(state.inventory.find((i) => i.itemId === 'longsword')!.name).toBe('Longsword');
+    expect(state.inventory.find((i) => i.instanceId === stackId)!.qty).toBe(3);
+  });
+
+  it('losing a whole stack removes it', () => {
+    const { events, stackId } = withStock();
+    const { state, flags } = replay([
+      ...events,
+      ev('session-adjustment', { lost: [{ instanceId: stackId }] }),
+    ]);
+    expect(flags).toEqual([]);
+    expect(state.inventory.some((i) => i.instanceId === stackId)).toBe(false);
+  });
+
+  it('one bad line refuses the whole batch', () => {
+    const { events, stackId } = withStock();
+    const { state, flags } = replay([
+      ...events,
+      ev('session-adjustment', {
+        coinSp: 5,
+        gained: [{ name: 'a lantern' }],
+        lost: [{ instanceId: 'nope' }],
+      }),
+    ]);
+    expect(flags).toHaveLength(1);
+    const before = replay(events).state;
+    expect(state.wealthCp).toBe(before.wealthCp);
+    expect(state.inventory.some((i) => i.name === 'a lantern')).toBe(false);
+    expect(state.inventory.find((i) => i.instanceId === stackId)!.qty).toBe(4);
+  });
+
+  it('two lost lines cannot together overdraw one stack', () => {
+    const { events, stackId } = withStock();
+    const { flags } = replay([
+      ...events,
+      ev('session-adjustment', {
+        lost: [{ instanceId: stackId, qty: 3 }, { instanceId: stackId, qty: 2 }],
+      }),
+    ]);
+    expect(flags).toHaveLength(1);
+  });
+
+  it('refuses a coin overdraw and an empty batch', () => {
+    const { events } = withStock();
+    expect(replay([...events, ev('session-adjustment', { coinSp: -100000 })]).flags).toHaveLength(1);
+    expect(replay([...events, ev('session-adjustment', {})]).flags).toHaveLength(1);
+  });
+});

@@ -55,6 +55,8 @@ import type { CharacterState, OwnedItem } from '../../lib/record/replay';
 import type { PlayState, VersionPayload } from '../../lib/store';
 import MarketShop, { QualityMenu, basketTotalsCp, commerceRankOf } from './MarketShop';
 import type { BasketLine } from './MarketShop';
+import SessionAdjustment from './SessionAdjustment';
+import type { AdjustmentDraft } from './SessionAdjustment';
 
 /** The in-turn Action rungs, as the sheet says them. */
 const COMMAND_LABEL: Record<string, string> = {
@@ -221,6 +223,16 @@ function describeEvent(e: RecordEvent): string {
     }
     case 'item-granted': return `Received ${e.name ?? e.itemId}${e.qty && e.qty > 1 ? ` ×${e.qty}` : ''}${e.note ? ` — ${e.note}` : ''}`;
     case 'coin-granted': return `${e.amountSp >= 0 ? 'Reward' : 'Coin taken'}: ${fmtCoins(Math.abs(e.amountSp) * 10)}${e.note ? ` — ${e.note}` : ''}`;
+    case 'session-adjustment': {
+      const parts = [
+        e.coinSp ? `${e.coinSp > 0 ? '+' : '−'}${fmtCoins(Math.abs(e.coinSp) * 10)}` : '',
+        e.gained?.length
+          ? `gained ${e.gained.map((g) => `${g.name ?? g.itemId}${g.qty && g.qty > 1 ? ` ×${g.qty}` : ''}`).join(', ')}`
+          : '',
+        e.lost?.length ? `removed ${e.lost.length} item${e.lost.length === 1 ? '' : 's'}` : '',
+      ].filter(Boolean);
+      return `Session Adjustment${e.note ? ` — ${e.note}` : ''}: ${parts.join(' · ')}`;
+    }
     case 'item-moved': return `Moved an item`;
   }
 }
@@ -288,6 +300,7 @@ export default function CharacterSheet({ identity, setIdentity, status, setStatu
   // Manage Mode: the sheet is read-only at the table; the Manage Character
   // button opens the editing surfaces (Details, Sessions, Milestones).
   const [manage, setManage] = useState(false);
+  const [adjust, setAdjust] = useState(false);
   // Pending Quality ticks per owned instance (the Commission button spends them).
   const [mwTicks, setMwTicks] = useState<Record<string, string[]>>({});
   // The Reward field — silver granted (or taken) outside commerce.
@@ -884,6 +897,15 @@ export default function CharacterSheet({ identity, setIdentity, status, setStatu
           <div class="sheet-manage-panel">
             <span class="sheet-record">Sessions {state.sessions} · Milestones {state.milestones}</span>
             <button type="button" class="buy" onClick={() => append(mk('session-logged', {}))}>Log a Session</button>
+            <button
+              type="button"
+              class="buy"
+              disabled={!state.gear}
+              title={!state.gear ? 'Nothing to reconcile until the Starting Gear is rolled.' : undefined}
+              onClick={() => setAdjust(!adjust)}
+            >
+              Session Adjustment
+            </button>
             {/* Milestones are the DM's to grant. The sandbox grants freely —
                 it is the play-around space; a roster character records the
                 DM's word, sourced 'gm'. */}
@@ -958,6 +980,16 @@ export default function CharacterSheet({ identity, setIdentity, status, setStatu
               </button>
             )}
           </div>
+        )}
+        {manage && adjust && state.gear && (
+          <SessionAdjustment
+            inventory={state.inventory}
+            onCommit={(draft: AdjustmentDraft) => {
+              append(mk('session-adjustment', draft));
+              setAdjust(false);
+            }}
+            onClose={() => setAdjust(false)}
+          />
         )}
       </section>
         </div>
