@@ -182,3 +182,35 @@ export function putCampaign(record: CampaignRecord): Promise<unknown> {
 export function deleteCampaign(id: string): Promise<unknown> {
   return tx(CAMPAIGN_STORE, 'readwrite', (s) => s.delete(id));
 }
+
+/** Serialize for the .avilund-campaign.json file — the campaign's travel
+ * format, mirroring the character's (§10). */
+export function exportCampaignFile(record: CampaignRecord): string {
+  return JSON.stringify(record, null, 2);
+}
+
+/** Parse a campaign file, throwing on anything that isn't one — including
+ * a character file. Pure, so the check is testable without a database. */
+export function parseCampaignFile(text: string): CampaignRecord {
+  const parsed = JSON.parse(text) as CampaignRecord;
+  if (
+    parsed.schemaVersion !== 1 ||
+    typeof parsed.name !== 'string' ||
+    !Array.isArray(parsed.roster) ||
+    !Array.isArray(parsed.sessions) ||
+    !Array.isArray(parsed.ledger)
+  ) {
+    throw new Error('not a campaign file');
+  }
+  return parsed;
+}
+
+/** Import a campaign file; a colliding id gets a fresh one (a copy, not a
+ * clobber), matching the character import. */
+export async function importCampaignFile(text: string): Promise<CampaignRecord> {
+  const parsed = parseCampaignFile(text);
+  const existing = parsed.id ? await getCampaign(parsed.id) : undefined;
+  const record: CampaignRecord = existing || !parsed.id ? { ...parsed, id: crypto.randomUUID() } : parsed;
+  await putCampaign(record);
+  return record;
+}

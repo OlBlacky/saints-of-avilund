@@ -9,6 +9,8 @@ import {
   addRosterEntry,
   addSession,
   createCampaign,
+  exportCampaignFile,
+  parseCampaignFile,
   removeGrant,
   removeRosterEntry,
   removeSession,
@@ -156,5 +158,23 @@ describe('grant-ledger mutations', () => {
     c = addGrant(c, 'Milestone', [c.roster[0].id]);
     expect(removeGrant(c, c.ledger[0].id).ledger).toEqual([]);
     expect(() => removeGrant(c, 'nope')).toThrow();
+  });
+});
+
+describe('campaign file', () => {
+  it('round-trips through export and parse', () => {
+    let c = addRosterEntry(createCampaign('The Femur', 0), 'Piotr', 'Wulfric');
+    c = addSession(c, '2026-08-18');
+    expect(parseCampaignFile(exportCampaignFile(c))).toEqual(c);
+  });
+
+  it('rejects a character file and garbage', () => {
+    const characterFile = JSON.stringify({
+      id: 'x',
+      schemaVersion: 1,
+      versions: [{ id: 'v1', draft: { events: [] } }],
+    });
+    expect(() => parseCampaignFile(characterFile)).toThrow();
+    expect(() => parseCampaignFile('nonsense')).toThrow();
   });
 });

@@ -11,7 +11,9 @@ import {
   addSession,
   createCampaign,
   deleteCampaign,
+  exportCampaignFile,
   getCampaign,
+  importCampaignFile,
   listCampaigns,
   putCampaign,
   removeGrant,
@@ -25,6 +27,15 @@ import type { CampaignRecord } from '../../lib/campaign-store';
 const BASE = import.meta.env.BASE_URL;
 
 const openHref = (id: string) => `${BASE}campaigns/?id=${id}`;
+
+function download(name: string, text: string) {
+  const blob = new Blob([text], { type: 'application/json' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = `${name.replace(/[^\w\- ]+/g, '').trim() || 'campaign'}.avilund-campaign.json`;
+  a.click();
+  URL.revokeObjectURL(a.href);
+}
 
 /** The Session log — the meta-Chronicle. Newest shown first; the Session
  * number is the entry's chronological position, so it renders from the
@@ -336,10 +347,25 @@ function CampaignList({
   };
 
   const doDelete = async (c: CampaignRecord) => {
-    const typed = prompt(`Deleting is forever.\n\nType the campaign's name (${c.name}) to continue:`);
+    const typed = prompt(
+      `Deleting is forever. A backup file will download first.\n\nType the campaign's name (${c.name}) to continue:`,
+    );
     if (typed !== c.name) return;
+    download(c.name, exportCampaignFile(c));
     await deleteCampaign(c.id);
     await refresh();
+  };
+
+  const doImport = (file: File) => {
+    file.text().then(async (text) => {
+      try {
+        await importCampaignFile(text);
+        setNote(`Imported ${file.name}.`);
+        await refresh();
+      } catch {
+        setNote(`${file.name} is not a campaign file.`);
+      }
+    });
   };
 
   return (
@@ -360,7 +386,12 @@ function CampaignList({
                 <td>{c.entryLevel}</td>
                 <td class="act">
                   <a class="buy" href={openHref(c.id)}>Open</a>
-                  <button type="button" class="undo" onClick={() => doDelete(c)}>Delete</button>
+                  <button type="button" class="buy" onClick={() => download(c.name, exportCampaignFile(c))}>
+                    Export
+                  </button>
+                  <button type="button" class="undo" title="delete (a backup downloads first)" onClick={() => doDelete(c)}>
+                    Delete
+                  </button>
                 </td>
               </tr>
             ))}
@@ -388,6 +419,19 @@ function CampaignList({
           />
         </label>
         <button type="button" class="cf-crystallize" onClick={create}>New Campaign</button>
+        <label class="cf-roll roster-import">
+          Import a campaign file
+          <input
+            type="file"
+            accept=".json,application/json"
+            style="display:none"
+            onChange={(e) => {
+              const file = (e.target as HTMLInputElement).files?.[0];
+              if (file) doImport(file);
+              (e.target as HTMLInputElement).value = '';
+            }}
+          />
+        </label>
       </div>
     </div>
   );
