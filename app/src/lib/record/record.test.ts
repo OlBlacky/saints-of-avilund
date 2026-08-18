@@ -5,6 +5,7 @@
 import { describe, expect, it } from 'vitest';
 
 import type { RecordEvent } from './events';
+import { commandAction } from '../companions';
 import { QUIRKS } from '../quirks';
 import { derive } from './derive';
 import { accessibleCategories, companionLevel, levelFor, replay, windowFor } from './replay';
@@ -768,6 +769,33 @@ describe('enforcement', () => {
       ev('companion-orders-taught', { ref, orders: ['Come', 'Guard', 'Fetch'] }),
     ]);
     expect(wider.flags).toEqual([]);
+  });
+
+  it('Command — Beast wants a beast, and walks down the Action ladder', () => {
+    const ref = { category: 'Husbandry', ability: 'Shepherd’s Dog' };
+    const naturalist = [
+      ev('class-chosen', { classId: 'naturalist' }),
+      ev('subclass-chosen', { subclassId: 'shepherd' }),
+    ];
+    // No dog, no Feat.
+    const dogless = replay([...naturalist, ev('feat-bought', { featId: 'command-beast' })]);
+    expect(dogless.flags.some((f) => f.code === 'no-access')).toBe(true);
+
+    const kept = [...naturalist, ev('ability-bought', { ref })];
+    const bought = replay([...kept, ev('feat-bought', { featId: 'command-beast' })]);
+    expect(bought.flags).toEqual([]);
+    expect(commandAction('Beast', 0)).toBe('standard');
+    expect(commandAction('Beast', bought.state.feats[0].rank)).toBe('move');
+    // A Summoned thing states its Action on the card, so nothing steps down.
+    expect(commandAction('Summoned', 3)).toBeUndefined();
+
+    // The Ranks climb one per Level, like every Feat Ladder.
+    const tooFast = replay([
+      ...kept,
+      ev('feat-bought', { featId: 'command-beast' }),
+      ev('feat-advanced', { featId: 'command-beast', toRank: 2 }),
+    ]);
+    expect(tooFast.flags.length).toBeGreaterThan(0);
   });
 
   it('a Summoned Companion bonds nothing and climbs the card’s own Ladders', () => {

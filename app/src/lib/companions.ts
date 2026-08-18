@@ -9,6 +9,10 @@
 
 export type CompanionType = 'Beast' | 'Summoned';
 
+/** The in-turn ladder a Command Feat walks down (Rail 6's own steps). */
+export const COMMAND_STEPS = ['standard', 'move', 'minor', 'free'] as const;
+export type CommandStep = (typeof COMMAND_STEPS)[number];
+
 export interface CompanionDials {
   /** How it acts — its own turn, or the owner's Action. */
   command: string;
@@ -21,15 +25,22 @@ export interface CompanionDials {
   /** Whose numbers: its own stat block climbing its own Level, or the card's
    * Ladders bought with the owner's Advances. */
   numbers: 'own' | 'card';
+  /** What commanding costs before any Command Feat buys it down. Absent
+   * where the card states the Action itself. */
+  commandAction?: CommandStep;
+  /** The Command Feat for this Type, where one exists yet. */
+  commandFeatId?: string;
 }
 
 export const COMPANION_TYPES: Record<CompanionType, CompanionDials> = {
   Beast: {
-    command: 'Its own turn, its own initiative. Orders are free.',
+    command: 'Its own turn, its own initiative. A Standard Action to change its standing Order.',
     permanence: 'Until it dies.',
     loyalty: 'Cannot refuse, but knows only its Orders.',
     upkeep: 'Feed, 1 cp/day.',
     numbers: 'own',
+    commandAction: 'standard',
+    commandFeatId: 'command-beast',
   },
   Summoned: {
     command: 'It acts only when the owner spends the Action the card names.',
@@ -45,6 +56,18 @@ export const COMPANION_TYPES: Record<CompanionType, CompanionDials> = {
  * machinery on this, never on the Type name. */
 export function hasOwnLevel(type: CompanionType | undefined): boolean {
   return !!type && COMPANION_TYPES[type].numbers === 'own';
+}
+
+/** What it costs this character to command the Companion: the Type's own
+ * Action, stepped down one rung per Rank of its Command Feat. */
+export function commandAction(
+  type: CompanionType | undefined,
+  featRank: number,
+): CommandStep | undefined {
+  const base = type ? COMPANION_TYPES[type].commandAction : undefined;
+  if (!base) return undefined;
+  const at = COMMAND_STEPS.indexOf(base);
+  return COMMAND_STEPS[Math.min(at + featRank, COMMAND_STEPS.length - 1)];
 }
 
 /** The Ladder that counts a Companion's Orders is named for them. */

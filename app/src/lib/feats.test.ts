@@ -166,6 +166,8 @@ describe('feats data', () => {
     expect(FEATS.filter((f) => f.requires?.kind === 'skill-rank')).toHaveLength(SKILLS.length);
     expect(FEATS.filter((f) => f.requires?.kind === 'attribute')).toHaveLength(12);
     expect(FEATS.filter((f) => f.requires?.kind === 'save-total')).toHaveLength(6);
-    expect(FEATS.filter((f) => f.ladder)).toHaveLength(19 + SKILLS.length);
+    // 19 + one Command Feat per Companion Type that has rules (Beast).
+    expect(FEATS.filter((f) => f.ladder)).toHaveLength(20 + SKILLS.length);
+    expect(FEATS.filter((f) => f.requires?.kind === 'companion-type')).toHaveLength(1);
   });
 });

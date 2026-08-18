@@ -3055,7 +3055,11 @@ const HUSBANDRY: Ability[] = [
     name: 'Shepherd’s Dog', category: 'Husbandry', role: 'Companion', companionType: 'Beast', mode: 'Passive',
     orderRoster: ['Come', 'Stay', 'Attack', 'Guard', 'Fetch', 'Follow'],
     vars: {
-      frequency: frequency({ freq: 'passive', detail: 'the dog is always with you' }),
+      // The dog is always with you, but commanding it is a thing you DO: as
+      // often as you like, a Standard Action each time. The Command — Beast
+      // Feat is the only way down that ladder, so the card sells no steps.
+      frequency: frequency({ freq: 'at-will', detail: 'the dog is always with you' }),
+      action: actionCost({ act: 'standard', detail: 'to change its standing Order' }),
     },
     extraVars: [
       {

@@ -49,12 +49,20 @@ import type { EventSource, RecordEvent } from '../../lib/record/events';
 import type { ItemLocation } from '../../lib/record/events';
 import { accessFor, contentsOf, descendantsOf, gearRows, isStored, locationBeside } from '../../lib/record/arrange';
 import type { Breakdown, DerivedSheet, Part } from '../../lib/record/derive';
-import { COMPANION_TYPES, ORDERS_LADDER, hasOwnLevel } from '../../lib/companions';
+import { COMPANION_TYPES, ORDERS_LADDER, commandAction, hasOwnLevel } from '../../lib/companions';
 import { abilityKey, companionBank, companionLevel, companionOrdersAllowed, languageAllowance } from '../../lib/record/replay';
 import type { CharacterState, OwnedItem } from '../../lib/record/replay';
 import type { PlayState, VersionPayload } from '../../lib/store';
 import MarketShop, { QualityMenu, basketTotalsCp, commerceRankOf } from './MarketShop';
 import type { BasketLine } from './MarketShop';
+
+/** The in-turn Action rungs, as the sheet says them. */
+const COMMAND_LABEL: Record<string, string> = {
+  standard: 'A Standard Action',
+  move: 'A Move Action',
+  minor: 'A Minor Action',
+  free: 'Free',
+};
 
 /** Where a dragged item lands on the row under the pointer: beside it, or —
  * over a Container's middle — inside it. */
@@ -1933,6 +1941,12 @@ export default function CharacterSheet({ identity, setIdentity, status, setStatu
                     const level = comp ? companionLevel(state, owned) : 0;
                     const bank = comp ? companionBank(state, owned) : { minor: 0, major: 0 };
                     const dials = COMPANION_TYPES[card.companionType!];
+                    // What it costs this character to command it: the Type's
+                    // Action, stepped down a rung per Rank of its Command Feat.
+                    const commandRank = dials.commandFeatId
+                      ? state.feats.find((f) => f.featId === dials.commandFeatId)?.rank ?? 0
+                      : 0;
+                    const command = commandAction(card.companionType, commandRank);
                     return (
                       <div key={abilityKey(owned)} class="sheet-card sheet-companion">
                         <p class="cf-quirk-eyebrow">
@@ -1950,6 +1964,16 @@ export default function CharacterSheet({ identity, setIdentity, status, setStatu
                             {comp.description && <p class="cf-how">{comp.description}</p>}
                             <table class="cf-shop-table sheet-table">
                               <tbody>
+                                {command && (
+                                  <tr>
+                                    <td>
+                                      <span class="sheet-taught" title="What it costs you to change its standing Order. The Command Feat buys it down.">
+                                        Command
+                                      </span>
+                                    </td>
+                                    <td>{COMMAND_LABEL[command]} to change its standing Order</td>
+                                  </tr>
+                                )}
                                 {(card.extraVars ?? []).map((l) => (
                                   <tr key={l.name}>
                                     <td>

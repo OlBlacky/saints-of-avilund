@@ -540,6 +540,13 @@ function meetsRequirement(
       return saveTotal(state, req.attr) >= req.value
         ? null
         : `requires a ${req.attr} Save of +${req.value}`;
+    case 'companion-type': {
+      const kept = state.abilities.some((a) => {
+        const card = findCard(a.ref);
+        return card?.companionType === req.type && (!hasOwnLevel(req.type) || a.companion);
+      });
+      return kept ? null : `requires a ${req.type} Companion`;
+    }
     case 'language':
       return state.languages.includes(req.language) || state.homeLanguage === req.language
         ? null

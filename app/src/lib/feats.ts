@@ -9,6 +9,7 @@
 // Malediction one of your curses carries. The record engine checks it from
 // state; there are no per-Class feat tables.
 
+import type { CompanionType } from './companions';
 import { CRAFTS } from './equipment';
 import type { Language } from './languages';
 import type { Attribute, Effect } from './quirks';
@@ -28,7 +29,10 @@ export type FeatRequirement =
   | { kind: 'attribute-any'; attrs: Attribute[]; value: number }
   /** Knowing a Language ("Skills know, Languages read" — the magic Market
    * Feats gate on the tradition's tongue). */
-  | { kind: 'language'; language: Language };
+  | { kind: 'language'; language: Language }
+  /** Keeping a Companion of this Type — the Command Feats gate on the
+   * creature they command (mechanics/companions.md). */
+  | { kind: 'companion-type'; type: CompanionType };
 
 /** One Rank of a Feat Ladder. */
 export interface FeatRank {
@@ -492,6 +496,38 @@ const ladders: Feat[] = [
   },
 ];
 
+// ── Command Feats ───────────────────────────────────────────────────────────
+// One per Companion Type, and the only way down the Action ladder that
+// commanding costs (mechanics/companions.md — a Companion card states one
+// fixed Action and never sells steps of its own).
+//
+// Rail 6 prices an in-turn Action step as a Major and a Feat as a Minor. The
+// two cheap Ranks are the sanctioned exception — they buy one narrow thing,
+// commanding one creature already paid for with a Major, and the pacing cap
+// holds them to one Rank a Level. The step that reaches Free pays the Major
+// the rail asks.
+//
+// Only the Beast's exists: the other four Types have no rules yet, and a Feat
+// that commands a creature with no rules is furniture. [[the other four land
+// with their Types]]
+const commandFeats: Feat[] = [
+  {
+    id: 'command-beast',
+    name: 'Command — Beast',
+    brief: 'Changing your beast’s standing Order costs you less of your turn.',
+    ...gated(
+      'Changing the standing Order of a Beast Companion costs a Move Action in place of a Standard. The later Ranks make it a Minor Action, then Free.',
+      'Requires a bonded Beast Companion. One Rank per Level.',
+    ),
+    requires: { kind: 'companion-type' as const, type: 'Beast' as const },
+    ladder: [
+      { value: 'A Move Action to change its standing Order', cost: 'm' as const },
+      { value: 'A Minor Action to change its standing Order', cost: 'm' as const },
+      { value: 'Free to change its standing Order', cost: 'M' as const },
+    ],
+  },
+];
+
 export const FEATS: Feat[] = [
   ...weaponSpecs,
   ...implementSpecs,
@@ -505,6 +541,7 @@ export const FEATS: Feat[] = [
   craftingSpec,
   ...handling,
   ...ladders,
+  ...commandFeats,
 ];
 
 export function featById(id: string): Feat | undefined {

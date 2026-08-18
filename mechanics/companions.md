@@ -39,7 +39,7 @@ The Type answers five questions, and those answers are the whole difference betw
 
 | Dial | **Beast** | **Summoned** |
 |---|---|---|
-| Command | Its own turn, its own initiative. Orders are **free**. | It acts **only** when the owner spends the Action the card names. |
+| Command | Its own turn, its own initiative. A **Standard Action** to change its standing Order. | It acts **only** when the owner spends the Action the card names. |
 | Permanence | Until it dies. | The card's **Duration**, then it is gone. |
 | Loyalty | Cannot refuse, but knows only its **Orders**. | Cannot refuse. It is bound. |
 | Upkeep | Feed, **1 cp/day**. | A material component, spent per summoning. |
@@ -51,7 +51,10 @@ The Type answers five questions, and those answers are the whole difference betw
 
 A living animal, bonded to its owner. The first is the Naturalist's **Shepherd's Dog** (Husbandry).
 
-- **Command.** It acts on its own turn, on its own initiative. Directing it costs the owner nothing — but it will do only what it has been taught. **Orders are its command vocabulary**: an Order is a standing instruction it will carry out (*Come, Stay, Attack, Guard, Fetch, Follow*), and it knows as many as its Orders Ladder allows. Ask it for anything outside its Orders and it does not understand you.
+- **Command.** It acts on its own turn, on its own initiative, and it will do only what it has been taught. **Orders are its command vocabulary**: an Order is a standing instruction it carries out (*Come, Stay, Attack, Guard, Fetch, Follow*), and it knows as many as its Orders Ladder allows. Ask it for anything outside its Orders and it does not understand you.
+  - **An Order stands until it is changed.** The beast keeps to its standing Order — guarding, following, holding — every round, for nothing.
+  - **Changing it costs a Standard Action.** The cost sits on the decision, not on the upkeep: switching the dog from Guard to Attack mid-fight is your turn. The **Command — Beast** Feat buys that Action down.
+  - **A built-in reaction is not an Order.** Interpose and its kin fire on their own trigger, off your turn, and cost you nothing — they are the beast's instincts, not your instructions.
 - **Permanence.** Bonding takes **weeks** of training — days, with the Naturalist's Beast-Wise. Once bonded it stays until it dies.
 - **Loyalty.** No Morale check. A bonded beast is loyal; the limit on it is its Orders, not its nerve. It takes Conditions like any creature, and a Frightened beast behaves as the Condition says.
 - **Upkeep.** It eats: **1 cp/day**, foraged or fed. A beast left unfed for a week leaves — treat that as death for the Advance rules below.
@@ -85,6 +88,42 @@ This is the rule the whole framework turns on, and it applies to any Companion t
 - **Replacement.** The card is the bond, not the beast: the owner does not pay the Major again. A new Companion starts at **Level 0** and takes the Type's bonding time.
 
 Companions never earn Milestones. Every Level a Companion has is derived from its owner's.
+
+---
+
+## Companion Feats
+
+Every Type has one Feat of its own, climbed a Rank at a time, one Rank per Level. For the Types whose Command dial costs an Action, the Feat is the **only** way down that ladder: the card states one fixed Action to command and never sells steps of its own. Where a Type's card already sells its own command Action — the Summoned do — the Feat does a different job, and makes the creature itself better.
+
+The climb runs down the standard in-turn ladder — **Standard → Move → Minor → Free** — and the last step is the expensive one:
+
+| Rank | Step | Cost |
+|---|---|---|
+| 1 | Standard becomes a **Move** | 1 Minor |
+| 2 | Move becomes a **Minor** | 1 Minor |
+| 3 | Minor becomes **Free** | 1 Major |
+
+Rail 6 prices an in-turn Action step as a Major, and a Feat costs a Minor. The two cheap Ranks are the sanctioned exception: they buy one narrow thing — commanding one creature you already paid a Major for — and the pacing cap holds them to one Rank a Level. The step that reaches **Free** is where the exception stops, and it pays the Major the rail asks.
+
+| Type | Feat | What it commands |
+|---|---|---|
+| **Beast** | Command — Beast | Changing the beast's standing Order. **Built.** |
+| **Summoned** | *(name unauthored)* | **Not a buy-down.** Bind Spirit already sells its command Action inside the card, so this Feat makes the shade itself better — a Ladder over what it can take and what it can do. |
+| **Henchman** | Command — Henchman | Orders given to a hired person, who may still refuse — the Morale ladder is untouched by this Feat. |
+| **Familiar** | Command — Familiar | Directing the familiar, and the range at which it still hears you. |
+| **Mount** | Command — Mount | Directing the mount while mounted, which is the whole of its Command dial. |
+
+Only **Command — Beast** exists in the rules data. Henchman, Familiar and Mount wait on their Types: a Feat that commands a creature with no rules is furniture.
+
+The **Summoned** Feat is designed and unbuilt. Its Ranks improve the shade rather than the hand that directs it, and the rungs need choosing from what a bound thing actually has — its **HP**, its **Defences**, its **damage**, how long the binding **holds**, and how hard it is to break. A first sketch, at the usual two-Minors-then-a-Major shape:
+
+| Rank | The shade | Cost |
+|---|---|---|
+| 1 | +2 HP | 1 Minor |
+| 2 | +1 to all its Defences | 1 Minor |
+| 3 | Its attack deals one die-step more | 1 Major |
+
+[[Les to bless the rungs and name the Feat]]
 
 ---
 
