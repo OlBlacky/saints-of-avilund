@@ -1317,9 +1317,15 @@ export default function CharacterSheet({ identity, setIdentity, status, setStatu
         // into place pins the order, and the record's order stands from then on.
         const isPassive = (o: (typeof state.abilities)[number]) =>
           findCard(o.ref.category, o.ref.ability)?.vars.frequency?.freq === 'passive';
+        // A bonded Companion is not an Ability you use — it is a creature,
+        // and the Companions box below prints it whole. Left here it would
+        // render as a card with nothing on it.
+        const abilityCards = state.abilities.filter(
+          (o) => !companionCards.some(({ owned }) => owned === o),
+        );
         const sortedAbilities = state.abilitiesArranged
-          ? state.abilities
-          : [...state.abilities].sort((a, b) => Number(isPassive(a)) - Number(isPassive(b)));
+          ? abilityCards
+          : [...abilityCards].sort((a, b) => Number(isPassive(a)) - Number(isPassive(b)));
 
         /** The grip that lifts an Ability card — the same handle the sheet's
          * boxes carry, so the card's own buttons and text stay usable. */
@@ -1765,14 +1771,9 @@ export default function CharacterSheet({ identity, setIdentity, status, setStatu
                       ? [[ladder.name, resolveValue(ladder, owned.ranks[ladder.name])] as const]
                       : []),
                     ['Duration', val('duration')],
-                    // A bonded Companion's stat Ladders climb on its own
-                    // Ranks, not the owner's, and the Companions box prints
-                    // them — printing them here would show the beast at base.
-                    ...(hasOwnLevel(card.companionType)
-                      ? []
-                      : (card.extraVars ?? []).map(
-                          (l) => [l.name, resolveValue(l, owned.ranks[l.name])] as const,
-                        )),
+                    ...(card.extraVars ?? []).map(
+                      (l) => [l.name, resolveValue(l, owned.ranks[l.name])] as const,
+                    ),
                     ...(specFeat ? [['Specialization', specFeat.now ?? specFeat.full] as const] : []),
                   ].filter(([, v]) => v && v !== '—') as [string, string][];
                   const keywords = keywordsFor(owned.ref.category);

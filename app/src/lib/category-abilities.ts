@@ -3111,9 +3111,12 @@ const HUSBANDRY: Ability[] = [
           "HP 5 · Speed 40'",
           'AC 12 · other Defences 10 · DC 10 (= 10 + its Level)',
           'Bite +2 vs AC, 1d4 damage',
-          'Senses: keen nose and ears — Perception +3, and it smells what no man can',
         ],
         placement: 'top',
+      },
+      {
+        label: 'Senses',
+        note: 'Perception +3, and it smells what no man can.',
       },
       {
         label: 'Interpose',
