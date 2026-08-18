@@ -7,19 +7,84 @@ import { useEffect, useState } from 'preact/hooks';
 
 import {
   addRosterEntry,
+  addSession,
   createCampaign,
   deleteCampaign,
   getCampaign,
   listCampaigns,
   putCampaign,
   removeRosterEntry,
+  removeSession,
   updateRosterEntry,
+  updateSession,
 } from '../../lib/campaign-store';
 import type { CampaignRecord } from '../../lib/campaign-store';
 
 const BASE = import.meta.env.BASE_URL;
 
 const openHref = (id: string) => `${BASE}campaigns/?id=${id}`;
+
+/** The Session log — the meta-Chronicle. Newest shown first; the Session
+ * number is the entry's chronological position, so it renders from the
+ * array index. */
+function SessionLog({
+  campaign,
+  save,
+}: {
+  campaign: CampaignRecord;
+  save: (next: CampaignRecord) => Promise<void>;
+}) {
+  const log = () => save(addSession(campaign, new Date().toISOString().slice(0, 10)));
+
+  return (
+    <div class="session-log">
+      <h3>Session log</h3>
+      {campaign.sessions.length === 0 && <p class="cf-how">No Sessions yet.</p>}
+      {campaign.sessions
+        .map((s, i) => ({ s, number: i + 1 }))
+        .reverse()
+        .map(({ s, number }) => (
+          <div class="session" key={s.id}>
+            <div class="session-head">
+              <strong>Session {number}</strong>
+              <input
+                class="roster-field"
+                type="date"
+                value={s.date}
+                onChange={(e) => {
+                  const typed = (e.target as HTMLInputElement).value;
+                  if (typed) save(updateSession(campaign, s.id, { date: typed }));
+                }}
+              />
+              <button
+                type="button"
+                class="undo"
+                onClick={() => {
+                  if (confirm(`Remove Session ${number}? Its notes go with it.`)) {
+                    save(removeSession(campaign, s.id));
+                  }
+                }}
+              >
+                Remove
+              </button>
+            </div>
+            <textarea
+              class="roster-field session-notes"
+              placeholder="Notes"
+              value={s.notes}
+              onChange={(e) =>
+                save(updateSession(campaign, s.id, {
+                  notes: (e.target as HTMLTextAreaElement).value,
+                }))}
+            />
+          </div>
+        ))}
+      <div class="roster-actions">
+        <button type="button" class="cf-crystallize" onClick={log}>Log a Session</button>
+      </div>
+    </div>
+  );
+}
 
 function CampaignHome({ campaign: initial }: { campaign: CampaignRecord }) {
   const [campaign, setCampaign] = useState(initial);
@@ -120,7 +185,9 @@ function CampaignHome({ campaign: initial }: { campaign: CampaignRecord }) {
         <button type="button" class="cf-crystallize" onClick={add}>Add to Roster</button>
       </div>
 
-      <p class="cf-how" style="margin-top:1.6rem;">The Session log and grant ledger are the next pieces to arrive.</p>
+      <SessionLog campaign={campaign} save={save} />
+
+      <p class="cf-how" style="margin-top:1.6rem;">The grant ledger is the next piece to arrive.</p>
       <p><a href={`${BASE}campaigns/`}>&larr; All campaigns</a></p>
     </div>
   );

@@ -19,11 +19,11 @@ export interface RosterEntry {
   character: string;
 }
 
-/** One entry in the Session log — the meta-Chronicle (spec §5). */
+/** One entry in the Session log — the meta-Chronicle (spec §5). The
+ * Session number is its 1-based position in the list, derived at render,
+ * so the log never carries a stale numbering. */
 export interface SessionEntry {
   id: string;
-  /** Session number, 1-based, assigned when logged. */
-  number: number;
   /** ISO date the Session was played. */
   date: string;
   /** The DM's notes. */
@@ -109,6 +109,27 @@ export function updateRosterEntry(
 export function removeRosterEntry(c: CampaignRecord, id: string): CampaignRecord {
   if (!c.roster.some((r) => r.id === id)) throw new Error('no such roster entry');
   return { ...c, roster: c.roster.filter((r) => r.id !== id) };
+}
+
+/** Session-log mutations — pure, like the roster's. */
+export function addSession(c: CampaignRecord, date: string): CampaignRecord {
+  if (!date.trim()) throw new Error('a Session needs a date');
+  const entry: SessionEntry = { id: crypto.randomUUID(), date: date.trim(), notes: '' };
+  return { ...c, sessions: [...c.sessions, entry] };
+}
+
+export function updateSession(
+  c: CampaignRecord,
+  id: string,
+  patch: Partial<Pick<SessionEntry, 'date' | 'notes'>>,
+): CampaignRecord {
+  if (!c.sessions.some((s) => s.id === id)) throw new Error('no such Session');
+  return { ...c, sessions: c.sessions.map((s) => (s.id === id ? { ...s, ...patch } : s)) };
+}
+
+export function removeSession(c: CampaignRecord, id: string): CampaignRecord {
+  if (!c.sessions.some((s) => s.id === id)) throw new Error('no such Session');
+  return { ...c, sessions: c.sessions.filter((s) => s.id !== id) };
 }
 
 export function listCampaigns(): Promise<CampaignRecord[]> {
