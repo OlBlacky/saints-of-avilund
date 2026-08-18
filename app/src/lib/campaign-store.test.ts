@@ -4,7 +4,12 @@
 
 import { describe, expect, it } from 'vitest';
 
-import { createCampaign } from './campaign-store';
+import {
+  addRosterEntry,
+  createCampaign,
+  removeRosterEntry,
+  updateRosterEntry,
+} from './campaign-store';
 
 describe('createCampaign', () => {
   it('trims the name and starts every list empty', () => {
@@ -33,5 +38,41 @@ describe('createCampaign', () => {
 
   it('mints distinct ids', () => {
     expect(createCampaign('a', 0).id).not.toBe(createCampaign('a', 0).id);
+  });
+});
+
+describe('roster mutations', () => {
+  const base = () => createCampaign('a', 0);
+
+  it('add appends a trimmed entry and leaves the original untouched', () => {
+    const before = base();
+    const after = addRosterEntry(before, '  Piotr ', ' Wulfric ');
+    expect(before.roster).toEqual([]);
+    expect(after.roster).toHaveLength(1);
+    expect(after.roster[0].player).toBe('Piotr');
+    expect(after.roster[0].character).toBe('Wulfric');
+  });
+
+  it('add allows a blank character but not a blank player', () => {
+    expect(addRosterEntry(base(), 'Piotr', '').roster[0].character).toBe('');
+    expect(() => addRosterEntry(base(), '   ', 'Wulfric')).toThrow();
+  });
+
+  it('update patches only the named entry', () => {
+    let c = addRosterEntry(addRosterEntry(base(), 'Piotr', ''), 'Anna', '');
+    c = updateRosterEntry(c, c.roster[0].id, { character: 'Wulfric' });
+    expect(c.roster[0].character).toBe('Wulfric');
+    expect(c.roster[1].character).toBe('');
+  });
+
+  it('remove drops the entry and leaves the rest', () => {
+    let c = addRosterEntry(addRosterEntry(base(), 'Piotr', ''), 'Anna', '');
+    c = removeRosterEntry(c, c.roster[0].id);
+    expect(c.roster.map((r) => r.player)).toEqual(['Anna']);
+  });
+
+  it('update and remove throw on an unknown id', () => {
+    expect(() => updateRosterEntry(base(), 'nope', { player: 'x' })).toThrow();
+    expect(() => removeRosterEntry(base(), 'nope')).toThrow();
   });
 });

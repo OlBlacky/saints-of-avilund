@@ -88,6 +88,29 @@ export function createCampaign(name: string, entryLevel: number): CampaignRecord
   };
 }
 
+/** Roster mutations are pure — a new record out, the original untouched —
+ * so the UI writes through putCampaign and the logic tests without a DB. */
+export function addRosterEntry(c: CampaignRecord, player: string, character: string): CampaignRecord {
+  const trimmed = player.trim();
+  if (!trimmed) throw new Error('a roster entry needs a player');
+  const entry: RosterEntry = { id: crypto.randomUUID(), player: trimmed, character: character.trim() };
+  return { ...c, roster: [...c.roster, entry] };
+}
+
+export function updateRosterEntry(
+  c: CampaignRecord,
+  id: string,
+  patch: Partial<Pick<RosterEntry, 'player' | 'character'>>,
+): CampaignRecord {
+  if (!c.roster.some((r) => r.id === id)) throw new Error('no such roster entry');
+  return { ...c, roster: c.roster.map((r) => (r.id === id ? { ...r, ...patch } : r)) };
+}
+
+export function removeRosterEntry(c: CampaignRecord, id: string): CampaignRecord {
+  if (!c.roster.some((r) => r.id === id)) throw new Error('no such roster entry');
+  return { ...c, roster: c.roster.filter((r) => r.id !== id) };
+}
+
 export function listCampaigns(): Promise<CampaignRecord[]> {
   return tx(CAMPAIGN_STORE, 'readonly', (s) => s.getAll() as IDBRequest<CampaignRecord[]>);
 }

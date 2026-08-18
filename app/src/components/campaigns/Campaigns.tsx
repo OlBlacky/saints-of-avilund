@@ -6,11 +6,14 @@
 import { useEffect, useState } from 'preact/hooks';
 
 import {
+  addRosterEntry,
   createCampaign,
   deleteCampaign,
   getCampaign,
   listCampaigns,
   putCampaign,
+  removeRosterEntry,
+  updateRosterEntry,
 } from '../../lib/campaign-store';
 import type { CampaignRecord } from '../../lib/campaign-store';
 
@@ -18,12 +21,106 @@ const BASE = import.meta.env.BASE_URL;
 
 const openHref = (id: string) => `${BASE}campaigns/?id=${id}`;
 
-function CampaignHome({ campaign }: { campaign: CampaignRecord }) {
+function CampaignHome({ campaign: initial }: { campaign: CampaignRecord }) {
+  const [campaign, setCampaign] = useState(initial);
+  const [player, setPlayer] = useState('');
+  const [character, setCharacter] = useState('');
+  const [note, setNote] = useState('');
+
+  /** Local state first (keystrokes stay cheap), persisted on commit. */
+  const save = async (next: CampaignRecord) => {
+    setCampaign(next);
+    await putCampaign(next);
+  };
+
+  const add = async () => {
+    try {
+      await save(addRosterEntry(campaign, player, character));
+    } catch (e) {
+      setNote((e as Error).message);
+      return;
+    }
+    setNote('');
+    setPlayer('');
+    setCharacter('');
+  };
+
   return (
     <div class="roster">
       <h2>{campaign.name}</h2>
       <p>Entry Level {campaign.entryLevel}</p>
-      <p class="cf-how">The Roster, Session log, and grant ledger are the next pieces to arrive.</p>
+
+      <h3>Roster</h3>
+      {note && <p class="roster-note">{note}</p>}
+      {campaign.roster.length === 0 ? (
+        <p class="cf-how">Nobody at the table yet.</p>
+      ) : (
+        <table class="roster-table">
+          <thead>
+            <tr><th>Player</th><th>Character</th><th></th></tr>
+          </thead>
+          <tbody>
+            {campaign.roster.map((r) => (
+              <tr key={r.id}>
+                <td>
+                  <input
+                    class="roster-field"
+                    type="text"
+                    value={r.player}
+                    onInput={(e) =>
+                      setCampaign(updateRosterEntry(campaign, r.id, {
+                        player: (e.target as HTMLInputElement).value,
+                      }))}
+                    onChange={(e) =>
+                      save(updateRosterEntry(campaign, r.id, {
+                        player: (e.target as HTMLInputElement).value.trim(),
+                      }))}
+                  />
+                </td>
+                <td>
+                  <input
+                    class="roster-field"
+                    type="text"
+                    value={r.character}
+                    onInput={(e) =>
+                      setCampaign(updateRosterEntry(campaign, r.id, {
+                        character: (e.target as HTMLInputElement).value,
+                      }))}
+                    onChange={(e) =>
+                      save(updateRosterEntry(campaign, r.id, {
+                        character: (e.target as HTMLInputElement).value.trim(),
+                      }))}
+                  />
+                </td>
+                <td class="act">
+                  <button type="button" class="undo" onClick={() => save(removeRosterEntry(campaign, r.id))}>
+                    Remove
+                  </button>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      )}
+      <div class="roster-actions">
+        <input
+          class="roster-field"
+          type="text"
+          placeholder="Player"
+          value={player}
+          onInput={(e) => setPlayer((e.target as HTMLInputElement).value)}
+        />
+        <input
+          class="roster-field"
+          type="text"
+          placeholder="Character"
+          value={character}
+          onInput={(e) => setCharacter((e.target as HTMLInputElement).value)}
+        />
+        <button type="button" class="cf-crystallize" onClick={add}>Add to Roster</button>
+      </div>
+
+      <p class="cf-how" style="margin-top:1.6rem;">The Session log and grant ledger are the next pieces to arrive.</p>
       <p><a href={`${BASE}campaigns/`}>&larr; All campaigns</a></p>
     </div>
   );
