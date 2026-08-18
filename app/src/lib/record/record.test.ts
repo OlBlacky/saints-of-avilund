@@ -733,6 +733,43 @@ describe('enforcement', () => {
     expect(nothing.flags.some((f) => f.code === 'unknown-ref')).toBe(true);
   });
 
+  it('a Companion is taught Orders from its roster, up to what it can hold', () => {
+    const ref = { category: 'Husbandry', ability: 'Shepherd’s Dog' };
+    // Wisdom +2 is the Shepherd's own: the dog holds two Orders at Level 0.
+    const base = [
+      ev('class-chosen', { classId: 'naturalist' }),
+      ev('subclass-chosen', { subclassId: 'shepherd' }),
+      ev('attribute-bought', { attr: 'Wisdom' }),
+      ev('attribute-bought', { attr: 'Wisdom' }),
+      ev('ability-bought', { ref }),
+    ];
+    const taught = replay([...base, ev('companion-orders-taught', { ref, orders: ['Come', 'Guard'] })]);
+    expect(taught.flags).toEqual([]);
+    expect(taught.state.abilities[0].companion?.orders).toEqual(['Come', 'Guard']);
+
+    // The whole set is stated each time, so forgetting one is just a smaller set.
+    const relearned = replay([
+      ...base,
+      ev('companion-orders-taught', { ref, orders: ['Come', 'Guard'] }),
+      ev('companion-orders-taught', { ref, orders: ['Fetch'] }),
+    ]);
+    expect(relearned.state.abilities[0].companion?.orders).toEqual(['Fetch']);
+
+    // More than it can hold, and Orders no dog was ever taught, are refused.
+    const greedy = replay([...base, ev('companion-orders-taught', { ref, orders: ['Come', 'Guard', 'Fetch'] })]);
+    expect(greedy.flags.some((f) => f.code === 'over-cap')).toBe(true);
+    const nonsense = replay([...base, ev('companion-orders-taught', { ref, orders: ['Do My Taxes'] })]);
+    expect(nonsense.flags.some((f) => f.code === 'unknown-ref')).toBe(true);
+
+    // The Orders Ladder widens what it holds: one Rank, one more Order.
+    const wider = replay([
+      ...base,
+      ev('companion-advanced', { ref, ladder: 'Orders', toRank: 1 }),
+      ev('companion-orders-taught', { ref, orders: ['Come', 'Guard', 'Fetch'] }),
+    ]);
+    expect(wider.flags).toEqual([]);
+  });
+
   it('a Summoned Companion bonds nothing and climbs the card’s own Ladders', () => {
     const ref = { category: 'Witchcraft', ability: 'Bind Spirit' };
     const base = [

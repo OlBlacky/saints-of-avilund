@@ -112,6 +112,9 @@ export interface Ability {
   // Every card with the Companion role declares its Type, and the Type sets
   // the five dials in companions.ts (mechanics/companions.md).
   companionType?: CompanionType;
+  // The Orders this Companion can be taught. The Orders Ladder counts how
+  // many of them it knows at once; the player picks which.
+  orderRoster?: string[];
   vars: Partial<Record<VarKey, Variable>>;
   // Spell-builder chassis: the card comes with a default name (the Ability
   // name), which the player may rename, and may be bought more than once —

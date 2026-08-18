@@ -46,3 +46,35 @@ export const COMPANION_TYPES: Record<CompanionType, CompanionDials> = {
 export function hasOwnLevel(type: CompanionType | undefined): boolean {
   return !!type && COMPANION_TYPES[type].numbers === 'own';
 }
+
+/** The Ladder that counts a Companion's Orders is named for them. */
+export const ORDERS_LADDER = 'Orders';
+
+/** An Orders Ladder states its allowance in one shape, and only one:
+ * "As many Orders as its owner's <Attr>", with an optional "+ N". The sheet
+ * has to count them, so the wording is a vocabulary rather than prose —
+ * rails.test fails, by name, on any Ladder worded outside it. */
+const ORDERS_ALLOWANCE = /^As many Orders as its owner’s (Str|Dex|Con|Int|Wis|Cha)(?: \+ (\d+))?$/;
+
+const ATTR_BY_SHORT: Record<string, string> = {
+  Str: 'Strength', Dex: 'Dexterity', Con: 'Constitution',
+  Int: 'Intelligence', Wis: 'Wisdom', Cha: 'Charisma',
+};
+
+/** The attribute an Orders Ladder counts from, and what it adds on top.
+ * Undefined when the Ladder is worded outside the vocabulary. */
+export function parseOrdersAllowance(
+  value: string | undefined,
+): { attr: string; bonus: number } | undefined {
+  const m = value?.match(ORDERS_ALLOWANCE);
+  if (!m) return undefined;
+  return { attr: ATTR_BY_SHORT[m[1]], bonus: Number(m[2] ?? 0) };
+}
+
+/** How many Orders the Companion may be taught, given the Ladder's value at
+ * its current Rank and the owner's attribute. */
+export function ordersAllowed(value: string | undefined, attrValue: number): number {
+  const parsed = parseOrdersAllowance(value);
+  if (!parsed) return 0;
+  return Math.max(0, attrValue + parsed.bonus);
+}

@@ -263,6 +263,15 @@ const blurb = 'Build a character of Avilund — and once they are Complete, this
   }
   .cf-compdesc:focus { outline: none; border-bottom-style: solid; }
 
+  /* Orders: the roster the beast can be taught, ticked up to its allowance */
+  .cf-orders { margin: 0.35rem 0 0.5rem; }
+  .cf-orderpick { display: flex; flex-wrap: wrap; gap: 0.15rem 1rem; margin-top: 0.2rem; }
+  .cf-order {
+    display: inline-flex; align-items: center; gap: 0.3rem;
+    font-size: 0.9rem; cursor: pointer;
+  }
+  .cf-order--full { color: var(--ink-soft); opacity: 0.55; cursor: default; }
+
   /* Ladder tracks: climbed › resting value › next (button) › the road ahead */
   .cf-stepsep { color: var(--rule); margin: 0 0.05rem; }
   .cf-stepchip { font-size: 0.82rem; white-space: nowrap; }

@@ -3053,6 +3053,7 @@ const HARVEST: Ability[] = [
 const HUSBANDRY: Ability[] = [
   {
     name: 'Shepherd’s Dog', category: 'Husbandry', role: 'Companion', companionType: 'Beast', mode: 'Passive',
+    orderRoster: ['Come', 'Stay', 'Attack', 'Guard', 'Fetch', 'Follow'],
     vars: {
       frequency: frequency({ freq: 'passive', detail: 'the dog is always with you' }),
     },
@@ -3121,10 +3122,6 @@ const HUSBANDRY: Ability[] = [
       {
         label: 'Interpose',
         note: 'Built in. Interrupt, when an opponent attempts to move adjacent to an ally: the dog may shift 10\' and snap at them — the opponent takes −1 on attacks until the end of its next turn.',
-      },
-      {
-        label: 'Orders it can be taught',
-        detail: ['Come', 'Stay', 'Attack', 'Guard', 'Fetch', 'Follow'],
       },
       {
         label: 'Bonding',

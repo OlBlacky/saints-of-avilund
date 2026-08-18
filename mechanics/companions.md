@@ -21,6 +21,8 @@ A Companion is **not a character**. It has no attributes, no Class, no Skills, n
 
 A card grants **one** Companion at a time.
 
+**Orders are taught, not innate.** A Companion knows the Orders its owner has taught it, chosen from the roster its card declares, and never more at once than its Orders Ladder allows. Teaching is a change to the Companion, so it happens where every other purchase happens — not at the table mid-fight.
+
 ---
 
 ## The five dials

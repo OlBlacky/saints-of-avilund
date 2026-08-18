@@ -226,6 +226,10 @@ export type RecordEvent =
    * earned Advances die with it, and the card stands empty until a new one
    * is bonded. */
   | (BaseEvent & { type: 'companion-died'; ref: AbilityRef; note?: string })
+  /** Teach the Companion its Orders — the whole set it knows, replacing what
+   * it knew. Every Order must be on the card's roster, and no more of them
+   * than the Orders Ladder allows. */
+  | (BaseEvent & { type: 'companion-orders-taught'; ref: AbilityRef; orders: string[] })
   /** Bond a new Companion to a card that stands empty. The card is the bond,
    * not the beast: no Major is paid again, and the new one starts at Level 0. */
   | (BaseEvent & { type: 'companion-bonded'; ref: AbilityRef });

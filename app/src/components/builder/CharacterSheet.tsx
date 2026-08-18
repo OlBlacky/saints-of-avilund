@@ -49,8 +49,8 @@ import type { EventSource, RecordEvent } from '../../lib/record/events';
 import type { ItemLocation } from '../../lib/record/events';
 import { accessFor, contentsOf, descendantsOf, gearRows, isStored, locationBeside } from '../../lib/record/arrange';
 import type { Breakdown, DerivedSheet, Part } from '../../lib/record/derive';
-import { COMPANION_TYPES, hasOwnLevel } from '../../lib/companions';
-import { abilityKey, companionBank, companionLevel, languageAllowance } from '../../lib/record/replay';
+import { COMPANION_TYPES, ORDERS_LADDER, hasOwnLevel } from '../../lib/companions';
+import { abilityKey, companionBank, companionLevel, companionOrdersAllowed, languageAllowance } from '../../lib/record/replay';
 import type { CharacterState, OwnedItem } from '../../lib/record/replay';
 import type { PlayState, VersionPayload } from '../../lib/store';
 import MarketShop, { QualityMenu, basketTotalsCp, commerceRankOf } from './MarketShop';
@@ -1929,7 +1929,6 @@ export default function CharacterSheet({ identity, setIdentity, status, setStatu
                 <h3>Companions</h3>
                 <div class="sheet-companions">
                   {companionCards.map(({ owned, card }) => {
-                    const ref = { category: owned.ref.category, ability: owned.ref.ability };
                     const comp = owned.companion;
                     const level = comp ? companionLevel(state, owned) : 0;
                     const bank = comp ? companionBank(state, owned) : { minor: 0, major: 0 };
@@ -1945,42 +1944,20 @@ export default function CharacterSheet({ identity, setIdentity, status, setStatu
                         {comp ? (
                           <>
                             <h4>
-                              {/* Named on the sheet as well as in the builder:
-                                  a Companion bonded at the table is nameless
-                                  until someone names it. The event is logged
-                                  on commit, not per keystroke. */}
-                              <input
-                                class="cf-instname"
-                                value={comp.name ?? ''}
-                                placeholder="Name it"
-                                title="name this Companion"
-                                onChange={(ev2) =>
-                                  append(mk('companion-named', {
-                                    ref,
-                                    name: (ev2.target as HTMLInputElement).value,
-                                    description: comp.description ?? '',
-                                  }))}
-                              />
+                              {comp.name ?? 'Unnamed'}
                               <span class="cf-shop-src"> · Level {level} · DC {10 + level}</span>
                             </h4>
-                            <input
-                              class="cf-compdesc"
-                              value={comp.description ?? ''}
-                              placeholder="Describe it"
-                              title="describe this Companion"
-                              onChange={(ev2) =>
-                                append(mk('companion-named', {
-                                  ref,
-                                  name: comp.name ?? '',
-                                  description: (ev2.target as HTMLInputElement).value,
-                                }))}
-                            />
+                            {comp.description && <p class="cf-how">{comp.description}</p>}
                             <table class="cf-shop-table sheet-table">
                               <tbody>
                                 {(card.extraVars ?? []).map((l) => (
                                   <tr key={l.name}>
                                     <td>{l.name}</td>
-                                    <td>{resolveValue(l, comp.ranks[l.name])}</td>
+                                    <td>
+                                      {l.name === ORDERS_LADDER && (card.orderRoster ?? []).length > 0
+                                        ? `${comp.orders.length ? comp.orders.join(' · ') : 'None taught'} (${comp.orders.length} of ${companionOrdersAllowed(state, owned, card)})`
+                                        : resolveValue(l, comp.ranks[l.name])}
+                                    </td>
                                   </tr>
                                 ))}
                               </tbody>
@@ -1989,26 +1966,11 @@ export default function CharacterSheet({ identity, setIdentity, status, setStatu
                               Its own bank: {bank.minor}m · {bank.major}M
                               <span class="cf-shop-src"> · upkeep {dials.upkeep.toLowerCase()}</span>
                             </p>
-                            <button
-                              type="button"
-                              class="undo"
-                              title="Record its death. Your invested Advances return; its own die with it."
-                              onClick={() => {
-                                if (confirm(`Record the death of ${comp.name ?? owned.ref.ability}?`)) {
-                                  append(mk('companion-died', { ref }));
-                                }
-                              }}
-                            >
-                              It died
-                            </button>
                           </>
                         ) : (
                           <>
                             <h4>No Companion</h4>
-                            <p class="cf-how">A new one costs no Major and starts at Level 0.</p>
-                            <button type="button" class="buy" onClick={() => append(mk('companion-bonded', { ref }))}>
-                              Bond a new one
-                            </button>
+                            <p class="cf-how">Bond a new one from Manage Character.</p>
                           </>
                         )}
                       </div>

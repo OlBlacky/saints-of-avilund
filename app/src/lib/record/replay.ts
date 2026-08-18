@@ -9,10 +9,11 @@
 //   - the drift review: rules changed → replay → flags name what broke;
 //   - the sheet: state is what derive() renders.
 
-import { isUnchosenChoiceLadder } from '../abilities';
+import { isUnchosenChoiceLadder, resolveValue } from '../abilities';
+import type { Ability } from '../abilities';
 import { CATEGORIES } from '../category-abilities';
 import { classById, subclassById } from '../classes';
-import { hasOwnLevel } from '../companions';
+import { ORDERS_LADDER, hasOwnLevel, ordersAllowed, parseOrdersAllowance } from '../companions';
 import type { ClassDef, SubclassDef } from '../classes';
 import { featById } from '../feats';
 import type { FeatRequirement } from '../feats';
@@ -52,6 +53,8 @@ export interface OwnedAbility {
     bondedAtLevel: number;
     /** Stat-Ladder Ranks, keyed by the card's extraVars names. */
     ranks: Record<string, number>;
+    /** The Orders it knows, from the card's roster. */
+    orders: string[];
     /** Spent from the Companion's own earned Advances. */
     ownSpent: { minor: number; major: number };
     /** The owner's invested Advances — these refund on death. */
@@ -439,6 +442,24 @@ export function companionBank(
     minor: level - owned.companion.ownSpent.minor,
     major: Math.floor(level / 3) - owned.companion.ownSpent.major,
   };
+}
+
+/** How many Orders this Companion may know at once: its Orders Ladder at the
+ * Rank it has climbed, counted from the owner's attribute. Read at teaching
+ * time, so a later Attribute climb widens what the beast can hold. */
+export function companionOrdersAllowed(
+  state: CharacterState,
+  owned: OwnedAbility,
+  card: Ability,
+): number {
+  const ladder = card.extraVars?.find((l) => l.name === ORDERS_LADDER);
+  if (!ladder || !owned.companion) return 0;
+  const value = resolveValue(ladder, owned.companion.ranks[ORDERS_LADDER]);
+  const parsed = parseOrdersAllowance(value);
+  if (!parsed) return 0;
+  const attr = parsed.attr as Attribute;
+  const total = (state.attributeRanks[attr] ?? 0) - (state.flaws.includes(attr) ? 1 : 0);
+  return ordersAllowed(value, total);
 }
 
 /** Polyglot's language allowance: Ranks 1–3 grant free languages — the best
@@ -1093,6 +1114,7 @@ export function replay(events: RecordEvent[]): ReplayResult {
                   // its owner is 1, and rises with each Level thereafter.
                   bondedAtLevel: Math.max(1, levelFor(state.milestones, state.crystallized)),
                   ranks: {},
+                  orders: [],
                   ownSpent: { minor: 0, major: 0 },
                   ownerSpent: { minor: 0, major: 0 },
                 },
@@ -1243,6 +1265,30 @@ export function replay(events: RecordEvent[]): ReplayResult {
         break;
       }
 
+      case 'companion-orders-taught': {
+        const owned = state.abilities.find(
+          (a) => a.ref.category === e.ref.category && a.ref.ability === e.ref.ability,
+        );
+        const card = findCard(e.ref);
+        if (!owned?.companion || !card) {
+          flag(e, 'unknown-ref', `no Companion "${e.ref.ability}" to teach`);
+          break;
+        }
+        const roster = card.orderRoster ?? [];
+        const offRoster = e.orders.filter((o) => !roster.includes(o));
+        if (offRoster.length > 0) {
+          flag(e, 'unknown-ref', `${e.ref.ability} knows no Order "${offRoster[0]}"`);
+          break;
+        }
+        const allowed = companionOrdersAllowed(state, owned, card);
+        if (e.orders.length > allowed) {
+          flag(e, 'over-cap', `it can hold ${allowed} Order${allowed === 1 ? '' : 's'}, not ${e.orders.length}`);
+          break;
+        }
+        owned.companion.orders = [...new Set(e.orders)];
+        break;
+      }
+
       case 'companion-died': {
         const owned = state.abilities.find(
           (a) => a.ref.category === e.ref.category && a.ref.ability === e.ref.ability,
@@ -1272,6 +1318,7 @@ export function replay(events: RecordEvent[]): ReplayResult {
         owned.companion = {
           bondedAtLevel: Math.max(1, levelFor(state.milestones, state.crystallized)),
           ranks: {},
+          orders: [],
           ownSpent: { minor: 0, major: 0 },
           ownerSpent: { minor: 0, major: 0 },
         };

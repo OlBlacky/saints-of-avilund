@@ -46,6 +46,7 @@ import {
   classSkills,
   companionBank,
   companionLevel,
+  companionOrdersAllowed,
   grantedProficiencies,
   languageAllowance,
   replay,
@@ -513,9 +514,28 @@ export default function CreationFlow() {
     owned: ReturnType<typeof replay>['state']['abilities'][number];
   }) => {
     const ref = { category: catName, ability: card.name };
-    const comp = owned.companion!;
-    const level = companionLevel(state, owned);
-    const bank = companionBank(state, owned);
+    const comp = owned.companion;
+    const level = comp ? companionLevel(state, owned) : 0;
+    const bank = comp ? companionBank(state, owned) : { minor: 0, major: 0 };
+    // The Orders it knows, and how many it may hold at once.
+    const roster = card.orderRoster ?? [];
+    const known = comp?.orders ?? [];
+    const allowance = comp ? companionOrdersAllowed(state, owned, card) : 0;
+    const teach = (orders: string[]) =>
+      setDraft((d) => ({
+        ...d,
+        events: [
+          ...d.events.filter(
+            (x) =>
+              !(
+                x.type === 'companion-orders-taught' &&
+                x.ref.category === catName &&
+                x.ref.ability === card.name
+              ),
+          ),
+          mk('companion-orders-taught', { ref, orders }),
+        ],
+      }));
     const rename = (name: string, description: string) =>
       setDraft((d) => ({
         ...d,
@@ -531,6 +551,18 @@ export default function CreationFlow() {
           mk('companion-named', { ref, name, description }),
         ],
       }));
+    if (!comp) {
+      return (
+        <div class="cf-companion">
+          <span class="cf-advline cf-instline">
+            <span class="cf-instchoice">No Companion. A new one costs no Major and starts at Level 0.</span>
+            <button type="button" class="buy" onClick={() => append(mk('companion-bonded', { ref }))}>
+              Bond a new one
+            </button>
+          </span>
+        </div>
+      );
+    }
     return (
       <div class="cf-companion">
         <span class="cf-advline cf-instline">
@@ -556,6 +588,33 @@ export default function CreationFlow() {
           title="describe this Companion"
           onInput={(ev2) => rename(comp.name ?? '', (ev2.target as HTMLInputElement).value)}
         />
+        {roster.length > 0 && (
+          <div class="cf-orders">
+            <span class="cf-advline cf-instline">
+              <strong>Orders</strong>
+              <span class="cf-instchoice">{known.length} of {allowance}</span>
+            </span>
+            <div class="cf-orderpick">
+              {roster.map((order) => {
+                const has = known.includes(order);
+                const full = !has && known.length >= allowance;
+                return (
+                  <label key={order} class={full ? 'cf-order cf-order--full' : 'cf-order'}>
+                    <input
+                      type="checkbox"
+                      checked={has}
+                      disabled={full}
+                      title={full ? 'It can hold no more Orders' : undefined}
+                      onChange={() =>
+                        teach(has ? known.filter((o) => o !== order) : [...known, order])}
+                    />
+                    {order}
+                  </label>
+                );
+              })}
+            </div>
+          </div>
+        )}
         {(card.extraVars ?? []).map((ladder) =>
           LadderStrip({
             stripKey: ladder.name,
@@ -571,6 +630,18 @@ export default function CreationFlow() {
               e.ladder === ladder.name,
           }),
         )}
+        <button
+          type="button"
+          class="undo"
+          title="Record its death. Your invested Advances return; its own die with it."
+          onClick={() => {
+            if (confirm(`Record the death of ${comp.name ?? card.name}?`)) {
+              append(mk('companion-died', { ref }));
+            }
+          }}
+        >
+          It died
+        </button>
       </div>
     );
   };
@@ -1095,7 +1166,7 @@ export default function CreationFlow() {
                                 <tr class="cf-abadv">
                                   <td colspan={3}>
                                     {AdvStrip({ catName, card: ab, owned })}
-                                    {owned.companion && CompanionBox({ catName, card: ab, owned })}
+                                    {hasOwnLevel(ab.companionType) && CompanionBox({ catName, card: ab, owned })}
                                   </td>
                                 </tr>
                               )}

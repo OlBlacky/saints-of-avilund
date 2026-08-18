@@ -17,7 +17,7 @@ import { describe, expect, it } from 'vitest';
 import type { Ability, NamedLadder, Variable } from './abilities';
 import { CATEGORIES } from './category-abilities';
 import { CLASSES } from './classes';
-import { COMPANION_TYPES } from './companions';
+import { COMPANION_TYPES, ORDERS_LADDER, parseOrdersAllowance } from './companions';
 import { TRADITIONS } from './traditions';
 
 // ── Walking the corpus ──────────────────────────────────────────────────────
@@ -405,6 +405,24 @@ describe('Structure', () => {
     const unknown = CARDS.filter(({ card }) => card.companionType && !COMPANION_TYPES[card.companionType])
       .map(({ card, homeCategory }) => `${homeCategory} · ${card.name}: unknown Type`);
     expect([...undeclared, ...orphan, ...unknown]).toEqual([]);
+  });
+
+  it('every Orders Ladder is worded so the sheet can count it', () => {
+    const bad: string[] = [];
+    for (const { card, homeCategory } of CARDS) {
+      const ladder = card.extraVars?.find((l) => l.name === ORDERS_LADDER);
+      if (!ladder && !card.orderRoster) continue;
+      if (!ladder || !card.orderRoster?.length) {
+        bad.push(`${homeCategory} · ${card.name}: an Orders roster and its Ladder come together`);
+        continue;
+      }
+      for (const value of [ladder.base, ...(ladder.advances ?? []).map((a) => a.value)]) {
+        if (!parseOrdersAllowance(value)) {
+          bad.push(`${homeCategory} · ${card.name}: "${value}" is outside the Orders vocabulary`);
+        }
+      }
+    }
+    expect(bad).toEqual([]);
   });
 
   it('every card states a Frequency', () => {
