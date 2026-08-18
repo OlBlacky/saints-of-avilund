@@ -16,9 +16,14 @@ import type { RecordEvent } from './record/events';
 export type PlayState = 'new' | 'in-play' | 'downtime';
 
 const DB_NAME = 'sova';
-const DB_VERSION = 1;
+const DB_VERSION = 2;
 const STORE = 'characters';
+/** The Campaign object store (spec §13) — beside the roster, never inside
+ * a character. Its record shape and CRUD live in campaign-store.ts. */
+export const CAMPAIGN_STORE = 'campaigns';
 export const LEGACY_DRAFT_KEY = 'sova-builder-draft-v1';
+
+type StoreName = typeof STORE | typeof CAMPAIGN_STORE;
 
 /** The version payload — exactly the builder's working draft. */
 export interface VersionPayload {
@@ -60,8 +65,10 @@ function openDb(): Promise<IDBDatabase> {
   return new Promise((resolve, reject) => {
     const req = indexedDB.open(DB_NAME, DB_VERSION);
     req.onupgradeneeded = () => {
-      if (!req.result.objectStoreNames.contains(STORE)) {
-        req.result.createObjectStore(STORE, { keyPath: 'id' });
+      for (const name of [STORE, CAMPAIGN_STORE]) {
+        if (!req.result.objectStoreNames.contains(name)) {
+          req.result.createObjectStore(name, { keyPath: 'id' });
+        }
       }
     };
     req.onsuccess = () => resolve(req.result);
@@ -69,12 +76,16 @@ function openDb(): Promise<IDBDatabase> {
   });
 }
 
-function tx<T>(mode: IDBTransactionMode, run: (store: IDBObjectStore) => IDBRequest<T>): Promise<T> {
+export function tx<T>(
+  store: StoreName,
+  mode: IDBTransactionMode,
+  run: (store: IDBObjectStore) => IDBRequest<T>,
+): Promise<T> {
   return openDb().then(
     (db) =>
       new Promise<T>((resolve, reject) => {
-        const t = db.transaction(STORE, mode);
-        const req = run(t.objectStore(STORE));
+        const t = db.transaction(store, mode);
+        const req = run(t.objectStore(store));
         req.onsuccess = () => resolve(req.result);
         req.onerror = () => reject(req.error);
         t.oncomplete = () => db.close();
@@ -83,19 +94,19 @@ function tx<T>(mode: IDBTransactionMode, run: (store: IDBObjectStore) => IDBRequ
 }
 
 export function listCharacters(): Promise<CharacterRecord[]> {
-  return tx('readonly', (s) => s.getAll() as IDBRequest<CharacterRecord[]>);
+  return tx(STORE, 'readonly', (s) => s.getAll() as IDBRequest<CharacterRecord[]>);
 }
 
 export function getCharacter(id: string): Promise<CharacterRecord | undefined> {
-  return tx('readonly', (s) => s.get(id) as IDBRequest<CharacterRecord | undefined>);
+  return tx(STORE, 'readonly', (s) => s.get(id) as IDBRequest<CharacterRecord | undefined>);
 }
 
 export function putCharacter(record: CharacterRecord): Promise<unknown> {
-  return tx('readwrite', (s) => s.put({ ...record, updatedAt: new Date().toISOString() }));
+  return tx(STORE, 'readwrite', (s) => s.put({ ...record, updatedAt: new Date().toISOString() }));
 }
 
 export function deleteCharacter(id: string): Promise<unknown> {
-  return tx('readwrite', (s) => s.delete(id));
+  return tx(STORE, 'readwrite', (s) => s.delete(id));
 }
 
 export function newCharacter(draft: VersionPayload): CharacterRecord {

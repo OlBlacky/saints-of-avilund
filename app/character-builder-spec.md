@@ -231,7 +231,7 @@ The builder **hard-blocks** illegal purchases — caps, pacing, gates, category 
 - **Conditional bonuses are labeled lines, never merged.** "AC 17 · *19 while shield raised*" — computed but kept separate; a total never lies when the condition is false. (Serves shields, stances, Load Bands, auras.)
 - **Brief + full.** Every entity appearing as a sheet line (Feat, Quirk, gear property, condition…) carries two authored texts: a one-liner (small italic, on the sheet) and the full rules text (tooltip/tap on screen; Page 5 in print). No bare names.
 - **Canonical order, optional presence.** Fields render in one fixed order but only when they have something to say.
-- **Modes:** **play** (the default — only what the character owns; no ladders, costs, or teasers), **advance** (§7 spending — ladders with owned Ranks and priced next steps), and **Session Adjustment** (the reconciliation changeset, see Parking Lot). Print always renders play mode.
+- **Modes:** **play** (the default — only what the character owns; no ladders, costs, or teasers), **advance** (§7 spending — ladders with owned Ranks and priced next steps), and **Session Adjustment** (the reconciliation changeset, §13). Print always renders play mode.
 
 ### Page 1 · The Character
 
@@ -441,14 +441,64 @@ Campaign data besides the Module: name, entry level, roster, the **Session log**
 
 ---
 
+## 13. Campaigns — the framework (settled Aug 18 2026)
+
+### Where a Campaign lives
+
+A Campaign is its own record in the **DM's** browser — its own IndexedDB store beside the character roster, never inside a character. Characters do not depend on campaigns: a `.avilund.json` replays whole with no campaign attached. When a campaign gives a character something, a **copy** of the grant is written into the character's own log as a `source: 'gm'` event (§9, Layer B); the Campaign keeps its own ledger entry. The two records agree because the table made them agree, not because they share storage.
+
+### The table is the wire (v1)
+
+There is no backend and no browser-to-browser link. The table itself carries every grant, by three routes:
+
+1. **Codes** — CEs, maps, and Market access travel by short entry codes (§4, §11): the DM reads out "K-17", the player types it in.
+2. **Verbal grants** — Milestones, gear, Marks: the DM says it, the player records it on their own sheet, as tables have always worked.
+3. **Session Adjustment** — the paper-reconciliation flow (promoted from the Parking Lot; below).
+
+The DM's campaign screen is a **ledger and a prompter**: it tracks what the DM has issued, to whom, in which Session — even though the players' sheets are updated by the players themselves. When accounts land, the Distribute button (§4) starts pushing grants over the wire for real; the record shapes do not change.
+
+### The Campaign record
+
+What the DM's browser stores per Campaign:
+
+- **Name** and **entry level**.
+- **The attached Adventure Module** (below) — or none; a homebrew campaign is a Campaign with no Module, or one the DM authors.
+- **Roster** — player name + character name, as text: the characters live on the players' devices, so the roster is the DM's list of who is at the table, not a link to their records.
+- **The Session log** — the meta-Chronicle (§5); "Log a Session" belongs to the Campaign.
+- **The grant ledger** — every issue: what, to whom (a roster entry), which Session.
+- **Campaign Options** — the DM-togglable rule-module flags (§12): Party Inventory first, Currencies someday.
+
+### The Adventure Module file
+
+**One format, three sources.** An Adventure Module is a content package in a single file shape, the same whether **we** authored it (free one-offs and paid campaigns shipped with the site), **a DM** built it in the Campaign Builder (a later UI), or it was **bought** (the later store delivers the same file). The format is the foundation; the Builder UI and the store sit on top of it.
+
+Contents (settling §12's list into fields):
+
+- **Identity** — id, title, author, version, recommended entry level.
+- **Information for the DM** — the module's GM text, in sections.
+- **CEs** — each with its entry code and a reveal rule: *on attach* or *held as a Reward*.
+- **Maps** — Map Book entries (§4) with reveal rules: *on enrollment*, *DM-activated*, or *DM-only* (private maps stay with the DM Information).
+- **Encounters** — the prepared set pieces; monster profiles with DCs when the bestiary lands (the field exists now, the profile shape waits).
+- **Rewards** — what completing things grants: CEs · gear/treasure · Milestone Advancement · Marks. All land as granted events on character records — in v1 by the table-is-the-wire routes.
+
+Repo-shipped Modules live as data in `lib/modules/` (the `texts.ts` / `saints.ts` pattern); **St. Carpathi is the first**. The file is versioned like the character file (§10), so a bought Module can be updated.
+
+### Session Adjustment (promoted from the Parking Lot)
+
+After a Session played on paper, the player edits inventory and wealth freely in a **draft changeset** (coin spent, herbs picked); nothing touches the record until they commit, and the whole batch writes as **one logged event tied to the Session**. v1: self-approved, labelled as an adjustment batch. Accounts era: the batch goes to the DM, who approves or rejects with a note — the same shape, with an approval step inserted.
+
+### First build increment
+
+The thin shell, in order: the Campaign store + create/open a Campaign · Roster · Session log · Session Adjustment on the character side. Module packaging follows once St. Carpathi is authored.
+
+---
+
 ## Parking Lot — flagged for later chunks
 
 - **Custom-input Abilities** — *instances built Aug 7 2026*: builder cards (spell/curse builders) mint named copies, each with a validated build choice (element, Malediction), its own Ladders and pacing, renameable, bought repeatedly at 1 Major. Still open: **Companion sub-sheets** (the Shepherd's Dog as a little character on the same engine, invested-advance refunds; the validator must catch orphaning the dog) and **in-play collections** (spellbooks — found spells arrive as granted events; recipe books).
 - **GM NPC-building** — do GMs use the builder for NPCs? (From §2 discussion.)
-- **Campaign internals** — roster, session log mechanics, Distribute flow, homebrew CEs (deferred; v1 is local-first).
 - **Currencies** (spec another day) — multiple currencies whose worth varies by region of Avilund; travellers convert (at a cost) or pay more. Notably, this is a **Campaign Option** — a rule module the DM activates per campaign, a concept that will likely grow more members (the data model should expect DM-togglable option flags on a Campaign). Wealth/Markets machinery should keep a currency field in mind rather than assuming one coinage.
 - **Per-market standing discounts** (flagged Aug 11 2026) — a character may earn a lasting discount at a named Market as an adventure reward (a Friar completing an adventure gains 10% at a specific religious market). Grantable in play like Market access; stacks with Commerce percentages; keeping stock sorted by Market (the Imperial Square shelf) is what makes such rewards land on the right goods.
-- **Session Adjustment** *(working name)* — the paper-reconciliation mode: after a session played on paper, the player edits inventory/wealth freely in a draft changeset (coin spent, herbs picked); nothing commits until the **DM approves**, then the batch writes to the record as one logged event tied to the Session. DM can reject with a note. v1 local: self-approved, still logged as a labeled adjustment batch.
 - **Party Inventory** (canonical name — "Party Stash" retired): a **Campaign Option** (DM decides whether it exists — for one-offs, maybe not): a campaign-owned inventory (a keep, a wagon) visible to characters the GM chooses. Items move between sheets and Party Inventory as logged transfers; the DM can send items to it directly, as to any character's In-box. Access: any member deposits; only **Quartermasters** (players choose, DM assigns — see §2) withdraw, sell, or distribute. Its **Sell** button optimizes across the whole party — every member's reachable Markets (In Play-filtered) × their Commerce modifiers — and shows the math: *Bottle of Poison — 9 sp — sold by Piotr (Chaffer, +10%) — via Black Market access*. **Divide Spoils**: a Quartermaster pays out currency from the Party Inventory — stating an amount or a % of the purse — split equally across the chosen recipients (default: the whole party), delivered automatically to each PC's In-box as a logged transfer; indivisible remainders stay in the Party Inventory.
 
 ---
