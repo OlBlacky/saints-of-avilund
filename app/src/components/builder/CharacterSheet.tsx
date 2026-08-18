@@ -1952,7 +1952,15 @@ export default function CharacterSheet({ identity, setIdentity, status, setStatu
                               <tbody>
                                 {(card.extraVars ?? []).map((l) => (
                                   <tr key={l.name}>
-                                    <td>{l.name}</td>
+                                    <td>
+                                      {l.name === ORDERS_LADDER ? (
+                                        <span class="sheet-taught" title="Taught from Manage Character, in the Companion box under this card.">
+                                          {l.name}
+                                        </span>
+                                      ) : (
+                                        l.name
+                                      )}
+                                    </td>
                                     <td>
                                       {l.name === ORDERS_LADDER && (card.orderRoster ?? []).length > 0
                                         ? `${comp.orders.length ? comp.orders.join(' · ') : 'None taught'} (${comp.orders.length} of ${companionOrdersAllowed(state, owned, card)})`
