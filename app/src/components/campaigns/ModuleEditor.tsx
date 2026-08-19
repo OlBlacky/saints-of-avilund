@@ -293,11 +293,11 @@ export default function ModuleEditor({
   // The Reward Builder (spec §13): the bundle at a Chapter's or Book's end.
   const rewardBlock = (r: Reward, apply: (patch: Partial<Reward>) => CampaignRecord) => {
     const heldCes = [
-      ...m.frontCes.map((ce) => ({ ce, where: 'Front Matter' })),
+      ...m.frontCes.map((ce) => ({ ce, where: 'Starting Handouts' })),
       ...m.chapters.flatMap((x, i) => x.ces.map((ce) => ({ ce, where: `Chapter ${i + 1}` }))),
     ].filter(({ ce }) => ce.reveal === 'held');
     const payableMaps = [
-      ...m.frontMaps.map((map) => ({ map, where: 'Front Matter' })),
+      ...m.frontMaps.map((map) => ({ map, where: 'Starting Handouts' })),
       ...m.chapters.flatMap((x, i) => x.maps.map((map) => ({ map, where: `Chapter ${i + 1}` }))),
     ].filter(({ map }) => map.reveal === 'dm-activated');
     const toggle = (list: string[], id: string) =>
@@ -490,12 +490,14 @@ export default function ModuleEditor({
         </table>
       )}
 
-      <h3>Front Matter</h3>
+      <h3>DM Introduction</h3>
       <textarea
         class="roster-field module-text"
-        placeholder="DM Introduction"
+        placeholder="For the DM's eyes, before play begins"
         {...field(m.dmIntro, (v) => updateModule(campaign, { dmIntro: v }))}
       />
+
+      <h3>Starting Handouts</h3>
       <div class="module-group">
         <strong>CEs</strong>
         {m.frontCes.map(ceBlock)}

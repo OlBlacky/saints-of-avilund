@@ -1,5 +1,5 @@
 // The book view (spec §13): the Module read as a book — covers, Table of
-// Contents, front matter, Chapters grouped under their Books, Appendix —
+// Contents, DM Introduction, Starting Handouts, Chapters under their Books,
 // with a scope picker, printing to PDF through the browser. A draft
 // module carries its watermark on every page.
 
@@ -250,10 +250,16 @@ export default function BookView({ campaign }: { campaign: CampaignRecord }) {
           </section>
         )}
 
-        {whole && (m.dmIntro || m.frontCes.length > 0 || m.frontMaps.length > 0) && (
+        {whole && m.dmIntro && (
           <section class="book-page">
-            <h2>Front Matter</h2>
-            {m.dmIntro && <p class="book-prose">{m.dmIntro}</p>}
+            <h2>DM Introduction</h2>
+            <p class="book-prose">{m.dmIntro}</p>
+          </section>
+        )}
+
+        {whole && (m.frontCes.length > 0 || m.frontMaps.length > 0) && (
+          <section class="book-page">
+            <h2>Starting Handouts</h2>
             {m.frontCes.map(ceEntry)}
             {m.frontMaps.map(mapEntry)}
           </section>

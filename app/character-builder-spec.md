@@ -479,7 +479,8 @@ The structure:
 - **Inside cover** *(optional; every field optional)* — the title page and credits: author(s) · additional design · editing · cover and interior artists · cartography · **Playtested By** · special thanks · dedication · version/printing and publication date · publisher line · legal line · content notes.
 - **Table of Contents** — the first page after the covers, assembled from Books, Chapters, and the Appendix at packaging — never written by hand (the same rule as the Campaign Summary's outline).
 - **The Campaign Summary** — the Module's first page, for the DM: an overview of the whole campaign in prose, followed by the outline — every Book and Chapter with its short summary. The outline is assembled from the Chapters' own summary fields, never written twice, so reorganizing Chapters keeps the page true.
-- **Front matter** — the DM introduction, and the CEs and maps revealed on enrollment.
+- **DM Introduction** — the text for the DM before play begins.
+- **Starting Handouts** — the CEs and maps every player receives on enrollment.
 - **Chapters**, in order — the constituent unit of a campaign. Each Chapter holds its short summary, its DM text, its CEs, maps, and encounters (monster profiles with DCs when the bestiary lands), and its **Reward** at the end. CEs and maps held back for later live in the Reward of the Chapter that pays them out; reveal rules (*on enrollment* / *DM-activated* / *DM-only*) ride with each entry.
 - **Books** — an optional grouping of Chapters, with a bigger Reward at the Book's end. Small campaigns never see them. Because Books may be sold separately, a Book may carry its own Cover and inside cover (the same fields), and a separately-sold Book renders its own Table of Contents and may close with its own Appendix.
 - **Appendix** — end matter: authored sections as the module needs them (pregenerated characters, tables, an NPC index), plus collections assembled at packaging for use at the table — the module's encounters gathered in one place, CE handouts, map plates.
@@ -510,7 +511,7 @@ The **Reward Builder** (a later DM UI) is a small form over this shape: pick CEs
 
 ### Print (ruled Aug 19 2026)
 
-Everything the Module holds must print — **a single Chapter or page, a Book, or the whole campaign as one book** — to a high-quality PDF the owner can then print however they like. The vehicle is a read-only **book view**: covers, Table of Contents, front matter, Chapters, Books, Appendix, in book order, with a scope picker (this Chapter / this Book / everything). PDF comes from the browser's own print-to-PDF (no backend); print styles do the bookwork — page breaks between sections, the Cover as a full page, no screen chrome. A draft module carries its watermark on every printed page. The book view doubles as the DM's reading view on screen.
+Everything the Module holds must print — **a single Chapter or page, a Book, or the whole campaign as one book** — to a high-quality PDF the owner can then print however they like. The vehicle is a read-only **book view**: covers, Table of Contents, DM Introduction, Starting Handouts, Chapters, Books, Appendix, in book order, with a scope picker (this Chapter / this Book / everything). PDF comes from the browser's own print-to-PDF (no backend); print styles do the bookwork — page breaks between sections, the Cover as a full page, no screen chrome. A draft module carries its watermark on every printed page. The book view doubles as the DM's reading view on screen.
 
 ### Session Adjustment (promoted from the Parking Lot)
 
