@@ -31,6 +31,7 @@ import {
   removeMap,
   removeRosterEntry,
   removeSession,
+  renameCampaign,
   setChapterBook,
   updateAppendixSection,
   updateBook,
@@ -421,5 +422,15 @@ describe('module file', () => {
     const campaignFile = exportCampaignFile(createCampaign('a', 0));
     expect(() => parseModuleFile(campaignFile)).toThrow();
     expect(() => parseModuleFile('nonsense')).toThrow();
+  });
+});
+
+describe('renameCampaign', () => {
+  it('trims, rejects blank, and leaves the original untouched', () => {
+    const before = createCampaign('A mist over St. Carpathi', 0);
+    const after = renameCampaign(before, '  The Shinbones of St. Carpathi ');
+    expect(after.name).toBe('The Shinbones of St. Carpathi');
+    expect(before.name).toBe('A mist over St. Carpathi');
+    expect(() => renameCampaign(before, '   ')).toThrow();
   });
 });

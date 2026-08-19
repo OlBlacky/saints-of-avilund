@@ -63,6 +63,12 @@ import Campaigns from '../../components/campaigns/Campaigns.tsx';
     .session { margin: 0 0 1.1rem; }
     .session-head { display: flex; gap: 0.8rem; align-items: center; margin-bottom: 0.4rem; }
     .session-notes { display: block; width: 100%; min-height: 4.5rem; resize: vertical; }
+    .campaign-name {
+      display: block; width: 100%; font-family: var(--display); font-size: 1.7rem;
+      color: inherit; background: transparent; border: 1px solid transparent;
+      border-radius: 3px; padding: 0.1rem 0.3rem; margin: 0 0 0.3rem -0.3rem;
+    }
+    .campaign-name:hover, .campaign-name:focus { border-color: var(--rule); }
     .campaign-tabs { display: flex; gap: 0.6rem; margin: 1.2rem 0 0.4rem; }
     .roster .campaign-tab.on { background: var(--gold); color: var(--panel); }
     .sheet-statelabel {

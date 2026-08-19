@@ -217,6 +217,14 @@ export function createCampaign(name: string, entryLevel: number): CampaignRecord
   };
 }
 
+/** Rename the campaign. The Module's title is its own field — a table
+ * and its book may be named differently. */
+export function renameCampaign(c: CampaignRecord, name: string): CampaignRecord {
+  const trimmed = name.trim();
+  if (!trimmed) throw new Error('a Campaign needs a name');
+  return { ...c, name: trimmed };
+}
+
 /** Roster mutations are pure — a new record out, the original untouched —
  * so the UI writes through putCampaign and the logic tests without a DB. */
 export function addRosterEntry(c: CampaignRecord, player: string, character: string): CampaignRecord {

@@ -19,6 +19,7 @@ import {
   removeGrant,
   removeRosterEntry,
   removeSession,
+  renameCampaign,
   updateRosterEntry,
   updateSession,
 } from '../../lib/campaign-store';
@@ -219,6 +220,7 @@ function GrantLedger({
 
 function CampaignHome({ campaign: initial }: { campaign: CampaignRecord }) {
   const [campaign, setCampaign] = useState(initial);
+  const [nameDraft, setNameDraft] = useState(initial.name);
   const [view, setView] = useState<'table' | 'module' | 'book'>('table');
   const [player, setPlayer] = useState('');
   const [character, setCharacter] = useState('');
@@ -244,7 +246,22 @@ function CampaignHome({ campaign: initial }: { campaign: CampaignRecord }) {
 
   return (
     <div class="roster">
-      <h2>{campaign.name}</h2>
+      <input
+        class="campaign-name"
+        type="text"
+        value={nameDraft}
+        onInput={(e) => setNameDraft((e.target as HTMLInputElement).value)}
+        onChange={(e) => {
+          const typed = (e.target as HTMLInputElement).value.trim();
+          if (typed) {
+            setNameDraft(typed);
+            save(renameCampaign(campaign, typed));
+          } else {
+            // A blank name reverts to the saved one.
+            setNameDraft(campaign.name);
+          }
+        }}
+      />
       <p>Entry Level {campaign.entryLevel}</p>
 
       <div class="campaign-tabs">
