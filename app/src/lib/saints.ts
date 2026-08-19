@@ -244,7 +244,7 @@ export const SAINTS: Saint[] = [
   },
   {
     slug: 'carpathius', name: 'Carpathius', tier: 'Minores', office: 'Founder of St. Carpathi',
-    blurb: 'The founder-saint of St. Carpathi, a hermit who climbed into the high valleys of the Bishopric of St. Ignatius some five centuries ago and gathered the first settlement about him. When a clan of Ferals came down from the peaks upon the young town, Carpathius fell defending it, and the folk held the ground he died on. Much of his remains lie in his shrine in the town that bears his name, and a single family, who trace their blood to him, have led St. Carpathi ever since.',
+    blurb: 'The founder-saint of St. Carpathi, a hermit who climbed into the high valleys of the Bishopric of St. Ignatius some seven centuries ago and gathered the first settlement about him. When a clan of Ferals came down from the peaks upon the young town, Carpathius fell defending it, and the folk held the ground he died on. Much of his remains lie in his shrine in the town that bears his name, and a single family, who trace their blood to him, have led St. Carpathi ever since.',
   },
 ];
 
