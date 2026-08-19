@@ -71,6 +71,29 @@ import Campaigns from '../../components/campaigns/Campaigns.tsx';
       color: var(--gold); font-size: 0.85rem;
     }
     .module { margin-top: 1rem; }
+    .module-section { border-top: 1px dotted var(--rule); padding: 0.6rem 0; }
+    .module-section > summary {
+      cursor: pointer; font-variant: small-caps; letter-spacing: 0.05em;
+      color: var(--gold);
+    }
+    .module-fields { display: flex; flex-wrap: wrap; gap: 0.7rem 1.2rem; margin-top: 0.7rem; }
+    .module-field { flex: 1 1 20rem; }
+    .module-field input { flex: 1; }
+    .module-artwork { display: flex; align-items: center; gap: 0.8rem; }
+    .module-artwork img {
+      display: block; max-width: 9rem; max-height: 12rem;
+      border: 1px solid var(--rule); border-radius: 3px;
+    }
+    .module-group { margin: 0.9rem 0; }
+    .module-group > strong {
+      display: block; margin-bottom: 0.4rem;
+      font-variant: small-caps; font-weight: normal; letter-spacing: 0.05em;
+      color: var(--gold); font-size: 0.85rem;
+    }
+    .module-item {
+      border-left: 3px solid var(--rule); padding-left: 0.8rem; margin-bottom: 0.8rem;
+    }
+    .module-code { width: 5.5rem; }
     .module-identity { display: flex; gap: 0.8rem; flex-wrap: wrap; margin-bottom: 1rem; }
     .module-identity .module-wide { flex: 1 1 16rem; }
     .module-identity .module-wide input { flex: 1; }

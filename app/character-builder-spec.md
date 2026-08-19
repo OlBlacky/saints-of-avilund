@@ -508,6 +508,10 @@ The **Reward Builder** (a later DM UI) is a small form over this shape: pick CEs
 
 **v1: the doors are real, the wire is the table.** A DM grant reaches the In Box by entry code, or by the player staging what the DM said aloud; staging and accepting may be one motion in the v1 UI. PC-to-PC transfers happen at the table, each side logging its half — the Out Box is the sender's record of what left their hands. When accounts land, Distribute and Send push straight into In Boxes, and none of the shapes change.
 
+### Print (ruled Aug 19 2026)
+
+Everything the Module holds must print — **a single Chapter or page, a Book, or the whole campaign as one book** — to a high-quality PDF the owner can then print however they like. The vehicle is a read-only **book view**: covers, Table of Contents, front matter, Chapters, Books, Appendix, in book order, with a scope picker (this Chapter / this Book / everything). PDF comes from the browser's own print-to-PDF (no backend); print styles do the bookwork — page breaks between sections, the Cover as a full page, no screen chrome. A draft module carries its watermark on every printed page. The book view doubles as the DM's reading view on screen.
+
 ### Session Adjustment (promoted from the Parking Lot)
 
 After a Session played on paper, the player edits inventory and wealth freely in a **draft changeset** (coin spent, herbs picked); nothing touches the record until they commit, and the whole batch writes as **one logged event tied to the Session**. v1: self-approved, labelled as an adjustment batch. Accounts era: the batch goes to the DM, who approves or rejects with a note — the same shape, with an approval step inserted.

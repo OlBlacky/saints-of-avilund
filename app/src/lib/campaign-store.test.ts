@@ -5,8 +5,11 @@
 import { describe, expect, it } from 'vitest';
 
 import {
+  addCE,
   addChapter,
+  addEncounter,
   addGrant,
+  addMap,
   addRosterEntry,
   addSession,
   createCampaign,
@@ -14,11 +17,19 @@ import {
   exportCampaignFile,
   moveChapter,
   parseCampaignFile,
+  removeCE,
   removeChapter,
+  removeEncounter,
   removeGrant,
+  removeMap,
   removeRosterEntry,
   removeSession,
+  updateCE,
   updateChapter,
+  updateCover,
+  updateEncounter,
+  updateInsideCover,
+  updateMap,
   updateRosterEntry,
   updateSession,
 } from './campaign-store';
@@ -223,5 +234,80 @@ describe('module mutations', () => {
     expect(c.module!.chapters[0].reward).toEqual({
       milestones: 0, gear: [], ceIds: [], mapIds: [], marks: [],
     });
+  });
+});
+
+describe('cover mutations', () => {
+  it('merge field patches, keep earlier fields, and require a Module', () => {
+    let c = ensureModule(createCampaign('a', 0));
+    c = updateCover(c, { title: 'The Femur' });
+    c = updateCover(c, { banner: 'Level 0 · one night' });
+    expect(c.module!.cover).toEqual({ title: 'The Femur', banner: 'Level 0 · one night' });
+    c = updateInsideCover(c, { playtestedBy: 'the Tuesday table' });
+    c = updateInsideCover(c, { editing: 'G. Plent' });
+    expect(c.module!.insideCover).toEqual({ playtestedBy: 'the Tuesday table', editing: 'G. Plent' });
+    expect(() => updateCover(createCampaign('a', 0), { title: 'x' })).toThrow();
+    expect(() => updateInsideCover(createCampaign('a', 0), { editing: 'x' })).toThrow();
+  });
+});
+
+describe('CEs, maps, and encounters', () => {
+  const twoChapters = () => addChapter(addChapter(ensureModule(createCampaign('a', 0))));
+
+  it('CEs land in the front matter or a Chapter, with unique minted codes', () => {
+    let c = twoChapters();
+    const [ch1, ch2] = c.module!.chapters.map((x) => x.id);
+    c = addCE(c, 'front');
+    c = addCE(c, { chapterId: ch1 });
+    c = addCE(c, { chapterId: ch2 });
+    expect(c.module!.frontCes).toHaveLength(1);
+    expect(c.module!.frontCes[0].reveal).toBe('on-attach');
+    expect(c.module!.chapters[0].ces[0].reveal).toBe('held');
+    const codes = [c.module!.frontCes[0].code, c.module!.chapters[0].ces[0].code, c.module!.chapters[1].ces[0].code];
+    expect(new Set(codes).size).toBe(3);
+    for (const code of codes) expect(code).toMatch(/^[A-Z]-\d\d$/);
+  });
+
+  it('CE updates and removals find the entry wherever it sits', () => {
+    let c = twoChapters();
+    c = addCE(c, 'front');
+    c = addCE(c, { chapterId: c.module!.chapters[1].id });
+    const frontId = c.module!.frontCes[0].id;
+    const deepId = c.module!.chapters[1].ces[0].id;
+    c = updateCE(c, frontId, { title: 'The Commission' });
+    c = updateCE(c, deepId, { title: 'The Crypt Ledger', reveal: 'on-attach' });
+    expect(c.module!.frontCes[0].title).toBe('The Commission');
+    expect(c.module!.chapters[1].ces[0]).toMatchObject({ title: 'The Crypt Ledger', reveal: 'on-attach' });
+    c = removeCE(c, deepId);
+    expect(c.module!.chapters[1].ces).toEqual([]);
+    expect(() => updateCE(c, deepId, { title: 'x' })).toThrow();
+    expect(() => removeCE(c, deepId)).toThrow();
+  });
+
+  it('maps default their reveal by place and update anywhere', () => {
+    let c = twoChapters();
+    c = addMap(c, 'front');
+    c = addMap(c, { chapterId: c.module!.chapters[0].id });
+    expect(c.module!.frontMaps[0].reveal).toBe('on-enrollment');
+    expect(c.module!.chapters[0].maps[0].reveal).toBe('dm-activated');
+    const id = c.module!.chapters[0].maps[0].id;
+    c = updateMap(c, id, { title: 'Vyshgorod', reveal: 'dm-only' });
+    expect(c.module!.chapters[0].maps[0]).toMatchObject({ title: 'Vyshgorod', reveal: 'dm-only' });
+    c = removeMap(c, id);
+    expect(c.module!.chapters[0].maps).toEqual([]);
+    expect(() => removeMap(c, id)).toThrow();
+  });
+
+  it('encounters live in Chapters only', () => {
+    let c = twoChapters();
+    const ch = c.module!.chapters[0].id;
+    c = addEncounter(c, ch);
+    const id = c.module!.chapters[0].encounters[0].id;
+    c = updateEncounter(c, id, { title: 'The riverside ambush', text: 'DC cues' });
+    expect(c.module!.chapters[0].encounters[0].title).toBe('The riverside ambush');
+    c = removeEncounter(c, id);
+    expect(c.module!.chapters[0].encounters).toEqual([]);
+    expect(() => addEncounter(c, 'nope')).toThrow();
+    expect(() => updateEncounter(c, id, { title: 'x' })).toThrow();
   });
 });

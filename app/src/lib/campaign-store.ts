@@ -295,6 +295,16 @@ export function updateModule(
   return { ...c, module: { ...withModule(c), ...patch } };
 }
 
+export function updateCover(c: CampaignRecord, patch: Partial<Cover>): CampaignRecord {
+  const m = withModule(c);
+  return { ...c, module: { ...m, cover: { ...m.cover, ...patch } } };
+}
+
+export function updateInsideCover(c: CampaignRecord, patch: Partial<InsideCover>): CampaignRecord {
+  const m = withModule(c);
+  return { ...c, module: { ...m, insideCover: { ...m.insideCover, ...patch } } };
+}
+
 export function addChapter(c: CampaignRecord): CampaignRecord {
   const m = withModule(c);
   const chapter: Chapter = {
@@ -340,6 +350,146 @@ export function moveChapter(c: CampaignRecord, id: string, dir: -1 | 1): Campaig
   const [moved] = chapters.splice(from, 1);
   chapters.splice(to, 0, moved);
   return { ...c, module: { ...m, chapters } };
+}
+
+// ── CEs, maps, and encounters ───────────────────────────────────────────
+// CEs and maps live in the front matter or in a Chapter; encounters live
+// in Chapters only. Updates and removals find the entry wherever it sits.
+
+/** Where a CE or map lives: the front matter, or a named Chapter. */
+export type ModulePlace = 'front' | { chapterId: string };
+
+/** Mint a short entry code ("K-17"), unique within the Module. */
+function mintCode(m: AdventureModule): string {
+  const used = new Set(
+    [...m.frontCes, ...m.chapters.flatMap((ch) => ch.ces)].map((ce) => ce.code),
+  );
+  for (;;) {
+    const code = `${String.fromCharCode(65 + Math.floor(Math.random() * 26))}-${10 + Math.floor(Math.random() * 90)}`;
+    if (!used.has(code)) return code;
+  }
+}
+
+function patchChapter(c: CampaignRecord, chapterId: string, patch: (ch: Chapter) => Chapter): CampaignRecord {
+  const m = withModule(c);
+  if (!m.chapters.some((ch) => ch.id === chapterId)) throw new Error('no such Chapter');
+  return {
+    ...c,
+    module: { ...m, chapters: m.chapters.map((ch) => (ch.id === chapterId ? patch(ch) : ch)) },
+  };
+}
+
+export function addCE(c: CampaignRecord, place: ModulePlace): CampaignRecord {
+  const m = withModule(c);
+  const ce: ModuleCE = {
+    id: crypto.randomUUID(),
+    title: '',
+    code: mintCode(m),
+    text: '',
+    reveal: place === 'front' ? 'on-attach' : 'held',
+  };
+  if (place === 'front') return { ...c, module: { ...m, frontCes: [...m.frontCes, ce] } };
+  return patchChapter(c, place.chapterId, (ch) => ({ ...ch, ces: [...ch.ces, ce] }));
+}
+
+export function updateCE(
+  c: CampaignRecord,
+  id: string,
+  patch: Partial<Pick<ModuleCE, 'title' | 'code' | 'text' | 'reveal'>>,
+): CampaignRecord {
+  const m = withModule(c);
+  if (m.frontCes.some((ce) => ce.id === id)) {
+    return {
+      ...c,
+      module: { ...m, frontCes: m.frontCes.map((ce) => (ce.id === id ? { ...ce, ...patch } : ce)) },
+    };
+  }
+  const ch = m.chapters.find((x) => x.ces.some((ce) => ce.id === id));
+  if (!ch) throw new Error('no such CE');
+  return patchChapter(c, ch.id, (x) => ({
+    ...x,
+    ces: x.ces.map((ce) => (ce.id === id ? { ...ce, ...patch } : ce)),
+  }));
+}
+
+export function removeCE(c: CampaignRecord, id: string): CampaignRecord {
+  const m = withModule(c);
+  if (m.frontCes.some((ce) => ce.id === id)) {
+    return { ...c, module: { ...m, frontCes: m.frontCes.filter((ce) => ce.id !== id) } };
+  }
+  const ch = m.chapters.find((x) => x.ces.some((ce) => ce.id === id));
+  if (!ch) throw new Error('no such CE');
+  return patchChapter(c, ch.id, (x) => ({ ...x, ces: x.ces.filter((ce) => ce.id !== id) }));
+}
+
+export function addMap(c: CampaignRecord, place: ModulePlace): CampaignRecord {
+  const m = withModule(c);
+  const map: ModuleMap = {
+    id: crypto.randomUUID(),
+    title: '',
+    reveal: place === 'front' ? 'on-enrollment' : 'dm-activated',
+  };
+  if (place === 'front') return { ...c, module: { ...m, frontMaps: [...m.frontMaps, map] } };
+  return patchChapter(c, place.chapterId, (ch) => ({ ...ch, maps: [...ch.maps, map] }));
+}
+
+export function updateMap(
+  c: CampaignRecord,
+  id: string,
+  patch: Partial<Pick<ModuleMap, 'title' | 'image' | 'reveal'>>,
+): CampaignRecord {
+  const m = withModule(c);
+  if (m.frontMaps.some((x) => x.id === id)) {
+    return {
+      ...c,
+      module: { ...m, frontMaps: m.frontMaps.map((x) => (x.id === id ? { ...x, ...patch } : x)) },
+    };
+  }
+  const ch = m.chapters.find((x) => x.maps.some((map) => map.id === id));
+  if (!ch) throw new Error('no such map');
+  return patchChapter(c, ch.id, (x) => ({
+    ...x,
+    maps: x.maps.map((map) => (map.id === id ? { ...map, ...patch } : map)),
+  }));
+}
+
+export function removeMap(c: CampaignRecord, id: string): CampaignRecord {
+  const m = withModule(c);
+  if (m.frontMaps.some((x) => x.id === id)) {
+    return { ...c, module: { ...m, frontMaps: m.frontMaps.filter((x) => x.id !== id) } };
+  }
+  const ch = m.chapters.find((x) => x.maps.some((map) => map.id === id));
+  if (!ch) throw new Error('no such map');
+  return patchChapter(c, ch.id, (x) => ({ ...x, maps: x.maps.filter((map) => map.id !== id) }));
+}
+
+export function addEncounter(c: CampaignRecord, chapterId: string): CampaignRecord {
+  const enc: ModuleEncounter = { id: crypto.randomUUID(), title: '', text: '' };
+  return patchChapter(c, chapterId, (ch) => ({ ...ch, encounters: [...ch.encounters, enc] }));
+}
+
+export function updateEncounter(
+  c: CampaignRecord,
+  id: string,
+  patch: Partial<Pick<ModuleEncounter, 'title' | 'text'>>,
+): CampaignRecord {
+  const m = withModule(c);
+  const ch = m.chapters.find((x) => x.encounters.some((enc) => enc.id === id));
+  if (!ch) throw new Error('no such encounter');
+  return patchChapter(c, ch.id, (x) => ({
+    ...x,
+    encounters: x.encounters.map((enc) => (enc.id === id ? { ...enc, ...patch } : enc)),
+  }));
+}
+
+export function removeEncounter(c: CampaignRecord, id: string): CampaignRecord {
+  const m = withModule(c);
+  const ch = m.chapters.find((x) => x.encounters.some((enc) => enc.id === id));
+  if (!ch) throw new Error('no such encounter');
+  return patchChapter(c, ch.id, (x) => ({
+    ...x,
+    encounters: x.encounters.filter((enc) => enc.id !== id),
+  }));
 }
 
 /** Grant-ledger mutations — pure, like the roster's. The ledger is the

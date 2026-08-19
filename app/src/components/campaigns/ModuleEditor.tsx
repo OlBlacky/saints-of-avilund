@@ -6,14 +6,94 @@
 import { useState } from 'preact/hooks';
 
 import {
+  addCE,
   addChapter,
+  addEncounter,
+  addMap,
   ensureModule,
   moveChapter,
+  removeCE,
   removeChapter,
+  removeEncounter,
+  removeMap,
+  updateCE,
   updateChapter,
+  updateCover,
+  updateEncounter,
+  updateInsideCover,
+  updateMap,
   updateModule,
 } from '../../lib/campaign-store';
-import type { CampaignRecord } from '../../lib/campaign-store';
+import type {
+  CampaignRecord,
+  Cover,
+  InsideCover,
+  ModuleCE,
+  ModuleEncounter,
+  ModuleMap,
+} from '../../lib/campaign-store';
+
+const CE_REVEALS: { value: ModuleCE['reveal']; label: string }[] = [
+  { value: 'on-attach', label: 'On enrollment' },
+  { value: 'held', label: 'Held — granted in play or by Reward' },
+];
+
+const MAP_REVEALS: { value: ModuleMap['reveal']; label: string }[] = [
+  { value: 'on-enrollment', label: 'On enrollment' },
+  { value: 'dm-activated', label: 'DM-activated' },
+  { value: 'dm-only', label: 'DM-only' },
+];
+
+/** Shrink uploaded cover art to a bounded JPEG data URL, portrait-style —
+ * it lives in the campaign record, so storage stays modest. */
+function resizeArtwork(file: File): Promise<string> {
+  return new Promise((resolve, reject) => {
+    const url = URL.createObjectURL(file);
+    const img = new Image();
+    img.onload = () => {
+      const MAX = 1200;
+      const scale = Math.min(1, MAX / Math.max(img.width, img.height));
+      const canvas = document.createElement('canvas');
+      canvas.width = Math.max(1, Math.round(img.width * scale));
+      canvas.height = Math.max(1, Math.round(img.height * scale));
+      canvas.getContext('2d')!.drawImage(img, 0, 0, canvas.width, canvas.height);
+      URL.revokeObjectURL(url);
+      resolve(canvas.toDataURL('image/jpeg', 0.85));
+    };
+    img.onerror = () => {
+      URL.revokeObjectURL(url);
+      reject(new Error('not an image'));
+    };
+    img.src = url;
+  });
+}
+
+const COVER_FIELDS: { key: keyof Cover; label: string }[] = [
+  { key: 'title', label: 'Title' },
+  { key: 'subtitle', label: 'Subtitle / tagline' },
+  { key: 'artist', label: 'Artist' },
+  { key: 'medium', label: 'Medium' },
+  { key: 'banner', label: 'Banner (entry level · party size · play length)' },
+  { key: 'seriesLine', label: 'Series line' },
+  { key: 'imprint', label: 'Imprint' },
+];
+
+const INSIDE_COVER_FIELDS: { key: keyof InsideCover; label: string }[] = [
+  { key: 'authors', label: 'Author(s)' },
+  { key: 'additionalDesign', label: 'Additional design' },
+  { key: 'editing', label: 'Editing' },
+  { key: 'coverArtist', label: 'Cover artist' },
+  { key: 'interiorArtists', label: 'Interior artists' },
+  { key: 'cartography', label: 'Cartography' },
+  { key: 'playtestedBy', label: 'Playtested By' },
+  { key: 'specialThanks', label: 'Special thanks' },
+  { key: 'dedication', label: 'Dedication' },
+  { key: 'versionPrinting', label: 'Version / printing' },
+  { key: 'publicationDate', label: 'Publication date' },
+  { key: 'publisher', label: 'Publisher' },
+  { key: 'legalLine', label: 'Legal line' },
+  { key: 'contentNotes', label: 'Content notes' },
+];
 
 export default function ModuleEditor({
   campaign,
@@ -48,6 +128,101 @@ export default function ModuleEditor({
     onChange: (e: Event) => save(patch((e.target as HTMLInputElement).value)),
   });
 
+  // Plain render helpers, invoked as {helper(x)} — never as components, so
+  // inputs keep focus across keystrokes (LESSONS.md).
+  const ceBlock = (ce: ModuleCE) => (
+    <div class="module-item" key={ce.id}>
+      <div class="module-chapter-head">
+        <input
+          class="roster-field module-code"
+          type="text"
+          title="Entry code"
+          {...field(ce.code, (v) => updateCE(campaign, ce.id, { code: v }))}
+        />
+        <input
+          class="roster-field module-grow"
+          type="text"
+          placeholder="CE title"
+          {...field(ce.title, (v) => updateCE(campaign, ce.id, { title: v }))}
+        />
+        <select
+          class="roster-field"
+          value={ce.reveal}
+          onChange={(e) =>
+            save(updateCE(campaign, ce.id, { reveal: (e.target as HTMLSelectElement).value as ModuleCE['reveal'] }))}
+        >
+          {CE_REVEALS.map((r) => <option key={r.value} value={r.value}>{r.label}</option>)}
+        </select>
+        <button type="button" class="undo" onClick={() => save(removeCE(campaign, ce.id))}>Remove</button>
+      </div>
+      <textarea
+        class="roster-field module-text"
+        placeholder="The entry's text"
+        {...field(ce.text, (v) => updateCE(campaign, ce.id, { text: v }))}
+      />
+    </div>
+  );
+
+  const mapBlock = (map: ModuleMap) => (
+    <div class="module-item" key={map.id}>
+      <div class="module-chapter-head">
+        <input
+          class="roster-field module-grow"
+          type="text"
+          placeholder="Map title"
+          {...field(map.title, (v) => updateMap(campaign, map.id, { title: v }))}
+        />
+        <select
+          class="roster-field"
+          value={map.reveal}
+          onChange={(e) =>
+            save(updateMap(campaign, map.id, { reveal: (e.target as HTMLSelectElement).value as ModuleMap['reveal'] }))}
+        >
+          {MAP_REVEALS.map((r) => <option key={r.value} value={r.value}>{r.label}</option>)}
+        </select>
+        <button type="button" class="undo" onClick={() => save(removeMap(campaign, map.id))}>Remove</button>
+      </div>
+      <div class="module-artwork">
+        {map.image && <img src={map.image} alt="" />}
+        <label class="cf-roll roster-import">
+          {map.image ? 'Replace the map image' : 'Upload the map image'}
+          <input
+            type="file"
+            accept="image/*"
+            style="display:none"
+            onChange={async (e) => {
+              const file = (e.target as HTMLInputElement).files?.[0];
+              (e.target as HTMLInputElement).value = '';
+              if (!file) return;
+              try {
+                save(updateMap(campaign, map.id, { image: await resizeArtwork(file) }));
+              } catch { /* not an image; nothing to store */ }
+            }}
+          />
+        </label>
+      </div>
+    </div>
+  );
+
+  const encounterBlock = (enc: ModuleEncounter) => (
+    <div class="module-item" key={enc.id}>
+      <div class="module-chapter-head">
+        <input
+          class="roster-field module-grow"
+          type="text"
+          placeholder="Encounter title"
+          {...field(enc.title, (v) => updateEncounter(campaign, enc.id, { title: v }))}
+        />
+        <button type="button" class="undo" onClick={() => save(removeEncounter(campaign, enc.id))}>Remove</button>
+      </div>
+      <textarea
+        class="roster-field module-text"
+        placeholder="The set piece"
+        {...field(enc.text, (v) => updateEncounter(campaign, enc.id, { text: v }))}
+      />
+    </div>
+  );
+
   return (
     <div class="module">
       <div class="module-identity">
@@ -64,6 +239,62 @@ export default function ModuleEditor({
           <input class="roster-field" type="text" {...field(m.version, (v) => updateModule(campaign, { version: v }))} />
         </label>
       </div>
+
+      <details class="module-section">
+        <summary>Cover</summary>
+        <div class="module-fields">
+          {COVER_FIELDS.map((f) => (
+            <label class="sheet-statelabel module-field" key={f.key}>
+              {f.label}
+              <input
+                class="roster-field"
+                type="text"
+                {...field(m.cover?.[f.key] ?? '', (v) => updateCover(campaign, { [f.key]: v }))}
+              />
+            </label>
+          ))}
+          <div class="module-field module-artwork">
+            {m.cover?.artwork && <img src={m.cover.artwork} alt="" />}
+            <label class="cf-roll roster-import">
+              {m.cover?.artwork ? 'Replace the cover artwork' : 'Upload cover artwork'}
+              <input
+                type="file"
+                accept="image/*"
+                style="display:none"
+                onChange={async (e) => {
+                  const file = (e.target as HTMLInputElement).files?.[0];
+                  (e.target as HTMLInputElement).value = '';
+                  if (!file) return;
+                  try {
+                    save(updateCover(campaign, { artwork: await resizeArtwork(file) }));
+                  } catch { /* not an image; nothing to store */ }
+                }}
+              />
+            </label>
+            {m.cover?.artwork && (
+              <button type="button" class="undo" onClick={() => save(updateCover(campaign, { artwork: undefined }))}>
+                Remove it
+              </button>
+            )}
+          </div>
+        </div>
+      </details>
+
+      <details class="module-section">
+        <summary>Inside Cover</summary>
+        <div class="module-fields">
+          {INSIDE_COVER_FIELDS.map((f) => (
+            <label class="sheet-statelabel module-field" key={f.key}>
+              {f.label}
+              <input
+                class="roster-field"
+                type="text"
+                {...field(m.insideCover?.[f.key] ?? '', (v) => updateInsideCover(campaign, { [f.key]: v }))}
+              />
+            </label>
+          ))}
+        </div>
+      </details>
 
       <h3>Campaign Summary</h3>
       <textarea
@@ -87,6 +318,23 @@ export default function ModuleEditor({
           </tbody>
         </table>
       )}
+
+      <h3>Front Matter</h3>
+      <textarea
+        class="roster-field module-text"
+        placeholder="DM Introduction"
+        {...field(m.dmIntro, (v) => updateModule(campaign, { dmIntro: v }))}
+      />
+      <div class="module-group">
+        <strong>CEs</strong>
+        {m.frontCes.map(ceBlock)}
+        <button type="button" class="buy" onClick={() => save(addCE(campaign, 'front'))}>Add a CE</button>
+      </div>
+      <div class="module-group">
+        <strong>Maps</strong>
+        {m.frontMaps.map(mapBlock)}
+        <button type="button" class="buy" onClick={() => save(addMap(campaign, 'front'))}>Add a map</button>
+      </div>
 
       {m.chapters.map((ch, i) => (
         <div class="module-chapter" key={ch.id}>
@@ -122,6 +370,21 @@ export default function ModuleEditor({
             placeholder="DM text"
             {...field(ch.dmText, (v) => updateChapter(campaign, ch.id, { dmText: v }))}
           />
+          <div class="module-group">
+            <strong>CEs</strong>
+            {ch.ces.map(ceBlock)}
+            <button type="button" class="buy" onClick={() => save(addCE(campaign, { chapterId: ch.id }))}>Add a CE</button>
+          </div>
+          <div class="module-group">
+            <strong>Maps</strong>
+            {ch.maps.map(mapBlock)}
+            <button type="button" class="buy" onClick={() => save(addMap(campaign, { chapterId: ch.id }))}>Add a map</button>
+          </div>
+          <div class="module-group">
+            <strong>Encounters</strong>
+            {ch.encounters.map(encounterBlock)}
+            <button type="button" class="buy" onClick={() => save(addEncounter(campaign, ch.id))}>Add an encounter</button>
+          </div>
         </div>
       ))}
 
