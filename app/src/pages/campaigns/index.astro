@@ -103,6 +103,65 @@ import Campaigns from '../../components/campaigns/Campaigns.tsx';
     }
     .module-reward .grant-recipient { display: block; margin-bottom: 0.25rem; }
     .module-mark-rule { min-height: 3.2rem; }
+
+    /* The book view — the Module read as a book, on screen and to print. */
+    .book-wrap { margin-top: 1rem; }
+    .book-controls { display: flex; gap: 0.8rem; align-items: center; margin-bottom: 1.2rem; }
+    .book-view { position: relative; }
+    .book-page {
+      border-top: 1px dotted var(--rule); padding: 1.4rem 0;
+    }
+    .book-cover { text-align: center; padding: 3rem 0; }
+    .book-cover h1 { margin: 0.8rem 0 0.2rem; }
+    .book-cover-art { max-width: 100%; max-height: 24rem; border: 1px solid var(--rule); }
+    .book-subtitle { font-style: italic; margin: 0.2rem 0; }
+    .book-banner { font-variant: small-caps; letter-spacing: 0.05em; color: var(--gold); margin: 0.6rem 0 0; }
+    .book-series, .book-imprint, .book-artcredit { color: var(--ink-soft); margin: 0.3rem 0 0; font-size: 0.9rem; }
+    .book-inside dl { margin: 0; }
+    .book-inside dt {
+      font-variant: small-caps; letter-spacing: 0.05em; color: var(--gold);
+      font-size: 0.85rem; margin-top: 0.6rem;
+    }
+    .book-inside dd { margin: 0.1rem 0 0; }
+    .book-toc { margin: 0.4rem 0 0 1.2rem; padding: 0; list-style: none; }
+    .book-toc li { margin: 0.25rem 0; }
+    .book-toc-book { font-variant: small-caps; letter-spacing: 0.05em; color: var(--gold); margin-top: 0.7rem; }
+    .book-prose { white-space: pre-wrap; }
+    .book-summaryline { font-style: italic; color: var(--ink-soft); }
+    .book-entry { margin: 1rem 0; }
+    .book-entry h4 { margin: 0 0 0.3rem; }
+    .book-tag {
+      font-variant: small-caps; letter-spacing: 0.05em; color: var(--ink-soft);
+      font-weight: normal; font-size: 0.8rem; margin-left: 0.5rem;
+    }
+    .book-map { display: block; max-width: 100%; border: 1px solid var(--rule); }
+    .book-reward { border-left: 3px solid var(--gold); padding-left: 0.8rem; margin-top: 1rem; }
+    .book-reward h4 { margin: 0 0 0.3rem; }
+    .book-watermark {
+      text-align: center; font-variant: small-caps; letter-spacing: 0.1em;
+      color: #7a2828; border: 1px solid rgba(120, 40, 40, 0.4);
+      border-radius: 3px; padding: 0.3rem 0.8rem; margin-bottom: 1rem;
+    }
+
+    @media print {
+      /* Print the book alone: everything hides, the book view stands. */
+      html.book-mode body * { visibility: hidden; }
+      html.book-mode .book-view, html.book-mode .book-view * { visibility: visible; }
+      html.book-mode .book-view { position: absolute; left: 0; top: 0; width: 100%; }
+      html.book-mode .book-controls { display: none; }
+      .book-page { border-top: none; page-break-before: always; }
+      .book-page:first-of-type { page-break-before: avoid; }
+      .book-cover { padding-top: 20vh; }
+      /* The draft watermark rides on every printed page. */
+      html.book-mode .book-watermark {
+        visibility: visible;
+        position: fixed; top: 45vh; left: 0; right: 0;
+        text-align: center; transform: rotate(-24deg);
+        font-size: 2.2rem; letter-spacing: 0.1em;
+        color: rgba(120, 40, 40, 0.18); z-index: 10;
+        border: none; padding: 0; margin: 0;
+      }
+    }
     .module-identity { display: flex; gap: 0.8rem; flex-wrap: wrap; margin-bottom: 1rem; }
     .module-identity .module-wide { flex: 1 1 16rem; }
     .module-identity .module-wide input { flex: 1; }

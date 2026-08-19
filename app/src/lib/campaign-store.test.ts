@@ -5,6 +5,8 @@
 import { describe, expect, it } from 'vitest';
 
 import {
+  addAppendixSection,
+  addBook,
   addCE,
   addChapter,
   addEncounter,
@@ -12,11 +14,16 @@ import {
   addMap,
   addRosterEntry,
   addSession,
+  attachModule,
   createCampaign,
   ensureModule,
   exportCampaignFile,
+  exportModuleFile,
   moveChapter,
   parseCampaignFile,
+  parseModuleFile,
+  removeAppendixSection,
+  removeBook,
   removeCE,
   removeChapter,
   removeEncounter,
@@ -24,6 +31,12 @@ import {
   removeMap,
   removeRosterEntry,
   removeSession,
+  setChapterBook,
+  updateAppendixSection,
+  updateBook,
+  updateBookCover,
+  updateBookInsideCover,
+  updateBookReward,
   updateCE,
   updateChapter,
   updateCover,
@@ -346,5 +359,67 @@ describe('updateReward', () => {
     expect(() => updateReward(c, ch, { ceIds: ['nope'] })).toThrow();
     expect(() => updateReward(c, ch, { mapIds: ['nope'] })).toThrow();
     expect(() => updateReward(c, 'nope', { milestones: 1 })).toThrow();
+  });
+});
+
+describe('Books and the Appendix', () => {
+  const ready = () => addChapter(addChapter(ensureModule(createCampaign('a', 0))));
+
+  it('Books hold Chapters by assignment, and removal frees them', () => {
+    let c = addBook(ready());
+    const bookId = c.module!.books[0].id;
+    const [ch1, ch2] = c.module!.chapters.map((x) => x.id);
+    c = updateBook(c, bookId, { title: 'Book One' });
+    c = setChapterBook(c, ch1, bookId);
+    c = setChapterBook(c, ch2, bookId);
+    expect(c.module!.chapters.every((x) => x.bookId === bookId)).toBe(true);
+    c = setChapterBook(c, ch2, undefined);
+    expect(c.module!.chapters[1].bookId).toBeUndefined();
+    c = removeBook(c, bookId);
+    expect(c.module!.books).toEqual([]);
+    expect(c.module!.chapters[0].bookId).toBeUndefined();
+    expect(() => setChapterBook(ready(), 'nope', undefined)).toThrow();
+    expect(() => setChapterBook(c, ch1, 'nope')).toThrow();
+    expect(() => removeBook(c, 'nope')).toThrow();
+  });
+
+  it('a Book carries its own covers and a validated Reward', () => {
+    let c = addBook(ready());
+    const bookId = c.module!.books[0].id;
+    c = updateBookCover(c, bookId, { title: 'Book One' });
+    c = updateBookInsideCover(c, bookId, { playtestedBy: 'the Tuesday table' });
+    c = updateBookReward(c, bookId, { milestones: 3 });
+    expect(c.module!.books[0].cover).toEqual({ title: 'Book One' });
+    expect(c.module!.books[0].insideCover).toEqual({ playtestedBy: 'the Tuesday table' });
+    expect(c.module!.books[0].reward.milestones).toBe(3);
+    expect(() => updateBookReward(c, bookId, { milestones: -1 })).toThrow();
+    expect(() => updateBookReward(c, bookId, { ceIds: ['nope'] })).toThrow();
+  });
+
+  it('Appendix sections add, update, and remove', () => {
+    let c = addAppendixSection(ready());
+    const id = c.module!.appendix[0].id;
+    c = updateAppendixSection(c, id, { title: 'Pregenerated characters', text: 'the four' });
+    expect(c.module!.appendix[0]).toMatchObject({ title: 'Pregenerated characters', text: 'the four' });
+    c = removeAppendixSection(c, id);
+    expect(c.module!.appendix).toEqual([]);
+    expect(() => updateAppendixSection(c, id, { title: 'x' })).toThrow();
+    expect(() => removeAppendixSection(c, id)).toThrow();
+  });
+});
+
+describe('module file', () => {
+  it('round-trips through export and parse, and attaches', () => {
+    let c = addChapter(ensureModule(createCampaign('The Femur', 0)));
+    const parsed = parseModuleFile(exportModuleFile(c.module!));
+    expect(parsed).toEqual(c.module);
+    const other = attachModule(createCampaign('Another table', 2), parsed);
+    expect(other.module).toEqual(parsed);
+  });
+
+  it('rejects a campaign file and garbage', () => {
+    const campaignFile = exportCampaignFile(createCampaign('a', 0));
+    expect(() => parseModuleFile(campaignFile)).toThrow();
+    expect(() => parseModuleFile('nonsense')).toThrow();
   });
 });

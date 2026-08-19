@@ -23,6 +23,7 @@ import {
   updateSession,
 } from '../../lib/campaign-store';
 import type { CampaignRecord } from '../../lib/campaign-store';
+import BookView from './BookView';
 import ModuleEditor from './ModuleEditor';
 
 const BASE = import.meta.env.BASE_URL;
@@ -218,7 +219,7 @@ function GrantLedger({
 
 function CampaignHome({ campaign: initial }: { campaign: CampaignRecord }) {
   const [campaign, setCampaign] = useState(initial);
-  const [view, setView] = useState<'table' | 'module'>('table');
+  const [view, setView] = useState<'table' | 'module' | 'book'>('table');
   const [player, setPlayer] = useState('');
   const [character, setCharacter] = useState('');
   const [note, setNote] = useState('');
@@ -261,9 +262,17 @@ function CampaignHome({ campaign: initial }: { campaign: CampaignRecord }) {
         >
           The Module
         </button>
+        <button
+          type="button"
+          class={view === 'book' ? 'buy campaign-tab on' : 'buy campaign-tab'}
+          onClick={() => setView('book')}
+        >
+          The Book
+        </button>
       </div>
 
       {view === 'module' && <ModuleEditor campaign={campaign} stage={setCampaign} save={save} />}
+      {view === 'book' && <BookView campaign={campaign} />}
 
       {view === 'table' && (<>
       <h3>Roster</h3>

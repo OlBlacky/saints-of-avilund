@@ -6,16 +6,27 @@
 import { useState } from 'preact/hooks';
 
 import {
+  addAppendixSection,
+  addBook,
   addCE,
+  exportModuleFile,
   addChapter,
   addEncounter,
   addMap,
   ensureModule,
   moveChapter,
+  removeAppendixSection,
+  removeBook,
   removeCE,
   removeChapter,
   removeEncounter,
   removeMap,
+  setChapterBook,
+  updateAppendixSection,
+  updateBook,
+  updateBookCover,
+  updateBookInsideCover,
+  updateBookReward,
   updateCE,
   updateChapter,
   updateCover,
@@ -27,12 +38,12 @@ import {
 } from '../../lib/campaign-store';
 import type {
   CampaignRecord,
-  Chapter,
   Cover,
   InsideCover,
   ModuleCE,
   ModuleEncounter,
   ModuleMap,
+  Reward,
 } from '../../lib/campaign-store';
 
 const CE_REVEALS: { value: ModuleCE['reveal']; label: string }[] = [
@@ -132,6 +143,60 @@ export default function ModuleEditor({
 
   // Plain render helpers, invoked as {helper(x)} — never as components, so
   // inputs keep focus across keystrokes (LESSONS.md).
+  const coverGrid = (cover: Cover | undefined, apply: (patch: Partial<Cover>) => CampaignRecord) => (
+    <div class="module-fields">
+      {COVER_FIELDS.map((f) => (
+        <label class="sheet-statelabel module-field" key={f.key}>
+          {f.label}
+          <input
+            class="roster-field"
+            type="text"
+            {...field(cover?.[f.key] ?? '', (v) => apply({ [f.key]: v }))}
+          />
+        </label>
+      ))}
+      <div class="module-field module-artwork">
+        {cover?.artwork && <img src={cover.artwork} alt="" />}
+        <label class="cf-roll roster-import">
+          {cover?.artwork ? 'Replace the cover artwork' : 'Upload cover artwork'}
+          <input
+            type="file"
+            accept="image/*"
+            style="display:none"
+            onChange={async (e) => {
+              const file = (e.target as HTMLInputElement).files?.[0];
+              (e.target as HTMLInputElement).value = '';
+              if (!file) return;
+              try {
+                save(apply({ artwork: await resizeArtwork(file) }));
+              } catch { /* not an image; nothing to store */ }
+            }}
+          />
+        </label>
+        {cover?.artwork && (
+          <button type="button" class="undo" onClick={() => save(apply({ artwork: undefined }))}>
+            Remove it
+          </button>
+        )}
+      </div>
+    </div>
+  );
+
+  const insideCoverGrid = (ic: InsideCover | undefined, apply: (patch: Partial<InsideCover>) => CampaignRecord) => (
+    <div class="module-fields">
+      {INSIDE_COVER_FIELDS.map((f) => (
+        <label class="sheet-statelabel module-field" key={f.key}>
+          {f.label}
+          <input
+            class="roster-field"
+            type="text"
+            {...field(ic?.[f.key] ?? '', (v) => apply({ [f.key]: v }))}
+          />
+        </label>
+      ))}
+    </div>
+  );
+
   const ceBlock = (ce: ModuleCE) => (
     <div class="module-item" key={ce.id}>
       <div class="module-chapter-head">
@@ -225,8 +290,8 @@ export default function ModuleEditor({
     </div>
   );
 
-  // The Reward Builder (spec §13): the bundle at a Chapter's end.
-  const rewardBlock = (ch: Chapter) => {
+  // The Reward Builder (spec §13): the bundle at a Chapter's or Book's end.
+  const rewardBlock = (r: Reward, apply: (patch: Partial<Reward>) => CampaignRecord) => {
     const heldCes = [
       ...m.frontCes.map((ce) => ({ ce, where: 'Front Matter' })),
       ...m.chapters.flatMap((x, i) => x.ces.map((ce) => ({ ce, where: `Chapter ${i + 1}` }))),
@@ -235,7 +300,6 @@ export default function ModuleEditor({
       ...m.frontMaps.map((map) => ({ map, where: 'Front Matter' })),
       ...m.chapters.flatMap((x, i) => x.maps.map((map) => ({ map, where: `Chapter ${i + 1}` }))),
     ].filter(({ map }) => map.reveal === 'dm-activated');
-    const r = ch.reward;
     const toggle = (list: string[], id: string) =>
       list.includes(id) ? list.filter((x) => x !== id) : [...list, id];
 
@@ -253,7 +317,7 @@ export default function ModuleEditor({
               value={String(r.milestones)}
               onChange={(e) => {
                 const n = Number((e.target as HTMLInputElement).value);
-                if (Number.isInteger(n) && n >= 0) save(updateReward(campaign, ch.id, { milestones: n }));
+                if (Number.isInteger(n) && n >= 0) save(apply({ milestones: n }));
               }}
             />
           </label>
@@ -268,24 +332,24 @@ export default function ModuleEditor({
                 type="text"
                 value={line}
                 onInput={(e) =>
-                  stage(updateReward(campaign, ch.id, {
+                  stage(apply({
                     gear: r.gear.map((x, j) => (j === i ? (e.target as HTMLInputElement).value : x)),
                   }))}
                 onChange={(e) =>
-                  save(updateReward(campaign, ch.id, {
+                  save(apply({
                     gear: r.gear.map((x, j) => (j === i ? (e.target as HTMLInputElement).value : x)),
                   }))}
               />
               <button
                 type="button"
                 class="undo"
-                onClick={() => save(updateReward(campaign, ch.id, { gear: r.gear.filter((_, j) => j !== i) }))}
+                onClick={() => save(apply({ gear: r.gear.filter((_, j) => j !== i) }))}
               >
                 ×
               </button>
             </div>
           ))}
-          <button type="button" class="buy" onClick={() => save(updateReward(campaign, ch.id, { gear: [...r.gear, ''] }))}>
+          <button type="button" class="buy" onClick={() => save(apply({ gear: [...r.gear, ''] }))}>
             Add a line
           </button>
         </div>
@@ -298,7 +362,7 @@ export default function ModuleEditor({
                 <input
                   type="checkbox"
                   checked={r.ceIds.includes(ce.id)}
-                  onChange={() => save(updateReward(campaign, ch.id, { ceIds: toggle(r.ceIds, ce.id) }))}
+                  onChange={() => save(apply({ ceIds: toggle(r.ceIds, ce.id) }))}
                 />{' '}
                 {ce.code} · {ce.title || 'Untitled'} ({where})
               </label>
@@ -314,7 +378,7 @@ export default function ModuleEditor({
                 <input
                   type="checkbox"
                   checked={r.mapIds.includes(map.id)}
-                  onChange={() => save(updateReward(campaign, ch.id, { mapIds: toggle(r.mapIds, map.id) }))}
+                  onChange={() => save(apply({ mapIds: toggle(r.mapIds, map.id) }))}
                 />{' '}
                 {map.title || 'Untitled'} ({where})
               </label>
@@ -333,18 +397,18 @@ export default function ModuleEditor({
                   placeholder="Name"
                   value={mark.name}
                   onInput={(e) =>
-                    stage(updateReward(campaign, ch.id, {
+                    stage(apply({
                       marks: r.marks.map((x, j) => (j === i ? { ...x, name: (e.target as HTMLInputElement).value } : x)),
                     }))}
                   onChange={(e) =>
-                    save(updateReward(campaign, ch.id, {
+                    save(apply({
                       marks: r.marks.map((x, j) => (j === i ? { ...x, name: (e.target as HTMLInputElement).value } : x)),
                     }))}
                 />
                 <button
                   type="button"
                   class="undo"
-                  onClick={() => save(updateReward(campaign, ch.id, { marks: r.marks.filter((_, j) => j !== i) }))}
+                  onClick={() => save(apply({ marks: r.marks.filter((_, j) => j !== i) }))}
                 >
                   Remove
                 </button>
@@ -354,11 +418,11 @@ export default function ModuleEditor({
                 placeholder="Rule text"
                 value={mark.rule}
                 onInput={(e) =>
-                  stage(updateReward(campaign, ch.id, {
+                  stage(apply({
                     marks: r.marks.map((x, j) => (j === i ? { ...x, rule: (e.target as HTMLTextAreaElement).value } : x)),
                   }))}
                 onChange={(e) =>
-                  save(updateReward(campaign, ch.id, {
+                  save(apply({
                     marks: r.marks.map((x, j) => (j === i ? { ...x, rule: (e.target as HTMLTextAreaElement).value } : x)),
                   }))}
               />
@@ -367,7 +431,7 @@ export default function ModuleEditor({
           <button
             type="button"
             class="buy"
-            onClick={() => save(updateReward(campaign, ch.id, { marks: [...r.marks, { name: '', rule: '' }] }))}
+            onClick={() => save(apply({ marks: [...r.marks, { name: '', rule: '' }] }))}
           >
             Add a Mark
           </button>
@@ -395,58 +459,12 @@ export default function ModuleEditor({
 
       <details class="module-section">
         <summary>Cover</summary>
-        <div class="module-fields">
-          {COVER_FIELDS.map((f) => (
-            <label class="sheet-statelabel module-field" key={f.key}>
-              {f.label}
-              <input
-                class="roster-field"
-                type="text"
-                {...field(m.cover?.[f.key] ?? '', (v) => updateCover(campaign, { [f.key]: v }))}
-              />
-            </label>
-          ))}
-          <div class="module-field module-artwork">
-            {m.cover?.artwork && <img src={m.cover.artwork} alt="" />}
-            <label class="cf-roll roster-import">
-              {m.cover?.artwork ? 'Replace the cover artwork' : 'Upload cover artwork'}
-              <input
-                type="file"
-                accept="image/*"
-                style="display:none"
-                onChange={async (e) => {
-                  const file = (e.target as HTMLInputElement).files?.[0];
-                  (e.target as HTMLInputElement).value = '';
-                  if (!file) return;
-                  try {
-                    save(updateCover(campaign, { artwork: await resizeArtwork(file) }));
-                  } catch { /* not an image; nothing to store */ }
-                }}
-              />
-            </label>
-            {m.cover?.artwork && (
-              <button type="button" class="undo" onClick={() => save(updateCover(campaign, { artwork: undefined }))}>
-                Remove it
-              </button>
-            )}
-          </div>
-        </div>
+        {coverGrid(m.cover, (p) => updateCover(campaign, p))}
       </details>
 
       <details class="module-section">
         <summary>Inside Cover</summary>
-        <div class="module-fields">
-          {INSIDE_COVER_FIELDS.map((f) => (
-            <label class="sheet-statelabel module-field" key={f.key}>
-              {f.label}
-              <input
-                class="roster-field"
-                type="text"
-                {...field(m.insideCover?.[f.key] ?? '', (v) => updateInsideCover(campaign, { [f.key]: v }))}
-              />
-            </label>
-          ))}
-        </div>
+        {insideCoverGrid(m.insideCover, (p) => updateInsideCover(campaign, p))}
       </details>
 
       <h3>Campaign Summary</h3>
@@ -499,6 +517,20 @@ export default function ModuleEditor({
               placeholder="Title"
               {...field(ch.title, (v) => updateChapter(campaign, ch.id, { title: v }))}
             />
+            {m.books.length > 0 && (
+              <select
+                class="roster-field"
+                title="Book"
+                value={ch.bookId ?? ''}
+                onChange={(e) =>
+                  save(setChapterBook(campaign, ch.id, (e.target as HTMLSelectElement).value || undefined))}
+              >
+                <option value="">No Book</option>
+                {m.books.map((b, bi) => (
+                  <option key={b.id} value={b.id}>{b.title || `Book ${bi + 1}`}</option>
+                ))}
+              </select>
+            )}
             <button type="button" class="undo" disabled={i === 0} onClick={() => save(moveChapter(campaign, ch.id, -1))}>↑</button>
             <button type="button" class="undo" disabled={i === m.chapters.length - 1} onClick={() => save(moveChapter(campaign, ch.id, 1))}>↓</button>
             {confirmRemove === ch.id ? (
@@ -538,12 +570,97 @@ export default function ModuleEditor({
             {ch.encounters.map(encounterBlock)}
             <button type="button" class="buy" onClick={() => save(addEncounter(campaign, ch.id))}>Add an encounter</button>
           </div>
-          {rewardBlock(ch)}
+          {rewardBlock(ch.reward, (p) => updateReward(campaign, ch.id, p))}
         </div>
       ))}
 
       <div class="roster-actions">
         <button type="button" class="cf-crystallize" onClick={() => save(addChapter(campaign))}>Add a Chapter</button>
+      </div>
+
+      <h3>Books</h3>
+      {m.books.map((b, bi) => (
+        <div class="module-chapter" key={b.id}>
+          <div class="module-chapter-head">
+            <strong>Book {bi + 1}</strong>
+            <input
+              class="roster-field module-grow"
+              type="text"
+              placeholder="Title"
+              {...field(b.title, (v) => updateBook(campaign, b.id, { title: v }))}
+            />
+            <button
+              type="button"
+              class="undo"
+              onClick={() => save(removeBook(campaign, b.id))}
+              title="Its Chapters stay in the spine"
+            >
+              Remove
+            </button>
+          </div>
+          <p class="cf-how">
+            {(() => {
+              const inBook = m.chapters
+                .map((ch, ci) => ({ ch, ci }))
+                .filter(({ ch }) => ch.bookId === b.id);
+              return inBook.length === 0
+                ? 'No Chapters assigned. Pick this Book on a Chapter.'
+                : `Chapters: ${inBook.map(({ ch, ci }) => ch.title || `Chapter ${ci + 1}`).join(' · ')}`;
+            })()}
+          </p>
+          <details class="module-section">
+            <summary>Cover</summary>
+            {coverGrid(b.cover, (p) => updateBookCover(campaign, b.id, p))}
+          </details>
+          <details class="module-section">
+            <summary>Inside Cover</summary>
+            {insideCoverGrid(b.insideCover, (p) => updateBookInsideCover(campaign, b.id, p))}
+          </details>
+          {rewardBlock(b.reward, (p) => updateBookReward(campaign, b.id, p))}
+        </div>
+      ))}
+      <div class="roster-actions">
+        <button type="button" class="cf-roll" onClick={() => save(addBook(campaign))}>Add a Book</button>
+      </div>
+
+      <h3>Appendix</h3>
+      {m.appendix.map((s) => (
+        <div class="module-item" key={s.id}>
+          <div class="module-chapter-head">
+            <input
+              class="roster-field module-grow"
+              type="text"
+              placeholder="Section title"
+              {...field(s.title, (v) => updateAppendixSection(campaign, s.id, { title: v }))}
+            />
+            <button type="button" class="undo" onClick={() => save(removeAppendixSection(campaign, s.id))}>Remove</button>
+          </div>
+          <textarea
+            class="roster-field module-text"
+            placeholder="Text"
+            {...field(s.text, (v) => updateAppendixSection(campaign, s.id, { text: v }))}
+          />
+        </div>
+      ))}
+      <div class="roster-actions">
+        <button type="button" class="cf-roll" onClick={() => save(addAppendixSection(campaign))}>Add a section</button>
+      </div>
+
+      <div class="roster-actions">
+        <button
+          type="button"
+          class="cf-roll"
+          onClick={() => {
+            const blob = new Blob([exportModuleFile(m)], { type: 'application/json' });
+            const a = document.createElement('a');
+            a.href = URL.createObjectURL(blob);
+            a.download = `${m.title.replace(/[^\w\- ]+/g, '').trim() || 'module'}.avilund-module.json`;
+            a.click();
+            URL.revokeObjectURL(a.href);
+          }}
+        >
+          Export the Module
+        </button>
       </div>
     </div>
   );

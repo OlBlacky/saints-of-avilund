@@ -492,14 +492,9 @@ export function removeEncounter(c: CampaignRecord, id: string): CampaignRecord {
   }));
 }
 
-/** Patch a Chapter's Reward. Milestones are whole and never negative;
- * paid-out CEs and maps must exist in the Module. */
-export function updateReward(
-  c: CampaignRecord,
-  chapterId: string,
-  patch: Partial<Reward>,
-): CampaignRecord {
-  const m = withModule(c);
+/** Milestones are whole and never negative; paid-out CEs and maps must
+ * exist in the Module. Shared by Chapter and Book Rewards. */
+function validateRewardPatch(m: AdventureModule, patch: Partial<Reward>): void {
   if (patch.milestones !== undefined && (!Number.isInteger(patch.milestones) || patch.milestones < 0)) {
     throw new Error('Milestones are a whole number');
   }
@@ -511,7 +506,100 @@ export function updateReward(
   for (const id of patch.mapIds ?? []) {
     if (!mapIds.has(id)) throw new Error('no such map');
   }
+}
+
+/** Patch a Chapter's Reward. */
+export function updateReward(
+  c: CampaignRecord,
+  chapterId: string,
+  patch: Partial<Reward>,
+): CampaignRecord {
+  validateRewardPatch(withModule(c), patch);
   return patchChapter(c, chapterId, (ch) => ({ ...ch, reward: { ...ch.reward, ...patch } }));
+}
+
+// ── Books & the Appendix ────────────────────────────────────────────────
+
+export function addBook(c: CampaignRecord): CampaignRecord {
+  const m = withModule(c);
+  const book: Book = { id: crypto.randomUUID(), title: '', reward: newReward() };
+  return { ...c, module: { ...m, books: [...m.books, book] } };
+}
+
+function patchBook(c: CampaignRecord, bookId: string, patch: (b: Book) => Book): CampaignRecord {
+  const m = withModule(c);
+  if (!m.books.some((b) => b.id === bookId)) throw new Error('no such Book');
+  return {
+    ...c,
+    module: { ...m, books: m.books.map((b) => (b.id === bookId ? patch(b) : b)) },
+  };
+}
+
+export function updateBook(c: CampaignRecord, id: string, patch: Partial<Pick<Book, 'title'>>): CampaignRecord {
+  return patchBook(c, id, (b) => ({ ...b, ...patch }));
+}
+
+export function updateBookCover(c: CampaignRecord, id: string, patch: Partial<Cover>): CampaignRecord {
+  return patchBook(c, id, (b) => ({ ...b, cover: { ...b.cover, ...patch } }));
+}
+
+export function updateBookInsideCover(c: CampaignRecord, id: string, patch: Partial<InsideCover>): CampaignRecord {
+  return patchBook(c, id, (b) => ({ ...b, insideCover: { ...b.insideCover, ...patch } }));
+}
+
+/** Patch a Book's Reward — the bigger one at the Book's end. Same
+ * validation as the Chapter's. */
+export function updateBookReward(c: CampaignRecord, id: string, patch: Partial<Reward>): CampaignRecord {
+  validateRewardPatch(withModule(c), patch);
+  return patchBook(c, id, (b) => ({ ...b, reward: { ...b.reward, ...patch } }));
+}
+
+/** Removing a Book frees its Chapters; they stay in the spine. */
+export function removeBook(c: CampaignRecord, id: string): CampaignRecord {
+  const m = withModule(c);
+  if (!m.books.some((b) => b.id === id)) throw new Error('no such Book');
+  return {
+    ...c,
+    module: {
+      ...m,
+      books: m.books.filter((b) => b.id !== id),
+      chapters: m.chapters.map((ch) =>
+        ch.bookId === id ? { ...ch, bookId: undefined } : ch,
+      ),
+    },
+  };
+}
+
+/** Put a Chapter in a Book, or take it out (bookId undefined). */
+export function setChapterBook(c: CampaignRecord, chapterId: string, bookId?: string): CampaignRecord {
+  const m = withModule(c);
+  if (bookId && !m.books.some((b) => b.id === bookId)) throw new Error('no such Book');
+  return patchChapter(c, chapterId, (ch) => ({ ...ch, bookId }));
+}
+
+export function addAppendixSection(c: CampaignRecord): CampaignRecord {
+  const m = withModule(c);
+  const section = { id: crypto.randomUUID(), title: '', text: '' };
+  return { ...c, module: { ...m, appendix: [...m.appendix, section] } };
+}
+
+export function updateAppendixSection(
+  c: CampaignRecord,
+  id: string,
+  patch: Partial<{ title: string; text: string }>,
+): CampaignRecord {
+  const m = withModule(c);
+  if (!m.appendix.some((s) => s.id === id)) throw new Error('no such Appendix section');
+  return {
+    ...c,
+    module: { ...m, appendix: m.appendix.map((s) => (s.id === id ? { ...s, ...patch } : s)) },
+  };
+}
+
+export function removeAppendixSection(c: CampaignRecord, id: string): CampaignRecord {
+  const m = withModule(c);
+  if (!m.appendix.some((s) => s.id === id)) throw new Error('no such Appendix section');
+  return { ...c, module: { ...m, appendix: m.appendix.filter((s) => s.id !== id) } };
 }
 
 /** Grant-ledger mutations — pure, like the roster's. The ledger is the
@@ -563,6 +651,35 @@ export function putCampaign(record: CampaignRecord): Promise<unknown> {
 
 export function deleteCampaign(id: string): Promise<unknown> {
   return tx(CAMPAIGN_STORE, 'readwrite', (s) => s.delete(id));
+}
+
+/** Serialize the Module alone — the .avilund-module.json file, the one
+ * format whether we shipped it, the DM authored it, or it was bought. */
+export function exportModuleFile(m: AdventureModule): string {
+  return JSON.stringify(m, null, 2);
+}
+
+/** Parse a module file, throwing on anything that isn't one. */
+export function parseModuleFile(text: string): AdventureModule {
+  const parsed = JSON.parse(text) as AdventureModule;
+  if (
+    typeof parsed.id !== 'string' ||
+    typeof parsed.title !== 'string' ||
+    !Array.isArray(parsed.chapters) ||
+    !Array.isArray(parsed.books) ||
+    !Array.isArray(parsed.appendix) ||
+    !Array.isArray(parsed.frontCes) ||
+    !Array.isArray(parsed.frontMaps)
+  ) {
+    throw new Error('not a module file');
+  }
+  return parsed;
+}
+
+/** Attach a Module to the campaign — how a shipped or bought module
+ * arrives. Replaces whatever was attached; callers confirm first. */
+export function attachModule(c: CampaignRecord, m: AdventureModule): CampaignRecord {
+  return { ...c, module: m };
 }
 
 /** Serialize for the .avilund-campaign.json file — the campaign's travel
