@@ -23,9 +23,11 @@ import {
   updateInsideCover,
   updateMap,
   updateModule,
+  updateReward,
 } from '../../lib/campaign-store';
 import type {
   CampaignRecord,
+  Chapter,
   Cover,
   InsideCover,
   ModuleCE,
@@ -223,6 +225,157 @@ export default function ModuleEditor({
     </div>
   );
 
+  // The Reward Builder (spec §13): the bundle at a Chapter's end.
+  const rewardBlock = (ch: Chapter) => {
+    const heldCes = [
+      ...m.frontCes.map((ce) => ({ ce, where: 'Front Matter' })),
+      ...m.chapters.flatMap((x, i) => x.ces.map((ce) => ({ ce, where: `Chapter ${i + 1}` }))),
+    ].filter(({ ce }) => ce.reveal === 'held');
+    const payableMaps = [
+      ...m.frontMaps.map((map) => ({ map, where: 'Front Matter' })),
+      ...m.chapters.flatMap((x, i) => x.maps.map((map) => ({ map, where: `Chapter ${i + 1}` }))),
+    ].filter(({ map }) => map.reveal === 'dm-activated');
+    const r = ch.reward;
+    const toggle = (list: string[], id: string) =>
+      list.includes(id) ? list.filter((x) => x !== id) : [...list, id];
+
+    return (
+      <div class="module-group module-reward">
+        <strong>Reward</strong>
+        <div class="module-chapter-head">
+          <label class="sheet-statelabel">
+            Milestones
+            <input
+              class="roster-field"
+              type="number"
+              min="0"
+              style="width: 5ch"
+              value={String(r.milestones)}
+              onChange={(e) => {
+                const n = Number((e.target as HTMLInputElement).value);
+                if (Number.isInteger(n) && n >= 0) save(updateReward(campaign, ch.id, { milestones: n }));
+              }}
+            />
+          </label>
+        </div>
+
+        <div class="module-reward-part">
+          <span class="module-reward-label">Gear & treasure</span>
+          {r.gear.map((line, i) => (
+            <div class="module-chapter-head" key={i}>
+              <input
+                class="roster-field module-grow"
+                type="text"
+                value={line}
+                onInput={(e) =>
+                  stage(updateReward(campaign, ch.id, {
+                    gear: r.gear.map((x, j) => (j === i ? (e.target as HTMLInputElement).value : x)),
+                  }))}
+                onChange={(e) =>
+                  save(updateReward(campaign, ch.id, {
+                    gear: r.gear.map((x, j) => (j === i ? (e.target as HTMLInputElement).value : x)),
+                  }))}
+              />
+              <button
+                type="button"
+                class="undo"
+                onClick={() => save(updateReward(campaign, ch.id, { gear: r.gear.filter((_, j) => j !== i) }))}
+              >
+                ×
+              </button>
+            </div>
+          ))}
+          <button type="button" class="buy" onClick={() => save(updateReward(campaign, ch.id, { gear: [...r.gear, ''] }))}>
+            Add a line
+          </button>
+        </div>
+
+        {heldCes.length > 0 && (
+          <div class="module-reward-part">
+            <span class="module-reward-label">CEs paid out</span>
+            {heldCes.map(({ ce, where }) => (
+              <label class="grant-recipient" key={ce.id}>
+                <input
+                  type="checkbox"
+                  checked={r.ceIds.includes(ce.id)}
+                  onChange={() => save(updateReward(campaign, ch.id, { ceIds: toggle(r.ceIds, ce.id) }))}
+                />{' '}
+                {ce.code} · {ce.title || 'Untitled'} ({where})
+              </label>
+            ))}
+          </div>
+        )}
+
+        {payableMaps.length > 0 && (
+          <div class="module-reward-part">
+            <span class="module-reward-label">Maps paid out</span>
+            {payableMaps.map(({ map, where }) => (
+              <label class="grant-recipient" key={map.id}>
+                <input
+                  type="checkbox"
+                  checked={r.mapIds.includes(map.id)}
+                  onChange={() => save(updateReward(campaign, ch.id, { mapIds: toggle(r.mapIds, map.id) }))}
+                />{' '}
+                {map.title || 'Untitled'} ({where})
+              </label>
+            ))}
+          </div>
+        )}
+
+        <div class="module-reward-part">
+          <span class="module-reward-label">Marks</span>
+          {r.marks.map((mark, i) => (
+            <div class="module-item" key={i}>
+              <div class="module-chapter-head">
+                <input
+                  class="roster-field module-grow"
+                  type="text"
+                  placeholder="Name"
+                  value={mark.name}
+                  onInput={(e) =>
+                    stage(updateReward(campaign, ch.id, {
+                      marks: r.marks.map((x, j) => (j === i ? { ...x, name: (e.target as HTMLInputElement).value } : x)),
+                    }))}
+                  onChange={(e) =>
+                    save(updateReward(campaign, ch.id, {
+                      marks: r.marks.map((x, j) => (j === i ? { ...x, name: (e.target as HTMLInputElement).value } : x)),
+                    }))}
+                />
+                <button
+                  type="button"
+                  class="undo"
+                  onClick={() => save(updateReward(campaign, ch.id, { marks: r.marks.filter((_, j) => j !== i) }))}
+                >
+                  Remove
+                </button>
+              </div>
+              <textarea
+                class="roster-field module-text module-mark-rule"
+                placeholder="Rule text"
+                value={mark.rule}
+                onInput={(e) =>
+                  stage(updateReward(campaign, ch.id, {
+                    marks: r.marks.map((x, j) => (j === i ? { ...x, rule: (e.target as HTMLTextAreaElement).value } : x)),
+                  }))}
+                onChange={(e) =>
+                  save(updateReward(campaign, ch.id, {
+                    marks: r.marks.map((x, j) => (j === i ? { ...x, rule: (e.target as HTMLTextAreaElement).value } : x)),
+                  }))}
+              />
+            </div>
+          ))}
+          <button
+            type="button"
+            class="buy"
+            onClick={() => save(updateReward(campaign, ch.id, { marks: [...r.marks, { name: '', rule: '' }] }))}
+          >
+            Add a Mark
+          </button>
+        </div>
+      </div>
+    );
+  };
+
   return (
     <div class="module">
       <div class="module-identity">
@@ -385,6 +538,7 @@ export default function ModuleEditor({
             {ch.encounters.map(encounterBlock)}
             <button type="button" class="buy" onClick={() => save(addEncounter(campaign, ch.id))}>Add an encounter</button>
           </div>
+          {rewardBlock(ch)}
         </div>
       ))}
 

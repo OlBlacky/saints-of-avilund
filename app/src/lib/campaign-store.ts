@@ -492,6 +492,28 @@ export function removeEncounter(c: CampaignRecord, id: string): CampaignRecord {
   }));
 }
 
+/** Patch a Chapter's Reward. Milestones are whole and never negative;
+ * paid-out CEs and maps must exist in the Module. */
+export function updateReward(
+  c: CampaignRecord,
+  chapterId: string,
+  patch: Partial<Reward>,
+): CampaignRecord {
+  const m = withModule(c);
+  if (patch.milestones !== undefined && (!Number.isInteger(patch.milestones) || patch.milestones < 0)) {
+    throw new Error('Milestones are a whole number');
+  }
+  const ceIds = new Set([...m.frontCes, ...m.chapters.flatMap((ch) => ch.ces)].map((ce) => ce.id));
+  for (const id of patch.ceIds ?? []) {
+    if (!ceIds.has(id)) throw new Error('no such CE');
+  }
+  const mapIds = new Set([...m.frontMaps, ...m.chapters.flatMap((ch) => ch.maps)].map((x) => x.id));
+  for (const id of patch.mapIds ?? []) {
+    if (!mapIds.has(id)) throw new Error('no such map');
+  }
+  return patchChapter(c, chapterId, (ch) => ({ ...ch, reward: { ...ch.reward, ...patch } }));
+}
+
 /** Grant-ledger mutations — pure, like the roster's. The ledger is the
  * DM's record of what was issued; a wrong entry is removed and re-issued,
  * not edited. */

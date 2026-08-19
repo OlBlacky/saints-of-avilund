@@ -30,6 +30,7 @@ import {
   updateEncounter,
   updateInsideCover,
   updateMap,
+  updateReward,
   updateRosterEntry,
   updateSession,
 } from './campaign-store';
@@ -309,5 +310,41 @@ describe('CEs, maps, and encounters', () => {
     expect(c.module!.chapters[0].encounters).toEqual([]);
     expect(() => addEncounter(c, 'nope')).toThrow();
     expect(() => updateEncounter(c, id, { title: 'x' })).toThrow();
+  });
+});
+
+describe('updateReward', () => {
+  const ready = () => {
+    let c = addChapter(addChapter(ensureModule(createCampaign('a', 0))));
+    c = addCE(c, { chapterId: c.module!.chapters[0].id });
+    c = addMap(c, { chapterId: c.module!.chapters[1].id });
+    return c;
+  };
+
+  it('patches the bundle piecewise and validates what it names', () => {
+    let c = ready();
+    const ch = c.module!.chapters[0].id;
+    const ceId = c.module!.chapters[0].ces[0].id;
+    const mapId = c.module!.chapters[1].maps[0].id;
+    c = updateReward(c, ch, { milestones: 2, gear: ['the carved femur'] });
+    c = updateReward(c, ch, { ceIds: [ceId], mapIds: [mapId] });
+    c = updateReward(c, ch, { marks: [{ name: 'Friend of the College', rule: '10% at the College market' }] });
+    expect(c.module!.chapters[0].reward).toEqual({
+      milestones: 2,
+      gear: ['the carved femur'],
+      ceIds: [ceId],
+      mapIds: [mapId],
+      marks: [{ name: 'Friend of the College', rule: '10% at the College market' }],
+    });
+  });
+
+  it('rejects bad milestones, unknown ids, and a missing Chapter', () => {
+    const c = ready();
+    const ch = c.module!.chapters[0].id;
+    expect(() => updateReward(c, ch, { milestones: -1 })).toThrow();
+    expect(() => updateReward(c, ch, { milestones: 1.5 })).toThrow();
+    expect(() => updateReward(c, ch, { ceIds: ['nope'] })).toThrow();
+    expect(() => updateReward(c, ch, { mapIds: ['nope'] })).toThrow();
+    expect(() => updateReward(c, 'nope', { milestones: 1 })).toThrow();
   });
 });
