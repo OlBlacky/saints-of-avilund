@@ -62,11 +62,11 @@ on every rendered/printed page when this becomes site or PDF output. -->
 
 ### DM Introduction
 
-[[add text — the plot engine for the DM's eyes: the saint's femur carved with an Elder Arcane spell; House Voronov as its guardians; the Order of the Candle as the hidden hand; the possessions are genuine]]
+[[add text — the plot engine for the DM's eyes: the saint's femur carved with an Elder Arcane spell; House Voronov as its guardians; the Order of the Candle as the hidden hand, in the person of Prohor Zavetnik at the Library of Vyshgorod, who engineered the errand and not the crisis; the possessions are genuine; the sender, Dr. Reinhardt Ostermann, Praelector of St. Ignatius College, is a cutout who suspects and chose not to ask]]
 
 ### Revealed on enrollment
 
-- CEs: [[add text — what the players start knowing; the professor's commission]]
+- CEs: [[add text — what the players start knowing; Dr. Reinhardt Ostermann's commission, and the sister-college letter behind it]]
 - Maps: [[add text — e.g. the road to St. Carpathi; Vyshgorod]]
 
 ---
